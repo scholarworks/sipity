@@ -11,7 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141120155922) do
+ActiveRecord::Schema.define(version: 20141120203834) do
+
+  create_table "sip_collaborators", force: true do |t|
+    t.integer  "sip_header_id", null: false
+    t.integer  "sequence"
+    t.string   "name"
+    t.string   "role"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sip_collaborators", ["sip_header_id", "sequence"], name: "index_sip_collaborators_on_sip_header_id_and_sequence"
 
   create_table "sip_headers", force: true do |t|
     t.string   "work_publication_strategy"

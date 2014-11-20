@@ -3,6 +3,11 @@
     <%= f.input :title %>
     <%= f.collection_radio_buttons :work_publication_strategy, model.work_publication_strategies, :last, :first %>
   <% end %>
+  <%= model.fieldset_for('collaborators') do %>
+    <%= f.fields_for :collaborators, model.collaborators_for_form do |collaborator_form| %>
+      <%= collaborator_form.input :name %>
+    <% end %>
+  <% end %>
   <%= model.fieldset_for('actions') do %>
     <%= f.submit %>
   <% end %>
