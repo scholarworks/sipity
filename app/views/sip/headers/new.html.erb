@@ -1,0 +1,8 @@
+<%= simple_form_for(model) do |f| %>
+  <%= model.fieldset_for('attributes') do %>
+    <% f.input :title %>
+  <% end %>
+  <%= model.fieldset_for('actions') do %>
+    <% f.submit %>
+  <% end %>
+<% end %>

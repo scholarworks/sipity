@@ -3,9 +3,10 @@ module SitePrism
   module Pages
     class NewSipHeader < SitePrism::Page
       element :form, %(form.new_sip_header)
+      element :input_title, %(form.new_sip_header input[name="sip_header[title]"])
 
       def choose(predicate, with: nil)
-        all(%(form.new_deposit_request input[name="deposit_request[#{predicate}]"])).each do |input|
+        all(%(form.new_sip_header input[name="sip_header[#{predicate}]"])).each do |input|
           if input.value == with
             input.set(true)
             break
