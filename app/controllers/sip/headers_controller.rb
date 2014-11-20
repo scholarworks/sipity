@@ -7,7 +7,25 @@ module Sip
       respond_with(@model)
     end
 
+    def create
+      @model = Header.new(create_params)
+      # Decorating because we'll be rendering the form if the object fails to
+      # save.
+      @model.decorate unless @model.save
+      respond_with(@model)
+    end
+
+    def show
+      @model = Header.find(params[:id]).decorate
+    end
+
     attr_accessor :model
     helper_method :model
+
+    private
+
+    def create_params
+      params.require(:sip_header).permit(:title)
+    end
   end
 end

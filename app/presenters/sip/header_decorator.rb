@@ -8,5 +8,9 @@ module Sip
         yield
       end
     end
+
+    def human_attribute_name(name)
+      object.class.human_attribute_name(name)
+    end
   end
 end
