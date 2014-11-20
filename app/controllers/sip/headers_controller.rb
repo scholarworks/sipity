@@ -16,7 +16,7 @@ module Sip
     end
 
     def show
-      @model = Header.find(params[:id]).decorate
+      @model = HeaderDecorator.decorate(Header.find(params[:id]))
     end
 
     attr_accessor :model
@@ -25,7 +25,7 @@ module Sip
     private
 
     def create_params
-      params.require(:sip_header).permit(:title)
+      params.require(:sip_header).permit(:title, :work_publication_strategy)
     end
   end
 end
