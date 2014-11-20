@@ -43,6 +43,7 @@ group :development, :test do
   gem 'faker'
   gem 'pry-rails'
   gem 'pry-rescue'
+  gem 'pry-byebug'
   gem 'rspec-rails'
 end
 group :production do
@@ -53,5 +54,6 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'site_prism'
+  gem 'rspec-html-matchers', '~>0.6'
   gem 'selenium-webdriver'
 end
