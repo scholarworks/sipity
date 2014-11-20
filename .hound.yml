@@ -406,6 +406,7 @@ OpMethod:
 ParameterLists:
   Description: 'Avoid parameter lists longer than three or four parameters.'
   Enabled: true
+  Max: 4
 
 ParenthesesAroundCondition:
   Description: >-
