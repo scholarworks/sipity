@@ -1,26 +1,23 @@
 module Sip
   # The controller for creating headers.
   class HeadersController < ApplicationController
+    decorates_assigned :model
     respond_to :html, :json
+
     def new
-      @model = HeaderDecorator.decorate(Header.new)
+      @model = Header.new
       respond_with(@model)
     end
 
     def create
       @model = Header.new(create_params)
-      # Decorating because we'll be rendering the form if the object fails to
-      # save.
-      @model.decorate unless @model.save
+      @model.save
       respond_with(@model)
     end
 
     def show
-      @model = HeaderDecorator.decorate(Header.find(params[:id]))
+      @model = Header.find(params[:id])
     end
-
-    attr_accessor :model
-    helper_method :model
 
     private
 
