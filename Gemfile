@@ -15,6 +15,7 @@ gem 'high_voltage'
 gem 'pundit'
 gem 'simple_form'
 gem 'upmin-admin'
+gem 'draper', '~> 1.4'
 group :doc do
   gem 'yard'
 end
