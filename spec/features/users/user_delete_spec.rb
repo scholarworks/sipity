@@ -18,7 +18,7 @@ feature 'User delete', :devise, :js do
   scenario 'user can delete own account' do
     skip 'skip a slow test'
     user = FactoryGirl.create(:user)
-    login_as(user, :scope => :user)
+    login_as(user, scope:  :user)
     visit edit_user_registration_path(user)
     click_button 'Cancel my account'
     page.driver.browser.switch_to.alert.accept
@@ -26,7 +26,3 @@ feature 'User delete', :devise, :js do
   end
 
 end
-
-
-
-
