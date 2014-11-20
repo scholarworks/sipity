@@ -1,8 +1,9 @@
 <%= simple_form_for(model) do |f| %>
   <%= model.fieldset_for('attributes') do %>
-    <% f.input :title %>
+    <%= f.input :title %>
+    <%= f.collection_radio_buttons :work_publication_strategy, model.work_publication_strategies, :last, :first %>
   <% end %>
   <%= model.fieldset_for('actions') do %>
-    <% f.submit %>
+    <%= f.submit %>
   <% end %>
 <% end %>

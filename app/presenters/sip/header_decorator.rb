@@ -12,5 +12,9 @@ module Sip
     def human_attribute_name(name)
       object.class.human_attribute_name(name)
     end
+
+    def work_publication_strategies
+      object.class.work_publication_strategies
+    end
   end
 end
