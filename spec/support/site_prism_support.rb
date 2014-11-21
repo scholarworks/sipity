@@ -14,7 +14,7 @@ module SitePrism
       end
 
       def choose(predicate, with: nil)
-        all(%(form.new_sip_header input[name="sip_header[#{predicate}]"])).each do |input|
+        all(%(form.#{DOM_CLASS} input[name="#{PARAM_NAME_CONTAINER}[#{predicate}]"])).each do |input|
           if input.value == with
             input.set(true)
             break

@@ -7,13 +7,20 @@ module Sip
     accepts_nested_attributes_for :collaborators, allow_destroy: true
 
     validates :title, presence: true
+    validates :work_publication_strategy,
+      inclusion: { in: ->(obj) { obj.class.work_publication_strategies } }
+
+    # While this make look ridiculous, if I use an Array, the enum declaration
+    # insists on persisting the value as the index instead of the key. While
+    # this might make more sense from a storage standpoint, it is not as clear
+    # and leverages a more opaque assumption.
     enum(
       work_publication_strategy:
       {
-        will_not_publish: :will_not_publish,
-        already_published: :already_published,
-        going_to_publish: :going_to_publish,
-        do_not_know: :do_not_know
+        'will_not_publish' => 'will_not_publish',
+        'already_published' => 'already_published',
+        'going_to_publish' => 'going_to_publish',
+        'do_not_know' => 'do_not_know'
       }
     )
   end
