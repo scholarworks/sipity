@@ -1,5 +1,11 @@
-require 'rails_helper'
-
-RSpec.describe Sip::Collaborator, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+require 'spec_helper'
+module Sip
+  RSpec.describe Collaborator, type: :model do
+    context '.roles' do
+      it 'is a Hash of keys that equal their values' do
+        expect(Collaborator.roles.keys).
+          to eq(Collaborator.roles.values)
+      end
+    end
+  end
 end
