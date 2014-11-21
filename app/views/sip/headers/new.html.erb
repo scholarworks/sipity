@@ -1,13 +1,12 @@
 <%= simple_form_for(model) do |f| %>
   <%= model.fieldset_for('attributes') do %>
     <%= f.input :title %>
-    <%= f.collection_radio_buttons :work_publication_strategy, model.work_publication_strategies, :first, :first %>
+    <%= f.collection_radio_buttons :work_publication_strategy, model.possible_work_publication_strategies, :first, :first %>
   <% end %>
   <%= model.fieldset_for('collaborators') do %>
     <%= f.fields_for :collaborators, model.collaborators_for_form do |collaborator_form| %>
       <%= collaborator_form.input :name %>
-      <%# TODO: Change the violation of demeter %>
-      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.class.roles %>
+      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
     <% end %>
   <% end %>
   <%= model.fieldset_for('actions') do %>
