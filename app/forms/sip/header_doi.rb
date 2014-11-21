@@ -7,7 +7,9 @@ module Sip
 
     attr_reader :identifier, :header
     def initialize(attributes = {})
-      @header, @identifier = attributes.values_at(:header, :identifier)
+      @decorator = attributes.fetch(:decorator) { default_decorator }
+      self.header = attributes.fetch(:header)
+      @identifier = attributes.fetch(:identifier, nil)
       yield(self) if block_given?
     end
 
@@ -24,6 +26,18 @@ module Sip
 
     def persisted?
       false
+    end
+
+    private
+    def header=(header)
+      @header = decorator.decorate(header)
+    end
+
+    attr_reader :decorator
+    private :decorator
+
+    def default_decorator
+      HeaderDecorator
     end
   end
 end
