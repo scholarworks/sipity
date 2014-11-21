@@ -12,6 +12,10 @@ module Sip
       end
     end
 
+    def to_s
+      title
+    end
+
     def human_attribute_name(name)
       object.class.human_attribute_name(name)
     end

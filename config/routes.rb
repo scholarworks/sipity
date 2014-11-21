@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   namespace :sip do
-    resources :headers
+    resources :headers do
+      resource :doi
+    end
   end
 
   mount Upmin::Engine => '/admin'

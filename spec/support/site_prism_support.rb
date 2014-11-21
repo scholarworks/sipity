@@ -29,7 +29,13 @@ module SitePrism
       def text_for(predicate)
         all(".#{DOM_CLASS} .value.#{predicate}").map(&:text)
       end
+
+      def click_recommendation(recommendation)
+        find(".sip_recommendation .value .recommendation-#{recommendation.downcase}").click
+      end
     end
+
+    class SipDoi
   end
 
   module OnThisPage
