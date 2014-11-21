@@ -4,7 +4,12 @@ module Sip
     self.table_name = 'sip_headers'
 
     has_many :collaborators, foreign_key: :sip_header_id
-    accepts_nested_attributes_for :collaborators, allow_destroy: true
+
+    accepts_nested_attributes_for(
+      :collaborators,
+      allow_destroy: true,
+      reject_if: ->(collaborator_attributes) { collaborator_attributes['name'].blank? }
+    )
 
     validates :title, presence: true
     validates :work_publication_strategy,

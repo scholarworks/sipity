@@ -9,5 +9,19 @@ module Sip
           to eq(Header.work_publication_strategies.values)
       end
     end
+
+    context '.accepts_nested_attributes_for collaborators' do
+      it 'should not create a collaborator instance when no name is provided' do
+        expect do
+          # Using .create! so an exception is thrown. If the exception is thrown
+          # it means validation fails.
+          Header.create!(
+            'title' => 'Hello World',
+            'work_publication_strategy' => 'do_not_know',
+            'collaborators_attributes' => { '0' => { 'name' => '' } }
+          )
+        end.to_not change { Collaborator.count }
+      end
+    end
   end
 end
