@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sip
-  RSpec.describe DoiForm do
+  RSpec.describe HeaderDoi do
     it 'is not persisted' do
       expect(subject.persisted?).to eq(false)
     end

@@ -5,5 +5,13 @@ module Sip
     def find_header(header_id)
       Header.find(header_id)
     end
+
+    def doi_request_is_pending?(_header)
+      false
+    end
+
+    def doi_already_assigned?(_header)
+      false
+    end
   end
 end

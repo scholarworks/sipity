@@ -13,5 +13,8 @@ module Sip
         expect(subject.find_header('8675309')).to eq(:found)
       end
     end
+
+    it { should respond_to :doi_request_is_pending? }
+    it { should respond_to :doi_already_assigned? }
   end
 end
