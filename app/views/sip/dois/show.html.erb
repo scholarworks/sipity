@@ -1,1 +1,17 @@
 <h1>DOI for <%= model %></h1>
+
+<ul>
+  <li>
+    <h2>One is already assigned</h2>
+  </li>
+  <li>
+    <h2>I have an existing DOI</h2>
+    <%= simple_form_for(Sip::HeaderDoi.new(header: model), url: sip_header_doi_path(model)) do |f| %>
+      <%= f.input :identifier %>
+      <%= f.submit %>
+    <% end %>
+  </li>
+  <li>
+    <h2>I'd like to create a DOI</h2>
+  </li>
+</ul>

@@ -11,6 +11,5 @@ module Sip
     attr_reader :model
     protected :model
     helper_method :model
-
   end
 end
