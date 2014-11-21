@@ -18,6 +18,10 @@ module Sip
       @model = decorate(Header.find(params[:id]))
     end
 
+    attr_reader :model
+    protected :model
+    helper_method :model
+
     private
 
     def create_params
