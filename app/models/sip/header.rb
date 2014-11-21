@@ -3,7 +3,7 @@ module Sip
   class Header < ActiveRecord::Base
     self.table_name = 'sip_headers'
 
-    has_many :collaborators, foreign_key: :sip_header_id
+    has_many :collaborators, foreign_key: :sip_header_id, dependent: :destroy
 
     accepts_nested_attributes_for(
       :collaborators,
