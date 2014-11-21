@@ -5,16 +5,16 @@ module SitePrism
       DOM_CLASS = 'new_sip_header'.freeze
       PARAM_NAME_CONTAINER = 'sip_header'.freeze
 
-      element :form, %(form.#{DOM_CLASS})
-      element :input_title, %(form.#{DOM_CLASS} input[name="#{PARAM_NAME_CONTAINER}[title]"])
-      element :submit_button, %(form.#{DOM_CLASS} input[type="submit"])
+      element :form, "form.#{DOM_CLASS}"
+      element :input_title, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[title]']"
+      element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
 
       def choose(predicate, with: nil)
-        all(%(form.#{DOM_CLASS} input[name="#{PARAM_NAME_CONTAINER}[#{predicate}]"])).each do |input|
+        all("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").each do |input|
           if input.value == with
             input.set(true)
             break
@@ -24,7 +24,11 @@ module SitePrism
     end
 
     class SipHeader < SitePrism::Page
-      element :title, %(.sip_header .attributes-detail.title)
+      DOM_CLASS = 'sip_header'.freeze
+
+      def text_for(predicate)
+        all(".#{DOM_CLASS} .value.#{predicate}").map(&:text)
+      end
     end
   end
 

@@ -9,8 +9,9 @@ module Sip
     end
 
     def create
-      @model = decorate(Header.new(create_params))
-      @model.save
+      @model = Header.new(create_params)
+      # If the save fails, decorate so we can re-render the form.
+      decorate(@model) unless @model.save
       respond_with(@model)
     end
 
@@ -25,7 +26,9 @@ module Sip
     private
 
     def create_params
-      params.require(:sip_header).permit(:title, :work_publication_strategy)
+      params.
+        require(:sip_header).
+        permit(:title, :work_publication_strategy, collaborators_attributes: [:name, :role])
     end
 
     def decorate(model)

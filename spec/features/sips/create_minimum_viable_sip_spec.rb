@@ -7,11 +7,15 @@ feature 'Minimum viable SIP', :devise do
       expect(the_page).to be_all_there
       the_page.fill_in(:title, with: 'Hello World')
       the_page.choose(:work_publication_strategy, with: 'do_not_know')
+      # Oh nested attributes. What lengths I go to!
+      the_page.fill_in('collaborators_attributes][0][name', with: 'Robert the Bruce')
       the_page.submit_button.click
     end
 
     on('sip_header') do |the_page|
-      expect(the_page).to be_all_there
+      expect(the_page.text_for('title')).to eq(['Hello World'])
+      expect(the_page.text_for('work_publication_strategy')).to eq(['do_not_know'])
+      expect(the_page.text_for('collaborators .value.name')).to eq(['Robert the Bruce'])
     end
   end
 end

@@ -6,5 +6,9 @@ module Sip
     def possible_roles
       object.class.roles
     end
+
+    def human_attribute_name(name)
+      object.class.human_attribute_name(name)
+    end
   end
 end
