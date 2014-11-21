@@ -4,6 +4,8 @@ module Sip
     delegate_all
 
     def fieldset_for(name)
+      # TODO - Translate name following active record internationalization
+      # conventions.
       h.field_set_tag(name, class: h.dom_class(object, name)) do
         yield
       end
@@ -17,6 +19,8 @@ module Sip
       object.class.work_publication_strategies
     end
 
+    # When working on the form, I always want a blank element for the
+    # collaborators.
     def collaborators_for_form
       object.collaborators.tap(&:build)
     end
