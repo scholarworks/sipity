@@ -11,7 +11,7 @@ module Sip
     def create
       @model = Header.new(create_params)
       # If the save fails, decorate so we can re-render the form.
-      decorate(@model) unless @model.save
+      @model = decorate(@model) unless @model.save
       respond_with(@model)
     end
 
