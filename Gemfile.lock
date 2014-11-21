@@ -125,6 +125,9 @@ GEM
     guard-rspec (4.3.1)
       guard (~> 2.1)
       rspec (>= 2.14, < 4.0)
+    guard-spring (0.0.4)
+      guard
+      spring
     haml (4.0.5)
       tilt
     high_voltage (2.2.1)
@@ -345,6 +348,7 @@ DEPENDENCIES
   guard-bundler
   guard-rails
   guard-rspec
+  guard-spring
   high_voltage
   jbuilder (~> 2.0)
   jquery-rails
