@@ -34,7 +34,6 @@ module SitePrism
         find(".sip_recommendation .value .recommendation-#{recommendation.downcase}").click
       end
     end
-
   end
 
   module OnThisPage
