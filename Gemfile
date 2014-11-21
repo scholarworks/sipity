@@ -55,6 +55,7 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'site_prism'
+  gem 'simplecov'
   gem 'rspec-html-matchers', '~>0.6'
   gem 'selenium-webdriver'
 end
