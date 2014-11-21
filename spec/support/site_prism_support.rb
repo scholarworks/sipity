@@ -35,7 +35,6 @@ module SitePrism
       end
     end
 
-    class SipDoi
   end
 
   module OnThisPage
