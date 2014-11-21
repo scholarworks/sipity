@@ -16,6 +16,7 @@ gem 'pundit'
 gem 'simple_form'
 gem 'upmin-admin'
 gem 'draper', '~> 1.4'
+gem 'hesburgh-lib', path: '../hesburgh-lib'
 group :doc do
   gem 'yard'
 end
