@@ -29,6 +29,7 @@ module Sip
     end
 
     private
+
     def header=(header)
       @header = decorator.decorate(header)
     end
