@@ -1,7 +1,6 @@
 if ENV['COV'] || ENV['COVERAGE'] || ENV['TRAVIS']
-  require 'simplecov'
-
   if ENV['COV'] || ENV['COVERAGE']
+    require 'simplecov'
     SimpleCov.start do
       load_profile 'rails'
     end

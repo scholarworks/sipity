@@ -42,13 +42,14 @@ group :development do
   gem 'spring-commands-rspec'
 end
 group :development, :test do
-  gem 'rubocop'
+  gem 'rubocop', require: false
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'coveralls', require: false
 end
 group :production do
   gem 'unicorn'
