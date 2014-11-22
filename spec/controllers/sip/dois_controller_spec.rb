@@ -24,5 +24,26 @@ module Sip
         end
       end
     end
+
+    context 'PUT #assign' do
+      before { controller.runner = runner }
+      let(:header) { double('Header', to_param: '1234') }
+      let(:runner) do
+        Hesburgh::Lib::MockRunner.new(
+          yields: header,
+          callback_name: :success,
+          run_with: { header_id: '1234', identifier: identifier },
+          context: controller
+        )
+      end
+
+      context 'when :success' do
+        let(:identifier) { 'doi:abc' }
+        it 'will render the show page' do
+          put 'assign', header_id: '1234', doi_form: { identifier: identifier }
+          expect(response).to redirect_to(sip_header_path('1234'))
+        end
+      end
+    end
   end
 end
