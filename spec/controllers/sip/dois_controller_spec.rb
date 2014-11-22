@@ -20,6 +20,7 @@ module Sip
         it 'will render the show page' do
           get 'show', header_id: '1234'
           expect(assigns(:model)).to_not be_nil
+          expect(response).to render_template('doi_not_assigned')
         end
       end
     end

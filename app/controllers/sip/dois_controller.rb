@@ -11,7 +11,9 @@ module Sip
           # TODO: Really I shouldn't be doing this; The header that is
           # return should be decorated
           @model = HeaderDoi.new(header: header)
-          respond_with(@model)
+          respond_with(@model) do |wants|
+            wants.html { render action: 'doi_not_assigned' }
+          end
         end
       end
     end
