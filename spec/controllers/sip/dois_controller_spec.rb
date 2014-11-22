@@ -40,7 +40,7 @@ module Sip
       context 'when :success' do
         let(:identifier) { 'doi:abc' }
         it 'will render the show page' do
-          put 'assign', header_id: '1234', doi_form: { identifier: identifier }
+          put 'assign', header_id: '1234', doi: { identifier: identifier }
           expect(response).to redirect_to(sip_header_path('1234'))
         end
       end

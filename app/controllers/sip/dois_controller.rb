@@ -37,7 +37,7 @@ module Sip
     end
 
     def doi
-      params.require(:doi_form).require(:identifier)
+      params.require(:doi).require(:identifier)
     end
   end
 end

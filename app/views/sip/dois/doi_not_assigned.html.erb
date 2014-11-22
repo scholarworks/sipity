@@ -1,1 +1,6 @@
 <h1>DOI Not Assigned for <%= model.header %></h1>
+
+<%= simple_form_for(model, url: assign_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+  <%= f.input :identifier %>
+  <%= f.submit %>
+<% end %>

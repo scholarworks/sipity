@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   namespace :sip do
     resources :headers do
-      resource :doi
+      resource :doi do
+        member do
+          post :assign
+        end
+      end
     end
   end
-  # I like this URL as I am putting the identifier at this location.
-  put "/sip/headers/:header_id/doi", to: 'sip/dois#assign', as: 'assign_sip_header_doi'
 
   mount Upmin::Engine => '/admin'
   root to: 'visitors#index'
