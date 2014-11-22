@@ -24,3 +24,4 @@ en:
     messages:
       flash:
         assigned_doi: '%{doi} has been assigned to %{title}.'
+        doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'

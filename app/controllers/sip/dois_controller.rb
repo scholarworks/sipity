@@ -1,4 +1,6 @@
 module Sip
+  SIP_MESSAGE_SCOPE = 'sip.messages.flash'.freeze
+
   # The controller for creating headers.
   class DoisController < ApplicationController
     respond_to :html, :json
@@ -12,6 +14,7 @@ module Sip
           # return should be decorated
           @model = HeaderDoi.new(header: header)
           respond_with(@model) do |wants|
+            flash.now.alert = t(:doi_not_assigned, title: header.title, scope: SIP_MESSAGE_SCOPE)
             wants.html { render action: 'doi_not_assigned' }
           end
         end
@@ -21,7 +24,7 @@ module Sip
     def assign
       run(header_id: header_id, identifier: doi) do |on|
         on.success do |header, identifier|
-          flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: 'sip.messages.flash')
+          flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: SIP_MESSAGE_SCOPE)
           redirect_to sip_header_path(header)
         end
       end
