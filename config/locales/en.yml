@@ -20,4 +20,7 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  sip:
+    messages:
+      flash:
+        assigned_doi: '%{doi} has been assigned to %{title}.'

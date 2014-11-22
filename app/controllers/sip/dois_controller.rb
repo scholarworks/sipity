@@ -20,7 +20,8 @@ module Sip
 
     def assign
       run(header_id: header_id, identifier: doi) do |on|
-        on.success do |header|
+        on.success do |header, identifier|
+          flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: 'sip.messages.flash')
           redirect_to sip_header_path(header)
         end
       end

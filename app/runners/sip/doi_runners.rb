@@ -13,5 +13,13 @@ module Sip
         end
       end
     end
+
+    # Responsible for assigning a DOI to the header.
+    class Assign < BaseRunner
+      def run(header_id: nil, identifier: nil)
+        header = repository.find_header(header_id)
+        callback(:success, header, identifier)
+      end
+    end
   end
 end

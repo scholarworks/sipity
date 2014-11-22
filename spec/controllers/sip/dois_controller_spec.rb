@@ -30,7 +30,7 @@ module Sip
       let(:header) { double('Header', to_param: '1234') }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
-          yields: header,
+          yields: [header, identifier],
           callback_name: :success,
           run_with: { header_id: '1234', identifier: identifier },
           context: controller
@@ -39,8 +39,10 @@ module Sip
 
       context 'when :success' do
         let(:identifier) { 'doi:abc' }
+        let(:header) { double(title: 'The Title', to_param: '1234') }
         it 'will render the show page' do
           put 'assign', header_id: '1234', doi: { identifier: identifier }
+          expect(flash[:notice]).to_not be_empty
           expect(response).to redirect_to(sip_header_path('1234'))
         end
       end
