@@ -30,10 +30,15 @@ class ApplicationController < ActionController::Base
   #
   # @see ApplicationController.runner_container for customization
   def run(*args, &block)
+    runner.run(self, *args, &block)
+  end
+
+  attr_writer :runner
+  def runner
+    return @runner if @runner # For Dependency Injection
     runner_name = action_name.classify
     if runner_container.const_defined?(runner_name)
-      runner = runner_container.const_get(runner_name)
-      runner.run(self, *args, &block)
+      runner_container.const_get(runner_name)
     else
       fail RunnerNotFoundError.new(runner_container, runner_name)
     end
