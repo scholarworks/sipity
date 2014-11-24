@@ -19,8 +19,11 @@ module Sip
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
         form = repository.build_header_doi_form(header: header, identifier: identifier)
-        if form.submit
-          callback(:success, form, form.identifier)
+        response = form.submit do |f|
+          repository.create_additional_attribute(header: f.header, key: f.identifier_key, value: f.identifier)
+        end
+        if response
+          callback(:success, header, form.identifier)
         else
           callback(:failure, form)
         end
