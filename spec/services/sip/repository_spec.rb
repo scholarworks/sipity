@@ -12,6 +12,13 @@ module Sip
         allow(Header).to receive(:find).with('8675309').and_return(:found)
         expect(subject.find_header('8675309')).to eq(:found)
       end
+
+      let(:decorator) { double(decorate: :decorated) }
+      it 'will build a decorated header if decoration is requested' do
+        allow(Header).to receive(:find).with('8675309').and_return(:found)
+        expect(subject.find_header('8675309', decorator: decorator)).to eq(:decorated)
+        expect(decorator).to have_received(:decorate).with(:found)
+      end
     end
 
     context '#build_header' do
@@ -19,7 +26,7 @@ module Sip
       it 'will build a header without decoration' do
         expect(subject.build_header).to be_a(Header)
       end
-      it 'will build a header if decoration is requested' do
+      it 'will build a decorated header if decoration is requested' do
         expect(subject.build_header(decorator: decorator)).to eq(:decorated)
         expect(decorator).to have_received(:decorate).with(kind_of(Header))
       end

@@ -22,7 +22,12 @@ module Sip
     end
 
     def show
-      @model = decorate(Header.find(params[:id]))
+      run(params[:id], decorator: HeaderDecorator) do |on|
+        on.success do |header|
+          @model = header
+          respond_with(@model)
+        end
+      end
     end
 
     attr_reader :model

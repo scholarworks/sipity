@@ -8,5 +8,12 @@ module Sip
         callback(:success, header)
       end
     end
+
+    class Show < BaseRunner
+      def run(header_id, decorator: nil)
+        header = repository.find_header(header_id, decorator: decorator)
+        callback(:success, header)
+      end
+    end
   end
 end
