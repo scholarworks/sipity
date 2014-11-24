@@ -2,12 +2,15 @@ module Sip
   module Recommendations
     # Container for the DOI Recommendation
     class DoiRecommendation
-      attr_reader :header, :repository
-      private :repository
+      extend ActiveModel::Translation
 
-      def initialize(header:, repository: self.default_repository)
+      attr_reader :header, :repository, :helper
+      private :repository, :helper
+
+      def initialize(header:, repository: default_repository, helper: header.h)
         @header = header
         @repository = repository
+        @helper = helper
       end
 
       def state
@@ -16,6 +19,22 @@ module Sip
         return :doi_not_assigned
       end
       alias_method :status, :state
+
+      def path_to_recommendation
+        helper.sip_header_doi_path(header)
+      end
+
+      def name
+        :doi
+      end
+
+      def t(name)
+        public_send(name)
+      end
+
+      def human_attribute_name(name)
+        self.class.human_attribute_name(name)
+      end
 
       private
 

@@ -4,8 +4,19 @@ module Sip
   module Recommendations
     RSpec.describe DoiRecommendation do
       let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false)}
+      let(:helper) { double(sip_header_doi_path: true) }
       let(:header) { double('Header') }
-      subject { described_class.new(header: header, repository: repository)}
+      subject { described_class.new(header: header, repository: repository, helper: helper)}
+
+      its(:name) { should eq :doi }
+
+      it { should respond_to :human_attribute_name }
+      it { should respond_to :path_to_recommendation }
+
+      it 'will have a :path_to_recommendation' do
+        expect(helper).to receive(:sip_header_doi_path).with(header).and_return('/the/path')
+        expect(subject.path_to_recommendation).to eq('/the/path')
+      end
 
       context 'when a doi exists in the system its' do
         before do
