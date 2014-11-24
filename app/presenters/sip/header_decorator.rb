@@ -16,6 +16,10 @@ module Sip
       title
     end
 
+    def with_recommendation(recommendation_name)
+      yield(recommendation_for(recommendation_name))
+    end
+
     def human_attribute_name(name)
       object.class.human_attribute_name(name)
     end
@@ -32,6 +36,12 @@ module Sip
 
     def authors
       object.collaborators.where(role: 'author').map(&:decorate)
+    end
+
+    private
+
+    def recommendation_for(_name)
+      Recommendations::DoiRecommendation.new(header: self)
     end
   end
 end

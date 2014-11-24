@@ -3,10 +3,10 @@ require 'spec_helper'
 module Sip
   module Recommendations
     RSpec.describe DoiRecommendation do
-      let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false)}
+      let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false) }
       let(:helper) { double(sip_header_doi_path: true) }
       let(:header) { double('Header') }
-      subject { described_class.new(header: header, repository: repository, helper: helper)}
+      subject { described_class.new(header: header, repository: repository, helper: helper) }
 
       its(:name) { should eq :doi }
 

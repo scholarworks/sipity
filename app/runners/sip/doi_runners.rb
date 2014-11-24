@@ -4,6 +4,8 @@ module Sip
     class Show < BaseRunner
       def run(header_id: nil)
         header = repository.find_header(header_id)
+        # recommendation = repository.doi_recommendation_for(header)
+        # callback(recommendation.state, recommendation.header)
         if repository.doi_already_assigned?(header)
           callback(:doi_already_assigned, header)
         elsif repository.doi_request_is_pending?(header)

@@ -28,13 +28,15 @@
 <div class="recommendations">
   <h2>Recommendations</h2>
   <ul class="recommendations-list">
-    <li class="recommendations-list-item">
-      <dl class="sip_recommendation">
-        <dt class="predicate status">Status</dt>
-        <dd class="value status">Incomplete</dd>
-        <dt class="predicate recommendation">Recommendation</dt>
-        <dd class="value recommendation doi"><%= link_to 'DOI', sip_header_doi_path(model), class: 'recommendation-doi' %></dd>
-      </dl>
-    </li>
+    <% model.with_recommendation('doi') do |recommendation| %>
+      <li class="recommendations-list-item">
+        <dl class="sip_recommendation">
+          <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
+          <dd class="value status"><%= recommendation.t(:status) %></dd>
+          <dt class="predicate recommendation">Recommendation</dt>
+          <dd class="value recommendation doi"><%= link_to recommendation.t(:name), recommendation.path_to_recommendation, class: 'recommendation-doi' %></dd>
+        </dl>
+      </li>
+    <% end %>
   </ul>
 </div>
