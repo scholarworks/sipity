@@ -23,7 +23,15 @@ module Sip
     private
 
     def decorate(object:, decorator:)
-      object.is_a?(decorator) ? object : decorator.decorate(object)
+      return object unless decorator.respond_to?(:decorate)
+      begin
+        object.is_a?(decorator) ? object : decorator.decorate(object)
+      rescue TypeError
+        # TODO: Is there a more elegant way to do this? I was encountering an
+        # error in which is_a? was throwing an exception because the decorator
+        # is a double and not a class or module.
+        decorator.decorate(object)
+      end
     end
   end
 end
