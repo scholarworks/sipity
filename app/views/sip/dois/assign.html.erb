@@ -1,5 +1,6 @@
 <h2>Assign an existing DOI?</h2>
 <%= simple_form_for(model.assign_a_doi_form, url: assign_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+  <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :identifier %>
     <%= f.submit %>
