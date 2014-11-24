@@ -27,23 +27,34 @@ module Sip
       end
     end
 
-    context 'PUT #assign' do
+    context 'POST #assign' do
       before { controller.runner = runner }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
           yields: [header, identifier],
-          callback_name: :success,
+          callback_name: callback_name,
           run_with: { header_id: header.to_param, identifier: identifier },
           context: controller
         )
       end
 
       context 'when :success' do
+        let(:callback_name) { :success }
         let(:identifier) { 'doi:abc' }
-        it 'will render the show page' do
-          put 'assign', header_id: header.to_param, doi: { identifier: identifier }
+        it 'will redirect to the sip header path' do
+          post 'assign', header_id: header.to_param, doi: { identifier: identifier }
           expect(flash[:notice]).to_not be_empty
           expect(response).to redirect_to(sip_header_path(header.to_param))
+        end
+      end
+
+      context 'when :failure' do
+        let(:identifier) { 'doi:abc' }
+        let(:callback_name) { :failure }
+        it 'will render the show page' do
+          post 'assign', header_id: header.to_param, doi: { identifier: identifier }
+          expect(assigns(:model)).to_not be_nil
+          expect(response).to render_template('assign')
         end
       end
     end

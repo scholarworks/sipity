@@ -10,5 +10,9 @@ module Sip
     def human_attribute_name(name)
       object.class.human_attribute_name(name)
     end
+
+    def to_s
+      name
+    end
   end
 end

@@ -6,12 +6,17 @@ module Sip
 
     attr_reader :header
     attr_accessor :publisher, :publication_date
+    delegate :title, to: :header
 
     def initialize(attributes = {})
       @decorator = attributes.fetch(:decorator) { default_decorator }
       self.header = attributes.fetch(:header)
       @publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
       yield(self) if block_given?
+    end
+
+    def authors
+      header.authors
     end
 
     def to_key

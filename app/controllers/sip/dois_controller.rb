@@ -28,6 +28,10 @@ module Sip
           flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: SIP_MESSAGE_SCOPE)
           redirect_to sip_header_path(header)
         end
+        on.failure do |header|
+          @model = HeaderDoi.new(header: header)
+          respond_with(@model)
+        end
       end
     end
 
@@ -42,7 +46,7 @@ module Sip
     end
 
     def doi
-      params.require(:doi).require(:identifier)
+      params.require(:doi).fetch(:identifier)
     end
   end
 end
