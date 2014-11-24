@@ -11,8 +11,8 @@ module Sip
     end
 
     it 'has many :additional_attributes' do
-      expect(Sip::Header.reflect_on_association(:additional_attributes)).to
-      be_a(ActiveRecord::Reflection::AssociationReflection)
+      expect(Sip::Header.reflect_on_association(:additional_attributes)).
+        to be_a(ActiveRecord::Reflection::AssociationReflection)
     end
 
     context '.accepts_nested_attributes_for collaborators' do
