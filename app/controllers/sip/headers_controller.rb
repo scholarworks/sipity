@@ -15,9 +15,10 @@ module Sip
     end
 
     def create
-      @model = Header.new(create_params)
-      # If the save fails, decorate so we can re-render the form.
-      @model = decorate(@model) unless @model.save
+      # Because the run command returns an Array, I need to shift the first
+      # value. And by convention, if there is a failure we'll render a 200 and
+      # provide the user with a form to re-enter data
+      @model = run(decorator: HeaderDecorator, attributes: create_params).shift
       respond_with(@model)
     end
 
@@ -40,10 +41,6 @@ module Sip
       params.
         require(:sip_header).
         permit(:title, :work_publication_strategy, collaborators_attributes: [:name, :role])
-    end
-
-    def decorate(model)
-      HeaderDecorator.new(model)
     end
   end
 end

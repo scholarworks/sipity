@@ -24,7 +24,7 @@ module Sip
       expect(subject.errors[:identifier]).to_not be_empty
     end
 
-    it { should respond_to :identifier_key }
+    its(:identifier_key) { should be_a(String) }
 
     it 'formats an identifier'
 

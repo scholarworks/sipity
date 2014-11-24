@@ -38,5 +38,37 @@ module Sip
         expect(response).to eq([header])
       end
     end
+
+    RSpec.describe Create do
+      let(:header) { double(save: false) }
+      let(:context) { double(repository: repository) }
+      let(:repository) { double(build_header: header) }
+      let(:handler) { double(invoked: true) }
+      let(:attributes) { {} }
+      subject do
+        described_class.new(context) do |on|
+          on.success { |header| handler.invoked("SUCCESS", header) }
+          on.failure { |header| handler.invoked("FAILURE", header) }
+        end
+      end
+
+      context 'when header is saved' do
+        it 'will issue the :success callback' do
+          expect(header).to receive(:save).and_return(true)
+          response = subject.run(attributes: attributes)
+          expect(handler).to have_received(:invoked).with("SUCCESS", header)
+          expect(response).to eq([header])
+        end
+      end
+
+      context 'when header is not saved' do
+        it 'will issue the :failure callback' do
+          expect(header).to receive(:save).and_return(false)
+          response = subject.run(attributes: attributes)
+          expect(handler).to have_received(:invoked).with("FAILURE", header)
+          expect(response).to eq([header])
+        end
+      end
+    end
   end
 end

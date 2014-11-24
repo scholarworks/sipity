@@ -8,8 +8,8 @@ module Sip
       decorator.decorate(header)
     end
 
-    def build_header(decorator: nil)
-      header = Header.new
+    def build_header(decorator: nil, attributes: {})
+      header = Header.new(attributes)
       return header unless decorator.respond_to?(:decorate)
       decorator.decorate(header)
     end
