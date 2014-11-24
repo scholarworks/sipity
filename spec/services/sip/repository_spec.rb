@@ -14,6 +14,17 @@ module Sip
       end
     end
 
+    context '#build_header' do
+      let(:decorator) { double(decorate: :decorated) }
+      it 'will build a header without decoration' do
+        expect(subject.build_header).to be_a(Header)
+      end
+      it 'will build a header if decoration is requested' do
+        expect(subject.build_header(decorator: decorator)).to eq(:decorated)
+        expect(decorator).to have_received(:decorate).with(kind_of(Header))
+      end
+    end
+
     it { should respond_to :doi_request_is_pending? }
     it { should respond_to :doi_already_assigned? }
   end

@@ -6,6 +6,12 @@ module Sip
       Header.find(header_id)
     end
 
+    def build_header(decorator: nil)
+      header = Header.new
+      return header unless decorator.respond_to?(:decorate)
+      decorator.decorate(header)
+    end
+
     def doi_request_is_pending?(_header)
       false
     end

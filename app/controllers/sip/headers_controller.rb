@@ -3,9 +3,15 @@ module Sip
   class HeadersController < ApplicationController
     respond_to :html, :json
 
+    self.runner_container = Sip::HeaderRunners
+
     def new
-      @model = decorate(Header.new)
-      respond_with(@model)
+      run(decorator: HeaderDecorator) do |on|
+        on.success do |header|
+          @model = header
+          respond_with(@model)
+        end
+      end
     end
 
     def create
