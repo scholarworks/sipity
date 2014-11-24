@@ -43,5 +43,41 @@ module Sip
         end
       end
     end
+
+    RSpec.describe Assign do
+      let(:header) { double }
+      let(:header_id) { 1234 }
+      let(:identifier) { 'abc:123' }
+      let(:context) { double(repository: repository) }
+      let(:form) { double('Form', submit: true, identifier: identifier, header: header, identifier_key: 'key') }
+      let(:repository) { double(find_header: header, build_header_doi_form: form, create_additional_attribute: true) }
+      let(:handler) { double(invoked: true) }
+      subject do
+        described_class.new(context) do |on|
+          on.success { |header, identifier| handler.invoked("SUCCESS", header, identifier) }
+          on.failure { |header| handler.invoked("FAILURE", header) }
+        end
+      end
+
+      context 'when the form submission fails' do
+        it 'issues the :failure callback' do
+          expect(form).to receive(:submit).and_return(false)
+          response = subject.run(header_id: header_id, identifier: identifier)
+          expect(handler).to have_received(:invoked).with("FAILURE", form)
+          expect(response).to eq([form])
+        end
+      end
+
+      context 'when the form submission succeeds' do
+        it 'issues the :success callback' do
+          expect(form).to receive(:submit).and_return(true).and_yield(form)
+          expect(repository).to receive(:create_additional_attribute).
+            with(header: header, key: form.identifier_key, value: form.identifier)
+          response = subject.run(header_id: header_id, identifier: identifier)
+          expect(handler).to have_received(:invoked).with("SUCCESS", header, identifier)
+          expect(response).to eq([header, identifier])
+        end
+      end
+    end
   end
 end
