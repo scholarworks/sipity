@@ -1,0 +1,24 @@
+<h2>Request a DOI?</h2>
+<%= simple_form_for(model.request_a_doi_form, url: submit_request_for_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+  <%= field_set_tag do %>
+    <dl>
+      <dt>Title</dt>
+      <dd><%= f.object.title %></dd>
+    <% if f.object.authors.any? %>
+      <dt>Authors</dt>
+      <dd>
+        <ul>
+          <% f.object.authors.each do |author| %>
+            <li><%= author %></li>
+          <% end %>
+        </ul>
+      </dd>
+    </dl>
+    <% else %>
+      <%= f.input :authors %>
+    <% end %>
+    <%= f.input :publisher %>
+    <%= f.input :publication_date %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
