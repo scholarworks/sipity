@@ -19,5 +19,11 @@ module Sip
     def submit
       fail NotImplementedError, "Expected #{self.class} to implement #submit"
     end
+
+    private
+
+    def decorate(object:, decorator:)
+      object.is_a?(decorator) ? object : decorator.decorate(object)
+    end
   end
 end
