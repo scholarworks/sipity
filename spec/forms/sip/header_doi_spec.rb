@@ -24,6 +24,8 @@ module Sip
       expect(subject.errors[:identifier]).to_not be_empty
     end
 
+    it { should respond_to :identifier_key }
+
     it 'formats an identifier'
 
     it 'decorates the header' do
@@ -41,11 +43,15 @@ module Sip
 
       context 'when valid' do
         let(:identifier) { 'doi:1234' }
+        let(:repository) { double(create_additional_attribute: true) }
         subject { HeaderDoi.new(decorator: decorator, header: header, identifier: identifier) }
-        it 'will return true' do
-          expect(subject.submit).to be_truthy
+        it 'will yield the form' do
+          expect { |b| subject.submit(&b) }.to yield_with_args(subject)
         end
-        it 'will append the DOI to the header'
+        it 'will return the yielded response' do
+          block = ->(_) { :response }
+          expect(subject.submit(&block)).to eq(:response)
+        end
       end
     end
   end

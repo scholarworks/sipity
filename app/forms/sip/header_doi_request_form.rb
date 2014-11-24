@@ -1,9 +1,6 @@
 module Sip
   # Submit a request for a DOI for the given Header
-  class HeaderDoiRequestForm
-    include ActiveModel::Validations
-    extend ActiveModel::Translation
-
+  class HeaderDoiRequestForm < VirtualForm
     attr_reader :header
     attr_accessor :publisher, :publication_date
     delegate :title, to: :header
@@ -17,18 +14,6 @@ module Sip
 
     def authors
       header.authors
-    end
-
-    def to_key
-      []
-    end
-
-    def to_param
-      nil
-    end
-
-    def persisted?
-      false
     end
 
     private

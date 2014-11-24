@@ -1,10 +1,7 @@
 module Sip
   # Responsible for capturing and validating the assignment of a DOI that
   # already exists but has not yet been assigned to the SIP
-  class HeaderDoi
-    include ActiveModel::Validations
-    extend ActiveModel::Translation
-
+  class HeaderDoi < VirtualForm
     attr_reader :header
     attr_accessor :identifier
     def initialize(attributes = {})
@@ -21,24 +18,17 @@ module Sip
       self
     end
 
+    def identifier_key
+      AdditionalAttribute::DOI_PREDICATE_NAME
+    end
+
     def request_a_doi_form
       HeaderDoiRequestForm.new(header: header, decorator: decorator)
     end
 
-    def to_key
-      []
-    end
-
-    def to_param
-      nil
-    end
-
-    def persisted?
-      false
-    end
-
     def submit
-      valid?
+      return false unless valid?
+      return yield(self)
     end
 
     private
