@@ -1,3 +1,4 @@
+# :nodoc:
 module Sip
   SIP_MESSAGE_SCOPE = 'sip.messages.flash'.freeze
 

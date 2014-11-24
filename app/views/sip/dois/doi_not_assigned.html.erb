@@ -1,6 +1,18 @@
 <h1>DOI Not Assigned for <%= model.header %></h1>
 
-<%= simple_form_for(model, url: assign_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
-  <%= f.input :identifier %>
-  <%= f.submit %>
+<h2>Assign an existing DOI?</h2>
+<%= simple_form_for(model.assign_a_doi_form, url: assign_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+  <%= field_set_tag do %>
+    <%= f.input :identifier %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
+
+<strong>OR</strong>
+<h2>Request a DOI?</h2>
+<%= simple_form_for(model.request_a_doi_form, url: submit_request_for_sip_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+  <%= field_set_tag do %>
+    <%= f.input :publisher %>
+    <%= f.submit %>
+  <% end %>
 <% end %>
