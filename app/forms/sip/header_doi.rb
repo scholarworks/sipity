@@ -5,11 +5,12 @@ module Sip
     include ActiveModel::Validations
     extend ActiveModel::Translation
 
-    attr_reader :identifier, :header
+    attr_reader :header
+    attr_accessor :identifier
     def initialize(attributes = {})
       @decorator = attributes.fetch(:decorator) { default_decorator }
       self.header = attributes.fetch(:header)
-      @identifier = attributes.fetch(:identifier, nil)
+      self.identifier = attributes.fetch(:identifier, nil)
       yield(self) if block_given?
     end
 
@@ -37,7 +38,7 @@ module Sip
     end
 
     def submit
-      true
+      valid?
     end
 
     private

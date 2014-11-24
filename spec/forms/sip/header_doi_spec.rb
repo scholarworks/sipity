@@ -30,5 +30,23 @@ module Sip
       subject
       expect(decorator).to have_received(:decorate).with(header)
     end
+
+    context '#submit' do
+      context 'when not valid' do
+        it 'will return false' do
+          expect(subject.submit).to be_falsey
+        end
+        it 'will not append data to the header'
+      end
+
+      context 'when valid' do
+        let(:identifier) { 'doi:1234' }
+        subject { HeaderDoi.new(decorator: decorator, header: header, identifier: identifier) }
+        it 'will return true' do
+          expect(subject.submit).to be_truthy
+        end
+        it 'will append the DOI to the header'
+      end
+    end
   end
 end
