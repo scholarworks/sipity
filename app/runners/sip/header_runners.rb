@@ -19,7 +19,7 @@ module Sip
 
     # Responsible for creating and persisting a new Header
     class Create < BaseRunner
-      def run(attributes: , decorator: nil)
+      def run(attributes:, decorator: nil)
         header = repository.build_header(attributes: attributes, decorator: decorator)
         # TODO: Create a repository#create_header method as there could be
         # other actions/behaviors that could happen on create
