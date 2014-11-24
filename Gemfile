@@ -49,6 +49,7 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'pry-byebug'
   gem 'rspec-rails'
+  gem 'rspec-its'
   gem 'coveralls', require: false
 end
 group :production do
