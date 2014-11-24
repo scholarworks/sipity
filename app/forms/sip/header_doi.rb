@@ -36,6 +36,10 @@ module Sip
       false
     end
 
+    def submit
+      true
+    end
+
     private
 
     def header=(header)

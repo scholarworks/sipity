@@ -21,5 +21,9 @@ module Sip
     def doi_already_assigned?(_header)
       false
     end
+
+    def build_header_doi_form(attributes = {})
+      HeaderDoi.new(attributes)
+    end
   end
 end

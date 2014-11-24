@@ -18,7 +18,12 @@ module Sip
     class Assign < BaseRunner
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
-        callback(:success, header, identifier)
+        form = repository.build_header_doi_form(header: header, identifier: identifier)
+        if form.submit
+          callback(:success, form, form.identifier)
+        else
+          callback(:failure, form)
+        end
       end
     end
   end
