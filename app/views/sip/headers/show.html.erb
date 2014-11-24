@@ -30,11 +30,10 @@
   <ul class="recommendations-list">
     <% model.with_recommendation('doi') do |recommendation| %>
       <li class="recommendations-list-item">
+        <h3><%= recommendation.human_name %></h3>
         <dl class="sip_recommendation">
           <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
-          <dd class="value status"><%= recommendation.t(:status) %></dd>
-          <dt class="predicate recommendation">Recommendation</dt>
-          <dd class="value recommendation doi"><%= link_to recommendation.t(:name), recommendation.path_to_recommendation, class: 'recommendation-doi' %></dd>
+          <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: 'recommendation-doi' %></dd>
         </dl>
       </li>
     <% end %>

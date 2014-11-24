@@ -8,10 +8,11 @@ module Sip
       let(:header) { double('Header') }
       subject { described_class.new(header: header, repository: repository, helper: helper) }
 
-      its(:name) { should eq :doi }
-
       it { should respond_to :human_attribute_name }
       it { should respond_to :path_to_recommendation }
+
+      its(:human_name) { should be_a(String) }
+      its(:human_status) { should be_a(String) }
 
       it 'will have a :path_to_recommendation' do
         expect(helper).to receive(:sip_header_doi_path).with(header).and_return('/the/path')

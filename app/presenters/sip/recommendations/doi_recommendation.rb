@@ -24,12 +24,12 @@ module Sip
         helper.sip_header_doi_path(header)
       end
 
-      def name
-        :doi
+      def human_status
+        I18n.translate("status.#{state}", scope: self.class.model_name.i18n_key)
       end
 
-      def t(name)
-        public_send(name)
+      def human_name
+        I18n.translate("name", scope: self.class.model_name.i18n_key)
       end
 
       def human_attribute_name(name)
