@@ -34,5 +34,13 @@ module Sip
 
     it { should respond_to :doi_request_is_pending? }
     it { should respond_to :doi_already_assigned? }
+
+    context '#create_additional_attribute' do
+      let(:header) { Header.create!(title: 'Hello', work_publication_strategy: 'do_not_know') }
+      it 'appends the additional attribute to the given header' do
+        expect { subject.create_additional_attribute(header: header, key: 'abc', value: '123') }.
+          to change(header.additional_attributes, :count).by(1)
+      end
+    end
   end
 end
