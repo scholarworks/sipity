@@ -1,4 +1,5 @@
 <%= simple_form_for(model) do |f| %>
+  <%= f.error_notification %>
   <%= model.fieldset_for('attributes') do %>
     <%= f.input :title %>
     <%= f.collection_radio_buttons :work_publication_strategy, model.possible_work_publication_strategies, :first, :first %>

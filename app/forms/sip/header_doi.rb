@@ -34,7 +34,11 @@ module Sip
     private
 
     def header=(header)
-      @header = decorator.decorate(header)
+      if header.respond_to?(:decorate)
+        @header = header
+      else
+        @header = decorator.decorate(header)
+      end
     end
 
     attr_reader :decorator

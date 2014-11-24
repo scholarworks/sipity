@@ -38,7 +38,7 @@ module Sip
           redirect_to sip_header_path(header)
         end
         on.failure do |header|
-          @model = HeaderDoi.new(header: header)
+          @model = header
           respond_with(@model)
         end
       end
