@@ -28,4 +28,5 @@ en:
   sip/recommendations/doi_recommendation:
     status:
       doi_already_assigned: 'DOI Already Assigned'
+      doi_not_assigned: 'DOI Not Yet Assigned'
     name: 'DOI'
