@@ -1,5 +1,5 @@
 module Sip
-  # A rudimentary container for all - as of now string based - attributes
+  # A rudimentary container for all (as of now string based) attributes
   # associated with the Sip::Header
   class AdditionalAttribute < ActiveRecord::Base
     DOI_PREDICATE_NAME = 'identifier.doi'.freeze
