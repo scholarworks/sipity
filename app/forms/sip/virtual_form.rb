@@ -16,10 +16,6 @@ module Sip
       to_param.nil? ? false : true
     end
 
-    def submit
-      fail NotImplementedError, "Expected #{self.class} to implement #submit"
-    end
-
     private
 
     def decorate(object:, decorator:)
