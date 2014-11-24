@@ -454,7 +454,7 @@ RedundantException:
 
 RedundantReturn:
   Description: "Don't use return where it's not required."
-  Enabled: true
+  Enabled: false
 
 RedundantSelf:
   Description: "Don't use self where it's not needed."
