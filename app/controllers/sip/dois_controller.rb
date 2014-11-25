@@ -23,7 +23,7 @@ module Sip
     def doi_not_assigned_response(header)
       # TODO: Really I shouldn't be doing this; The header that is
       # return should be decorated
-      @model = HeaderDoi.new(header: header)
+      @model = AssignADoiForm.new(header: header)
       respond_with(@model) do |wants|
         flash.now.alert = t(:doi_not_assigned, title: header.title, scope: SIP_MESSAGE_SCOPE)
         wants.html { render action: 'doi_not_assigned' }

@@ -24,7 +24,7 @@ module Sip
     end
 
     def build_assign_a_doi_form(attributes = {})
-      HeaderDoi.new(attributes)
+      AssignADoiForm.new(attributes)
     end
 
     def create_additional_attribute(header:, key:, value:)
