@@ -27,6 +27,14 @@ module Sip
       AssignADoiForm.new(attributes)
     end
 
+    def submit_assign_doi_form(form)
+      form.submit do |f|
+        create_additional_attribute(header: f.header, key: f.identifier_key, value: f.identifier)
+      end
+    end
+
+    private
+
     def create_additional_attribute(header:, key:, value:)
       header.additional_attributes.create(key: key, value: value)
     end

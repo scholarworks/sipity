@@ -21,6 +21,27 @@ module Sip
       end
     end
 
+    context '#submit_assign_doi_form' do
+      let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+      let(:attributes) { { header: header, identifier: identifier } }
+      let(:form) { Repository.new.build_assign_a_doi_form(attributes) }
+
+      context 'on invalid data' do
+        let(:identifier) { '' }
+        it 'returns false and does not assign a DOI' do
+          expect(subject.submit_assign_doi_form(form)).to eq(false)
+        end
+      end
+      context 'on valid data' do
+        let(:identifier) { 'doi:abc' }
+        it 'will assign the DOI to the header' do
+          expect { subject.submit_assign_doi_form(form) }.
+            to change { subject.doi_already_assigned?(header) }.
+            from(false).to(true)
+        end
+      end
+    end
+
     context '#build_assign_a_doi_form object' do
       let(:header) { double }
       subject { Repository.new.build_assign_a_doi_form(header: header) }
@@ -43,13 +64,5 @@ module Sip
 
     it { should respond_to :doi_request_is_pending? }
     it { should respond_to :doi_already_assigned? }
-
-    context '#create_additional_attribute' do
-      let(:header) { Header.create!(title: 'Hello', work_publication_strategy: 'do_not_know') }
-      it 'appends the additional attribute to the given header' do
-        expect { subject.create_additional_attribute(header: header, key: 'abc', value: '123') }.
-          to change(header.additional_attributes, :count).by(1)
-      end
-    end
   end
 end

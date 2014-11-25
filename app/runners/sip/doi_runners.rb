@@ -20,16 +20,9 @@ module Sip
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
         form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
-        # TODO: Should this code be pushed into the Form? Given that there
-        # exists a repository service object that handles these things.
-        response = form.submit do |f|
-          repository.create_additional_attribute(header: f.header, key: f.identifier_key, value: f.identifier)
-        end
-        if response
+        if repository.submit_assign_doi_form(form)
           callback(:success, header, form.identifier)
         else
-          # I'm returning the form because the end user will be prompted to
-          # edit the form again.
           callback(:failure, form)
         end
       end

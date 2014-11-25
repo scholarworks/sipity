@@ -48,10 +48,12 @@ module Sip
       let(:header) { double }
       let(:header_id) { 1234 }
       let(:identifier) { 'abc:123' }
-      let(:context) { double(repository: repository) }
+      let(:context) { double('Context', repository: repository) }
       let(:form) { double('Form', submit: true, identifier: identifier, header: header, identifier_key: 'key') }
-      let(:repository) { double(find_header: header, build_assign_a_doi_form: form, create_additional_attribute: true) }
-      let(:handler) { double(invoked: true) }
+      let(:repository) do
+        double('Repository', find_header: header, build_assign_a_doi_form: form, submit_assign_doi_form: true)
+      end
+      let(:handler) { double('Handler', invoked: true) }
       subject do
         described_class.new(context) do |on|
           on.success { |header, identifier| handler.invoked("SUCCESS", header, identifier) }
@@ -61,7 +63,7 @@ module Sip
 
       context 'when the form submission fails' do
         it 'issues the :failure callback' do
-          expect(form).to receive(:submit).and_return(false)
+          expect(repository).to receive(:submit_assign_doi_form).with(form).and_return(false)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
           expect(response).to eq([form])
@@ -70,9 +72,7 @@ module Sip
 
       context 'when the form submission succeeds' do
         it 'issues the :success callback' do
-          expect(form).to receive(:submit).and_return(true).and_yield(form)
-          expect(repository).to receive(:create_additional_attribute).
-            with(header: header, key: form.identifier_key, value: form.identifier)
+          expect(repository).to receive(:submit_assign_doi_form).with(form).and_return(true)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("SUCCESS", header, identifier)
           expect(response).to eq([header, identifier])
