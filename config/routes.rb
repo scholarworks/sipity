@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   namespace :sip do
     resources :headers do
+      resource :citation
       resource :doi do
         member do
           post :assign_a_doi
