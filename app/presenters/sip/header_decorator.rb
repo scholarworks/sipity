@@ -40,8 +40,8 @@ module Sip
 
     private
 
-    def recommendation_for(_name)
-      Recommendations::DoiRecommendation.new(header: self)
+    def recommendation_for(name)
+      Recommendations.const_get("#{name.classify}Recommendation").new(header: self)
     end
   end
 end

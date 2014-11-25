@@ -34,14 +34,16 @@
 <div class="recommendations">
   <h2>Recommendations</h2>
   <ul class="recommendations-list">
-    <% model.with_recommendation('doi') do |recommendation| %>
-      <li class="recommendations-list-item">
-        <h3><%= recommendation.human_name %></h3>
-        <dl class="sip_recommendation">
-          <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
-          <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: 'recommendation-doi' %></dd>
-        </dl>
-      </li>
+    <% %w(doi citation).each do |recommendation_name| %>
+      <% model.with_recommendation(recommendation_name) do |recommendation| %>
+        <li class="recommendations-list-item">
+          <h3><%= recommendation.human_name %></h3>
+          <dl class="sip_recommendation">
+            <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
+            <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: "recommendation-#{recommendation_name}" %></dd>
+          </dl>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>
