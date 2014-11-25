@@ -76,6 +76,15 @@ module Sip
       it { should respond_to :submit }
     end
 
+    context '#build_assign_a_citation_form object' do
+      let(:header) { double }
+      subject { Repository.new.build_assign_a_citation_form(header: header) }
+      it { should respond_to :header }
+      it { should respond_to :citation }
+      it { should respond_to :type }
+      it { should respond_to :submit }
+    end
+
     context '#build_request_a_doi_form object' do
       let(:header) { double }
       subject { Repository.new.build_request_a_doi_form(header: header) }

@@ -25,6 +25,10 @@ module Sip
         where(key: AdditionalAttribute::DOI_PREDICATE_NAME).count > 0
     end
 
+    def build_assign_a_citation_form(attributes = {})
+      AssignACitationForm.new(attributes)
+    end
+
     def build_assign_a_doi_form(attributes = {})
       AssignADoiForm.new(attributes)
     end
