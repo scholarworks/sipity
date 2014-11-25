@@ -15,6 +15,11 @@ module Sip
         to be_a(ActiveRecord::Reflection::AssociationReflection)
     end
 
+    it 'has many :doi_creation_request' do
+      expect(Sip::Header.reflect_on_association(:doi_creation_request)).
+        to be_a(ActiveRecord::Reflection::AssociationReflection)
+    end
+
     context '.accepts_nested_attributes_for collaborators' do
       it 'should not create a collaborator instance when no name is provided' do
         expect do

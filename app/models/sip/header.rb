@@ -5,6 +5,7 @@ module Sip
 
     has_many :collaborators, foreign_key: :sip_header_id, dependent: :destroy
     has_many :additional_attributes, foreign_key: :sip_header_id, dependent: :destroy
+    has_one :doi_creation_request, foreign_key: :sip_header_id, dependent: :destroy
 
     accepts_nested_attributes_for(
       :collaborators,

@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       resource :doi do
         member do
           post :assign
-          post :submit_request_for
+          post :request_a_doi
         end
       end
     end

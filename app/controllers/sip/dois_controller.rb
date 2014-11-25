@@ -44,11 +44,28 @@ module Sip
       end
     end
 
+    def request_a_doi
+      run(header_id: header_id, attributes: request_a_doi_attributes) do |on|
+        on.success do |header|
+          flash[:notice] = t(:request_a_doi, title: header.title, scope: SIP_MESSAGE_SCOPE)
+          redirect_to sip_header_path(header)
+        end
+        on.failure do |model|
+          @model = model
+          respond_with(@model)
+        end
+      end
+    end
+
     attr_reader :model
     protected :model
     helper_method :model
 
     private
+
+    def request_a_doi_attributes
+      params.require(:doi).permit!
+    end
 
     def header_id
       params.require(:header_id)

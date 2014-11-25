@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141124162510) do
+ActiveRecord::Schema.define(version: 20141125133337) do
 
   create_table "sip_additional_attributes", force: true do |t|
     t.integer  "sip_header_id", null: false
@@ -31,6 +31,17 @@ ActiveRecord::Schema.define(version: 20141124162510) do
   end
 
   add_index "sip_collaborators", ["sip_header_id", "sequence"], name: "index_sip_collaborators_on_sip_header_id_and_sequence"
+
+  create_table "sip_doi_creation_requests", force: true do |t|
+    t.integer  "sip_header_id",    null: false
+    t.string   "state",            null: false
+    t.string   "response_message"
+    t.string   "text"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sip_doi_creation_requests", ["state"], name: "index_sip_doi_creation_requests_on_state"
 
   create_table "sip_headers", force: true do |t|
     t.string   "work_publication_strategy"
