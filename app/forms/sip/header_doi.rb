@@ -26,11 +26,6 @@ module Sip
       HeaderDoiRequestForm.new(header: header, decorator: decorator)
     end
 
-    def submit
-      return false unless valid?
-      return yield(self)
-    end
-
     private
 
     def header=(header)
