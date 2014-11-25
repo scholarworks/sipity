@@ -34,8 +34,8 @@ module Sip
         on.success do |header|
           redirect_to(sip_header_path(header.to_param), notice: 'a message')
         end
-        on.failure do |header|
-          @model = header
+        on.failure do |form|
+          @model = form
           respond_with(@model)
         end
       end

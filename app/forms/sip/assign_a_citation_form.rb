@@ -3,6 +3,7 @@ module Sip
   class AssignACitationForm < VirtualForm
     def initialize(attributes = {})
       @header = attributes.fetch(:header)
+      @type, @citation = attributes.values_at(:type, :citation)
     end
     attr_accessor :type, :citation
     attr_reader :header
