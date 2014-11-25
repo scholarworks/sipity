@@ -50,7 +50,7 @@ module Sip
       let(:identifier) { 'abc:123' }
       let(:context) { double(repository: repository) }
       let(:form) { double('Form', submit: true, identifier: identifier, header: header, identifier_key: 'key') }
-      let(:repository) { double(find_header: header, build_header_doi_form: form, create_additional_attribute: true) }
+      let(:repository) { double(find_header: header, build_assign_a_doi_form: form, create_additional_attribute: true) }
       let(:handler) { double(invoked: true) }
       subject do
         described_class.new(context) do |on|
