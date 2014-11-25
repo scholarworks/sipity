@@ -5,7 +5,7 @@ module Sip
     RSpec.describe DoiRecommendation do
       let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false) }
       let(:helper) { double(sip_header_doi_path: true) }
-      let(:header) { double('Header') }
+      let(:header) { double('Header', title: 'Hello World') }
       subject { described_class.new(header: header, repository: repository, helper: helper) }
 
       it { should respond_to :human_attribute_name }

@@ -29,5 +29,5 @@ en:
     status:
       doi_already_assigned: 'DOI Already Assigned'
       doi_not_assigned: 'DOI Not Yet Assigned'
-      doi_request_is_pending: 'A request for a DOI is pending'
+      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
     name: 'DOI'

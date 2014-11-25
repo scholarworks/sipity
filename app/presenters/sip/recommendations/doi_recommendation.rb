@@ -25,7 +25,7 @@ module Sip
       end
 
       def human_status
-        I18n.translate("status.#{state}", scope: self.class.model_name.i18n_key)
+        I18n.translate("status.#{state}", scope: self.class.model_name.i18n_key, title: header.title)
       end
 
       def human_name
