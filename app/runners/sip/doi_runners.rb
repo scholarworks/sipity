@@ -21,7 +21,24 @@ module Sip
         header = repository.find_header(header_id)
         form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
         if repository.submit_assign_a_doi_form(form)
+          # TODO: Should this be the form or the header? Likely the form, but
+          # the controller implementations assume the header
           callback(:success, header, form.identifier)
+        else
+          callback(:failure, form)
+        end
+      end
+    end
+
+    # Responsible for requesting a DOI for the header.
+    class RequestADoi < BaseRunner
+      def run(header_id:, attributes:)
+        header = repository.find_header(header_id)
+        form = repository.build_request_a_doi_form(attributes.merge(header: header))
+        if repository.submit_request_a_doi_form(form)
+          # TODO: Should this be the form or the header? Likely the form, but
+          # the controller implementations assume the header
+          callback(:success, header)
         else
           callback(:failure, form)
         end
