@@ -58,10 +58,14 @@ module Sip
 
       context 'on valid data' do
         let(:publisher) { 'Valid Publisher' }
-        it 'returns true and creates the DOI creation request' do
+        it 'returns true, creating the DOI creation request and appending the captured attributes' do
           expect { subject.submit_request_a_doi_form(form) }.
-            to change { subject.doi_request_is_pending?(header) }.
-            from(false).to(true)
+          to(
+            change { subject.doi_request_is_pending?(header) }.
+            from(false).to(true) &&
+            change { header.additional_attributes.count }.
+            by(2)
+          )
         end
       end
     end
