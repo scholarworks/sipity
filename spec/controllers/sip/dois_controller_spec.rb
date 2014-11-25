@@ -25,6 +25,16 @@ module Sip
           expect(response).to render_template('doi_not_assigned')
         end
       end
+
+      context 'when :doi_already_assigned' do
+        let(:callback_name) { :doi_already_assigned }
+        it 'will redirect to the header page' do
+          get 'show', header_id: header.to_param
+          expect(flash[:notice]).to_not be_empty
+          expect(assigns(:model)).to be_nil
+          expect(response).to redirect_to sip_header_path(header.to_param)
+        end
+      end
     end
 
     context 'POST #assign' do
