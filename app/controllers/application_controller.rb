@@ -40,14 +40,14 @@ class ApplicationController < ActionController::Base
     if runner_container.const_defined?(runner_name)
       runner_container.const_get(runner_name)
     else
-      fail RunnerNotFoundError.new(runner_container, runner_name)
+      fail RunnerNotFoundError, container: runner_container, name: runner_name
     end
   end
 
   # Raised when a Runner is not found
   class RunnerNotFoundError < RuntimeError # :nodoc:
-    def initialize(runner_container, runner_name)
-      super("Unable to find #{runner_name} in #{runner_container}")
+    def initialize(container:, name:)
+      super("Unable to find #{name} in #{container}")
     end
   end
 
