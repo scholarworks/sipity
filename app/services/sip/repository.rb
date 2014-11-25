@@ -14,8 +14,10 @@ module Sip
       decorator.decorate(header)
     end
 
-    def citation_already_assigned?(_header)
-      false
+    def citation_already_assigned?(header)
+      # TODO: Remove magic string and capture their meaning elsewhere.
+      header.additional_attributes.
+        where(key: 'citation').count > 0
     end
 
     def doi_request_is_pending?(header)
@@ -31,6 +33,14 @@ module Sip
 
     def build_assign_a_citation_form(attributes = {})
       AssignACitationForm.new(attributes)
+    end
+
+    def submit_assign_a_citation_form(form)
+      form.submit do |f|
+        # TODO: Remove magic string and capture their meaning elsewhere.
+        create_additional_attribute(header: f.header, key: 'citation', value: f.citation)
+        create_additional_attribute(header: f.header, key: 'citationType', value: f.type)
+      end
     end
 
     def build_assign_a_doi_form(attributes = {})

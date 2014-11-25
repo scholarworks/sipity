@@ -42,6 +42,29 @@ module Sip
       end
     end
 
+    context '#submit_assign_a_citation_form' do
+      let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+      let(:attributes) { { header: header, citation: citation, type: '1234' } }
+      let(:form) { Repository.new.build_assign_a_citation_form(attributes) }
+
+      context 'on invalid data' do
+        let(:citation) { '' }
+        it 'returns false and does not assign a Citation' do
+          expect(subject.submit_assign_a_citation_form(form)).to eq(false)
+        end
+      end
+
+      context 'on valid data' do
+        let(:citation) { 'citation:abc' }
+        it 'will assign the Citation to the header' do
+          expect { subject.submit_assign_a_citation_form(form) }.to(
+            change { subject.citation_already_assigned?(header) }.from(false).to(true) &&
+            change { header.additional_attributes.count }.by(2)
+          )
+        end
+      end
+    end
+
     context '#submit_request_a_doi_form' do
       let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
       let(:attributes) do
