@@ -25,10 +25,10 @@ module Sip
     #   successful
     # @yield [VirtualForm] when the form is valid yield control to the caller
     # @yieldparam form [VirtualForm]
-    # @yieldreturn [Boolean] was the sender's response successful
+    # @yieldreturn the sender's response successful
     def submit
       return false unless valid?
-      return !!yield(self)
+      return yield(self)
     end
 
     private
