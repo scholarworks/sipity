@@ -108,5 +108,6 @@ module Sip
 
     it { should respond_to :doi_request_is_pending? }
     it { should respond_to :doi_already_assigned? }
+    it { should respond_to :citation_already_assigned? }
   end
 end

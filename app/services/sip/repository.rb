@@ -14,6 +14,10 @@ module Sip
       decorator.decorate(header)
     end
 
+    def citation_already_assigned?(_header)
+      false
+    end
+
     def doi_request_is_pending?(header)
       # TODO: This is not the final answer to this question.
       # There is an underlying state machine implied.
