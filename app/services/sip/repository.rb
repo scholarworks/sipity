@@ -41,6 +41,7 @@ module Sip
 
     def submit_request_a_doi_form(form)
       form.submit do |f|
+        # TODO: Remove magic string and capture their meaning elsewhere.
         create_additional_attribute(header: f.header, key: 'publisher', value: f.publisher)
         create_additional_attribute(header: f.header, key: 'publication_date', value: f.publication_date)
         create_doi_creation_request(header: f.header)
