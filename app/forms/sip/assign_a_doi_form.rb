@@ -2,8 +2,6 @@ module Sip
   # Responsible for capturing and validating the assignment of a DOI that
   # already exists but has not yet been assigned to the SIP
   class AssignADoiForm < VirtualForm
-    attr_reader :header
-    attr_accessor :identifier
     def initialize(attributes = {})
       @decorator = attributes.fetch(:decorator) { default_decorator }
       self.header = attributes.fetch(:header)
@@ -11,6 +9,8 @@ module Sip
       yield(self) if block_given?
     end
 
+    attr_reader :header
+    attr_accessor :identifier
     validates :header, presence: true
     validates :identifier, presence: true
 

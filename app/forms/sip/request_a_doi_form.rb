@@ -1,10 +1,6 @@
 module Sip
   # Submit a request for a DOI for the given Header
   class RequestADoiForm < VirtualForm
-    attr_reader :header
-    attr_accessor :publisher, :publication_date
-    delegate :title, to: :header
-
     def initialize(attributes = {})
       @decorator = attributes.fetch(:decorator) { default_decorator }
       self.header = attributes.fetch(:header)
@@ -12,6 +8,11 @@ module Sip
       yield(self) if block_given?
     end
 
+    attr_reader :header
+    attr_accessor :publisher, :publication_date
+    delegate :title, to: :header
+
+    validates :header, presence: true
     validates :publisher, presence: true
     validates :publication_date, presence: true
 
