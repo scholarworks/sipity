@@ -37,7 +37,7 @@ module Sip
       end
     end
 
-    context 'POST #assign' do
+    context 'POST #assign_a_doi' do
       before { controller.runner = runner }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
@@ -53,7 +53,7 @@ module Sip
         let(:callback_name) { :success }
         let(:identifier) { 'doi:abc' }
         it 'will redirect to the sip header path' do
-          post 'assign', header_id: header.to_param, doi: { identifier: identifier }
+          post 'assign_a_doi', header_id: header.to_param, doi: { identifier: identifier }
           expect(flash[:notice]).to_not be_empty
           expect(response).to redirect_to(sip_header_path(header.to_param))
         end
@@ -64,9 +64,9 @@ module Sip
         let(:identifier) { 'doi:abc' }
         let(:callback_name) { :failure }
         it 'will render the "assign" template' do
-          post 'assign', header_id: header.to_param, doi: { identifier: identifier }
+          post 'assign_a_doi', header_id: header.to_param, doi: { identifier: identifier }
           expect(assigns(:model)).to_not be_nil
-          expect(response).to render_template('assign')
+          expect(response).to render_template('assign_a_doi')
         end
       end
     end

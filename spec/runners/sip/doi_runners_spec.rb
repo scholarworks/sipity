@@ -44,7 +44,7 @@ module Sip
       end
     end
 
-    RSpec.describe Assign do
+    RSpec.describe AssignADoi do
       let(:header) { double }
       let(:header_id) { 1234 }
       let(:identifier) { 'abc:123' }

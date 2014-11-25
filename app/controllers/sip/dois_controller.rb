@@ -31,7 +31,7 @@ module Sip
     end
     private :doi_not_assigned_response
 
-    def assign
+    def assign_a_doi
       run(header_id: header_id, identifier: doi) do |on|
         on.success do |header, identifier|
           flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: SIP_MESSAGE_SCOPE)
