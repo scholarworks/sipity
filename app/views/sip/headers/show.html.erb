@@ -22,6 +22,12 @@
         </ul>
       </dd>
     <% end %>
+    <% if model.additional_attributes.any? %>
+      <% model.additional_attributes.each do |attribute| %>
+        <dt><%= attribute.key %></dt>
+        <dd><%= attribute.value %></dd>
+      <% end %>
+    <% end %>
   </dl>
 </div>
 
