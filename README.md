@@ -57,4 +57,7 @@ means of pulling even more logic out of the overworked Rails controller.
 
 ### Services
 
-The grand dumping bucket of objects that do things.
+Of particular note is the Sip::Repository class. Here are methods for
+interacting with the persistence layer; either by way of commands or queries.
+
+It can also represent the grand dumping bucket of objects that do things.
