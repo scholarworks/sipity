@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :sip_header, class: 'Sip::Header' do
-    work_publication_strategy "MyString"
     title "MyString"
+    work_publication_strategy "do_not_know"
   end
 end
