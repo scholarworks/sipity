@@ -1,5 +1,7 @@
 # :nodoc:
 module Sip
+  # @TODO: Is this the correct scope? Is this the right location for this
+  # constant?
   SIP_MESSAGE_SCOPE = 'sip.messages.flash'.freeze
 
   # The controller for creating headers.
