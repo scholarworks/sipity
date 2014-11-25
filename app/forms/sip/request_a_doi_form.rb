@@ -1,6 +1,6 @@
 module Sip
   # Submit a request for a DOI for the given Header
-  class HeaderDoiRequestForm < VirtualForm
+  class RequestADoiForm < VirtualForm
     attr_reader :header
     attr_accessor :publisher, :publication_date
     delegate :title, to: :header

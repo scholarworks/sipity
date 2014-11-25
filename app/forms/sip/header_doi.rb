@@ -23,7 +23,7 @@ module Sip
     end
 
     def request_a_doi_form
-      HeaderDoiRequestForm.new(header: header, decorator: decorator)
+      RequestADoiForm.new(header: header, decorator: decorator)
     end
 
     private

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sip
-  RSpec.describe HeaderDoiRequestForm do
+  RSpec.describe RequestADoiForm do
     let(:header) { double }
     subject { described_class.new(header: header) }
 
