@@ -9,7 +9,7 @@ module Sip
       before { controller.runner = runner }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
-          yields: header,
+          yields: yields,
           callback_name: callback_name,
           run_with: { header_id: header.to_param },
           context: controller
@@ -17,6 +17,7 @@ module Sip
       end
 
       context 'when :doi_not_assigned' do
+        let(:yields) { header }
         let(:callback_name) { :doi_not_assigned }
         it 'will render the show page' do
           get 'show', header_id: header.to_param
@@ -27,7 +28,20 @@ module Sip
       end
 
       context 'when :doi_already_assigned' do
+        let(:yields) { header }
         let(:callback_name) { :doi_already_assigned }
+        it 'will redirect to the header page' do
+          get 'show', header_id: header.to_param
+          expect(flash[:notice]).to_not be_empty
+          expect(assigns(:model)).to be_nil
+          expect(response).to redirect_to sip_header_path(header.to_param)
+        end
+      end
+
+      context 'when :doi_request_is_pending' do
+        let(:doi_request) { double }
+        let(:yields) { [header, doi_request] }
+        let(:callback_name) { :doi_request_is_pending }
         it 'will redirect to the header page' do
           get 'show', header_id: header.to_param
           expect(flash[:notice]).to_not be_empty

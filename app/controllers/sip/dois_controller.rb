@@ -14,8 +14,10 @@ module Sip
           doi_not_assigned_response(header)
         end
         on.doi_already_assigned do |header|
-          flash[:notice] = t(:doi_already_assigned, title: header.title, scope: SIP_MESSAGE_SCOPE)
-          redirect_to sip_header_path(header)
+          redirect_to sip_header_path(header), notice: show_notice(:doi_already_assigned, title: header.title)
+        end
+        on.doi_request_is_pending do |header, _doi_request|
+          redirect_to sip_header_path(header), notice: show_notice(:doi_request_is_pending, title: header.title)
         end
       end
     end
@@ -30,6 +32,11 @@ module Sip
       end
     end
     private :doi_not_assigned_response
+
+    def show_notice(key, options = {})
+      t(key, { scope: SIP_MESSAGE_SCOPE }.merge(options))
+    end
+    private :show_notice
 
     def assign_a_doi
       run(header_id: header_id, identifier: doi) do |on|
