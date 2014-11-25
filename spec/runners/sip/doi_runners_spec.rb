@@ -51,7 +51,7 @@ module Sip
       let(:context) { double('Context', repository: repository) }
       let(:form) { double('Form', submit: true, identifier: identifier, header: header, identifier_key: 'key') }
       let(:repository) do
-        double('Repository', find_header: header, build_assign_a_doi_form: form, submit_assign_doi_form: true)
+        double('Repository', find_header: header, build_assign_a_doi_form: form, submit_assign_a_doi_form: true)
       end
       let(:handler) { double('Handler', invoked: true) }
       subject do
@@ -63,7 +63,7 @@ module Sip
 
       context 'when the form submission fails' do
         it 'issues the :failure callback' do
-          expect(repository).to receive(:submit_assign_doi_form).with(form).and_return(false)
+          expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(false)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
           expect(response).to eq([form])
@@ -72,7 +72,7 @@ module Sip
 
       context 'when the form submission succeeds' do
         it 'issues the :success callback' do
-          expect(repository).to receive(:submit_assign_doi_form).with(form).and_return(true)
+          expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(true)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("SUCCESS", header, identifier)
           expect(response).to eq([header, identifier])

@@ -21,7 +21,7 @@ module Sip
       end
     end
 
-    context '#submit_assign_doi_form' do
+    context '#submit_assign_a_doi_form' do
       let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
       let(:attributes) { { header: header, identifier: identifier } }
       let(:form) { Repository.new.build_assign_a_doi_form(attributes) }
@@ -29,13 +29,34 @@ module Sip
       context 'on invalid data' do
         let(:identifier) { '' }
         it 'returns false and does not assign a DOI' do
-          expect(subject.submit_assign_doi_form(form)).to eq(false)
+          expect(subject.submit_assign_a_doi_form(form)).to eq(false)
         end
       end
       context 'on valid data' do
         let(:identifier) { 'doi:abc' }
         it 'will assign the DOI to the header' do
-          expect { subject.submit_assign_doi_form(form) }.
+          expect { subject.submit_assign_a_doi_form(form) }.
+            to change { subject.doi_already_assigned?(header) }.
+            from(false).to(true)
+        end
+      end
+    end
+
+    context '#submit_assign_a_doi_form' do
+      let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+      let(:attributes) { { header: header, identifier: identifier } }
+      let(:form) { Repository.new.build_assign_a_doi_form(attributes) }
+
+      context 'on invalid data' do
+        let(:identifier) { '' }
+        it 'returns false and does not assign a DOI' do
+          expect(subject.submit_assign_a_doi_form(form)).to eq(false)
+        end
+      end
+      context 'on valid data' do
+        let(:identifier) { 'doi:abc' }
+        it 'will assign the DOI to the header' do
+          expect { subject.submit_assign_a_doi_form(form) }.
             to change { subject.doi_already_assigned?(header) }.
             from(false).to(true)
         end

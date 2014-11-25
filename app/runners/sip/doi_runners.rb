@@ -20,7 +20,7 @@ module Sip
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
         form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
-        if repository.submit_assign_doi_form(form)
+        if repository.submit_assign_a_doi_form(form)
           callback(:success, header, form.identifier)
         else
           callback(:failure, form)
