@@ -33,6 +33,10 @@ module Sip
       end
     end
 
+    def build_request_a_doi_form(attributes = {})
+      RequestADoiForm.new(attributes)
+    end
+
     private
 
     def create_additional_attribute(header:, key:, value:)

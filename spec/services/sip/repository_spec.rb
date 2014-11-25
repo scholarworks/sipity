@@ -51,6 +51,16 @@ module Sip
       it { should respond_to :submit }
     end
 
+    context '#build_request_a_doi_form object' do
+      let(:header) { double }
+      subject { Repository.new.build_request_a_doi_form(header: header) }
+      it { should respond_to :title }
+      it { should respond_to :authors }
+      it { should respond_to :publication_date }
+      it { should respond_to :publisher }
+      it { should respond_to :submit }
+    end
+
     context '#build_header' do
       let(:decorator) { double(decorate: :decorated) }
       it 'will build a header without decoration' do
