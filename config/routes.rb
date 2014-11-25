@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     resources :headers do
       resource :doi do
         member do
-          post :assign
+          post :assign_a_doi
           post :request_a_doi
         end
       end

@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 module Sip
-  RSpec.describe HeaderDoi do
+  RSpec.describe AssignADoiForm do
     let(:header) { double('Header') }
     let(:decorator) { double(decorate: header) }
 
-    subject { HeaderDoi.new(decorator: decorator, header: header) }
+    subject { AssignADoiForm.new(decorator: decorator, header: header) }
 
     it 'is not persisted' do
       expect(subject.persisted?).to eq(false)
@@ -44,7 +44,7 @@ module Sip
       context 'when valid' do
         let(:identifier) { 'doi:1234' }
         let(:repository) { double(create_additional_attribute: true) }
-        subject { HeaderDoi.new(decorator: decorator, header: header, identifier: identifier) }
+        subject { AssignADoiForm.new(decorator: decorator, header: header, identifier: identifier) }
         it 'will yield the form' do
           expect { |b| subject.submit(&b) }.to yield_with_args(subject)
         end

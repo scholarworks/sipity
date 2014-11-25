@@ -23,8 +23,8 @@ module Sip
         where(key: AdditionalAttribute::DOI_PREDICATE_NAME).count > 0
     end
 
-    def build_header_doi_form(attributes = {})
-      HeaderDoi.new(attributes)
+    def build_assign_a_doi_form(attributes = {})
+      AssignADoiForm.new(attributes)
     end
 
     def create_additional_attribute(header:, key:, value:)

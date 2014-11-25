@@ -21,9 +21,9 @@ module Sip
       end
     end
 
-    context '#build_header_doi_form object' do
+    context '#build_assign_a_doi_form object' do
       let(:header) { double }
-      subject { Repository.new.build_header_doi_form(header: header) }
+      subject { Repository.new.build_assign_a_doi_form(header: header) }
       it { should respond_to :header }
       it { should respond_to :identifier }
       it { should respond_to :identifier_key }

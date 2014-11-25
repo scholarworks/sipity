@@ -16,10 +16,10 @@ module Sip
     end
 
     # Responsible for assigning a DOI to the header.
-    class Assign < BaseRunner
+    class AssignADoi < BaseRunner
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
-        form = repository.build_header_doi_form(header: header, identifier: identifier)
+        form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
         response = form.submit do |f|
           repository.create_additional_attribute(header: f.header, key: f.identifier_key, value: f.identifier)
         end
