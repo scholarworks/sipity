@@ -14,6 +14,8 @@ module Sip
     validates :header, presence: true
     validates :identifier, presence: true
 
+    # TODO: Get this out of here. There is an object that is a better owner of
+    # this method.
     def assign_a_doi_form
       self
     end
@@ -22,6 +24,8 @@ module Sip
       AdditionalAttribute::DOI_PREDICATE_NAME
     end
 
+    # TODO: Get this out of here. There is an object that is a better owner of
+    # this method.
     def request_a_doi_form
       RequestADoiForm.new(header: header, decorator: decorator)
     end
