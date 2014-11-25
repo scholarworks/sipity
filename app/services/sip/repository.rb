@@ -14,8 +14,10 @@ module Sip
       decorator.decorate(header)
     end
 
-    def doi_request_is_pending?(_header)
-      false
+    def doi_request_is_pending?(header)
+      # TODO: This is not the final answer to this question.
+      # There is an underlying state machine implied.
+      !header.doi_creation_request.nil?
     end
 
     def doi_already_assigned?(header)
@@ -37,10 +39,20 @@ module Sip
       RequestADoiForm.new(attributes)
     end
 
-    private
+    def submit_request_a_doi_form(form)
+      form.submit do |f|
+        create_doi_creation_request(header: f.header)
+      end
+    end
+
+    protected
 
     def create_additional_attribute(header:, key:, value:)
       header.additional_attributes.create(key: key, value: value)
+    end
+
+    def create_doi_creation_request(header:)
+      header.create_doi_creation_request!(state: 'request_not_yet_submitted')
     end
   end
 end

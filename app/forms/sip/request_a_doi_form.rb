@@ -12,6 +12,9 @@ module Sip
       yield(self) if block_given?
     end
 
+    validates :publisher, presence: true
+    validates :publication_date, presence: true
+
     def authors
       header.authors
     end

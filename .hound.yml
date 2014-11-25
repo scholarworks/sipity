@@ -628,7 +628,7 @@ WhileUntilModifier:
 
 WordArray:
   Description: 'Use %w or %W for arrays of words.'
-  Enabled: true
+  Enabled: false
 
 #################### Lint ################################
 ### Warnings

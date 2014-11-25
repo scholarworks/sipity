@@ -42,22 +42,25 @@ module Sip
       end
     end
 
-    context '#submit_assign_a_doi_form' do
+    context '#submit_request_a_doi_form' do
       let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
-      let(:attributes) { { header: header, identifier: identifier } }
-      let(:form) { Repository.new.build_assign_a_doi_form(attributes) }
+      let(:attributes) do
+        { header: header, publisher: publisher, publication_date: '2014-10-11', authors: ['Frog', 'Toad'] }
+      end
+      let(:form) { Repository.new.build_request_a_doi_form(attributes) }
 
       context 'on invalid data' do
-        let(:identifier) { '' }
-        it 'returns false and does not assign a DOI' do
-          expect(subject.submit_assign_a_doi_form(form)).to eq(false)
+        let(:publisher) { '' }
+        it 'returns false and does not create the DOI request' do
+          expect(subject.submit_request_a_doi_form(form)).to eq(false)
         end
       end
+
       context 'on valid data' do
-        let(:identifier) { 'doi:abc' }
-        it 'will assign the DOI to the header' do
-          expect { subject.submit_assign_a_doi_form(form) }.
-            to change { subject.doi_already_assigned?(header) }.
+        let(:publisher) { 'Valid Publisher' }
+        it 'returns true and creates the DOI creation request' do
+          expect { subject.submit_request_a_doi_form(form) }.
+            to change { subject.doi_request_is_pending?(header) }.
             from(false).to(true)
         end
       end
