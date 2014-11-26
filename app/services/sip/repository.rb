@@ -25,9 +25,8 @@ module Sip
     end
 
     def citation_already_assigned?(header)
-      # TODO: Remove magic string and capture their meaning elsewhere.
       header.additional_attributes.
-        where(key: 'citation').count > 0
+        where(key: AdditionalAttribute::CITATION_PREDICATE_NAME).count > 0
     end
 
     def doi_request_is_pending?(header)
