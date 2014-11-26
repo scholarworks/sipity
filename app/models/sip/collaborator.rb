@@ -8,6 +8,8 @@ module Sip
       new(role: DEFAULT_ROLE)
     end
 
+    belongs_to :header, foreign_key: 'sip_header_id'
+
     self.table_name = 'sip_collaborators'
 
     validates :name, presence: true
