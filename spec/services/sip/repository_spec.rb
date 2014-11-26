@@ -90,12 +90,24 @@ module Sip
       end
     end
 
-    context '#create_header' do
-      let(:header) { FactoryGirl.build(:sip_header, publication_date: '2014-10-11') }
+    context '#submit_create_header_form' do
+      let(:header) do
+        subject.build_create_header_form(
+          attributes: {
+            title: 'This is my title',
+            work_publication_strategy: 'do_not_know',
+            publication_date: '2014-11-12',
+            collaborators_attributes: {
+              "0" => { name: "The person", role: Collaborator::DEFAULT_ROLE }
+            }
+          }
+        )
+      end
       it 'will append the publication_date if one is given' do
         expect { subject.submit_create_header_form(header) }.to(
           change { Header.count }.by(1) &&
-          change { header.additional_attributes.count }.by(1)
+          change { header.additional_attributes.count }.by(1) &&
+          change { Collaborator.count }.by(1)
         )
       end
     end
@@ -131,11 +143,11 @@ module Sip
     context '#build_create_header_form' do
       let(:decorator) { double(decorate: :decorated) }
       it 'will build a header without decoration' do
-        expect(subject.build_create_header_form).to be_a(Header)
+        expect(subject.build_create_header_form).to be_a(CreateHeaderForm)
       end
       it 'will build a decorated header if decoration is requested' do
         expect(subject.build_create_header_form(decorator: decorator)).to eq(:decorated)
-        expect(decorator).to have_received(:decorate).with(kind_of(Header))
+        expect(decorator).to have_received(:decorate).with(kind_of(CreateHeaderForm))
       end
     end
 

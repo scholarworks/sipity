@@ -25,7 +25,7 @@
     </div>
   <% end %>
   <%= model.fieldset_for('collaborators') do %>
-    <%= f.fields_for :collaborators, model.collaborators_for_form do |collaborator_form| %>
+    <%= f.fields_for :collaborators do |collaborator_form| %>
       <%= collaborator_form.input :name %>
       <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
     <% end %>

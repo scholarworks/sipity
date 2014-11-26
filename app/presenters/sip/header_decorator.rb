@@ -24,10 +24,6 @@ module Sip
       object.class.human_attribute_name(name)
     end
 
-    def collaborators_for_form
-      object.collaborators.tap(&:build).map(&:decorate)
-    end
-
     def authors
       object.collaborators.where(role: 'author').map(&:decorate)
     end

@@ -9,22 +9,19 @@ module Sip
     end
 
     def build_create_header_form(decorator: nil, attributes: {})
-      header = Header.new(attributes)
+      header = CreateHeaderForm.new(attributes)
       return header unless decorator.respond_to?(:decorate)
       decorator.decorate(header)
     end
     alias_method :build_header, :build_create_header_form
 
-    def submit_create_header_form(header)
-      header.save!
-      if header.publication_date.present?
-        create_additional_attribute(
-          header: header,
-          key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME,
-          value: header.publication_date
-        )
+    def submit_create_header_form(form)
+      form.submit do |f|
+        create_header!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
+          assign_collaborators_to_header(collaborators: f.collaborators, header: header)
+          assign_publication_date_to_header(header: header, publication_date: f.publication_date)
+        end
       end
-      header
     end
 
     def citation_already_assigned?(header)
@@ -72,15 +69,33 @@ module Sip
     def submit_request_a_doi_form(form)
       form.submit do |f|
         create_additional_attribute(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: f.publisher)
-        create_additional_attribute(header: f.header, key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, value: f.publication_date)
+        assign_publication_date_to_header(header: f.header, publication_date: f.publication_date)
         create_doi_creation_request(header: f.header)
       end
     end
 
-    protected
+    private
+
+    def create_header!(attributes = {})
+      header = Header.create!(attributes)
+      yield(header)
+      header
+    end
+
+    def assign_collaborators_to_header(header:, collaborators:)
+      collaborators.each do |collaborator|
+        collaborator.header = header
+        collaborator.save!
+      end
+    end
+
+    def assign_publication_date_to_header(header:, publication_date:)
+      return true if publication_date.blank?
+      create_additional_attribute(header: header, key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, value: publication_date)
+    end
 
     def create_additional_attribute(header:, key:, value:)
-      header.additional_attributes.create(key: key, value: value)
+      header.additional_attributes.create!(key: key, value: value)
     end
 
     def create_doi_creation_request(header:)

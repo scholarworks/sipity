@@ -20,11 +20,12 @@ module Sip
     # Responsible for creating and persisting a new Header
     class Create < BaseRunner
       def run(attributes:, decorator: nil)
-        header = repository.build_create_header_form(attributes: attributes, decorator: decorator)
-        if repository.submit_create_header_form(header)
+        form = repository.build_create_header_form(attributes: attributes, decorator: decorator)
+        header = repository.submit_create_header_form(form)
+        if header
           callback(:success, header)
         else
-          callback(:failure, header)
+          callback(:failure, form)
         end
       end
     end
