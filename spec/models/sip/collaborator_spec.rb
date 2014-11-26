@@ -2,7 +2,7 @@ require 'spec_helper'
 module Sip
   RSpec.describe Collaborator, type: :model do
     it 'defaults the role' do
-      expect(Collaborator.new.role).to eq(Collaborator::DEFAULT_ROLE)
+      expect(Collaborator.build_default).to be_a(Collaborator)
     end
 
     context '.roles' do

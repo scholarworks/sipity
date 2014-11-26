@@ -21,6 +21,10 @@ module SitePrism
           end
         end
       end
+
+      def select(value, from: nil)
+        find("form.#{DOM_CLASS} select[name='#{PARAM_NAME_CONTAINER}[#{from}]'] option[value='#{value}']").select_option
+      end
     end
 
     class SipHeader < SitePrism::Page

@@ -4,6 +4,10 @@ module Sip
   class Collaborator < ActiveRecord::Base
     DEFAULT_ROLE = 'author'.freeze
 
+    def self.build_default
+      new(role: DEFAULT_ROLE)
+    end
+
     self.table_name = 'sip_collaborators'
 
     validates :name, presence: true
@@ -21,13 +25,5 @@ module Sip
         'contributor' => 'contributor'
       }
     )
-
-    after_initialize :set_default_role, if:  :new_record?
-
-    private
-
-    def set_default_role
-      self.role ||= DEFAULT_ROLE
-    end
   end
 end
