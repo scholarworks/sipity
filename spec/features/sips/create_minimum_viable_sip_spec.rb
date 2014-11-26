@@ -20,4 +20,10 @@ feature 'Minimum viable SIP', :devise do
       the_page.click_recommendation('DOI')
     end
   end
+
+  # Given a user has filled out a publication date at creation
+  # When they go to request a DOI
+  # Then the publication_date is displayed
+  # And cannot be changed
+
 end
