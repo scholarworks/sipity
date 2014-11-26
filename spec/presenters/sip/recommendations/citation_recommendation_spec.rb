@@ -9,7 +9,6 @@ module Sip
       subject { described_class.new(header: header, repository: repository, helper: helper) }
 
       it { should respond_to :human_attribute_name }
-      it { should respond_to :path_to_recommendation }
 
       its(:human_name) { should be_a(String) }
       its(:human_status) { should be_a(String) }
