@@ -2,6 +2,11 @@ require 'spec_helper'
 
 module Sip
   RSpec.describe VirtualForm do
+
+    its(:to_key) { should be_empty }
+    its(:to_param) { should be_nil }
+    its(:persisted?) { should eq(false) }
+
     context '#submit' do
       context 'with invalid data' do
         before { allow(subject).to receive(:valid?).and_return(false) }
