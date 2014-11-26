@@ -8,6 +8,12 @@ module Sip
       let(:repository) { double('Repository') }
       subject { described_class.new(header: header, helper: helper, repository: repository) }
 
+      it 'requires the header to implement a #title' do
+        header = double('Header')
+        expect { described_class.new(header: header, helper: helper, repository: repository) }.
+          to raise_error(NotImplementedError)
+      end
+
       context 'upon extension' do
         it 'will require you to implement #path_to_recommendation' do
           expect { subject.path_to_recommendation }.to raise_error(NotImplementedError)
