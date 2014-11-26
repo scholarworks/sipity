@@ -8,6 +8,7 @@ module Sip
     attr_accessor :type, :citation
     attr_reader :header
 
+    validates :header, presence: true
     validates :citation, presence: true
     validates :type, presence: true
   end

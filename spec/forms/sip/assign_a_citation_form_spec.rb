@@ -16,6 +16,12 @@ module Sip
       expect(subject.errors[:citation]).to_not be_empty
     end
 
+    it 'will require a header' do
+      subject = described_class.new(header: nil)
+      subject.valid?
+      expect(subject.errors[:header]).to_not be_empty
+    end
+
     it 'will require a type' do
       subject.valid?
       expect(subject.errors[:type]).to_not be_empty
