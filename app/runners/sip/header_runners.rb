@@ -21,9 +21,7 @@ module Sip
     class Create < BaseRunner
       def run(attributes:, decorator: nil)
         header = repository.build_header(attributes: attributes, decorator: decorator)
-        # TODO: Create a repository#create_header method as there could be
-        # other actions/behaviors that could happen on create
-        if repository.submit_create_header(header)
+        if repository.submit_create_header_form(header)
           callback(:success, header)
         else
           callback(:failure, header)

@@ -14,7 +14,7 @@ module Sip
       decorator.decorate(header)
     end
 
-    def submit_create_header(header)
+    def submit_create_header_form(header)
       header.save!
       if header.publication_date.present?
         create_additional_attribute(
