@@ -37,9 +37,8 @@ module Sip
 
     def submit_assign_a_citation_form(form)
       form.submit do |f|
-        # TODO: Remove magic string and capture their meaning elsewhere.
-        create_additional_attribute(header: f.header, key: 'citation', value: f.citation)
-        create_additional_attribute(header: f.header, key: 'citationType', value: f.type)
+        create_additional_attribute(header: f.header, key: AdditionalAttribute::CITATION_PREDICATE_NAME, value: f.citation)
+        create_additional_attribute(header: f.header, key: AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, value: f.type)
       end
     end
 
@@ -59,9 +58,8 @@ module Sip
 
     def submit_request_a_doi_form(form)
       form.submit do |f|
-        # TODO: Remove magic string and capture their meaning elsewhere.
-        create_additional_attribute(header: f.header, key: 'publisher', value: f.publisher)
-        create_additional_attribute(header: f.header, key: 'publication_date', value: f.publication_date)
+        create_additional_attribute(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: f.publisher)
+        create_additional_attribute(header: f.header, key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, value: f.publication_date)
         create_doi_creation_request(header: f.header)
       end
     end
@@ -73,6 +71,7 @@ module Sip
     end
 
     def create_doi_creation_request(header:)
+      # TODO: Remove magic string
       header.create_doi_creation_request!(state: 'request_not_yet_submitted')
     end
   end
