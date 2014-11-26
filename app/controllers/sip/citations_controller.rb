@@ -8,6 +8,7 @@ module Sip
     def show
       run(header_id: header_id) do |on|
         on.citation_not_assigned do |header|
+          # TODO: This is inadequate messaging
           redirect_to(new_sip_header_citation_path(header.to_param), alert: 'a message')
         end
         on.citation_assigned do |header|
@@ -24,6 +25,7 @@ module Sip
           respond_with(@model)
         end
         on.citation_assigned do |header|
+          # TODO: This is inadequate messaging
           redirect_to(sip_header_citation_path(header.to_param), notice: 'a message')
         end
       end
@@ -32,6 +34,7 @@ module Sip
     def create
       run(header_id: header_id, attributes: create_attributes) do |on|
         on.success do |header|
+          # TODO: This is inadequate messaging
           redirect_to(sip_header_path(header.to_param), notice: 'a message')
         end
         on.failure do |form|
