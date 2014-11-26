@@ -4,6 +4,7 @@ module Sip
   #
   # @see #to_key
   # @see #to_param
+  # @see #submit
   class VirtualForm
     include ActiveModel::Validations
     extend ActiveModel::Translation
