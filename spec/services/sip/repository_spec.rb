@@ -128,13 +128,13 @@ module Sip
       it { should respond_to :submit }
     end
 
-    context '#build_header' do
+    context '#build_create_header_form' do
       let(:decorator) { double(decorate: :decorated) }
       it 'will build a header without decoration' do
-        expect(subject.build_header).to be_a(Header)
+        expect(subject.build_create_header_form).to be_a(Header)
       end
       it 'will build a decorated header if decoration is requested' do
-        expect(subject.build_header(decorator: decorator)).to eq(:decorated)
+        expect(subject.build_create_header_form(decorator: decorator)).to eq(:decorated)
         expect(decorator).to have_received(:decorate).with(kind_of(Header))
       end
     end

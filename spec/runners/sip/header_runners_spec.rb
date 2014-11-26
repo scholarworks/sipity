@@ -6,7 +6,7 @@ module Sip
     RSpec.describe New do
       let(:header) { double }
       let(:context) { double(repository: repository) }
-      let(:repository) { double(build_header: header) }
+      let(:repository) { double(build_create_header_form: header) }
       let(:handler) { double(invoked: true) }
       subject do
         described_class.new(context) do |on|
@@ -42,7 +42,7 @@ module Sip
     RSpec.describe Create do
       let(:header) { double }
       let(:context) { double(repository: repository) }
-      let(:repository) { double(build_header: header, submit_create_header_form: creation_response) }
+      let(:repository) { double(build_create_header_form: header, submit_create_header_form: creation_response) }
       let(:handler) { double(invoked: true) }
       let(:attributes) { {} }
       subject do

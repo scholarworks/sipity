@@ -8,11 +8,12 @@ module Sip
       decorator.decorate(header)
     end
 
-    def build_header(decorator: nil, attributes: {})
+    def build_create_header_form(decorator: nil, attributes: {})
       header = Header.new(attributes)
       return header unless decorator.respond_to?(:decorate)
       decorator.decorate(header)
     end
+    alias_method :build_header, :build_create_header_form
 
     def submit_create_header_form(header)
       header.save!
