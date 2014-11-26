@@ -1,6 +1,5 @@
 module Sip
   module Recommendations
-
     # The basis for any recommendation
     class Base
       extend ActiveModel::Translation

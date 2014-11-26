@@ -2,7 +2,6 @@ module Sip
   module Recommendations
     # Container for the DOI Recommendation
     class DoiRecommendation < Recommendations::Base
-
       def state
         return :doi_already_assigned if doi_already_assigned?
         return :doi_request_is_pending if doi_request_is_pending?
@@ -23,7 +22,6 @@ module Sip
       def doi_already_assigned?
         repository.doi_already_assigned?(header)
       end
-
     end
   end
 end

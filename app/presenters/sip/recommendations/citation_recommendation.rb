@@ -2,7 +2,6 @@ module Sip
   module Recommendations
     # Container for the Citation Recommendation
     class CitationRecommendation < Recommendations::Base
-
       def state
         return :citation_already_assigned if citation_already_assigned?
         return :citation_not_assigned
@@ -18,7 +17,6 @@ module Sip
       def citation_already_assigned?
         repository.citation_already_assigned?(header)
       end
-
     end
   end
 end
