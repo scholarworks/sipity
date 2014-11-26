@@ -5,18 +5,12 @@ module Sip
     let(:header) { double('Header') }
     let(:decorator) { double(decorate: header) }
 
-    subject { AssignADoiForm.new(decorator: decorator, header: header) }
+    subject { described_class.new(decorator: decorator, header: header) }
 
-    it 'is not persisted' do
-      expect(subject.persisted?).to eq(false)
-    end
-
-    it 'has a nil to_param' do
-      expect(subject.to_param).to be_nil
-    end
-
-    it 'has an empty to_key' do
-      expect(subject.to_key).to eq([])
+    it 'requires a header' do
+      subject = described_class.new(header: nil, decorator: nil)
+      subject.valid?
+      expect(subject.errors[:header]).to_not be_empty
     end
 
     it 'requires an identifer' do
@@ -33,26 +27,10 @@ module Sip
       expect(decorator).to have_received(:decorate).with(header)
     end
 
-    context '#submit' do
-      context 'when not valid' do
-        it 'will return false' do
-          expect(subject.submit).to be_falsey
-        end
-        it 'will not append data to the header'
-      end
-
-      context 'when valid' do
-        let(:identifier) { 'doi:1234' }
-        let(:repository) { double(create_additional_attribute: true) }
-        subject { AssignADoiForm.new(decorator: decorator, header: header, identifier: identifier) }
-        it 'will yield the form' do
-          expect { |b| subject.submit(&b) }.to yield_with_args(subject)
-        end
-        it 'will return the yielded response' do
-          block = ->(_) { :response }
-          expect(subject.submit(&block)).to eq(:response)
-        end
-      end
+    it 'has a default decorator that implements #decorate' do
+      # I want the #decorator method to remain private
+      # This example was to test a default path.
+      expect(subject.send(:decorator)).to respond_to(:decorate)
     end
   end
 end
