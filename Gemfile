@@ -34,6 +34,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-spring'
+  gem 'guard-rubocop'
   gem 'quiet_assets'
   gem 'rails_layout'
   gem 'rb-fchange', :require=>false
