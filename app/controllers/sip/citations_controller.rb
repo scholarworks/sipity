@@ -52,7 +52,7 @@ module Sip
     end
 
     def create_attributes
-      params.require(:citation).permit!
+      params.require(:citation)
     end
   end
 end

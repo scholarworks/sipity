@@ -73,7 +73,7 @@ module Sip
     private
 
     def request_a_doi_attributes
-      params.require(:doi).permit!
+      params.require(:doi)
     end
 
     def header_id
