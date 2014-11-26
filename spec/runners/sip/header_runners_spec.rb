@@ -40,9 +40,9 @@ module Sip
     end
 
     RSpec.describe Create do
-      let(:header) { double(save: false) }
+      let(:header) { double }
       let(:context) { double(repository: repository) }
-      let(:repository) { double(build_header: header) }
+      let(:repository) { double(build_header: header, submit_create_header: creation_response) }
       let(:handler) { double(invoked: true) }
       let(:attributes) { {} }
       subject do
@@ -53,8 +53,8 @@ module Sip
       end
 
       context 'when header is saved' do
+        let(:creation_response) { true }
         it 'will issue the :success callback' do
-          expect(header).to receive(:save).and_return(true)
           response = subject.run(attributes: attributes)
           expect(handler).to have_received(:invoked).with("SUCCESS", header)
           expect(response).to eq([header])
@@ -62,8 +62,8 @@ module Sip
       end
 
       context 'when header is not saved' do
+        let(:creation_response) { false }
         it 'will issue the :failure callback' do
-          expect(header).to receive(:save).and_return(false)
           response = subject.run(attributes: attributes)
           expect(handler).to have_received(:invoked).with("FAILURE", header)
           expect(response).to eq([header])

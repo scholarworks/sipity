@@ -23,7 +23,7 @@ module Sip
         header = repository.build_header(attributes: attributes, decorator: decorator)
         # TODO: Create a repository#create_header method as there could be
         # other actions/behaviors that could happen on create
-        if header.save
+        if repository.submit_create_header(header)
           callback(:success, header)
         else
           callback(:failure, header)

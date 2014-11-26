@@ -90,6 +90,16 @@ module Sip
       end
     end
 
+    context '#create_header' do
+      let(:header) { FactoryGirl.build(:sip_header, publication_date: '2014-10-11') }
+      it 'will append the publication_date if one is given' do
+        expect { subject.submit_create_header(header) }.to(
+          change { Header.count }.by(1) &&
+          change { header.additional_attributes.count }.by(1)
+        )
+      end
+    end
+
     context '#build_assign_a_doi_form object' do
       let(:header) { double }
       subject { Repository.new.build_assign_a_doi_form(header: header) }

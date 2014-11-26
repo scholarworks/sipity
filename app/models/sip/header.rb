@@ -31,6 +31,13 @@ module Sip
         'do_not_know' => 'do_not_know'
       }
     )
+
+    # TODO: This is exposed to allow the publication date to be set as part
+    # of the Header creation. However it implies behavior that may or may
+    # not exist in the views. So consider removing this attribute and crafting
+    # a proper form object to reflect the input. After all, the validation
+    # of :publication_date upon creation has something to do with the
+    # :work_publication_strategy of 'already_published'
     attr_accessor :publication_date
   end
 end

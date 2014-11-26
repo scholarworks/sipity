@@ -14,6 +14,18 @@ module Sip
       decorator.decorate(header)
     end
 
+    def submit_create_header(header)
+      header.save!
+      if header.publication_date.present?
+        create_additional_attribute(
+          header: header,
+          key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME,
+          value: header.publication_date
+        )
+      end
+      header
+    end
+
     def citation_already_assigned?(header)
       # TODO: Remove magic string and capture their meaning elsewhere.
       header.additional_attributes.
