@@ -3,6 +3,9 @@ require 'spec_helper'
 module Sip
   RSpec.describe Header, type: :model do
     subject { Header.new }
+
+    it { should respond_to :possible_work_publication_strategies }
+
     context '.work_publication_strategies' do
       it 'is a Hash of keys that equal their values' do
         expect(Header.work_publication_strategies.keys).

@@ -32,6 +32,10 @@ module Sip
       }
     )
 
+    def possible_work_publication_strategies
+      self.class.work_publication_strategies
+    end
+
     # TODO: This is exposed to allow the publication date to be set as part
     # of the Header creation. However it implies behavior that may or may
     # not exist in the views. So consider removing this attribute and crafting

@@ -24,12 +24,6 @@ module Sip
       object.class.human_attribute_name(name)
     end
 
-    def possible_work_publication_strategies
-      object.class.work_publication_strategies
-    end
-
-    # When working on the form, I always want a blank element for the
-    # collaborators.
     def collaborators_for_form
       object.collaborators.tap(&:build).map(&:decorate)
     end
