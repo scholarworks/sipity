@@ -18,7 +18,7 @@ module Sip
     attr_accessor :publication_date
 
     validates :title, presence: true
-    validates :work_publication_strategy, inclusion: { in: :valid_work_publication_strategies }, presence: true
+    validates :work_publication_strategy, inclusion: { in: :possible_work_publication_strategies }, presence: true
     validates(:publication_date, presence: { if: :publication_date_required? })
     validate :each_collaborator_must_be_valid
 
@@ -42,15 +42,15 @@ module Sip
       @collaborators_attributes = inputs
     end
 
+    def possible_work_publication_strategies
+      Header.work_publication_strategies
+    end
+
     private
 
     def each_collaborator_must_be_valid
       return true if Array.wrap(@collaborators).all?(&:valid?)
       errors.add(:collaborators_attributes, 'are incomplete')
-    end
-
-    def valid_work_publication_strategies
-      Header.work_publication_strategies.keys
     end
 
     def publication_date_required?

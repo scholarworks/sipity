@@ -4,6 +4,10 @@ module Sip
   RSpec.describe CreateHeaderForm do
     subject { described_class.new }
 
+    it 'will have a #possible_work_publication_strategies' do
+      expect(subject.possible_work_publication_strategies).to be_a(Hash)
+    end
+
     it 'will have a model name like Header' do
       expect(described_class.model_name).to be_a(ActiveModel::Name)
     end
