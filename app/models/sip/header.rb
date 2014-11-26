@@ -15,6 +15,7 @@ module Sip
 
     validates :title, presence: true
     validates :work_publication_strategy,
+      presence: true,
       inclusion: { in: ->(obj) { obj.class.work_publication_strategies } }
 
     # While this make look ridiculous, if I use an Array, the enum declaration
@@ -30,5 +31,6 @@ module Sip
         'do_not_know' => 'do_not_know'
       }
     )
+    attr_accessor :publication_date
   end
 end

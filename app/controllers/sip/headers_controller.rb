@@ -40,7 +40,7 @@ module Sip
     def create_params
       params.
         require(:sip_header).
-        permit(:title, :work_publication_strategy, collaborators_attributes: [:name, :role])
+        permit(:title, :work_publication_strategy, :publication_date, collaborators_attributes: [:name, :role])
     end
   end
 end
