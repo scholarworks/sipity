@@ -66,7 +66,7 @@ module Sip
         let(:yields) { [header, identifier] }
         let(:callback_name) { :success }
         let(:identifier) { 'doi:abc' }
-        it 'will redirect to the sip header path' do
+        it 'will redirect to the header page' do
           post 'assign_a_doi', header_id: header.to_param, doi: { identifier: identifier }
           expect(flash[:notice]).to_not be_empty
           expect(response).to redirect_to(sip_header_path(header.to_param))
@@ -103,7 +103,7 @@ module Sip
         let(:yields) { header }
         let(:callback_name) { :success }
         let(:identifier) { 'doi:abc' }
-        it 'will redirect to the sip header path' do
+        it 'will redirect to the header page' do
           post 'request_a_doi', header_id: header.to_param, doi: attributes
           expect(flash[:notice]).to_not be_empty
           expect(response).to redirect_to(sip_header_path(header.to_param))
@@ -114,7 +114,7 @@ module Sip
         let(:identifier) { 'doi:abc' }
         let(:yields) { header }
         let(:callback_name) { :failure }
-        it 'will render the "request_a_doi" page' do
+        it 'will render the "request_a_doi" template' do
           post 'request_a_doi', header_id: header.to_param, doi: attributes
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('request_a_doi')

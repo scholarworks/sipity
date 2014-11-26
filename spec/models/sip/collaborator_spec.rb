@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Sip
   RSpec.describe Collaborator, type: :model do
-    it 'defaults the role' do
+    it 'can build a default' do
       expect(Collaborator.build_default).to be_a(Collaborator)
     end
 

@@ -30,7 +30,7 @@ module Sip
       context 'when :citation_assigned' do
         let(:yields) { header }
         let(:callback_name) { :citation_assigned }
-        it 'will render to the edit page' do
+        it 'will render the show page' do
           get 'show', header_id: header.to_param
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('show')
@@ -52,7 +52,7 @@ module Sip
       context 'when :citation_not_assigned' do
         let(:yields) { header }
         let(:callback_name) { :citation_not_assigned }
-        it 'will render the edit page' do
+        it 'will render the new page' do
           get 'new', header_id: header.to_param
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('new')
@@ -97,7 +97,7 @@ module Sip
       context 'when :failure' do
         let(:yields) { header }
         let(:callback_name) { :failure }
-        it 'will render the "edit" template' do
+        it 'will render the "new" template' do
           # A dirty shim acknowledging the terse, yit fickle, respond_with
           # methodology.
           allow(header).to receive(:errors).and_return([:yes])

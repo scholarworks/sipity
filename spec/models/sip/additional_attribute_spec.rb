@@ -2,6 +2,11 @@ require 'rails_helper'
 
 module Sip
   RSpec.describe AdditionalAttribute, type: :model do
-    pending "add some examples to (or delete) #{__FILE__}"
+
+    it 'belongs to :header' do
+      expect(described_class.reflect_on_association(:header)).
+        to be_a(ActiveRecord::Reflection::AssociationReflection)
+    end
+
   end
 end
