@@ -12,8 +12,12 @@ module Sip
     class New < BaseRunner
       def run(header_id:)
         header = repository.find_header(header_id)
-        form = repository.build_assign_a_citation_form(header: header)
-        callback(:citation_not_assigned, form)
+        if repository.citation_already_assigned?(header)
+          callback(:citation_already_assigned, header)
+        else
+          form = repository.build_assign_a_citation_form(header: header)
+          callback(:citation_not_assigned, form)
+        end
       end
     end
 
