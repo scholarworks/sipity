@@ -20,6 +20,9 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activerecord:
+    models:
+      sip/header: Deposit
   sip/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
