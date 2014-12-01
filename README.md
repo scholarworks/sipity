@@ -7,6 +7,14 @@
 [![APACHE 2 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 [![Contributing Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 
+Sipity is a patron-oriented deposit interface into CurateND.
+Its goal is to provide clarity on why a patron would want to fill out metadata information.
+
+* Does the patron want a DOI? Ask them to provide a publisher and publication date.
+* Does the patron want to include the works citation? Encourage them to fill out the component fields for building a citation, or have them provide the citation.
+* Does the patron want their deposit to be listed in Google Scholar? Fill out this information.
+* Does the patron want other people to assist them on editing this information? Fill out this particular information.
+
 ## Anatomy of Sipity
 
 ```
