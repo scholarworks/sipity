@@ -1,9 +1,5 @@
 # :nodoc:
 module Sip
-  # @TODO: Is this the correct scope? Is this the right location for this
-  # constant?
-  SIP_MESSAGE_SCOPE = 'sip.messages.flash'.freeze
-
   # The controller for creating headers.
   class DoisController < ApplicationController
     respond_to :html, :json
@@ -16,10 +12,10 @@ module Sip
           doi_not_assigned_response(header)
         end
         on.doi_already_assigned do |header|
-          redirect_to sip_header_path(header), notice: show_notice(:doi_already_assigned, title: header.title)
+          redirect_to sip_header_path(header), notice: message_for(:doi_already_assigned, title: header.title)
         end
         on.doi_request_is_pending do |header, _doi_request|
-          redirect_to sip_header_path(header), notice: show_notice(:doi_request_is_pending, title: header.title)
+          redirect_to sip_header_path(header), notice: message_for(:doi_request_is_pending, title: header.title)
         end
       end
     end
@@ -29,22 +25,16 @@ module Sip
       # return should be decorated
       @model = AssignADoiForm.new(header: header)
       respond_with(@model) do |wants|
-        flash.now.alert = t(:doi_not_assigned, title: header.title, scope: SIP_MESSAGE_SCOPE)
+        flash.now.alert = message_for(:doi_not_assigned, title: header.title)
         wants.html { render action: 'doi_not_assigned' }
       end
     end
     private :doi_not_assigned_response
 
-    def show_notice(key, options = {})
-      t(key, { scope: SIP_MESSAGE_SCOPE }.merge(options))
-    end
-    private :show_notice
-
     def assign_a_doi
       run(header_id: header_id, identifier: doi) do |on|
         on.success do |header, identifier|
-          flash[:notice] = t(:assigned_doi, doi: identifier, title: header.title, scope: SIP_MESSAGE_SCOPE)
-          redirect_to sip_header_path(header)
+          redirect_to sip_header_path(header), notice: message_for(:success, doi: identifier, title: header.title)
         end
         on.failure do |header|
           @model = header
@@ -56,8 +46,7 @@ module Sip
     def request_a_doi
       run(header_id: header_id, attributes: request_a_doi_attributes) do |on|
         on.success do |header|
-          flash[:notice] = t(:request_a_doi, title: header.title, scope: SIP_MESSAGE_SCOPE)
-          redirect_to sip_header_path(header)
+          redirect_to sip_header_path(header), notice: message_for(:success, title: header.title)
         end
         on.failure do |model|
           @model = model

@@ -59,4 +59,9 @@ class ApplicationController < ActionController::Base
     @repository = Sip::Repository.new
   end
   helper_method :repository
+
+  def message_for(key, options = {})
+    t(key, { scope: "sip/#{controller_name}.action/#{action_name}" }.merge(options))
+  end
+  private :message_for
 end

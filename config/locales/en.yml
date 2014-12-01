@@ -20,11 +20,11 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  sip:
-    messages:
-      flash:
-        assigned_doi: '%{doi} has been assigned to %{title}.'
-        doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
+  sip/dois:
+    action/show:
+      doi_already_assigned: '%{doi} has been assigned to %{title}.'
+      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
+      doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
   sip/recommendations/doi_recommendation:
     status:
       doi_already_assigned: 'DOI Already Assigned'
