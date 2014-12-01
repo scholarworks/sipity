@@ -3,8 +3,9 @@ require 'spec_helper'
 RSpec.describe ApplicationController do
   context '#runner' do
     it 'can be replaced at runtime' do
-      controller.runner = :my_runner
-      expect(controller.runner).to eq(:my_runner)
+      my_runner = double(run: true)
+      controller.runner = my_runner
+      expect(controller.runner).to eq(my_runner)
     end
     it 'raises a RunnerNotFoundError when the runner is not found in the container' do
       allow(controller).to receive(:action_name).and_return('missing')
