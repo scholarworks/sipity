@@ -7,18 +7,29 @@ module Sip
       let(:header) { double }
       let(:header_id) { 1234 }
       let(:context) { double(repository: repository) }
-      let(:repository) { double(find_header: header) }
+      let(:repository) { double(find_header: header, citation_already_assigned?: citation_already_assigned) }
       let(:handler) { double(invoked: true) }
       subject do
         described_class.new(context) do |on|
           on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
+          on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
         end
       end
 
       context 'when a citation is not assigned' do
+        let(:citation_already_assigned) { false }
         it 'issues the :citation_not_assigned callback' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", header)
+          expect(response).to eq([header])
+        end
+      end
+
+      context 'when a citation is already assigned' do
+        let(:citation_already_assigned) { true }
+        it 'issues the :citation_assigned callback' do
+          response = subject.run(header_id: header_id)
+          expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", header)
           expect(response).to eq([header])
         end
       end
@@ -38,7 +49,7 @@ module Sip
       subject do
         described_class.new(context) do |on|
           on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
-          on.citation_already_assigned { |header| handler.invoked("CITATION_ALREADY_ASSIGNED", header) }
+          on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
         end
       end
 
@@ -55,7 +66,7 @@ module Sip
         let(:citation_assigned) { true }
         it 'issues the :citation_not_assigned callback with the header' do
           response = subject.run(header_id: header_id)
-          expect(handler).to have_received(:invoked).with("CITATION_ALREADY_ASSIGNED", header)
+          expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", header)
           expect(response).to eq([header])
         end
       end
