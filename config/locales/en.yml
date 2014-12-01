@@ -26,13 +26,13 @@ en:
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
       doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
   sip/recommendations/doi_recommendation:
-    status:
+    state:
       doi_already_assigned: 'DOI Already Assigned'
       doi_not_assigned: 'DOI Not Yet Assigned'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
     name: 'DOI'
   sip/recommendations/citation_recommendation:
-    status:
+    state:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
