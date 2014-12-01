@@ -1,9 +1,9 @@
 # Sipity
 
-[![Build Status](https://travis-ci.org/jeremyf/sipity.png?branch=master)](https://travis-ci.org/jeremyf/sipity)
-[![Code Climate](https://codeclimate.com/github/jeremyf/sipity.png)](https://codeclimate.com/github/jeremyf/sipity)
-[![Coverage Status](https://img.shields.io/coveralls/jeremyf/sipity.svg)](https://coveralls.io/r/jeremyf/sipity)
-[![Documentation Status](http://inch-ci.org/github/jeremyf/sipity.svg?branch=master)](http://inch-ci.org/github/jeremyf/sipity)
+[![Build Status](https://travis-ci.org/ndlib/sipity.png?branch=master)](https://travis-ci.org/ndlib/sipity)
+[![Code Climate](https://codeclimate.com/github/ndlib/sipity.png)](https://codeclimate.com/github/ndlib/sipity)
+[![Coverage Status](https://img.shields.io/coveralls/ndlib/sipity.svg)](https://coveralls.io/r/ndlib/sipity)
+[![Documentation Status](http://inch-ci.org/github/ndlib/sipity.svg?branch=master)](http://inch-ci.org/github/ndlib/sipity)
 [![APACHE 2 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 [![Contributing Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 
