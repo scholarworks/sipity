@@ -59,7 +59,7 @@ module Sip
 
       context '#build_assign_a_doi_form object' do
         let(:header) { double }
-        subject { subject.build_assign_a_doi_form(header: header) }
+        subject { klass.new.build_assign_a_doi_form(header: header) }
         it { should respond_to :header }
         it { should respond_to :identifier }
         it { should respond_to :identifier_key }
@@ -68,7 +68,7 @@ module Sip
 
       context '#build_request_a_doi_form object' do
         let(:header) { double }
-        subject { subject.build_request_a_doi_form(header: header) }
+        subject { klass.new.build_request_a_doi_form(header: header) }
         it { should respond_to :title }
         it { should respond_to :authors }
         it { should respond_to :publication_date }
