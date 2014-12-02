@@ -36,4 +36,16 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # If run WITH_I18N_DICTIONARY environment **not** set
+  # Finished in 0.09408 seconds (files took 3.07 seconds to load)
+  #
+  # If run WITH_I18N_DICTIONARY environment set
+  # Finished in 0.50963 seconds (files took 2.85 seconds to load)
+  unless ENV['WITH_I18N_DICTIONARY']
+    config.i18n.enforce_available_locales = false
+    I18n.config.enforce_available_locales = false
+    I18n.backend = I18n::Backend::KeyValue.new({})
+    I18n.backend.store_translations(:en, {})
+  end
 end
