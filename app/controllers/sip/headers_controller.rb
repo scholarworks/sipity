@@ -6,12 +6,8 @@ module Sip
     self.runner_container = Sip::HeaderRunners
 
     def new
-      run(decorator: HeaderDecorator) do |on|
-        on.success do |header|
-          @model = header
-          respond_with(@model)
-        end
-      end
+      _status, @model = run(decorator: HeaderDecorator)
+      respond_with(@model)
     end
 
     def create
@@ -23,12 +19,8 @@ module Sip
     end
 
     def show
-      run(params[:id], decorator: HeaderDecorator) do |on|
-        on.success do |header|
-          @model = header
-          respond_with(@model)
-        end
-      end
+      _status, @model = run(params[:id], decorator: HeaderDecorator)
+      respond_with(@model)
     end
 
     attr_reader :model
