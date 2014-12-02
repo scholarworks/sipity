@@ -29,6 +29,10 @@
       <% end %>
     <% end %>
   </dl>
+
+  <div>
+    <%= link_to "Edit #{model.title}", edit_sip_header_path(model.to_param), class: 'btn btn-primary' %>
+  </div>
 </div>
 
 <div class="recommendations">

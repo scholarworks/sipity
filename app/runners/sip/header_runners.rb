@@ -29,5 +29,13 @@ module Sip
         end
       end
     end
+
+    # Responsible for instantiating the header for edit
+    class Edit < BaseRunner
+      def run(header_id:)
+        header = repository.find_header(header_id)
+        callback(:success, header)
+      end
+    end
   end
 end
