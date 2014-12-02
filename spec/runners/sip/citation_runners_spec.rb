@@ -21,7 +21,7 @@ module Sip
         it 'issues the :citation_not_assigned callback' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:citation_not_assigned, header])
         end
       end
 
@@ -30,7 +30,7 @@ module Sip
         it 'issues the :citation_assigned callback' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:citation_assigned, header])
         end
       end
     end
@@ -58,16 +58,16 @@ module Sip
         it 'issues the :citation_not_assigned callback with the form' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", form)
-          expect(response).to eq([form])
+          expect(response).to eq([:citation_not_assigned, form])
         end
       end
 
       context 'when a citation is already assigned' do
         let(:citation_assigned) { true }
-        it 'issues the :citation_not_assigned callback with the header' do
+        it 'issues the :citation_assigned callback with the header' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:citation_assigned, header])
         end
       end
     end
@@ -94,7 +94,7 @@ module Sip
           expect(repository).to receive(:submit_assign_a_citation_form).with(form).and_return(false)
           response = subject.run(header_id: header_id, attributes: attributes)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
-          expect(response).to eq([form])
+          expect(response).to eq([:failure, form])
         end
       end
 
@@ -103,7 +103,7 @@ module Sip
           expect(repository).to receive(:submit_assign_a_citation_form).with(form).and_return(true)
           response = subject.run(header_id: header_id, attributes: attributes)
           expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:success, header])
         end
       end
     end

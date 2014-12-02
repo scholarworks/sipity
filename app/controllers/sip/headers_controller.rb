@@ -18,7 +18,7 @@ module Sip
       # Because the run command returns an Array, I need to shift the first
       # value. And by convention, if there is a failure we'll render a 200 and
       # provide the user with a form to re-enter data
-      @model = run(decorator: HeaderDecorator, attributes: create_params).shift
+      _status, @model = run(decorator: HeaderDecorator, attributes: create_params)
       respond_with(@model)
     end
 

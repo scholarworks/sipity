@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/ndlib/hesburgh-lib.git
-  revision: 1fda32e482d88d7112b1815abc776cdb0cb97676
+  revision: 9597d47334b0415313648add737b634597d94993
   specs:
     hesburgh-lib (0.0.1)
 

@@ -22,7 +22,7 @@ module Sip
           expect(repository).to receive(:doi_already_assigned?).and_return true
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("DOI_ALREADY_ASSIGNED", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:doi_already_assigned, header])
         end
       end
 
@@ -30,16 +30,16 @@ module Sip
         it 'issues the :doi_not_assigned callback' do
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("DOI_NOT_ASSIGNED", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:doi_not_assigned, header])
         end
       end
 
       context 'when a DOI request has been made but not yet completed' do
-        it 'issues the :pending_doi_assignment callback' do
+        it 'issues the :doi_request_is_pending callback' do
           expect(repository).to receive(:doi_request_is_pending?).and_return(true)
           response = subject.run(header_id: header_id)
           expect(handler).to have_received(:invoked).with("DOI_REQUEST_IS_PENDING", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:doi_request_is_pending, header])
         end
       end
     end
@@ -66,7 +66,7 @@ module Sip
           expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(false)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
-          expect(response).to eq([form])
+          expect(response).to eq([:failure, form])
         end
       end
 
@@ -75,7 +75,7 @@ module Sip
           expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(true)
           response = subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to have_received(:invoked).with("SUCCESS", header, identifier)
-          expect(response).to eq([header, identifier])
+          expect(response).to eq([:success, header, identifier])
         end
       end
     end
@@ -102,7 +102,7 @@ module Sip
           expect(repository).to receive(:submit_request_a_doi_form).with(form).and_return(false)
           response = subject.run(header_id: header_id, attributes: attributes)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
-          expect(response).to eq([form])
+          expect(response).to eq([:failure, form])
         end
       end
 
@@ -111,7 +111,7 @@ module Sip
           expect(repository).to receive(:submit_request_a_doi_form).with(form).and_return(true)
           response = subject.run(header_id: header_id, attributes: attributes)
           expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:success, header])
         end
       end
     end

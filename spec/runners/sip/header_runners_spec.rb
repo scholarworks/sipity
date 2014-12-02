@@ -17,7 +17,7 @@ module Sip
       it 'issues the :success callback' do
         response = subject.run
         expect(handler).to have_received(:invoked).with("SUCCESS", header)
-        expect(response).to eq([header])
+        expect(response).to eq([:success, header])
       end
     end
 
@@ -35,7 +35,7 @@ module Sip
       it 'issues the :success callback' do
         response = subject.run(1234)
         expect(handler).to have_received(:invoked).with("SUCCESS", header)
-        expect(response).to eq([header])
+        expect(response).to eq([:success, header])
       end
     end
 
@@ -60,7 +60,7 @@ module Sip
         it 'will issue the :success callback and return the header' do
           response = subject.run(attributes: attributes)
           expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([header])
+          expect(response).to eq([:success, header])
         end
       end
 
@@ -69,7 +69,7 @@ module Sip
         it 'will issue the :failure callback and return the form' do
           response = subject.run(attributes: attributes)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
-          expect(response).to eq([form])
+          expect(response).to eq([:failure, form])
         end
       end
     end
