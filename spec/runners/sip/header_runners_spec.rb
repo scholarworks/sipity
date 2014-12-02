@@ -76,8 +76,9 @@ module Sip
 
     RSpec.describe Edit do
       let(:header) { Header.new(id: '123', title: 'My Title') }
+      let(:form) { double('Form') }
       let(:context) { double('Context', repository: repository) }
-      let(:repository) { double('Repository', find_header: header) }
+      let(:repository) { double('Repository', find_header: header, build_edit_header_form: form) }
       let(:handler) { double(invoked: true) }
       subject do
         described_class.new(context) do |on|
@@ -88,8 +89,8 @@ module Sip
       context 'when header is found' do
         it 'will issue the :success callback and return the header' do
           response = subject.run(header_id: '123')
-          expect(handler).to have_received(:invoked).with('SUCCESS', header)
-          expect(response).to eq([:success, header])
+          expect(handler).to have_received(:invoked).with('SUCCESS', form)
+          expect(response).to eq([:success, form])
         end
       end
     end

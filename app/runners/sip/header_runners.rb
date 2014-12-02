@@ -34,7 +34,8 @@ module Sip
     class Edit < BaseRunner
       def run(header_id:)
         header = repository.find_header(header_id)
-        callback(:success, header)
+        form = repository.build_edit_header_form(header: header)
+        callback(:success, form)
       end
     end
   end
