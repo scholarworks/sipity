@@ -27,11 +27,7 @@ module Sip
       def submit_request_a_doi_form(form)
         form.submit do |f|
           AdditionalAttribute.create!(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: f.publisher)
-          if f.publication_date.present?
-            AdditionalAttribute.create!(
-              header: f.header, key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, value: f.publication_date
-            )
-          end
+          Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
           DoiCreationRequest.create!(header: f.header, state: 'request_not_yet_submitted')
         end
       end

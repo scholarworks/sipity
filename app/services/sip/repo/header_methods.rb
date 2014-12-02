@@ -17,29 +17,10 @@ module Sip
 
       def submit_create_header_form(form)
         form.submit do |f|
-          create_header!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
-            assign_collaborators_to_header(collaborators: f.collaborators, header: header)
-            if f.publication_date.present?
-              AdditionalAttribute.create!(
-                header: header, key: AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, value: f.publication_date
-              )
-            end
-          end
-        end
-      end
-
-      private
-
-      def create_header!(attributes = {})
-        header = Header.create!(attributes)
-        yield(header)
-        header
-      end
-
-      def assign_collaborators_to_header(header:, collaborators:)
-        collaborators.each do |collaborator|
-          collaborator.header = header
-          collaborator.save!
+          header = Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          Support::Collaborators.create!(header: header, collaborators: f.collaborators)
+          Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
+          header
         end
       end
     end
