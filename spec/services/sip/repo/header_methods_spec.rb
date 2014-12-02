@@ -36,6 +36,12 @@ module Sip
           expect { subject.build_edit_header_form(header: header) }.
             to raise_error(RuntimeError)
         end
+
+        it 'will raise an exception if the header is not persisted' do
+          header.id = '123'
+          allow(header).to receive(:persisted?).and_return(true)
+          expect(subject.build_edit_header_form(header: header)).to be_a(EditHeaderForm)
+        end
       end
 
       context '#exposed_attribute_names_for' do
