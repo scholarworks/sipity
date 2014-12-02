@@ -10,5 +10,6 @@ class CreateSipCollaborators < ActiveRecord::Migration
 
     add_index :sip_collaborators, [:sip_header_id, :sequence]
     change_column_null :sip_collaborators, :sip_header_id, false
+    change_column_null :sip_collaborators, :role, false
   end
 end

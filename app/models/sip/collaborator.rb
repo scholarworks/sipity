@@ -12,7 +12,6 @@ module Sip
 
     self.table_name = 'sip_collaborators'
 
-    validates :name, presence: true
     validates :role, inclusion: { in: ->(obj) { obj.class.roles } }
 
     # While this make look ridiculous, if I use an Array, the enum declaration
