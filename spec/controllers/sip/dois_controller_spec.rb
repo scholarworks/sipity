@@ -9,10 +9,7 @@ module Sip
       before { controller.runner = runner }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
-          yields: yields,
-          callback_name: callback_name,
-          run_with: { header_id: header.to_param },
-          context: controller
+          yields: yields, callback_name: callback_name, run_with: { header_id: header.to_param }, context: controller
         )
       end
 
@@ -55,10 +52,8 @@ module Sip
       before { controller.runner = runner }
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
-          yields: yields,
-          callback_name: callback_name,
-          run_with: { header_id: header.to_param, identifier: identifier },
-          context: controller
+          yields: yields, callback_name: callback_name, context: controller,
+          run_with: { header_id: header.to_param, identifier: identifier }
         )
       end
 
@@ -92,10 +87,8 @@ module Sip
       end
       let(:runner) do
         Hesburgh::Lib::MockRunner.new(
-          yields: yields,
-          callback_name: callback_name,
-          run_with: { header_id: header.to_param, attributes: attributes },
-          context: controller
+          yields: yields, callback_name: callback_name, context: controller,
+          run_with: { header_id: header.to_param, attributes: attributes }
         )
       end
 
