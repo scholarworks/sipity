@@ -13,7 +13,6 @@ module Sip
         return header unless decorator.respond_to?(:decorate)
         decorator.decorate(header)
       end
-      alias_method :build_header, :build_create_header_form
 
       def submit_create_header_form(form)
         form.submit do |f|
