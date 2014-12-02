@@ -15,6 +15,17 @@ Its goal is to provide clarity on why a patron would want to fill out metadata i
 * Does the patron want their deposit to be listed in Google Scholar? Fill out this information.
 * Does the patron want other people to assist them on editing this information? Fill out this particular information.
 
+## Getting Your Bearings
+
+Sipity is a Rails application but is built with a few more concepts in mind.
+
+The Sip::Repository object exposes the methods for interacting with the persistence layer.
+You can circumvent this, but I prefer the expressiveness of the methods.
+
+The Runners expose how the application interacts with the persistence layer.
+Conceptually a Runner is either a Query or a Command.
+In either case, the Runner's #run method is called and it issues one of several arbitrary callbacks.
+
 ## Anatomy of Sipity
 
 ```
