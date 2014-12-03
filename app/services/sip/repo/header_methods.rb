@@ -29,9 +29,15 @@ module Sip
         EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: attributes)
       end
 
-      def exposed_attribute_names_for(header:, additional_attribute_names: [:title, :collaborators_attributes])
-        keys = AdditionalAttribute.where(header: header).pluck(:key).uniq
-        keys + additional_attribute_names
+      def exposed_attribute_names_for(header:, additional_attribute_names: nil)
+        # TODO: What's with the magic array?
+        (
+          AdditionalAttribute.where(header: header).pluck(:key) +
+          (
+            additional_attribute_names ||
+            [:title, :collaborators_attributes, :publication_date, :work_publication_strategy]
+          )
+        ).uniq
       end
 
       def submit_edit_header_form(form)
