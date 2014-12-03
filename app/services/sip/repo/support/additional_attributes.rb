@@ -19,7 +19,9 @@ module Sip
         end
 
         def destroy!(header:, key:, values:)
-          AdditionalAttribute.where(header: header, key: key, value: Array.wrap(values)).destroy_all
+          values_to_destroy = Array.wrap(values)
+          return true unless values_to_destroy.present?
+          AdditionalAttribute.where(header: header, key: key, value: values_to_destroy).destroy_all
         end
 
         def values_for(header:, key:)
@@ -32,6 +34,10 @@ module Sip
 
         def keys_for(header:)
           AdditionalAttribute.where(header: header).order(:key).pluck('DISTINCT key')
+        end
+
+        def default_keys_for(*)
+          [:publication_date]
         end
       end
     end

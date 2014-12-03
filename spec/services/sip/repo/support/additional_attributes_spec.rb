@@ -31,6 +31,13 @@ module Sip
             to eq([['key', 'def'], ['key', 'new_value'], ['key_2', 'abc'], ['key_2', 'def']])
         end
 
+        it 'will not destroy when no values are specified' do
+          subject.create!(header: header, key: 'key', values: ['abc'])
+          subject.destroy!(header: header, key: 'key', values: [])
+          expect(subject.values_for(header: header, key: 'key')).to eq(['abc'])
+        end
+
+        its(:default_keys_for) { should be_a(Array) }
       end
     end
   end

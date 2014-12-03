@@ -87,13 +87,13 @@ module Sip
         let(:header) { Header.new(id: '123') }
         it 'will be the basic attributes if no additional attributes are assigned' do
           expect(subject.exposed_attribute_names_for(header: header)).
-            to eq([:title, :work_publication_strategy])
+            to eq([:publication_date, :title, :work_publication_strategy])
         end
 
         it 'will be the basic attributes and the keys for any additional attributes' do
           AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
           expect(subject.exposed_attribute_names_for(header: header)).
-            to eq(['chicken', :title, :work_publication_strategy])
+            to eq([:publication_date, 'chicken', :title, :work_publication_strategy])
         end
       end
 

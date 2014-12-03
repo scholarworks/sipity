@@ -32,7 +32,11 @@ module Sip
       end
 
       def exposed_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
-        (Support::AdditionalAttributes.keys_for(header: header) + additional_attribute_names).uniq
+        (
+          Support::AdditionalAttributes.default_keys_for(header: header) +
+          Support::AdditionalAttributes.keys_for(header: header) +
+          additional_attribute_names
+        ).uniq
       end
 
       def submit_edit_header_form(form)
