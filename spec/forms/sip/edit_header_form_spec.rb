@@ -46,13 +46,5 @@ module Sip
         expect(subject.exposes?(:not_exposed)).to eq(false)
       end
     end
-
-    context 'internal behaviors due to BasicObject' do
-      it { expect(subject.class).to eq(EditHeaderForm) }
-      it { expect(subject.inspect).to be_a(String) }
-      it { expect(subject.is_a?(described_class)).to be_truthy }
-      it { should respond_to :public_send }
-      it { should respond_to :send }
-    end
   end
 end

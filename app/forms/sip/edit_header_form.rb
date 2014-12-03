@@ -3,21 +3,12 @@ module Sip
   # Responsible for exposing attributes for editing
   #
   # TODO: Expose setter and getter methods for each :exposed_attribute_name
-  class EditHeaderForm
+  class EditHeaderForm < VirtualForm
     attr_reader :header
     def initialize(header:, exposed_attribute_names: [], attributes: {})
       @header = header
       @attributes = attributes.stringify_keys
       self.exposed_attribute_names = exposed_attribute_names
-    end
-
-    def valid?
-      false
-    end
-
-    def submit
-      return false unless valid?
-      return yield(self)
     end
 
     def method_missing(method_name, *_args, &_block)
