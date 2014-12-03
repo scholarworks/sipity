@@ -3,12 +3,12 @@ require 'rails_helper'
 module Sip
   module Repo
     RSpec.describe HeaderMethods, type: :repository do
-      let!(:klass) do
+      let!(:repository_class) do
         class TestRepository
           include HeaderMethods
         end
       end
-      subject { klass.new }
+      subject { repository_class.new }
       after { Sip::Repo.send(:remove_const, :TestRepository) }
 
       context '#find_header' do
@@ -63,17 +63,23 @@ module Sip
       end
 
       context '#build_edit_header_form' do
-        let(:header) { Header.new }
+        let(:header) { Header.new(title: 'Hello World', id: '123') }
         it 'will raise an exception if the header is not persisted' do
           allow(header).to receive(:persisted?).and_return(false)
           expect { subject.build_edit_header_form(header: header) }.
             to raise_error(RuntimeError)
         end
-
-        it 'will raise an exception if the header is not persisted' do
-          header.id = '123'
-          allow(header).to receive(:persisted?).and_return(true)
-          expect(subject.build_edit_header_form(header: header)).to be_a(EditHeaderForm)
+        context 'returned object given a persisted header' do
+          before { allow(header).to receive(:persisted?).and_return(true) }
+          subject { repository_class.new.build_edit_header_form(header: header) }
+          it { should respond_to :submit }
+          it 'will expose an attribute of the underlying header' do
+            expect(subject.title).to eq(header.title)
+          end
+          it 'will expose an additional attribute' do
+            AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
+            expect(subject.chicken).to eq('parmasean')
+          end
         end
       end
 

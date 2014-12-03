@@ -25,8 +25,9 @@ module Sip
 
       def build_edit_header_form(header:, attributes: {})
         fail "Expected #{header} to be persisted" unless header.persisted?
+        new_attributes = existing_attributes_for(header).merge(attributes)
         exposed_attribute_names = exposed_attribute_names_for(header: header)
-        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: attributes)
+        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
       def exposed_attribute_names_for(header:, additional_attribute_names: nil)
@@ -45,6 +46,16 @@ module Sip
           Header.find(f.header.id) do |header|
             header.update(title: f.title) if f.exposes?(:title)
           end
+        end
+      end
+
+      private
+
+      def existing_attributes_for(header)
+        # TODO: How to account for additional fields and basic fields of header
+        existing_attributes = { title: header.title, work_publication_strategy: header.work_publication_strategy }
+        AdditionalAttribute.where(header: header).each_with_object(existing_attributes) do |attr, mem|
+          mem[attr.key] = attr.value
         end
       end
     end
