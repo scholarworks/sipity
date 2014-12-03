@@ -23,6 +23,11 @@ module Sip
       respond_with(@model)
     end
 
+    def edit
+      _status, @model = run(params[:id])
+      respond_with(@model)
+    end
+
     attr_reader :model
     protected :model
     helper_method :model
