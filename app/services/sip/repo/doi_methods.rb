@@ -7,7 +7,7 @@ module Sip
       end
 
       def doi_already_assigned?(header)
-        AdditionalAttribute.where(header: header, key: AdditionalAttribute::DOI_PREDICATE_NAME).any?
+        Support::AdditionalAttributes.values_for(header: header, key: AdditionalAttribute::DOI_PREDICATE_NAME).any?
       end
 
       def build_assign_a_doi_form(attributes = {})
@@ -16,7 +16,7 @@ module Sip
 
       def submit_assign_a_doi_form(form)
         form.submit do |f|
-          AdditionalAttribute.create!(header: f.header, key: f.identifier_key, value: f.identifier)
+          Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
         end
       end
 
@@ -26,7 +26,7 @@ module Sip
 
       def submit_request_a_doi_form(form)
         form.submit do |f|
-          AdditionalAttribute.create!(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: f.publisher)
+          Support::AdditionalAttributes.update!(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher)
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
           DoiCreationRequest.create!(header: f.header, state: 'request_not_yet_submitted')
         end
