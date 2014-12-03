@@ -40,7 +40,11 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'spring-commands-rspec'
-  gem 'terminal-notifier-guard'
+  if RUBY_PLATFORM =~ /darwin12/
+    gem 'terminal-notifier-guard', '~> 1.5.3'
+  else
+    gem 'terminal-notifier-guard'
+  end
 end
 group :development, :test do
   gem 'rubocop', require: false
