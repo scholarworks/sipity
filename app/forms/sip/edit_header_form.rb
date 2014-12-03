@@ -1,3 +1,4 @@
+require 'sip/exceptions'
 module Sip
   # Responsible for exposing attributes for editing
   #
@@ -7,7 +8,7 @@ module Sip
     def initialize(header:, exposed_attribute_names: [], attributes: {})
       @header = header
       @attributes = attributes.stringify_keys
-      @exposed_attribute_names = exposed_attribute_names.map(&:to_s)
+      self.exposed_attribute_names = exposed_attribute_names
     end
 
     def valid?
@@ -40,6 +41,23 @@ module Sip
         '#<%s:%#0x @header.to_param=%s @exposed_attribute_names=%s, @attributes=%s>',
         self.class, __id__, @header.to_param, @exposed_attribute_names.inspect, @attributes.inspect
       )
+    end
+
+    private
+
+    def exposed_attribute_names=(names)
+      method_names = names.map(&:to_s)
+      guard_against_existing_method_names!(method_names)
+      @exposed_attribute_names = method_names
+    end
+
+    def guard_against_existing_method_names!(method_names)
+      intersecting_methods = self.class.instance_methods.grep(/^(#{method_names.join('|')})/)
+      if intersecting_methods.any?
+        fail Sip::ExistingMethodsAlreadyDefined.new(self, intersecting_methods)
+      else
+        return true
+      end
     end
   end
 end

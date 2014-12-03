@@ -10,6 +10,13 @@ module Sip
       )
     end
 
+    context 'exposing an attribute_name that is an already defined method' do
+      it 'will raise an exception' do
+        expect { described_class.new(header: header, exposed_attribute_names: [:submit]) }.
+          to raise_error(Sip::ExistingMethodsAlreadyDefined)
+      end
+    end
+
     context 'for exposed attribute' do
       it 'will respond to that attribute name' do
         expect(subject).to respond_to(:title)
