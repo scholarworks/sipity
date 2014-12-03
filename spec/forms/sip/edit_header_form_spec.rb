@@ -10,6 +10,10 @@ module Sip
       )
     end
 
+    it 'will have a model_name equal to the Sip::Header' do
+      expect(described_class.model_name).to eq(Sip::Header.model_name)
+    end
+
     context 'exposing an attribute_name that is an already defined method' do
       it 'will raise an exception' do
         expect { described_class.new(header: header, exposed_attribute_names: [:submit]) }.
