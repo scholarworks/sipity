@@ -20,6 +20,9 @@ module Sip
       it 'will expose a getter via :send' do
         expect(subject.send(:title)).to eq('My Title')
       end
+      it 'will expose the named attribute' do
+        expect(subject.exposes?(:title)).to eq(true)
+      end
     end
 
     context 'for attribute that is not exposed attribute' do
@@ -31,6 +34,9 @@ module Sip
       end
       it 'will NOT expose a getter via :send' do
         expect { subject.send(:not_exposed) }.to raise_error NoMethodError
+      end
+      it 'will NOT expose the named attribute' do
+        expect(subject.exposes?(:not_exposed)).to eq(false)
       end
     end
 
