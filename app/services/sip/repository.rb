@@ -1,6 +1,6 @@
 module Sip
-  # These are the service methods container. As I work on building the
-  # more complicated data entry, I believe this will be required.
+  # Defines and exposes the methods for interacting with the public API of the
+  # persistence layer.
   class Repository
     include Sip::Repo::HeaderMethods
     include Sip::Repo::CitationMethods
