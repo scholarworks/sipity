@@ -124,8 +124,8 @@ module Sip
           end
           it 'will update additional attributes' do
             expect { subject.submit_edit_header_form(form) }.
-              to change { AdditionalAttribute.where(header: header).pluck(:value) }.
-              from(['parmasean']).to(['dance'])
+              to change { AdditionalAttribute.where(header: header).pluck(:key, :value) }.
+              from([['chicken', 'parmasean']]).to([['chicken', 'dance']])
           end
         end
       end

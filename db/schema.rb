@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141125133337) do
+ActiveRecord::Schema.define(version: 20141203194600) do
 
   create_table "sip_additional_attributes", force: true do |t|
     t.integer  "sip_header_id", null: false
@@ -20,6 +20,9 @@ ActiveRecord::Schema.define(version: 20141125133337) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "sip_additional_attributes", ["sip_header_id", "key"], name: "index_sip_additional_attributes_on_sip_header_id_and_key"
+  add_index "sip_additional_attributes", ["sip_header_id"], name: "index_sip_additional_attributes_on_sip_header_id"
 
   create_table "sip_collaborators", force: true do |t|
     t.integer  "sip_header_id", null: false

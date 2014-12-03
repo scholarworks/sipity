@@ -32,7 +32,7 @@ module Sip
       end
 
       def exposed_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
-        (AdditionalAttribute.where(header: header).pluck(:key) + additional_attribute_names).uniq
+        (Support::AdditionalAttributes.keys_for(header: header) + additional_attribute_names).uniq
       end
 
       def submit_edit_header_form(form)
@@ -41,9 +41,8 @@ module Sip
             with_header_attributes_for_form(f) do |attributes|
               header.update(attributes)
             end
-            # TODO: How to handle multiple values
-            with_each_additional_attribute_for_form(f) do |key, value|
-              AdditionalAttribute.create!(header: header, key: key, value: value)
+            with_each_additional_attribute_for_form(f) do |key, values|
+              Support::AdditionalAttributes.update!(header: header, key: key, values: values)
             end
           end
         end
@@ -52,10 +51,8 @@ module Sip
       private
 
       def with_each_additional_attribute_for_form(form)
-        AdditionalAttribute.where(header: form.header).pluck(:key).uniq.each do |key|
+        Support::AdditionalAttributes.keys_for(header: form.header).each do |key|
           next unless  form.exposes?(key)
-          # TODO: Do I want to destroy entries that may not have changed?
-          AdditionalAttribute.where(header: form.header, key: key).destroy_all
           yield(key, form.public_send(key))
         end
       end
