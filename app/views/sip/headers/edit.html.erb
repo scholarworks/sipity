@@ -2,27 +2,7 @@
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :title %>
-    <div class="control-group string required sip_header_work_publication_strategy error">
-      <%= f.label :work_publication_strategy %>
-      <%= f.error :work_publication_strategy %>
-      <%= f.hint :work_publication_strategy %>
-      <label class="radio">
-        <input type="radio" id="visibility_open" name="<%= f.object_name %>[work_publication_strategy]" value="will_not_publish" checked="true"/>
-        <span class="label label-success">will_not_publish</span>
-      </label>
-      <label class="radio">
-        <input type="radio" id="visibility_open" name="<%= f.object_name %>[work_publication_strategy]" value="already_published" checked="true"/>
-        <span class="label label-success">already_published</span> on <%= f.input_field :publication_date %>.
-      </label>
-      <label class="radio">
-        <input type="radio" id="visibility_open" name="<%= f.object_name %>[work_publication_strategy]" value="going_to_publish" checked="true"/>
-        <span class="label label-success">going_to_publish</span>
-      </label>
-      <label class="radio">
-        <input type="radio" id="visibility_open" name="<%= f.object_name %>[work_publication_strategy]" value="do_not_know" checked="true"/>
-        <span class="label label-success">do_not_know</span>
-      </label>
-    </div>
+    <%= render 'form_for_work_publication_strategy', { f: f } %>
   <% end %>
   <%= field_set_tag do %>
     <%= f.submit %>
