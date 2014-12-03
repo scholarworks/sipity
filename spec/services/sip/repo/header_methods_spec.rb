@@ -91,6 +91,32 @@ module Sip
         end
       end
 
+      context '#submit_edit_header_form' do
+        let(:header) { Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
+        let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title' }) }
+        context 'with invalid data' do
+          before do
+            allow(header).to receive(:persisted?).and_return(true)
+            allow(form).to receive(:valid?).and_return(false)
+          end
+          it 'will return false' do
+            expect(subject.submit_edit_header_form(form)).to eq(false)
+          end
+        end
+        context 'with valid data' do
+          before do
+            allow(header).to receive(:persisted?).and_return(true)
+            allow(form).to receive(:valid?).and_return(true)
+          end
+          it 'will return the header' do
+            expect(subject.submit_edit_header_form(form)).to eq(header)
+          end
+          it 'will update the header information' do
+            expect { subject.submit_edit_header_form(form) }.
+              to change { header.reload.title }.from('My Title').to('My New Title')
+          end
+        end
+      end
     end
   end
 end

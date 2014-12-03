@@ -23,15 +23,23 @@ module Sip
         end
       end
 
-      def build_edit_header_form(header:)
+      def build_edit_header_form(header:, attributes: {})
         fail "Expected #{header} to be persisted" unless header.persisted?
         exposed_attribute_names = exposed_attribute_names_for(header: header)
-        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names)
+        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: attributes)
       end
 
       def exposed_attribute_names_for(header:, additional_attribute_names: [:title, :collaborators_attributes])
         keys = AdditionalAttribute.where(header: header).pluck(:key).uniq
         keys + additional_attribute_names
+      end
+
+      def submit_edit_header_form(form)
+        form.submit do |f|
+          Header.find(f.header.id) do |header|
+            header.update(title: f.title) if f.exposes?(:title)
+          end
+        end
       end
     end
   end
