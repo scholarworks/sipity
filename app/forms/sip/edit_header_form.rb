@@ -27,13 +27,6 @@ module Sip
       exposes?(method_name) || super
     end
 
-    def inspect
-      ::Kernel.format(
-        '#<%s:%#0x @header.to_param=%s @exposed_attribute_names=%s, @attributes=%s>',
-        self.class, __id__, @header.to_param, @exposed_attribute_names.inspect, @attributes.inspect
-      )
-    end
-
     private
 
     def exposed_attribute_names=(names)
