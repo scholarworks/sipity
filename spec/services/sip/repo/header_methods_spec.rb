@@ -29,35 +29,6 @@ module Sip
         end
       end
 
-      context '#build_edit_header_form' do
-        let(:header) { Header.new }
-        it 'will raise an exception if the header is not persisted' do
-          allow(header).to receive(:persisted?).and_return(false)
-          expect { subject.build_edit_header_form(header: header) }.
-            to raise_error(RuntimeError)
-        end
-
-        it 'will raise an exception if the header is not persisted' do
-          header.id = '123'
-          allow(header).to receive(:persisted?).and_return(true)
-          expect(subject.build_edit_header_form(header: header)).to be_a(EditHeaderForm)
-        end
-      end
-
-      context '#exposed_attribute_names_for' do
-        let(:header) { Header.new(id: '123') }
-        it 'will be the basic attributes if no additional attributes are assigned' do
-          expect(subject.exposed_attribute_names_for(header: header)).
-            to eq([:title, :collaborators_attributes])
-        end
-
-        it 'will be the basic attributes and the keys for any additional attributes' do
-          AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
-          expect(subject.exposed_attribute_names_for(header: header)).
-            to eq(['chicken', :title, :collaborators_attributes])
-        end
-      end
-
       context '#submit_create_header_form' do
         let(:header) do
           subject.build_create_header_form(
@@ -90,6 +61,36 @@ module Sip
           expect(decorator).to have_received(:decorate).with(kind_of(CreateHeaderForm))
         end
       end
+
+      context '#build_edit_header_form' do
+        let(:header) { Header.new }
+        it 'will raise an exception if the header is not persisted' do
+          allow(header).to receive(:persisted?).and_return(false)
+          expect { subject.build_edit_header_form(header: header) }.
+            to raise_error(RuntimeError)
+        end
+
+        it 'will raise an exception if the header is not persisted' do
+          header.id = '123'
+          allow(header).to receive(:persisted?).and_return(true)
+          expect(subject.build_edit_header_form(header: header)).to be_a(EditHeaderForm)
+        end
+      end
+
+      context '#exposed_attribute_names_for' do
+        let(:header) { Header.new(id: '123') }
+        it 'will be the basic attributes if no additional attributes are assigned' do
+          expect(subject.exposed_attribute_names_for(header: header)).
+            to eq([:title, :collaborators_attributes])
+        end
+
+        it 'will be the basic attributes and the keys for any additional attributes' do
+          AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
+          expect(subject.exposed_attribute_names_for(header: header)).
+            to eq(['chicken', :title, :collaborators_attributes])
+        end
+      end
+
     end
   end
 end

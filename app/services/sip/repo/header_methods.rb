@@ -8,12 +8,6 @@ module Sip
         decorator.decorate(header)
       end
 
-      def build_edit_header_form(header:)
-        fail "Expected #{header} to be persisted" unless header.persisted?
-        exposed_attribute_names = exposed_attribute_names_for(header: header)
-        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names)
-      end
-
       def build_create_header_form(decorator: nil, attributes: {})
         header = CreateHeaderForm.new(attributes)
         return header unless decorator.respond_to?(:decorate)
@@ -27,6 +21,12 @@ module Sip
             Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
           end
         end
+      end
+
+      def build_edit_header_form(header:)
+        fail "Expected #{header} to be persisted" unless header.persisted?
+        exposed_attribute_names = exposed_attribute_names_for(header: header)
+        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names)
       end
 
       def exposed_attribute_names_for(header:, additional_attribute_names: [:title, :collaborators_attributes])
