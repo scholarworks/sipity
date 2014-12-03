@@ -12,7 +12,7 @@ module Sip
     end
 
     def method_missing(method_name, *_args, &_block)
-      if @exposed_attribute_names.include?(method_name.to_s)
+      if exposes?(method_name)
         @attributes[method_name.to_s]
       else
         super
