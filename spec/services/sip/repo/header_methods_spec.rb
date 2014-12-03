@@ -87,19 +87,19 @@ module Sip
         let(:header) { Header.new(id: '123') }
         it 'will be the basic attributes if no additional attributes are assigned' do
           expect(subject.exposed_attribute_names_for(header: header)).
-            to eq([:title, :collaborators_attributes, :publication_date, :work_publication_strategy])
+            to eq([:title, :work_publication_strategy])
         end
 
         it 'will be the basic attributes and the keys for any additional attributes' do
           AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
           expect(subject.exposed_attribute_names_for(header: header)).
-            to eq(['chicken', :title, :collaborators_attributes, :publication_date, :work_publication_strategy])
+            to eq(['chicken', :title, :work_publication_strategy])
         end
       end
 
       context '#submit_edit_header_form' do
         let(:header) { Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
-        let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title' }) }
+        let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
         context 'with invalid data' do
           before do
             allow(header).to receive(:persisted?).and_return(true)
@@ -111,6 +111,7 @@ module Sip
         end
         context 'with valid data' do
           before do
+            AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
             allow(header).to receive(:persisted?).and_return(true)
             allow(form).to receive(:valid?).and_return(true)
           end
@@ -120,6 +121,11 @@ module Sip
           it 'will update the header information' do
             expect { subject.submit_edit_header_form(form) }.
               to change { header.reload.title }.from('My Title').to('My New Title')
+          end
+          it 'will update additional attributes' do
+            expect { subject.submit_edit_header_form(form) }.
+              to change { AdditionalAttribute.where(header: header).pluck(:value) }.
+              from(['parmasean']).to(['dance'])
           end
         end
       end
