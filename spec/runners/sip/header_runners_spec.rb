@@ -88,7 +88,7 @@ module Sip
 
       context 'when header is found' do
         it 'will issue the :success callback and return the header' do
-          response = subject.run(header_id: '123')
+          response = subject.run('123')
           expect(handler).to have_received(:invoked).with('SUCCESS', form)
           expect(response).to eq([:success, form])
         end
