@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(version: 20141125133337) do
     t.integer  "sip_header_id", null: false
     t.integer  "sequence"
     t.string   "name"
-    t.string   "role"
+    t.string   "role",          null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
