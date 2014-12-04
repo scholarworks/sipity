@@ -3,14 +3,14 @@ module Sip
   # already exists but has not yet been assigned to the SIP
   class AssignADoiForm < VirtualForm
     def initialize(attributes = {})
-      @decorator = attributes.fetch(:decorator) { default_decorator }
       self.header = attributes.fetch(:header)
       self.identifier = attributes.fetch(:identifier, nil)
       yield(self) if block_given?
     end
 
-    attr_reader :header
-    attr_accessor :identifier
+    attr_accessor :header, :identifier
+    private :header=
+
     validates :header, presence: true
     validates :identifier, presence: true
 
@@ -27,20 +27,7 @@ module Sip
     # TODO: Get this out of here. There is an object that is a better owner of
     # this method.
     def request_a_doi_form
-      RequestADoiForm.new(header: header, decorator: decorator)
-    end
-
-    private
-
-    def header=(header)
-      @header = decorate(object: header, decorator: decorator)
-    end
-
-    attr_reader :decorator
-    private :decorator
-
-    def default_decorator
-      HeaderDecorator
+      RequestADoiForm.new(header: header)
     end
   end
 end

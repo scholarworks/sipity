@@ -21,8 +21,7 @@ module Sip
     end
 
     def doi_not_assigned_response(header)
-      # TODO: Really I shouldn't be doing this; The header that is
-      # return should be decorated
+      header = HeaderDecorator.decorate(header)
       @model = AssignADoiForm.new(header: header)
       respond_with(@model) do |wants|
         flash.now.alert = message_for(:doi_not_assigned, title: header.title)

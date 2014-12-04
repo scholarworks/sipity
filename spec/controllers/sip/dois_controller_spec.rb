@@ -19,7 +19,8 @@ module Sip
         it 'will render the show page' do
           get 'show', header_id: header.to_param
           expect(flash[:alert]).to_not be_empty
-          expect(assigns(:model)).to_not be_nil
+          expect(assigns(:model)).to respond_to(:submit)
+          expect(assigns(:model).header).to be_decorated
           expect(response).to render_template('doi_not_assigned')
         end
       end

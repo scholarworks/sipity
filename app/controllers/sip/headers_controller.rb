@@ -6,7 +6,8 @@ module Sip
     self.runner_container = Sip::HeaderRunners
 
     def new
-      _status, @model = run(decorator: HeaderDecorator)
+      _status, model = run
+      @model = HeaderDecorator.decorate(model)
       respond_with(@model)
     end
 
@@ -14,12 +15,14 @@ module Sip
       # Because the run command returns an Array, I need to shift the first
       # value. And by convention, if there is a failure we'll render a 200 and
       # provide the user with a form to re-enter data
-      _status, @model = run(decorator: HeaderDecorator, attributes: create_params)
+      _status, model = run(attributes: create_params)
+      @model = HeaderDecorator.decorate(model)
       respond_with(@model)
     end
 
     def show
-      _status, @model = run(params[:id], decorator: HeaderDecorator)
+      _status, model = run(params[:id])
+      @model = HeaderDecorator.decorate(model)
       respond_with(@model)
     end
 
