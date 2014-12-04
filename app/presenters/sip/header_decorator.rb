@@ -24,8 +24,8 @@ module Sip
       object.class.human_attribute_name(name)
     end
 
-    def authors
-      object.collaborators.where(role: 'author').map(&:decorate)
+    def authors(decorator: CollaboratorDecorator)
+      Repo::Support::Collaborators.for(header: object, role: 'author').map { |obj| decorator.decorate(obj) }
     end
 
     private

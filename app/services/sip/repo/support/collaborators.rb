@@ -11,6 +11,10 @@ module Sip
             collaborator.save!
           end
         end
+
+        def for(options = {})
+          Collaborator.where(options.slice(:header, :role))
+        end
       end
     end
   end
