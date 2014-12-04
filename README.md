@@ -29,6 +29,11 @@ And instead let the controller worry about generating the correct response (e.g.
 In offloading the processing from the controller, the runner can, with minimal adjustments, operate in a different context.
 In other words, a Runner could be used to build a suite of command-line commands.
 
+### RSpec output
+
+Don't forget, you can run `rspec --format documentation` (or its equivalent `rspec -f d`) to run the tests and output a "self-documentation" format.
+I am doing my best to re-read the output tests to make sure they are adequate/accurate low-level documentation.
+
 ## Anatomy of Sipity
 
 ```
