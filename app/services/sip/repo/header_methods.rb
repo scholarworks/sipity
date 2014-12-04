@@ -18,6 +18,8 @@ module Sip
             Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
             # TODO: Remove magic role
             Permission.create!(subject: header, user: requested_by, role: 'creating_user') if requested_by
+            # TODO: Remove magic event name. Should this be derived from the method name?
+            EventLog.create!(subject: header, user: requested_by, event_name: 'submit_create_header_form') if requested_by
           end
         end
       end
@@ -29,14 +31,16 @@ module Sip
         EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
-      def submit_edit_header_form(form)
+      def submit_edit_header_form(form, requested_by: nil)
         form.submit do |f|
-          Header.find(f.header.id) do |header|
-            with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
-            with_each_additional_attribute_for_header_form(f) do |key, values|
-              Support::AdditionalAttributes.update!(header: header, key: key, values: values)
-            end
+          header = find_header(f.header.id)
+          with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
+          with_each_additional_attribute_for_header_form(f) do |key, values|
+            Support::AdditionalAttributes.update!(header: header, key: key, values: values)
           end
+          # TODO: Remove magic event name. Should this be derived from the method name?
+          EventLog.create!(subject: header, user: requested_by, event_name: 'submit_edit_header_form') if requested_by
+          header
         end
       end
 

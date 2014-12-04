@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204154424) do
+ActiveRecord::Schema.define(version: 20141204165259) do
 
   create_table "sip_additional_attributes", force: true do |t|
     t.integer  "sip_header_id", null: false
@@ -45,6 +45,20 @@ ActiveRecord::Schema.define(version: 20141204154424) do
   end
 
   add_index "sip_doi_creation_requests", ["state"], name: "index_sip_doi_creation_requests_on_state"
+
+  create_table "sip_event_logs", force: true do |t|
+    t.integer  "user_id",                 null: false
+    t.integer  "subject_id",              null: false
+    t.string   "subject_type", limit: 64, null: false
+    t.string   "event_name",              null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sip_event_logs", ["subject_id", "subject_type", "event_name"], name: "sip_event_logs_subject_event_name"
+  add_index "sip_event_logs", ["subject_id", "subject_type"], name: "sip_event_logs_subject"
+  add_index "sip_event_logs", ["user_id", "event_name"], name: "sip_event_logs_user_event_name"
+  add_index "sip_event_logs", ["user_id", "subject_id", "subject_type"], name: "sip_event_logs_user_subject"
 
   create_table "sip_headers", force: true do |t|
     t.string   "work_publication_strategy"

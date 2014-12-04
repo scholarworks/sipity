@@ -74,6 +74,13 @@ module Sip
             allow(form).to receive(:valid?).and_return(true)
             expect(subject.submit_create_header_form(form)).to be_a(Header)
           end
+          it 'will create an event log entry for the requesting user' do
+            user = User.new(id: '123')
+            form = subject.build_create_header_form(attributes: { title: 'This is my title' })
+            allow(form).to receive(:valid?).and_return(true)
+            expect { subject.submit_create_header_form(form, requested_by: user) }.
+              to change { EventLog.where(user: user, event_name: 'submit_create_header_form').count }.by(1)
+          end
         end
       end
 
@@ -137,6 +144,11 @@ module Sip
             expect { subject.submit_edit_header_form(form) }.
               to change { AdditionalAttribute.where(header: header).pluck(:key, :value) }.
               from([['chicken', 'parmasean']]).to([['chicken', 'dance']])
+          end
+          it 'will create an event log entry for the requesting user' do
+            user = User.new(id: '123')
+            expect { subject.submit_edit_header_form(form, requested_by: user) }.
+              to change { EventLog.where(user: user, event_name: 'submit_edit_header_form').count }.by(1)
           end
         end
       end

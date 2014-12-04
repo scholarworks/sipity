@@ -10,10 +10,11 @@ module Sip
         AssignACitationForm.new(attributes)
       end
 
-      def submit_assign_a_citation_form(form)
+      def submit_assign_a_citation_form(form, requested_by: nil)
         form.submit do |f|
           Support::AdditionalAttributes.update!(header: f.header, key: AdditionalAttribute::CITATION_PREDICATE_NAME, values: f.citation)
           Support::AdditionalAttributes.update!(header: f.header, key: AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type)
+          EventLog.create!(subject: f.header, user: requested_by, event_name: 'submit_assign_a_citation_form') if requested_by
         end
       end
     end

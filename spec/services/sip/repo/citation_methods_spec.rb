@@ -33,6 +33,11 @@ module Sip
               change { header.additional_attributes.count }.by(2)
             )
           end
+          it 'will create an event log entry for the requesting user' do
+            user = User.new(id: '123')
+            expect { subject.submit_assign_a_citation_form(form, requested_by: user) }.
+              to change { EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count }.by(1)
+          end
         end
       end
 
