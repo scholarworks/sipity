@@ -8,12 +8,18 @@ module Sip
       let(:header_id) { 1234 }
       let(:context) { double(repository: repository) }
       let(:repository) { double(find_header: header, citation_already_assigned?: citation_already_assigned) }
+      let(:citation_already_assigned) { true }
       let(:handler) { double(invoked: true) }
       subject do
-        described_class.new(context) do |on|
+        described_class.new(context, requires_authentication: false) do |on|
           on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
           on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
         end
+      end
+
+      it 'requires authentication' do
+        expect(context).to receive(:authenticate_user!).and_return(true)
+        described_class.new(context)
       end
 
       context 'when a citation is not assigned' do
@@ -40,6 +46,7 @@ module Sip
       let(:header_id) { 1234 }
       let(:context) { double('Context', repository: repository) }
       let(:form) { double('Form') }
+      let(:citation_assigned) { nil }
       let(:repository) do
         double('Repository',
                find_header: header, build_assign_a_citation_form: form, citation_already_assigned?: citation_assigned
@@ -47,10 +54,15 @@ module Sip
       end
       let(:handler) { double('Handler', invoked: true) }
       subject do
-        described_class.new(context) do |on|
+        described_class.new(context, requires_authentication: false) do |on|
           on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
           on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
         end
+      end
+
+      it 'requires authentication' do
+        expect(context).to receive(:authenticate_user!).and_return(true)
+        described_class.new(context)
       end
 
       context 'when a citation is not assigned' do
@@ -83,10 +95,15 @@ module Sip
       end
       let(:handler) { double('Handler', invoked: true) }
       subject do
-        described_class.new(context) do |on|
+        described_class.new(context, requires_authentication: false) do |on|
           on.success { |a| handler.invoked("SUCCESS", a) }
           on.failure { |a| handler.invoked("FAILURE", a) }
         end
+      end
+
+      it 'requires authentication' do
+        expect(context).to receive(:authenticate_user!).and_return(true)
+        described_class.new(context)
       end
 
       context 'when the form submission fails' do
