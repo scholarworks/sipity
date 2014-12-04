@@ -17,6 +17,7 @@ feature 'Minimum viable SIP', :devise do
       expect(the_page.text_for('title')).to eq(['Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['do_not_know'])
       expect(the_page.text_for('collaborators .value.name')).to eq(['Robert the Bruce'])
+      the_page.click_recommendation('DOI')
     end
   end
 

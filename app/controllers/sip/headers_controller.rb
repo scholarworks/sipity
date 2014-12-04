@@ -12,11 +12,9 @@ module Sip
     end
 
     def create
-      # Because the run command returns an Array, I need to shift the first
-      # value. And by convention, if there is a failure we'll render a 200 and
-      # provide the user with a form to re-enter data
-      _status, model = run(attributes: create_params)
+      status, model = run(attributes: create_params)
       @model = HeaderDecorator.decorate(model)
+      flash[:notice] = message_for(status, title: @model.title)
       respond_with(@model)
     end
 
@@ -27,8 +25,7 @@ module Sip
     end
 
     def edit
-      status, @model = run(params[:id])
-      flash[:notice] = message_for(status, title: @model.title)
+      _status, @model = run(params[:id])
       respond_with(@model)
     end
 
