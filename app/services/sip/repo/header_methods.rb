@@ -30,9 +30,7 @@ module Sip
       def submit_edit_header_form(form)
         form.submit do |f|
           Header.find(f.header.id) do |header|
-            with_header_attributes_for_form(f) do |attributes|
-              header.update(attributes)
-            end
+            with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
             with_each_additional_attribute_for_header_form(f) do |key, values|
               Support::AdditionalAttributes.update!(header: header, key: key, values: values)
             end
