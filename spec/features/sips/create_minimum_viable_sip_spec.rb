@@ -25,8 +25,18 @@ feature 'Minimum viable SIP', :devise do
       the_page.fill_in(:identifier, with: 'abc:123')
       the_page.submit_button.click
     end
+
     on('sip_header') do |the_page|
       the_page.click_edit
+    end
+
+    on('edit_sip_header') do |the_page|
+      the_page.fill_in(:title, with: 'New Value')
+      the_page.submit_button.click
+    end
+
+    on('sip_header') do |the_page|
+      expect(the_page.text_for('title')).to eq(['New Value'])
     end
   end
 
