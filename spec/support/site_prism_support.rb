@@ -37,6 +37,22 @@ module SitePrism
       def click_recommendation(recommendation)
         find(".sip_recommendation .value .recommendation-#{recommendation.downcase}").click
       end
+
+      def click_edit
+        find('.action-edit').click
+      end
+    end
+
+    class AssignDoiPage < SitePrism::Page
+      DOM_CLASS = 'assign_a_doi'.freeze
+      PARAM_NAME_CONTAINER = 'doi'.freeze
+      element :form, "form.#{DOM_CLASS}"
+      element :input_identifier, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[identifier]']"
+      element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
+
+      def fill_in(predicate, with: nil)
+        find("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+      end
     end
   end
 

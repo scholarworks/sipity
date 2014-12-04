@@ -19,6 +19,15 @@ feature 'Minimum viable SIP', :devise do
       expect(the_page.text_for('collaborators .value.name')).to eq(['Robert the Bruce'])
       the_page.click_recommendation('DOI')
     end
+
+    on('assign_doi_page') do |the_page|
+      expect(the_page).to be_all_there
+      the_page.fill_in(:identifier, with: 'abc:123')
+      the_page.submit_button.click
+    end
+    on('sip_header') do |the_page|
+      the_page.click_edit
+    end
   end
 
   # Given a user has filled out a publication date at creation
