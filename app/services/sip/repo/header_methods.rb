@@ -22,8 +22,8 @@ module Sip
 
       def build_edit_header_form(header:, attributes: {})
         fail "Expected #{header} to be persisted" unless header.persisted?
-        new_attributes = existing_attributes_for(header).merge(attributes)
-        exposed_attribute_names = exposed_attribute_names_for(header: header)
+        new_attributes = existing_header_attributes_for(header).merge(attributes)
+        exposed_attribute_names = exposed_header_attribute_names_for(header: header)
         EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
@@ -33,7 +33,7 @@ module Sip
             with_header_attributes_for_form(f) do |attributes|
               header.update(attributes)
             end
-            with_each_additional_attribute_for_form(f) do |key, values|
+            with_each_additional_attribute_for_header_form(f) do |key, values|
               Support::AdditionalAttributes.update!(header: header, key: key, values: values)
             end
           end
@@ -42,7 +42,7 @@ module Sip
 
       private
 
-      def with_each_additional_attribute_for_form(form)
+      def with_each_additional_attribute_for_header_form(form)
         Support::AdditionalAttributes.keys_for(header: form.header).each do |key|
           next unless  form.exposes?(key)
           yield(key, form.public_send(key))
@@ -57,7 +57,7 @@ module Sip
         yield(attributes) if attributes.any?
       end
 
-      def existing_attributes_for(header)
+      def existing_header_attributes_for(header)
         # TODO: How to account for additional fields and basic fields of header
         existing_attributes = { title: header.title, work_publication_strategy: header.work_publication_strategy }
         AdditionalAttribute.where(header: header).each_with_object(existing_attributes) do |attr, mem|
@@ -66,7 +66,7 @@ module Sip
         end
       end
 
-      def exposed_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
+      def exposed_header_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
         (
           Support::AdditionalAttributes.default_keys_for(header: header) +
           Support::AdditionalAttributes.keys_for(header: header) +
