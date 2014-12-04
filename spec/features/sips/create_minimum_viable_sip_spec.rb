@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 feature 'Minimum viable SIP', :devise do
+  include Warden::Test::Helpers
+  before { Warden.test_mode! }
+  let(:user) { FactoryGirl.create(:user) }
   scenario 'User can create a SIP' do
+    login_as(user, scope: :user)
     visit '/start'
     on('new_sip_header') do |the_page|
       expect(the_page).to be_all_there
