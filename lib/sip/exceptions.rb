@@ -8,4 +8,11 @@ module Sip
       super("#{context} implemented the following methods: #{method_names.inspect}. #{context} won't work as expected")
     end
   end
+
+  # Exposing a custom AuthenticationFailureError
+  class AuthenticationFailureError < RuntimeError
+    def initialize(context)
+      super("Unable to authenticate #{context}")
+    end
+  end
 end
