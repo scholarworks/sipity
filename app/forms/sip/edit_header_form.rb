@@ -24,6 +24,7 @@ module Sip
         super
       end
     end
+    validates :title, presence: true
 
     def exposes?(method_name)
       @exposed_attribute_names.include?(method_name.to_s)

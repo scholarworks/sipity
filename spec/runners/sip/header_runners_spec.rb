@@ -94,5 +94,41 @@ module Sip
         end
       end
     end
+
+    RSpec.describe Update do
+      let(:header) { double('Header') }
+      let(:form) { double('Form') }
+      let(:context) { double('Context', repository: repository) }
+      let(:repository) do
+        double('Repository', find_header: header, build_edit_header_form: form, submit_edit_header_form: update_response)
+      end
+      let(:handler) { double(invoked: true) }
+      let(:attributes) { {} }
+
+      subject do
+        described_class.new(context) do |on|
+          on.success { |a| handler.invoked("SUCCESS", a) }
+          on.failure { |a| handler.invoked("FAILURE", a) }
+        end
+      end
+
+      context 'when header is updated' do
+        let(:update_response) { header }
+        it 'will issue the :success callback and return the header' do
+          response = subject.run('123', attributes: attributes)
+          expect(handler).to have_received(:invoked).with('SUCCESS', header)
+          expect(response).to eq([:success, header])
+        end
+      end
+
+      context 'when header update fails' do
+        let(:update_response) { false }
+        it 'will issue the :failure callback and return the form' do
+          response = subject.run('123', attributes: attributes)
+          expect(handler).to have_received(:invoked).with('FAILURE', form)
+          expect(response).to eq([:failure, form])
+        end
+      end
+    end
   end
 end

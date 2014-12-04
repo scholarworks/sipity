@@ -24,7 +24,14 @@ module Sip
     end
 
     def edit
-      _status, @model = run(params[:id])
+      status, @model = run(params[:id])
+      flash[:notice] = message_for(status, title: @model.title)
+      respond_with(@model)
+    end
+
+    def update
+      status, @model = run(params[:id], attributes: update_params)
+      flash[:notice] = message_for(status, title: @model.title)
       respond_with(@model)
     end
 
@@ -35,6 +42,10 @@ module Sip
     private
 
     def create_params
+      params.require(:sip_header)
+    end
+
+    def update_params
       params.require(:sip_header)
     end
   end

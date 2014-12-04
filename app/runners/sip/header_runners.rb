@@ -38,5 +38,19 @@ module Sip
         callback(:success, form)
       end
     end
+
+    # Responsible for creating and persisting a new Header
+    class Update < BaseRunner
+      def run(header_id, attributes:)
+        header = repository.find_header(header_id)
+        form = repository.build_edit_header_form(header: header, attributes: attributes)
+        header = repository.submit_edit_header_form(form)
+        if header
+          callback(:success, header)
+        else
+          callback(:failure, form)
+        end
+      end
+    end
   end
 end
