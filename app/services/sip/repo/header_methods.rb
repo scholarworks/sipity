@@ -27,14 +27,6 @@ module Sip
         EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
-      def exposed_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
-        (
-          Support::AdditionalAttributes.default_keys_for(header: header) +
-          Support::AdditionalAttributes.keys_for(header: header) +
-          additional_attribute_names
-        ).uniq
-      end
-
       def submit_edit_header_form(form)
         form.submit do |f|
           Header.find(f.header.id) do |header|
@@ -72,6 +64,14 @@ module Sip
           # TODO: How to handle multi-value options
           mem[attr.key] = attr.value
         end
+      end
+
+      def exposed_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
+        (
+          Support::AdditionalAttributes.default_keys_for(header: header) +
+          Support::AdditionalAttributes.keys_for(header: header) +
+          additional_attribute_names
+        ).uniq
       end
     end
   end

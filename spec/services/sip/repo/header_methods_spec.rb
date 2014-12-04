@@ -72,20 +72,6 @@ module Sip
         end
       end
 
-      context '#exposed_attribute_names_for' do
-        let(:header) { Header.new(id: '123') }
-        it 'will be the basic attributes if no additional attributes are assigned' do
-          expect(subject.exposed_attribute_names_for(header: header)).
-            to eq([:publication_date, :title, :work_publication_strategy])
-        end
-
-        it 'will be the basic attributes and the keys for any additional attributes' do
-          AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
-          expect(subject.exposed_attribute_names_for(header: header)).
-            to eq([:publication_date, 'chicken', :title, :work_publication_strategy])
-        end
-      end
-
       context '#submit_edit_header_form' do
         let(:header) { Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
         let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
