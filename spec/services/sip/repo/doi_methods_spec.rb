@@ -29,6 +29,9 @@ module Sip
               to change { subject.doi_already_assigned?(header) }.
               from(false).to(true)
           end
+          it 'will return true' do
+            expect(subject.submit_assign_a_doi_form(form)).to be_truthy
+          end
           it 'will create an event log entry for the requesting user' do
             user = User.new(id: '123')
             expect { subject.submit_assign_a_doi_form(form, requested_by: user) }.
@@ -46,14 +49,17 @@ module Sip
 
         context 'on invalid data' do
           let(:publisher) { '' }
-          it 'returns false and does not create the DOI request' do
+          it 'will return false and does not create the DOI request' do
             expect(subject.submit_request_a_doi_form(form)).to eq(false)
           end
         end
 
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
-          it 'returns true, creating the DOI creation request and appending the captured attributes' do
+          it 'will return true' do
+            expect(subject.submit_request_a_doi_form(form)).to be_truthy
+          end
+          it 'will create the DOI request and append the captured attributes' do
             expect { subject.submit_request_a_doi_form(form) }.to(
               change { subject.doi_request_is_pending?(header) }.from(false).to(true) &&
               change { header.additional_attributes.count }.by(2)

@@ -16,8 +16,8 @@ module Sip
 
       def submit_assign_a_doi_form(form, requested_by: nil)
         form.submit do |f|
-          Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
           EventLog.create!(subject: f.header, user: requested_by, event_name: 'submit_assign_a_doi_form') if requested_by
+          Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
         end
       end
 
