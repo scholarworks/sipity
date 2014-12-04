@@ -24,7 +24,7 @@ module Sip
       end
 
       context '#submit_create_header_form' do
-        let(:header) do
+        let(:form) do
           subject.build_create_header_form(
             attributes: {
               title: 'This is my title',
@@ -36,17 +36,36 @@ module Sip
             }
           )
         end
-        it 'will append the publication_date if one is given' do
-          expect { subject.submit_create_header_form(header) }.to(
-            change { Header.count }.by(1) &&
-            change { header.additional_attributes.count }.by(1) &&
-            change { Collaborator.count }.by(1)
-          )
+        context 'with invalid data' do
+          it 'will not create a a header' do
+            allow(form).to receive(:valid?).and_return(false)
+            expect { subject.submit_create_header_form(form) }.
+              to_not change { Header.count }
+          end
+          it 'will return false' do
+            allow(form).to receive(:valid?).and_return(false)
+            expect(subject.submit_create_header_form(form)).to eq(false)
+          end
+        end
+        context 'with valid data' do
+          it 'will create the header with the given attributes' do
+            allow(form).to receive(:valid?).and_return(true)
+            expect { subject.submit_create_header_form(form) }.to(
+              change { Header.count }.by(1) &&
+              change { header.additional_attributes.count }.by(1) &&
+              change { Collaborator.count }.by(1)
+            )
+          end
+          it 'will return the header with the given attributes' do
+            form = subject.build_create_header_form(attributes: { title: 'This is my title' })
+            allow(form).to receive(:valid?).and_return(true)
+            expect(subject.submit_create_header_form(form)).to be_a(Header)
+          end
         end
       end
 
       context '#build_create_header_form' do
-        it 'will build a header form' do
+        it 'will build an object that can be submitted' do
           expect(subject.build_create_header_form).to respond_to(:submit)
         end
       end
@@ -58,7 +77,7 @@ module Sip
           expect { subject.build_edit_header_form(header: header) }.
             to raise_error(RuntimeError)
         end
-        context 'returned object given a persisted header' do
+        context 'with a persisted object will return an object that' do
           before { allow(header).to receive(:persisted?).and_return(true) }
           subject { repository_class.new.build_edit_header_form(header: header) }
           it { should respond_to :submit }
@@ -82,6 +101,10 @@ module Sip
           end
           it 'will return false' do
             expect(subject.submit_edit_header_form(form)).to eq(false)
+          end
+          it 'will NOT update the header' do
+            expect { subject.submit_edit_header_form(form) }.
+              to_not change { header.reload.title }
           end
         end
         context 'with valid data' do
