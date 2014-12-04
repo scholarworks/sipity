@@ -14,9 +14,10 @@ module Sip
         AssignADoiForm.new(attributes)
       end
 
-      def submit_assign_a_doi_form(form)
+      def submit_assign_a_doi_form(form, requested_by: nil)
         form.submit do |f|
           Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
+          EventLog.create!(subject: f.header, user: requested_by, event_name: 'submit_assign_a_doi_form') if requested_by
         end
       end
 
@@ -24,10 +25,11 @@ module Sip
         RequestADoiForm.new(attributes)
       end
 
-      def submit_request_a_doi_form(form)
+      def submit_request_a_doi_form(form, requested_by: nil)
         form.submit do |f|
           Support::AdditionalAttributes.update!(header: f.header, key: AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher)
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
+          EventLog.create!(subject: f.header, user: requested_by, event_name: 'submit_request_a_doi_form') if requested_by
           DoiCreationRequest.create!(header: f.header, state: 'request_not_yet_submitted')
         end
       end
