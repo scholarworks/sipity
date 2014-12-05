@@ -25,6 +25,10 @@ module Sipity
       # care only if the user is signed in, not who or what they are.
       self.requires_authentication = false
 
+      # If you are going to enforce a policy but forget to define it, I want
+      # to attempt to perform a policy with a symbol that is rather explicit.
+      self.policy_authorization_method_name = :policy_always_fails_so_change_it!
+
       # The default authentication service is from Devise; Perhaps this is
       # something to configure at the application level.
       self.authentication_service = ->(context) { context.authenticate_user! }

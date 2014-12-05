@@ -15,7 +15,7 @@ module Sipity
         expect(BaseRunner.authentication_service).to respond_to(:call)
       end
 
-      its(:policy_authorization_method_name) { should be nil}
+      its(:policy_authorization_method_name) { should be :policy_always_fails_so_change_it!}
 
       it { should respond_to :repository }
       it { should respond_to :current_user }
