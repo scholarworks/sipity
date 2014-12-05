@@ -16,7 +16,7 @@ module Sip
     validates :publisher, presence: true
     validates :publication_date, presence: true
 
-    def authors(decorator: CollaboratorDecorator)
+    def authors(decorator: Decorators::CollaboratorDecorator)
       Repo::Support::Collaborators.for(header: header, role: 'author').map { |obj| decorator.decorate(obj) }
     end
   end

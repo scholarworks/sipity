@@ -7,20 +7,20 @@ module Sip
 
     def new
       _status, model = run
-      @model = HeaderDecorator.decorate(model)
+      @model = Decorators::HeaderDecorator.decorate(model)
       respond_with(@model)
     end
 
     def create
       status, model = run(attributes: create_params)
-      @model = HeaderDecorator.decorate(model)
+      @model = Decorators::HeaderDecorator.decorate(model)
       flash[:notice] = message_for(status, title: @model.title)
       respond_with(@model)
     end
 
     def show
       _status, model = run(params[:id])
-      @model = HeaderDecorator.decorate(model)
+      @model = Decorators::HeaderDecorator.decorate(model)
       respond_with(@model)
     end
 
