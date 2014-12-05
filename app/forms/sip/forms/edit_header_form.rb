@@ -6,7 +6,7 @@ module Sip
     # TODO: Expose setter and getter methods for each :exposed_attribute_name
     class EditHeaderForm < VirtualForm
       def self.model_name
-        Header.model_name
+        Models::Header.model_name
       end
 
       attr_reader :header

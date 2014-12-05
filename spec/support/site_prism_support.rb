@@ -2,8 +2,8 @@ require 'site_prism'
 module SitePrism
   module Pages
     class NewSipHeader < SitePrism::Page
-      DOM_CLASS = 'new_sip_header'.freeze
-      PARAM_NAME_CONTAINER = 'sip_header'.freeze
+      DOM_CLASS = 'new_header'.freeze
+      PARAM_NAME_CONTAINER = 'header'.freeze
 
       element :form, "form.#{DOM_CLASS}"
       element :input_title, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[title]']"
@@ -28,8 +28,8 @@ module SitePrism
     end
 
     class EditSipHeader < SitePrism::Page
-      DOM_CLASS = 'edit_sip_header'.freeze
-      PARAM_NAME_CONTAINER = 'sip_header'.freeze
+      DOM_CLASS = 'edit_header'.freeze
+      PARAM_NAME_CONTAINER = 'header'.freeze
 
       element :form, "form.#{DOM_CLASS}"
       element :input_title, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[title]']"
@@ -54,14 +54,14 @@ module SitePrism
     end
 
     class SipHeader < SitePrism::Page
-      DOM_CLASS = 'sip_header'.freeze
+      DOM_CLASS = 'header'.freeze
 
       def text_for(predicate)
         all(".#{DOM_CLASS} .value.#{predicate}").map(&:text)
       end
 
       def click_recommendation(recommendation)
-        find(".sip_recommendation .value .recommendation-#{recommendation.downcase}").click
+        find(".recommendation .value .recommendation-#{recommendation.downcase}").click
       end
 
       def click_edit

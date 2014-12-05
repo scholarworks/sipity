@@ -4,7 +4,7 @@ module Sip
   module Repo
     module Support
       RSpec.describe AdditionalAttributes do
-        let(:header) { Header.new(id: '123') }
+        let(:header) { Models::Header.new(id: '123') }
 
         it 'will create a key/value pair if the value does not exist' do
           expect { subject.update!(header: header, key: 'key', values: 'abc') }.

@@ -1,6 +1,6 @@
 <div class="card">
   <h2><%= model.title %></h2>
-  <dl class="sip_header">
+  <dl class="header">
     <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
     <dd class="value title"><%= model.title %></dt>
     <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
@@ -11,7 +11,7 @@
         <ul class="collaborators-list">
           <% model.collaborators.each do |collaborator| %>
             <li class="collaborators-list-item">
-              <dl class="sip_collaborator">
+              <dl class="collaborator">
                 <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
                 <dd class="value name"><%= collaborator.name %></dd>
                 <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
@@ -31,7 +31,7 @@
   </dl>
 
   <div>
-    <%= link_to "Edit #{model.title}", edit_sip_header_path(model.to_param), class: 'btn btn-primary action-edit' %>
+    <%= link_to "Edit #{model.title}", edit_header_path(model.to_param), class: 'btn btn-primary action-edit' %>
   </div>
 </div>
 
@@ -42,7 +42,7 @@
       <% model.with_recommendation(recommendation_name) do |recommendation| %>
         <li class="recommendations-list-item">
           <h3><%= recommendation.human_name %></h3>
-          <dl class="sip_recommendation">
+          <dl class="recommendation">
             <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
             <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: "recommendation-#{recommendation_name}" %></dd>
           </dl>

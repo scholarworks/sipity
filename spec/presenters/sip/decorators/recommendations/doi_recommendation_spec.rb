@@ -5,7 +5,7 @@ module Sip
     module Recommendations
       RSpec.describe DoiRecommendation do
         let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false) }
-        let(:helper) { double(sip_header_doi_path: true) }
+        let(:helper) { double(header_doi_path: true) }
         let(:header) { double('Header', title: 'Hello World') }
         subject { described_class.new(header: header, repository: repository, helper: helper) }
 
@@ -16,7 +16,7 @@ module Sip
         its(:human_status) { should be_a(String) }
 
         it 'will have a :path_to_recommendation' do
-          expect(helper).to receive(:sip_header_doi_path).with(header).and_return('/the/path')
+          expect(helper).to receive(:header_doi_path).with(header).and_return('/the/path')
           expect(subject.path_to_recommendation).to eq('/the/path')
         end
 

@@ -11,7 +11,7 @@ module Sip
         alias_method :status, :state
 
         def path_to_recommendation
-          helper.sip_header_doi_path(header)
+          helper.header_doi_path(header)
         end
 
         private

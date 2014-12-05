@@ -4,7 +4,7 @@ module Sip
     module HeaderMethods
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
       def find_header(header_id)
-        Header.find(header_id)
+        Models::Header.find(header_id)
       end
 
       def build_create_header_form(attributes: {})
@@ -13,13 +13,13 @@ module Sip
 
       def submit_create_header_form(form, requested_by: nil)
         form.submit do |f|
-          Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
+          Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
             Support::Collaborators.create!(header: header, collaborators: f.collaborators)
             Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
             # TODO: Remove magic role
-            Permission.create!(subject: header, user: requested_by, role: 'creating_user') if requested_by
+            Models::Permission.create!(subject: header, user: requested_by, role: 'creating_user') if requested_by
             # TODO: Remove magic event name. Should this be derived from the method name?
-            EventLog.create!(subject: header, user: requested_by, event_name: 'submit_create_header_form') if requested_by
+            Models::EventLog.create!(subject: header, user: requested_by, event_name: 'submit_create_header_form') if requested_by
           end
         end
       end
@@ -39,7 +39,7 @@ module Sip
             Support::AdditionalAttributes.update!(header: header, key: key, values: values)
           end
           # TODO: Remove magic event name. Should this be derived from the method name?
-          EventLog.create!(subject: header, user: requested_by, event_name: 'submit_edit_header_form') if requested_by
+          Models::EventLog.create!(subject: header, user: requested_by, event_name: 'submit_edit_header_form') if requested_by
           header
         end
       end
@@ -64,7 +64,7 @@ module Sip
       def existing_header_attributes_for(header)
         # TODO: How to account for additional fields and basic fields of header
         existing_attributes = { title: header.title, work_publication_strategy: header.work_publication_strategy }
-        AdditionalAttribute.where(header: header).each_with_object(existing_attributes) do |attr, mem|
+        Models::AdditionalAttribute.where(header: header).each_with_object(existing_attributes) do |attr, mem|
           # TODO: How to handle multi-value options
           mem[attr.key] = attr.value
         end

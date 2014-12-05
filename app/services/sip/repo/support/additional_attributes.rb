@@ -14,26 +14,26 @@ module Sip
 
         def create!(header:, key:, values:)
           Array.wrap(values).each do |value|
-            AdditionalAttribute.create!(header: header, key: key, value: value)
+            Models::AdditionalAttribute.create!(header: header, key: key, value: value)
           end
         end
 
         def destroy!(header:, key:, values:)
           values_to_destroy = Array.wrap(values)
           return true unless values_to_destroy.present?
-          AdditionalAttribute.where(header: header, key: key, value: values_to_destroy).destroy_all
+          Models::AdditionalAttribute.where(header: header, key: key, value: values_to_destroy).destroy_all
         end
 
         def values_for(header:, key:)
-          AdditionalAttribute.where(header: header, key: key).pluck(:value)
+          Models::AdditionalAttribute.where(header: header, key: key).pluck(:value)
         end
 
         def key_value_pairs_for(header:)
-          AdditionalAttribute.where(header: header).order(:sip_header_id, :key).pluck(:key, :value)
+          Models::AdditionalAttribute.where(header: header).order(:sip_header_id, :key).pluck(:key, :value)
         end
 
         def keys_for(header:)
-          AdditionalAttribute.where(header: header).order(:key).pluck('DISTINCT key')
+          Models::AdditionalAttribute.where(header: header).order(:key).pluck('DISTINCT key')
         end
 
         def default_keys_for(*)

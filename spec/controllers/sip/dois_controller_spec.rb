@@ -3,7 +3,7 @@ require 'hesburgh/lib/mock_runner'
 
 module Sip
   RSpec.describe DoisController, type: :controller do
-    let(:header) { Header.new(title: 'The Title', id: '1234') }
+    let(:header) { Models::Header.new(title: 'The Title', id: '1234') }
 
     context 'GET #show' do
       before { controller.runner = runner }
@@ -32,7 +32,7 @@ module Sip
           get 'show', header_id: header.to_param
           expect(flash[:notice]).to_not be_empty
           expect(assigns(:model)).to be_nil
-          expect(response).to redirect_to sip_header_path(header.to_param)
+          expect(response).to redirect_to header_path(header.to_param)
         end
       end
 
@@ -44,7 +44,7 @@ module Sip
           get 'show', header_id: header.to_param
           expect(flash[:notice]).to_not be_empty
           expect(assigns(:model)).to be_nil
-          expect(response).to redirect_to sip_header_path(header.to_param)
+          expect(response).to redirect_to header_path(header.to_param)
         end
       end
     end
@@ -65,7 +65,7 @@ module Sip
         it 'will redirect to the header page' do
           post 'assign_a_doi', header_id: header.to_param, doi: { identifier: identifier }
           expect(flash[:notice]).to_not be_empty
-          expect(response).to redirect_to(sip_header_path(header.to_param))
+          expect(response).to redirect_to(header_path(header.to_param))
         end
       end
 
@@ -100,7 +100,7 @@ module Sip
         it 'will redirect to the header page' do
           post 'request_a_doi', header_id: header.to_param, doi: attributes
           expect(flash[:notice]).to_not be_empty
-          expect(response).to redirect_to(sip_header_path(header.to_param))
+          expect(response).to redirect_to(header_path(header.to_param))
         end
       end
 

@@ -3,7 +3,7 @@ module Sip
     # A decoration layer for Sip::Header
     class HeaderDecorator < Draper::Decorator
       def self.object_class
-        Sip::Header
+        Models::Header
       end
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
