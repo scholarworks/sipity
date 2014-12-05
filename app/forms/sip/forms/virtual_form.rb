@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Forms
     # A Form data structure for validation and submission. This is envisioned as a
     # non-persisted representation.

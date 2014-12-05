@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Models
     RSpec.describe Header, type: :model do
       subject { Header.new }

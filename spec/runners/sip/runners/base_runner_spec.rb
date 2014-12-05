@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Runners
     RSpec.describe BaseRunner do
       let(:context) { double('Context') }

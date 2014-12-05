@@ -1,5 +1,5 @@
 require 'spec_helper'
-module Sip
+module Sipity
   module Models
     RSpec.describe Collaborator, type: :model do
       it 'can build a default' do

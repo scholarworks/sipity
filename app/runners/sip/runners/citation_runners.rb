@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Runners
     module CitationRunners
       # Responsible for responding with the state of the header's citation.

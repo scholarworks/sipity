@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Repo
     # Methods related to header creation
     module HeaderMethods

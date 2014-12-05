@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Decorators
     RSpec.describe HeaderDecorator do
       let(:header) { double(title: 'Hello World') }

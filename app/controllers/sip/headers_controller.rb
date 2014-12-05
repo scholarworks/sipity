@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # The controller for creating headers.
   class HeadersController < ApplicationController
     respond_to :html, :json

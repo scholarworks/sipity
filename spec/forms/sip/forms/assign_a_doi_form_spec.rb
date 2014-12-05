@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Forms
     RSpec.describe AssignADoiForm do
       let(:header) { double('Header') }

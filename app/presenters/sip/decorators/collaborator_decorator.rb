@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Decorators
     # A decoration layer for Sip::Collaborator
     class CollaboratorDecorator < Draper::Decorator

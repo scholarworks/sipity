@@ -1,5 +1,5 @@
 require 'sip/models'
-module Sip
+module Sipity
   module Models
     # Sits between a user and a subject defining the role for access.
     class Permission < ActiveRecord::Base

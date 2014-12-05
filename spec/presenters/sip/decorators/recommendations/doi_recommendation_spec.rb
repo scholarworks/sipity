@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Decorators
     module Recommendations
       RSpec.describe DoiRecommendation do

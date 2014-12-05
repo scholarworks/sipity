@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Repo
     # Citation related methods
     module CitationMethods

@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Forms
     # Responsible for creating a new header.
     # What goes into this is more complicated that the entity might allow.

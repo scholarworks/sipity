@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Forms
     RSpec.describe CreateHeaderForm do
       subject { described_class.new }

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'sip/runners/citation_runners'
 
-module Sip
+module Sipity
   module Runners
     module CitationRunners
       RSpec.describe Show do

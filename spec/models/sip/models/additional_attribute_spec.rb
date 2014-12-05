@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module Sip
+module Sipity
   module Models
     RSpec.describe AdditionalAttribute, type: :model do
       it 'belongs to :header' do

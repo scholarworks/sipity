@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Repo
     module Support
       RSpec.describe Collaborators do

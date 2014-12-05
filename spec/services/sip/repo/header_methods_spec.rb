@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module Sip
+module Sipity
   module Repo
     RSpec.describe HeaderMethods, type: :repository do
       let!(:repository_class) do

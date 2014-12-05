@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Repo
     module Support
       # Responsible for managing Publication Date

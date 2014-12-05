@@ -1,7 +1,7 @@
 require 'hesburgh/lib/runner'
 require 'sip/exceptions'
 
-module Sip
+module Sipity
   module Runners
     # A simple insulating layer between this application and Hesburgh::Lib
     #

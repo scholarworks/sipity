@@ -1,5 +1,5 @@
 require 'sip/exceptions'
-module Sip
+module Sipity
   module Forms
     # Responsible for exposing attributes for editing
     #

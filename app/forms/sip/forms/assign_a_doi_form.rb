@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Forms
     # Responsible for capturing and validating the assignment of a DOI that
     # already exists but has not yet been assigned to the SIP

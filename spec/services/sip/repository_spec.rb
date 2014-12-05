@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module Sip
+module Sipity
   RSpec.describe Repository, type: :repository do
     subject { Repository }
     its(:included_modules) { should include(Sip::Repo::HeaderMethods) }

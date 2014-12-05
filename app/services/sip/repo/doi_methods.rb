@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Repo
     # DOI related methods
     module DoiMethods

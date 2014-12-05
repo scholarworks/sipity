@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'hesburgh/lib/mock_runner'
 
-module Sip
+module Sipity
   RSpec.describe DoisController, type: :controller do
     let(:header) { Models::Header.new(title: 'The Title', id: '1234') }
 

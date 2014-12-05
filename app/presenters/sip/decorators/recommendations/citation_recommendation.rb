@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Decorators
     module Recommendations
       # Container for the Citation Recommendation

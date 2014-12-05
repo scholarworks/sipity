@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Contains the various Decorators associated with Sipity. The primary
   # responsibility of a decorator is to encapsulate view related logic that is
   # associated with a model. Things like URLs, translations, etc.

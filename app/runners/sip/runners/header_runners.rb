@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Runners
     # Container for Header related actions.
     module HeaderRunners

@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Defines and exposes the methods for interacting with the public API of the
   # persistence layer.
   class Repository

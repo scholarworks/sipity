@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'sip/runners/header_runners'
 
-module Sip
+module Sipity
   module Runners
     module HeaderRunners
       RSpec.describe New do

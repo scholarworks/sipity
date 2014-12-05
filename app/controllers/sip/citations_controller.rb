@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Responsible for working on the citation of the given header.
   class CitationsController < ApplicationController
     respond_to :html, :json

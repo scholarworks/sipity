@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Runners are a means of encapsulating an action's logic.
   #
   # The current construction of Rails controller's discourages re-using an

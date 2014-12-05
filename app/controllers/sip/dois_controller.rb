@@ -1,5 +1,5 @@
 # :nodoc:
-module Sip
+module Sipity
   # The controller for creating headers.
   class DoisController < ApplicationController
     respond_to :html, :json

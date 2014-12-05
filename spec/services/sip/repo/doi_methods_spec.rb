@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-module Sip
+module Sipity
   module Repo
     RSpec.describe DoiMethods, type: :repository do
       let!(:klass) do

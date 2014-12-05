@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'sip/runners/doi_runners'
 
-module Sip
+module Sipity
   module Runners
     module DoiRunners
       RSpec.describe Show do

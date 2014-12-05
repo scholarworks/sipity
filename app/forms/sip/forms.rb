@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Contains the various Forms associated with Sipity.
   #
   # Forms are a class of objects that are different from models. They may

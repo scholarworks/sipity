@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Decorators
     RSpec.describe CollaboratorDecorator do
       let(:header) { double(name: 'Hello World') }

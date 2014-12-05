@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Forms
     # Submit a request for a DOI for the given Header
     class RequestADoiForm < VirtualForm

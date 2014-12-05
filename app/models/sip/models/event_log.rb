@@ -1,5 +1,5 @@
 require 'sip/models'
-module Sip
+module Sipity
   module Models
     # A place to record the named event for the given subject that was trigger by
     # a user's action.

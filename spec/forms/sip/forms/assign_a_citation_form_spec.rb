@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module Sip
+module Sipity
   module Forms
     RSpec.describe AssignACitationForm do
       let(:header) { Models::Header.new(id: '1234') }

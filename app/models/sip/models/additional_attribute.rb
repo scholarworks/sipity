@@ -1,5 +1,5 @@
 require 'sip/models'
-module Sip
+module Sipity
   module Models
     # A rudimentary container for all (as of now string based) attributes
     # associated with the Sip::Header

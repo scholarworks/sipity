@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   module Runners
     module DoiRunners
       # Responsible for showing the correct state of the DOI for the given SIP.

@@ -1,4 +1,4 @@
-module Sip
+module Sipity
   # Models are the persisted objects. They are the closest representation of
   # the persistence layer tables/documents.
   module Models

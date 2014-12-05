@@ -1,5 +1,5 @@
 require 'sip/models'
-module Sip
+module Sipity
   module Models
     # A collaborator (as per metadata not improving on the SIP) for the underlying
     # work's SIP.

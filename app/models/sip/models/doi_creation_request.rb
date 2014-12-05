@@ -1,5 +1,5 @@
 require 'sip/models'
-module Sip
+module Sipity
   module Models
     # Responsible for tracking the state of a remote DOI request.
     class DoiCreationRequest < ActiveRecord::Base
