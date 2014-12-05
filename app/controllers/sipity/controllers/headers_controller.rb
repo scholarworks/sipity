@@ -49,6 +49,12 @@ module Sipity
       def update_params
         params.require(:header)
       end
+
+      # Without this, Rails will attempt to render views that are found in
+      # `app/views/sipity/controllers/headers` directory.
+      def controller_path
+        'sipity/headers'
+      end
     end
   end
 end

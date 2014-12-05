@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   scope module: :sipity do
-    resources :headers do
-      resource :citation
-      resource :doi do
-        member do
-          post :assign_a_doi
-          post :request_a_doi
+    scope module: :controllers do
+      resources :headers do
+        resource :citation
+        resource :doi do
+          member do
+            post :assign_a_doi
+            post :request_a_doi
+          end
         end
       end
     end
