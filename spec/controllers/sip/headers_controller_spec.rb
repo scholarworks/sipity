@@ -3,7 +3,7 @@ require 'hesburgh/lib/mock_runner'
 
 module Sip
   RSpec.describe HeadersController, type: :controller do
-    let(:header) { Header.new(title: 'The Title', id: '1234') }
+    let(:header) { Models::Header.new(title: 'The Title', id: '1234') }
 
     context 'GET #edit' do
       before { controller.runner = runner }

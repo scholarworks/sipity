@@ -22,7 +22,7 @@ module Sip
       end
 
       def identifier_key
-        AdditionalAttribute::DOI_PREDICATE_NAME
+        Models::AdditionalAttribute::DOI_PREDICATE_NAME
       end
 
       # TODO: Get this out of here. There is an object that is a better owner of

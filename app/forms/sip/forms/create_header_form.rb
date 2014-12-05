@@ -4,7 +4,7 @@ module Sip
     # What goes into this is more complicated that the entity might allow.
     class CreateHeaderForm < VirtualForm
       def self.model_name
-        Header.model_name
+        Models::Header.model_name
       end
 
       def initialize(attributes = {})
@@ -24,7 +24,7 @@ module Sip
       validate :each_collaborator_must_be_valid
 
       def collaborators
-        @collaborators || [Collaborator.build_default]
+        @collaborators || [Models::Collaborator.build_default]
       end
 
       attr_reader :collaborators_attributes
@@ -37,14 +37,14 @@ module Sip
           name, role = attributes.values_at(:name, :role)
           if name.present?
             @collaborators ||= []
-            @collaborators << Collaborator.new(name: name, role: role)
+            @collaborators << Models::Collaborator.new(name: name, role: role)
           end
         end
         @collaborators_attributes = inputs
       end
 
       def possible_work_publication_strategies
-        Header.work_publication_strategies
+        Models::Header.work_publication_strategies
       end
 
       private

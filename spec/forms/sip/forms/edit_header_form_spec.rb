@@ -11,8 +11,8 @@ module Sip
         )
       end
 
-      it 'will have a model_name equal to the Sip::Header' do
-        expect(described_class.model_name).to eq(Sip::Header.model_name)
+      it 'will have a model_name equal to the Models::Header' do
+        expect(described_class.model_name).to eq(Models::Header.model_name)
       end
 
       context 'exposing an attribute_name that is an already defined method' do

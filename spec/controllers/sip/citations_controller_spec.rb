@@ -3,7 +3,7 @@ require 'hesburgh/lib/mock_runner'
 
 module Sip
   RSpec.describe CitationsController, type: :controller do
-    let(:header) { Header.new(title: 'The Title', id: '1234') }
+    let(:header) { Models::Header.new(title: 'The Title', id: '1234') }
 
     context 'GET #show' do
       before { controller.runner = runner }
@@ -19,7 +19,7 @@ module Sip
         it 'will redirect to the edit page' do
           get 'show', header_id: header.to_param
           # expect(flash[:alert]).to_not be_empty
-          expect(response).to redirect_to(new_sip_header_citation_path(header))
+          expect(response).to redirect_to(new_header_citation_path(header))
         end
       end
 
@@ -59,7 +59,7 @@ module Sip
           get 'new', header_id: header.to_param
           expect(flash[:notice]).to_not be_empty
           expect(assigns(:model)).to be_nil
-          expect(response).to redirect_to(sip_header_citation_path(header))
+          expect(response).to redirect_to(header_citation_path(header))
         end
       end
     end
@@ -81,7 +81,7 @@ module Sip
           post 'create', header_id: header.to_param, citation: attributes
           expect(flash[:notice]).to_not be_empty
           expect(assigns(:model)).to be_nil
-          expect(response).to redirect_to(sip_header_path(header))
+          expect(response).to redirect_to(header_path(header))
         end
       end
 

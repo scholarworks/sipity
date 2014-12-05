@@ -3,7 +3,7 @@ module Sip
     # A decoration layer for Sip::Collaborator
     class CollaboratorDecorator < Draper::Decorator
       def self.object_class
-        Sip::Collaborator
+        Models::Collaborator
       end
 
       delegate_all

@@ -91,7 +91,7 @@ module Sip
       end
 
       RSpec.describe Edit do
-        let(:header) { Header.new(id: '123', title: 'My Title') }
+        let(:header) { Models::Header.new(id: '123', title: 'My Title') }
         let(:form) { double('Form') }
         let(:context) { double('Context', repository: repository) }
         let(:repository) { double('Repository', find_header: header, build_edit_header_form: form) }

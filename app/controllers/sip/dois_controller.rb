@@ -12,10 +12,10 @@ module Sip
           doi_not_assigned_response(header)
         end
         on.doi_already_assigned do |header|
-          redirect_to sip_header_path(header), notice: message_for(:doi_already_assigned, title: header.title)
+          redirect_to header_path(header), notice: message_for(:doi_already_assigned, title: header.title)
         end
         on.doi_request_is_pending do |header, _doi_request|
-          redirect_to sip_header_path(header), notice: message_for(:doi_request_is_pending, title: header.title)
+          redirect_to header_path(header), notice: message_for(:doi_request_is_pending, title: header.title)
         end
       end
     end
@@ -33,7 +33,7 @@ module Sip
     def assign_a_doi
       run(header_id: header_id, identifier: doi) do |on|
         on.success do |header, identifier|
-          redirect_to sip_header_path(header), notice: message_for(:success, doi: identifier, title: header.title)
+          redirect_to header_path(header), notice: message_for(:success, doi: identifier, title: header.title)
         end
         on.failure do |header|
           @model = header
@@ -45,7 +45,7 @@ module Sip
     def request_a_doi
       run(header_id: header_id, attributes: request_a_doi_attributes) do |on|
         on.success do |header|
-          redirect_to sip_header_path(header), notice: message_for(:success, title: header.title)
+          redirect_to header_path(header), notice: message_for(:success, title: header.title)
         end
         on.failure do |model|
           @model = model

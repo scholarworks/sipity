@@ -13,7 +13,7 @@ module Sip
         end
 
         def for(options = {})
-          Collaborator.where(options.slice(:header, :role))
+          Models::Collaborator.where(options.slice(:header, :role))
         end
       end
     end

@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sip
   module Forms
     RSpec.describe AssignACitationForm do
-      let(:header) { Header.new(id: '1234') }
+      let(:header) { Models::Header.new(id: '1234') }
       subject { described_class.new(header: header) }
 
       it { should respond_to :header }

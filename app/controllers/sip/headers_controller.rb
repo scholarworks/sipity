@@ -42,11 +42,11 @@ module Sip
     private
 
     def create_params
-      params.require(:sip_header)
+      params.require(:header)
     end
 
     def update_params
-      params.require(:sip_header)
+      params.require(:header)
     end
   end
 end

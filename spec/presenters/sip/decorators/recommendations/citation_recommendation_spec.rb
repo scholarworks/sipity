@@ -5,7 +5,7 @@ module Sip
     module Recommendations
       RSpec.describe CitationRecommendation do
         let(:repository) { double(citation_already_assigned?: false) }
-        let(:helper) { double(sip_header_citation_path: true) }
+        let(:helper) { double(header_citation_path: true) }
         let(:header) { double('Header', title: 'Hello World') }
         subject { described_class.new(header: header, repository: repository, helper: helper) }
 
@@ -15,7 +15,7 @@ module Sip
         its(:human_status) { should be_a(String) }
 
         it 'will have a :path_to_recommendation' do
-          expect(helper).to receive(:sip_header_citation_path).with(header).and_return('/the/path')
+          expect(helper).to receive(:header_citation_path).with(header).and_return('/the/path')
           expect(subject.path_to_recommendation).to eq('/the/path')
         end
 
