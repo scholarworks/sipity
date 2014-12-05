@@ -8,7 +8,7 @@ module Sipity
       subject { BasePolicy.new(nil, nil) }
       it 'exposes a .call function for convenience' do
         allow_any_instance_of(BasePolicy).to receive(:show?)
-        BasePolicy.call(user: user, entity: entity, policy_authorization_method_name: :show?)
+        BasePolicy.call(user: user, entity: entity, policy_question: :show?)
       end
       it 'requires that you implement :show?' do
         expect { subject.show? }.to raise_error(NotImplementedError)

@@ -19,7 +19,7 @@ module Sipity
     class BaseRunner < Hesburgh::Lib::Runner
       class_attribute :requires_authentication, instance_accessor: false
       class_attribute :authentication_service, instance_accessor: false
-      class_attribute :policy_authorization_method_name
+      class_attribute :policy_question
 
       # Does this runner require authentication? This is not authorization. We
       # care only if the user is signed in, not who or what they are.
@@ -27,7 +27,7 @@ module Sipity
 
       # If you are going to enforce a policy but forget to define it, I want
       # to attempt to perform a policy with a symbol that is rather explicit.
-      self.policy_authorization_method_name = :policy_always_fails_so_change_it!
+      self.policy_question = :policy_always_fails_so_change_it!
 
       # The default authentication service is from Devise; Perhaps this is
       # something to configure at the application level.

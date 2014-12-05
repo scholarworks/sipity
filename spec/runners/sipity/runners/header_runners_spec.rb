@@ -16,7 +16,7 @@ module Sipity
           end
         end
 
-        its(:policy_authorization_method_name) { should eq(:create?) }
+        its(:policy_question) { should eq(:create?) }
 
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
@@ -49,7 +49,7 @@ module Sipity
           end
         end
 
-        its(:policy_authorization_method_name) { should eq(:show?) }
+        its(:policy_question) { should eq(:show?) }
 
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
