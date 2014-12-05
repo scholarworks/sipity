@@ -73,7 +73,8 @@ module Sipity
       RSpec.describe Create do
         let(:header) { double('Header') }
         let(:form) { double('Form') }
-        let(:context) { double('Context', repository: repository) }
+        let(:user) { User.new(id: '1') }
+        let(:context) { double('Context', repository: repository, current_user: user) }
         let(:repository) do
           double('Repository', build_create_header_form: form, submit_create_header_form: creation_response)
         end
