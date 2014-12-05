@@ -1,4 +1,6 @@
 module Sipity
+  # The logical container for all things Exceptional in Sipity! And by
+  # Exceptional, I mean custom exceptions that can and will be raised by Sipity.
   module Exceptions
     # When you go about building an object that has method missing expectations
     # you may need to raise an exception if you are planning to catch a
