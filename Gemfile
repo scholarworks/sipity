@@ -50,12 +50,14 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'factory_girl_rails'
   gem 'faker'
-  gem 'pry-rails'
-  gem 'pry-rescue'
-  gem 'pry-byebug'
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'coveralls', require: false
+end
+group :debug do
+  gem 'pry-rails'
+  gem 'pry-rescue'
+  gem 'pry-byebug'
 end
 group :production do
   gem 'unicorn'
