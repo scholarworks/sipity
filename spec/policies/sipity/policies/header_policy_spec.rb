@@ -30,7 +30,7 @@ module Sipity
           end
           before do
             allow(query_service).to receive(:call).
-              with(user: user, header: header, roles: ['creating_user']).
+              with(user: user, subject: header, roles: ['creating_user']).
               and_return(is_creating_user)
           end
           context 'that was created by the user' do
