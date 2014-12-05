@@ -7,7 +7,7 @@ module Sip
       end
 
       def build_assign_a_citation_form(attributes = {})
-        AssignACitationForm.new(attributes)
+        Forms::AssignACitationForm.new(attributes)
       end
 
       def submit_assign_a_citation_form(form, requested_by: nil)
