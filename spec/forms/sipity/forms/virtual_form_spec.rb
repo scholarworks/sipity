@@ -5,6 +5,7 @@ module Sipity
     RSpec.describe VirtualForm do
 
       its(:to_key) { should be_empty }
+      its(:policy_enforcer) { should be_nil }
       its(:to_param) { should be_nil }
       its(:persisted?) { should eq(false) }
 

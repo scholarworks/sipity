@@ -3,7 +3,7 @@ module Sipity
     # Responsible for creating a new header.
     # What goes into this is more complicated that the entity might allow.
     class CreateHeaderForm < VirtualForm
-      self.policy_class = Policies::HeaderPolicy
+      self.policy_enforcer = Policies::HeaderPolicy
 
       def self.model_name
         Models::Header.model_name

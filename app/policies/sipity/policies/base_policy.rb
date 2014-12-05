@@ -2,15 +2,15 @@ module Sipity
   module Policies
     # At its core a policy must implement the following API
     #
-    # * .call(user:, entity:, policy_method_name:)
+    # * .call(user:, entity:, policy_authorization_method_name:)
     # * #initialize(user, entity)
     # * #show?
     # * #create?
     # * #update?
     # * #destroy?
     class BasePolicy
-      def self.call(user:, entity:, policy_method_name:)
-        new(user, entity).public_send(policy_method_name)
+      def self.call(user:, entity:, policy_authorization_method_name:)
+        new(user, entity).public_send(policy_authorization_method_name)
       end
 
       def initialize(user, entity, permission_query_service: nil)

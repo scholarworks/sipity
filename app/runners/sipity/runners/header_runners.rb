@@ -9,7 +9,7 @@ module Sipity
 
         def run
           header = repository.build_create_header_form
-          if repository.policy_unauthorized_for?(runner: self, subject: header)
+          if repository.policy_unauthorized_for?(runner: self, entity: header)
             callback(:unauthorized)
           else
             callback(:success, header)
@@ -20,10 +20,15 @@ module Sipity
       # Responsible for instantiating the model for a Header
       class Show < BaseRunner
         self.requires_authentication = true
+        self.policy_authorization_method_name = :show?
 
         def run(header_id)
           header = repository.find_header(header_id)
-          callback(:success, header)
+          if repository.policy_unauthorized_for?(runner: self, entity: header)
+            callback(:unauthorized)
+          else
+            callback(:success, header)
+          end
         end
       end
 
