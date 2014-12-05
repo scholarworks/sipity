@@ -1,4 +1,3 @@
-require 'sipity/exceptions'
 module Sipity
   module Forms
     # Responsible for exposing attributes for editing

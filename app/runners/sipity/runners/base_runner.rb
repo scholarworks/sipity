@@ -1,5 +1,4 @@
 require 'hesburgh/lib/runner'
-require 'sipity/exceptions'
 
 module Sipity
   module Runners
