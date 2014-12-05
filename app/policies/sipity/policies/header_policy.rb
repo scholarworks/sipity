@@ -43,7 +43,7 @@ module Sipity
         lambda do |options|
           # TODO: Extract this method into a permssions object
           Models::Permission.where(user: options(:user), subject: options.fetch(:header)).
-            where("roles IN ?", options.fetch(:roles))
+            where("roles IN ?", options.fetch(:roles)).any?
         end
       end
     end
