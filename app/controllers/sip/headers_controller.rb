@@ -3,7 +3,7 @@ module Sip
   class HeadersController < ApplicationController
     respond_to :html, :json
 
-    self.runner_container = Sip::HeaderRunners
+    self.runner_container = Sip::Runners::HeaderRunners
 
     def new
       _status, model = run

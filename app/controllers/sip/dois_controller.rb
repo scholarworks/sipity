@@ -4,7 +4,7 @@ module Sip
   class DoisController < ApplicationController
     respond_to :html, :json
 
-    self.runner_container = Sip::DoiRunners
+    self.runner_container = Sip::Runners::DoiRunners
 
     def show
       run(header_id: header_id) do |on|

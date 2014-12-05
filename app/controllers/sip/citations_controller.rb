@@ -3,7 +3,7 @@ module Sip
   class CitationsController < ApplicationController
     respond_to :html, :json
 
-    self.runner_container = Sip::CitationRunners
+    self.runner_container = Sip::Runners::CitationRunners
 
     def show
       run(header_id: header_id) do |on|
