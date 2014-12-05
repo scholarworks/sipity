@@ -30,7 +30,7 @@ MethodLength:
   CountComments: false
   Enabled: true
   Exclude:
-    - 'app/controllers/sipity/dois_controller.rb'
+    - 'app/controllers/sipity/controllers/dois_controller.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
