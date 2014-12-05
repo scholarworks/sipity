@@ -4,7 +4,7 @@ module Sipity
   class DoisController < ApplicationController
     respond_to :html, :json
 
-    self.runner_container = Sip::Runners::DoiRunners
+    self.runner_container = Sipity::Runners::DoiRunners
 
     def show
       run(header_id: header_id) do |on|

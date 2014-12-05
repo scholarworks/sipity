@@ -1,6 +1,6 @@
 module Sipity
   module Decorators
-    # A decoration layer for Sip::Collaborator
+    # A decoration layer for Sipity::Collaborator
     class CollaboratorDecorator < Draper::Decorator
       def self.object_class
         Models::Collaborator

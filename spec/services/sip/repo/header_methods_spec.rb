@@ -9,7 +9,7 @@ module Sipity
         end
       end
       subject { repository_class.new }
-      after { Sip::Repo.send(:remove_const, :TestRepository) }
+      after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
       context '#headers_that_can_be_seen_by_user' do
         it 'will include headers that were created by the user'

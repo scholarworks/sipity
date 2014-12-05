@@ -3,7 +3,7 @@ module Sipity
   class HeadersController < ApplicationController
     respond_to :html, :json
 
-    self.runner_container = Sip::Runners::HeaderRunners
+    self.runner_container = Sipity::Runners::HeaderRunners
 
     def new
       _status, model = run

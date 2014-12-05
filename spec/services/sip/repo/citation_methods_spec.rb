@@ -9,7 +9,7 @@ module Sipity
         end
       end
       subject { klass.new }
-      after { Sip::Repo.send(:remove_const, :TestRepository) }
+      after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
       subject { Repository.new }
 

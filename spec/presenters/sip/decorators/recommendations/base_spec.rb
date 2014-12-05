@@ -33,7 +33,7 @@ module Sipity
             end
           end
           after do
-            Sip::Decorators::Recommendations.send(:remove_const, :TestClass)
+            Sipity::Decorators::Recommendations.send(:remove_const, :TestClass)
           end
           subject { TestClass.new(header: header, helper: helper, repository: repository) }
           it 'has a translated #human_status' do

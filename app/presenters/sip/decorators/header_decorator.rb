@@ -1,6 +1,6 @@
 module Sipity
   module Decorators
-    # A decoration layer for Sip::Header
+    # A decoration layer for Sipity::Header
     class HeaderDecorator < Draper::Decorator
       def self.object_class
         Models::Header

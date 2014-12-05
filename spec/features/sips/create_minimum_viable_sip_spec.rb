@@ -13,7 +13,7 @@ feature 'Minimum viable SIP', :devise do
       the_page.choose(:work_publication_strategy, with: 'do_not_know')
       # Oh nested attributes. What lengths I go to!
       the_page.fill_in('collaborators_attributes][0][name', with: 'Robert the Bruce')
-      the_page.select(Sip::Models::Collaborator::DEFAULT_ROLE, from: 'collaborators_attributes][0][role')
+      the_page.select(Sipity::Models::Collaborator::DEFAULT_ROLE, from: 'collaborators_attributes][0][role')
       the_page.submit_button.click
     end
 

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'sip/headers/new.html.erb', type: :view do
-  let(:model) { Sip::Decorators::HeaderDecorator.decorate(Sip::Forms::CreateHeaderForm.new) }
+  let(:model) { Sipity::Decorators::HeaderDecorator.decorate(Sipity::Forms::CreateHeaderForm.new) }
 
   it 'renders the object and fieldsets' do
     # I want to pass the model to the view; Not using an instance variable

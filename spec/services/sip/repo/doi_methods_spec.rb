@@ -9,7 +9,7 @@ module Sipity
         end
       end
       subject { klass.new }
-      after { Sip::Repo.send(:remove_const, :TestRepository) }
+      after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
       context '#submit_assign_a_doi_form' do
         let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }

@@ -46,7 +46,7 @@ module Sipity
       def guard_against_existing_method_names!(method_names)
         intersecting_methods = self.class.instance_methods.grep(/^(#{method_names.join('|')})/)
         if intersecting_methods.any?
-          fail Sip::ExistingMethodsAlreadyDefined.new(self, intersecting_methods)
+          fail Sipity::ExistingMethodsAlreadyDefined.new(self, intersecting_methods)
         else
           return true
         end
