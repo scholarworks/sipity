@@ -16,6 +16,8 @@ module Sipity
           end
         end
 
+        its(:policy_authorization_method_name) { should eq(:create?) }
+
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
           described_class.new(context)

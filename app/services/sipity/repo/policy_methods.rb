@@ -4,9 +4,9 @@ module Sipity
     module PolicyMethods
       def policy_unauthorized_for?(runner:, subject:)
         current_user = runner.current_user
-        policy_method_name = find_policy_method_name_for(runner)
+        policy_authorization_method_name = find_policy_authorization_method_name_for(runner)
         policy_class = find_policy_class_for(subject)
-        !policy_class.new(current_user, subject).public_send(policy_method_name)
+        !policy_class.new(current_user, subject).public_send(policy_authorization_method_name)
       end
 
       def find_policy_class_for(context)
@@ -19,9 +19,9 @@ module Sipity
         end
       end
 
-      def find_policy_method_name_for(context)
-        if context.respond_to?(:policy_method_name)
-          context.policy_method_name
+      def find_policy_authorization_method_name_for(context)
+        if context.respond_to?(:policy_authorization_method_name)
+          context.policy_authorization_method_name
         else
           # Yowza! Maybe I should be specific about this?
           "#{context.class.to_s.demodulize.underscore}?"

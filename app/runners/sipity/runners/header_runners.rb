@@ -5,6 +5,7 @@ module Sipity
       # Responsible for building the model for a New Header
       class New < BaseRunner
         self.requires_authentication = true
+        self.policy_authorization_method_name = :create?
 
         def run
           header = repository.build_create_header_form

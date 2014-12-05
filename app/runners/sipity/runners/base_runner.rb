@@ -19,6 +19,7 @@ module Sipity
     class BaseRunner < Hesburgh::Lib::Runner
       class_attribute :requires_authentication, instance_accessor: false
       class_attribute :authentication_service, instance_accessor: false
+      class_attribute :policy_authorization_method_name
 
       # Does this runner require authentication? This is not authorization. We
       # care only if the user is signed in, not who or what they are.

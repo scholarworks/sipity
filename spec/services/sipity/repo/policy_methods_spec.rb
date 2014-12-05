@@ -38,17 +38,17 @@ module Sipity
         end
       end
 
-      context '.find_policy_method_name_for' do
-        context 'with a #policy_method_name defined on the model' do
-          let(:runner) { double(policy_method_name: :my_method_name) }
-          it 'will use the response of the #policy_method_name' do
-            expect(subject.find_policy_method_name_for(runner)).to eq(:my_method_name)
+      context '.find_policy_authorization_method_name_for' do
+        context 'with a #policy_authorization_method_name defined on the model' do
+          let(:runner) { double(policy_authorization_method_name: :my_method_name) }
+          it 'will use the response of the #policy_authorization_method_name' do
+            expect(subject.find_policy_authorization_method_name_for(runner)).to eq(:my_method_name)
           end
         end
 
-        context 'without a #policy_method_name defined on the model' do
+        context 'without a #policy_authorization_method_name defined on the model' do
           it 'will interpolate what the policy should be' do
-            expect(subject.find_policy_method_name_for(runner)).to eq("show?")
+            expect(subject.find_policy_authorization_method_name_for(runner)).to eq("show?")
           end
         end
       end
