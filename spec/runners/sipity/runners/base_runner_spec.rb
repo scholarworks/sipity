@@ -24,7 +24,7 @@ module Sipity
         context 'and the authentication service returns false' do
           it 'will raise an AuthenticationFailureError on instantiation' do
             expect(my_options[:authentication_service]).to receive(:call).with(context).and_return(false)
-            expect { BaseRunner.new(context, my_options) }.to raise_error(AuthenticationFailureError)
+            expect { BaseRunner.new(context, my_options) }.to raise_error(Exceptions::AuthenticationFailureError)
           end
         end
 
