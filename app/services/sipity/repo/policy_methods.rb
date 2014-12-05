@@ -5,6 +5,8 @@ module Sipity
       def policy_unauthorized_for?(runner:, subject:)
         current_user = runner.current_user
         policy_class = find_policy_class_for(subject)
+        # TODO: Perhaps something a little less dense? And something that does
+        # not violate the Law of Demeter
         !policy_class.new(current_user, subject).public_send(runner.policy_authorization_method_name)
       end
 
