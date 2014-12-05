@@ -3,6 +3,8 @@ module Sip
   module HeaderRunners
     # Responsible for building the model for a New Header
     class New < BaseRunner
+      self.requires_authentication = true
+
       def run
         header = repository.build_create_header_form
         callback(:success, header)
@@ -11,6 +13,8 @@ module Sip
 
     # Responsible for instantiating the model for a Header
     class Show < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id)
         header = repository.find_header(header_id)
         callback(:success, header)
@@ -19,6 +23,8 @@ module Sip
 
     # Responsible for creating and persisting a new Header
     class Create < BaseRunner
+      self.requires_authentication = true
+
       def run(attributes:)
         form = repository.build_create_header_form(attributes: attributes)
         header = repository.submit_create_header_form(form)
@@ -32,6 +38,8 @@ module Sip
 
     # Responsible for instantiating the header for edit
     class Edit < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id)
         header = repository.find_header(header_id)
         form = repository.build_edit_header_form(header: header)
@@ -41,6 +49,8 @@ module Sip
 
     # Responsible for creating and persisting a new Header
     class Update < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id, attributes:)
         header = repository.find_header(header_id)
         form = repository.build_edit_header_form(header: header, attributes: attributes)

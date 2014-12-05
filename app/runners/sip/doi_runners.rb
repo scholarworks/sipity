@@ -2,6 +2,8 @@ module Sip
   module DoiRunners
     # Responsible for showing the correct state of the DOI for the given SIP.
     class Show < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id: nil)
         header = repository.find_header(header_id)
         # TODO: Tease out state machine from DoiRecommendation
@@ -17,6 +19,8 @@ module Sip
 
     # Responsible for assigning a DOI to the header.
     class AssignADoi < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id: nil, identifier: nil)
         header = repository.find_header(header_id)
         form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
@@ -32,6 +36,8 @@ module Sip
 
     # Responsible for requesting a DOI for the header.
     class RequestADoi < BaseRunner
+      self.requires_authentication = true
+
       def run(header_id:, attributes:)
         header = repository.find_header(header_id)
         form = repository.build_request_a_doi_form(attributes.merge(header: header))
