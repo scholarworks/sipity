@@ -22,7 +22,7 @@ module Sip
 
     def doi_not_assigned_response(header)
       header = Decorators::HeaderDecorator.decorate(header)
-      @model = AssignADoiForm.new(header: header)
+      @model = Forms::AssignADoiForm.new(header: header)
       respond_with(@model) do |wants|
         flash.now.alert = message_for(:doi_not_assigned, title: header.title)
         wants.html { render action: 'doi_not_assigned' }

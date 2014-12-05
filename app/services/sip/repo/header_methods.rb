@@ -8,7 +8,7 @@ module Sip
       end
 
       def build_create_header_form(attributes: {})
-        CreateHeaderForm.new(attributes)
+        Forms::CreateHeaderForm.new(attributes)
       end
 
       def submit_create_header_form(form, requested_by: nil)
@@ -28,7 +28,7 @@ module Sip
         fail "Expected #{header} to be persisted" unless header.persisted?
         new_attributes = existing_header_attributes_for(header).merge(attributes)
         exposed_attribute_names = exposed_header_attribute_names_for(header: header)
-        EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
+        Forms::EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
       def submit_edit_header_form(form, requested_by: nil)

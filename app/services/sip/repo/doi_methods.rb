@@ -11,7 +11,7 @@ module Sip
       end
 
       def build_assign_a_doi_form(attributes = {})
-        AssignADoiForm.new(attributes)
+        Forms::AssignADoiForm.new(attributes)
       end
 
       def submit_assign_a_doi_form(form, requested_by: nil)
@@ -22,7 +22,7 @@ module Sip
       end
 
       def build_request_a_doi_form(attributes = {})
-        RequestADoiForm.new(attributes)
+        Forms::RequestADoiForm.new(attributes)
       end
 
       def submit_request_a_doi_form(form, requested_by: nil)
