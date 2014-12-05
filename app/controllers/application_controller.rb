@@ -13,12 +13,12 @@ class ApplicationController < ActionController::Base
   #
   # @see Cur8Nd::Repository for the default methods
   def repository
-    @repository = Sip::Repository.new
+    @repository = Sipity::Repository.new
   end
   helper_method :repository
 
   def message_for(key, options = {})
-    t(key, { scope: "sip/#{controller_name}.action/#{action_name}" }.merge(options))
+    t(key, { scope: "sipity/#{controller_name}.action/#{action_name}" }.merge(options))
   end
   private :message_for
 end

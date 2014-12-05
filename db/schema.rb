@@ -13,30 +13,30 @@
 
 ActiveRecord::Schema.define(version: 20141204165259) do
 
-  create_table "sip_additional_attributes", force: true do |t|
-    t.integer  "sip_header_id", null: false
-    t.string   "key",           null: false
+  create_table "sipity_additional_attributes", force: true do |t|
+    t.integer  "sipity_header_id", null: false
+    t.string   "key",              null: false
     t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sip_additional_attributes", ["sip_header_id", "key"], name: "index_sip_additional_attributes_on_sip_header_id_and_key"
-  add_index "sip_additional_attributes", ["sip_header_id"], name: "index_sip_additional_attributes_on_sip_header_id"
+  add_index "sipity_additional_attributes", ["sipity_header_id", "key"], name: "index_sipity_additional_attributes_on_sipity_header_id_and_key"
+  add_index "sipity_additional_attributes", ["sipity_header_id"], name: "index_sipity_additional_attributes_on_sipity_header_id"
 
-  create_table "sip_collaborators", force: true do |t|
-    t.integer  "sip_header_id", null: false
+  create_table "sipity_collaborators", force: true do |t|
+    t.integer  "sipity_header_id", null: false
     t.integer  "sequence"
     t.string   "name"
-    t.string   "role",          null: false
+    t.string   "role",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sip_collaborators", ["sip_header_id", "sequence"], name: "index_sip_collaborators_on_sip_header_id_and_sequence"
+  add_index "sipity_collaborators", ["sipity_header_id", "sequence"], name: "index_sipity_collaborators_on_sipity_header_id_and_sequence"
 
-  create_table "sip_doi_creation_requests", force: true do |t|
-    t.integer  "sip_header_id",    null: false
+  create_table "sipity_doi_creation_requests", force: true do |t|
+    t.integer  "sipity_header_id", null: false
     t.string   "state",            null: false
     t.string   "response_message"
     t.string   "text"
@@ -44,9 +44,9 @@ ActiveRecord::Schema.define(version: 20141204165259) do
     t.datetime "updated_at"
   end
 
-  add_index "sip_doi_creation_requests", ["state"], name: "index_sip_doi_creation_requests_on_state"
+  add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state"
 
-  create_table "sip_event_logs", force: true do |t|
+  create_table "sipity_event_logs", force: true do |t|
     t.integer  "user_id",                 null: false
     t.integer  "subject_id",              null: false
     t.string   "subject_type", limit: 64, null: false
@@ -55,30 +55,30 @@ ActiveRecord::Schema.define(version: 20141204165259) do
     t.datetime "updated_at"
   end
 
-  add_index "sip_event_logs", ["subject_id", "subject_type", "event_name"], name: "sip_event_logs_subject_event_name"
-  add_index "sip_event_logs", ["subject_id", "subject_type"], name: "sip_event_logs_subject"
-  add_index "sip_event_logs", ["user_id", "event_name"], name: "sip_event_logs_user_event_name"
-  add_index "sip_event_logs", ["user_id", "subject_id", "subject_type"], name: "sip_event_logs_user_subject"
+  add_index "sipity_event_logs", ["subject_id", "subject_type", "event_name"], name: "sipity_event_logs_subject_event_name"
+  add_index "sipity_event_logs", ["subject_id", "subject_type"], name: "sipity_event_logs_subject"
+  add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
+  add_index "sipity_event_logs", ["user_id", "subject_id", "subject_type"], name: "sipity_event_logs_user_subject"
 
-  create_table "sip_headers", force: true do |t|
+  create_table "sipity_headers", force: true do |t|
     t.string   "work_publication_strategy"
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "sip_permissions", force: true do |t|
+  create_table "sipity_permissions", force: true do |t|
     t.integer  "user_id",                 null: false
     t.integer  "subject_id",              null: false
-    t.string   "subject_type", limit: 32, null: false
+    t.string   "subject_type", limit: 64, null: false
     t.string   "role",         limit: 32, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sip_permissions", ["subject_id", "subject_type", "role"], name: "sip_permissions_subject_role"
-  add_index "sip_permissions", ["user_id", "role"], name: "sip_permissions_user_role"
-  add_index "sip_permissions", ["user_id", "subject_id", "subject_type"], name: "sip_permissions_user_subject"
+  add_index "sipity_permissions", ["subject_id", "subject_type", "role"], name: "sipity_permissions_subject_role"
+  add_index "sipity_permissions", ["user_id", "role"], name: "sipity_permissions_user_role"
+  add_index "sipity_permissions", ["user_id", "subject_id", "subject_type"], name: "sipity_permissions_user_subject"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

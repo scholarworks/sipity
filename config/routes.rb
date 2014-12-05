@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  scope module: :sip do
+  scope module: :sipity do
     resources :headers do
       resource :citation
       resource :doi do

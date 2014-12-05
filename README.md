@@ -19,7 +19,7 @@ Its goal is to provide clarity on why a patron would want to fill out metadata i
 
 Sipity is a Rails application but is built with a few more concepts in mind.
 
-The Sip::Repository object exposes the methods for interacting with the persistence layer.
+The Sipity::Repository object exposes the methods for interacting with the persistence layer.
 You can circumvent this interaction, but I am looking to convey the concepts in an expressive manner.
 
 The Runners, found in `./app/runners`, define how the application interacts with the repository layer.
@@ -84,7 +84,7 @@ means of pulling even more logic out of the overworked Rails controller.
 
 ### Services
 
-Of particular note is the Sip::Repository class. Here are methods for
+Of particular note is the Sipity::Repository class. Here are methods for
 interacting with the persistence layer; either by way of commands or queries.
 
 It can also represent the grand dumping bucket of objects that do things.

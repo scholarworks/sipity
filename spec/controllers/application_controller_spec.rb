@@ -9,7 +9,7 @@ RSpec.describe ApplicationController do
     end
     it 'raises a RunnerNotFoundError when the runner is not found in the container' do
       allow(controller).to receive(:action_name).and_return('missing')
-      controller.runner_container = Sip
+      controller.runner_container = Sipity
       expect { controller.runner }.to raise_error(ApplicationController::RunnerNotFoundError)
     end
 

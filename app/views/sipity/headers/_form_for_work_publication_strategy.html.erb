@@ -1,0 +1,22 @@
+<%# This partial should receive a simple_form form object %>
+<div class="control-group string required sipity_header_work_publication_strategy error">
+  <%= f.label :work_publication_strategy %>
+  <%= f.error :work_publication_strategy %>
+  <%= f.hint :work_publication_strategy %>
+  <label class="radio">
+    <input type="radio" name="<%= f.object_name %>[work_publication_strategy]" value="will_not_publish" <% if f.object.work_publication_strategy == 'will_not_publish' %>checked="true"<% end %>/>
+    <span class="label label-success">will_not_publish</span>
+  </label>
+  <label class="radio">
+    <input type="radio" name="<%= f.object_name %>[work_publication_strategy]" value="already_published" <% if f.object.work_publication_strategy == 'already_published' %>checked="true"<% end %>/>
+    <span class="label label-success">already_published</span> on <%= f.input_field :publication_date %>.
+  </label>
+  <label class="radio">
+    <input type="radio" name="<%= f.object_name %>[work_publication_strategy]" value="going_to_publish" <% if f.object.work_publication_strategy == 'going_to_publish' %>checked="true"<% end %>/>
+    <span class="label label-success">going_to_publish</span>
+  </label>
+  <label class="radio">
+    <input type="radio" name="<%= f.object_name %>[work_publication_strategy]" value="do_not_know" <% if f.object.work_publication_strategy == 'do_not_know' %>checked="true"<% end %>/>
+    <span class="label label-success">do_not_know</span>
+  </label>
+</div>
