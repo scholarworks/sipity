@@ -62,7 +62,7 @@ module Sipity
         # service has likely thrown an exception if things have failed. This is
         # my last line of defense. If you encounter this exception, make sure
         # to review the authentication_service method for its output.
-        fail AuthenticationFailureError, self.class
+        fail Exceptions::AuthenticationFailureError, self.class
       end
 
       def requires_authentication?
