@@ -1,4 +1,4 @@
-class CreateSipHeaders < ActiveRecord::Migration
+class CreateSipityHeaders < ActiveRecord::Migration
   def change
     create_table :sip_headers do |t|
       t.string :work_publication_strategy

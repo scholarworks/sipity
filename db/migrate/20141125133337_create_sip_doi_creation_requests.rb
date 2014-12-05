@@ -1,4 +1,4 @@
-class CreateSipDoiCreationRequests < ActiveRecord::Migration
+class CreateSipityDoiCreationRequests < ActiveRecord::Migration
   def change
     create_table :sip_doi_creation_requests do |t|
       t.integer :sip_header_id, null: false, unique: true

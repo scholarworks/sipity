@@ -1,7 +1,7 @@
 require 'site_prism'
 module SitePrism
   module Pages
-    class NewSipHeader < SitePrism::Page
+    class NewSipityHeader < SitePrism::Page
       DOM_CLASS = 'new_header'.freeze
       PARAM_NAME_CONTAINER = 'header'.freeze
 
@@ -27,7 +27,7 @@ module SitePrism
       end
     end
 
-    class EditSipHeader < SitePrism::Page
+    class EditSipityHeader < SitePrism::Page
       DOM_CLASS = 'edit_header'.freeze
       PARAM_NAME_CONTAINER = 'header'.freeze
 
@@ -53,7 +53,7 @@ module SitePrism
       end
     end
 
-    class SipHeader < SitePrism::Page
+    class SipityHeader < SitePrism::Page
       DOM_CLASS = 'header'.freeze
 
       def text_for(predicate)

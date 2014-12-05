@@ -1,4 +1,4 @@
-class CreateSipCollaborators < ActiveRecord::Migration
+class CreateSipityCollaborators < ActiveRecord::Migration
   def change
     create_table :sip_collaborators do |t|
       t.integer :sip_header_id
