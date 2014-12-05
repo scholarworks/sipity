@@ -15,7 +15,7 @@ ActiveRecord::Schema.define(version: 20141204165259) do
 
   create_table "sipity_additional_attributes", force: true do |t|
     t.integer  "sipity_header_id", null: false
-    t.string   "key",           null: false
+    t.string   "key",              null: false
     t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20141204165259) do
     t.integer  "sipity_header_id", null: false
     t.integer  "sequence"
     t.string   "name"
-    t.string   "role",          null: false
+    t.string   "role",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 20141204165259) do
   add_index "sipity_collaborators", ["sipity_header_id", "sequence"], name: "index_sipity_collaborators_on_sipity_header_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: true do |t|
-    t.integer  "sipity_header_id",    null: false
+    t.integer  "sipity_header_id", null: false
     t.string   "state",            null: false
     t.string   "response_message"
     t.string   "text"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 20141204165259) do
   create_table "sipity_permissions", force: true do |t|
     t.integer  "user_id",                 null: false
     t.integer  "subject_id",              null: false
-    t.string   "subject_type", limit: 32, null: false
+    t.string   "subject_type", limit: 64, null: false
     t.string   "role",         limit: 32, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
