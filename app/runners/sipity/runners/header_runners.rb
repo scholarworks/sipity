@@ -8,7 +8,11 @@ module Sipity
 
         def run
           header = repository.build_create_header_form
-          callback(:success, header)
+          if repository.policy_unauthorized_for?(runner: self, subject: header)
+            callback(:unauthorized)
+          else
+            callback(:success, header)
+          end
         end
       end
 

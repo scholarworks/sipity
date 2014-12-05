@@ -9,6 +9,7 @@ module Sipity
     class VirtualForm
       include ActiveModel::Validations
       extend ActiveModel::Translation
+      class_attribute :policy_class
 
       def to_key
         []

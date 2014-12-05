@@ -30,6 +30,7 @@ module Sipity
         return false if header.persisted?
         true
       end
+      alias_method :new?, :create?
 
       def destroy?
         return false unless user.present?
@@ -42,8 +43,8 @@ module Sipity
       def defaul_permission_query_service
         lambda do |options|
           # TODO: Extract this method into a permssions object
-          Models::Permission.where(user: options(:user), subject: options.fetch(:header)).
-            where("roles IN ?", options.fetch(:roles)).any?
+          Models::Permission.
+            where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
         end
       end
     end
