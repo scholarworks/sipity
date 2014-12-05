@@ -12,7 +12,7 @@ module Sipity
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
       context '#submit_assign_a_doi_form' do
-        let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+        let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:attributes) { { header: header, identifier: identifier } }
         let(:form) { subject.build_assign_a_doi_form(attributes) }
 
@@ -41,7 +41,7 @@ module Sipity
       end
 
       context '#submit_request_a_doi_form' do
-        let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+        let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:attributes) do
           { header: header, publisher: publisher, publication_date: '2014-10-11', authors: ['Frog', 'Toad'] }
         end

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'sip/runners/citation_runners'
+require 'sipity/runners/citation_runners'
 
 module Sipity
   module Runners

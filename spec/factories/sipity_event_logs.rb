@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :sip_event_log, class: 'Sipity::Models::EventLog' do
+  factory :sipity_event_log, class: 'Sipity::Models::EventLog' do
     user 1
     subject_id 1
     subject_type "MyString"

@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'sip/runners/header_runners'
+require 'sipity/runners/header_runners'
 
 module Sipity
   module Runners

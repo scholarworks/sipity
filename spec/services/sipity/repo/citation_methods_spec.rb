@@ -14,7 +14,7 @@ module Sipity
       subject { Repository.new }
 
       context '#submit_assign_a_citation_form' do
-        let(:header) { FactoryGirl.build_stubbed(:sip_header, id: '1234') }
+        let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:attributes) { { header: header, citation: citation, type: '1234' } }
         let(:form) { Repository.new.build_assign_a_citation_form(attributes) }
 

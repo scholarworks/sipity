@@ -1,4 +1,4 @@
-require 'sip/models'
+require 'sipity/models'
 module Sipity
   module Models
     # A collaborator (as per metadata not improving on the SIP) for the underlying
@@ -10,9 +10,9 @@ module Sipity
         new(role: DEFAULT_ROLE)
       end
 
-      belongs_to :header, foreign_key: 'sip_header_id'
+      belongs_to :header, foreign_key: 'sipity_header_id'
 
-      self.table_name = 'sip_collaborators'
+      self.table_name = 'sipity_collaborators'
 
       validates :role, inclusion: { in: ->(obj) { obj.class.roles } }
 

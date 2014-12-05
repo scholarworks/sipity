@@ -1,6 +1,6 @@
 class CreateSipityHeaders < ActiveRecord::Migration
   def change
-    create_table :sip_headers do |t|
+    create_table :sipity_headers do |t|
       t.string :work_publication_strategy
       t.string :title
 

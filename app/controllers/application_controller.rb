@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
   helper_method :repository
 
   def message_for(key, options = {})
-    t(key, { scope: "sip/#{controller_name}.action/#{action_name}" }.merge(options))
+    t(key, { scope: "sipity/#{controller_name}.action/#{action_name}" }.merge(options))
   end
   private :message_for
 end

@@ -37,10 +37,10 @@ module Sipity
           end
           subject { TestClass.new(header: header, helper: helper, repository: repository) }
           it 'has a translated #human_status' do
-            expect(subject.human_status).to eq("translation missing: en.sip/decorators/recommendations/test_class.state.#{subject.state}")
+            expect(subject.human_status).to eq("translation missing: en.sipity/decorators/recommendations/test_class.state.#{subject.state}")
           end
           it 'has a translated #human_name' do
-            expect(subject.human_name).to eq("translation missing: en.sip/decorators/recommendations/test_class.name")
+            expect(subject.human_name).to eq("translation missing: en.sipity/decorators/recommendations/test_class.name")
           end
 
           it 'has a translated #human_attribute_name' do

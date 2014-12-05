@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-RSpec.describe 'sip/headers/new.html.erb', type: :view do
+RSpec.describe 'sipity/headers/new.html.erb', type: :view do
   let(:model) { Sipity::Decorators::HeaderDecorator.decorate(Sipity::Forms::CreateHeaderForm.new) }
 
   it 'renders the object and fieldsets' do
     # I want to pass the model to the view; Not using an instance variable
-    render template: 'sip/headers/new', locals: { model: model }
+    render template: 'sipity/headers/new', locals: { model: model }
     expect(rendered).to have_tag('form.new_header[action="/headers"][method="post"]') do
       with_tag('fieldset.attributes_header') do
         with_tag('input', with: { name: 'header[title]' })

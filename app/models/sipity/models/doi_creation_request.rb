@@ -1,10 +1,10 @@
-require 'sip/models'
+require 'sipity/models'
 module Sipity
   module Models
     # Responsible for tracking the state of a remote DOI request.
     class DoiCreationRequest < ActiveRecord::Base
-      self.table_name = 'sip_doi_creation_requests'
-      belongs_to :header, foreign_key: 'sip_header_id'
+      self.table_name = 'sipity_doi_creation_requests'
+      belongs_to :header, foreign_key: 'sipity_header_id'
 
       enum(
         state:

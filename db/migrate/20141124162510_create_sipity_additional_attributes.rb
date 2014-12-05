@@ -1,7 +1,7 @@
 class CreateSipityAdditionalAttributes < ActiveRecord::Migration
   def change
-    create_table :sip_additional_attributes do |t|
-      t.integer :sip_header_id, null: false
+    create_table :sipity_additional_attributes do |t|
+      t.integer :sipity_header_id, null: false
       t.string :key, null: false
       t.string :value
 

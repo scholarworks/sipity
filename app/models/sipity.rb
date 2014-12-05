@@ -1,7 +1,7 @@
 # A Submission Information Package
-# @see http://www.iasa-web.org/tc04/submission-information-package-sip
+# @see http://www.iasa-web.org/tc04/submission-information-package-sipity
 module Sipity
   def self.table_name_prefix
-    'sip_'
+    'sipity_'
   end
 end

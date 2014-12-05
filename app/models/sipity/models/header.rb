@@ -1,13 +1,13 @@
-require 'sip/models'
+require 'sipity/models'
 module Sipity
   module Models
     # The most basic of information required for generating a valid SIP
     class Header < ActiveRecord::Base
-      self.table_name = 'sip_headers'
+      self.table_name = 'sipity_headers'
 
-      has_many :collaborators, foreign_key: :sip_header_id, dependent: :destroy
-      has_many :additional_attributes, foreign_key: :sip_header_id, dependent: :destroy
-      has_one :doi_creation_request, foreign_key: :sip_header_id, dependent: :destroy
+      has_many :collaborators, foreign_key: :sipity_header_id, dependent: :destroy
+      has_many :additional_attributes, foreign_key: :sipity_header_id, dependent: :destroy
+      has_one :doi_creation_request, foreign_key: :sipity_header_id, dependent: :destroy
 
       accepts_nested_attributes_for(
         :collaborators,
