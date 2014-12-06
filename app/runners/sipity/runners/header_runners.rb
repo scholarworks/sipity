@@ -5,30 +5,41 @@ module Sipity
       # Responsible for building the model for a New Header
       class New < BaseRunner
         self.requires_authentication = true
+        self.policy_question = :create?
 
         def run
           header = repository.build_create_header_form
-          callback(:success, header)
+          if repository.policy_unauthorized_for?(runner: self, entity: header)
+            callback(:unauthorized)
+          else
+            callback(:success, header)
+          end
         end
       end
 
       # Responsible for instantiating the model for a Header
       class Show < BaseRunner
         self.requires_authentication = true
+        self.policy_question = :show?
 
         def run(header_id)
           header = repository.find_header(header_id)
-          callback(:success, header)
+          if repository.policy_unauthorized_for?(runner: self, entity: header)
+            callback(:unauthorized)
+          else
+            callback(:success, header)
+          end
         end
       end
 
       # Responsible for creating and persisting a new Header
       class Create < BaseRunner
         self.requires_authentication = true
+        self.policy_question = :create?
 
         def run(attributes:)
           form = repository.build_create_header_form(attributes: attributes)
-          header = repository.submit_create_header_form(form)
+          header = repository.submit_create_header_form(form, requested_by: current_user)
           if header
             callback(:success, header)
           else

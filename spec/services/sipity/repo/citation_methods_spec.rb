@@ -3,15 +3,13 @@ require 'rails_helper'
 module Sipity
   module Repo
     RSpec.describe CitationMethods, type: :repository do
-      let!(:klass) do
+      let!(:repository_class) do
         class TestRepository
           include CitationMethods
         end
       end
-      subject { klass.new }
+      subject { repository_class.new }
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
-
-      subject { Repository.new }
 
       context '#submit_assign_a_citation_form' do
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
