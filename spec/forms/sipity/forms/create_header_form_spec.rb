@@ -5,6 +5,8 @@ module Sipity
     RSpec.describe CreateHeaderForm do
       subject { described_class.new }
 
+      its(:policy_enforcer) { should eq Policies::HeaderPolicy }
+
       it 'will have a #possible_work_publication_strategies' do
         expect(subject.possible_work_publication_strategies).to be_a(Hash)
       end
