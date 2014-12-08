@@ -13,11 +13,8 @@ module Sipity
         subject do
           described_class.new(context, requires_authentication: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
-            on.unauthorized { handler.invoked("UNAUTHORIZED") }
           end
         end
-
-        its(:policy_question) { should eq(:create?) }
 
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
@@ -25,9 +22,8 @@ module Sipity
         end
 
         it 'requires authorization' do
-          expect(repository).to receive(:policy_unauthorized_for?).with(runner: subject, entity: header).and_return(true)
-          expect { subject.run }.to raise_error(Exceptions::AuthorizationFailureError)
-          expect(handler).to have_received(:invoked).with("UNAUTHORIZED")
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, header)
+          subject.run
         end
 
         it 'issues the :success callback' do
@@ -39,17 +35,15 @@ module Sipity
 
       RSpec.describe Show do
         let(:header) { double }
-        let(:context) { double(repository: repository) }
+        let(:user) { double('User') }
+        let(:context) { double(repository: repository, current_user: user) }
         let(:repository) { double(find_header: header, policy_unauthorized_for?: false) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
             on.success { |header| handler.invoked("SUCCESS", header) }
-            on.unauthorized { |a| handler.invoked("UNAUTHORIZED", a) }
           end
         end
-
-        its(:policy_question) { should eq(:show?) }
 
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
@@ -57,10 +51,8 @@ module Sipity
         end
 
         it 'requires authorization' do
-          expect(repository).to receive(:policy_unauthorized_for?).with(runner: subject, entity: header).and_return(true)
-          response = subject.run(1234)
-          expect(handler).to have_received(:invoked).with("UNAUTHORIZED", nil)
-          expect(response).to eq([:unauthorized])
+          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
+          subject.run(1234)
         end
 
         it 'issues the :success callback' do
@@ -76,7 +68,11 @@ module Sipity
         let(:user) { User.new(id: '1') }
         let(:context) { double('Context', repository: repository, current_user: user) }
         let(:repository) do
-          double('Repository', build_create_header_form: form, submit_create_header_form: creation_response)
+          double(
+            'Repository',
+            build_create_header_form: form, submit_create_header_form: creation_response,
+            policy_unauthorized_for?: false
+          )
         end
         let(:creation_response) { nil }
         let(:handler) { double(invoked: true) }
@@ -90,6 +86,11 @@ module Sipity
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
           described_class.new(context)
+        end
+
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
+          subject.run(attributes: {})
         end
 
         context 'when header is saved' do

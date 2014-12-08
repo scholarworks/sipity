@@ -19,8 +19,8 @@ module Sipity
         #   work
         it 'works for a Header and a New/Create runner' do
           allow(entity).to receive(:persisted?).and_return(true)
-          expect(runner).to receive(:policy_question).and_return(:create?)
-          expect(subject.policy_unauthorized_for?(runner: runner, entity: entity)).to eq(true)
+          expect(subject.policy_unauthorized_for?(user: current_user, policy_question: :create?, entity: entity)).
+            to eq(true)
         end
       end
 
