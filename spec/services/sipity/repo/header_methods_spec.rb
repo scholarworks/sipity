@@ -67,7 +67,7 @@ module Sipity
           it 'will grant the creating user the "creating_user" permission to the work' do
             allow(form).to receive(:valid?).and_return(true)
             expect { subject.submit_create_header_form(form, requested_by: user) }.
-              to change { Models::Permission.where(user: user, role: 'creating_user').count }.by(1)
+              to change { Models::Permission.where(user: user, role: Models::Permission::CREATING_USER).count }.by(1)
           end
           it 'will return the header' do
             form = subject.build_create_header_form(attributes: { title: 'This is my title' })

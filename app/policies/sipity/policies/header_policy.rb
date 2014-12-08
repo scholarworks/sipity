@@ -15,13 +15,13 @@ module Sipity
       def show?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: ['creating_user'])
+        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       def update?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: ['creating_user'])
+        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       def create?
@@ -33,14 +33,14 @@ module Sipity
       def destroy?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: ['creating_user'])
+        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       private
 
       def default_permission_query_service
         lambda do |options|
-          # TODO: Extract this method into a permissions object
+          # TODO: Extract this method into a permissions object?
           Models::Permission.
             where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
         end

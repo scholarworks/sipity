@@ -17,7 +17,7 @@ module Sipity
             Support::Collaborators.create!(header: header, collaborators: f.collaborators)
             Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
             # TODO: Remove magic role
-            Models::Permission.create!(subject: header, user: requested_by, role: 'creating_user') if requested_by
+            Models::Permission.create!(subject: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
             # TODO: Remove magic event name. Should this be derived from the method name?
             Models::EventLog.create!(subject: header, user: requested_by, event_name: 'submit_create_header_form') if requested_by
           end
