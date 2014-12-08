@@ -18,5 +18,14 @@ module Sipity
         super("Unable to authenticate #{context}")
       end
     end
+
+    # Exposing a custom AuthorizationFailureError
+    class AuthorizationFailureError < RuntimeError
+      attr_reader :user, :policy_question, :entity
+      def initialize(user:, policy_question:, entity:)
+        @user, @policy_question, @entity = user, policy_question, entity
+        super("#{user} not allowed to #{policy_question} this #{entity}")
+      end
+    end
   end
 end

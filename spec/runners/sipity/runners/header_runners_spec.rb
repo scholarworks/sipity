@@ -6,13 +6,14 @@ module Sipity
     module HeaderRunners
       RSpec.describe New do
         let(:header) { double }
-        let(:context) { double(repository: repository) }
-        let(:repository) { double(build_create_header_form: header, policy_unauthorized_for?: false) }
+        let(:user) { double('User') }
+        let(:context) { double('Context', repository: repository, current_user: user) }
+        let(:repository) { double('Repository', build_create_header_form: header, policy_unauthorized_for?: false) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
-            on.success { |header| handler.invoked("SUCCESS", header) }
-            on.unauthorized { |a| handler.invoked("UNAUTHORIZED", a) }
+            on.success { |a| handler.invoked("SUCCESS", a) }
+            on.unauthorized { handler.invoked("UNAUTHORIZED") }
           end
         end
 
@@ -25,9 +26,8 @@ module Sipity
 
         it 'requires authorization' do
           expect(repository).to receive(:policy_unauthorized_for?).with(runner: subject, entity: header).and_return(true)
-          response = subject.run
-          expect(handler).to have_received(:invoked).with("UNAUTHORIZED", nil)
-          expect(response).to eq([:unauthorized])
+          expect { subject.run }.to raise_error(Exceptions::AuthorizationFailureError)
+          expect(handler).to have_received(:invoked).with("UNAUTHORIZED")
         end
 
         it 'issues the :success callback' do

@@ -59,6 +59,12 @@ module Sipity
 
       private
 
+      def enforce_authorization_policy!(entity)
+        return true unless repository.policy_unauthorized_for?(runner: self, entity: entity)
+        callback(:unauthorized)
+        fail Exceptions::AuthorizationFailureError.new(user: current_user, policy_question: policy_question, entity: entity)
+      end
+
       def enforce_authentication!
         return true unless requires_authentication?
         return true if authentication_service.call(context)
