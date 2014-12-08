@@ -2,12 +2,9 @@ module Sipity
   module Repo
     # Methods for checking policies
     module PolicyMethods
-      def policy_unauthorized_for?(user:, policy_question:, entity:)
+      def policy_authorized_for?(user:, policy_question:, entity:)
         policy_enforcer = find_policy_enforcer_for(entity)
-
-        # The enforcer returns true but since this question is asking
-        # are you unauthorized, I want to return the inverse
-        !policy_enforcer.call(user: user, entity: entity, policy_question: policy_question)
+        policy_enforcer.call(user: user, entity: entity, policy_question: policy_question)
       end
 
       def find_policy_enforcer_for(context)

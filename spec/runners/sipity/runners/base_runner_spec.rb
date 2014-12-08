@@ -50,7 +50,7 @@ module Sipity
       context '.with_authorization_enforcement' do
         let(:user) { double('User') }
         let(:handler) { double(invoked: true) }
-        let(:context) { TestRunnerContext.new(current_user: user, policy_unauthorized_for?: policy_unauthorized_answer) }
+        let(:context) { TestRunnerContext.new(current_user: user, policy_authorized_for?: policy_authorized_answer) }
         before do
           MyRunner = Class.new(BaseRunner) do
             def run(entity:, policy_question: :show?)
@@ -70,7 +70,7 @@ module Sipity
           end
         end
         context 'when the request is unauthorized' do
-          let(:policy_unauthorized_answer) { true }
+          let(:policy_authorized_answer) { false }
           let(:entity) { double('Entity') }
           it 'will issue the :unauthorized callback then fail' do
             expect { subject.run(entity: entity) }.to raise_error(Sipity::Exceptions::AuthorizationFailureError)
@@ -80,7 +80,7 @@ module Sipity
         end
 
         context 'when the request is authorized' do
-          let(:policy_unauthorized_answer) { false }
+          let(:policy_authorized_answer) { true }
           let(:entity) { double('Entity') }
           it 'will yield control and return the result' do
             response = subject.run(entity: entity)
