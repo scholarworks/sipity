@@ -5,6 +5,13 @@ module Sipity
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     class HeaderPolicy < BasePolicy
+      def initialize(user, entity, permission_query_service: nil)
+        super(user, entity)
+        @permission_query_service = permission_query_service || default_permission_query_service
+      end
+      attr_reader :permission_query_service
+      private :permission_query_service
+
       def show?
         return false unless user.present?
         return false unless entity.persisted?
@@ -27,6 +34,16 @@ module Sipity
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, subject: entity, roles: ['creating_user'])
+      end
+
+      private
+
+      def default_permission_query_service
+        lambda do |options|
+          # TODO: Extract this method into a permissions object
+          Models::Permission.
+            where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
+        end
       end
     end
   end

@@ -8,6 +8,12 @@ module Sipity
       let(:query_service) { double('Query Service') }
       subject { HeaderPolicy.new(user, header, permission_query_service: query_service) }
 
+      it 'has a default permission query service' do
+        policy = HeaderPolicy.new(user, header)
+        service = policy.send(:permission_query_service)
+        expect(service.call(user: user, subject: header, roles: ['hello_world'])).to eq(false)
+      end
+
       context 'for a non-authenticated user' do
         let(:user) { nil }
         its(:show?) { should eq(false) }

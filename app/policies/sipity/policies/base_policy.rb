@@ -17,23 +17,12 @@ module Sipity
         new(user, entity).public_send(policy_question)
       end
 
-      def initialize(user, entity, permission_query_service: nil)
+      def initialize(user, entity)
         @user = user
         @entity = entity
-        @permission_query_service = permission_query_service || default_permission_query_service
       end
-      attr_reader :user, :entity, :permission_query_service
-      private :user, :entity, :permission_query_service
-
-      private
-
-      def default_permission_query_service
-        lambda do |options|
-          # TODO: Extract this method into a permissions object
-          Models::Permission.
-            where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
-        end
-      end
+      attr_reader :user, :entity
+      private :user, :entity
     end
   end
 end
