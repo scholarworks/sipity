@@ -4,12 +4,14 @@ require 'sipity/runners/citation_runners'
 module Sipity
   module Runners
     module CitationRunners
+      include RunnersSupport
       RSpec.describe Show do
         let(:header) { double }
         let(:header_id) { 1234 }
-        let(:context) { double(repository: repository) }
-        let(:repository) { double(find_header: header, citation_already_assigned?: citation_already_assigned) }
-        let(:citation_already_assigned) { true }
+        let(:citation_already_assigned) { false }
+        let(:context) do
+          TestRunnerContext.new(find_header: header, citation_already_assigned?: citation_already_assigned)
+        end
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
@@ -45,13 +47,10 @@ module Sipity
       RSpec.describe New do
         let(:header) { double('Header') }
         let(:header_id) { 1234 }
-        let(:context) { double('Context', repository: repository) }
         let(:form) { double('Form') }
         let(:citation_assigned) { nil }
-        let(:repository) do
-          double('Repository',
-                 find_header: header, build_assign_a_citation_form: form, citation_already_assigned?: citation_assigned
-                 )
+        let(:context) do
+          TestRunnerContext.new(find_header: header, build_assign_a_citation_form: form, citation_already_assigned?: citation_assigned)
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
@@ -89,10 +88,9 @@ module Sipity
         let(:header) { double }
         let(:header_id) { 1234 }
         let(:attributes) { { key: 'abc:123' } }
-        let(:context) { double('Context', repository: repository) }
         let(:form) { double('Form') }
-        let(:repository) do
-          double('Repository', find_header: header, build_assign_a_citation_form: form, submit_assign_a_citation_form: true)
+        let(:context) do
+          TestRunnerContext.new(find_header: header, build_assign_a_citation_form: form, submit_assign_a_citation_form: true)
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
@@ -109,7 +107,7 @@ module Sipity
 
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
-            expect(repository).to receive(:submit_assign_a_citation_form).with(form).and_return(false)
+            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form).and_return(false)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
@@ -118,7 +116,7 @@ module Sipity
 
         context 'when the form submission succeeds' do
           it 'issues the :success callback' do
-            expect(repository).to receive(:submit_assign_a_citation_form).with(form).and_return(true)
+            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form).and_return(true)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("SUCCESS", header)
             expect(response).to eq([:success, header])

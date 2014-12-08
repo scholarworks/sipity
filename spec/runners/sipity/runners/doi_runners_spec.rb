@@ -4,11 +4,13 @@ require 'sipity/runners/doi_runners'
 module Sipity
   module Runners
     module DoiRunners
+      include RunnersSupport
       RSpec.describe Show do
         let(:header) { double }
         let(:header_id) { 1234 }
-        let(:context) { double(repository: repository) }
-        let(:repository) { double(find_header: header, doi_already_assigned?: false, doi_request_is_pending?: false) }
+        let(:context) do
+          TestRunnerContext.new(find_header: header, doi_already_assigned?: false, doi_request_is_pending?: false)
+        end
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
@@ -25,7 +27,7 @@ module Sipity
 
         context 'when a DOI is assigned' do
           it 'issues the :doi_already_assigned callback' do
-            expect(repository).to receive(:doi_already_assigned?).and_return true
+            expect(context.repository).to receive(:doi_already_assigned?).and_return true
             response = subject.run(header_id: header_id)
             expect(handler).to have_received(:invoked).with("DOI_ALREADY_ASSIGNED", header)
             expect(response).to eq([:doi_already_assigned, header])
@@ -42,7 +44,7 @@ module Sipity
 
         context 'when a DOI request has been made but not yet completed' do
           it 'issues the :doi_request_is_pending callback' do
-            expect(repository).to receive(:doi_request_is_pending?).and_return(true)
+            expect(context.repository).to receive(:doi_request_is_pending?).and_return(true)
             response = subject.run(header_id: header_id)
             expect(handler).to have_received(:invoked).with("DOI_REQUEST_IS_PENDING", header)
             expect(response).to eq([:doi_request_is_pending, header])
@@ -54,10 +56,9 @@ module Sipity
         let(:header) { double }
         let(:header_id) { 1234 }
         let(:identifier) { 'abc:123' }
-        let(:context) { double('Context', repository: repository) }
         let(:form) { double('Form', submit: true, identifier: identifier, header: header, identifier_key: 'key') }
-        let(:repository) do
-          double('Repository', find_header: header, build_assign_a_doi_form: form, submit_assign_a_doi_form: true)
+        let(:context) do
+          TestRunnerContext.new(find_header: header, build_assign_a_doi_form: form, submit_assign_a_doi_form: true)
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
@@ -74,7 +75,7 @@ module Sipity
 
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
-            expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(false)
+            expect(context.repository).to receive(:submit_assign_a_doi_form).with(form).and_return(false)
             response = subject.run(header_id: header_id, identifier: identifier)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
@@ -83,7 +84,7 @@ module Sipity
 
         context 'when the form submission succeeds' do
           it 'issues the :success callback' do
-            expect(repository).to receive(:submit_assign_a_doi_form).with(form).and_return(true)
+            expect(context.repository).to receive(:submit_assign_a_doi_form).with(form).and_return(true)
             response = subject.run(header_id: header_id, identifier: identifier)
             expect(handler).to have_received(:invoked).with("SUCCESS", header, identifier)
             expect(response).to eq([:success, header, identifier])
@@ -95,10 +96,9 @@ module Sipity
         let(:header) { double }
         let(:header_id) { 1234 }
         let(:attributes) { { key: 'value' } }
-        let(:context) { double('Context', repository: repository) }
         let(:form) { double('Form', submit: true, header: header) }
-        let(:repository) do
-          double('Repository', find_header: header, build_request_a_doi_form: form, submit_request_a_doi_form: true)
+        let(:context) do
+          TestRunnerContext.new(find_header: header, build_request_a_doi_form: form, submit_request_a_doi_form: true)
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
@@ -115,7 +115,7 @@ module Sipity
 
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
-            expect(repository).to receive(:submit_request_a_doi_form).with(form).and_return(false)
+            expect(context.repository).to receive(:submit_request_a_doi_form).with(form).and_return(false)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
@@ -124,7 +124,7 @@ module Sipity
 
         context 'when the form submission succeeds' do
           it 'issues the :success callback' do
-            expect(repository).to receive(:submit_request_a_doi_form).with(form).and_return(true)
+            expect(context.repository).to receive(:submit_request_a_doi_form).with(form).and_return(true)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("SUCCESS", header)
             expect(response).to eq([:success, header])

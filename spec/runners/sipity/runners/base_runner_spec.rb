@@ -2,6 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Runners
+    include RunnersSupport
     RSpec.describe BaseRunner do
       let(:context) { double('Context') }
       let(:my_options) { {} }
@@ -43,6 +44,49 @@ module Sipity
         it 'will not call the underlying authentication_service' do
           expect(my_options[:authentication_service]).to_not receive(:call)
           expect(BaseRunner.new(context, my_options)).to be_a(BaseRunner)
+        end
+      end
+
+      context '.with_authorization_enforcement' do
+        let(:user) { double('User') }
+        let(:handler) { double(invoked: true) }
+        let(:context) { TestRunnerContext.new(current_user: user, policy_unauthorized_for?: policy_unauthorized_answer) }
+        before do
+          MyRunner = Class.new(BaseRunner) do
+            def run(entity:, policy_question: :show?)
+              with_authorization_enforcement(policy_question, entity) do
+                callback(:success, entity)
+              end
+            end
+          end
+        end
+        after do
+          Sipity::Runners.send(:remove_const, :MyRunner)
+        end
+        subject do
+          MyRunner.new(context) do |on|
+            on.unauthorized { handler.invoked('UNAUTHORIZED') }
+            on.success { |a| handler.invoked('SUCCESS', a) }
+          end
+        end
+        context 'when the request is unauthorized' do
+          let(:policy_unauthorized_answer) { true }
+          let(:entity) { double('Entity') }
+          it 'will issue the :unauthorized callback then fail' do
+            expect { subject.run(entity: entity) }.to raise_error(Sipity::Exceptions::AuthorizationFailureError)
+            expect(handler).to have_received(:invoked).with('UNAUTHORIZED')
+            expect(handler).to_not have_received(:invoked).with('SUCCESS', entity)
+          end
+        end
+
+        context 'when the request is authorized' do
+          let(:policy_unauthorized_answer) { false }
+          let(:entity) { double('Entity') }
+          it 'will yield control and return the result' do
+            response = subject.run(entity: entity)
+            expect(handler).to have_received(:invoked).with('SUCCESS', entity)
+            expect(response).to eq([:success, entity])
+          end
         end
       end
     end
