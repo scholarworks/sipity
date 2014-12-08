@@ -80,7 +80,7 @@ module Sipity
         end
 
         it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
+          allow(subject).to receive(:with_authorization_enforcement).with(:submit?, form)
           subject.run(header_id: header_id, identifier: identifier)
           expect(handler).to_not have_received(:invoked)
         end
@@ -126,7 +126,7 @@ module Sipity
         end
 
         it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
+          allow(subject).to receive(:with_authorization_enforcement).with(:submit?, form)
           subject.run(header_id: header_id, attributes: attributes)
           expect(handler).to_not have_received(:invoked)
         end

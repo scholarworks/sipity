@@ -27,7 +27,7 @@ module Sipity
         def run(header_id: nil, identifier: nil)
           header = repository.find_header(header_id)
           form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
-          with_authorization_enforcement(:create?, form) do
+          with_authorization_enforcement(:submit?, form) do
             if repository.submit_assign_a_doi_form(form)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
@@ -46,7 +46,7 @@ module Sipity
         def run(header_id:, attributes:)
           header = repository.find_header(header_id)
           form = repository.build_request_a_doi_form(attributes.merge(header: header))
-          with_authorization_enforcement(:create?, form) do
+          with_authorization_enforcement(:submit?, form) do
             if repository.submit_request_a_doi_form(form)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
