@@ -41,7 +41,7 @@ module Sipity
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
-            on.success { |header| handler.invoked("SUCCESS", header) }
+            on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
 
