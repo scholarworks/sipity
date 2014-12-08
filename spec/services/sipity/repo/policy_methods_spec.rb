@@ -14,13 +14,13 @@ module Sipity
       let(:current_user) { User.new(id: '1') }
       let(:runner) { double('Runner', current_user: current_user) }
 
-      context '#policy_unauthorized_for?' do
+      context '#policy_authorized_for?' do
         # TODO: The handoff to the policy class is unpleasant. But appears to
         #   work
         it 'works for a Header and a New/Create runner' do
           allow(entity).to receive(:persisted?).and_return(true)
-          expect(runner).to receive(:policy_question).and_return(:create?)
-          expect(subject.policy_unauthorized_for?(runner: runner, entity: entity)).to eq(true)
+          expect(subject.policy_authorized_for?(user: current_user, policy_question: :create?, entity: entity)).
+            to eq(false)
         end
       end
 
