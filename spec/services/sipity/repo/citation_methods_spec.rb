@@ -51,7 +51,12 @@ module Sipity
         it { should respond_to :submit }
       end
 
-      it { should respond_to :citation_already_assigned? }
+      context '#citation_already_assigned?' do
+        it 'will query the header' do
+          header = Models::Header.new(id: 1)
+          expect(subject.citation_already_assigned?(header)).to eq(false)
+        end
+      end
     end
   end
 end

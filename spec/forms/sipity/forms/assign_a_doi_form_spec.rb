@@ -19,8 +19,8 @@ module Sipity
       end
 
       its(:identifier_key) { should be_a(String) }
-
-      it 'formats an identifier'
+      its(:assign_a_doi_form) { should be_a AssignADoiForm }
+      its(:request_a_doi_form) { should be_a RequestADoiForm }
     end
   end
 end

@@ -5,6 +5,7 @@ module Sipity
     # Responsible for enforcing Assignment of a DOI
     class AssignADoiFormPolicy < BasePolicy
       attr_reader :header_policy
+      private :header_policy
       def initialize(user, entity, options = {})
         super(user, entity)
         @header_policy = options.fetch(:header_policy) { default_header_policy }

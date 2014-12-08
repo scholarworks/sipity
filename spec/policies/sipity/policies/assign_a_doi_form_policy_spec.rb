@@ -9,6 +9,10 @@ module Sipity
       let(:header_policy) { double('Header Policy') }
       subject { AssignADoiFormPolicy.new(user, form, header_policy: header_policy) }
 
+      it 'will have a default header_policy' do
+        expect(AssignADoiFormPolicy.new(user, form).send(:header_policy)).to be_a(HeaderPolicy)
+      end
+
       context 'for a non-authenticated user' do
         let(:user) { nil }
         its(:submit?) { should eq(false) }

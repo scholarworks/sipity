@@ -92,8 +92,19 @@ module Sipity
         it { should respond_to :submit }
       end
 
-      it { should respond_to :doi_request_is_pending? }
-      it { should respond_to :doi_already_assigned? }
+      context '#doi_request_is_pending?' do
+        let(:header) { Models::Header.new(id: 1) }
+        it 'will see if a DOI Creation Request exists' do
+          expect(klass.new.doi_request_is_pending?(header)).to be_falsey
+        end
+      end
+
+      context '#doi_already_assigned?' do
+        let(:header) { Models::Header.new(id: 1) }
+        it 'will see if a DOI has been assigned to the header' do
+          expect(klass.new.doi_already_assigned?(header)).to be_falsey
+        end
+      end
     end
   end
 end

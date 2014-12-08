@@ -3,9 +3,7 @@ module Sipity
     # Citation related methods
     module CitationMethods
       def citation_already_assigned?(header)
-        Support::AdditionalAttributes.values_for(
-          header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
-        ).any?
+        Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME).any?
       end
 
       def build_assign_a_citation_form(attributes = {})

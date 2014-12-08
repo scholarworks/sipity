@@ -15,6 +15,15 @@ module Sipity
             to raise_error(NotImplementedError)
         end
 
+        it 'has assigns a default repository' do
+          expect(described_class.new(header: header, helper: helper).send(:repository)).to be_a(Repository)
+        end
+
+        it 'has a default helper' do
+          header = double('Header', h: helper, title: 'My Title')
+          expect(described_class.new(header: header).send(:helper)).to eq(helper)
+        end
+
         context 'upon extension' do
           it 'will require you to implement #path_to_recommendation' do
             expect { subject.path_to_recommendation }.to raise_error(NotImplementedError)

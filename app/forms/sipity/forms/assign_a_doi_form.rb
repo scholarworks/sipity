@@ -16,7 +16,7 @@ module Sipity
       validates :identifier, presence: true
 
       # TODO: Get this out of here. There is an object that is a better owner of
-      # this method.
+      # this method. But for now it is here based on a view implementation.
       def assign_a_doi_form
         self
       end
@@ -26,7 +26,7 @@ module Sipity
       end
 
       # TODO: Get this out of here. There is an object that is a better owner of
-      # this method.
+      # this method. But for now it is here based on a view implementation.
       def request_a_doi_form
         RequestADoiForm.new(header: header)
       end

@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe ApplicationController do
+  its(:repository) { should be_a Sipity::Repository }
   context '#runner' do
     it 'can be replaced at runtime' do
       my_runner = double(run: true)
