@@ -8,7 +8,7 @@ module Sipity
       RSpec.describe New do
         let(:header) { double }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(build_create_header_form: header, policy_authorized_for?: true) }
+        let(:context) { TestRunnerContext.new(build_create_header_form: header) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
@@ -37,7 +37,7 @@ module Sipity
       RSpec.describe Show do
         let(:header) { double }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(find_header: header, current_user: user, policy_authorized_for?: true) }
+        let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|

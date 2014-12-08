@@ -25,6 +25,12 @@ module Sipity
           described_class.new(context)
         end
 
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
+          subject.run
+          expect(handler).to_not have_received(:invoked)
+        end
+
         context 'when a DOI is assigned' do
           it 'issues the :doi_already_assigned callback' do
             expect(context.repository).to receive(:doi_already_assigned?).and_return true
@@ -73,6 +79,12 @@ module Sipity
           described_class.new(context)
         end
 
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
+          subject.run(header_id: header_id, identifier: identifier)
+          expect(handler).to_not have_received(:invoked)
+        end
+
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
             expect(context.repository).to receive(:submit_assign_a_doi_form).with(form).and_return(false)
@@ -111,6 +123,12 @@ module Sipity
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
           described_class.new(context)
+        end
+
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
+          subject.run(header_id: header_id, attributes: attributes)
+          expect(handler).to_not have_received(:invoked)
         end
 
         context 'when the form submission fails' do

@@ -25,6 +25,12 @@ module Sipity
           described_class.new(context)
         end
 
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
+          subject.run(header_id: header_id)
+          expect(handler).to_not have_received(:invoked)
+        end
+
         context 'when a citation is not assigned' do
           let(:citation_already_assigned) { false }
           it 'issues the :citation_not_assigned callback' do
@@ -65,6 +71,12 @@ module Sipity
           described_class.new(context)
         end
 
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, header)
+          subject.run(header_id: header_id)
+          expect(handler).to_not have_received(:invoked)
+        end
+
         context 'when a citation is not assigned' do
           let(:citation_assigned) { false }
           it 'issues the :citation_not_assigned callback with the form' do
@@ -103,6 +115,12 @@ module Sipity
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
           described_class.new(context)
+        end
+
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:create?, header)
+          subject.run(header_id: header_id, attributes: attributes)
+          expect(handler).to_not have_received(:invoked)
         end
 
         context 'when the form submission fails' do

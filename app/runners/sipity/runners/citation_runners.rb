@@ -7,10 +7,12 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          if repository.citation_already_assigned?(header)
-            callback(:citation_assigned, header)
-          else
-            callback(:citation_not_assigned, header)
+          with_authorization_enforcement(:show?, header) do
+            if repository.citation_already_assigned?(header)
+              callback(:citation_assigned, header)
+            else
+              callback(:citation_not_assigned, header)
+            end
           end
         end
       end
@@ -21,11 +23,13 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          if repository.citation_already_assigned?(header)
-            callback(:citation_assigned, header)
-          else
-            form = repository.build_assign_a_citation_form(header: header)
-            callback(:citation_not_assigned, form)
+          with_authorization_enforcement(:create?, header) do
+            if repository.citation_already_assigned?(header)
+              callback(:citation_assigned, header)
+            else
+              form = repository.build_assign_a_citation_form(header: header)
+              callback(:citation_not_assigned, form)
+            end
           end
         end
       end
@@ -37,10 +41,12 @@ module Sipity
         def run(header_id:, attributes: {})
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(attributes.merge(header: header))
-          if repository.submit_assign_a_citation_form(form)
-            callback(:success, header)
-          else
-            callback(:failure, form)
+          with_authorization_enforcement(:create?, header) do
+            if repository.submit_assign_a_citation_form(form)
+              callback(:success, header)
+            else
+              callback(:failure, form)
+            end
           end
         end
       end
