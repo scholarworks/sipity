@@ -15,6 +15,8 @@ module Sipity
         reject_if: ->(collaborator_attributes) { collaborator_attributes['name'].blank? }
       )
 
+      ALREADY_PUBLISHED = 'already_published'.freeze
+
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While
       # this might make more sense from a storage standpoint, it is not as clear
@@ -23,7 +25,7 @@ module Sipity
         work_publication_strategy:
         {
           'will_not_publish' => 'will_not_publish',
-          'already_published' => 'already_published',
+          ALREADY_PUBLISHED => ALREADY_PUBLISHED,
           'going_to_publish' => 'going_to_publish',
           'do_not_know' => 'do_not_know'
         }

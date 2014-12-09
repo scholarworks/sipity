@@ -57,8 +57,7 @@ module Sipity
       end
 
       def publication_date_required?
-        # TODO: Remove magical string
-        work_publication_strategy == 'already_published'
+        work_publication_strategy == Models::Header::ALREADY_PUBLISHED
       end
     end
   end
