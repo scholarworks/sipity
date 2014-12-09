@@ -11,6 +11,8 @@ module Sipity
         )
       end
 
+      its(:policy_enforcer) { should eq Policies::HeaderPolicy }
+
       it 'will have a model_name equal to the Models::Header' do
         expect(described_class.model_name).to eq(Models::Header.model_name)
       end

@@ -15,7 +15,7 @@ module Sipity
         Forms::CreateHeaderForm.new(attributes)
       end
 
-      def submit_create_header_form(form, requested_by: nil)
+      def submit_create_header_form(form, requested_by:)
         form.submit do |f|
           Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
             Support::Collaborators.create!(header: header, collaborators: f.collaborators)
@@ -35,7 +35,7 @@ module Sipity
         Forms::EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
-      def submit_edit_header_form(form, requested_by: nil)
+      def submit_edit_header_form(form, requested_by:)
         form.submit do |f|
           header = find_header(f.header.id)
           with_header_attributes_for_form(f) { |attributes| header.update(attributes) }

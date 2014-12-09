@@ -6,11 +6,16 @@ module Sipity
     #   oriented authorizaiton.
     class HeaderPolicy < BasePolicy
       def initialize(user, entity, permission_query_service: nil)
-        super(user, entity)
+        # TODO: There is a leaky abstraction regarding policies and queries.
+        #   I prefer to not generate loads of policies, instead leaning on
+        #   as few of policies as possible
+        @original_entity = entity
+        header = entity.respond_to?(:header) ? entity.header : entity
+        super(user, header)
         @permission_query_service = permission_query_service || default_permission_query_service
       end
-      attr_reader :permission_query_service
-      private :permission_query_service
+      attr_reader :permission_query_service, :original_entity
+      private :permission_query_service, :original_entity
 
       def show?
         return false unless user.present?

@@ -157,6 +157,12 @@ module Sipity
           described_class.new(context)
         end
 
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:update?, form)
+          subject.run(1234)
+          expect(handler).to_not have_received(:invoked)
+        end
+
         context 'when header is found' do
           it 'will issue the :success callback and return the header' do
             response = subject.run('123')
@@ -169,11 +175,13 @@ module Sipity
       RSpec.describe Update do
         let(:header) { double('Header') }
         let(:form) { double('Form') }
-        let(:context) { double('Context', repository: repository) }
-        let(:update_response) { nil }
-        let(:repository) do
-          double('Repository', find_header: header, build_edit_header_form: form, submit_edit_header_form: update_response)
+        let(:user) { double('User') }
+        let(:context) do
+          TestRunnerContext.new(
+            find_header: header, build_edit_header_form: form, submit_edit_header_form: update_response, current_user: user
+          )
         end
+        let(:update_response) { nil }
         let(:handler) { double(invoked: true) }
         let(:attributes) { {} }
 
@@ -187,6 +195,12 @@ module Sipity
         it 'requires authentication' do
           expect(context).to receive(:authenticate_user!).and_return(true)
           described_class.new(context)
+        end
+
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:update?, form)
+          subject.run(1234, attributes: attributes)
+          expect(handler).to_not have_received(:invoked)
         end
 
         context 'when header is updated' do

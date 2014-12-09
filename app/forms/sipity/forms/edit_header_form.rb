@@ -4,6 +4,8 @@ module Sipity
     #
     # TODO: Expose setter and getter methods for each :exposed_attribute_name
     class EditHeaderForm < VirtualForm
+      self.policy_enforcer = Policies::HeaderPolicy
+
       def self.model_name
         Models::Header.model_name
       end
