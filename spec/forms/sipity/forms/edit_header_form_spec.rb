@@ -22,6 +22,13 @@ module Sipity
         end
       end
 
+      context 'exposing no attribute_names' do
+        it 'will NOT raise an exception' do
+          expect { described_class.new(header: header, exposed_attribute_names: []) }.
+            to_not raise_error
+        end
+      end
+
       context 'for exposed attribute' do
         it 'will respond to that attribute name' do
           expect(subject).to respond_to(:title)
