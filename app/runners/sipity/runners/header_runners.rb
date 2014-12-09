@@ -14,18 +14,6 @@ module Sipity
         end
       end
 
-      # Responsible for instantiating the model for a Header
-      class Show < BaseRunner
-        self.requires_authentication = true
-
-        def run(header_id)
-          header = repository.find_header(header_id)
-          with_authorization_enforcement(:show?, header) do
-            callback(:success, header)
-          end
-        end
-      end
-
       # Responsible for creating and persisting a new Header
       class Create < BaseRunner
         self.requires_authentication = true
@@ -40,6 +28,18 @@ module Sipity
             else
               callback(:failure, form)
             end
+          end
+        end
+      end
+
+      # Responsible for instantiating the model for a Header
+      class Show < BaseRunner
+        self.requires_authentication = true
+
+        def run(header_id)
+          header = repository.find_header(header_id)
+          with_authorization_enforcement(:show?, header) do
+            callback(:success, header)
           end
         end
       end

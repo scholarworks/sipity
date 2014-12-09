@@ -34,35 +34,6 @@ module Sipity
         end
       end
 
-      RSpec.describe Show do
-        let(:header) { double }
-        let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
-        let(:handler) { double(invoked: true) }
-        subject do
-          described_class.new(context, requires_authentication: false) do |on|
-            on.success { |a| handler.invoked("SUCCESS", a) }
-          end
-        end
-
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
-        end
-
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
-          subject.run(1234)
-          expect(handler).to_not have_received(:invoked)
-        end
-
-        it 'issues the :success callback' do
-          response = subject.run(1234)
-          expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([:success, header])
-        end
-      end
-
       RSpec.describe Create do
         let(:header) { double('Header') }
         let(:form) { double('Form') }
@@ -110,6 +81,35 @@ module Sipity
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
           end
+        end
+      end
+
+      RSpec.describe Show do
+        let(:header) { double }
+        let(:user) { double('User') }
+        let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
+        let(:handler) { double(invoked: true) }
+        subject do
+          described_class.new(context, requires_authentication: false) do |on|
+            on.success { |a| handler.invoked("SUCCESS", a) }
+          end
+        end
+
+        it 'requires authentication' do
+          expect(context).to receive(:authenticate_user!).and_return(true)
+          described_class.new(context)
+        end
+
+        it 'requires authorization' do
+          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
+          subject.run(1234)
+          expect(handler).to_not have_received(:invoked)
+        end
+
+        it 'issues the :success callback' do
+          response = subject.run(1234)
+          expect(handler).to have_received(:invoked).with("SUCCESS", header)
+          expect(response).to eq([:success, header])
         end
       end
 
