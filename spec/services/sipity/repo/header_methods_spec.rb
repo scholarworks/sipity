@@ -37,6 +37,7 @@ module Sipity
       end
 
       context '#submit_create_header_form' do
+        let(:user) { User.new(id: '123') }
         let(:form) do
           subject.build_create_header_form(
             attributes: {
@@ -52,40 +53,29 @@ module Sipity
         context 'with invalid data' do
           it 'will not create a a header' do
             allow(form).to receive(:valid?).and_return(false)
-            expect { subject.submit_create_header_form(form) }.
+            expect { subject.submit_create_header_form(form, requested_by: user) }.
               to_not change { Models::Header.count }
           end
           it 'will return false' do
             allow(form).to receive(:valid?).and_return(false)
-            expect(subject.submit_create_header_form(form)).to eq(false)
+            expect(subject.submit_create_header_form(form, requested_by: user)).to eq(false)
           end
         end
         context 'with valid data' do
           let(:user) { User.new(id: '123') }
-          it 'will create the header with the given attributes' do
+          it 'will create the header, add the attributes, assign collaborators, assign permission, and log the event' do
             allow(form).to receive(:valid?).and_return(true)
-            expect { subject.submit_create_header_form(form) }.to(
+            expect { subject.submit_create_header_form(form, requested_by: user) }.to(
               change { Models::Header.count }.by(1) &&
               change { header.additional_attributes.count }.by(1) &&
-              change { Models::Collaborator.count }.by(1)
+              change { Models::Collaborator.count }.by(1) &&
+              change { Models::Permission.where(user: user, role: Models::Permission::CREATING_USER).count }.by(1) &&
+              change { Models::EventLog.where(user: user, event_name: 'submit_create_header_form').count }.by(1)
             )
           end
-          it 'will grant the creating user the "creating_user" permission to the work' do
+          it 'will return a header' do
             allow(form).to receive(:valid?).and_return(true)
-            expect { subject.submit_create_header_form(form, requested_by: user) }.
-              to change { Models::Permission.where(user: user, role: Models::Permission::CREATING_USER).count }.by(1)
-          end
-          it 'will return the header' do
-            form = subject.build_create_header_form(attributes: { title: 'This is my title' })
-            allow(form).to receive(:valid?).and_return(true)
-            expect(subject.submit_create_header_form(form)).to be_a(Models::Header)
-          end
-          it 'will create an event log entry for the requesting user' do
-            user = User.new(id: '123')
-            form = subject.build_create_header_form(attributes: { title: 'This is my title' })
-            allow(form).to receive(:valid?).and_return(true)
-            expect { subject.submit_create_header_form(form, requested_by: user) }.
-              to change { Models::EventLog.where(user: user, event_name: 'submit_create_header_form').count }.by(1)
+            expect(subject.submit_create_header_form(form, requested_by: user)).to be_a(Models::Header)
           end
         end
       end
@@ -118,6 +108,7 @@ module Sipity
       end
 
       context '#submit_edit_header_form' do
+        let(:user) { User.new(id: '123') }
         let(:header) { Models::Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
         let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
         context 'with invalid data' do
@@ -126,10 +117,10 @@ module Sipity
             allow(form).to receive(:valid?).and_return(false)
           end
           it 'will return false' do
-            expect(subject.submit_edit_header_form(form)).to eq(false)
+            expect(subject.submit_edit_header_form(form, requested_by: user)).to eq(false)
           end
           it 'will NOT update the header' do
-            expect { subject.submit_edit_header_form(form) }.
+            expect { subject.submit_edit_header_form(form, requested_by: user) }.
               to_not change { header.reload.title }
           end
         end
@@ -140,21 +131,15 @@ module Sipity
             allow(form).to receive(:valid?).and_return(true)
           end
           it 'will return the header' do
-            expect(subject.submit_edit_header_form(form)).to eq(header)
+            expect(subject.submit_edit_header_form(form, requested_by: user)).to eq(header)
           end
-          it 'will update the header information' do
-            expect { subject.submit_edit_header_form(form) }.
-              to change { header.reload.title }.from('My Title').to('My New Title')
-          end
-          it 'will update additional attributes' do
-            expect { subject.submit_edit_header_form(form) }.
-              to change { Models::AdditionalAttribute.where(header: header).pluck(:key, :value) }.
-              from([['chicken', 'parmasean']]).to([['chicken', 'dance']])
-          end
-          it 'will create an event log entry for the requesting user' do
-            user = User.new(id: '123')
-            expect { subject.submit_edit_header_form(form, requested_by: user) }.
-              to change { Models::EventLog.where(user: user, event_name: 'submit_edit_header_form').count }.by(1)
+          it 'will update the header, additional attributes, and create an event log entry' do
+            expect { subject.submit_edit_header_form(form, requested_by: user) }.to(
+              change { header.reload.title }.from('My Title').to('My New Title') &&
+              change { Models::AdditionalAttribute.where(header: header).pluck(:key, :value) }.
+                from([['chicken', 'parmasean']]).to([['chicken', 'dance']]) &&
+              change { Models::EventLog.where(user: user, event_name: 'submit_edit_header_form').count }.by(1)
+            )
           end
         end
       end
