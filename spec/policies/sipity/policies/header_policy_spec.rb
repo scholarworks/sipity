@@ -56,5 +56,18 @@ module Sipity
         end
       end
     end
+
+    RSpec.describe HeaderPolicy::Scope do
+      let(:user) { User.new(id: '1') }
+      subject { HeaderPolicy::Scope.new(user, Models::Header) }
+
+      its(:resolve) { should be_a(ActiveRecord::Relation) }
+
+      context '.resolve' do
+        it 'will instantiate the scope and resolve' do
+          expect(HeaderPolicy::Scope.resolve(user: user, scope: Models::Header)).to be_a(ActiveRecord::Relation)
+        end
+      end
+    end
   end
 end

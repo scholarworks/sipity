@@ -7,6 +7,10 @@ module Sipity
         Models::Header.find(header_id)
       end
 
+      def find_headers_for(user:)
+        Policies::HeaderPolicy::Scope.resolve(user: user, scope: Models::Header)
+      end
+
       def build_create_header_form(attributes: {})
         Forms::CreateHeaderForm.new(attributes)
       end

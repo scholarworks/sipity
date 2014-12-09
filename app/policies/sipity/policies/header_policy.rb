@@ -45,6 +45,46 @@ module Sipity
             where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
         end
       end
+
+      # Responsible for building a scoped query to find a collection of
+      # Model::Header objects for the given user.
+      #
+      # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
+      #   more information regarding the Scope interface.
+      class Scope
+        def self.resolve(user:, scope: Models::Header)
+          new(user, scope).resolve
+        end
+        def initialize(user, scope = Models::Header)
+          @user = user
+          @scope = scope
+        end
+        attr_reader :user, :scope
+        private :user, :scope
+
+        # Switching to AREL
+        # @see [AREL gem](https://github.com/rails/arel) for information on
+        #   constructing AREL queries
+        def resolve
+          scope.where(scope.arel_table[:id].in(permission_subquery))
+        end
+
+        private
+
+        def permission_subquery(arel_table = Models::Permission.arel_table)
+          arel_table.project(arel_table[:id]).where(
+            arel_table[:user_id].eq(user.to_key).
+            and(arel_table[:role].in([Models::Permission::CREATING_USER])).
+            and(arel_table[:subject_type].eq(polymorphic_subject_type))
+          )
+        end
+
+        def polymorphic_subject_type
+          # I Believe this is the correct way to handle the polymorphic relation
+          # on Models::Permission
+          scope.model_name.name
+        end
+      end
     end
   end
 end

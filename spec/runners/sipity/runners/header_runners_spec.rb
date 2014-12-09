@@ -113,6 +113,34 @@ module Sipity
         end
       end
 
+      RSpec.describe Index do
+        let(:header) { double('Header') }
+        let(:user) { double('User') }
+        let(:context) { TestRunnerContext.new(current_user: user, find_headers_for: [header]) }
+        let(:handler) { double(invoked: true) }
+        subject do
+          described_class.new(context, requires_authentication: false) do |on|
+            on.success { |a| handler.invoked("SUCCESS", a) }
+          end
+        end
+
+        it 'requires authentication' do
+          expect(context).to receive(:authenticate_user!).and_return(true)
+          described_class.new(context)
+        end
+
+        it 'will return only a list of objects that I can see' do
+          subject.run
+          expect(context.repository).to have_received(:find_headers_for).with(user: user)
+        end
+
+        it 'issues the :success callback' do
+          response = subject.run
+          expect(handler).to have_received(:invoked).with("SUCCESS", [header])
+          expect(response).to eq([:success, [header]])
+        end
+      end
+
       RSpec.describe Edit do
         let(:header) { Models::Header.new(id: '123', title: 'My Title') }
         let(:form) { double('Form') }

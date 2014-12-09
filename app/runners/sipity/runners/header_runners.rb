@@ -44,6 +44,16 @@ module Sipity
         end
       end
 
+      # Responsible for providing an index of Headers
+      class Index < BaseRunner
+        self.requires_authentication = true
+
+        def run
+          headers = repository.find_headers_for(user: current_user)
+          callback(:success, headers)
+        end
+      end
+
       # Responsible for instantiating the header for edit
       class Edit < BaseRunner
         self.requires_authentication = true
