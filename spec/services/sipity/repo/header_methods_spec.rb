@@ -11,9 +11,15 @@ module Sipity
       subject { repository_class.new }
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
-      context '#headers_that_can_be_seen_by_user' do
-        it 'will include headers that were created by the user'
-        it 'will NOT include headers created by another user'
+      context '#find_headers_for' do
+        let(:user_one) { User.new(id: 1) }
+        let(:user_two) { User.new(id: 2) }
+        let(:form) { subject.build_create_header_form(attributes: { title: 'My Title', work_publication_strategy: 'do_not_know' }) }
+        let!(:header_one) { subject.submit_create_header_form(form, requested_by: user_one) }
+        let!(:header_two) { subject.submit_create_header_form(form, requested_by: user_two) }
+        it 'will include headers that were created by the user' do
+          expect(subject.find_headers_for(user: user_one)).to eq([header_one])
+        end
       end
 
       context '#assign_a_pid' do

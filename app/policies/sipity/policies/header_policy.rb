@@ -52,6 +52,9 @@ module Sipity
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
+        def self.resolve(user:, scope: Models::Header)
+          new(user, scope).resolve
+        end
         def initialize(user, scope = Models::Header)
           @user = user
           @scope = scope
