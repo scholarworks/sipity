@@ -35,7 +35,7 @@ module Sipity
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
           Models::EventLog.create!(subject: f.header, user: requested_by, event_name: __method__) if requested_by
           # TODO: Remove magic string
-          Models::DoiCreationRequest.create!(header: f.header, state: 'request_not_yet_submitted')
+          Models::DoiCreationRequest.create!(header: f.header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
         end
       end
     end
