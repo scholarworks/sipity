@@ -7,9 +7,9 @@ module Sipity
     class BasePolicy
       # @param user [User]
       # @param entity [#persisted?]
-      # @param policy_question [Symbol] In the general case
-      #   this will be :show?, :create?, :update?, or :destroy?; However in
-      #   other cases that may not be the correct answer.
+      # @param policy_question [Symbol] In the general case this will be :show?,
+      #   :create?, :update?, or :destroy?; However in other cases that may not
+      #   be the correct answer.
       #
       # @return [Boolean] If the user can take the action, then return true.
       #   otherwise return false.
