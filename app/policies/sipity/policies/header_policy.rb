@@ -82,7 +82,7 @@ module Sipity
         def polymorphic_subject_type
           # I Believe this is the correct way to handle the polymorphic relation
           # on Models::Permission
-          scope.model_name.name
+          scope.base_class
         end
       end
     end
