@@ -144,7 +144,7 @@ module Sipity
       RSpec.describe Edit do
         let(:header) { Models::Header.new(id: '123', title: 'My Title') }
         let(:form) { double('Form') }
-        let(:context) { TestRunnerContext.new(find_header: header, build_edit_header_form: form) }
+        let(:context) { TestRunnerContext.new(find_header: header, build_update_header_form: form) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, requires_authentication: false) do |on|
@@ -178,7 +178,7 @@ module Sipity
         let(:user) { double('User') }
         let(:context) do
           TestRunnerContext.new(
-            find_header: header, build_edit_header_form: form, submit_edit_header_form: update_response, current_user: user
+            find_header: header, build_update_header_form: form, submit_update_header_form: update_response, current_user: user
           )
         end
         let(:update_response) { nil }

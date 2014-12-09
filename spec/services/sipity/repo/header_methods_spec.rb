@@ -86,16 +86,16 @@ module Sipity
         end
       end
 
-      context '#build_edit_header_form' do
+      context '#build_update_header_form' do
         let(:header) { Models::Header.new(title: 'Hello World', id: '123') }
         it 'will raise an exception if the header is not persisted' do
           allow(header).to receive(:persisted?).and_return(false)
-          expect { subject.build_edit_header_form(header: header) }.
+          expect { subject.build_update_header_form(header: header) }.
             to raise_error(RuntimeError)
         end
         context 'with a persisted object will return an object that' do
           before { allow(header).to receive(:persisted?).and_return(true) }
-          subject { repository_class.new.build_edit_header_form(header: header) }
+          subject { repository_class.new.build_update_header_form(header: header) }
           it { should respond_to :submit }
           it 'will expose an attribute of the underlying header' do
             expect(subject.title).to eq(header.title)
@@ -107,20 +107,20 @@ module Sipity
         end
       end
 
-      context '#submit_edit_header_form' do
+      context '#submit_update_header_form' do
         let(:user) { User.new(id: '123') }
         let(:header) { Models::Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
-        let(:form) { subject.build_edit_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
+        let(:form) { subject.build_update_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
         context 'with invalid data' do
           before do
             allow(header).to receive(:persisted?).and_return(true)
             allow(form).to receive(:valid?).and_return(false)
           end
           it 'will return false' do
-            expect(subject.submit_edit_header_form(form, requested_by: user)).to eq(false)
+            expect(subject.submit_update_header_form(form, requested_by: user)).to eq(false)
           end
           it 'will NOT update the header' do
-            expect { subject.submit_edit_header_form(form, requested_by: user) }.
+            expect { subject.submit_update_header_form(form, requested_by: user) }.
               to_not change { header.reload.title }
           end
         end
@@ -131,14 +131,14 @@ module Sipity
             allow(form).to receive(:valid?).and_return(true)
           end
           it 'will return the header' do
-            expect(subject.submit_edit_header_form(form, requested_by: user)).to eq(header)
+            expect(subject.submit_update_header_form(form, requested_by: user)).to eq(header)
           end
           it 'will update the header, additional attributes, and create an event log entry' do
-            expect { subject.submit_edit_header_form(form, requested_by: user) }.to(
+            expect { subject.submit_update_header_form(form, requested_by: user) }.to(
               change { header.reload.title }.from('My Title').to('My New Title') &&
               change { Models::AdditionalAttribute.where(header: header).pluck(:key, :value) }.
                 from([['chicken', 'parmasean']]).to([['chicken', 'dance']]) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_edit_header_form').count }.by(1)
+              change { Models::EventLog.where(user: user, event_name: 'submit_update_header_form').count }.by(1)
             )
           end
         end
