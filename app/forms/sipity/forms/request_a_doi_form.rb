@@ -5,7 +5,6 @@ module Sipity
       def initialize(attributes = {})
         self.header = attributes.fetch(:header)
         @publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
-        yield(self) if block_given?
       end
 
       attr_accessor :publisher, :publication_date, :header

@@ -6,7 +6,6 @@ module Sipity
       def initialize(attributes = {})
         self.header = attributes.fetch(:header)
         self.identifier = attributes.fetch(:identifier, nil)
-        yield(self) if block_given?
       end
 
       attr_accessor :header, :identifier
