@@ -18,7 +18,7 @@ module Sipity
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
           )
-          Models::EventLog.create!(subject: f.header, user: requested_by, event_name: 'submit_assign_a_citation_form') if requested_by
+          Models::EventLog.create!(subject: f.header, user: requested_by, event_name: __method__) if requested_by
           true
         end
       end

@@ -45,7 +45,6 @@ module Sipity
 
       def default_permission_query_service
         lambda do |options|
-          # TODO: Extract this method into a permissions object?
           Models::Permission.
             where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
         end
