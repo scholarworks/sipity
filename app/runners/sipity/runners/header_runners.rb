@@ -17,7 +17,6 @@ module Sipity
       # Responsible for creating and persisting a new Header
       class Create < BaseRunner
         self.requires_authentication = true
-        self.policy_question = :create?
 
         def run(attributes:)
           form = repository.build_create_header_form(attributes: attributes)
