@@ -44,6 +44,7 @@ app
 |-- helpers
 |-- mailers
 |-- models
+|-- policies
 |-- presenters
 |-- runners
 |-- services
@@ -75,6 +76,12 @@ Reform gem. Though it could make its way into this application.
 
 Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
 great job of explaining their importance.
+
+### Policies
+
+Take a look at the [Pundit gem](https://github.com/elabs/pundit). Sipity is
+implementing policies that adhere to the interface of Pundit Policy and Scope
+objects.
 
 ### Runners
 
