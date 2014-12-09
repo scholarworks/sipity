@@ -60,7 +60,7 @@ module Sipity
 
         def run(header_id)
           header = repository.find_header(header_id)
-          form = repository.build_edit_header_form(header: header)
+          form = repository.build_update_header_form(header: header)
           with_authorization_enforcement(:update?, form) do
             callback(:success, form)
           end
@@ -73,9 +73,9 @@ module Sipity
 
         def run(header_id, attributes:)
           header = repository.find_header(header_id)
-          form = repository.build_edit_header_form(header: header, attributes: attributes)
+          form = repository.build_update_header_form(header: header, attributes: attributes)
           with_authorization_enforcement(:update?, form) do
-            header = repository.submit_edit_header_form(form, requested_by: current_user)
+            header = repository.submit_update_header_form(form, requested_by: current_user)
             if header
               callback(:success, header)
             else

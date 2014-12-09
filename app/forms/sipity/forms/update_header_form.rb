@@ -3,7 +3,7 @@ module Sipity
     # Responsible for exposing attributes for editing
     #
     # TODO: Expose setter and getter methods for each :exposed_attribute_name
-    class EditHeaderForm < VirtualForm
+    class UpdateHeaderForm < VirtualForm
       self.policy_enforcer = Policies::HeaderPolicy
 
       def self.model_name

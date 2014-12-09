@@ -28,14 +28,14 @@ module Sipity
         end
       end
 
-      def build_edit_header_form(header:, attributes: {})
+      def build_update_header_form(header:, attributes: {})
         fail "Expected #{header} to be persisted" unless header.persisted?
         new_attributes = existing_header_attributes_for(header).merge(attributes)
         exposed_attribute_names = exposed_header_attribute_names_for(header: header)
-        Forms::EditHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
+        Forms::UpdateHeaderForm.new(header: header, exposed_attribute_names: exposed_attribute_names, attributes: new_attributes)
       end
 
-      def submit_edit_header_form(form, requested_by:)
+      def submit_update_header_form(form, requested_by:)
         form.submit do |f|
           header = find_header(f.header.id)
           with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
@@ -43,7 +43,7 @@ module Sipity
             Support::AdditionalAttributes.update!(header: header, key: key, values: values)
           end
           # TODO: Remove magic event name. Should this be derived from the method name?
-          Models::EventLog.create!(subject: header, user: requested_by, event_name: 'submit_edit_header_form') if requested_by
+          Models::EventLog.create!(subject: header, user: requested_by, event_name: 'submit_update_header_form') if requested_by
           header
         end
       end
