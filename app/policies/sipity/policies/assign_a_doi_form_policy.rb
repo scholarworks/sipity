@@ -3,6 +3,10 @@ require 'spec_helper'
 module Sipity
   module Policies
     # Responsible for enforcing Assignment of a DOI
+    #
+    # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
+    #   oriented authorizaiton.
+    # @see HeaderPolicy for more information on who can edit this object.
     class AssignADoiFormPolicy < BasePolicy
       attr_reader :header_policy
       private :header_policy
