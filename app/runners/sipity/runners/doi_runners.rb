@@ -8,7 +8,7 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          authorization_layer.enforce!(:show?, header) do
+          authorization_layer.enforce_take_two!(show?: header) do
             # TODO: Tease out state machine from DoiRecommendation
             if repository.doi_already_assigned?(header)
               callback(:doi_already_assigned, header)
@@ -29,7 +29,7 @@ module Sipity
         def run(header_id:, identifier: nil)
           header = repository.find_header(header_id)
           form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
-          authorization_layer.enforce!(:submit?, form) do
+          authorization_layer.enforce_take_two!(submit?: form) do
             if repository.submit_assign_a_doi_form(form)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
@@ -49,7 +49,7 @@ module Sipity
         def run(header_id:, attributes:)
           header = repository.find_header(header_id)
           form = repository.build_request_a_doi_form(attributes.merge(header: header))
-          authorization_layer.enforce!(:submit?, form) do
+          authorization_layer.enforce_take_two!(submit?: form) do
             if repository.submit_request_a_doi_form(form)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
