@@ -13,7 +13,7 @@ module Sipity
         end
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.doi_already_assigned { |header| handler.invoked("DOI_ALREADY_ASSIGNED", header) }
             on.doi_not_assigned { |header| handler.invoked("DOI_NOT_ASSIGNED", header) }
             on.doi_request_is_pending { |header| handler.invoked("DOI_REQUEST_IS_PENDING", header) }
@@ -25,10 +25,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
-          subject.run
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when a DOI is assigned' do
@@ -68,7 +66,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |header, identifier| handler.invoked("SUCCESS", header, identifier) }
             on.failure { |header| handler.invoked("FAILURE", header) }
           end
@@ -79,10 +77,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:submit?, form)
-          subject.run(header_id: header_id, identifier: identifier)
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when the form submission fails' do
@@ -114,7 +110,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
@@ -125,10 +121,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:submit?, form)
-          subject.run(header_id: header_id, attributes: attributes)
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when the form submission fails' do

@@ -58,7 +58,7 @@ module Sipity
         before do
           MyRunner = Class.new(BaseRunner) do
             def run(entity:, policy_question:)
-              with_authorization_enforcement(policy_question, entity) do
+              authorization_layer.enforce!(policy_question, entity) do
                 callback(:success, entity)
               end
             end

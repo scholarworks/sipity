@@ -11,7 +11,7 @@ module Sipity
         let(:context) { TestRunnerContext.new(build_create_header_form: header) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
@@ -21,10 +21,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:create?, header)
-          subject.run
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         it 'issues the :success callback' do
@@ -48,7 +46,7 @@ module Sipity
         let(:creation_response) { nil }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
@@ -59,10 +57,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:create?, form)
-          subject.run(attributes: {})
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when header is saved' do
@@ -90,7 +86,7 @@ module Sipity
         let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
@@ -100,10 +96,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:show?, header)
-          subject.run(1234)
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         it 'issues the :success callback' do
@@ -119,7 +113,7 @@ module Sipity
         let(:context) { TestRunnerContext.new(current_user: user, find_headers_for: [header]) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
@@ -147,7 +141,7 @@ module Sipity
         let(:context) { TestRunnerContext.new(find_header: header, build_update_header_form: form) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
@@ -157,10 +151,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:update?, form)
-          subject.run(1234)
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when header is found' do
@@ -186,7 +178,7 @@ module Sipity
         let(:attributes) { {} }
 
         subject do
-          described_class.new(context, requires_authentication: false) do |on|
+          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
@@ -197,10 +189,8 @@ module Sipity
           described_class.new(context)
         end
 
-        it 'requires authorization' do
-          allow(subject).to receive(:with_authorization_enforcement).with(:update?, form)
-          subject.run(1234, attributes: attributes)
-          expect(handler).to_not have_received(:invoked)
+        it 'enforces authorization' do
+          expect(described_class.enforces_authorization).to be_truthy
         end
 
         context 'when header is updated' do

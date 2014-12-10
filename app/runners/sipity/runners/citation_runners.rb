@@ -4,10 +4,11 @@ module Sipity
       # Responsible for responding with the state of the header's citation.
       class Show < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          with_authorization_enforcement(:show?, header) do
+          authorization_layer.enforce!(:show?, header) do
             if repository.citation_already_assigned?(header)
               callback(:citation_assigned, header)
             else
@@ -20,10 +21,11 @@ module Sipity
       # Responsible for responding with the correct form for the header's citation
       class New < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          with_authorization_enforcement(:create?, header) do
+          authorization_layer.enforce!(:create?, header) do
             if repository.citation_already_assigned?(header)
               callback(:citation_assigned, header)
             else
@@ -37,11 +39,12 @@ module Sipity
       # Responsible for building, validating, and submitting the form.
       class Create < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id:, attributes: {})
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(attributes.merge(header: header))
-          with_authorization_enforcement(:create?, header) do
+          authorization_layer.enforce!(:create?, header) do
             if repository.submit_assign_a_citation_form(form)
               callback(:success, header)
             else

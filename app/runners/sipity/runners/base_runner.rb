@@ -71,12 +71,6 @@ module Sipity
         end
       end
 
-      def with_authorization_enforcement(policy_question, entity)
-        authorization_layer.enforce!(policy_question, entity) do
-          yield
-        end
-      end
-
       def enforce_authentication!
         return true unless requires_authentication?
         return true if authentication_service.call(context)
