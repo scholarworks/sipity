@@ -40,12 +40,12 @@ I am doing my best to re-read the output tests to make sure they are adequate/ac
 app
 |-- assets
 |-- controllers
+|-- decorators
 |-- forms
 |-- helpers
 |-- mailers
 |-- models
 |-- policies
-|-- presenters
 |-- runners
 |-- services
 |-- views
@@ -74,12 +74,12 @@ Reform gem. Though it could make its way into this application.
 
 Find out more about [Sipity's Forms](https://github.com/ndlib/sipity/blob/master/app/forms/sipity/forms.rb)
 
-### Presenters
+### Decorators
 
 Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
 great job of explaining their importance.
 
-Find out more about [Sipity's Presenters](https://github.com/ndlib/sipity/blob/master/app/presenters/sipity/decorators.rb)
+Find out more about [Sipity's Decorators](https://github.com/ndlib/sipity/blob/master/app/decorators/sipity/decorators.rb)
 
 ### Policies
 
