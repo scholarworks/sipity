@@ -17,6 +17,7 @@ gem 'simple_form'
 gem 'upmin-admin'
 gem 'draper', '~> 1.4'
 gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
+gem 'ezid-client', '~> 0.5.0'
 group :doc do
   gem 'yard'
 end
