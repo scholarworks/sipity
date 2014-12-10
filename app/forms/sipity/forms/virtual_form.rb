@@ -26,8 +26,10 @@ module Sipity
       end
 
       # @return false if the form was not valid
-      # @return true if the form was valid and the caller's submission block was
+      #
+      # @return truthy if the form was valid and the caller's submission block was
       #   successful
+      #
       # @yield [VirtualForm] when the form is valid yield control to the caller
       # @yieldparam form [VirtualForm]
       # @yieldreturn the sender's response successful
