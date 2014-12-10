@@ -8,7 +8,7 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          authorization_layer.enforce_take_two!(show?: header) do
+          authorization_layer.enforce!(show?: header) do
             if repository.citation_already_assigned?(header)
               callback(:citation_assigned, header)
             else
@@ -25,7 +25,7 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          authorization_layer.enforce_take_two!(create?: header) do
+          authorization_layer.enforce!(create?: header) do
             if repository.citation_already_assigned?(header)
               callback(:citation_assigned, header)
             else
@@ -44,7 +44,7 @@ module Sipity
         def run(header_id:, attributes: {})
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(attributes.merge(header: header))
-          authorization_layer.enforce_take_two!(create?: header) do
+          authorization_layer.enforce!(create?: header) do
             if repository.submit_assign_a_citation_form(form)
               callback(:success, header)
             else

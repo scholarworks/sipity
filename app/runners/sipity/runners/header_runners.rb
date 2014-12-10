@@ -9,7 +9,7 @@ module Sipity
 
         def run
           header = repository.build_create_header_form
-          authorization_layer.enforce_take_two!(create?: header) do
+          authorization_layer.enforce!(create?: header) do
             callback(:success, header)
           end
         end
@@ -22,7 +22,7 @@ module Sipity
 
         def run(attributes:)
           form = repository.build_create_header_form(attributes: attributes)
-          authorization_layer.enforce_take_two!(create?: form) do
+          authorization_layer.enforce!(create?: form) do
             header = repository.submit_create_header_form(form, requested_by: current_user)
             if header
               callback(:success, header)
@@ -40,7 +40,7 @@ module Sipity
 
         def run(header_id:)
           header = repository.find_header(header_id)
-          authorization_layer.enforce_take_two!(show?: header) do
+          authorization_layer.enforce!(show?: header) do
             callback(:success, header)
           end
         end
@@ -64,7 +64,7 @@ module Sipity
         def run(header_id:)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header)
-          authorization_layer.enforce_take_two!(update?: form) do
+          authorization_layer.enforce!(update?: form) do
             callback(:success, form)
           end
         end
@@ -78,7 +78,7 @@ module Sipity
         def run(header_id:, attributes:)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header, attributes: attributes)
-          authorization_layer.enforce_take_two!(update?: form) do
+          authorization_layer.enforce!(update?: form) do
             header = repository.submit_update_header_form(form, requested_by: current_user)
             if header
               callback(:success, header)
