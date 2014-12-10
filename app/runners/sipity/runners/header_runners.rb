@@ -5,10 +5,11 @@ module Sipity
       # Responsible for building the model for a New Header
       class New < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run
           header = repository.build_create_header_form
-          with_authorization_enforcement(:create?, header) do
+          authorization_layer.enforce!(:create?, header) do
             callback(:success, header)
           end
         end
@@ -17,11 +18,11 @@ module Sipity
       # Responsible for creating and persisting a new Header
       class Create < BaseRunner
         self.requires_authentication = true
-        self.policy_question = :create?
+        self.enforces_authorization = true
 
         def run(attributes:)
           form = repository.build_create_header_form(attributes: attributes)
-          with_authorization_enforcement(:create?, form) do
+          authorization_layer.enforce!(:create?, form) do
             header = repository.submit_create_header_form(form, requested_by: current_user)
             if header
               callback(:success, header)
@@ -35,10 +36,11 @@ module Sipity
       # Responsible for instantiating the model for a Header
       class Show < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id)
           header = repository.find_header(header_id)
-          with_authorization_enforcement(:show?, header) do
+          authorization_layer.enforce!(:show?, header) do
             callback(:success, header)
           end
         end
@@ -57,11 +59,12 @@ module Sipity
       # Responsible for instantiating the header for edit
       class Edit < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header)
-          with_authorization_enforcement(:update?, form) do
+          authorization_layer.enforce!(:update?, form) do
             callback(:success, form)
           end
         end
@@ -70,11 +73,12 @@ module Sipity
       # Responsible for creating and persisting a new Header
       class Update < BaseRunner
         self.requires_authentication = true
+        self.enforces_authorization = true
 
         def run(header_id, attributes:)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header, attributes: attributes)
-          with_authorization_enforcement(:update?, form) do
+          authorization_layer.enforce!(:update?, form) do
             header = repository.submit_update_header_form(form, requested_by: current_user)
             if header
               callback(:success, header)

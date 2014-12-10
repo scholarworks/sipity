@@ -16,7 +16,9 @@ module Sipity
         expect(BaseRunner.authentication_service).to respond_to(:call)
       end
 
-      its(:policy_question) { should be :policy_always_fails_so_change_it! }
+      it 'has a default enforces_authorization' do
+        expect(BaseRunner.enforces_authorization).to be_falsey
+      end
 
       it { should respond_to :repository }
       it { should respond_to :current_user }
@@ -50,11 +52,13 @@ module Sipity
       context '.with_authorization_enforcement' do
         let(:user) { double('User') }
         let(:handler) { double(invoked: true) }
-        let(:context) { TestRunnerContext.new(current_user: user, policy_authorized_for?: policy_authorized_answer) }
+        let(:authorization_layer) { double('AuthorizationLayer', enforce!: true) }
+        let(:entity) { double('Entity') }
+        let(:context) { TestRunnerContext.new(current_user: user, authorization_layer: authorization_layer) }
         before do
           MyRunner = Class.new(BaseRunner) do
-            def run(entity:, policy_question: :show?)
-              with_authorization_enforcement(policy_question, entity) do
+            def run(entity:, policy_question:)
+              authorization_layer.enforce!(policy_question, entity) do
                 callback(:success, entity)
               end
             end
@@ -64,29 +68,13 @@ module Sipity
           Sipity::Runners.send(:remove_const, :MyRunner)
         end
         subject do
-          MyRunner.new(context) do |on|
-            on.unauthorized { handler.invoked('UNAUTHORIZED') }
+          MyRunner.new(context, authorization_layer: authorization_layer) do |on|
             on.success { |a| handler.invoked('SUCCESS', a) }
           end
         end
-        context 'when the request is unauthorized' do
-          let(:policy_authorized_answer) { false }
-          let(:entity) { double('Entity') }
-          it 'will issue the :unauthorized callback then fail' do
-            expect { subject.run(entity: entity) }.to raise_error(Sipity::Exceptions::AuthorizationFailureError)
-            expect(handler).to have_received(:invoked).with('UNAUTHORIZED')
-            expect(handler).to_not have_received(:invoked).with('SUCCESS', entity)
-          end
-        end
-
-        context 'when the request is authorized' do
-          let(:policy_authorized_answer) { true }
-          let(:entity) { double('Entity') }
-          it 'will yield control and return the result' do
-            response = subject.run(entity: entity)
-            expect(handler).to have_received(:invoked).with('SUCCESS', entity)
-            expect(response).to eq([:success, entity])
-          end
+        it 'will issue the :unauthorized callback then fail' do
+          expect(authorization_layer).to receive(:enforce!).with(:show?, entity).and_yield
+          subject.run(entity: entity, policy_question: :show?)
         end
       end
     end

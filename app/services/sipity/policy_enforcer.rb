@@ -1,21 +1,32 @@
 module Sipity
-  # Contains the various Policies associated with Sipity.
-  #
-  # A Policy is an object responsible for answering questions about actions
-  # the given user is attempting to take on a given object.
-  #
-  # @see [Elabs' Pundit gem](http://github.com/elabs/pundit) for
-  #   further explanation of Policy and Scope objects.
-  module Policies
-    module_function
+  # A service object to find and enforce appropriate policies.
+  class PolicyEnforcer
+    # Everything is allowed!
+    class AuthorizeEverything
+      def initialize(*)
+      end
 
-    def with_authorization_enforcement(user:, policy_question:, entity:)
+      def enforce!(*)
+        yield
+      end
+    end
+    def initialize(context)
+      @context = context
+      @user = context.current_user
+    end
+    attr_reader :user, :context
+    private :user, :context
+
+    def enforce!(policy_question, entity)
       if policy_authorized_for?(user: user, policy_question: policy_question, entity: entity)
         yield
       else
+        context.callback(:unauthorized) if context.respond_to?(:callback)
         fail Exceptions::AuthorizationFailureError, user: user, policy_question: policy_question, entity: entity
       end
     end
+
+    private
 
     def policy_authorized_for?(user:, policy_question:, entity:)
       policy_enforcer = find_policy_enforcer_for(entity)
