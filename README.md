@@ -72,10 +72,14 @@ method.
 As of the writing of this, I'm not making use of Nick Sutterer's fantastic
 Reform gem. Though it could make its way into this application.
 
+Find out more about [Sipity's Forms](https://github.com/ndlib/sipity/blob/master/app/forms/sipity/forms.rb)
+
 ### Presenters
 
 Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
 great job of explaining their importance.
+
+Find out more about [Sipity's Presenters](https://github.com/ndlib/sipity/blob/master/app/presenters/sipity/decorators.rb)
 
 ### Policies
 
@@ -83,11 +87,15 @@ Take a look at the [Pundit gem](https://github.com/elabs/pundit). Sipity is
 implementing policies that adhere to the interface of Pundit Policy and Scope
 objects.
 
+Find out more about [Sipity's Policies](https://github.com/ndlib/sipity/blob/master/app/policies/sipity/policies.rb)
+
 ### Runners
 
 This is a step towards crafting a single class per Controller action.
 They are an implementation idea of the late Jim Weirich and provide a fantastic
 means of pulling even more logic out of the overworked Rails controller.
+
+Find out more about [Sipity's Runners](https://github.com/ndlib/sipity/blob/master/app/runners/sipity/runners.rb)
 
 ### Services
 
