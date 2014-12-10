@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  RSpec.describe PolicyEnforcer do
+  RSpec.describe AuthorizationLayer do
     subject { described_class.new(context) }
     let(:entity) { Models::Header.new(id: '2') }
     let(:context) { double(current_user: User.new(id: '1')) }
@@ -41,7 +41,7 @@ module Sipity
     end
   end
 
-  RSpec.describe PolicyEnforcer::AuthorizeEverything do
+  RSpec.describe AuthorizationLayer::AuthorizeEverything do
     let(:context) { double }
     subject { described_class.new(context) }
     context '#enforce!' do

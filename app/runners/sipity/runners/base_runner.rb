@@ -90,9 +90,9 @@ module Sipity
 
       def default_authorization_layer
         if enforces_authorization.present?
-          PolicyEnforcer.new(self)
+          AuthorizationLayer.new(self)
         else
-          PolicyEnforcer::AuthorizeEverything.new(self)
+          AuthorizationLayer::AuthorizeEverything.new(self)
         end
       end
 

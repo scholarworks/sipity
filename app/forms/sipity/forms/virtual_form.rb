@@ -9,8 +9,6 @@ module Sipity
     class VirtualForm
       include ActiveModel::Validations
       extend ActiveModel::Translation
-      # TODO: Is there a better name for this? Given the existence of the
-      # Sipity::PolicyEnforcer
       class_attribute :policy_enforcer
 
       def to_key

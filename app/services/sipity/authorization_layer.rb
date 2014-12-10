@@ -1,6 +1,6 @@
 module Sipity
   # A service object to find and enforce appropriate policies.
-  class PolicyEnforcer
+  class AuthorizationLayer
     def initialize(context)
       @context = context
       @user = context.current_user
