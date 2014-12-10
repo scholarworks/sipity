@@ -16,7 +16,7 @@ module Sipity
     # @yield Returns control to the caller if all :policy_questions_and_entity_pairs
     #   are authorized.
     #
-    # @raises [Exceptions::AuthorizationFailureError] if one of the
+    # @raise [Exceptions::AuthorizationFailureError] if one of the
     #   policy_question/entity pairs fail to authorize.
     #
     # @note If the context implements #callbacks, that will be called.

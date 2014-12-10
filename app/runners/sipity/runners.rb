@@ -16,7 +16,7 @@ module Sipity
   # If you want the filter concept to run do it as part of the runner. That way
   # you can make sure your command-line application adhears to the same policy.
   #
-  # @see [Jim Weirich's Wyriki](https://github.com/jimweirich/wyriki)
+  # @see https://github.com/jimweirich/wyriki Jim Weirich's Wyriki
   module Runners
   end
 end
