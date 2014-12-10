@@ -17,6 +17,15 @@ module Sipity
       end
     end
 
+    def enforce_take_two!(questions_and_entities = {})
+      questions_and_entities.each do |policy_question, entity|
+        next if policy_authorized_for?(user: user, policy_question: policy_question, entity: entity)
+        context.callback(:unauthorized) if context.respond_to?(:callback)
+        fail Exceptions::AuthorizationFailureError, user: user, policy_question: policy_question, entity: entity
+      end
+      yield
+    end
+
     private
 
     def policy_authorized_for?(user:, policy_question:, entity:)
@@ -40,6 +49,10 @@ module Sipity
       end
 
       def enforce!(*)
+        yield
+      end
+
+      def enforce_take_two!(*)
         yield
       end
     end
