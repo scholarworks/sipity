@@ -49,7 +49,7 @@ module Sipity
         end
       end
 
-      context '.with_authorization_enforcement' do
+      context 'when enforcing the authorization layer' do
         let(:user) { double('User') }
         let(:handler) { double(invoked: true) }
         let(:authorization_layer) { double('AuthorizationLayer', enforce!: true) }
@@ -72,9 +72,11 @@ module Sipity
             on.success { |a| handler.invoked('SUCCESS', a) }
           end
         end
-        it 'will issue the :unauthorized callback then fail' do
+        it 'will enforce! the policy then yield control to the runner' do
           expect(authorization_layer).to receive(:enforce!).with(:show?, entity).and_yield
-          subject.run(entity: entity, policy_question: :show?)
+          response = subject.run(entity: entity, policy_question: :show?)
+          expect(handler).to have_received(:invoked).with('SUCCESS', entity)
+          expect(response).to eq([:success, entity])
         end
       end
     end
