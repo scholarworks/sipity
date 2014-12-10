@@ -19,10 +19,13 @@ module Sipity
     class BaseRunner < Hesburgh::Lib::Runner
       class_attribute :requires_authentication, instance_accessor: false
       class_attribute :authentication_service, instance_accessor: false
+      class_attribute :enforces_authorization, instance_accessor: false
 
       # Does this runner require authentication? This is not authorization. We
       # care only if the user is signed in, not who or what they are.
       self.requires_authentication = false
+
+      self.enforces_authorization = false
 
       # The default authentication service is from Devise; Perhaps this is
       # something to configure at the application level.
@@ -36,6 +39,10 @@ module Sipity
       # @option options [#call] :authentication_service if authentication is
       #   required, this lambda will be called. It should return true if we have
       #   a user, or false otherwise.
+      # @option options [Boolean] :enforces_authorization will this instance
+      #   enforce authorizations? Or will the underlying authorization_layer authorize everything?
+      # @option options [#enforce!] :authorization_layer What are the authorization_layer that should
+      #   be in effect for this instance?
       #
       # @note By convention, the Rails application will instantiate this object
       #   without passing any options; Thus the class configuration options will be
@@ -46,20 +53,27 @@ module Sipity
         @requires_authentication = options.fetch(:requires_authentication) { self.class.requires_authentication }
         @authentication_service = options.fetch(:authentication_service) { self.class.authentication_service }
         enforce_authentication!
+        @enforces_authorization = options.fetch(:enforces_authorization) { self.class.enforces_authorization }
+        @authorization_layer = options.fetch(:authorization_layer) { default_authorization_layer }
       end
 
       delegate :repository, :current_user, to: :context
-      attr_reader :requires_authentication, :authentication_service, :policies
-      private :requires_authentication, :authentication_service, :policies
+      attr_reader :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
+      private :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
 
       private
 
-      def with_authorization_enforcement(policy_question, entity)
-        if repository.policy_authorized_for?(user: current_user, policy_question: policy_question, entity: entity)
-          yield
+      def default_authorization_layer
+        if enforces_authorization.present?
+          PolicyEnforcer.new(self)
         else
-          callback(:unauthorized)
-          fail Exceptions::AuthorizationFailureError, user: current_user, policy_question: policy_question, entity: entity
+          PolicyEnforcer::AuthorizeEverything.new(self)
+        end
+      end
+
+      def with_authorization_enforcement(policy_question, entity)
+        authorization_layer.enforce!(policy_question, entity) do
+          yield
         end
       end
 
