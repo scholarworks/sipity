@@ -42,6 +42,7 @@ app
 |-- controllers
 |-- decorators
 |-- forms
+|-- jobs
 |-- helpers
 |-- mailers
 |-- models
@@ -54,6 +55,13 @@ app
 ### Assets, Controllers, Helpers, Mailers, Models, Views
 
 The usual Rails suspects.
+
+### Decorators
+
+Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
+great job of explaining their importance.
+
+Find out more about [Sipity's Decorators](https://github.com/ndlib/sipity/blob/master/app/decorators/sipity/decorators.rb)
 
 ### Forms
 
@@ -74,12 +82,9 @@ Reform gem. Though it could make its way into this application.
 
 Find out more about [Sipity's Forms](https://github.com/ndlib/sipity/blob/master/app/forms/sipity/forms.rb)
 
-### Decorators
+### Jobs
 
-Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
-great job of explaining their importance.
-
-Find out more about [Sipity's Decorators](https://github.com/ndlib/sipity/blob/master/app/decorators/sipity/decorators.rb)
+Find out more about [Sipity's Jobs](https://github.com/ndlib/sipity/blob/master/app/jobs/sipity/jobs.rb)
 
 ### Policies
 
