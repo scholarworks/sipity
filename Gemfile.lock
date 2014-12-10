@@ -1,4 +1,10 @@
 GIT
+  remote: git://github.com/duke-libraries/ezid-client.git
+  revision: b1512cf903337ca281ab2d5906831ff41955d42d
+  specs:
+    ezid-client (0.7.0)
+
+GIT
   remote: git://github.com/ndlib/hesburgh-lib.git
   revision: a22bae11b65f1eabbdba3e02fabf1c5cded63ac0
   specs:
@@ -112,7 +118,6 @@ GEM
       request_store (~> 1.0)
     erubis (2.7.0)
     execjs (2.2.2)
-    ezid-client (0.5.0)
     factory_girl (4.5.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.5.0)
@@ -370,7 +375,7 @@ DEPENDENCIES
   database_cleaner
   devise
   draper (~> 1.4)
-  ezid-client (~> 0.5.0)
+  ezid-client!
   factory_girl_rails
   faker
   figaro (>= 1.0.0.rc1)
