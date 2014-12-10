@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :sipity_event_log, class: 'Sipity::Models::EventLog' do
     user 1
-    subject_id 1
-    subject_type "MyString"
+    entity_id 1
+    entity_type "MyString"
     event_name "MyString"
   end
 end

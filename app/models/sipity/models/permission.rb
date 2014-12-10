@@ -6,7 +6,7 @@ module Sipity
       CREATING_USER = 'creating_user'.freeze
       self.table_name = 'sipity_permissions'
       belongs_to :user
-      belongs_to :subject, polymorphic: true
+      belongs_to :entity, polymorphic: true
     end
   end
 end

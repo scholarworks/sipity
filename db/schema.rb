@@ -47,18 +47,18 @@ ActiveRecord::Schema.define(version: 20141204165259) do
   add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state"
 
   create_table "sipity_event_logs", force: true do |t|
-    t.integer  "user_id",                 null: false
-    t.integer  "subject_id",              null: false
-    t.string   "subject_type", limit: 64, null: false
-    t.string   "event_name",              null: false
+    t.integer  "user_id",                null: false
+    t.integer  "entity_id",              null: false
+    t.string   "entity_type", limit: 64, null: false
+    t.string   "event_name",             null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sipity_event_logs", ["subject_id", "subject_type", "event_name"], name: "sipity_event_logs_subject_event_name"
-  add_index "sipity_event_logs", ["subject_id", "subject_type"], name: "sipity_event_logs_subject"
+  add_index "sipity_event_logs", ["entity_id", "entity_type", "event_name"], name: "sipity_event_logs_entity_event_name"
+  add_index "sipity_event_logs", ["entity_id", "entity_type"], name: "sipity_event_logs_subject"
+  add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject"
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
-  add_index "sipity_event_logs", ["user_id", "subject_id", "subject_type"], name: "sipity_event_logs_user_subject"
 
   create_table "sipity_headers", force: true do |t|
     t.string   "work_publication_strategy"
@@ -68,17 +68,17 @@ ActiveRecord::Schema.define(version: 20141204165259) do
   end
 
   create_table "sipity_permissions", force: true do |t|
-    t.integer  "user_id",                 null: false
-    t.integer  "subject_id",              null: false
-    t.string   "subject_type", limit: 64, null: false
-    t.string   "role",         limit: 32, null: false
+    t.integer  "user_id",                null: false
+    t.integer  "entity_id",              null: false
+    t.string   "entity_type", limit: 64, null: false
+    t.string   "role",        limit: 32, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sipity_permissions", ["subject_id", "subject_type", "role"], name: "sipity_permissions_subject_role"
+  add_index "sipity_permissions", ["entity_id", "entity_type", "role"], name: "sipity_permissions_entity_role"
+  add_index "sipity_permissions", ["user_id", "entity_id", "entity_type"], name: "sipity_permissions_user_subject"
   add_index "sipity_permissions", ["user_id", "role"], name: "sipity_permissions_user_role"
-  add_index "sipity_permissions", ["user_id", "subject_id", "subject_type"], name: "sipity_permissions_user_subject"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
