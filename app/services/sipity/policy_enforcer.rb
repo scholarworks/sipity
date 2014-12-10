@@ -1,15 +1,6 @@
 module Sipity
   # A service object to find and enforce appropriate policies.
   class PolicyEnforcer
-    # Everything is allowed!
-    class AuthorizeEverything
-      def initialize(*)
-      end
-
-      def enforce!(*)
-        yield
-      end
-    end
     def initialize(context)
       @context = context
       @user = context.current_user
@@ -40,6 +31,16 @@ module Sipity
         # Yowza! This could cause lots of problems; Maybe I should be very
         # specific about this?
         Policies.const_get("#{entity.class.to_s.demodulize}Policy")
+      end
+    end
+
+    # Everything is allowed!
+    class AuthorizeEverything
+      def initialize(*)
+      end
+
+      def enforce!(*)
+        yield
       end
     end
   end
