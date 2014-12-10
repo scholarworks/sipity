@@ -21,10 +21,26 @@ module Sipity
       class_attribute :authentication_service, instance_accessor: false
       class_attribute :enforces_authorization, instance_accessor: false
 
-      # Does this runner require authentication? This is not authorization. We
-      # care only if the user is signed in, not who or what they are.
-      self.requires_authentication = false
+      # Because yardoc's scope imperative does not appear to work, I'm pushing the
+      # comments into the class definition
+      class << self
+        # @!attribute [rw] requires_authentication
+        #   If true, then the runner will make sure it has a current user.
+        #
+        #   @return [Boolean]
+        #
+        # @!attribute [rw] enforces_authorization
+        #   If true, then the runner will apply a more rigorous authorization_layer.
+        #
+        #   @return [Boolean]
+        #
+        # @!attribute [rw] authentication_service
+        #   What will the runner use to perform the authentication?
+        #
+        #   @return [#call(context)]
+      end
 
+      self.requires_authentication = false
       self.enforces_authorization = false
 
       # The default authentication service is from Devise; Perhaps this is
@@ -61,6 +77,15 @@ module Sipity
       attr_reader :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
       private :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
 
+      # The returned value should be an issued callback
+      #
+      # @return results of the #callback method
+      #
+      # @see NamedCallback
+      def run(*)
+        fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
+      end
+
       private
 
       def default_authorization_layer
@@ -72,17 +97,13 @@ module Sipity
       end
 
       def enforce_authentication!
-        return true unless requires_authentication?
+        return true unless requires_authentication.present?
         return true if authentication_service.call(context)
         # I am choosing to raise this exception because the default authentication
         # service has likely thrown an exception if things have failed. This is
         # my last line of defense. If you encounter this exception, make sure
         # to review the authentication_service method for its output.
         fail Exceptions::AuthenticationFailureError, self.class
-      end
-
-      def requires_authentication?
-        requires_authentication.present?
       end
     end
   end
