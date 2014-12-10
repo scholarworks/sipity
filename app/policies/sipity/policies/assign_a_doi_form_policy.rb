@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 module Sipity
   module Policies
     # Responsible for enforcing Assignment of a DOI
