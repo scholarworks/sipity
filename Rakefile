@@ -29,3 +29,20 @@ end
 
 Rake::Task["default"].clear
 task default: ['rubocop', 'spec:all']
+
+namespace :sipity do
+  task :stats_setup do
+    require 'rails/code_statistics'
+    types = begin
+      dirs = Dir['./app/**/*.rb'].map { |f| f.sub(%r{^\./(app/\w+)/.*}, '\\1') }.uniq.select { |f| File.directory?(f) }
+      Hash[dirs.map { |d| [d.split('/').last, d] }]
+    end
+    types.each do |type, dir|
+      name = type.pluralize.capitalize
+      ::STATS_DIRECTORIES << [name, dir] unless ::STATS_DIRECTORIES.find { |array| array[0] == name }
+    end
+    ::STATS_DIRECTORIES.sort!
+  end
+end
+
+task stats: ['sipity:stats_setup']
