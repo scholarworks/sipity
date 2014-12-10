@@ -101,7 +101,7 @@ module Sipity
         end
 
         it 'issues the :success callback' do
-          response = subject.run(1234)
+          response = subject.run(header_id: 1234)
           expect(handler).to have_received(:invoked).with("SUCCESS", header)
           expect(response).to eq([:success, header])
         end
@@ -157,7 +157,7 @@ module Sipity
 
         context 'when header is found' do
           it 'will issue the :success callback and return the header' do
-            response = subject.run('123')
+            response = subject.run(header_id: '123')
             expect(handler).to have_received(:invoked).with('SUCCESS', form)
             expect(response).to eq([:success, form])
           end
@@ -196,7 +196,7 @@ module Sipity
         context 'when header is updated' do
           let(:update_response) { header }
           it 'will issue the :success callback and return the header' do
-            response = subject.run('123', attributes: attributes)
+            response = subject.run(header_id: '123', attributes: attributes)
             expect(handler).to have_received(:invoked).with('SUCCESS', header)
             expect(response).to eq([:success, header])
           end
@@ -205,7 +205,7 @@ module Sipity
         context 'when header update fails' do
           let(:update_response) { false }
           it 'will issue the :failure callback and return the form' do
-            response = subject.run('123', attributes: attributes)
+            response = subject.run(header_id: '123', attributes: attributes)
             expect(handler).to have_received(:invoked).with('FAILURE', form)
             expect(response).to eq([:failure, form])
           end

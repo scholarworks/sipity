@@ -38,7 +38,7 @@ module Sipity
         self.requires_authentication = true
         self.enforces_authorization = true
 
-        def run(header_id)
+        def run(header_id:)
           header = repository.find_header(header_id)
           authorization_layer.enforce!(:show?, header) do
             callback(:success, header)
@@ -61,7 +61,7 @@ module Sipity
         self.requires_authentication = true
         self.enforces_authorization = true
 
-        def run(header_id)
+        def run(header_id:)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header)
           authorization_layer.enforce!(:update?, form) do
@@ -75,7 +75,7 @@ module Sipity
         self.requires_authentication = true
         self.enforces_authorization = true
 
-        def run(header_id, attributes:)
+        def run(header_id:, attributes:)
           header = repository.find_header(header_id)
           form = repository.build_update_header_form(header: header, attributes: attributes)
           authorization_layer.enforce!(:update?, form) do

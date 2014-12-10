@@ -27,7 +27,7 @@ module Sipity
         before { controller.runner = runner }
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
-            yields: yields, callback_name: callback_name, run_with: header.to_param, context: controller
+            yields: yields, callback_name: callback_name, run_with: { header_id: header.to_param }, context: controller
           )
         end
 

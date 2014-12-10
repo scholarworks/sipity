@@ -20,18 +20,18 @@ module Sipity
       end
 
       def show
-        _status, model = run(params[:id])
+        _status, model = run(header_id: header_id)
         @model = Decorators::HeaderDecorator.decorate(model)
         respond_with(@model)
       end
 
       def edit
-        _status, @model = run(params[:id])
+        _status, @model = run(header_id: header_id)
         respond_with(@model)
       end
 
       def update
-        status, @model = run(params[:id], attributes: update_params)
+        status, @model = run(header_id: header_id, attributes: update_params)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
@@ -41,6 +41,10 @@ module Sipity
       helper_method :model
 
       private
+
+      def header_id
+        params.require(:id)
+      end
 
       def create_params
         params.require(:header)
