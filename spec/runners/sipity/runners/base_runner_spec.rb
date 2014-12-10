@@ -20,6 +20,10 @@ module Sipity
         expect(BaseRunner.enforces_authorization).to be_falsey
       end
 
+      it 'will require you to implement #run' do
+        expect { subject.run }.to raise_error(NotImplementedError)
+      end
+
       it { should respond_to :repository }
       it { should respond_to :current_user }
 
