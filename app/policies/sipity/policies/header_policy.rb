@@ -20,13 +20,13 @@ module Sipity
       def show?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       def update?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       def create?
@@ -38,7 +38,7 @@ module Sipity
       def destroy?
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, subject: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
       private
@@ -46,7 +46,7 @@ module Sipity
       def default_permission_query_service
         lambda do |options|
           Models::Permission.
-            where(user: options.fetch(:user), subject: options.fetch(:subject), role: options.fetch(:roles)).any?
+            where(user: options.fetch(:user), entity: options.fetch(:entity), role: options.fetch(:roles)).any?
         end
       end
 
@@ -79,11 +79,11 @@ module Sipity
           arel_table.project(arel_table[:id]).where(
             arel_table[:user_id].eq(user.to_key).
             and(arel_table[:role].in([Models::Permission::CREATING_USER])).
-            and(arel_table[:subject_type].eq(polymorphic_subject_type))
+            and(arel_table[:entity_type].eq(polymorphic_entity_type))
           )
         end
 
-        def polymorphic_subject_type
+        def polymorphic_entity_type
           # I Believe this is the correct way to handle the polymorphic relation
           # on Models::Permission
           scope.base_class

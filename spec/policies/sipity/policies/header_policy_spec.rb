@@ -11,7 +11,7 @@ module Sipity
       it 'has a default permission query service' do
         policy = HeaderPolicy.new(user, header)
         service = policy.send(:permission_query_service)
-        expect(service.call(user: user, subject: header, roles: ['hello_world'])).to eq(false)
+        expect(service.call(user: user, entity: header, roles: ['hello_world'])).to eq(false)
       end
 
       context 'for a non-authenticated user' do
@@ -36,7 +36,7 @@ module Sipity
           end
           before do
             allow(query_service).to receive(:call).
-              with(user: user, subject: header, roles: [Models::Permission::CREATING_USER]).
+              with(user: user, entity: header, roles: [Models::Permission::CREATING_USER]).
               and_return(is_creating_user)
           end
           context 'that was created by the user' do
