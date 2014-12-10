@@ -6,7 +6,7 @@ module Sipity
         self.requires_authentication = true
         self.enforces_authorization = true
 
-        def run(header_id: nil)
+        def run(header_id:)
           header = repository.find_header(header_id)
           authorization_layer.enforce!(:show?, header) do
             # TODO: Tease out state machine from DoiRecommendation
@@ -26,7 +26,7 @@ module Sipity
         self.requires_authentication = true
         self.enforces_authorization = true
 
-        def run(header_id: nil, identifier: nil)
+        def run(header_id:, identifier: nil)
           header = repository.find_header(header_id)
           form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
           authorization_layer.enforce!(:submit?, form) do
