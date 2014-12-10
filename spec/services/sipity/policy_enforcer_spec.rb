@@ -40,7 +40,7 @@ module Sipity
     let(:context) { double }
     subject { described_class.new(context) }
     context '#enforce!' do
-      it 'will yield to the caller' do
+      it 'will be very permissive and always yield to the caller' do
         expect { |b| subject.enforce!(&b) }.to yield_control
       end
     end

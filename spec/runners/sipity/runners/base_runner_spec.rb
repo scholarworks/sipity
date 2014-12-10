@@ -16,7 +16,7 @@ module Sipity
         expect(BaseRunner.authentication_service).to respond_to(:call)
       end
 
-      it 'has a default enforces_authorization' do
+      it 'will not require authorization by default' do
         expect(BaseRunner.enforces_authorization).to be_falsey
       end
 
