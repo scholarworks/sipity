@@ -1,7 +1,7 @@
 require 'sipity/models'
 module Sipity
   module Models
-    # A place to record the named event for the given subject that was trigger by
+    # A place to record the named event for the given entity that was trigger by
     # a user's action.
     #
     # @note Where are the validations? They are enforced on the database.
