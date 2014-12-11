@@ -14,20 +14,33 @@ rescue LoadError
   puts "Unable to load rubocop. Who will enforce your styles now?"
 end
 
+types = begin
+  dirs = Dir['./app/**/*.rb'].map { |f| f.sub(%r{^\./(app/\w+)/.*}, '\\1') }.uniq.select { |f| File.directory?(f) }
+  Hash[dirs.map { |d| [d.split('/').last, d] }]
+end
+
 namespace :spec do
   desc "Run all specs"
   RSpec::Core::RakeTask.new(:all) do
     ENV['COVERAGE'] = 'true'
   end
 
-  desc "Run all non-feature specs"
-  RSpec::Core::RakeTask.new(:featureless) do |t|
-    ENV['COVERAGE'] = 'true'
-    t.exclude_pattern = './spec/features/**/*_spec.rb'
-  end
+  namespace :coverage do
+    desc "Run all non-feature specs"
+    RSpec::Core::RakeTask.new(:without_features) do |t|
+      ENV['COVERAGE'] = 'true'
+      t.exclude_pattern = './spec/features/**/*_spec.rb'
+    end
 
-  # TODO: Create a test suite and coverage for only repository methods;
-  #   Those are the public API and I want good coverage.
+    types.each do |name, _dir|
+      desc "Run, with code coverage, the examples in spec/#{name.downcase}"
+      RSpec::Core::RakeTask.new(name) do |t|
+        ENV['COVERAGE'] = 'true'
+        ENV['COV_PROFILE'] = name.downcase
+        t.pattern = "./spec/#{name}/**/*_spec.rb"
+      end
+    end
+  end
 
   desc 'Run the Travis CI specs'
   task travis: [:rubocop] do
@@ -42,10 +55,6 @@ task default: ['rubocop', 'spec:all']
 namespace :sipity do
   task :stats_setup do
     require 'rails/code_statistics'
-    types = begin
-      dirs = Dir['./app/**/*.rb'].map { |f| f.sub(%r{^\./(app/\w+)/.*}, '\\1') }.uniq.select { |f| File.directory?(f) }
-      Hash[dirs.map { |d| [d.split('/').last, d] }]
-    end
     types.each do |type, dir|
       name = type.pluralize.capitalize
       ::STATS_DIRECTORIES << [name, dir] unless ::STATS_DIRECTORIES.find { |array| array[0] == name }
