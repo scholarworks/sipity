@@ -60,6 +60,10 @@ The usual Rails suspects.
 ### Conversions
 
 Taking a que from Avdi Grimm's "Confident Ruby", Conversions are responsible for coercing the input to another format.
+The Conversions modules are designed to be either:
+
+* callable via module functions
+* includable and thus exposing the underlying conversion
 
 Find out more about [Sipity's Conversions](https://github.com/ndlib/sipity/blob/master/app/conversions/sipity/conversions.rb)
 
