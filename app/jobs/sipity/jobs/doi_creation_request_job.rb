@@ -15,6 +15,7 @@ module Sipity
       end
       attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
       private :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
+      delegate :header, to: :doi_creation_request
 
       def work
         # TODO: Do we need to track history for the given person?
@@ -44,11 +45,15 @@ module Sipity
       end
 
       def submit_remote_request!
-        minter.call(metadata)
+        identifier = minter.call(metadata)
         doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
-      rescue *minter_handled_exceptions
+        Repo::Support::AdditionalAttributes.update!(
+          header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: identifier
+        )
+      rescue *minter_handled_exceptions => e
         # TODO: Should we catch and record this exception? If so where?
-        doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED)
+        doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED, response_message: e.message)
+        raise e
       end
 
       def metadata
