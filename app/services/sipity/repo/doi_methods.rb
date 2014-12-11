@@ -73,7 +73,7 @@ module Sipity
         request = Models::DoiCreationRequest.create!(header: header)
         # TODO: Is this the best way to submit a job?
         # Would it be better to craft a Job submission layer?
-        Jobs::DoiCreationRequestJob.submit(request.id)
+        Jobs.submit('doi_creation_request_job', request.id)
         request
       end
     end

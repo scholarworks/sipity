@@ -62,11 +62,11 @@ module Sipity
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
           it 'will return true' do
-            expect(Jobs::DoiCreationRequestJob).to receive(:submit)
+            expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(Fixnum))
             expect(subject.submit_request_a_doi_form(form, requested_by: user)).to be_truthy
           end
           it 'will create the DOI request and append the captured attributes and log the event' do
-            expect(Jobs::DoiCreationRequestJob).to receive(:submit)
+            expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(Fixnum))
             expect { subject.submit_request_a_doi_form(form, requested_by: user) }.to(
               change { subject.doi_request_is_pending?(header) }.from(false).to(true) &&
               change { header.additional_attributes.count }.by(2) &&
