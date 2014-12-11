@@ -9,6 +9,7 @@ module Sipity
 
     context '#enforce!' do
       let(:user) { User.new }
+
       context 'when each policy is authorized' do
         it 'will yield to the caller' do
           allow(subject).to receive(:policy_authorized_for?).and_return(true)
@@ -36,6 +37,33 @@ module Sipity
           expect do
             subject.enforce!(show?: entity)
           end.to raise_exception(Exceptions::AuthorizationFailureError)
+        end
+      end
+    end
+
+    context 'private methods (for completeness)' do
+      let(:user) { double('User') }
+      let(:policy_enforcer) { double('Policy Enforcer', call: true) }
+      let(:entity) { double('Entity', policy_enforcer: policy_enforcer) }
+      context '#policy_authorized_for?' do
+        it 'will use the found policy_enforcer' do
+          allow(subject).to receive(:find_policy_enforcer_for).with(entity: entity).and_return(policy_enforcer)
+          expect(policy_enforcer).to receive(:call).with(user: user, entity: entity, policy_question: policy_question)
+          subject.send(:policy_authorized_for?, user: user, policy_question: policy_question, entity: entity)
+        end
+      end
+      context '#find_policy_enforcer_for' do
+        it "will use an entity's policy_enforcer if one is found" do
+          expect(subject.send(:find_policy_enforcer_for, entity: entity)).to eq(entity.policy_enforcer)
+        end
+
+        it "will lookup one by convention" do
+          header = Models::Header.new
+          expect(subject.send(:find_policy_enforcer_for, entity: header)).to eq(Policies::HeaderPolicy)
+        end
+
+        it "will fail if a policy_enforcer cannot be found" do
+          expect { subject.send(:find_policy_enforcer_for, entity: double) }.to raise_error NameError
         end
       end
     end
