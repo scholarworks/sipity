@@ -6,10 +6,10 @@ module Sipity
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
         @minter = options.fetch(:minter) { default_minter }
-        @minter_exceptions = Array.wrap(options.fetch(:minter_exceptions) { default_minter_exceptions })
+        @minter_handled_exceptions = Array.wrap(options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions })
       end
-      attr_reader :doi_creation_request, :minter, :minter_exceptions
-      private :doi_creation_request, :minter, :minter_exceptions
+      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions
+      private :doi_creation_request, :minter, :minter_handled_exceptions
 
       def work
         # Guard REQUEST_NOT_YET_SUBMITTED? Maybe?
@@ -36,7 +36,8 @@ module Sipity
       def submit_remote_request!
         begin
           identifier = minter.call(metadata)
-        rescue *minter_exceptions => e
+          doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
+        rescue *minter_handled_exceptions => e
           doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED)
         end
       end
@@ -55,7 +56,7 @@ module Sipity
         ->(metadata) { Ezid::Identifier.create(metadata: metadata) }
       end
 
-      def default_minter_exceptions
+      def default_minter_handled_exceptions
         Ezid::Error
       end
     end
