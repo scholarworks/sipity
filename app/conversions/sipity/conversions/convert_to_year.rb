@@ -6,6 +6,7 @@ module Sipity
       private
 
       def convert_to_year(input)
+        return input if input.is_a?(Fixnum)
         return input.to_year if input.respond_to?(:to_year)
         return input.year if input.respond_to?(:year)
         return convert_to_year(input.to_date) if input.respond_to?(:to_date)

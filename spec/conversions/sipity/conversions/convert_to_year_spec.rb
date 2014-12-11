@@ -38,8 +38,13 @@ module Sipity
           expect(convert_to_year(string)).to eq(2012)
         end
 
-        it "will handle a year" do
+        it "will handle a year as a string" do
           string = "2012"
+          expect(convert_to_year(string)).to eq(2012)
+        end
+
+        it "will handle an integer" do
+          string = 2012
           expect(convert_to_year(string)).to eq(2012)
         end
       end
