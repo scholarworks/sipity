@@ -28,8 +28,10 @@ module Sipity
           Models::AdditionalAttribute.where(header: header, key: key).pluck(:value)
         end
 
-        def key_value_pairs_for(header:)
-          Models::AdditionalAttribute.where(header: header).order(:header_id, :key).pluck(:key, :value)
+        def key_value_pairs_for(header:, keys: [])
+          query = Models::AdditionalAttribute.where(header: header).order(:header_id, :key)
+          query = query.where(key: keys) if keys.present?
+          query.pluck(:key, :value)
         end
 
         def keys_for(header:)

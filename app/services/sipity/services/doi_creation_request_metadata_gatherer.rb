@@ -33,15 +33,24 @@ module Sipity
       end
 
       def creator
-        ''
+        Repo::Support::Collaborators.for(header: header, roles: 'author').
+          map { |author| author.name }.join("; ")
       end
 
       def publisher
-        ''
+        Repo::Support::AdditionalAttributes.
+          values_for(header: header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME).
+          join("; ")
       end
 
       def publication_year
-        ''
+        publication_dates = Repo::Support::AdditionalAttributes.
+          values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME)
+        publication_dates.map { |publication_date| extract_year_from(publication_date).to_s }.join(", ")
+      end
+
+      def extract_year_from(date)
+        2014
       end
     end
   end

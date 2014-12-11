@@ -34,7 +34,9 @@ module Sipity
           )
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
           Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
-          Models::DoiCreationRequest.create!(header: f.header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
+          request = Models::DoiCreationRequest.create!(header: f.header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
+          Jobs::DoiCreationRequestJob.submit(request.id)
+          request
         end
       end
     end

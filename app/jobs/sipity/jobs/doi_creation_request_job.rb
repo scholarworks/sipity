@@ -2,6 +2,9 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
+      def self.submit(doi_creation_request_id)
+        new(doi_creation_request_id).work
+      end
       def initialize(doi_creation_request_id, options = {})
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
