@@ -9,7 +9,7 @@ module Sipity
       let(:header) { Models::Header.create!(title: 'Hello', work_publication_strategy: 'do_not_know') }
       let(:minter) { double('Minter', call: true) }
       let(:metadata_gatherer) { double('MetadataBuilder', call: true) }
-      let(:identifier) { 'doi:oh-my' }
+      let(:response) { double(id: 'doi:oh-my') }
       let(:metadata) { double('Metadata') }
       subject do
         described_class.new(
@@ -43,11 +43,11 @@ module Sipity
             expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered
             expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_COMPLETED).ordered
             expect(metadata_gatherer).to receive(:call).with(header_id: doi_creation_request.header_id).and_return(metadata)
-            expect(minter).to receive(:call).with(metadata).and_return(identifier)
+            expect(minter).to receive(:call).with(metadata).and_return(response)
             subject.work
 
             expect(Repo::Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)).
-              to eq([identifier])
+              to eq([response.id])
           end
         end
       end
