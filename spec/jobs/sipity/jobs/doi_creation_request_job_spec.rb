@@ -28,8 +28,10 @@ module Sipity
         context 'with invalid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_FAILED' do
             doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_FAILED, response_message: kind_of(String)).ordered
+            expect(doi_creation_request).to receive(:update).
+              with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered
+            expect(doi_creation_request).to receive(:update).
+              with(state: doi_creation_request.class::REQUEST_FAILED, response_message: kind_of(String)).ordered
             expect(minter).to receive(:call).and_raise(RuntimeError)
             expect { subject.work }.to raise_error(RuntimeError)
           end
