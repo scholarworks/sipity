@@ -37,8 +37,10 @@ module Sipity
         context 'with valid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_COMPLETED and set the identifier.doi' do
             doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered.and_call_original
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_COMPLETED).ordered.and_call_original
+            expect(doi_creation_request).to receive(:update).
+              with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered.and_call_original
+            expect(doi_creation_request).to receive(:update).
+              with(state: doi_creation_request.class::REQUEST_COMPLETED).ordered.and_call_original
             expect(metadata_gatherer).to receive(:call).with(header_id: doi_creation_request.header_id).and_return(metadata)
             expect(minter).to receive(:call).with(metadata).and_return(response)
             subject.work
