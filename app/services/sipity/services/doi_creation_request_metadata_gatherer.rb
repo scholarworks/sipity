@@ -9,6 +9,7 @@ module Sipity
     #   services. Ultimately, I found it easier to test this singular concern
     #   as something separate from the job.
     class DoiCreationRequestMetadataGatherer
+      # A convenience method to codify the external API.
       def self.call(header_id:)
         new(header_id).as_hash
       end

@@ -6,6 +6,16 @@ module Sipity
       let(:header) { Models::Header.new(id: 123, title: 'Live at Leeds') }
       subject { described_class.new(header_id: header.id) }
 
+      context '.call' do
+        it 'is a convenience method to expose the public API' do
+          parameters = { header_id: 1 }
+          gatherer = double(as_hash: true)
+          allow(described_class).to receive(:new).with(parameters.fetch(:header_id)).and_return(gatherer)
+          described_class.call(parameters)
+          expect(gatherer).to have_received(:as_hash)
+        end
+      end
+
       context '#as_hash' do
         let(:creator) { 'Pete Townsend' }
         let(:publisher) { 'Decca' }
