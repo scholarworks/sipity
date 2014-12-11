@@ -14,6 +14,7 @@ module Sipity
 
       def work
         # TODO: Do we need to track history for the given person?
+        #   If so, who is the requester? Is it the DoiCreationRequest creating_user
         # TODO: Do we need to enforce via the authorization layer?
 
         # Guard REQUEST_NOT_YET_SUBMITTED? Maybe?
