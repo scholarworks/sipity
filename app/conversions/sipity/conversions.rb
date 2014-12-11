@@ -6,6 +6,12 @@ module Sipity
   # base ruby.
   #
   # This module is defined here to provide the top-level declaration.
+  #
+  # Any Conversion modules should be callable and includable. By calling the
+  # module you would perform the singular conversion. By including the module
+  # you would gain access to the private conversion method.
+  #
+  # @see Sipity::Conversions::ConvertToYear
   module Conversions
   end
 end
