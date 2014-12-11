@@ -10,7 +10,7 @@ module Sipity
         new(role: DEFAULT_ROLE)
       end
 
-      belongs_to :header, foreign_key: 'sipity_header_id'
+      belongs_to :header, foreign_key: 'header_id'
 
       self.table_name = 'sipity_collaborators'
 

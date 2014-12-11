@@ -29,7 +29,7 @@ module Sipity
         end
 
         def key_value_pairs_for(header:)
-          Models::AdditionalAttribute.where(header: header).order(:sipity_header_id, :key).pluck(:key, :value)
+          Models::AdditionalAttribute.where(header: header).order(:header_id, :key).pluck(:key, :value)
         end
 
         def keys_for(header:)

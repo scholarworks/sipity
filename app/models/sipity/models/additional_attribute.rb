@@ -12,7 +12,7 @@ module Sipity
       PUBLICATION_DATE_PREDICATE_NAME = 'publicationDate'.freeze
 
       self.table_name = 'sipity_additional_attributes'
-      belongs_to :header, foreign_key: 'sipity_header_id'
+      belongs_to :header, foreign_key: 'header_id'
     end
   end
 end

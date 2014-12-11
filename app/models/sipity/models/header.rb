@@ -5,9 +5,9 @@ module Sipity
     class Header < ActiveRecord::Base
       self.table_name = 'sipity_headers'
 
-      has_many :collaborators, foreign_key: :sipity_header_id, dependent: :destroy
-      has_many :additional_attributes, foreign_key: :sipity_header_id, dependent: :destroy
-      has_one :doi_creation_request, foreign_key: :sipity_header_id, dependent: :destroy
+      has_many :collaborators, foreign_key: :header_id, dependent: :destroy
+      has_many :additional_attributes, foreign_key: :header_id, dependent: :destroy
+      has_one :doi_creation_request, foreign_key: :header_id, dependent: :destroy
 
       accepts_nested_attributes_for(
         :collaborators,
