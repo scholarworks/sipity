@@ -13,7 +13,7 @@ module Sipity
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
         @metadata_gatherer = options.fetch(:metadata_gatherer) { default_metadata_gatherer }
         @minter = options.fetch(:minter) { default_minter }
-        @minter_handled_exceptions = Array.wrap(options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions })
+        @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
       end
       attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
       delegate :header, to: :doi_creation_request
@@ -43,7 +43,7 @@ module Sipity
       def submit_remote_request!
         transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
-      rescue *minter_handled_exceptions => e
+      rescue *Array.wrap(minter_handled_exceptions) => e
         doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED, response_message: e.message)
         raise e
       end
@@ -60,6 +60,7 @@ module Sipity
       end
 
       def default_minter
+        # TODO: Do I need an insulating layer?
         ->(metadata) { Ezid::Identifier.create(metadata: metadata) }
       end
 
