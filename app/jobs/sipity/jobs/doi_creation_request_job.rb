@@ -13,8 +13,12 @@ module Sipity
       private :doi_creation_request, :minter, :minter_handled_exceptions, :repository
 
       def work
+        # TODO: Do we need to track history for the given person?
+        # TODO: Do we need to enforce via the authorization layer?
+
         # Guard REQUEST_NOT_YET_SUBMITTED? Maybe?
         guard_doi_creation_request_state!
+
         # Update request to REQUEST_SUBMITTED
         transition_doi_creation_request_to_submitted!
         # Submit remote request
