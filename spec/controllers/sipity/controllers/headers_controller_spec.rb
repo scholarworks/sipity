@@ -16,7 +16,7 @@ module Sipity
 
         let(:yields) { header }
         let(:callback_name) { :success }
-        it 'will render the edit page' do
+        it 'will render the new page' do
           get 'new'
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('new')
@@ -39,6 +39,24 @@ module Sipity
           expect(response).to render_template('edit')
         end
       end
+
+      context 'GET #show' do
+        before { controller.runner = runner }
+        let(:runner) do
+          Hesburgh::Lib::MockRunner.new(
+            yields: yields, callback_name: callback_name, run_with: { header_id: header.to_param }, context: controller
+          )
+        end
+
+        let(:yields) { header }
+        let(:callback_name) { :success }
+        it 'will render the show page' do
+          get 'show', id: header.to_param
+          expect(assigns(:model)).to_not be_nil
+          expect(response).to render_template('show')
+        end
+      end
+
     end
   end
 end
