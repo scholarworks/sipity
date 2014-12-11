@@ -17,11 +17,35 @@ module Sipity
         )
       end
 
-      before do
-        allow(Models::DoiCreationRequest).to receive(:find).with(doi_creation_request.id).and_return doi_creation_request
+      context '.submit' do
+        it 'is a convenience method to expose the public API' do
+          gatherer = double(work: true)
+          allow(described_class).to receive(:new).with(1234).and_return(gatherer)
+          described_class.submit(1234)
+          expect(gatherer).to have_received(:work)
+        end
+      end
+
+      context 'defaults' do
+        before do
+          allow(Models::DoiCreationRequest).to receive(:find).with(1234).and_return double('Doi Creation Request')
+        end
+        subject { described_class.new(1234) }
+        its(:metadata_gatherer) { should respond_to :call }
+        its(:minter) { should respond_to :call }
       end
 
       context '#work' do
+        before do
+          allow(Models::DoiCreationRequest).to receive(:find).with(doi_creation_request.id).and_return doi_creation_request
+        end
+
+        it 'will ensure the doi_creation_request is in a proper state' do
+          allow(doi_creation_request).to receive(:request_not_yet_submitted?).and_return false
+          allow(doi_creation_request).to receive(:request_failed?).and_return false
+          expect { subject.work }.to raise_error(Exceptions::InvalidDoiCreationRequestStateError)
+        end
+
         context 'with invalid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_FAILED' do
             doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED

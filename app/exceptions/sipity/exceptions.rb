@@ -27,5 +27,29 @@ module Sipity
         super("#{user} not allowed to #{policy_question} this #{entity}")
       end
     end
+
+    # For some reason, you have an entity in an incorrect state. Push up what
+    # information we can to be helpful to the end user.
+    class InvalidStateError < RuntimeError
+      attr_reader :entity, :actual, :expected
+      def initialize(entity:, actual:, expected: nil)
+        @entity, @actual, @expected = entity, actual, expected
+        super(build_message)
+      end
+
+      private
+
+      def build_message
+        if expected.present?
+          "#{self.class}: Expected #{entity} to have state: #{expected}, but it had state: #{actual}"
+        else
+          "#{self.class}: #{entity} has in valid state: #{actual}"
+        end
+      end
+    end
+
+    # A refinement of InvalidStateError to provide an explicit context
+    class InvalidDoiCreationRequestStateError < InvalidStateError
+    end
   end
 end

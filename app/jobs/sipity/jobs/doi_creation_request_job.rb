@@ -17,7 +17,6 @@ module Sipity
         @minter_handled_exceptions = Array.wrap(options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions })
       end
       attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
-      private :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
       delegate :header, to: :doi_creation_request
 
       def work
@@ -44,8 +43,7 @@ module Sipity
       def guard_doi_creation_request_state!
         return true if doi_creation_request.request_failed?
         return true if doi_creation_request.request_not_yet_submitted?
-        # TODO: Need a better exception
-        fail RuntimeError
+        fail Exceptions::InvalidDoiCreationRequestStateError, entity: doi_creation_request, actual: doi_creation_request.state
       end
 
       def transition_doi_creation_request_to_submitted!
