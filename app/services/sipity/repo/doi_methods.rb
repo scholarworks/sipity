@@ -1,3 +1,5 @@
+require 'sipity/jobs'
+
 module Sipity
   module Repo
     # DOI related methods
