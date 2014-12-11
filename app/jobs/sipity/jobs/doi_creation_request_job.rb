@@ -6,6 +6,9 @@ module Sipity
         new(doi_creation_request_id).work
       end
 
+      # TODO: Refactor to use header_id; It is the more relevant identifier
+      #   and will alleviate much of the underlying tests need to persist
+      #   the relevant methods.
       def initialize(doi_creation_request_id, options = {})
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
