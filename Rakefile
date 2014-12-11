@@ -20,10 +20,14 @@ namespace :spec do
     ENV['COVERAGE'] = 'true'
   end
 
+  desc "Run all non-feature specs"
   RSpec::Core::RakeTask.new(:featureless) do |t|
     ENV['COVERAGE'] = 'true'
     t.exclude_pattern = './spec/features/**/*_spec.rb'
   end
+
+  # TODO: Create a test suite and coverage for only repository methods;
+  #   Those are the public API and I want good coverage.
 
   desc 'Run the Travis CI specs'
   task travis: [:rubocop] do
