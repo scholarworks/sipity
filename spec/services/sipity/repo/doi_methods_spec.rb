@@ -37,6 +37,13 @@ module Sipity
         end
       end
 
+      context '#gather_doi_creation_request_metadata' do
+        it 'will delegate to the gather' do
+          expect(Services::DoiCreationRequestMetadataGatherer).to receive(:call).with(header_id: 1234)
+          subject.gather_doi_creation_request_metadata(header_id: 1234)
+        end
+      end
+
       context '#submit_request_a_doi_form' do
         let(:user) { User.new(id: 12) }
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }

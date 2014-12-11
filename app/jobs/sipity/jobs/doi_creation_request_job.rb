@@ -11,11 +11,11 @@ module Sipity
       #   the relevant methods.
       def initialize(doi_creation_request_id, options = {})
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
-        @metadata_gatherer = options.fetch(:metadata_gatherer) { default_metadata_gatherer }
+        @repository = options.fetch(:repository) { default_repository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
       end
-      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
+      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
       delegate :header, to: :doi_creation_request
 
       def work
@@ -37,26 +37,24 @@ module Sipity
       end
 
       def transition_doi_creation_request_to_submitted!
-        doi_creation_request.update(state: doi_creation_request.class::REQUEST_SUBMITTED)
+        repository.update_header_doi_creation_request_state!(header: header, state: :request_submitted)
       end
 
       def submit_remote_request!
         transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
       rescue *Array.wrap(minter_handled_exceptions) => e
-        doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED, response_message: e.message)
+        repository.update_header_doi_creation_request_state!(header: header, state: :request_failed, response_message: e.message)
         raise e
       end
 
       def handle_remote_response!(response)
-        doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
-        Repo::Support::AdditionalAttributes.update!(
-          header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: response.id
-        )
+        repository.update_header_with_doi_predicate!(header: header, values: response.id)
+        repository.update_header_doi_creation_request_state!(header: header, state: :request_completed)
       end
 
       def metadata
-        metadata_gatherer.call(header_id: doi_creation_request.header_id)
+        repository.gather_doi_creation_request_metadata(header_id: doi_creation_request.header_id)
       end
 
       def default_minter
@@ -68,8 +66,8 @@ module Sipity
         Ezid::Error
       end
 
-      def default_metadata_gatherer
-        Services::DoiCreationRequestMetadataGatherer
+      def default_repository
+        Repository.new
       end
     end
   end
