@@ -1,8 +1,14 @@
 module Sipity
   module Forms
-    # Responsible for exposing attributes for editing
+    # Responsible for exposing attributes for editing a given header.
     #
-    # TODO: Expose setter and getter methods for each :exposed_attribute_name
+    # Since a Header is a composite of many attributes from numerous sources
+    # this object is a bit different.
+    #
+    # @see Sipity::Forms::UpdateHeaderForm#guard_against_existing_method_names!
+    # @see Sipity::Forms::UpdateHeaderForm#exposes?
+    # @see Sipity::Forms::UpdateHeaderForm#method_missing
+    # @see Sipity::Forms::UpdateHeaderForm#respond_to_missing?
     class UpdateHeaderForm < VirtualForm
       self.policy_enforcer = Policies::HeaderPolicy
 
@@ -10,14 +16,17 @@ module Sipity
         Models::Header.model_name
       end
 
-      attr_reader :header
       def initialize(header:, exposed_attribute_names: [], attributes: {})
         @header = header
         @attributes = attributes.stringify_keys
         self.exposed_attribute_names = exposed_attribute_names
       end
 
+      attr_reader :header
       delegate :to_key, :to_param, :persisted?, to: :header
+
+      validates :title, presence: true
+      validates :header, presence: true
 
       def method_missing(method_name, *_args, &_block)
         if exposes?(method_name)
@@ -26,7 +35,6 @@ module Sipity
           super
         end
       end
-      validates :title, presence: true
 
       def exposes?(method_name)
         @exposed_attribute_names.include?(method_name.to_s)
