@@ -5,6 +5,26 @@ module Sipity
     describe ConvertToYear do
       include ::Sipity::Conversions::ConvertToYear
 
+      context '.call' do
+        it 'will call the underlying conversion method' do
+          object = double(to_year: 1234)
+          expect(described_class.call(object)).to eq(object.to_year)
+        end
+      end
+
+      context '.convert_to_year' do
+        it 'will be private' do
+          object = double(to_year: 1234)
+          expect { described_class.convert_to_year(object) }.to raise_error(NoMethodError, /private method `convert_to_year'/)
+        end
+      end
+
+      context '#call' do
+        it 'will not be implemented' do
+          expect(self).to_not respond_to(:call)
+        end
+      end
+
       context '#convert_to_year' do
         it "will return the object's year if the object responds to #year" do
           object = double(year: 1234)

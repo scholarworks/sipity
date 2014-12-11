@@ -3,8 +3,17 @@ module Sipity
     # Exposes a conversion method to take an input and transform it into a
     # year.
     module ConvertToYear
-      private
+      # A convenience method so that you don't need to include the conversion
+      # module in your base class.
+      def self.call(input)
+        convert_to_year(input)
+      end
 
+      # Does its best to convert the input into a year.
+      #
+      # @param input [Object] something coercable
+      #
+      # @return Integer
       def convert_to_year(input)
         return input if input.is_a?(Fixnum)
         return input.to_year if input.respond_to?(:to_year)
@@ -14,6 +23,10 @@ module Sipity
       rescue ArgumentError
         return input.to_i == 0 ? nil : input.to_i if input.respond_to?(:to_i)
       end
+
+      module_function :convert_to_year
+      private_class_method :convert_to_year
+      private :convert_to_year
     end
   end
 end
