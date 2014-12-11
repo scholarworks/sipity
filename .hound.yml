@@ -181,6 +181,18 @@ ConstantName:
 CyclomaticComplexity:
   Description: 'Avoid complex methods.'
   Enabled: true
+  Exclude:
+     - app/conversions/**/*.rb
+
+Metrics/PerceivedComplexity:
+  Enabled: true
+  Exclude:
+     - app/conversions/**/*.rb
+
+Metrics/AbcSize:
+  Enabled: true
+  Exclude:
+     - app/conversions/**/*.rb
 
 DefWithParentheses:
   Description: 'Use def with parentheses when there are arguments.'
