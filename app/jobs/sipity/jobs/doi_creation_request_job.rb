@@ -44,7 +44,6 @@ module Sipity
         transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
       rescue *minter_handled_exceptions => e
-        # TODO: Should we catch and record this exception? If so where?
         doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED, response_message: e.message)
         raise e
       end
