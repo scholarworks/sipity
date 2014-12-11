@@ -10,10 +10,10 @@ module Sipity
       #   and will alleviate much of the underlying tests need to persist
       #   the relevant methods.
       def initialize(doi_creation_request_id, options = {})
-        @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
         @repository = options.fetch(:repository) { default_repository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
+        @doi_creation_request = repository.find_doi_creation_request_by_id(doi_creation_request_id)
       end
       attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
       delegate :header, to: :doi_creation_request
@@ -67,6 +67,7 @@ module Sipity
       end
 
       def default_repository
+        # REVIEW: Do I want multiple repositories to exist?
         Repository.new
       end
     end

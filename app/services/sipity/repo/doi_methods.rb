@@ -16,6 +16,12 @@ module Sipity
         Models::DoiCreationRequest.where(header: header).first!
       end
 
+      def find_doi_creation_request_by_id(id)
+        # Going to give you the header as part of the find; You'll probably want
+        # it.
+        Models::DoiCreationRequest.includes(:header).find(id)
+      end
+
       def doi_already_assigned?(header)
         Support::AdditionalAttributes.values_for(
           header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME
