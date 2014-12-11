@@ -5,11 +5,12 @@ module Sipity
       def initialize(doi_creation_request_id, options = {})
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
+        @repository = options.fetch(:repository) { default_respository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = Array.wrap(options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions })
       end
-      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions
-      private :doi_creation_request, :minter, :minter_handled_exceptions
+      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :repository
+      private :doi_creation_request, :minter, :minter_handled_exceptions, :repository
 
       def work
         # Guard REQUEST_NOT_YET_SUBMITTED? Maybe?
@@ -42,13 +43,7 @@ module Sipity
       end
 
       def metadata
-        {
-          '_target' => '',
-          'datacite.creator' => '',
-          'datacite.title' => '',
-          'datacite.publisher' => '',
-          'datacite.publicationyear' => ''
-        }
+        repository.doi_creation_request_metadata_for(doi_creation_request)
       end
 
       def default_minter
@@ -57,6 +52,10 @@ module Sipity
 
       def default_minter_handled_exceptions
         Ezid::Error
+      end
+
+      def default_respository
+        Repository.new
       end
     end
   end
