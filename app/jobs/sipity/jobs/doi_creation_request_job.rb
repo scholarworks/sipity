@@ -58,7 +58,7 @@ module Sipity
       end
 
       def default_minter
-        # TODO: Do I need an insulating layer?
+        # REVIEW: Do I need an insulating layer?
         ->(metadata) { Ezid::Identifier.create(metadata: metadata) }
       end
 
