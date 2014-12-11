@@ -35,11 +35,13 @@ module Sipity
     private
 
     def policy_authorized_for?(user:, policy_question:, entity:)
+      # TODO: Consider moving these questions out into Sipity::Policies
       policy_enforcer = find_policy_enforcer_for(entity: entity)
       policy_enforcer.call(user: user, entity: entity, policy_question: policy_question)
     end
 
     def find_policy_enforcer_for(entity:)
+      # TODO: Consider moving these questions out into Sipity::Policies
       return entity.policy_enforcer if entity.respond_to?(:policy_enforcer) && entity.policy_enforcer.present?
       policy_name_as_constant = "#{entity.class.to_s.demodulize}Policy"
       if Policies.const_defined?(policy_name_as_constant)
