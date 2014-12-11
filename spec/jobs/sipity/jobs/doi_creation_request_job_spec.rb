@@ -9,7 +9,9 @@ module Sipity
       let(:identifier) { double('Identifier') }
       let(:metadata) { double('Metadata') }
       subject do
-        described_class.new(doi_creation_request.id, metadata_builder: metadata_builder, minter: minter, minter_handled_exceptions: RuntimeError)
+        described_class.new(
+          doi_creation_request.id, metadata_builder: metadata_builder, minter: minter, minter_handled_exceptions: RuntimeError
+        )
       end
 
       before do

@@ -1,5 +1,6 @@
 module Sipity
   module Services
+    # Responsible for gathering the parameters for the DOI Minting request
     class DoiCreationRequestMetadataGatherer
       def self.call(header_id:)
         new(header_id).as_hash
