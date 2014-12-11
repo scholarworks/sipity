@@ -70,8 +70,7 @@ module Sipity
       end
 
       def submit_doi_creation_request_job!(header:)
-        state = get_valid_doi_creation_request_state(:request_not_yet_submitted)
-        request = Models::DoiCreationRequest.create!(header: header, state: state)
+        request = Models::DoiCreationRequest.create!(header: header)
         # TODO: Is this the best way to submit a job?
         # Would it be better to craft a Job submission layer?
         Jobs::DoiCreationRequestJob.submit(request.id)
