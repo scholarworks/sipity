@@ -10,7 +10,6 @@ module Sipity
       #   and will alleviate much of the underlying tests need to persist
       #   the relevant methods.
       def initialize(doi_creation_request_id, options = {})
-        # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
         @metadata_gatherer = options.fetch(:metadata_gatherer) { default_metadata_gatherer }
         @minter = options.fetch(:minter) { default_minter }
