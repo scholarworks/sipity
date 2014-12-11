@@ -19,6 +19,13 @@ module Sipity
       end
     end
 
+    # A policy was not found. Now panic!
+    class PolicyNotFoundError < RuntimeError
+      def initialize(name:, container:)
+        super("Unable to find #{name} within #{container}")
+      end
+    end
+
     # Exposing a custom AuthenticationFailureError
     class AuthenticationFailureError < RuntimeError
       def initialize(context)

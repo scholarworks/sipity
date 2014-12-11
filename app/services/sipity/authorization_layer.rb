@@ -40,15 +40,12 @@ module Sipity
     end
 
     def find_policy_enforcer_for(entity:)
-      if entity.respond_to?(:policy_enforcer) && entity.policy_enforcer.present?
-        entity.policy_enforcer
+      return entity.policy_enforcer if entity.respond_to?(:policy_enforcer) && entity.policy_enforcer.present?
+      policy_name_as_constant = "#{entity.class.to_s.demodulize}Policy"
+      if Policies.const_defined?(policy_name_as_constant)
+        Policies.const_get(policy_name_as_constant)
       else
-        # Yowza! This could cause lots of problems; Maybe I should be very
-        # specific about this?
-        #
-        # TODO: Is a NameError the correct error? Can we craft something a bit
-        #   more meaningful?
-        Policies.const_get("#{entity.class.to_s.demodulize}Policy")
+        fail Exceptions::PolicyNotFoundError, name: policy_name_as_constant, container: Policies
       end
     end
 

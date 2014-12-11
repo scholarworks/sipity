@@ -63,7 +63,7 @@ module Sipity
         end
 
         it "will fail if a policy_enforcer cannot be found" do
-          expect { subject.send(:find_policy_enforcer_for, entity: double) }.to raise_error NameError
+          expect { subject.send(:find_policy_enforcer_for, entity: double) }.to raise_error Exceptions::PolicyNotFoundError
         end
       end
     end
