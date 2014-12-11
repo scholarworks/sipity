@@ -83,3 +83,6 @@ pickle-email-*.html
 # Ignore documentation
 .yardoc
 /doc
+
+.tags
+.tags_sorted_by_file
