@@ -7,6 +7,13 @@ module Sipity
         Models::Header.find(header_id)
       end
 
+      # @todo Is this the right place for this? Should there a permanency layer?
+      #   That is to say something responsible for resolving records and
+      #   providing redirection.
+      def permanent_uri_for_header_id(header_id)
+        URI.parse("http://change.me/show/#{header_id}")
+      end
+
       def find_headers_for(user:)
         Policies::HeaderPolicy::Scope.resolve(user: user, scope: Models::Header)
       end

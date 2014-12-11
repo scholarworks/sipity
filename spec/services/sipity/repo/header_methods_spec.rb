@@ -11,6 +11,10 @@ module Sipity
       subject { repository_class.new }
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
+      it 'will have a permanent URL for a given header' do
+        expect(subject.permanent_uri_for_header_id(123)).to be_a(URI)
+      end
+
       context '#find_headers_for' do
         let(:user_one) { User.new(id: 1) }
         let(:user_two) { User.new(id: 2) }

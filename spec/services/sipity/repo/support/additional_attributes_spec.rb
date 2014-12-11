@@ -23,12 +23,16 @@ module Sipity
           expect(subject.values_for(header: header, key: 'key')).to eq(['def', 'new_value'])
         end
 
-        it 'will handles mixed key/value pairs' do
+        it 'will handle mixed key/value pairs' do
           subject.create!(header: header, key: 'key', values: ['abc', 'def'])
           subject.create!(header: header, key: 'key_2', values: ['abc', 'def'])
           subject.update!(header: header, key: 'key', values: ['new_value', 'def'])
           expect(subject.key_value_pairs_for(header: header)).
             to eq([['key', 'def'], ['key', 'new_value'], ['key_2', 'abc'], ['key_2', 'def']])
+
+          # Limiting to a subset of keys
+          expect(subject.key_value_pairs_for(header: header, keys: ['key'])).
+            to eq([['key', 'def'], ['key', 'new_value']])
         end
 
         it 'will not destroy when no values are specified' do
