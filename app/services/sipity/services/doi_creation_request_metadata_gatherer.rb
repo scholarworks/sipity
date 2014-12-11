@@ -1,12 +1,20 @@
 module Sipity
   module Services
-    # Responsible for gathering the parameters for the DOI Minting request
+    # Responsible for gathering the parameters for the DOI Minting request.
+    #
+    # @note: I debated about where this information should reside. It made sense
+    #   to be part of the DoiCreationRequestJob, however this information is
+    #   relevant for more than the asynchronous job; It could be used as
+    #   validation, or display as we send that information on to remote
+    #   services. Ultimately, I found it easier to test this singular concern
+    #   as something separate from the job.
     class DoiCreationRequestMetadataGatherer
       def self.call(header_id:)
         new(header_id).as_hash
       end
 
       def initialize(header_id)
+        # TODO: Should I be making use of the Repository?
         @header = Models::Header.find(header_id)
       end
       attr_reader :header
@@ -22,8 +30,12 @@ module Sipity
         }
       end
 
+      private
+
       # The permanent URL in which we promise that you can always find this
       # object.
+      #
+      # TODO: Extract to a more prominent location; This is a permanent URL
       def permanent_url_for_header
         "http://change.me/show/#{header.id}"
       end
@@ -33,24 +45,27 @@ module Sipity
       end
 
       def creator
-        Repo::Support::Collaborators.for(header: header, roles: 'author').
-          map { |author| author.name }.join("; ")
+        @creator ||= Repo::Support::Collaborators.for(header: header, roles: 'author').map(&:name).join("; ")
       end
 
       def publisher
-        Repo::Support::AdditionalAttributes.
-          values_for(header: header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME).
-          join("; ")
+        @publisher ||= begin
+          Repo::Support::AdditionalAttributes.values_for(
+            header: header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME
+          ).join("; ")
+        end
       end
 
       def publication_year
-        publication_dates = Repo::Support::AdditionalAttributes.
-          values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME)
-        publication_dates.map { |publication_date| extract_year_from(publication_date).to_s }.join(", ")
+        @publication_year ||=
+          Repo::Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME).
+          map { |publication_date| extract_year_from(publication_date).to_s }.join(", ")
       end
 
+      # @todo Extract this behavior to some service function; It is useful
+      #   beyond the scope of this class.
       def extract_year_from(date)
-        2014
+        Date.parse(date).year
       end
     end
   end
