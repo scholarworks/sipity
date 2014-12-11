@@ -56,16 +56,12 @@ module Sipity
         end
       end
 
+      include Conversions::ConvertToYear
+
       def publication_year
         @publication_year ||=
           Repo::Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME).
-          map { |publication_date| extract_year_from(publication_date).to_s }.join(", ")
-      end
-
-      # @todo Extract this behavior to some service function; It is useful
-      #   beyond the scope of this class.
-      def extract_year_from(date)
-        Date.parse(date).year
+          map { |publication_date| convert_to_year(publication_date).to_s }.join(", ")
       end
     end
   end

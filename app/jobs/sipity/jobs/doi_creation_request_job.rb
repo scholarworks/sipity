@@ -5,15 +5,16 @@ module Sipity
       def self.submit(doi_creation_request_id)
         new(doi_creation_request_id).work
       end
+
       def initialize(doi_creation_request_id, options = {})
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
-        @metadata_builder = options.fetch(:metadata_builder) { default_metadata_builder }
+        @metadata_gatherer = options.fetch(:metadata_gatherer) { default_metadata_gatherer }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = Array.wrap(options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions })
       end
-      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_builder
-      private :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_builder
+      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
+      private :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer
 
       def work
         # TODO: Do we need to track history for the given person?
@@ -51,7 +52,7 @@ module Sipity
       end
 
       def metadata
-        metadata_builder.call(header_id: doi_creation_request.header_id)
+        metadata_gatherer.call(header_id: doi_creation_request.header_id)
       end
 
       def default_minter
@@ -62,7 +63,7 @@ module Sipity
         Ezid::Error
       end
 
-      def default_metadata_builder
+      def default_metadata_gatherer
         Services::DoiCreationRequestMetadataGatherer
       end
     end

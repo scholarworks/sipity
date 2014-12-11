@@ -4,10 +4,7 @@ module Sipity
   module Services
     RSpec.describe DoiCreationRequestMetadataGatherer do
       let(:header) { Models::Header.new(id: 123, title: 'Live at Leeds') }
-      subject { described_class.new(header_id: header) }
-      before do
-        allow(Models::Header).to receive(:find).and_return(header)
-      end
+      subject { described_class.new(header_id: header.id) }
 
       context '#as_hash' do
         let(:creator) { 'Pete Townsend' }
@@ -15,6 +12,7 @@ module Sipity
         let(:publication_date) { "#{publication_year}-05-23" }
         let(:publication_year) { '1970' }
         before do
+          allow(Models::Header).to receive(:find).and_return(header)
           # TODO: Remove magic string
           Models::Collaborator.create!(header_id: header.id, role: 'author', name: creator)
           Models::AdditionalAttribute.create!(
