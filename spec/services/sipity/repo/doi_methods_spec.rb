@@ -11,6 +11,16 @@ module Sipity
       subject { klass.new }
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
+      context '#find_doi_creation_request' do
+        it 'will find based on the given header'
+        it 'will raise an exception if one cannot be found'
+      end
+
+      context 'find_doi_creation_request_by_id' do
+        it 'will find based on the id'
+        it 'will raise an exception if one cannot be found'
+      end
+
       context '#submit_assign_a_doi_form' do
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:user) { User.new(id: '123') }
