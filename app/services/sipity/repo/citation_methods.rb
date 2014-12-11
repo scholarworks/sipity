@@ -10,7 +10,7 @@ module Sipity
         Forms::AssignACitationForm.new(attributes)
       end
 
-      def submit_assign_a_citation_form(form, requested_by: nil)
+      def submit_assign_a_citation_form(form, requested_by:)
         form.submit do |f|
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME, values: f.citation
@@ -18,8 +18,8 @@ module Sipity
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
           )
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__) if requested_by
-          true
+          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
+          f.header
         end
       end
     end

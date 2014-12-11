@@ -15,29 +15,26 @@ module Sipity
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:attributes) { { header: header, citation: citation, type: '1234' } }
         let(:form) { Repository.new.build_assign_a_citation_form(attributes) }
+        let(:user) { User.new(id: 3) }
 
         context 'on invalid data' do
           let(:citation) { '' }
           it 'returns false and does not assign a Citation' do
-            expect(subject.submit_assign_a_citation_form(form)).to eq(false)
+            expect(subject.submit_assign_a_citation_form(form, requested_by: user)).to eq(false)
           end
         end
 
         context 'on valid data' do
           let(:citation) { 'citation:abc' }
-          it 'will assign the Citation to the header' do
-            expect { subject.submit_assign_a_citation_form(form) }.to(
+          it 'will assign the Citation to the header and create an event' do
+            expect { subject.submit_assign_a_citation_form(form, requested_by: user) }.to(
               change { subject.citation_already_assigned?(header) }.from(false).to(true) &&
-              change { header.additional_attributes.count }.by(2)
+              change { header.additional_attributes.count }.by(2) &&
+              change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count }.by(1)
             )
           end
           it 'will return a truthy object' do
-            expect(subject.submit_assign_a_citation_form(form)).to be_truthy
-          end
-          it 'will create an event log entry for the requesting user' do
-            user = User.new(id: '123')
-            expect { subject.submit_assign_a_citation_form(form, requested_by: user) }.
-              to change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count }.by(1)
+            expect(subject.submit_assign_a_citation_form(form, requested_by: user)).to be_truthy
           end
         end
       end
