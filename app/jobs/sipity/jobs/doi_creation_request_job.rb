@@ -2,7 +2,7 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
-      def initialize(doi_creation_request_id, options = {} )
+      def initialize(doi_creation_request_id, options = {})
         # Find the DOI Creation Request
         @doi_creation_request = Models::DoiCreationRequest.find(doi_creation_request_id)
         @minter = options.fetch(:minter) { default_minter }
@@ -34,12 +34,11 @@ module Sipity
       end
 
       def submit_remote_request!
-        begin
-          identifier = minter.call(metadata)
-          doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
-        rescue *minter_handled_exceptions => e
-          doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED)
-        end
+        minter.call(metadata)
+        doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
+      rescue *minter_handled_exceptions
+        # TODO: Should we catch and record this exception? If so where?
+        doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED)
       end
 
       def metadata
