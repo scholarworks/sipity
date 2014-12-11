@@ -22,18 +22,9 @@ module Sipity
         # TODO: Do we need to track history for the given person?
         #   If so, who is the requester? Is it the DoiCreationRequest creating_user
         # TODO: Do we need to enforce via the authorization layer?
-
-        # Guard REQUEST_NOT_YET_SUBMITTED? Maybe?
         guard_doi_creation_request_state!
-
-        # Update request to REQUEST_SUBMITTED
-        transition_doi_creation_request_to_submitted!
-        # Submit remote request
         submit_remote_request! do |response|
-          doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
-          Repo::Support::AdditionalAttributes.update!(
-            header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: response.id
-          )
+          handle_remote_response!(response)
         end
       end
 
@@ -50,11 +41,19 @@ module Sipity
       end
 
       def submit_remote_request!
+        transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
       rescue *minter_handled_exceptions => e
         # TODO: Should we catch and record this exception? If so where?
         doi_creation_request.update(state: doi_creation_request.class::REQUEST_FAILED, response_message: e.message)
         raise e
+      end
+
+      def handle_remote_response!(response)
+        doi_creation_request.update(state: doi_creation_request.class::REQUEST_COMPLETED)
+        Repo::Support::AdditionalAttributes.update!(
+          header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: response.id
+        )
       end
 
       def metadata
