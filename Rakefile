@@ -20,6 +20,11 @@ namespace :spec do
     ENV['COVERAGE'] = 'true'
   end
 
+  RSpec::Core::RakeTask.new(:featureless) do |t|
+    ENV['COVERAGE'] = 'true'
+    t.exclude_pattern = './spec/features/**/*_spec.rb'
+  end
+
   desc 'Run the Travis CI specs'
   task travis: [:rubocop] do
     ENV['SPEC_OPTS'] = "--profile 5"
