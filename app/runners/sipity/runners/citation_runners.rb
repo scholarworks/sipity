@@ -45,7 +45,7 @@ module Sipity
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(attributes.merge(header: header))
           authorization_layer.enforce!(create?: header) do
-            if repository.submit_assign_a_citation_form(form)
+            if repository.submit_assign_a_citation_form(form, requested_by: current_user)
               callback(:success, header)
             else
               callback(:failure, form)

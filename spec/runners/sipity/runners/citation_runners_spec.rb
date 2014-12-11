@@ -98,7 +98,9 @@ module Sipity
         let(:attributes) { { key: 'abc:123' } }
         let(:form) { double('Form') }
         let(:context) do
-          TestRunnerContext.new(find_header: header, build_assign_a_citation_form: form, submit_assign_a_citation_form: true)
+          TestRunnerContext.new(
+            current_user: User.new(id: 12), find_header: header, build_assign_a_citation_form: form, submit_assign_a_citation_form: true
+          )
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
@@ -119,7 +121,7 @@ module Sipity
 
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
-            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form).and_return(false)
+            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form, requested_by: context.current_user).and_return(false)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
@@ -128,7 +130,7 @@ module Sipity
 
         context 'when the form submission succeeds' do
           it 'issues the :success callback' do
-            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form).and_return(true)
+            expect(context.repository).to receive(:submit_assign_a_citation_form).with(form, requested_by: context.current_user).and_return(true)
             response = subject.run(header_id: header_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("SUCCESS", header)
             expect(response).to eq([:success, header])
