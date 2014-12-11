@@ -16,9 +16,9 @@ module Sipity
         Forms::AssignADoiForm.new(attributes)
       end
 
-      def submit_assign_a_doi_form(form, requested_by: nil)
+      def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__) if requested_by
+          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
           Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
         end
       end
@@ -27,14 +27,13 @@ module Sipity
         Forms::RequestADoiForm.new(attributes)
       end
 
-      def submit_request_a_doi_form(form, requested_by: nil)
+      def submit_request_a_doi_form(form, requested_by:)
         form.submit do |f|
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
           )
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__) if requested_by
-          # TODO: Remove magic string
+          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
           Models::DoiCreationRequest.create!(header: f.header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
         end
       end

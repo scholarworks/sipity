@@ -30,7 +30,7 @@ module Sipity
           header = repository.find_header(header_id)
           form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
           authorization_layer.enforce!(submit?: form) do
-            if repository.submit_assign_a_doi_form(form)
+            if repository.submit_assign_a_doi_form(form, requested_by: current_user)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
               callback(:success, header, form.identifier)
@@ -50,7 +50,7 @@ module Sipity
           header = repository.find_header(header_id)
           form = repository.build_request_a_doi_form(attributes.merge(header: header))
           authorization_layer.enforce!(submit?: form) do
-            if repository.submit_request_a_doi_form(form)
+            if repository.submit_request_a_doi_form(form, requested_by: current_user)
               # TODO: Should this be the form or the header? Likely the form, but
               # the controller implementations assume the header
               callback(:success, header)

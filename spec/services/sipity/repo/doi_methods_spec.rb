@@ -13,34 +13,32 @@ module Sipity
 
       context '#submit_assign_a_doi_form' do
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
+        let(:user) { User.new(id: '123') }
         let(:attributes) { { header: header, identifier: identifier } }
         let(:form) { subject.build_assign_a_doi_form(attributes) }
 
         context 'on invalid data' do
           let(:identifier) { '' }
           it 'returns false and does not assign a DOI' do
-            expect(subject.submit_assign_a_doi_form(form)).to eq(false)
+            expect(subject.submit_assign_a_doi_form(form, requested_by: user)).to eq(false)
           end
         end
         context 'on valid data' do
           let(:identifier) { 'doi:abc' }
-          it 'will assign the DOI to the header' do
-            expect { subject.submit_assign_a_doi_form(form) }.
-              to change { subject.doi_already_assigned?(header) }.
-              from(false).to(true)
+          it 'will assign the DOI to the header and log the event' do
+            expect { subject.submit_assign_a_doi_form(form, requested_by: user) }.to(
+              change { subject.doi_already_assigned?(header) }.from(false).to(true) &&
+              change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_doi_form').count }.by(1)
+            )
           end
           it 'will return true' do
-            expect(subject.submit_assign_a_doi_form(form)).to be_truthy
-          end
-          it 'will create an event log entry for the requesting user' do
-            user = User.new(id: '123')
-            expect { subject.submit_assign_a_doi_form(form, requested_by: user) }.
-              to change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_doi_form').count }.by(1)
+            expect(subject.submit_assign_a_doi_form(form, requested_by: user)).to be_truthy
           end
         end
       end
 
       context '#submit_request_a_doi_form' do
+        let(:user) { User.new(id: 12) }
         let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
         let(:attributes) do
           { header: header, publisher: publisher, publication_date: '2014-10-11', authors: ['Frog', 'Toad'] }
@@ -50,25 +48,21 @@ module Sipity
         context 'on invalid data' do
           let(:publisher) { '' }
           it 'will return false and does not create the DOI request' do
-            expect(subject.submit_request_a_doi_form(form)).to eq(false)
+            expect(subject.submit_request_a_doi_form(form, requested_by: user)).to eq(false)
           end
         end
 
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
           it 'will return true' do
-            expect(subject.submit_request_a_doi_form(form)).to be_truthy
+            expect(subject.submit_request_a_doi_form(form, requested_by: user)).to be_truthy
           end
-          it 'will create the DOI request and append the captured attributes' do
-            expect { subject.submit_request_a_doi_form(form) }.to(
+          it 'will create the DOI request and append the captured attributes and log the event' do
+            expect { subject.submit_request_a_doi_form(form, requested_by: user) }.to(
               change { subject.doi_request_is_pending?(header) }.from(false).to(true) &&
-              change { header.additional_attributes.count }.by(2)
+              change { header.additional_attributes.count }.by(2) &&
+              change { Models::EventLog.where(user: user, event_name: 'submit_request_a_doi_form').count }.by(1)
             )
-          end
-          it 'will create an event log entry for the requesting user' do
-            user = User.new(id: '123')
-            expect { subject.submit_request_a_doi_form(form, requested_by: user) }.
-              to change { Models::EventLog.where(user: user, event_name: 'submit_request_a_doi_form').count }.by(1)
           end
         end
       end
