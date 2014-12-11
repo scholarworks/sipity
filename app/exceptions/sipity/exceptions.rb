@@ -12,6 +12,13 @@ module Sipity
       end
     end
 
+    # When you just can't find that job, throw an exception.
+    class JobNotFoundError < RuntimeError
+      def initialize(name:, container:)
+        super("Unable to find #{name} within #{container}")
+      end
+    end
+
     # Exposing a custom AuthenticationFailureError
     class AuthenticationFailureError < RuntimeError
       def initialize(context)
