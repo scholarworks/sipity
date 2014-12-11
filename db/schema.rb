@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141204165259) do
+ActiveRecord::Schema.define(version: 20141211191318) do
 
   create_table "sipity_additional_attributes", force: true do |t|
     t.integer  "header_id",  null: false
@@ -36,14 +36,14 @@ ActiveRecord::Schema.define(version: 20141204165259) do
   add_index "sipity_collaborators", ["header_id", "sequence"], name: "index_sipity_collaborators_on_header_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: true do |t|
-    t.integer  "header_id",        null: false
-    t.string   "state",            null: false
+    t.integer  "header_id",                                              null: false
+    t.string   "state",            default: "request_not_yet_submitted", null: false
     t.string   "response_message"
-    t.string   "text"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "sipity_doi_creation_requests", ["header_id"], name: "index_sipity_doi_creation_requests_on_header_id", unique: true
   add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state"
 
   create_table "sipity_event_logs", force: true do |t|
