@@ -22,16 +22,13 @@ module Sipity
       end
 
       context '#work' do
-        before do
-        end
-
         context 'with invalid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_FAILED' do
             doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED
             expect(doi_creation_request).to receive(:update).
-              with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered
+              with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered.and_call_original
             expect(doi_creation_request).to receive(:update).
-              with(state: doi_creation_request.class::REQUEST_FAILED, response_message: kind_of(String)).ordered
+              with(state: doi_creation_request.class::REQUEST_FAILED, response_message: kind_of(String)).ordered.and_call_original
             expect(minter).to receive(:call).and_raise(RuntimeError)
             expect { subject.work }.to raise_error(RuntimeError)
           end
@@ -40,8 +37,8 @@ module Sipity
         context 'with valid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_COMPLETED and set the identifier.doi' do
             doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered
-            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_COMPLETED).ordered
+            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_SUBMITTED).ordered.and_call_original
+            expect(doi_creation_request).to receive(:update).with(state: doi_creation_request.class::REQUEST_COMPLETED).ordered.and_call_original
             expect(metadata_gatherer).to receive(:call).with(header_id: doi_creation_request.header_id).and_return(metadata)
             expect(minter).to receive(:call).with(metadata).and_return(response)
             subject.work
