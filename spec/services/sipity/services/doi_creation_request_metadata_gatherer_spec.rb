@@ -24,7 +24,7 @@ module Sipity
         before do
           allow(Models::Header).to receive(:find).and_return(header)
           # TODO: Remove magic string
-          Models::Collaborator.create!(header_id: header.id, role: 'author', name: creator)
+          Models::Collaborator.create!(header_id: header.id, role: Models::Collaborator::AUTHOR_ROLE, name: creator)
           Models::AdditionalAttribute.create!(
             header_id: header.id, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: publisher
           )

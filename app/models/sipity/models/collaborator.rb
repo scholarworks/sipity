@@ -4,7 +4,9 @@ module Sipity
     # A collaborator (as per metadata not improving on the SIP) for the underlying
     # work's SIP.
     class Collaborator < ActiveRecord::Base
-      DEFAULT_ROLE = 'author'.freeze
+      AUTHOR_ROLE = DEFAULT_ROLE = 'author'.freeze
+      ADVISOR_ROLE = 'advisor'
+      CONTRIBUTOR_ROLE = 'contributor'
 
       def self.build_default
         new(role: DEFAULT_ROLE)
@@ -23,9 +25,9 @@ module Sipity
       enum(
         role:
         {
-          'advisor' => 'advisor',
-          'author' => 'author',
-          'contributor' => 'contributor'
+          ADVISOR_ROLE => ADVISOR_ROLE,
+          AUTHOR_ROLE => AUTHOR_ROLE,
+          CONTRIBUTOR_ROLE => CONTRIBUTOR_ROLE
         }
       )
     end
