@@ -17,8 +17,14 @@ module Sipity
       end
 
       context 'find_doi_creation_request_by_id' do
-        it 'will find based on the id'
-        it 'will raise an exception if one cannot be found'
+        it 'will find based on the id' do
+          header = Models::Header.new(id: 123)
+          entity = Models::DoiCreationRequest.create!(header: header)
+          expect(subject.find_doi_creation_request_by_id(entity.id)).to eq(entity)
+        end
+        it 'will raise an exception if one cannot be found' do
+          expect { subject.find_doi_creation_request_by_id(1) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
       end
 
       context '#submit_assign_a_doi_form' do
