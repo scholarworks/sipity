@@ -34,12 +34,18 @@ module Sipity
           )
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
           Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
-          request = Models::DoiCreationRequest.create!(header: f.header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
-          # TODO: Is this the best way to submit a job?
-          # Would it be better to craft a Job submission layer?
-          Jobs::DoiCreationRequestJob.submit(request.id)
-          request
+          submit_doi_creation_request_job!(header: f.header)
         end
+      end
+
+      private
+
+      def submit_doi_creation_request_job!(header:)
+        request = Models::DoiCreationRequest.create!(header: header, state: Models::DoiCreationRequest::REQUEST_NOT_YET_SUBMITTED)
+        # TODO: Is this the best way to submit a job?
+        # Would it be better to craft a Job submission layer?
+        Jobs::DoiCreationRequestJob.submit(request.id)
+        request
       end
     end
   end
