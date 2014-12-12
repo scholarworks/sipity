@@ -11,6 +11,10 @@ module Sipity
     # asynchronously, this is your place to make changes.
     def submit(job_name, *args)
       job = find_job_by_name(job_name)
+
+      # REVIEW: Would it make sense to verify that each of the args is a
+      #   primative? Given that we could be passing this information through
+      #   REDIS
       job.submit(*args)
     end
 
