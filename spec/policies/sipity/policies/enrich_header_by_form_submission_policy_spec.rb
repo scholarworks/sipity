@@ -2,15 +2,15 @@ require 'spec_helper'
 
 module Sipity
   module Policies
-    RSpec.describe AssignADoiFormPolicy do
+    RSpec.describe EnrichHeaderByFormSubmissionPolicy do
       let(:user) { User.new(id: '1') }
       let(:header) { Models::Header.new(id: '2') }
       let(:form) { Forms::AssignADoiForm.new(header: header) }
       let(:header_policy) { double('Header Policy') }
-      subject { AssignADoiFormPolicy.new(user, form, header_policy: header_policy) }
+      subject { EnrichHeaderByFormSubmissionPolicy.new(user, form, header_policy: header_policy) }
 
       it 'will have a default header_policy' do
-        expect(AssignADoiFormPolicy.new(user, form).send(:header_policy)).to be_a(HeaderPolicy)
+        expect(EnrichHeaderByFormSubmissionPolicy.new(user, form).send(:header_policy)).to be_a(HeaderPolicy)
       end
 
       context 'for a non-authenticated user' do
