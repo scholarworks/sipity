@@ -22,7 +22,7 @@ module Sipity
 
       def as_hash
         {
-          '_target' => permanent_url_for_header,
+          '_target' => permanent_uri_for_header,
           'datacite.title' => title,
           'datacite.creator' => creator,
           'datacite.publisher' => publisher,
@@ -36,8 +36,8 @@ module Sipity
       # object.
       #
       # TODO: Extract to a more prominent location; This is a permanent URL
-      def permanent_url_for_header
-        "http://change.me/show/#{header.id}"
+      def permanent_uri_for_header
+        Sipity::Conversions::ConvertToPermanentUri.call(header)
       end
 
       def title

@@ -12,6 +12,13 @@ module Sipity
       end
     end
 
+    # Unable to convert the given object into a permanent URI
+    class PermanentUriConversionError < RuntimeError
+      def initialize(attempted_conversion_object)
+        super("Unable to convert #{attempted_conversion_object.inspect} to a PermanentUri")
+      end
+    end
+
     # When you just can't find that job, throw an exception.
     class JobNotFoundError < RuntimeError
       def initialize(name:, container:)
