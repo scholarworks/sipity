@@ -9,7 +9,8 @@ module Sipity
     let(:policy_authorizer) { double('PolicyAuthorizer', call: :called) }
 
     it 'will have a default policy_authorizer' do
-      expect(subject.send(:policy_authorizer)).to respond_to(:call)
+      authorization_layer = described_class.new(context)
+      expect(authorization_layer.send(:policy_authorizer)).to respond_to(:call)
     end
 
     context '#enforce!' do
