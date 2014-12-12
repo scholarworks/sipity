@@ -11,7 +11,7 @@ module Sipity
 
       context '.fieldset_for' do
         it 'wrap the results of the block inside a fieldset tag' do
-          expect(subject.fieldset_for('attributes') { 'hello' }).to match(%r{^<fieldset.*legend>hello</fieldset>})
+          expect(subject.fieldset_for('attributes') { 'hello' }).to match(/\A<fieldset.*legend>hello<\/fieldset>/)
         end
       end
 
