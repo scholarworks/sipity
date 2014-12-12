@@ -5,7 +5,7 @@ module Sipity
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     # @see HeaderPolicy for more information on who can edit this object.
-    class AssignADoiFormPolicy < BasePolicy
+    class EnrichHeaderByFormSubmissionPolicy < BasePolicy
       attr_reader :header_policy
       private :header_policy
       def initialize(user, entity, options = {})
