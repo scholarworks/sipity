@@ -17,6 +17,8 @@ module Sipity
             to eq(Collaborator.roles.values)
         end
       end
+
+      its(:possible_roles) { should eq(described_class.roles) }
     end
   end
 end

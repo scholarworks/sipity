@@ -12,6 +12,10 @@ module Sipity
       it 'will have a #human_attribute_name' do
         expect(subject.human_attribute_name(:name)).to eq('Name')
       end
+
+      it 'shares .object_class with Models::Collaborator' do
+        expect(CollaboratorDecorator.object_class).to eq(Models::Collaborator)
+      end
     end
   end
 end

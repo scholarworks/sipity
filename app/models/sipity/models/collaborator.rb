@@ -16,7 +16,7 @@ module Sipity
 
       self.table_name = 'sipity_collaborators'
 
-      validates :role, inclusion: { in: ->(obj) { obj.class.roles } }
+      validates :role, inclusion: { in: ->(obj) { obj.possible_roles } }
 
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While
@@ -30,6 +30,10 @@ module Sipity
           CONTRIBUTOR_ROLE => CONTRIBUTOR_ROLE
         }
       )
+
+      def possible_roles
+        self.class.roles
+      end
     end
   end
 end
