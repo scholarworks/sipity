@@ -14,6 +14,10 @@ module Sipity
         end
       end
 
+      it 'will raise an ArgumentError if you provide an invalid work_publication_strategy' do
+        expect { subject.work_publication_strategy = '__incorrect_strategy__' }.to raise_error(ArgumentError)
+      end
+
       it 'has many :additional_attributes' do
         expect(Header.reflect_on_association(:additional_attributes)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
