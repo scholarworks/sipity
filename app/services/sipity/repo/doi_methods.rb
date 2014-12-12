@@ -68,6 +68,7 @@ module Sipity
       end
 
       def gather_doi_creation_request_metadata(header_id:)
+        # REVIEW: Would this be better as :header?
         Services::DoiCreationRequestMetadataGatherer.call(header_id: header_id)
       end
 
@@ -79,8 +80,6 @@ module Sipity
 
       def submit_doi_creation_request_job!(header:)
         request = Models::DoiCreationRequest.create!(header: header)
-        # TODO: Is this the best way to submit a job?
-        # Would it be better to craft a Job submission layer?
         Jobs.submit('doi_creation_request_job', request.id)
         request
       end
