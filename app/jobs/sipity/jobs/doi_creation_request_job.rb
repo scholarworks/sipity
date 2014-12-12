@@ -2,21 +2,18 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
-      def self.submit(doi_creation_request_id)
-        new(doi_creation_request_id).work
+      def self.submit(header_id)
+        new(header_id).work
       end
 
-      # TODO: Refactor to use header_id; It is the more relevant identifier
-      #   and will alleviate much of the underlying tests need to persist
-      #   the relevant methods.
-      def initialize(doi_creation_request_id, options = {})
+      def initialize(header_id, options = {})
         @repository = options.fetch(:repository) { default_repository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
-        @doi_creation_request = repository.find_doi_creation_request_by_id(doi_creation_request_id)
+        @header = repository.find_header(header_id)
+        @doi_creation_request = repository.find_doi_creation_request(header: header)
       end
-      attr_reader :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
-      delegate :header, to: :doi_creation_request
+      attr_reader :header, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
 
       def work
         # TODO: Do we need to track history for the given person?
@@ -59,6 +56,9 @@ module Sipity
 
       def default_minter
         # REVIEW: Do I need an insulating layer?
+        # I chose a lambda instead of capturing the method as the method signature
+        # of the underlying Ezid::Identifer is not under my control and could be
+        # something I would want to tease apart.
         ->(metadata) { Ezid::Identifier.create(metadata: metadata) }
       end
 
