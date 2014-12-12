@@ -17,11 +17,13 @@ digraph "G" {
         decorator[label="Decoration\nLayer"]
         responder[label="Responder"]
         response[shape=octagon label="HTTP Response"]
+        command_line[shape=oval label="Alternate Client"]
         job[label="Asynchronous Tasks"]
 
         request -> router
         router -> controller
         controller -> runner
+        command_line -> runner[dir=both]
         runner -> authentication
         authentication -> authorization
         authorization -> repository
