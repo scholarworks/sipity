@@ -1,7 +1,14 @@
 module Sipity
   # The logical container for all things Exceptional in Sipity! And by
   # Exceptional, I mean custom exceptions that can and will be raised by Sipity.
+  #
+  # By focusing on custom exceptions, the Application's exception handling can
+  # become much more granular.
   module Exceptions
+    # Creating a base exception to further extend.
+    class RuntimeError < ::RuntimeError
+    end
+
     # When you go about building an object that has method missing expectations
     # you may need to raise an exception if you are planning to catch a
     # method_name via message missing, but won't because the method is already
@@ -19,18 +26,19 @@ module Sipity
       end
     end
 
-    # When you just can't find that job, throw an exception.
-    class JobNotFoundError < RuntimeError
+    # As you are looking up something by name, within a given container.
+    class ConceptNotFoundError < RuntimeError
       def initialize(name:, container:)
         super("Unable to find #{name} within #{container}")
       end
     end
 
+    # When you just can't find that job, throw an exception.
+    class JobNotFoundError < ConceptNotFoundError
+    end
+
     # A policy was not found. Now panic!
-    class PolicyNotFoundError < RuntimeError
-      def initialize(name:, container:)
-        super("Unable to find #{name} within #{container}")
-      end
+    class PolicyNotFoundError < ConceptNotFoundError
     end
 
     # Exposing a custom AuthenticationFailureError
