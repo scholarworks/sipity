@@ -3,7 +3,10 @@ require 'rails_helper'
 module Sipity
   module Models
     RSpec.describe DoiCreationRequest, type: :model do
-      pending "add some examples to (or delete) #{__FILE__}"
+      subject { described_class.new }
+      it 'will initialize with a default state' do
+        expect(subject.state).to be_present
+      end
     end
   end
 end
