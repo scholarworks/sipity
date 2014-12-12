@@ -19,15 +19,19 @@ Its goal is to provide clarity on why a patron would want to fill out metadata i
 
 Sipity is a Rails application but is built with a few more concepts in mind.
 
-The Sipity::Repository object exposes the methods for interacting with the persistence layer.
-You can circumvent this interaction, but I am looking to convey the concepts in an expressive manner.
+![Sipity Request Cycle](artifacts/sipity-request-cycle.png)
 
-The Runners, found in `./app/runners`, define how the application interacts with the repository layer.
-The primary purpose of the Runner is to offload much of the processing decisions from the controller.
-And instead let the controller worry about generating the correct response (e.g. render a template or redirect to another URI) based on the results of the Runner.
 
-In offloading the processing from the controller, the runner can, with minimal adjustments, operate in a different context.
-In other words, a Runner could be used to build a suite of command-line commands.
+1. A request comes into the Router.
+2. Router maps request to a Controller.
+3. Controller maps request to a Runner.
+4. Runner enforces Authentication layer
+5. Runner enforces Authorization layer
+6. Runner processes request by collaborating with the Repository and Job.
+7. Runner generates response for the Controller.
+8. Controller passes response through Decoration layer.
+9. Controller generates response for Responder.
+10. Responder sends response to the request.
 
 ### RSpec output
 
