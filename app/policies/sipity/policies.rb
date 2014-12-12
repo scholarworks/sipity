@@ -1,3 +1,8 @@
+# Because of the above `const_defined?` I'm requiring the various sipity
+# policies
+Dir[File.expand_path('../policies/*.rb', __FILE__)].each do |filename|
+  require_relative "./policies/#{File.basename(filename)}"
+end
 module Sipity
   # Contains the various Policies associated with Sipity.
   #

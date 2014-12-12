@@ -1,3 +1,8 @@
+# Because of the above `const_defined?` I'm requiring the various sipity
+# jobs
+Dir[File.expand_path('../jobs/*.rb', __FILE__)].each do |filename|
+  require_relative "./jobs/#{File.basename(filename)}"
+end
 module Sipity
   # Responsible for processing a single concept in an asynchronous manner.
   # That means we are only passing primatives to the Jobs and it is
