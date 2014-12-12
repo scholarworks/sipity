@@ -140,6 +140,16 @@ module Sipity
           expect(klass.new.doi_already_assigned?(header)).to be_falsey
         end
       end
+
+      context '#update_header_with_doi_predicate!' do
+        let(:header) { Models::Header.new(id: 1) }
+        let(:value) { 'doi:oh-my' }
+        it 'will update the underlying doi predicates' do
+          allow(Support::AdditionalAttributes).to receive(:update!).
+            with(header: header, key: 'identifier.doi', values: value).and_call_original
+          subject.update_header_with_doi_predicate!(header: header, values: value)
+        end
+      end
     end
   end
 end

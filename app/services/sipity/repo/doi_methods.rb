@@ -58,9 +58,7 @@ module Sipity
       end
 
       def update_header_with_doi_predicate!(header:, values:)
-        Support::AdditionalAttributes.update!(
-          header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values
-        )
+        Support::AdditionalAttributes.update!(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values)
       end
 
       def gather_doi_creation_request_metadata(header:)
