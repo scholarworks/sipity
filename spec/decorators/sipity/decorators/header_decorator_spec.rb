@@ -9,6 +9,10 @@ module Sipity
         expect(subject.to_s).to eq(header.title)
       end
 
+      it 'shares .object_class with Models::Header' do
+        expect(HeaderDecorator.object_class).to eq(Models::Header)
+      end
+
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
         allow(Repo::Support::Collaborators).to receive(:for).with(header: header, role: 'author').and_return(authors)
