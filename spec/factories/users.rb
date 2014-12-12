@@ -1,12 +1,12 @@
-FactoryGirl.define do
-  factory :user do
-    name "Test User"
-    email "test@example.com"
-    password "please123"
+module Sipity
+  module SpecSupport
+    module Factory
+      module_function
 
-    trait :admin do
-      role 'admin'
+      def create_user(overrides = {})
+        default_attributes = { name: 'Test User', email: 'test@example.com', password: 'please123' }
+        User.create!(default_attributes.merge(overrides))
+      end
     end
-
   end
 end
