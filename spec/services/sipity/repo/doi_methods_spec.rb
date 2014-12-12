@@ -43,7 +43,7 @@ module Sipity
       end
 
       context '#submit_assign_a_doi_form' do
-        let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
+        let(:header) { Models::Header.new(id: '1234') }
         let(:user) { User.new(id: '123') }
         let(:attributes) { { header: header, identifier: identifier } }
         let(:form) { subject.build_assign_a_doi_form(attributes) }
@@ -78,7 +78,7 @@ module Sipity
 
       context '#submit_request_a_doi_form' do
         let(:user) { User.new(id: 12) }
-        let(:header) { FactoryGirl.build_stubbed(:sipity_header, id: '1234') }
+        let(:header) { Models::Header.new(id: '1234') }
         let(:attributes) do
           { header: header, publisher: publisher, publication_date: '2014-10-11', authors: ['Frog', 'Toad'] }
         end
