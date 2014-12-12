@@ -23,6 +23,24 @@ module Sipity
         end
       end
 
+      context 'POST #create' do
+        let(:header) { FactoryGirl.build_stubbed(:sipity_header) }
+        before { controller.runner = runner }
+        let(:runner) do
+          Hesburgh::Lib::MockRunner.new(
+            yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
+          )
+        end
+        let(:attributes) { { 'title' => 'My Title' } }
+        let(:yields) { header }
+        let(:callback_name) { :success }
+        it 'will render the new page' do
+          post 'create', header: attributes
+          expect(assigns(:model)).to_not be_nil
+          expect(response).to redirect_to("/headers/#{header.to_param}")
+        end
+      end
+
       context 'GET #edit' do
         before { controller.runner = runner }
         let(:runner) do
@@ -40,6 +58,24 @@ module Sipity
         end
       end
 
+      context 'PUT #create' do
+        let(:header) { FactoryGirl.build_stubbed(:sipity_header) }
+        before { controller.runner = runner }
+        let(:runner) do
+          Hesburgh::Lib::MockRunner.new(
+            yields: yields, callback_name: callback_name,
+            run_with: { header_id: header.to_param, attributes: attributes }, context: controller
+          )
+        end
+        let(:attributes) { { 'title' => 'My Title' } }
+        let(:yields) { header }
+        let(:callback_name) { :success }
+        it 'will render the new page' do
+          put 'update', id: header.to_param, header: attributes
+          expect(assigns(:model)).to_not be_nil
+          expect(response).to redirect_to("/headers/#{header.to_param}")
+        end
+      end
       context 'GET #show' do
         before { controller.runner = runner }
         let(:runner) do
