@@ -13,6 +13,16 @@ module Sipity
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :header, foreign_key: 'header_id'
+
+      enum(
+        key: {
+          DOI_PREDICATE_NAME => DOI_PREDICATE_NAME,
+          CITATION_PREDICATE_NAME => CITATION_PREDICATE_NAME,
+          CITATION_TYPE_PREDICATE_NAME => CITATION_TYPE_PREDICATE_NAME,
+          PUBLISHER_PREDICATE_NAME => PUBLISHER_PREDICATE_NAME,
+          PUBLICATION_DATE_PREDICATE_NAME => PUBLICATION_DATE_PREDICATE_NAME
+        }
+      )
     end
   end
 end

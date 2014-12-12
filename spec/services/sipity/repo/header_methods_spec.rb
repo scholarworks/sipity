@@ -105,8 +105,8 @@ module Sipity
             expect(subject.title).to eq(header.title)
           end
           it 'will expose an additional attribute' do
-            Models::AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
-            expect(subject.chicken).to eq('parmasean')
+            Models::AdditionalAttribute.create!(header: header, key: 'publisher', value: 'parmasean')
+            expect(subject.publisher).to eq('parmasean')
           end
         end
       end
@@ -114,7 +114,7 @@ module Sipity
       context '#submit_update_header_form' do
         let(:user) { User.new(id: '123') }
         let(:header) { Models::Header.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
-        let(:form) { subject.build_update_header_form(header: header, attributes: { title: 'My New Title', chicken: 'dance' }) }
+        let(:form) { subject.build_update_header_form(header: header, attributes: { title: 'My New Title', publisher: 'dance' }) }
         context 'with invalid data' do
           before do
             allow(header).to receive(:persisted?).and_return(true)
@@ -130,7 +130,7 @@ module Sipity
         end
         context 'with valid data' do
           before do
-            Models::AdditionalAttribute.create!(header: header, key: 'chicken', value: 'parmasean')
+            Models::AdditionalAttribute.create!(header: header, key: 'publisher', value: 'parmasean')
             allow(header).to receive(:persisted?).and_return(true)
             allow(form).to receive(:valid?).and_return(true)
           end
@@ -141,7 +141,7 @@ module Sipity
             expect { subject.submit_update_header_form(form, requested_by: user) }.to(
               change { header.reload.title }.from('My Title').to('My New Title') &&
               change { Models::AdditionalAttribute.where(header: header).pluck(:key, :value) }.
-                from([['chicken', 'parmasean']]).to([['chicken', 'dance']]) &&
+                from([['publisher', 'parmasean']]).to([['publisher', 'dance']]) &&
               change { Models::EventLog.where(user: user, event_name: 'submit_update_header_form').count }.by(1)
             )
           end
