@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Minimum viable SIP', :devise do
   include Warden::Test::Helpers
   before { Warden.test_mode! }
-  let(:user) { Sipity::SpecSupport::Factory.create_user }
+  let(:user) { Sipity::Factories.create_user }
   scenario 'User can create a SIP' do
     login_as(user, scope: :user)
     visit '/start'
