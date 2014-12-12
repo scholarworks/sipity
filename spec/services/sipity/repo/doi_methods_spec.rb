@@ -11,6 +11,26 @@ module Sipity
       subject { klass.new }
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
+      context '#update_header_doi_creation_request_state!' do
+        let(:header) { Models::Header.new(id: 123) }
+        let!(:doi_creation_request) { Models::DoiCreationRequest.create!(header: header) }
+        context 'given a valid state' do
+          let(:state) { 'request_completed' }
+          it 'will update the state' do
+            expect { subject.update_header_doi_creation_request_state!(header: header, state: state) }.
+              to change { doi_creation_request.reload.state }.to(state)
+          end
+        end
+
+        context 'given an invalid state' do
+          let(:state) { 'not_valid_even_once' }
+          it 'will raise an ArgumentError' do
+            expect { subject.update_header_doi_creation_request_state!(header: header, state: state) }.
+              to raise_error(ArgumentError)
+          end
+        end
+      end
+
       context '#find_doi_creation_request' do
         let(:header) { Models::Header.new(id: 123) }
         it 'will find based on the header' do

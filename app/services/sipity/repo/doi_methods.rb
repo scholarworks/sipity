@@ -52,7 +52,7 @@ module Sipity
 
       def update_header_doi_creation_request_state!(header:, state:, response_message: nil)
         doi_creation_request = find_doi_creation_request(header: header)
-        attributes = { state: get_valid_doi_creation_request_state(state) }
+        attributes = { state: state.to_s.downcase }
         attributes[:response_message] = response_message if response_message.present?
         doi_creation_request.update(attributes)
       end
@@ -69,10 +69,6 @@ module Sipity
       end
 
       private
-
-      def get_valid_doi_creation_request_state(state)
-        Models::DoiCreationRequest.const_get(state.to_s.upcase)
-      end
 
       def submit_doi_creation_request_job!(header:)
         request = Models::DoiCreationRequest.create!(header: header)
