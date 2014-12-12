@@ -16,6 +16,9 @@ module Sipity
       )
 
       ALREADY_PUBLISHED = 'already_published'.freeze
+      WILL_NOT_PUBLISH = 'will_not_publish'.freeze
+      GOING_TO_PUBLISH = 'going_to_publish'.freeze
+      DO_NOT_KNOW = 'do_not_know'.freeze
 
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While
@@ -24,10 +27,10 @@ module Sipity
       enum(
         work_publication_strategy:
         {
-          'will_not_publish' => 'will_not_publish',
+          WILL_NOT_PUBLISH => WILL_NOT_PUBLISH,
           ALREADY_PUBLISHED => ALREADY_PUBLISHED,
-          'going_to_publish' => 'going_to_publish',
-          'do_not_know' => 'do_not_know'
+          GOING_TO_PUBLISH => GOING_TO_PUBLISH,
+          DO_NOT_KNOW => DO_NOT_KNOW
         }
       )
 
