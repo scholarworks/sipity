@@ -9,6 +9,12 @@ module Sipity
         expect(subject.to_s).to eq(header.title)
       end
 
+      context '.fieldset_for' do
+        it 'wrap the results of the block inside a fieldset tag' do
+          expect(subject.fieldset_for('attributes') { 'hello' }).to match(%r{^<fieldset.*legend>hello</fieldset>})
+        end
+      end
+
       it 'shares .object_class with Models::Header' do
         expect(HeaderDecorator.object_class).to eq(Models::Header)
       end
