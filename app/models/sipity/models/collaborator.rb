@@ -5,8 +5,8 @@ module Sipity
     # work's SIP.
     class Collaborator < ActiveRecord::Base
       AUTHOR_ROLE = DEFAULT_ROLE = 'author'.freeze
-      ADVISOR_ROLE = 'advisor'
-      CONTRIBUTOR_ROLE = 'contributor'
+      ADVISOR_ROLE = 'advisor'.freeze
+      CONTRIBUTOR_ROLE = 'contributor'.freeze
 
       def self.build_default
         new(role: DEFAULT_ROLE)
