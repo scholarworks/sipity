@@ -24,8 +24,11 @@ module Sipity
       end
 
       context 'POST #create' do
-        let(:header) { FactoryGirl.build_stubbed(:sipity_header) }
-        before { controller.runner = runner }
+        before do
+          controller.runner = runner
+          # Because Rails checks persisted for when processing respond_with
+          allow(header).to receive(:persisted?).and_return(true)
+        end
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
             yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
@@ -59,8 +62,11 @@ module Sipity
       end
 
       context 'PUT #create' do
-        let(:header) { FactoryGirl.build_stubbed(:sipity_header) }
-        before { controller.runner = runner }
+        before do
+          controller.runner = runner
+          # Because Rails checks persisted for when processing respond_with
+          allow(header).to receive(:persisted?).and_return(true)
+        end
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
             yields: yields, callback_name: callback_name,
