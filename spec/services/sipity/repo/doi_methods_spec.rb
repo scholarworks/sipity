@@ -12,18 +12,13 @@ module Sipity
       after { Sipity::Repo.send(:remove_const, :TestRepository) }
 
       context '#find_doi_creation_request' do
-        it 'will find based on the given header'
-        it 'will raise an exception if one cannot be found'
-      end
-
-      context 'find_doi_creation_request_by_id' do
-        it 'will find based on the id' do
-          header = Models::Header.new(id: 123)
+        let(:header) { Models::Header.new(id: 123) }
+        it 'will find based on the header' do
           entity = Models::DoiCreationRequest.create!(header: header)
-          expect(subject.find_doi_creation_request_by_id(entity.id)).to eq(entity)
+          expect(subject.find_doi_creation_request(header: header)).to eq(entity)
         end
         it 'will raise an exception if one cannot be found' do
-          expect { subject.find_doi_creation_request_by_id(1) }.to raise_error(ActiveRecord::RecordNotFound)
+          expect { subject.find_doi_creation_request(header: header) }.to raise_error(ActiveRecord::RecordNotFound)
         end
       end
 
@@ -79,7 +74,7 @@ module Sipity
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
           it 'will return true' do
-            expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(Fixnum))
+            expect(Jobs).to receive(:submit).with('doi_creation_request_job', header.id)
             expect(subject.submit_request_a_doi_form(form, requested_by: user)).to be_truthy
           end
           it 'will create the DOI request and append the captured attributes and log the event' do

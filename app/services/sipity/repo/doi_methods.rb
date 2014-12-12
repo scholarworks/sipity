@@ -13,13 +13,9 @@ module Sipity
       end
 
       def find_doi_creation_request(header:)
-        Models::DoiCreationRequest.where(header: header).first!
-      end
-
-      def find_doi_creation_request_by_id(id)
         # Going to give you the header as part of the find; You'll probably want
         # it.
-        Models::DoiCreationRequest.includes(:header).find(id)
+        Models::DoiCreationRequest.includes(:header).where(header: header).first!
       end
 
       def doi_already_assigned?(header)
@@ -80,7 +76,7 @@ module Sipity
 
       def submit_doi_creation_request_job!(header:)
         request = Models::DoiCreationRequest.create!(header: header)
-        Jobs.submit('doi_creation_request_job', request.id)
+        Jobs.submit('doi_creation_request_job', header.id)
         request
       end
     end

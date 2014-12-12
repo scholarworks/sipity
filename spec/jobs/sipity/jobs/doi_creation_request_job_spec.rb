@@ -3,16 +3,19 @@ require 'spec_helper'
 module Sipity
   module Jobs
     RSpec.describe DoiCreationRequestJob do
-      let(:doi_creation_request) { Models::DoiCreationRequest.create!(header: header) }
-      let(:header) { Models::Header.create!(title: 'Hello', work_publication_strategy: 'do_not_know') }
+      let(:doi_creation_request) { Models::DoiCreationRequest.new(header: header) }
+      let(:header) { Models::Header.new(id: 1, title: 'Hello') }
       let(:minter) { double('Minter') }
       let(:repository) { Repository.new }
       let(:response) { double(id: 'doi:oh-my') }
       let(:metadata) { double('Metadata') }
       subject do
-        described_class.new(
-          doi_creation_request.id, repository: repository, minter: minter, minter_handled_exceptions: RuntimeError
-        )
+        described_class.new(header.id, repository: repository, minter: minter, minter_handled_exceptions: RuntimeError)
+      end
+
+      before do
+        allow(repository).to receive(:find_header).with(header.id).and_return(header)
+        allow(repository).to receive(:find_doi_creation_request).with(header: header).and_return(doi_creation_request)
       end
 
       context '.submit' do
@@ -25,27 +28,22 @@ module Sipity
       end
 
       context 'defaults' do
-        let(:an_id) { 1234 }
         before do
           # Not a fan of allow_any_instance_of but it helps with understanding default
           # behavior.
-          allow_any_instance_of(Repository).to receive(:find_doi_creation_request_by_id).
-            with(an_id).and_return doi_creation_request
+          allow_any_instance_of(Repository).to receive(:find_header).with(header.id).and_return header
+          allow_any_instance_of(Repository).to receive(:find_doi_creation_request).with(header: header).and_return header
         end
-        subject { described_class.new(an_id) }
+        subject { described_class.new(header.id) }
         its(:minter) { should respond_to :call }
         its(:repository) { should respond_to :update_header_doi_creation_request_state! }
         its(:repository) { should respond_to :update_header_with_doi_predicate! }
         its(:repository) { should respond_to :gather_doi_creation_request_metadata }
-        its(:repository) { should respond_to :find_doi_creation_request_by_id }
+        its(:repository) { should respond_to :find_doi_creation_request }
+        its(:repository) { should respond_to :find_header }
       end
 
       context '#work' do
-        before do
-          expect(repository).to receive(:find_doi_creation_request_by_id).
-            with(doi_creation_request.id).and_return doi_creation_request
-        end
-
         it 'will ensure the doi_creation_request is in a proper state' do
           allow(doi_creation_request).to receive(:request_not_yet_submitted?).and_return false
           allow(doi_creation_request).to receive(:request_failed?).and_return false
@@ -54,7 +52,6 @@ module Sipity
 
         context 'with invalid remote metadata' do
           it 'will transition the state through REQUEST_SUBMITTED to REQUEST_FAILED' do
-            doi_creation_request.state = doi_creation_request.class::REQUEST_NOT_YET_SUBMITTED
             expect(minter).to receive(:call).and_raise(RuntimeError)
             expect { subject.work }.to raise_error(RuntimeError)
           end
@@ -65,6 +62,7 @@ module Sipity
             expect(repository).to receive(:gather_doi_creation_request_metadata).and_return(metadata)
             expect(minter).to receive(:call).with(metadata).and_return(response)
             subject.work
+            # TODO: This is stretching beyond the responsibilities of this layer
             expect(Repo::Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)).
               to eq([response.id])
           end
