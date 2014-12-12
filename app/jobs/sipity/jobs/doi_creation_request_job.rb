@@ -54,7 +54,7 @@ module Sipity
       end
 
       def metadata
-        repository.gather_doi_creation_request_metadata(header_id: doi_creation_request.header_id)
+        repository.gather_doi_creation_request_metadata(header: header)
       end
 
       def default_minter

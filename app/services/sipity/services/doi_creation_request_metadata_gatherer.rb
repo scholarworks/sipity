@@ -10,13 +10,12 @@ module Sipity
     #   as something separate from the job.
     class DoiCreationRequestMetadataGatherer
       # A convenience method to codify the external API.
-      def self.call(header_id:)
-        new(header_id).as_hash
+      def self.call(header:)
+        new(header).as_hash
       end
 
-      def initialize(header_id)
-        # TODO: Should I be making use of the Repository?
-        @header = Models::Header.find(header_id)
+      def initialize(header)
+        @header = header
       end
       attr_reader :header
       private :header

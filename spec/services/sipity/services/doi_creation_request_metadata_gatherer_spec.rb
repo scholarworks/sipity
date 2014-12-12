@@ -4,13 +4,13 @@ module Sipity
   module Services
     RSpec.describe DoiCreationRequestMetadataGatherer do
       let(:header) { Models::Header.new(id: 123, title: 'Live at Leeds') }
-      subject { described_class.new(header_id: header.id) }
+      subject { described_class.new(header) }
 
       context '.call' do
         it 'is a convenience method to expose the public API' do
-          parameters = { header_id: 1 }
+          parameters = { header: header }
           gatherer = double(as_hash: true)
-          allow(described_class).to receive(:new).with(parameters.fetch(:header_id)).and_return(gatherer)
+          allow(described_class).to receive(:new).with(parameters.fetch(:header)).and_return(gatherer)
           described_class.call(parameters)
           expect(gatherer).to have_received(:as_hash)
         end
@@ -22,7 +22,6 @@ module Sipity
         let(:publication_date) { "#{publication_year}-05-23" }
         let(:publication_year) { '1970' }
         before do
-          allow(Models::Header).to receive(:find).and_return(header)
           # TODO: Remove magic string
           Models::Collaborator.create!(header_id: header.id, role: Models::Collaborator::AUTHOR_ROLE, name: creator)
           Models::AdditionalAttribute.create!(

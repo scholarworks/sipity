@@ -55,8 +55,9 @@ module Sipity
 
       context '#gather_doi_creation_request_metadata' do
         it 'will delegate to the gather' do
-          expect(Services::DoiCreationRequestMetadataGatherer).to receive(:call).with(header_id: 1234)
-          subject.gather_doi_creation_request_metadata(header_id: 1234)
+          header = double
+          expect(Services::DoiCreationRequestMetadataGatherer).to receive(:call).with(header: header)
+          subject.gather_doi_creation_request_metadata(header: header)
         end
       end
 
