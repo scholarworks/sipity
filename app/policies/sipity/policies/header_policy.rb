@@ -5,12 +5,7 @@ module Sipity
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     class HeaderPolicy < BasePolicy
-      def initialize(user, entity, permission_query_service: nil)
-        # TODO: There is a leaky abstraction regarding policies and queries.
-        #   I prefer to not generate loads of policies, instead leaning on
-        #   as few of policies as possible
-        @original_entity = entity
-        header = entity.respond_to?(:header) ? entity.header : entity
+      def initialize(user, header, permission_query_service: nil)
         super(user, header)
         @permission_query_service = permission_query_service || default_permission_query_service
       end

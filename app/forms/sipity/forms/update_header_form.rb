@@ -10,7 +10,7 @@ module Sipity
     # @see Sipity::Forms::UpdateHeaderForm#method_missing
     # @see Sipity::Forms::UpdateHeaderForm#respond_to_missing?
     class UpdateHeaderForm < VirtualForm
-      self.policy_enforcer = Policies::HeaderPolicy
+      self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
 
       def self.model_name
         Models::Header.model_name
