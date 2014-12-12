@@ -41,6 +41,7 @@ feature 'Minimum viable SIP', :devise do
 
     on('sipity_header') do |the_page|
       expect(the_page.text_for('title')).to eq(['New Value'])
+      the_page.click_recommendation('Citation')
     end
   end
 
