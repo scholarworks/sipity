@@ -23,7 +23,7 @@ You can do the same by copying and pasting the text below into your terminal.
 
 ```console
 echo '#!/bin/sh
-bin/rake spec:travis' > .git/hooks/pre-push ; chmod +x .git/hooks/pre-push
+SPEC_OPTS="--format progress" bin/rake spec:travis' > .git/hooks/pre-push ; chmod +x .git/hooks/pre-push
 ```
 
 ## But Rubocop is complaining too much...

@@ -44,7 +44,7 @@ namespace :spec do
 
   desc 'Run the Travis CI specs'
   task travis: [:rubocop] do
-    ENV['SPEC_OPTS'] = "--profile 5"
+    ENV['SPEC_OPTS'] ||= "--profile 5"
     Rake::Task['spec:all'].invoke
   end
 end
