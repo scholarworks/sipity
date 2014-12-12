@@ -1,6 +1,9 @@
 module Sipity
   # Models are the persisted objects. They are the closest representation of
   # the persistence layer tables/documents.
+  #
+  # @note Do **NOT** put behavior in the Models. Treat the models as data
+  #   structures.
   module Models
     # Because I want greater control of the names. Changes the polymorphic
     # pathing to something a bit less chatty (i.e. from sipity_models_header_path

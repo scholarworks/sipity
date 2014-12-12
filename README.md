@@ -36,6 +36,8 @@ I am doing my best to re-read the output tests to make sure they are adequate/ac
 
 ## Anatomy of Sipity
 
+Below is a list of the various concepts of Sipity.
+
 ```
 app
 |-- assets
@@ -53,9 +55,35 @@ app
 |-- views
 ```
 
+### Cohesion, Orthogonality, and Decoupling
+
+I am working to keep the various concepts of Sipity loosely coupled.
+I use the various `rake spec:<layer>:coverage` tasks to help me understand how each layer's specs cover that layer's code.
+
+My conjecture is that if each layer's specs cover the entire layer:
+
+* I have a well documented internal API.
+* My feature tests can focus on integration of the various layers.
+
 ### Assets, Controllers, Helpers, Mailers, Models, Views
 
 The usual Rails suspects.
+
+Jeremy's Admonition:
+
+* **Though shalt not put behavior in ActiveRecord objects**
+  - This means:
+    * No callbacks - prefer repository service/command objects/methods
+    * No query scopes - prefer repository query objects/methods
+    * No conditional validations - prefer form objects
+* **Though shalt not use ActionController filters**
+  - This means:
+    * Pushing authentication to another layer
+    * Pushing authorization to another layer
+    * Pushing cache management to another layer
+* **Though shalt think about command line interaction**
+  - This means:
+    * The controllers are one of many possible clients for the underlying application
 
 ### Conversions
 
