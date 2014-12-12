@@ -1,0 +1,37 @@
+digraph "G" {
+    compound=true;
+    node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
+
+    subgraph cluster_0 {
+        label="Sipity Request Cycle"
+        color="seashell3"
+        style="filled"
+        node[style=filled fillcolor=white color="seashell4"]
+        request[shape=oval label="HTTP Request"]
+        router[label="Rails Router"]
+        controller[label="Controller#action"]
+        runner[label="Runner"]
+        authentication[label="Authentication\nLayer"]
+        authorization[label="Authorization\nLayer"]
+        repository[label="Repository"]
+        decorator[label="Decoration\nLayer"]
+        responder[label="Responder"]
+        response[shape=octagon label="HTTP Response"]
+        job[label="Asynchronous Tasks"]
+
+        request -> router
+        router -> controller
+        controller -> runner
+        runner -> authentication
+        authentication -> authorization
+        authorization -> repository
+        repository -> runner
+        repository -> job [style="dashed"]
+        job -> repository [style="dashed"]
+        runner -> controller
+        controller -> decorator
+        decorator -> responder
+        responder -> response
+    }
+
+}
