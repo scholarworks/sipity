@@ -1,7 +1,7 @@
 require 'site_prism'
 module SitePrism
   module Pages
-    class NewSipityHeader < SitePrism::Page
+    class NewHeaderPage < SitePrism::Page
       DOM_CLASS = 'new_header'.freeze
       PARAM_NAME_CONTAINER = 'header'.freeze
 
@@ -27,7 +27,7 @@ module SitePrism
       end
     end
 
-    class EditSipityHeader < SitePrism::Page
+    class EditHeaderPage < SitePrism::Page
       DOM_CLASS = 'edit_header'.freeze
       PARAM_NAME_CONTAINER = 'header'.freeze
 
@@ -36,11 +36,11 @@ module SitePrism
       element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
 
       def fill_in(predicate, with: nil)
-        find("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
 
       def choose(predicate, with: nil)
-        all("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").each do |input|
+        all("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").each do |input|
           if input.value == with
             input.set(true)
             break
@@ -53,7 +53,7 @@ module SitePrism
       end
     end
 
-    class SipityHeader < SitePrism::Page
+    class HeaderPage < SitePrism::Page
       DOM_CLASS = 'header'.freeze
 
       def text_for(predicate)
@@ -77,7 +77,20 @@ module SitePrism
       element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
 
       def fill_in(predicate, with: nil)
-        find("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+      end
+    end
+
+    class NewCitationPage < SitePrism::Page
+      DOM_CLASS = 'new_citation'.freeze
+      PARAM_NAME_CONTAINER = 'citation'.freeze
+      element :form, "form.#{DOM_CLASS}"
+      element :input_citation, "form.#{DOM_CLASS} textarea[name='#{PARAM_NAME_CONTAINER}[citation]']"
+      element :input_type, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[type]']"
+      element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
+
+      def fill_in(predicate, with: nil)
+        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
     end
   end
