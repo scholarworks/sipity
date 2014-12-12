@@ -1,12 +1,13 @@
 module Sipity
   # A service object to find and enforce appropriate policies.
   class AuthorizationLayer
-    def initialize(context)
+    def initialize(context, collaborators = {})
       @context = context
       @user = context.current_user
+      @policy_authorizer = collaborators.fetch(:policy_authorizer) { default_policy_authorizer }
     end
-    attr_reader :user, :context
-    private :user, :context
+    attr_reader :user, :context, :policy_authorizer
+    private :user, :context, :policy_authorizer
 
     # Responsible for enforcing policies on the :policy_questions_and_entity_pairs.
     #
@@ -25,7 +26,7 @@ module Sipity
     #   that was found?
     def enforce!(policy_questions_and_entity_pairs = {})
       policy_questions_and_entity_pairs.each do |policy_question, entity|
-        next if policy_authorized_for?(user: user, policy_question: policy_question, entity: entity)
+        next if policy_authorizer.call(user: user, policy_question: policy_question, entity: entity)
         context.callback(:unauthorized) if context.respond_to?(:callback)
         fail Exceptions::AuthorizationFailureError, user: user, policy_question: policy_question, entity: entity
       end
@@ -34,21 +35,8 @@ module Sipity
 
     private
 
-    def policy_authorized_for?(user:, policy_question:, entity:)
-      # TODO: Consider moving these questions out into Sipity::Policies
-      policy_enforcer = find_policy_enforcer_for(entity: entity)
-      policy_enforcer.call(user: user, entity: entity, policy_question: policy_question)
-    end
-
-    def find_policy_enforcer_for(entity:)
-      # TODO: Consider moving these questions out into Sipity::Policies
-      return entity.policy_enforcer if entity.respond_to?(:policy_enforcer) && entity.policy_enforcer.present?
-      policy_name_as_constant = "#{entity.class.to_s.demodulize}Policy"
-      if Policies.const_defined?(policy_name_as_constant)
-        Policies.const_get(policy_name_as_constant)
-      else
-        fail Exceptions::PolicyNotFoundError, name: policy_name_as_constant, container: Policies
-      end
+    def default_policy_authorizer
+      Policies.method(:authorized_for?)
     end
 
     # Everything is allowed!

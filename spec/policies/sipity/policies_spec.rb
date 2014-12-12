@@ -9,11 +9,11 @@ module Sipity
     let(:policy_question) { :show? }
     let(:entity) { double('Entity', policy_enforcer: policy_enforcer) }
 
-    context '#policy_authorized_for?' do
+    context '#authorized_for?' do
       it 'will use the found policy_enforcer' do
         allow(subject).to receive(:find_policy_enforcer_for).with(entity: entity).and_return(policy_enforcer)
         expect(policy_enforcer).to receive(:call).with(user: user, entity: entity, policy_question: policy_question)
-        subject.policy_authorized_for?(user: user, policy_question: policy_question, entity: entity)
+        subject.authorized_for?(user: user, policy_question: policy_question, entity: entity)
       end
     end
 

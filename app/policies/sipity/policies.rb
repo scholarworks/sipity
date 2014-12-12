@@ -9,7 +9,7 @@ module Sipity
   module Policies
     module_function
 
-    def policy_authorized_for?(user:, policy_question:, entity:)
+    def authorized_for?(user:, policy_question:, entity:)
       policy_enforcer = find_policy_enforcer_for(entity: entity)
       policy_enforcer.call(user: user, entity: entity, policy_question: policy_question)
     end
