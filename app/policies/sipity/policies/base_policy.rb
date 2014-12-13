@@ -18,11 +18,11 @@ module Sipity
       end
 
       def initialize(user, entity)
-        @user = user
-        @entity = entity
+        self.user = user
+        self.entity = entity
       end
-      attr_reader :user, :entity
-      private :user, :entity
+      attr_accessor :user, :entity
+      private :user, :user=, :entity=, :entity
     end
   end
 end
