@@ -13,7 +13,7 @@ module Sipity
 
       its(:policy_enforcer) { should eq Policies::EnrichHeaderByFormSubmissionPolicy }
 
-      it 'will have a model_name equal to the Models::Header' do
+      it 'will have a model_name that is the same as the Models::Header.model_name' do
         expect(described_class.model_name).to eq(Models::Header.model_name)
       end
 
@@ -24,14 +24,14 @@ module Sipity
         end
       end
 
-      context 'exposing no attribute_names' do
+      context 'when no attribute_names are exposed' do
         it 'will NOT raise an exception' do
           expect { described_class.new(header: header, exposed_attribute_names: []) }.
             to_not raise_error
         end
       end
 
-      context 'for exposed attribute' do
+      context 'for an exposed attribute' do
         it 'will respond to that attribute name' do
           expect(subject).to respond_to(:title)
         end
@@ -46,7 +46,7 @@ module Sipity
         end
       end
 
-      context 'for attribute that is not exposed attribute' do
+      context 'for an attribute that is not an exposed attribute' do
         it 'will NOT respond to that attribute name' do
           expect(subject).to_not respond_to(:not_exposed)
         end
