@@ -80,14 +80,24 @@ Jeremy's Admonition:
     * No callbacks - prefer repository service/command objects/methods
     * No query scopes - prefer repository query objects/methods
     * No conditional validations - prefer form objects
+  - Why?
+    * Because the data structures are important, but "creating the universe" everytime you want to deal with a persisted object is insanity.
 * **Though shalt not use ActionController filters**
   - This means:
     * Pushing authentication to another layer
     * Pushing authorization to another layer
     * Pushing cache management to another layer
+  - Why?
+    * Because controllers have enough stuff going on; They are often hard to test.
+      - Ensuring you have the correct parameters
+      - Mapping the results of the action to a response
+      - Communicating any messages
+      - In other words, they already have enough reasons to change.
 * **Though shalt think about command line interaction**
   - This means:
-    * The controllers are one of many possible clients for the underlying application
+    * The controllers are one of many possible clients for the underlying application.
+  - Why?
+    * Because if you can disentangle your application from the web pages, you will have a richer application.
 
 ### Conversions
 
