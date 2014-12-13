@@ -170,3 +170,5 @@ Of particular note is the Sipity::Repository class. Here are methods for
 interacting with the persistence layer; either by way of commands or queries.
 
 It can also represent the grand dumping bucket of objects that do things.
+
+Find out more about [Sipity's Services](https://github.com/ndlib/sipity/blob/master/app/services/sipity/services.rb)
