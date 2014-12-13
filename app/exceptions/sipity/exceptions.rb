@@ -9,6 +9,9 @@ module Sipity
     class RuntimeError < ::RuntimeError
     end
 
+    class PolicyExpectationMismatchError < RuntimeError
+    end
+
     # When you go about building an object that has method missing expectations
     # you may need to raise an exception if you are planning to catch a
     # method_name via message missing, but won't because the method is already

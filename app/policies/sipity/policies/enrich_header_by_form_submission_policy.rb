@@ -21,6 +21,14 @@ module Sipity
 
       private
 
+      def entity=(object)
+        if object.respond_to?(:header) && object.header.present?
+          super(object)
+        else
+          fail Exceptions::PolicyExpectationMismatchError, "Expected #{object} to have a #header."
+        end
+      end
+
       def default_header_policy
         HeaderPolicy.new(user, entity.header)
       end
