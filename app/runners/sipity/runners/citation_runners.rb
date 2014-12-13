@@ -26,7 +26,6 @@ module Sipity
         def run(header_id:)
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(header: header)
-          # REVIEW: Given the form, do I really need a policy_question?
           authorization_layer.enforce!(submit?: form) do
             if repository.citation_already_assigned?(header)
               callback(:citation_assigned, header)
@@ -45,7 +44,6 @@ module Sipity
         def run(header_id:, attributes: {})
           header = repository.find_header(header_id)
           form = repository.build_assign_a_citation_form(attributes.merge(header: header))
-          # REVIEW: Given the form, do I really need a policy_question?
           authorization_layer.enforce!(submit?: form) do
             if repository.submit_assign_a_citation_form(form, requested_by: current_user)
               callback(:success, header)

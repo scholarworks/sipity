@@ -77,7 +77,8 @@ module Sipity
       attr_reader :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
       private :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
 
-      # The returned value should be an issued callback
+      # The returned value should be the response from the call of a
+      # NamedCallback.
       #
       # @return results of the #callback method
       #
