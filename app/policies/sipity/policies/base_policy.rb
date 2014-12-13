@@ -5,6 +5,9 @@ module Sipity
     # * .call(user:, entity:, policy_question:)
     # * #initialize(user, entity)
     class BasePolicy
+      # Exposed as a convenience method and the public interface into the Policy
+      # subsystem.
+      #
       # @param user [User]
       # @param entity [#persisted?]
       # @param policy_question [Symbol] In the general case this will be :show?,
