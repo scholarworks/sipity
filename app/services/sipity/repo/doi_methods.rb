@@ -62,7 +62,6 @@ module Sipity
       end
 
       def gather_doi_creation_request_metadata(header:)
-        # REVIEW: Would this be better as :header?
         Services::DoiCreationRequestMetadataGatherer.call(header: header)
       end
 
