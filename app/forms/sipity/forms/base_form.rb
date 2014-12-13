@@ -6,7 +6,7 @@ module Sipity
     # @see #to_key
     # @see #to_param
     # @see #submit
-    class VirtualForm
+    class BaseForm
       include ActiveModel::Validations
       extend ActiveModel::Translation
       class_attribute :policy_enforcer
@@ -28,8 +28,8 @@ module Sipity
       # @return truthy if the form was valid and the caller's submission block was
       #   successful
       #
-      # @yield [VirtualForm] when the form is valid yield control to the caller
-      # @yieldparam form [VirtualForm]
+      # @yield [BaseForm] when the form is valid yield control to the caller
+      # @yieldparam form [BaseForm]
       # @yieldreturn the sender's response successful
       def submit
         return false unless valid?

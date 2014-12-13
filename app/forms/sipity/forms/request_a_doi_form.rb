@@ -1,7 +1,7 @@
 module Sipity
   module Forms
     # Submit a request for a DOI for the given Header
-    class RequestADoiForm < VirtualForm
+    class RequestADoiForm < BaseForm
       self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
 
       def initialize(attributes = {})

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe VirtualForm do
+    RSpec.describe BaseForm do
 
       its(:to_key) { should be_empty }
       its(:policy_enforcer) { should be_nil }

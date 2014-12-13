@@ -1,7 +1,7 @@
 module Sipity
   module Forms
     # Responsible for capturing and validating information for citation creation.
-    class AssignACitationForm < VirtualForm
+    class AssignACitationForm < BaseForm
       self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
 
       def initialize(attributes = {})

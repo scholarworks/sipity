@@ -2,7 +2,7 @@ module Sipity
   module Forms
     # Responsible for capturing and validating the assignment of a DOI that
     # already exists but has not yet been assigned to the SIP
-    class AssignADoiForm < VirtualForm
+    class AssignADoiForm < BaseForm
       self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
 
       def initialize(attributes = {})
