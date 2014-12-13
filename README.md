@@ -101,15 +101,19 @@ Jeremy's Admonition:
 
 ### Conversions
 
-Taking a cue from Avdi Grimm's "Confident Ruby", Conversions are responsible for coercing the input to another format.
+Taking a cue from [Avdi Grimm's "Confident Ruby"](http://www.confidentruby.com/), Conversions are responsible for coercing the input to another format. These are similar to `Array()` function.
+
 The Conversions modules are designed to be either:
 
 * callable via module functions
-* includable and thus exposing the underlying conversion
+* include-able and thus expose an underlying conversion method
 
 Find out more about [Sipity's Conversions](https://github.com/ndlib/sipity/blob/master/app/conversions/sipity/conversions.rb)
 
 ### Decorators
+
+Models are great for holding data.
+Decorators are useful for collecting that data into meaningful information.
 
 Take a look at the [Draper gem](https://github.com/drapergem/draper). It does a
 great job of explaining their importance.
