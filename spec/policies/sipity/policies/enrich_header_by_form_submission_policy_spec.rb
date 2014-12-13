@@ -16,7 +16,7 @@ module Sipity
       it 'will fail to initialize if the entity does not have a #header' do
         entity = double
         expect { EnrichHeaderByFormSubmissionPolicy.new(user, entity, header_policy: header_policy) }.
-          to raise_error Exceptions::PolicyExpectationMismatchError
+          to raise_error Exceptions::PolicyEntityExpectationError
       end
 
       context 'for a non-authenticated user' do

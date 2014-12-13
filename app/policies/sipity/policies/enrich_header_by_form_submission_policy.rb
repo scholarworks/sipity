@@ -25,7 +25,7 @@ module Sipity
         if object.respond_to?(:header) && object.header.present?
           super(object)
         else
-          fail Exceptions::PolicyExpectationMismatchError, "Expected #{object} to have a #header."
+          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #header."
         end
       end
 

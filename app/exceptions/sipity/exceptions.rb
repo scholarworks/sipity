@@ -9,7 +9,15 @@ module Sipity
     class RuntimeError < ::RuntimeError
     end
 
-    class PolicyExpectationMismatchError < RuntimeError
+    # When something about the entity for a given policy is just not quite
+    # right.
+    class PolicyEntityExpectationError < RuntimeError
+    end
+
+    # When passing parameters through the job layer, passing complex objects
+    # can cause problems; In that we don't want to pass state across the async
+    # boundary.
+    class NonPrimativeParameterError < RuntimeError
     end
 
     # When you go about building an object that has method missing expectations
@@ -21,6 +29,7 @@ module Sipity
         super("#{context} implemented the following methods: #{method_names.inspect}. #{context} won't work as expected")
       end
     end
+
 
     # Unable to convert the given object into a permanent URI
     class PermanentUriConversionError < RuntimeError
