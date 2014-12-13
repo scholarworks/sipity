@@ -101,7 +101,7 @@ Jeremy's Admonition:
 
 ### Conversions
 
-Taking a que from Avdi Grimm's "Confident Ruby", Conversions are responsible for coercing the input to another format.
+Taking a cue from Avdi Grimm's "Confident Ruby", Conversions are responsible for coercing the input to another format.
 The Conversions modules are designed to be either:
 
 * callable via module functions
