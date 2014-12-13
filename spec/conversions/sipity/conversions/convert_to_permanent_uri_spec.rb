@@ -51,12 +51,12 @@ module Sipity
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
-        it 'raises an exception if the input is not convertable' do
+        it 'will raise an exception if the input is not convertable' do
           object = :hello
           expect { convert_to_permanent_uri(object) }.to raise_error(Exceptions::PermanentUriConversionError)
         end
 
-        it 'will raises an exception if the input is not present' do
+        it 'will raise an exception if the input is not present' do
           object = ''
           expect { convert_to_permanent_uri(object) }.to raise_error(Exceptions::PermanentUriConversionError)
         end
