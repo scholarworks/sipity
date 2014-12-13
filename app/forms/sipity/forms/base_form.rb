@@ -1,7 +1,9 @@
 module Sipity
   module Forms
-    # A Form data structure for validation and submission. This is envisioned as a
-    # non-persisted representation.
+    # A Form data structure for validation and submission.
+    #
+    # I'm including persistence related methods so this behaves "well enough"
+    # for a Rails form_for (or simple_form_for) tag.
     #
     # @see #to_key
     # @see #to_param
