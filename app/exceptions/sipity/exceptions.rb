@@ -30,7 +30,6 @@ module Sipity
       end
     end
 
-
     # Unable to convert the given object into a permanent URI
     class PermanentUriConversionError < RuntimeError
       def initialize(attempted_conversion_object)

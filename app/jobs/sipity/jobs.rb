@@ -30,7 +30,7 @@ module Sipity
     end
     private_class_method :find_job_by_name
 
-    def verify_primativeness_of!(*args)
+    def verify_primativeness_of!(*)
       # REVIEW: Would it make sense to verify that each of the args is a
       #   primative? Given that we could be passing this information through
       #   REDIS
