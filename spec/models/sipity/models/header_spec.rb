@@ -23,7 +23,7 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
-      it 'has many :doi_creation_request' do
+      it 'has one :doi_creation_request' do
         expect(Header.reflect_on_association(:doi_creation_request)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
