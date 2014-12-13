@@ -34,8 +34,6 @@ module Sipity
 
       # The permanent URL in which we promise that you can always find this
       # object.
-      #
-      # TODO: Extract to a more prominent location; This is a permanent URL
       def permanent_uri_for_header
         Sipity::Conversions::ConvertToPermanentUri.call(header)
       end
