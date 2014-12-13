@@ -141,7 +141,12 @@ Find out more about [Sipity's Forms](https://github.com/ndlib/sipity/blob/master
 
 ### Jobs
 
+There are certain things you don't want to do during the HTTP request cycle.
+Expensive calculations, remote service calls, etc.
+
 Find out more about [Sipity's Jobs](https://github.com/ndlib/sipity/blob/master/app/jobs/sipity/jobs.rb)
+
+**Note: With the imminent arrival of the ActiveJob into Rails 4.2, this subsystem may undergo a change.**
 
 ### Policies
 
