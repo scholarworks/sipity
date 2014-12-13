@@ -9,6 +9,8 @@ module Sipity
       has_many :additional_attributes, foreign_key: :header_id, dependent: :destroy
       has_one :doi_creation_request, foreign_key: :header_id, dependent: :destroy
 
+      # REVIEW: Do I really want to deal with nested attributes such as these?
+      #   It smells suspicious.
       accepts_nested_attributes_for(
         :collaborators,
         allow_destroy: true,
