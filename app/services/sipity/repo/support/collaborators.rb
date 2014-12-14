@@ -13,7 +13,7 @@ module Sipity
         end
 
         def for(options = {})
-          Models::Collaborator.where(options.slice(:header, :role))
+          Models::Collaborator.includes(:header).where(options.slice(:header, :role))
         end
       end
     end
