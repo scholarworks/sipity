@@ -16,6 +16,9 @@ module Sipity
 
       self.table_name = 'sipity_collaborators'
 
+      # REVIEW: Do I want validations here? I'm relying on the CreateHeaderForm
+      #   to check for collaborators and use the underlying ActiveRecord
+      #   validations.
       validates :role, presence: true
 
       # While this make look ridiculous, if I use an Array, the enum declaration
