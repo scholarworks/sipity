@@ -35,7 +35,7 @@ module Sipity
       # The permanent URL in which we promise that you can always find this
       # object.
       def permanent_uri_for_header
-        Sipity::Conversions::ConvertToPermanentUri.call(header)
+        Conversions::ConvertToPermanentUri.call(header)
       end
 
       def title
@@ -54,12 +54,10 @@ module Sipity
         end
       end
 
-      include Conversions::ConvertToYear
-
       def publication_year
         @publication_year ||=
           Repo::Support::AdditionalAttributes.values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME).
-          map { |publication_date| convert_to_year(publication_date).to_s }.join(", ")
+          map { |publication_date| Conversions::ConvertToYear.call(publication_date).to_s }.join(", ")
       end
     end
   end
