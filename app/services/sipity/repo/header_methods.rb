@@ -15,6 +15,7 @@ module Sipity
       end
 
       def find_headers_for(user:)
+        # REVIEW: Is this bleeding into the authorization layer?
         Policies::HeaderPolicy::Scope.resolve(user: user, scope: Models::Header)
       end
 
