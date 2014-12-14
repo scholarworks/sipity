@@ -21,6 +21,13 @@ module Sipity
             expect(subject.for(role: 'advisor')).to eq([two, three])
           end
         end
+
+        context '.names_for' do
+          it 'returns only the names' do
+            Models::Collaborator.create!(header: header, role: 'author', name: 'John')
+            expect(subject.names_for(header: header)).to eq(['John'])
+          end
+        end
       end
     end
   end

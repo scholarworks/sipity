@@ -15,6 +15,10 @@ module Sipity
         def for(options = {})
           Models::Collaborator.includes(:header).where(options.slice(:header, :role))
         end
+
+        def names_for(options = {})
+          self.for(options).pluck(:name)
+        end
       end
     end
   end

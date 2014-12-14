@@ -43,7 +43,7 @@ module Sipity
       end
 
       def creator
-        @creator ||= Repo::Support::Collaborators.for(header: header, roles: 'author').map(&:name).join("; ")
+        @creator ||= Repo::Support::Collaborators.names_for(header: header, roles: 'author').join("; ")
       end
 
       def publisher
