@@ -64,6 +64,11 @@ module Sipity
       #   without passing any options; Thus the class configuration options will be
       #   used. However, it is possible that another application (i.e. a command-
       #   line application) would opt to instead instantiate the object directly.
+      #
+      # REVIEW: Should the two parameters for authentication be consolidated
+      #   into one?
+      # REVIEW: Should the two parameters for authorization related services be
+      #   consolidated into one?
       def initialize(context, options = {}, &block)
         super(context, &block)
         @requires_authentication = options.fetch(:requires_authentication) { self.class.requires_authentication }
