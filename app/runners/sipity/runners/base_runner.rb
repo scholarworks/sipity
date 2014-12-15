@@ -18,21 +18,20 @@ module Sipity
     # @note You will need to define the #run method on any subclasses.
     class BaseRunner < Hesburgh::Lib::Runner
       class_attribute :authentication_layer, instance_accessor: false
-      class_attribute :enforces_authorization, instance_accessor: false
+      class_attribute :authorization_layer, instance_accessor: false
 
       # Because yardoc's scope imperative does not appear to work, I'm pushing the
       # comments into the class definition
       class << self
-        # @!attribute [rw] enforces_authorization
-        #   If true, then the runner will apply a more rigorous authorization_layer.
-        #
-        #   @return [Boolean]
+        # @!attribute [rw] authorization_layer
+        #   @return [#enforce!(question/entity pairs)]
+        #   @see Sipity::BaseRunner#authorization_layer=
         #
         # @!attribute [rw] authentication_layer
         #   @return [#call(context)]
         #   @see Sipity::BaseRunner#authentication_layer=
       end
-      self.enforces_authorization = false
+      self.authorization_layer = :none
       self.authentication_layer = :none
 
       # @param context [#current_user, #repository] The containing context in
@@ -40,9 +39,6 @@ module Sipity
       # @param options [Hash] configuration options
       # @option options [#call(context), false, :default, :none]
       #   :authentication_layer defines how authentication will or will not be enforced/verified.
-      # @option options [#call] :authentication_layer
-      # @option options [Boolean] :enforces_authorization will this instance
-      #   enforce authorizations? Or will the underlying authorization_layer authorize everything?
       # @option options [#enforce!] :authorization_layer What are the authorization_layer that should
       #   be in effect for this instance?
       #
@@ -50,22 +46,16 @@ module Sipity
       #   without passing any options; Thus the class configuration options will be
       #   used. However, it is possible that another application (i.e. a command-
       #   line application) would opt to instead instantiate the object directly.
-      #
-      # REVIEW: Should the two parameters for authentication be consolidated
-      #   into one?
-      # REVIEW: Should the two parameters for authorization related services be
-      #   consolidated into one?
       def initialize(context, options = {}, &block)
         super(context, &block)
         self.authentication_layer = options.fetch(:authentication_layer) { self.class.authentication_layer }
         enforce_authentication!
-        @enforces_authorization = options.fetch(:enforces_authorization) { self.class.enforces_authorization }
-        @authorization_layer = options.fetch(:authorization_layer) { default_authorization_layer }
+        self.authorization_layer = options.fetch(:authorization_layer) { self.class.authorization_layer }
       end
 
       delegate :repository, :current_user, to: :context
-      attr_reader :authentication_layer, :enforces_authorization, :authorization_layer
-      private :authentication_layer, :enforces_authorization, :authorization_layer
+      attr_reader :authentication_layer, :authorization_layer
+      private :authentication_layer, :authorization_layer
 
       # The returned value should be the response from the call of a
       # NamedCallback.
@@ -79,31 +69,25 @@ module Sipity
 
       private
 
-      def default_authorization_layer
-        if enforces_authorization.present?
-          Services::AuthorizationLayer.new(self)
-        else
-          Services::AuthorizationLayer::AuthorizeEverything.new(self)
-        end
-      end
-
+      # @todo Tease out a builder object
       def authentication_layer=(uncoerced_layer)
         return @authentication_layer = uncoerced_layer if uncoerced_layer.respond_to?(:call)
-        case uncoerced_layer
-        when :none, false, nil then
-          @authentication_layer = authenticates_everything
-        when :default, true then
-          @authentication_layer = use_context_authentication
-        else
-          fail Exceptions::FailedToBuildAuthenticationLayerError
+        @authentication_layer = begin
+          case uncoerced_layer
+          when :none, false, nil then authentication_layer_that_authenticates_anything
+          when :default, true then authentication_layer_that_uses_context_authentication
+          else
+            fail Exceptions::FailedToBuildAuthenticationLayerError
+          end
         end
       end
 
-      def authenticates_everything
+      def authentication_layer_that_authenticates_anything
         -> (*) { true }
       end
 
-      def use_context_authentication
+      def authentication_layer_that_uses_context_authentication
+        # Devise provides helpful authentication options; I'm using those.
         ->(context) { context.authenticate_user! }
       end
 
@@ -114,6 +98,27 @@ module Sipity
         # my last line of defense. If you encounter this exception, make sure
         # to review the authentication_service method for its output.
         fail Exceptions::AuthenticationFailureError, self.class
+      end
+
+      # @todo Tease out a builder
+      def authorization_layer=(uncoerced_layer)
+        return @authorization_layer = uncoerced_layer.call(self) if uncoerced_layer.respond_to?(:call)
+        @authorization_layer = begin
+          case uncoerced_layer
+          when :none, false, nil then authorization_layer_that_authorizes_everything
+          when :default, true then authorization_layer_with_enforcement
+          else
+            fail Exceptions::FailedToBuildAuthorizationLayerError
+          end
+        end
+      end
+
+      def authorization_layer_with_enforcement
+        Services::AuthorizationLayer.new(self)
+      end
+
+      def authorization_layer_that_authorizes_everything
+        Services::AuthorizationLayer::AuthorizeEverything.new(self)
       end
     end
   end

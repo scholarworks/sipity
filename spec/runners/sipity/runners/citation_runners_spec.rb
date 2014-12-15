@@ -14,7 +14,7 @@ module Sipity
         end
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
             on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
           end
@@ -25,7 +25,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when a citation is not assigned' do
@@ -57,7 +57,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.citation_not_assigned { |header| handler.invoked("CITATION_NOT_ASSIGNED", header) }
             on.citation_assigned { |header| handler.invoked("CITATION_ASSIGNED", header) }
           end
@@ -68,7 +68,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when a citation is not assigned' do
@@ -102,7 +102,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
@@ -113,7 +113,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when the form submission fails' do

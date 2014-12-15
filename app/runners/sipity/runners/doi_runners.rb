@@ -4,7 +4,7 @@ module Sipity
       # Responsible for showing the correct state of the DOI for the given SIP.
       class Show < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:)
           header = repository.find_header(header_id)
@@ -24,7 +24,7 @@ module Sipity
       # Responsible for assigning a DOI to the header.
       class AssignADoi < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:, identifier: nil)
           header = repository.find_header(header_id)
@@ -44,7 +44,7 @@ module Sipity
       # Responsible for requesting a DOI for the header.
       class RequestADoi < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:, attributes:)
           header = repository.find_header(header_id)
