@@ -13,12 +13,11 @@ module RepositoryHelpers
         end
         @test_repository = klass.new
       end
+      attr_reader :test_repository
     end
-
-    attr_reader :test_repository
   end
 end
 
 RSpec.configure do |config|
-  config.include RepositoryHelpers::IsolatedRepository, type: :repository
+  config.include RepositoryHelpers::IsolatedRepository, type: :repository_methods
 end

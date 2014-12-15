@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Repo
-    RSpec.describe DoiMethods, type: :repository do
+    RSpec.describe DoiMethods, type: :repository_methods do
       context '#update_header_doi_creation_request_state!' do
         let(:header) { Models::Header.new(id: 123) }
         let!(:doi_creation_request) { Models::DoiCreationRequest.create!(header: header) }
