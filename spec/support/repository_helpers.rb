@@ -15,9 +15,7 @@ module RepositoryHelpers
       end
     end
 
-    def test_repository
-      @test_repository
-    end
+    attr_reader :test_repository
   end
 end
 
