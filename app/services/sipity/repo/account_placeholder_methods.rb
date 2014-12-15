@@ -1,5 +1,6 @@
 module Sipity
   module Repo
+    # Responsible for coordination of creating and managing account placeholders.
     module AccountPlaceholderMethods
       def build_create_orcid_account_placeholder_form(attributes: {})
         Forms::CreateOrcidAccountPlaceholderForm.new(attributes)
@@ -7,7 +8,13 @@ module Sipity
 
       def submit_create_orcid_account_placeholder_form(form, requested_by:)
         form.submit do |f|
-          true
+          placeholder = Models::AccountPlaceholder.create!(
+            identifier: f.identifier, identifier_type: Models::AccountPlaceholder::ORCID_IDENTIFIER_TYPE,
+            name: f.name
+          )
+          Models::Permission.create!(entity: placeholder, user: requested_by, role: Models::Permission::CREATING_USER)
+          Models::EventLog.create!(entity: placeholder, user: requested_by, event_name: __method__)
+          placeholder
         end
       end
     end
