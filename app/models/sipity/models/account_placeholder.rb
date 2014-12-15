@@ -7,11 +7,19 @@ module Sipity
       CREATED_STATE = 'created'.freeze
       CLAIMED_STATE = 'claimed'.freeze
 
+      NETID_IDENTIFIER_TYPE = 'netid'.freeze
+      ORCID_IDENTIFIER_TYPE = 'orcid'.freeze
+
       enum(
         state:
         {
           CREATED_STATE => CREATED_STATE,
           CLAIMED_STATE => CLAIMED_STATE
+        },
+        identifier_type:
+        {
+          ORCID_IDENTIFIER_TYPE => ORCID_IDENTIFIER_TYPE,
+          NETID_IDENTIFIER_TYPE => NETID_IDENTIFIER_TYPE
         }
       )
 

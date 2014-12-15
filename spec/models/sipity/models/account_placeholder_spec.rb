@@ -11,6 +11,10 @@ module Sipity
       it 'will raise an ArgumentError if you provide an invalid state' do
         expect { subject.state = '__incorrect_state__' }.to raise_error(ArgumentError)
       end
+
+      it 'will raise an ArgumentError if you provide an invalid identifier_type' do
+        expect { subject.identifier_type = '__incorrect_state__' }.to raise_error(ArgumentError)
+      end
     end
   end
 end
