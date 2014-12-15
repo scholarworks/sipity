@@ -6,6 +6,8 @@ module Sipity
     its(:included_modules) { should include(Sipity::Repo::HeaderMethods) }
     its(:included_modules) { should include(Sipity::Repo::DoiMethods) }
     its(:included_modules) { should include(Sipity::Repo::CitationMethods) }
+    its(:included_modules) { should include(Sipity::Repo::EventLogMethods) }
+    its(:included_modules) { should include(Sipity::Repo::AccountPlaceholderMethods) }
 
     context 'verifying method definition interaction' do
       let(:modules_to_check_for_method_collision) do
