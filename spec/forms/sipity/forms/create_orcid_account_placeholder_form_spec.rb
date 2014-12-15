@@ -20,6 +20,11 @@ module Sipity
         subject.valid?
         expect(subject.errors[:identifier]).to_not be_empty
       end
+
+      it 'will validate when given an ORCID identifier that is "correct"' do
+        subject.identifier = '0000-0002-8205-121X'
+        expect(subject).to be_valid
+      end
     end
   end
 end
