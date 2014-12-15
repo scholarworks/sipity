@@ -5,7 +5,7 @@ module Sipity
       # Responsible for building the model for a New Header
       class New < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run
           header = repository.build_create_header_form
@@ -18,7 +18,7 @@ module Sipity
       # Responsible for creating and persisting a new Header
       class Create < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(attributes:)
           form = repository.build_create_header_form(attributes: attributes)
@@ -36,7 +36,7 @@ module Sipity
       # Responsible for instantiating the model for a Header
       class Show < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:)
           header = repository.find_header(header_id)
@@ -59,7 +59,7 @@ module Sipity
       # Responsible for instantiating the header for edit
       class Edit < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:)
           header = repository.find_header(header_id)
@@ -73,7 +73,7 @@ module Sipity
       # Responsible for creating and persisting a new Header
       class Update < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:, attributes:)
           header = repository.find_header(header_id)

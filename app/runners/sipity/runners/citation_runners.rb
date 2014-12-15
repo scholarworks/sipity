@@ -4,7 +4,7 @@ module Sipity
       # Responsible for responding with the state of the header's citation.
       class Show < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:)
           header = repository.find_header(header_id)
@@ -21,7 +21,7 @@ module Sipity
       # Responsible for responding with the correct form for the header's citation
       class New < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:)
           header = repository.find_header(header_id)
@@ -39,7 +39,7 @@ module Sipity
       # Responsible for building, validating, and submitting the form.
       class Create < BaseRunner
         self.authentication_layer = :default
-        self.enforces_authorization = true
+        self.authorization_layer = :default
 
         def run(header_id:, attributes: {})
           header = repository.find_header(header_id)

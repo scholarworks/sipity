@@ -13,7 +13,7 @@ module Sipity
         end
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.doi_already_assigned { |header| handler.invoked("DOI_ALREADY_ASSIGNED", header) }
             on.doi_not_assigned { |header| handler.invoked("DOI_NOT_ASSIGNED", header) }
             on.doi_request_is_pending { |header| handler.invoked("DOI_REQUEST_IS_PENDING", header) }
@@ -25,7 +25,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when a DOI is assigned' do
@@ -67,7 +67,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.success { |header, identifier| handler.invoked("SUCCESS", header, identifier) }
             on.failure { |header| handler.invoked("FAILURE", header) }
           end
@@ -78,7 +78,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when the form submission fails' do
@@ -114,7 +114,7 @@ module Sipity
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
-          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
@@ -125,7 +125,7 @@ module Sipity
         end
 
         it 'enforces authorization' do
-          expect(described_class.enforces_authorization).to be_truthy
+          expect(described_class.authorization_layer).to eq(:default)
         end
 
         context 'when the form submission fails' do
