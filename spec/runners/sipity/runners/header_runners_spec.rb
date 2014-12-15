@@ -11,14 +11,13 @@ module Sipity
         let(:context) { TestRunnerContext.new(build_create_header_form: header) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -46,15 +45,14 @@ module Sipity
         let(:creation_response) { nil }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -86,14 +84,13 @@ module Sipity
         let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -113,14 +110,13 @@ module Sipity
         let(:context) { TestRunnerContext.new(current_user: user, find_headers_for: [header]) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'will return only a list of objects that I can see' do
@@ -141,14 +137,13 @@ module Sipity
         let(:context) { TestRunnerContext.new(find_header: header, build_update_header_form: form) }
         let(:handler) { double(invoked: true) }
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -178,15 +173,14 @@ module Sipity
         let(:attributes) { {} }
 
         subject do
-          described_class.new(context, requires_authentication: false, enforces_authorization: false) do |on|
+          described_class.new(context, authentication_layer: false, enforces_authorization: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
             on.failure { |a| handler.invoked("FAILURE", a) }
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do

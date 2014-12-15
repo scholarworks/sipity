@@ -59,6 +59,10 @@ module Sipity
       end
     end
 
+    # The authentication layer failed to build. Probably need to explain why.
+    class FailedToBuildAuthenticationLayerError < RuntimeError
+    end
+
     # Exposing a custom AuthorizationFailureError
     class AuthorizationFailureError < RuntimeError
       attr_reader :user, :policy_question, :entity

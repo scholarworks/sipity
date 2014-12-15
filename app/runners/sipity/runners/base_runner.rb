@@ -17,44 +17,30 @@ module Sipity
     #
     # @note You will need to define the #run method on any subclasses.
     class BaseRunner < Hesburgh::Lib::Runner
-      class_attribute :requires_authentication, instance_accessor: false
-      class_attribute :authentication_service, instance_accessor: false
+      class_attribute :authentication_layer, instance_accessor: false
       class_attribute :enforces_authorization, instance_accessor: false
 
       # Because yardoc's scope imperative does not appear to work, I'm pushing the
       # comments into the class definition
       class << self
-        # @!attribute [rw] requires_authentication
-        #   If true, then the runner will make sure it has a current user.
-        #
-        #   @return [Boolean]
-        #
         # @!attribute [rw] enforces_authorization
         #   If true, then the runner will apply a more rigorous authorization_layer.
         #
         #   @return [Boolean]
         #
-        # @!attribute [rw] authentication_service
-        #   What will the runner use to perform the authentication?
-        #
+        # @!attribute [rw] authentication_layer
         #   @return [#call(context)]
+        #   @see Sipity::BaseRunner#authentication_layer=
       end
-
-      self.requires_authentication = false
       self.enforces_authorization = false
-
-      # The default authentication service is from Devise; Perhaps this is
-      # something to configure at the application level.
-      self.authentication_service = ->(context) { context.authenticate_user! }
+      self.authentication_layer = :none
 
       # @param context [#current_user, #repository] The containing context in
       #   which the runner is acting. This is likely an ApplicationController.
       # @param options [Hash] configuration options
-      # @option options [Boolean] :requires_authentication will this instance
-      #   check if we need an authenticated user?
-      # @option options [#call] :authentication_service if authentication is
-      #   required, this lambda will be called. It should return true if we have
-      #   a user, or false otherwise.
+      # @option options [#call(context), false, :default, :none]
+      #   :authentication_layer defines how authentication will or will not be enforced/verified.
+      # @option options [#call] :authentication_layer
       # @option options [Boolean] :enforces_authorization will this instance
       #   enforce authorizations? Or will the underlying authorization_layer authorize everything?
       # @option options [#enforce!] :authorization_layer What are the authorization_layer that should
@@ -71,16 +57,15 @@ module Sipity
       #   consolidated into one?
       def initialize(context, options = {}, &block)
         super(context, &block)
-        @requires_authentication = options.fetch(:requires_authentication) { self.class.requires_authentication }
-        @authentication_service = options.fetch(:authentication_service) { self.class.authentication_service }
+        self.authentication_layer = options.fetch(:authentication_layer) { self.class.authentication_layer }
         enforce_authentication!
         @enforces_authorization = options.fetch(:enforces_authorization) { self.class.enforces_authorization }
         @authorization_layer = options.fetch(:authorization_layer) { default_authorization_layer }
       end
 
       delegate :repository, :current_user, to: :context
-      attr_reader :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
-      private :requires_authentication, :authentication_service, :enforces_authorization, :authorization_layer
+      attr_reader :authentication_layer, :enforces_authorization, :authorization_layer
+      private :authentication_layer, :enforces_authorization, :authorization_layer
 
       # The returned value should be the response from the call of a
       # NamedCallback.
@@ -102,9 +87,28 @@ module Sipity
         end
       end
 
+      def authentication_layer=(uncoerced_layer)
+        return @authentication_layer = uncoerced_layer if uncoerced_layer.respond_to?(:call)
+        case uncoerced_layer
+        when :none, false, nil then
+          @authentication_layer = authenticates_everything
+        when :default, true then
+          @authentication_layer = use_context_authentication
+        else
+          fail Exceptions::FailedToBuildAuthenticationLayerError
+        end
+      end
+
+      def authenticates_everything
+        -> (*) { true }
+      end
+
+      def use_context_authentication
+        ->(context) { context.authenticate_user! }
+      end
+
       def enforce_authentication!
-        return true unless requires_authentication.present?
-        return true if authentication_service.call(context)
+        return true if authentication_layer.call(context)
         # I am choosing to raise this exception because the default authentication
         # service has likely thrown an exception if things have failed. This is
         # my last line of defense. If you encounter this exception, make sure
