@@ -1,6 +1,9 @@
 module Sipity
   module Policies
-    # Responsible for enforcing access to a given Sipity::Header
+    # Responsible for enforcing access to a given Sipity::Header.
+    #
+    # This class answers can I take the given action based on the user and
+    # the header.
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
@@ -12,25 +15,25 @@ module Sipity
       attr_reader :permission_query_service, :original_entity
       private :permission_query_service, :original_entity
 
-      def show?
+      define_policy_question :show? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
-      def update?
+      define_policy_question :update? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
-      def create?
+      define_policy_question :create? do
         return false unless user.present?
         return false if entity.persisted?
         true
       end
 
-      def destroy?
+      define_policy_question :destroy? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
@@ -47,6 +50,8 @@ module Sipity
 
       # Responsible for building a scoped query to find a collection of
       # Model::Header objects for the given user.
+      #
+      # Responsible for answering.
       #
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.

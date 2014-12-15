@@ -13,7 +13,7 @@ module Sipity
         @header_policy = options.fetch(:header_policy) { default_header_policy }
       end
 
-      def submit?
+      define_policy_question :submit? do
         return false unless user.present?
         return false unless entity.header.persisted?
         header_policy.update?

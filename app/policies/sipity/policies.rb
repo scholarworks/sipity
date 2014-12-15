@@ -9,6 +9,17 @@ module Sipity
   # A Policy is an object responsible for answering questions about actions
   # the given user is attempting to take on a given object.
   #
+  # The Policy subsystem is responsible for three major concerns:
+  #
+  # * Given a user, entity, and policy question; Can the user do it? This is
+  #   answered via a Policy object.
+  # * Given a user and a policy question, what are all of the entities that
+  #   can be acted upon? This is answered via a Policy::Scope object.
+  # * Given a user and an entity, what are all of the actions the user can take
+  #   on the entity? This is answered via a permitted_actions query.
+  #   NOTE: This is a concept that is not part of the Pundit ecosystem. It is
+  #   also a theoretical exercise.
+  #
   # @see [Elabs' Pundit gem](http://github.com/elabs/pundit) for
   #   further explanation of Policy and Scope objects.
   module Policies

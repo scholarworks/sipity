@@ -26,6 +26,15 @@ module Sipity
       end
       attr_accessor :user, :entity
       private :user, :user=, :entity=, :entity
+
+      class_attribute :policy_questions, instance_writer: false
+      self.policy_questions = Set.new
+
+      def self.define_policy_question(method_name, &block)
+        self.policy_questions += [method_name]
+        define_method(method_name, &block)
+      end
+      private_class_method :define_policy_question
     end
   end
 end
