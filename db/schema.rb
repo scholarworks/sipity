@@ -11,7 +11,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211191318) do
+ActiveRecord::Schema.define(version: 20141215163110) do
+
+  create_table "sipity_account_placeholders", force: true do |t|
+    t.string   "identifier",                                     null: false
+    t.string   "name"
+    t.string   "identifier_type", limit: 32,                     null: false
+    t.string   "state",           limit: 32, default: "created", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sipity_account_placeholders", ["identifier", "identifier_type"], name: "sipity_account_placeholders_id_and_type", unique: true
+  add_index "sipity_account_placeholders", ["identifier"], name: "index_sipity_account_placeholders_on_identifier"
+  add_index "sipity_account_placeholders", ["name"], name: "index_sipity_account_placeholders_on_name"
+  add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state"
 
   create_table "sipity_additional_attributes", force: true do |t|
     t.integer  "header_id",  null: false
