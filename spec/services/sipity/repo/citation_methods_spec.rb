@@ -27,14 +27,11 @@ module Sipity
         context 'on valid data' do
           let(:citation) { 'citation:abc' }
           it 'will assign the Citation to the header and create an event' do
-            expect { subject.submit_assign_a_citation_form(form, requested_by: user) }.to(
-              change { subject.citation_already_assigned?(header) }.from(false).to(true) &&
-              change { header.additional_attributes.count }.by(2) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count }.by(1)
-            )
-          end
-          it 'will return a truthy object' do
-            expect(subject.submit_assign_a_citation_form(form, requested_by: user)).to be_truthy
+            response = subject.submit_assign_a_citation_form(form, requested_by: user)
+            expect(response).to be_truthy
+            expect(subject.citation_already_assigned?(header)).to be_truthy
+            expect(header.additional_attributes.count).to eq(2)
+            expect(Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count).to eq(1)
           end
         end
       end
