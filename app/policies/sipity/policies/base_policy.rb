@@ -20,6 +20,16 @@ module Sipity
         new(user, entity).public_send(policy_question)
       end
 
+      class_attribute :registered_policy_questions, instance_writer: false
+      self.registered_policy_questions = Set.new
+      private :registered_policy_questions, :registered_policy_questions?
+
+      def self.define_policy_question(method_name, &block)
+        self.registered_policy_questions += [method_name]
+        define_method(method_name, &block)
+      end
+      private_class_method :define_policy_question
+
       def initialize(user, entity)
         self.user = user
         self.entity = entity
@@ -27,14 +37,12 @@ module Sipity
       attr_accessor :user, :entity
       private :user, :user=, :entity=, :entity
 
-      class_attribute :policy_questions, instance_writer: false
-      self.policy_questions = Set.new
-
-      def self.define_policy_question(method_name, &block)
-        self.policy_questions += [method_name]
-        define_method(method_name, &block)
+      def available_actions_by_policy
+        registered_policy_questions.each_with_object([]) do |question, mem|
+          mem << question if public_send(question)
+          mem
+        end
       end
-      private_class_method :define_policy_question
     end
   end
 end
