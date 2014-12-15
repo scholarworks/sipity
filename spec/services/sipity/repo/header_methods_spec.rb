@@ -67,19 +67,17 @@ module Sipity
         end
         context 'with valid data' do
           let(:user) { User.new(id: '123') }
-          it 'will create the header, add the attributes, assign collaborators, assign permission, and log the event' do
+          it 'will return the header having created the header, added the attributes,
+              assigned collaborators, assigned permission, and loggged the event' do
             allow(form).to receive(:valid?).and_return(true)
-            expect { subject.submit_create_header_form(form, requested_by: user) }.to(
-              change { Models::Header.count }.by(1) &&
-              change { header.additional_attributes.count }.by(1) &&
-              change { Models::Collaborator.count }.by(1) &&
-              change { Models::Permission.where(user: user, role: Models::Permission::CREATING_USER).count }.by(1) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_create_header_form').count }.by(1)
-            )
-          end
-          it 'will return a header' do
-            allow(form).to receive(:valid?).and_return(true)
-            expect(subject.submit_create_header_form(form, requested_by: user)).to be_a(Models::Header)
+            response = subject.submit_create_header_form(form, requested_by: user)
+
+            expect(response).to be_a(Models::Header)
+            expect(Models::Header.count).to eq(1)
+            expect(response.additional_attributes.count).to eq(1)
+            expect(Models::Collaborator.count).to eq(1)
+            expect(Models::Permission.where(user: user, role: Models::Permission::CREATING_USER).count).to eq(1)
+            expect(Models::EventLog.where(user: user, event_name: 'submit_create_header_form').count).to eq(1)
           end
         end
       end
@@ -134,16 +132,13 @@ module Sipity
             allow(header).to receive(:persisted?).and_return(true)
             allow(form).to receive(:valid?).and_return(true)
           end
-          it 'will return the header' do
-            expect(subject.submit_update_header_form(form, requested_by: user)).to eq(header)
-          end
-          it 'will update the header, additional attributes, and create an event log entry' do
-            expect { subject.submit_update_header_form(form, requested_by: user) }.to(
-              change { header.reload.title }.from('My Title').to('My New Title') &&
-              change { Models::AdditionalAttribute.where(header: header).pluck(:key, :value) }.
-                from([['publisher', 'parmasean']]).to([['publisher', 'dance']]) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_update_header_form').count }.by(1)
-            )
+          it 'will return the header after updating the header, additional attributes, and creating an event log entry' do
+            response = subject.submit_update_header_form(form, requested_by: user)
+
+            expect(response).to eq(header)
+            expect(header.reload.title).to eq('My New Title')
+            expect(Models::AdditionalAttribute.where(header: header).pluck(:key, :value)).to eq([['publisher', 'dance']])
+            expect(Models::EventLog.where(user: user, event_name: 'submit_update_header_form').count).to eq(1)
           end
         end
       end

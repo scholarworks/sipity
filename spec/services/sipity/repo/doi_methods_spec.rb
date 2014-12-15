@@ -56,14 +56,11 @@ module Sipity
         end
         context 'on valid data' do
           let(:identifier) { 'doi:abc' }
-          it 'will assign the DOI to the header and log the event' do
-            expect { subject.submit_assign_a_doi_form(form, requested_by: user) }.to(
-              change { subject.doi_already_assigned?(header) }.from(false).to(true) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_assign_a_doi_form').count }.by(1)
-            )
-          end
-          it 'will return true' do
-            expect(subject.submit_assign_a_doi_form(form, requested_by: user)).to be_truthy
+          it 'will return true after assigning the DOI to the header and logging the event' do
+            response = subject.submit_assign_a_doi_form(form, requested_by: user)
+            expect(response).to be_truthy
+            expect(subject.doi_already_assigned?(header)).to be_truthy
+            expect(Models::EventLog.where(user: user, event_name: 'submit_assign_a_doi_form').count).to eq(1)
           end
         end
       end
@@ -93,17 +90,14 @@ module Sipity
 
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
-          it 'will return true' do
-            expect(Jobs).to receive(:submit).with('doi_creation_request_job', header.id)
-            expect(subject.submit_request_a_doi_form(form, requested_by: user)).to be_truthy
-          end
-          it 'will create the DOI request and append the captured attributes and log the event' do
+          it 'will return true having created the DOI request, appended the captured attributes, and loggged the event' do
             expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(Fixnum))
-            expect { subject.submit_request_a_doi_form(form, requested_by: user) }.to(
-              change { subject.doi_request_is_pending?(header) }.from(false).to(true) &&
-              change { header.additional_attributes.count }.by(2) &&
-              change { Models::EventLog.where(user: user, event_name: 'submit_request_a_doi_form').count }.by(1)
-            )
+            response = subject.submit_request_a_doi_form(form, requested_by: user)
+
+            expect(response).to be_truthy
+            expect(subject.doi_request_is_pending?(header)).to be_truthy
+            expect(header.additional_attributes.count).to eq(2)
+            expect(Models::EventLog.where(user: user, event_name: 'submit_request_a_doi_form').count).to eq(1)
           end
         end
       end
