@@ -97,7 +97,7 @@ module Sipity
         end
         context 'with a persisted object will return an object that' do
           before { allow(header).to receive(:persisted?).and_return(true) }
-          subject { repository_class.new.build_update_header_form(header: header) }
+          subject { test_repository.build_update_header_form(header: header) }
           it { should respond_to :submit }
           it 'will expose an attribute of the underlying header' do
             expect(subject.title).to eq(header.title)
