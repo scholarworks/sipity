@@ -16,9 +16,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -52,9 +51,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -91,9 +89,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -118,9 +115,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'will return only a list of objects that I can see' do
@@ -146,9 +142,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
@@ -184,9 +179,8 @@ module Sipity
           end
         end
 
-        it 'requires authentication' do
-          expect(context).to receive(:authenticate_user!).and_return(true)
-          described_class.new(context)
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
         end
 
         it 'enforces authorization' do
