@@ -63,6 +63,7 @@ group :production do
   gem 'unicorn'
 end
 group :test do
+  gem 'rspec-given'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'launchy'
