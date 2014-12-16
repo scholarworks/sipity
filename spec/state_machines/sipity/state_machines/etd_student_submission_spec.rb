@@ -158,49 +158,49 @@ module Sipity
 
         context ':submit_for_ingest is triggered' do
           let(:processing_state) { :new }
+          let(:event) { :submit_for_ingest }
+          before { subject.send("#{event}!") }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD'
           it 'will record the event for auditing purposes' do
-            expect(repository).to receive(:log_event!).
-              with(entity: entity, user: user, event_name: 'etd_student_submission_submit_for_ingest')
-            subject.submit_for_ingest!
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
           it 'will update the ETDs processing_state to :under_review'  do
-            expect(repository).to receive(:update_processing_state!).
+            expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, new_processing_state: :under_review)
-            subject.submit_for_ingest!
           end
         end
 
         context ':request_revisions is triggered' do
           let(:processing_state) { :under_review }
+          let(:event) { :request_revisions }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
+          before { subject.send("#{event}!") }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
           it 'will record the event for auditing purposes'  do
-            expect(repository).to receive(:log_event!).
-              with(entity: entity, user: user, event_name: 'etd_student_submission_request_revisions')
-            subject.request_revisions!
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
-            expect(repository).to receive(:update_processing_state!).
+            expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, new_processing_state: :revisions_needed)
-            subject.request_revisions!
           end
         end
 
         context ':approve_for_ingest is triggered' do
           let(:processing_state) { :under_review }
+          let(:event) { :approve_for_ingest }
+          before { subject.send("#{event}!") }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes' do
-            expect(repository).to receive(:log_event!).
-              with(entity: entity, user: user, event_name: 'etd_student_submission_approve_for_ingest')
-            subject.approve_for_ingest!
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
           it 'will update the ETDs processing_state to :ready_for_ingest' do
-            expect(repository).to receive(:update_processing_state!).
+            expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, new_processing_state: :ready_for_ingest)
-            subject.approve_for_ingest!
           end
           it 'will trigger :ingest event'
         end
