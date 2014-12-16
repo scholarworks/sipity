@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141215194110) do
+ActiveRecord::Schema.define(version: 20141216192315) do
 
   create_table "sipity_account_placeholders", force: true do |t|
     t.string   "identifier",                                     null: false
@@ -81,7 +81,10 @@ ActiveRecord::Schema.define(version: 20141215194110) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "processing_state",          limit: 64, default: "new", null: false
   end
+
+  add_index "sipity_headers", ["processing_state"], name: "index_sipity_headers_on_processing_state"
 
   create_table "sipity_permissions", force: true do |t|
     t.integer  "user_id",                null: false

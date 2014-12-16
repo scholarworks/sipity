@@ -5,6 +5,9 @@ module Sipity
     RSpec.describe Header, type: :model do
       subject { Header.new }
 
+      it { should respond_to :processing_state }
+      it { should respond_to :processing_state= }
+
       its(:possible_work_publication_strategies) { should eq(subject.class.work_publication_strategies) }
 
       context '.work_publication_strategies' do
