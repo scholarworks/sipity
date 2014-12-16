@@ -12,6 +12,7 @@ module Sipity
       context 'with the default repository' do
         subject { described_class.new(entity: entity, user: user) }
         its(:repository) { should respond_to :log_event! }
+        its(:repository) { should respond_to :update_processing_state! }
       end
 
       context '.roles_for_policy_question' do

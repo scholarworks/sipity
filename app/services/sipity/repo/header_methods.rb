@@ -23,6 +23,12 @@ module Sipity
         Forms::CreateHeaderForm.new(attributes)
       end
 
+      def update_processing_state!(header:, new_processing_state:)
+        # REVIEW: Should this be re-finding the header? Is it cheating to re-use
+        #   the given header? Is it unsafe as far as state is concerned?
+        header.update(processing_state: new_processing_state)
+      end
+
       def submit_create_header_form(form, requested_by:)
         form.submit do |f|
           Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|

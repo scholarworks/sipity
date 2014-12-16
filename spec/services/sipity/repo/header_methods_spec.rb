@@ -32,6 +32,14 @@ module Sipity
         end
       end
 
+      context '#update_processing_state!' do
+        let(:header) { Models::Header.create! }
+        it 'will update the underlying state of the object' do
+          expect { test_repository.update_processing_state!(header: header, new_processing_state: 'hello') }.
+            to change { header.processing_state }.to('hello')
+        end
+      end
+
       context '#submit_create_header_form' do
         let(:user) { User.new(id: '123') }
         let(:form) do
