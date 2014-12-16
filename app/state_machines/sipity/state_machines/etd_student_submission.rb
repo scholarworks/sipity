@@ -43,15 +43,31 @@ module Sipity
       end
 
       def submit_for_ingest!
-        state_machine.trigger(:submit_for_ingest)
+        state_machine.trigger!(:submit_for_ingest)
       end
 
       def approve_for_ingest!
-        state_machine.trigger(:approve_for_ingest)
+        state_machine.trigger!(:approve_for_ingest)
       end
 
       def request_revisions!
-        state_machine.trigger(:request_revisions)
+        state_machine.trigger!(:request_revisions)
+      end
+
+      def ingest!
+        state_machine.trigger!(:ingest)
+      end
+
+      def ingest_completed!
+        state_machine.trigger!(:ingest_completed)
+      end
+
+      def finish_cataloging!
+        state_machine.trigger!(:finish_cataloging)
+      end
+
+      def finish!
+        state_machine.trigger!(:finish)
       end
 
       private
@@ -67,8 +83,9 @@ module Sipity
         state_machine.when(:submit_for_ingest, new: :under_review)
         state_machine.when(:request_revisions, under_review: :revisions_needed, revisions_needed: :revisions_needed)
         state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest, revisions_needed: :ready_for_ingest)
-        state_machine.when(:ingest_completed, ready_for_ingest: :ingested)
-        state_machine.when(:finish_cataloging, ingested: :cataloged)
+        state_machine.when(:ingest, ready_for_ingest: :ingest_completed)
+        state_machine.when(:ingest_completed, ingest_completed: :ready_for_cataloging)
+        state_machine.when(:finish_cataloging, ready_for_cataloging: :cataloged)
         state_machine.when(:finish, cataloged: :done)
       end
 

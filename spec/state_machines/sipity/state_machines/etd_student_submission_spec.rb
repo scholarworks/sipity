@@ -206,27 +206,51 @@ module Sipity
         end
 
         context ':ingest is triggered' do
+          let(:processing_state) { :ready_for_ingest }
+          let(:event) { :ingest }
           it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
-          it 'will record the event for auditing purposes'
+          it 'will record the event for auditing purposes' do
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+          end
+
           it 'will update the ETDs processing_state to :ingested'
           it 'will add permission entries for the catalog reviewers of the given ETD'
           it 'will trigger :ingest_completed'
         end
 
         context ':ingest_completed is triggered' do
+          let(:processing_state) { :ingest_completed }
+          let(:event) { :ingest_completed }
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
-          it 'will record the event for auditing purposes'
+          it 'will record the event for auditing purposes' do
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+          end
+
           it 'will update the ETDs processing_state to :ready_for_cataloging'
         end
 
         context ':finish_cataloging is triggered' do
-          it 'will record the event for auditing purposes'
+          let(:processing_state) { :ready_for_cataloging }
+          let(:event) { :finish_cataloging }
+          it 'will record the event for auditing purposes' do
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+          end
+
           it 'will update the ETDs processing_state to :cataloged'
           it 'will trigger the :finish event'
         end
 
         context ':finish is triggered' do
-          it 'will record the event for auditing purposes'
+          let(:processing_state) { :cataloged }
+          let(:event) { :finish }
+          it 'will record the event for auditing purposes' do
+            expect(repository).to have_received(:log_event!).
+              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+          end
+
           it 'will update the ETDs processing_state to :done'
         end
       end
