@@ -43,33 +43,7 @@ module Sipity
         raise Exceptions::StatePolicyQuestionRoleMapError, state: entity.processing_state, context: self
       end
 
-      def submit_for_ingest!
-        state_machine.trigger!(:submit_for_ingest)
-      end
-
-      def approve_for_ingest!
-        state_machine.trigger!(:approve_for_ingest)
-      end
-
-      def request_revisions!
-        state_machine.trigger!(:request_revisions)
-      end
-
-      def ingest!
-        state_machine.trigger!(:ingest)
-      end
-
-      def ingest_completed!
-        state_machine.trigger!(:ingest_completed)
-      end
-
-      def finish_cataloging!
-        state_machine.trigger!(:finish_cataloging)
-      end
-
-      def finish!
-        state_machine.trigger!(:finish)
-      end
+      delegate :trigger!, to: :state_machine
 
       private
 

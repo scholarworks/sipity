@@ -155,7 +155,7 @@ module Sipity
         let(:entity) { Models::Header.new(processing_state: processing_state, id: 1) }
         let(:user) { User.new(id: 2) }
         subject { described_class.new(entity: entity, user: user, repository: repository) }
-        before { subject.send("#{event}!") }
+        before { subject.trigger!(event) }
         context ':submit_for_ingest is triggered' do
           let(:processing_state) { :new }
           let(:event) { :submit_for_ingest }
