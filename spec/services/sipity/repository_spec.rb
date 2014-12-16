@@ -9,6 +9,12 @@ module Sipity
     its(:included_modules) { should include(Sipity::Repo::EventLogMethods) }
     its(:included_modules) { should include(Sipity::Repo::AccountPlaceholderMethods) }
 
+    context '#log_event!' do
+      it 'is a placeholder until I can spend some time focusing on it' do
+        expect { described_class.new.log_event! }.to raise_error(NotImplementedError)
+      end
+    end
+
     context 'verifying method definition interaction' do
       let(:modules_to_check_for_method_collision) do
         # I'm concerned about the methods I've mixed in. There are several
