@@ -30,6 +30,7 @@ module Sipity
       def initialize(entity:, user:, repository: nil)
         @entity, @user = entity, user
         @state_machine = build_state_machine
+        # @TODO - Catch unexpected states
         @repository = repository || default_repository
       end
       attr_reader :entity, :state_machine, :user, :repository
