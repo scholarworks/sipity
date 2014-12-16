@@ -46,6 +46,10 @@ module Sipity
         state_machine.trigger(:submit_for_ingest)
       end
 
+      def approve_for_ingest!
+        state_machine.trigger(:approve_for_ingest)
+      end
+
       def request_revisions!
         state_machine.trigger(:request_revisions)
       end

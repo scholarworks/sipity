@@ -152,10 +152,12 @@ module Sipity
       end
 
       context 'processing_state transitions when' do
+        let(:entity) { Models::Header.new(processing_state: processing_state, id: 1) }
+        let(:user) { User.new(id: 2) }
+        subject { described_class.new(entity: entity, user: user, repository: repository) }
+
         context ':submit_for_ingest is triggered' do
-          let(:entity) { Models::Header.new(processing_state: :new, id: 1) }
-          let(:user) { User.new(id: 2) }
-          subject { described_class.new(entity: entity, user: user, repository: repository) }
+          let(:processing_state) { :new }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD'
@@ -168,9 +170,7 @@ module Sipity
         end
 
         context ':request_revisions is triggered' do
-          let(:event_name) { 'request_revisions' }
-          let(:entity) { Models::Header.new(processing_state: :under_review, id: 1) }
-          let(:user) { User.new(id: 2) }
+          let(:processing_state) { :under_review }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
           it 'will record the event for auditing purposes'  do
@@ -182,8 +182,13 @@ module Sipity
         end
 
         context ':approve_for_ingest is triggered' do
+          let(:processing_state) { :under_review }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
-          it 'will record the event for auditing purposes'
+          it 'will record the event for auditing purposes' do
+            expect(repository).to receive(:log_event!).
+              with(entity: entity, user: user, event_name: 'etd_student_submission_approve_for_ingest')
+            subject.approve_for_ingest!
+          end
           it 'will update the ETDs processing_state to :ready_for_ingest'
           it 'will trigger :ingest event'
         end
