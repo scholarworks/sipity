@@ -1,6 +1,9 @@
 module Sipity
   module StateMachines
     # Responsible for overseeing the life cycle of the ETD Submisssion process.
+    #
+    # REVIEW: How is this different from crafting a handful of runners? Perhaps
+    #   These should be codified as runners?
     class EtdStudentSubmission
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
@@ -72,6 +75,8 @@ module Sipity
         end
       end
 
+      # REVIEW - Will this be the convention? In other locations I'm using the
+      # Runner.
       def convert_to_logged_name(event_name)
         "#{self.class.to_s.demodulize.underscore}_#{event_name}"
       end
