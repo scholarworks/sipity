@@ -20,6 +20,13 @@ module Sipity
     class NonPrimativeParameterError < RuntimeError
     end
 
+    # There was a problem referencing the state for a policy lookup.
+    class StatePolicyQuestionRoleMapError < RuntimeError
+      def initialize(state:, context:)
+        super("Could not find #{state} in the corresponding map for #{context}")
+      end
+    end
+
     # When you go about building an object that has method missing expectations
     # you may need to raise an exception if you are planning to catch a
     # method_name via message missing, but won't because the method is already

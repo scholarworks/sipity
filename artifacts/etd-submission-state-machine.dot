@@ -1,0 +1,39 @@
+digraph "G" {
+    compound=true;
+    node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
+
+    subgraph cluster_0 {
+        label="ETD Student Submission Cycle\n(DRAFT)"
+        color="seashell3"
+        style="filled"
+        node[style=filled fillcolor=white color="seashell4"]
+
+        new [shape="oval" label=":new"]
+        under_review[shape="oval" label=":under_review"]
+        revisions_needed[shape="oval" label=":revisions_needed"]
+        ready_for_ingest[shape="oval" label=":ready_for_ingest"]
+        ingested[shape="oval" label=":ingested"]
+        ready_for_cataloging[shape="oval" label=":ready_for_cataloging"]
+        cataloged[shape="oval" label=":cataloged"]
+        done[shape="octagon" label=":done"]
+
+        submit_for_ingest[shape="record" label="{ Event: submit_for_ingest | Send email to Grad School | Send email to Student | Add etd_reviewers to Permissions | Record the event | State: :under_review }"]
+        request_revisions[shape="record" label="{ Event: request_revisions | Send email to student with comments | Record the event | State: :revisions_needed }"]
+        approve_for_ingest[shape="record" label="{ Event: approve_for_ingest | Send email notification to the student, grad school,\nand any additional emails (i.e. ISSA) | Record the event | State: :ready_for_ingest }"]
+        ingest[shape="record" label="{ Event: ingest | Run ROF Import then trigger :ingest_completed | Record the event | State: :ingested }"]
+        ingest_completed[shape="record" label="{ Event: ingest_completed | Send email to Catalogers with link to ETD in CurateND | Record the event | State: :ready_for_cataloging }"]
+        finish_cataloging[shape="record" label="{ Event: finish_cataloging | Record the event | Trigger :mark_as_done | State: :cataloged }"]
+        mark_as_done[shape="record" label="{ Event: mark_as_done | Record the event | State: :done }"]
+
+        new -> submit_for_ingest -> under_review
+        under_review -> request_revisions -> revisions_needed
+        revisions_needed -> request_revisions
+        under_review -> approve_for_ingest -> ready_for_ingest
+        revisions_needed -> approve_for_ingest -> ready_for_ingest
+        ready_for_ingest -> ingest -> ingested
+        ingested -> ingest_completed -> ready_for_cataloging
+        ready_for_cataloging -> finish_cataloging -> cataloged
+        cataloged -> mark_as_done -> done
+    }
+
+}

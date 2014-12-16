@@ -1,9 +1,14 @@
 require 'sipity/models'
 module Sipity
   module Models
-    # The most basic of information required for generating a valid SIP
+    # The most basic of information required for generating a valid SIP.
     class Header < ActiveRecord::Base
       self.table_name = 'sipity_headers'
+
+      # @!attribute [rw] :processing_state The processing state of the header.
+      #   @default :new (as enforced by the database)
+      #   @return [String]
+      alias_attribute :processing_status, :processing_state
 
       has_many :collaborators, foreign_key: :header_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :header_id, dependent: :destroy

@@ -5,6 +5,12 @@ GIT
     ezid-client (0.7.0)
 
 GIT
+  remote: git://github.com/jeremyf/micromachine.git
+  revision: bf4f68d34e5e568d92c0a34257e502a6f2583951
+  specs:
+    micromachine (1.1.0)
+
+GIT
   remote: git://github.com/ndlib/hesburgh-lib.git
   revision: a22bae11b65f1eabbdba3e02fabf1c5cded63ac0
   specs:
@@ -389,6 +395,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   launchy
+  micromachine!
   pry-byebug
   pry-rails
   pry-rescue
