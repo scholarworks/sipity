@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: git://github.com/jeremyf/micromachine.git
-  revision: dd506b4ab1abc9b1cb90535eaf56d4801c96b4c8
+  revision: bf4f68d34e5e568d92c0a34257e502a6f2583951
   specs:
     micromachine (1.1.0)
 
