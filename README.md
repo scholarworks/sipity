@@ -77,7 +77,7 @@ Jeremy's Admonition:
 
 * **Though shalt not put behavior in ActiveRecord objects**
   - This means:
-    * No callbacks - prefer repository service/command objects/methods
+    * No before/after save callbacks - prefer repository service/command objects/methods
     * No query scopes - prefer repository query objects/methods
     * No conditional validations - prefer form objects
   - Why?
@@ -87,6 +87,7 @@ Jeremy's Admonition:
     * Pushing authentication to another layer
     * Pushing authorization to another layer
     * Pushing cache management to another layer
+    * Avoid before/after filters
   - Why?
     * Because controllers have enough stuff going on; They are often hard to test.
       - Ensuring you have the correct parameters
