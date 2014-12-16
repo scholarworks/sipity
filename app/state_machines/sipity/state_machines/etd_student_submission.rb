@@ -70,17 +70,24 @@ module Sipity
 
       def build_state_machine
         state_machine = MicroMachine.new(entity.processing_state)
+        build_state_machine_triggers(state_machine)
+        build_state_machine_callbacks(state_machine)
+        state_machine
+      end
+
+      def build_state_machine_triggers(state_machine)
         state_machine.when(:submit_for_ingest, new: :under_review)
         state_machine.when(:request_revisions, under_review: :revisions_needed, revisions_needed: :revisions_needed)
         state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest, revisions_needed: :ready_for_ingest)
         state_machine.when(:ingest_completed, ready_for_ingest: :ingested)
         state_machine.when(:finish_cataloging, ingested: :cataloged)
         state_machine.when(:finish, cataloged: :done)
+      end
 
+      def build_state_machine_callbacks(state_machine)
         state_machine.on(:any) do |event_name|
           repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
         end
-        state_machine
       end
 
       def convert_to_logged_name(event_name)

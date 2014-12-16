@@ -160,7 +160,8 @@ module Sipity
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD'
           it 'will record the event for auditing purposes' do
-            expect(repository).to receive(:log_event!).with(entity: entity, user: user, event_name: 'etd_student_submission_submit_for_ingest')
+            expect(repository).to receive(:log_event!).
+              with(entity: entity, user: user, event_name: 'etd_student_submission_submit_for_ingest')
             subject.submit_for_ingest!
           end
           it 'will update the ETDs processing_state to :under_review'
@@ -173,7 +174,8 @@ module Sipity
           subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
           it 'will record the event for auditing purposes'  do
-            expect(repository).to receive(:log_event!).with(entity: entity, user: user, event_name: 'etd_student_submission_request_revisions')
+            expect(repository).to receive(:log_event!).
+              with(entity: entity, user: user, event_name: 'etd_student_submission_request_revisions')
             subject.request_revisions!
           end
           it 'will update the ETDs processing_state to :revisions_needed'
