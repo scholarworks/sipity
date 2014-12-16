@@ -155,11 +155,10 @@ module Sipity
         let(:entity) { Models::Header.new(processing_state: processing_state, id: 1) }
         let(:user) { User.new(id: 2) }
         subject { described_class.new(entity: entity, user: user, repository: repository) }
-
+        before { subject.send("#{event}!") }
         context ':submit_for_ingest is triggered' do
           let(:processing_state) { :new }
           let(:event) { :submit_for_ingest }
-          before { subject.send("#{event}!") }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD'
@@ -177,7 +176,6 @@ module Sipity
           let(:processing_state) { :under_review }
           let(:event) { :request_revisions }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
-          before { subject.send("#{event}!") }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
           it 'will record the event for auditing purposes'  do
             expect(repository).to have_received(:log_event!).
@@ -192,7 +190,6 @@ module Sipity
         context ':approve_for_ingest is triggered' do
           let(:processing_state) { :under_review }
           let(:event) { :approve_for_ingest }
-          before { subject.send("#{event}!") }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
