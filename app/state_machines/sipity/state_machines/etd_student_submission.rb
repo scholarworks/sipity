@@ -3,7 +3,8 @@ module Sipity
     # Responsible for overseeing the life cycle of the ETD Submisssion process.
     #
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
-    #   These should be codified as runners?
+    #   These should be codified as runners? Is there a symmetry of moving these
+    #   to runners? Is symmetry worth pursuing?
     class EtdStudentSubmission
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
@@ -33,7 +34,7 @@ module Sipity
       def initialize(entity:, user:, repository: nil)
         @entity, @user = entity, user
         @state_machine = build_state_machine
-        # @TODO - Catch unexpected states
+        # @TODO - Catch unexpected states.
         @repository = repository || default_repository
       end
       attr_reader :entity, :state_machine, :user, :repository
