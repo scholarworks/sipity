@@ -6,7 +6,7 @@ module Sipity
       let(:processing_state) { :new }
       let(:entity) { double('ETD', processing_state: processing_state) }
       let(:user) { double('User') }
-      let(:repository) { double('Repository') }
+      let(:repository) { double('Repository', update_processing_state!: true, log_event!: true) }
       subject { described_class.new(entity: entity, user: user, repository: repository) }
 
       context 'with the default repository' do
@@ -166,7 +166,11 @@ module Sipity
               with(entity: entity, user: user, event_name: 'etd_student_submission_submit_for_ingest')
             subject.submit_for_ingest!
           end
-          it 'will update the ETDs processing_state to :under_review'
+          it 'will update the ETDs processing_state to :under_review'  do
+            expect(repository).to receive(:update_processing_state!).
+              with(entity: entity, new_processing_state: :under_review)
+            subject.submit_for_ingest!
+          end
         end
 
         context ':request_revisions is triggered' do
@@ -178,7 +182,11 @@ module Sipity
               with(entity: entity, user: user, event_name: 'etd_student_submission_request_revisions')
             subject.request_revisions!
           end
-          it 'will update the ETDs processing_state to :revisions_needed'
+          it 'will update the ETDs processing_state to :revisions_needed' do
+            expect(repository).to receive(:update_processing_state!).
+              with(entity: entity, new_processing_state: :revisions_needed)
+            subject.request_revisions!
+          end
         end
 
         context ':approve_for_ingest is triggered' do
@@ -189,7 +197,11 @@ module Sipity
               with(entity: entity, user: user, event_name: 'etd_student_submission_approve_for_ingest')
             subject.approve_for_ingest!
           end
-          it 'will update the ETDs processing_state to :ready_for_ingest'
+          it 'will update the ETDs processing_state to :ready_for_ingest' do
+            expect(repository).to receive(:update_processing_state!).
+              with(entity: entity, new_processing_state: :ready_for_ingest)
+            subject.approve_for_ingest!
+          end
           it 'will trigger :ingest event'
         end
 

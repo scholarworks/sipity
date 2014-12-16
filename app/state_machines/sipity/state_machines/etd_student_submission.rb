@@ -74,6 +74,8 @@ module Sipity
 
       def build_state_machine_callbacks(state_machine)
         state_machine.on(:any) do |event_name|
+          # REVIEW: Should I update the current entity instance's processing_state?
+          repository.update_processing_state!(entity: entity, new_processing_state: state_machine.state)
           repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
         end
       end
