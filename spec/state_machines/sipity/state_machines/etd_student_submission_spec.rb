@@ -202,7 +202,10 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, new_processing_state: :ready_for_ingest)
           end
-          it 'will trigger :ingest event'
+          xit 'will trigger :ingest event' do
+            # This should be submitted as a background job, so we need to requery
+            # everything
+          end
         end
 
         context ':ingest is triggered' do
