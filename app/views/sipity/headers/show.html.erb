@@ -31,7 +31,9 @@
   </dl>
 
   <div>
-    <%= link_to "Edit #{model.title}", edit_header_path(model.to_param), class: 'btn btn-primary action-edit' %>
+    <% model.available_linked_actions.each do |action| %>
+      <%= action.render(self) %>
+    <% end %>
   </div>
 </div>
 

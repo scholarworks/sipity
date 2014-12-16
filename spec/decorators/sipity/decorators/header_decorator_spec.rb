@@ -3,10 +3,16 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe HeaderDecorator do
-      let(:header) { Models::Header.new(title: 'Hello World') }
+      let(:header) { Models::Header.new(title: 'Hello World', id: 123) }
       subject { HeaderDecorator.new(header) }
       it 'will have a #to_s equal its #title' do
         expect(subject.to_s).to eq(header.title)
+      end
+
+      context '#available_linked_actions' do
+        it 'will return an enumerable in which all elements responds to render' do
+          expect(subject.available_linked_actions.all? { |link| link.respond_to?(:render) }).to be_truthy
+        end
       end
 
       context '.fieldset_for' do
