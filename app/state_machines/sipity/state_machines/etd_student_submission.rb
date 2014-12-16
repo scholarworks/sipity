@@ -76,12 +76,14 @@ module Sipity
         end
       end
 
-      # REVIEW - Will this be the convention? In other locations I'm using the
+      # REVIEW: Will this be the convention? In other locations I'm using the
       # Runner.
       def convert_to_logged_name(event_name)
         "#{self.class.to_s.demodulize.underscore}_#{event_name}"
       end
 
+      # REVIEW: Given that I need a repository, should this be teased into a
+      # runner.
       def default_repository
         Repository.new
       end
