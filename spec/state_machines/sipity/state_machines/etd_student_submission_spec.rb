@@ -13,13 +13,13 @@ module Sipity
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]'
         end
 
-        context 'for :revisions_needed' do
+        context 'for :under_review' do
           it 'will allow :update? for [:etd_reviewer]'
           it 'will allow :delete? for []'
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]'
         end
 
-        context 'for :under_review' do
+        context 'for :revisions_needed' do
           it 'will allow :update? for [:etd_reviewer]'
           it 'will allow :delete? for []'
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]'
@@ -32,6 +32,12 @@ module Sipity
         end
 
         context 'for :ingested' do
+          it 'will allow :update? for []'
+          it 'will allow :delete? for []'
+          it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]'
+        end
+
+        context 'for :ready_for_cataloging' do
           it 'will allow :update? for []'
           it 'will allow :delete? for []'
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]'
@@ -67,15 +73,22 @@ module Sipity
 
         context ':grad_school_approves is triggered' do
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
-          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
           it 'will record the event for auditing purposes'
           it 'will update the ETDs state to :ready_for_ingest'
+          it 'will trigger :ingest event'
+        end
+
+        context ':ingest is triggered' do
+          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
+          it 'will record the event for auditing purposes'
+          it 'will update the ETDs state to :ingested'
+          it 'will trigger :ingest_completed'
         end
 
         context ':ingest_completed is triggered' do
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :ingested'
+          it 'will update the ETDs state to :ready_for_cataloging'
         end
 
         context ':cataloging_completed is triggered' do
