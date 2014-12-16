@@ -50,22 +50,6 @@ module Sipity
         state_machine.trigger(:request_revisions)
       end
 
-      def approve_for_ingest!
-        state_machine.trigger(:approve_for_ingest)
-      end
-
-      def ingest_completed!
-        state_machine.trigger(:ingest_completed)
-      end
-
-      def finish_cataloging!
-        state_machine.trigger(:finish_cataloging)
-      end
-
-      def finish!
-        state_machine.trigger(:finish)
-      end
-
       private
 
       def build_state_machine
