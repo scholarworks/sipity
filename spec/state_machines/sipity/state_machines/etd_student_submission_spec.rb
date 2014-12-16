@@ -3,16 +3,24 @@ require 'spec_helper'
 module Sipity
   module StateMachines
     RSpec.describe EtdStudentSubmission do
-      let(:etd) { double('ETD', state: state) }
-      subject { described_class.new(etd) }
+      let(:processing_state) { :new }
+      let(:entity) { double('ETD', processing_state: processing_state) }
+      let(:user) { double('User') }
+      let(:repository) { double('Repository') }
+      subject { described_class.new(entity: entity, user: user, repository: repository) }
+
+      context 'with the default repository' do
+        subject { described_class.new(entity: entity, user: user) }
+        its(:repository) { should respond_to :log_event! }
+      end
 
       context '.roles_for_policy_question' do
-        let(:state) { :unknown }
-        it 'will raise an exception if the state is unknown' do
+        let(:processing_state) { :unknown }
+        it 'will raise an exception if the processing_state is unknown' do
           expect { subject.roles_for_policy_question(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
         end
         context 'for :new' do
-          let(:state) { :new }
+          let(:processing_state) { :new }
           it 'will allow :update? for [:creating_user, :advisor]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['creating_user', 'advisor'])
           end
@@ -28,7 +36,7 @@ module Sipity
         end
 
         context 'for :under_review' do
-          let(:state) { :under_review }
+          let(:processing_state) { :under_review }
           it 'will allow :update? for [:etd_reviewer]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
           end
@@ -47,7 +55,7 @@ module Sipity
         end
 
         context 'for :revisions_needed' do
-          let(:state) { :revisions_needed }
+          let(:processing_state) { :revisions_needed }
           it 'will allow :update? for [:etd_reviewer]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
           end
@@ -66,7 +74,7 @@ module Sipity
         end
 
         context 'for :ready_for_ingest' do
-          let(:state) { :ready_for_ingest }
+          let(:processing_state) { :ready_for_ingest }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -82,7 +90,7 @@ module Sipity
         end
 
         context 'for :ingested' do
-          let(:state) { :ingested }
+          let(:processing_state) { :ingested }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -98,7 +106,7 @@ module Sipity
         end
 
         context 'for :ready_for_cataloging' do
-          let(:state) { :ready_for_cataloging }
+          let(:processing_state) { :ready_for_cataloging }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -114,7 +122,7 @@ module Sipity
         end
 
         context 'for :cataloged' do
-          let(:state) { :cataloged }
+          let(:processing_state) { :cataloged }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -130,7 +138,7 @@ module Sipity
         end
 
         context 'for :done' do
-          let(:state) { :done }
+          let(:processing_state) { :done }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -143,32 +151,45 @@ module Sipity
         end
       end
 
-      context 'state transitions when' do
+      context 'processing_state transitions when' do
         context ':submit_for_ingest is triggered' do
+          let(:entity) { Models::Header.new(processing_state: :new, id: 1) }
+          let(:user) { User.new(id: 2) }
+          subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD'
-          it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :under_review'
+          it 'will record the event for auditing purposes' do
+            expect(repository).to receive(:log_event!).with(entity: entity, user: user, event_name: 'etd_student_submission_submit_for_ingest')
+            subject.submit_for_ingest!
+          end
+          it 'will update the ETDs processing_state to :under_review'
         end
 
         context ':request_revisions is triggered' do
+          let(:event_name) { 'request_revisions' }
+          let(:entity) { Models::Header.new(processing_state: :under_review, id: 1) }
+          let(:user) { User.new(id: 2) }
+          subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
-          it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :revisions_needed'
+          it 'will record the event for auditing purposes'  do
+            expect(repository).to receive(:log_event!).with(entity: entity, user: user, event_name: 'etd_student_submission_request_revisions')
+            subject.request_revisions!
+          end
+          it 'will update the ETDs processing_state to :revisions_needed'
         end
 
         context ':approve_for_ingest is triggered' do
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :ready_for_ingest'
+          it 'will update the ETDs processing_state to :ready_for_ingest'
           it 'will trigger :ingest event'
         end
 
         context ':ingest is triggered' do
           it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :ingested'
+          it 'will update the ETDs processing_state to :ingested'
           it 'will add permission entries for the catalog reviewers of the given ETD'
           it 'will trigger :ingest_completed'
         end
@@ -176,18 +197,18 @@ module Sipity
         context ':ingest_completed is triggered' do
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :ready_for_cataloging'
+          it 'will update the ETDs processing_state to :ready_for_cataloging'
         end
 
         context ':finish_cataloging is triggered' do
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :cataloged'
+          it 'will update the ETDs processing_state to :cataloged'
           it 'will trigger the :finish event'
         end
 
         context ':finish is triggered' do
           it 'will record the event for auditing purposes'
-          it 'will update the ETDs state to :done'
+          it 'will update the ETDs processing_state to :done'
         end
       end
     end
