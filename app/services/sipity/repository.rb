@@ -18,6 +18,8 @@ module Sipity
   #   object from Fedora, then request the object from a DB and layer the DB
   #   values on top of the Fedora values.
   class Repository
+    # TODO: Separate Command and Query methods; This way other classes can
+    #   make use query methods without exposing command methods.
     include RepositoryMethods
 
     def submit_etd_student_submission_trigger!
