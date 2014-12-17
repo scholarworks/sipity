@@ -35,7 +35,7 @@ module Sipity
             Support::Collaborators.create!(header: header, collaborators: f.collaborators)
             Support::PublicationDate.create!(header: header, publication_date: f.publication_date)
             Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
-            Models::EventLog.create!(entity: header, user: requested_by, event_name: __method__) if requested_by
+            EventLogMethods.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
           end
         end
       end
@@ -54,7 +54,7 @@ module Sipity
           with_each_additional_attribute_for_header_form(f) do |key, values|
             Support::AdditionalAttributes.update!(header: header, key: key, values: values)
           end
-          Models::EventLog.create!(entity: header, user: requested_by, event_name: __method__) if requested_by
+          EventLogMethods.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
           header
         end
       end

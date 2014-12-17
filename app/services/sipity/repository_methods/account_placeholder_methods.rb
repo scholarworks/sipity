@@ -13,7 +13,7 @@ module Sipity
             name: f.name
           )
           Models::Permission.create!(entity: placeholder, user: requested_by, role: Models::Permission::CREATING_USER)
-          Models::EventLog.create!(entity: placeholder, user: requested_by, event_name: __method__)
+          EventLogMethods.log_event!(entity: placeholder, user: requested_by, event_name: __method__)
           placeholder
         end
       end

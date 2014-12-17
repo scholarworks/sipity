@@ -18,7 +18,7 @@ module Sipity
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
           )
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           f.header
         end
       end
