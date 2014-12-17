@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          assign_group_roles_to_entity: true
+          assign_group_roles_to_entity: true, send_notification: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -21,6 +21,7 @@ module Sipity
         its(:repository) { should respond_to :update_processing_state! }
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
         its(:repository) { should respond_to :assign_group_roles_to_entity }
+        its(:repository) { should respond_to :send_notification }
       end
 
       context '.roles_for_policy_question' do
@@ -149,8 +150,14 @@ module Sipity
         context ':submit_for_review is triggered' do
           let(:initial_processing_state) { :new }
           let(:event) { :submit_for_review }
-          it 'will send an email notification to the grad school'
-          it 'will send an email confirmation to the student with a URL to that item'
+          it 'will send an email notification to the grad school' do
+            expect(repository).to have_received(:send_notification).
+              with(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+          end
+          it 'will send an email confirmation to the student with a URL to that item' do
+            expect(repository).to have_received(:send_notification).
+              with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user')
+          end
           it 'will add permission entries for the etd reviewers for the given ETD' do
             expect(repository).to have_received(:assign_group_roles_to_entity).
               with(entity: entity, roles: 'etd_reviewer')

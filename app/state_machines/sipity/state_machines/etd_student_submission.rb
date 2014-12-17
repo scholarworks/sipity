@@ -50,7 +50,14 @@ module Sipity
 
       private
 
-      def after_successful_trigger!(_event)
+      def after_successful_trigger!(event)
+        case event
+        when :submit_for_review then
+          repository.send_notification(
+            notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
+          )
+          repository.send_notification(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+        end
       end
 
       def build_state_machine
