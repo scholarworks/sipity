@@ -39,8 +39,8 @@ module Sipity
           it 'will allow :show? for [:creating_user, :advisor]' do
             expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor'])
           end
-          it 'will allow :submit_for_ingest? for [:creating_user]'do
-            expect(subject.roles_for_policy_question(:submit_for_ingest?)).to eq(['creating_user'])
+          it 'will allow :submit_for_review? for [:creating_user]'do
+            expect(subject.roles_for_policy_question(:submit_for_review?)).to eq(['creating_user'])
           end
         end
 
@@ -146,9 +146,9 @@ module Sipity
         let(:user) { User.new(id: 2) }
         subject { described_class.new(entity: entity, user: user, repository: repository) }
         before { subject.trigger!(event) }
-        context ':submit_for_ingest is triggered' do
+        context ':submit_for_review is triggered' do
           let(:initial_processing_state) { :new }
-          let(:event) { :submit_for_ingest }
+          let(:event) { :submit_for_review }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
           it 'will add permission entries for the etd reviewers for the given ETD' do

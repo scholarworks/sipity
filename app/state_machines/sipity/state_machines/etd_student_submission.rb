@@ -14,7 +14,7 @@ module Sipity
       {
         new: {
           update?: ['creating_user', 'advisor'], show?: ['creating_user', 'advisor'],
-          delete?: ['creating_user'], submit_for_ingest?: ['creating_user']
+          delete?: ['creating_user'], submit_for_review?: ['creating_user']
         },
         under_review: {
           update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
@@ -61,7 +61,7 @@ module Sipity
       end
 
       def build_state_machine_triggers(state_machine)
-        state_machine.when(:submit_for_ingest, new: :under_review)
+        state_machine.when(:submit_for_review, new: :under_review)
         state_machine.when(:request_revisions, under_review: :under_review)
         state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest)
         state_machine.when(:ingest, ready_for_ingest: :ingested)
