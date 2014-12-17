@@ -2,6 +2,8 @@ module Sipity
   module StateMachines
     # Responsible for overseeing the life cycle of the ETD Submisssion process.
     #
+    # TODO: Magic Strings Everywhere! Deal with them.
+    #
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
@@ -67,6 +69,10 @@ module Sipity
         repository.send_notification(
           notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user', comments: comments
         )
+      end
+
+      def after_trigger_ingest(_options)
+        repository.submit_ingest_etd(entity: entity)
       end
 
       def after_trigger_ingest_completed(options)

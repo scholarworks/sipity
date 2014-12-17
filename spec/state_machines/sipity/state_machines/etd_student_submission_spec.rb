@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          assign_group_roles_to_entity: true, send_notification: true
+          assign_group_roles_to_entity: true, send_notification: true, submit_ingest_etd: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -22,6 +22,7 @@ module Sipity
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
         its(:repository) { should respond_to :assign_group_roles_to_entity }
         its(:repository) { should respond_to :send_notification }
+        its(:repository) { should respond_to :submit_ingest_etd }
       end
 
       context '.roles_for_policy_question' do
@@ -216,7 +217,10 @@ module Sipity
         context ':ingest is triggered' do
           let(:initial_processing_state) { :ready_for_ingest }
           let(:event) { :ingest }
-          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
+          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object' do
+            expect(repository).to have_received(:submit_ingest_etd).
+              with(entity: entity)
+          end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
