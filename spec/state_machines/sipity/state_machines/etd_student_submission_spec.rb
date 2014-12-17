@@ -157,7 +157,7 @@ module Sipity
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :under_review'  do
             expect(repository).to have_received(:update_processing_state!).
@@ -172,7 +172,7 @@ module Sipity
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
           it 'will record the event for auditing purposes'  do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
@@ -186,7 +186,7 @@ module Sipity
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :ready_for_ingest' do
             expect(repository).to have_received(:update_processing_state!).
@@ -204,7 +204,7 @@ module Sipity
           it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :ingest_completed' do
             expect(repository).to have_received(:update_processing_state!).
@@ -226,7 +226,7 @@ module Sipity
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :ready_for_cataloging' do
             expect(repository).to have_received(:update_processing_state!).
@@ -239,7 +239,7 @@ module Sipity
           let(:event) { :finish_cataloging }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
           it 'will update the ETDs processing_state to :cataloged' do
             expect(repository).to have_received(:update_processing_state!).
@@ -256,7 +256,7 @@ module Sipity
           let(:event) { :finish }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
+              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
 
           it 'will update the ETDs processing_state to :done' do
