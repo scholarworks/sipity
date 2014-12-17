@@ -43,9 +43,15 @@ module Sipity
         raise Exceptions::StatePolicyQuestionRoleMapError, state: entity.processing_state, context: self
       end
 
-      delegate :trigger!, to: :state_machine
+      def trigger!(event)
+        state_machine.trigger!(event)
+        after_successful_trigger!(event)
+      end
 
       private
+
+      def after_successful_trigger!(_event)
+      end
 
       def build_state_machine
         state_machine = MicroMachine.new(entity.processing_state)
