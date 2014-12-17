@@ -53,11 +53,14 @@ module Sipity
       private
 
       def after_trigger_successful!(event, options = {})
+        repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
+        repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event))
         include_private_methods = true
         send("after_trigger_#{event}", options) if respond_to?("after_trigger_#{event}", include_private_methods)
       end
 
       def after_trigger_submit_for_review(_options)
+        repository.assign_group_roles_to_entity(entity: entity, roles: 'etd_reviewer')
         repository.send_notification(
           notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
         )
@@ -71,11 +74,18 @@ module Sipity
         )
       end
 
+      def after_trigger_approve_for_ingest(_options)
+        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest)
+      end
+
       def after_trigger_ingest(_options)
         repository.submit_ingest_etd(entity: entity)
+        # REVIEW: Is this the correct thing? Probably not
+        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest_completed)
       end
 
       def after_trigger_ingest_completed(options)
+        repository.assign_group_roles_to_entity(entity: entity, roles: 'cataloger')
         additional_emails = options.fetch(:additional_emails)
         repository.send_notification(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
         repository.send_notification(
@@ -84,14 +94,12 @@ module Sipity
         )
       end
 
-      def build_state_machine
-        state_machine = MicroMachine.new(entity.processing_state)
-        build_state_machine_triggers(state_machine)
-        build_state_machine_callbacks(state_machine)
-        state_machine
+      def after_trigger_finish_cataloging(_options)
+        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish)
       end
 
-      def build_state_machine_triggers(state_machine)
+      def build_state_machine
+        state_machine = MicroMachine.new(entity.processing_state)
         state_machine.when(:submit_for_review, new: :under_review)
         state_machine.when(:request_revisions, under_review: :under_review)
         state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest)
@@ -99,22 +107,7 @@ module Sipity
         state_machine.when(:ingest_completed, ingested: :ready_for_cataloging)
         state_machine.when(:finish_cataloging, ready_for_cataloging: :cataloged)
         state_machine.when(:finish, cataloged: :done)
-      end
-
-      def build_state_machine_callbacks(state_machine)
-        # TODO: Extract this method into the after callbacks. I want a greater control of the sequencing.
-        state_machine.on(:any) do |event_name|
-          # REVIEW: Should I update the current entity instance's processing_state?
-          repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
-          repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
-        end
-        # TODO: MAGIC STRING ----------------------------------------------------------------------------------V
-        state_machine.on(:under_review) { repository.assign_group_roles_to_entity(entity: entity, roles: 'etd_reviewer') }
-        # TODO: MAGIC STRING -----------------------------------------------------------------------------------------V
-        state_machine.on(:ready_for_cataloging) { repository.assign_group_roles_to_entity(entity: entity, roles: 'cataloger') }
-        state_machine.on(:ready_for_ingest) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest) }
-        state_machine.on(:ingested) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest_completed) }
-        state_machine.on(:cataloged) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish) }
+        state_machine
       end
 
       # REVIEW: Will this be the convention? In other locations I'm using the
