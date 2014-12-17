@@ -9,12 +9,6 @@ module Sipity
     its(:included_modules) { should include(Sipity::Repo::EventLogMethods) }
     its(:included_modules) { should include(Sipity::Repo::AccountPlaceholderMethods) }
 
-    context '#log_event!' do
-      it 'is a placeholder until I can spend some time focusing on it' do
-        expect { described_class.new.log_event! }.to raise_error(NotImplementedError)
-      end
-    end
-
     context '#submit_etd_student_submission_trigger!' do
       it 'is a placeholder until I can spend some time focusing on it' do
         expect { described_class.new.submit_etd_student_submission_trigger! }.to raise_error(NotImplementedError)

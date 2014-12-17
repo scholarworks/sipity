@@ -23,11 +23,6 @@ module Sipity
     include Sipity::Repo::EventLogMethods
     include Sipity::Repo::AccountPlaceholderMethods
 
-    def log_event!
-      # TODO: Models::EventLog.create!(entity: entity, user: user, event_name: event_name)
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
-    end
-
     def submit_etd_student_submission_trigger!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
