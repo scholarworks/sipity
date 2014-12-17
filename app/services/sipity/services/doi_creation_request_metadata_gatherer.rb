@@ -14,11 +14,13 @@ module Sipity
         new(header).as_hash
       end
 
-      def initialize(header)
+      def initialize(header, options = {})
         @header = header
+        # TODO: I don't want to craft a custom repository
+        @repository = options.fetch(:repository) { default_repository }
       end
-      attr_reader :header
-      private :header
+      attr_reader :header, :repository
+      private :header, :repository
 
       def as_hash
         {
@@ -48,17 +50,22 @@ module Sipity
 
       def publisher
         @publisher ||= begin
-          RepositoryMethods::Support::AdditionalAttributes.values_for(
+          repository.header_attribute_values_for(
             header: header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME
           ).join("; ")
         end
       end
 
       def publication_year
-        @publication_year ||=
-          RepositoryMethods::Support::AdditionalAttributes.
-          values_for(header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME).
-          map { |publication_date| Conversions::ConvertToYear.call(publication_date).to_s }.join(", ")
+        @publication_year ||= begin
+          repository.header_attribute_values_for(
+            header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME
+          ).map { |publication_date| Conversions::ConvertToYear.call(publication_date).to_s }.join(", ")
+        end
+      end
+
+      def default_repository
+        Repository.new
       end
     end
   end

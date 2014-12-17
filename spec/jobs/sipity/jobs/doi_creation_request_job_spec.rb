@@ -62,9 +62,9 @@ module Sipity
             expect(repository).to receive(:gather_doi_creation_request_metadata).and_return(metadata)
             expect(minter).to receive(:call).with(metadata).and_return(response)
             subject.work
-            # TODO: This is stretching beyond the responsibilities of this layer
-            expect(RepositoryMethods::Support::AdditionalAttributes.
-                   values_for(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)
+            # This reaches beyond the normal responsibility; But I want to make sure it works.
+            expect(
+              repository.header_attribute_values_for(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)
             ).to eq([response.id])
           end
         end
