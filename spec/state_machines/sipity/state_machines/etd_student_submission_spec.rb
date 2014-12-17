@@ -6,13 +6,16 @@ module Sipity
       let(:initial_processing_state) { :new }
       let(:entity) { double('ETD', processing_state: initial_processing_state) }
       let(:user) { double('User') }
-      let(:repository) { double('Repository', update_processing_state!: true, log_event!: true) }
+      let(:repository) do
+        double('Repository', update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true)
+      end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
 
       context 'with the default repository' do
         subject { described_class.new(entity: entity, user: user) }
         its(:repository) { should respond_to :log_event! }
         its(:repository) { should respond_to :update_processing_state! }
+        its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
       end
 
       context '.roles_for_policy_question' do
@@ -200,9 +203,9 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :ready_for_ingest)
           end
-          xit 'will trigger :ingest event' do
-            # This should be submitted as a background job, so we need to requery
-            # everything
+          it 'will trigger :ingest event' do
+            expect(repository).to have_received(:submit_etd_student_submission_trigger!).
+              with(entity: entity, trigger: :ingest)
           end
         end
 
@@ -219,7 +222,10 @@ module Sipity
               with(entity: entity, from: initial_processing_state, to: :ingested)
           end
           it 'will add permission entries for the catalog reviewers of the given ETD'
-          it 'will trigger :ingest_completed'
+          it 'will trigger :ingest_completed' do
+            expect(repository).to have_received(:submit_etd_student_submission_trigger!).
+              with(entity: entity, trigger: :ingest_completed)
+          end
         end
 
         context ':ingest_completed is triggered' do
@@ -247,7 +253,10 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :cataloged)
           end
-          it 'will trigger the :finish event'
+          it 'will trigger the :finish event' do
+            expect(repository).to have_received(:submit_etd_student_submission_trigger!).
+              with(entity: entity, trigger: :finish)
+          end
         end
 
         context ':finish is triggered' do

@@ -33,9 +33,9 @@ module Sipity
 
       def initialize(entity:, user:, repository: nil)
         @entity, @user = entity, user
-        @state_machine = build_state_machine
-        # @TODO - Catch unexpected states.
         @repository = repository || default_repository
+        # @TODO - Catch unexpected states.
+        @state_machine = build_state_machine
       end
       attr_reader :entity, :state_machine, :user, :repository
       private :entity, :state_machine, :user, :repository
@@ -74,6 +74,9 @@ module Sipity
           repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
           repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
         end
+        state_machine.on(:ready_for_ingest) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest) }
+        state_machine.on(:ingested) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest_completed) }
+        state_machine.on(:cataloged) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish) }
       end
 
       # REVIEW: Will this be the convention? In other locations I'm using the
