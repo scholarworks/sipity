@@ -22,6 +22,7 @@ module Sipity
     include Sipity::Repo::DoiMethods
     include Sipity::Repo::EventLogMethods
     include Sipity::Repo::AccountPlaceholderMethods
+    include Sipity::Repo::NotificationMethods
 
     def submit_etd_student_submission_trigger!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
@@ -31,7 +32,7 @@ module Sipity
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
 
-    def send_notification
+    def send_notification_for_entity_trigger(*_)
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
 

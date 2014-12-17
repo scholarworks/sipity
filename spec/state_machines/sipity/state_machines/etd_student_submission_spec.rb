@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          assign_group_roles_to_entity: true, send_notification: true, submit_ingest_etd: true
+          assign_group_roles_to_entity: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -21,7 +21,7 @@ module Sipity
         its(:repository) { should respond_to :update_processing_state! }
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
         its(:repository) { should respond_to :assign_group_roles_to_entity }
-        its(:repository) { should respond_to :send_notification }
+        its(:repository) { should respond_to :send_notification_for_entity_trigger }
         its(:repository) { should respond_to :submit_ingest_etd }
       end
 
@@ -153,11 +153,11 @@ module Sipity
           let(:initial_processing_state) { :new }
           let(:event) { :submit_for_review }
           it 'will send an email notification to the grad school' do
-            expect(repository).to have_received(:send_notification).
+            expect(repository).to have_received(:send_notification_for_entity_trigger).
               with(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
           end
           it 'will send an email confirmation to the student with a URL to that item' do
-            expect(repository).to have_received(:send_notification).
+            expect(repository).to have_received(:send_notification_for_entity_trigger).
               with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user')
           end
           it 'will add permission entries for the etd reviewers for the given ETD' do
@@ -184,7 +184,7 @@ module Sipity
           subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments' do
             expect(repository).to(
-              have_received(:send_notification).with(
+              have_received(:send_notification_for_entity_trigger).with(
                 notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user',
                 comments: options.fetch(:comments)
               )
@@ -246,7 +246,7 @@ module Sipity
           let(:options) { { additional_emails: 'hello@world.com' } }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)' do
             expect(repository).to(
-              have_received(:send_notification).with(
+              have_received(:send_notification_for_entity_trigger).with(
                 notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
                 to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
               )
@@ -257,7 +257,7 @@ module Sipity
               with(entity: entity, roles: 'cataloger')
           end
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging' do
-            expect(repository).to have_received(:send_notification).
+            expect(repository).to have_received(:send_notification_for_entity_trigger).
               with(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
           end
           it 'will record the event for auditing purposes' do

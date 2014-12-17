@@ -61,15 +61,15 @@ module Sipity
 
       def after_trigger_submit_for_review(_options)
         repository.assign_group_roles_to_entity(entity: entity, roles: 'etd_reviewer')
-        repository.send_notification(
+        repository.send_notification_for_entity_trigger(
           notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
         )
-        repository.send_notification(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+        repository.send_notification_for_entity_trigger(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
       end
 
       def after_trigger_request_revisions(options)
         comments = options.fetch(:comments)
-        repository.send_notification(
+        repository.send_notification_for_entity_trigger(
           notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user', comments: comments
         )
       end
@@ -85,8 +85,8 @@ module Sipity
       def after_trigger_ingest_completed(options)
         repository.assign_group_roles_to_entity(entity: entity, roles: 'cataloger')
         additional_emails = options.fetch(:additional_emails)
-        repository.send_notification(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
-        repository.send_notification(
+        repository.send_notification_for_entity_trigger(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
+        repository.send_notification_for_entity_trigger(
           notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
           to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: additional_emails
         )
