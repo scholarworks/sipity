@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     module Support
       # Responsible for managing Publication Date
       module PublicationDate

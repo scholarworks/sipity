@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     RSpec.describe EventLogMethods, type: :repository_methods do
       Given(:user) { User.new(id: 1) }
       Given(:entity) { Models::Header.new(id: 1) }

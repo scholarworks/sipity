@@ -3,11 +3,11 @@ require 'rails_helper'
 module Sipity
   RSpec.describe Repository, type: :repository do
     subject { Repository }
-    its(:included_modules) { should include(Sipity::Repo::HeaderMethods) }
-    its(:included_modules) { should include(Sipity::Repo::DoiMethods) }
-    its(:included_modules) { should include(Sipity::Repo::CitationMethods) }
-    its(:included_modules) { should include(Sipity::Repo::EventLogMethods) }
-    its(:included_modules) { should include(Sipity::Repo::AccountPlaceholderMethods) }
+    its(:included_modules) { should include(Sipity::RepositoryMethods::HeaderMethods) }
+    its(:included_modules) { should include(Sipity::RepositoryMethods::DoiMethods) }
+    its(:included_modules) { should include(Sipity::RepositoryMethods::CitationMethods) }
+    its(:included_modules) { should include(Sipity::RepositoryMethods::EventLogMethods) }
+    its(:included_modules) { should include(Sipity::RepositoryMethods::AccountPlaceholderMethods) }
 
     context '#submit_etd_student_submission_trigger!' do
       it 'is a placeholder until I can spend some time focusing on it' do

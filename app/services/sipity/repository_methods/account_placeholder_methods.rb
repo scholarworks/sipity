@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     # Responsible for coordination of creating and managing account placeholders.
     module AccountPlaceholderMethods
       def build_create_orcid_account_placeholder_form(attributes: {})

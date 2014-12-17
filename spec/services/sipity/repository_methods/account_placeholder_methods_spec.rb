@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     RSpec.describe AccountPlaceholderMethods, type: :repository_methods do
       context '#build_create_orcid_account_placeholder_form' do
         subject { test_repository.build_create_orcid_account_placeholder_form }

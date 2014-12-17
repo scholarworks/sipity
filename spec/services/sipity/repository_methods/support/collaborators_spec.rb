@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     module Support
       RSpec.describe Collaborators do
         let(:header) { Models::Header.new(id: '123') }
