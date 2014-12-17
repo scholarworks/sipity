@@ -6,25 +6,21 @@ module Sipity
       # @option options [User] :user; If given, what events were taken by the user
       # @option options [Entity] :entity; If given, what events happened to the entity.
       def sequence_of_events_for(options = {})
-        event_log_model.where(options.slice(:entity, :user)).order(created_at: :desc)
+        Models::EventLog.where(options.slice(:entity, :user)).order(created_at: :desc)
       end
 
-      # REVIEW: This knowledge is repeated through out the various methods. How
-      #   to resolve this as it relates to module mixins. The Repository object
-      #   is becoming a bit of a god class. How to tease apart those concerns?
-      #   One consideration is that within the constraints of the Repository
-      #   it is acceptable to reference other classes.
+      # @note This is both a module function and an instance function.
+      # @see The underlying spec defines the behavior; Do not access
       def log_event!(entity:, user:, event_name:)
-        event_log_model.create!(entity: entity, user: user, event_name: event_name)
+        Models::EventLog.create!(entity: entity, user: user, event_name: event_name)
       end
 
-      private
-
-      # REVIEW: Does this make sense? Would I create a module that has all of
-      #   the models as represented by methods?
-      def event_log_model
-        Models::EventLog
-      end
+      # TODO: Make this module a private constant. This means moving the modules
+      #   into the same name space as where they are included. I'm trying to
+      #   make sure that the repository layer remains a unified interface and
+      #   not exposing module functions beyond the repository layer.
+      module_function :log_event!
+      public :log_event!
     end
   end
 end
