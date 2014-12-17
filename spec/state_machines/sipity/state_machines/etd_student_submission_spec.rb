@@ -63,25 +63,6 @@ module Sipity
           end
         end
 
-        context 'for :revisions_needed' do
-          let(:initial_processing_state) { :revisions_needed }
-          it 'will allow :update? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
-          end
-          it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
-          end
-          it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
-          end
-          it 'will allow :request_revisions? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:request_revisions?)).to eq(['etd_reviewer'])
-          end
-          it 'will allow :approve_for_ingest? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:approve_for_ingest?)).to eq(['etd_reviewer'])
-          end
-        end
-
         context 'for :ready_for_ingest' do
           let(:initial_processing_state) { :ready_for_ingest }
           it 'will allow :update? for []' do
@@ -195,7 +176,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: :revisions_needed)
+              with(entity: entity, from: initial_processing_state, to: :under_review)
           end
         end
 

@@ -20,10 +20,6 @@ module Sipity
           update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
           request_revisions?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
         },
-        revisions_needed: {
-          update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
-          request_revisions?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
-        },
         ready_for_ingest: { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
         ingested: { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
         ready_for_cataloging: { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'], finish_cataloging?: ['cataloger'] },
@@ -60,8 +56,8 @@ module Sipity
 
       def build_state_machine_triggers(state_machine)
         state_machine.when(:submit_for_ingest, new: :under_review)
-        state_machine.when(:request_revisions, under_review: :revisions_needed, revisions_needed: :revisions_needed)
-        state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest, revisions_needed: :ready_for_ingest)
+        state_machine.when(:request_revisions, under_review: :under_review)
+        state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest)
         state_machine.when(:ingest, ready_for_ingest: :ingested)
         state_machine.when(:ingest_completed, ingested: :ready_for_cataloging)
         state_machine.when(:finish_cataloging, ready_for_cataloging: :cataloged)
