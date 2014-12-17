@@ -62,8 +62,8 @@ module Sipity
         state_machine.when(:submit_for_ingest, new: :under_review)
         state_machine.when(:request_revisions, under_review: :revisions_needed, revisions_needed: :revisions_needed)
         state_machine.when(:approve_for_ingest, under_review: :ready_for_ingest, revisions_needed: :ready_for_ingest)
-        state_machine.when(:ingest, ready_for_ingest: :ingest_completed)
-        state_machine.when(:ingest_completed, ingest_completed: :ready_for_cataloging)
+        state_machine.when(:ingest, ready_for_ingest: :ingested)
+        state_machine.when(:ingest_completed, ingested: :ready_for_cataloging)
         state_machine.when(:finish_cataloging, ready_for_cataloging: :cataloged)
         state_machine.when(:finish, cataloged: :done)
       end
@@ -71,7 +71,7 @@ module Sipity
       def build_state_machine_callbacks(state_machine)
         state_machine.on(:any) do |event_name|
           # REVIEW: Should I update the current entity instance's processing_state?
-          repository.update_processing_state!(entity: entity, new_processing_state: state_machine.state)
+          repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
           repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
         end
       end

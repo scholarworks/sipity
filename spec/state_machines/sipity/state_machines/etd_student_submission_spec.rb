@@ -3,8 +3,8 @@ require 'spec_helper'
 module Sipity
   module StateMachines
     RSpec.describe EtdStudentSubmission do
-      let(:processing_state) { :new }
-      let(:entity) { double('ETD', processing_state: processing_state) }
+      let(:initial_processing_state) { :new }
+      let(:entity) { double('ETD', processing_state: initial_processing_state) }
       let(:user) { double('User') }
       let(:repository) { double('Repository', update_processing_state!: true, log_event!: true) }
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -16,12 +16,12 @@ module Sipity
       end
 
       context '.roles_for_policy_question' do
-        let(:processing_state) { :unknown }
+        let(:initial_processing_state) { :unknown }
         it 'will raise an exception if the processing_state is unknown' do
           expect { subject.roles_for_policy_question(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
         end
         context 'for :new' do
-          let(:processing_state) { :new }
+          let(:initial_processing_state) { :new }
           it 'will allow :update? for [:creating_user, :advisor]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['creating_user', 'advisor'])
           end
@@ -37,7 +37,7 @@ module Sipity
         end
 
         context 'for :under_review' do
-          let(:processing_state) { :under_review }
+          let(:initial_processing_state) { :under_review }
           it 'will allow :update? for [:etd_reviewer]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
           end
@@ -56,7 +56,7 @@ module Sipity
         end
 
         context 'for :revisions_needed' do
-          let(:processing_state) { :revisions_needed }
+          let(:initial_processing_state) { :revisions_needed }
           it 'will allow :update? for [:etd_reviewer]' do
             expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
           end
@@ -75,7 +75,7 @@ module Sipity
         end
 
         context 'for :ready_for_ingest' do
-          let(:processing_state) { :ready_for_ingest }
+          let(:initial_processing_state) { :ready_for_ingest }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -91,7 +91,7 @@ module Sipity
         end
 
         context 'for :ingested' do
-          let(:processing_state) { :ingested }
+          let(:initial_processing_state) { :ingested }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -107,7 +107,7 @@ module Sipity
         end
 
         context 'for :ready_for_cataloging' do
-          let(:processing_state) { :ready_for_cataloging }
+          let(:initial_processing_state) { :ready_for_cataloging }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -123,7 +123,7 @@ module Sipity
         end
 
         context 'for :cataloged' do
-          let(:processing_state) { :cataloged }
+          let(:initial_processing_state) { :cataloged }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -139,7 +139,7 @@ module Sipity
         end
 
         context 'for :done' do
-          let(:processing_state) { :done }
+          let(:initial_processing_state) { :done }
           it 'will allow :update? for []' do
             expect(subject.roles_for_policy_question(:update?)).to eq([])
           end
@@ -153,12 +153,12 @@ module Sipity
       end
 
       context 'processing_state transitions when' do
-        let(:entity) { Models::Header.new(processing_state: processing_state, id: 1) }
+        let(:entity) { Models::Header.new(processing_state: initial_processing_state, id: 1) }
         let(:user) { User.new(id: 2) }
         subject { described_class.new(entity: entity, user: user, repository: repository) }
         before { subject.trigger!(event) }
         context ':submit_for_ingest is triggered' do
-          let(:processing_state) { :new }
+          let(:initial_processing_state) { :new }
           let(:event) { :submit_for_ingest }
           it 'will send an email notification to the grad school'
           it 'will send an email confirmation to the student with a URL to that item'
@@ -169,12 +169,12 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :under_review'  do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, new_processing_state: :under_review)
+              with(entity: entity, from: initial_processing_state, to: :under_review)
           end
         end
 
         context ':request_revisions is triggered' do
-          let(:processing_state) { :under_review }
+          let(:initial_processing_state) { :under_review }
           let(:event) { :request_revisions }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
@@ -184,12 +184,12 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, new_processing_state: :revisions_needed)
+              with(entity: entity, from: initial_processing_state, to: :revisions_needed)
           end
         end
 
         context ':approve_for_ingest is triggered' do
-          let(:processing_state) { :under_review }
+          let(:initial_processing_state) { :under_review }
           let(:event) { :approve_for_ingest }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes' do
@@ -198,7 +198,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :ready_for_ingest' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, new_processing_state: :ready_for_ingest)
+              with(entity: entity, from: initial_processing_state, to: :ready_for_ingest)
           end
           xit 'will trigger :ingest event' do
             # This should be submitted as a background job, so we need to requery
@@ -207,52 +207,61 @@ module Sipity
         end
 
         context ':ingest is triggered' do
-          let(:processing_state) { :ready_for_ingest }
+          let(:initial_processing_state) { :ready_for_ingest }
           let(:event) { :ingest }
           it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
-
-          it 'will update the ETDs processing_state to :ingested'
+          it 'will update the ETDs processing_state to :ingest_completed' do
+            expect(repository).to have_received(:update_processing_state!).
+              with(entity: entity, from: initial_processing_state, to: :ingested)
+          end
           it 'will add permission entries for the catalog reviewers of the given ETD'
           it 'will trigger :ingest_completed'
         end
 
         context ':ingest_completed is triggered' do
-          let(:processing_state) { :ingest_completed }
+          let(:initial_processing_state) { :ingested }
           let(:event) { :ingest_completed }
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
-
-          it 'will update the ETDs processing_state to :ready_for_cataloging'
+          it 'will update the ETDs processing_state to :ready_for_cataloging' do
+            expect(repository).to have_received(:update_processing_state!).
+              with(entity: entity, from: initial_processing_state, to: :ready_for_cataloging)
+          end
         end
 
         context ':finish_cataloging is triggered' do
-          let(:processing_state) { :ready_for_cataloging }
+          let(:initial_processing_state) { :ready_for_cataloging }
           let(:event) { :finish_cataloging }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
-
-          it 'will update the ETDs processing_state to :cataloged'
+          it 'will update the ETDs processing_state to :cataloged' do
+            expect(repository).to have_received(:update_processing_state!).
+              with(entity: entity, from: initial_processing_state, to: :cataloged)
+          end
           it 'will trigger the :finish event'
         end
 
         context ':finish is triggered' do
-          let(:processing_state) { :cataloged }
+          let(:initial_processing_state) { :cataloged }
           let(:event) { :finish }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission_#{event}")
           end
 
-          it 'will update the ETDs processing_state to :done'
+          it 'will update the ETDs processing_state to :done' do
+            expect(repository).to have_received(:update_processing_state!).
+              with(entity: entity, from: initial_processing_state, to: :done)
+          end
         end
       end
     end
