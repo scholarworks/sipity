@@ -20,7 +20,7 @@ module Sipity
       end
 
       def doi_already_assigned?(header)
-        Support::AdditionalAttributes.values_for(
+        AdditionalAttributeMethods.header_attribute_values_for(
           header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME
         ).any?
       end
@@ -32,7 +32,7 @@ module Sipity
       def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
           EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
-          Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
+          AdditionalAttributeMethods.update_header_attribute_values!(header: f.header, key: f.identifier_key, values: f.identifier)
         end
       end
 
@@ -42,7 +42,7 @@ module Sipity
 
       def submit_request_a_doi_form(form, requested_by:)
         form.submit do |f|
-          Support::AdditionalAttributes.update!(
+          AdditionalAttributeMethods.update_header_attribute_values!(
             header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
           )
           AdditionalAttributeMethods.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
@@ -59,7 +59,9 @@ module Sipity
       end
 
       def update_header_with_doi_predicate!(header:, values:)
-        Support::AdditionalAttributes.update!(header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values)
+        AdditionalAttributeMethods.update_header_attribute_values!(
+          header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values
+        )
       end
 
       def gather_doi_creation_request_metadata(header:)

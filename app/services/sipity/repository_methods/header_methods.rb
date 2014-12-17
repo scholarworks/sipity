@@ -53,7 +53,7 @@ module Sipity
           header = find_header(f.header.id)
           with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
           with_each_additional_attribute_for_header_form(f) do |key, values|
-            Support::AdditionalAttributes.update!(header: header, key: key, values: values)
+            AdditionalAttributeMethods.update_header_attribute_values!(header: header, key: key, values: values)
           end
           EventLogMethods.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
           header
@@ -63,7 +63,7 @@ module Sipity
       private
 
       def with_each_additional_attribute_for_header_form(form)
-        Support::AdditionalAttributes.keys_for(header: form.header).each do |key|
+        AdditionalAttributeMethods.header_attribute_keys_for(header: form.header).each do |key|
           next unless  form.exposes?(key)
           yield(key, form.public_send(key))
         end
@@ -88,8 +88,8 @@ module Sipity
 
       def exposed_header_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
         (
-          Support::AdditionalAttributes.default_keys_for(header: header) +
-          Support::AdditionalAttributes.keys_for(header: header) +
+          AdditionalAttributeMethods.header_default_attribute_keys_for(header: header) +
+          AdditionalAttributeMethods.header_attribute_keys_for(header: header) +
           additional_attribute_names
         ).uniq
       end

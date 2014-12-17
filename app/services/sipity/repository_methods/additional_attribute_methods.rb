@@ -5,7 +5,7 @@ module Sipity
     module AdditionalAttributeMethods
       def update_header_publication_date!(header:, publication_date:)
         return true unless publication_date.present?
-        Support::AdditionalAttributes.update!(
+        update_header_attribute_values!(
           header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, values: publication_date
         )
       end
