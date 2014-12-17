@@ -6,40 +6,38 @@ module Sipity
         module_function
 
         def update!(header:, key:, values:)
-          input_values = Array.wrap(values)
-          existing_values = values_for(header: header, key: key)
-          create!(header: header, key: key, values: (input_values - existing_values))
-          destroy!(header: header, key: key, values: (existing_values - input_values))
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.update_header_attribute_values!(header: header, key: key, values: values)
         end
 
         def create!(header:, key:, values:)
-          Array.wrap(values).each do |value|
-            Models::AdditionalAttribute.create!(header: header, key: key, value: value)
-          end
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.create_header_attribute_values!(header: header, key: key, values: values)
         end
 
         def destroy!(header:, key:, values:)
-          values_to_destroy = Array.wrap(values)
-          return true unless values_to_destroy.present?
-          Models::AdditionalAttribute.where(header: header, key: key, value: values_to_destroy).destroy_all
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.destroy_header_attribute_values!(header: header, key: key, values: values)
         end
 
         def values_for(header:, key:)
-          Models::AdditionalAttribute.where(header: header, key: key).pluck(:value)
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.header_attribute_values_for(header: header, key: key)
         end
 
         def key_value_pairs_for(header:, keys: [])
-          query = Models::AdditionalAttribute.where(header: header).order(:header_id, :key)
-          query = query.where(key: keys) if keys.present?
-          query.pluck(:key, :value)
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.header_attribute_key_value_pairs(header: header, keys: keys)
         end
 
         def keys_for(header:)
-          Models::AdditionalAttribute.where(header: header).order(:key).pluck('DISTINCT key')
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.header_attribute_keys_for(header: header)
         end
 
-        def default_keys_for(*)
-          [:publication_date]
+        def default_keys_for(*args)
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          AdditionalAttributeMethods.header_default_attribute_keys_for(*args)
         end
       end
     end
