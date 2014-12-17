@@ -45,7 +45,7 @@ module Sipity
           Support::AdditionalAttributes.update!(
             header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
           )
-          Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
+          AdditionalAttributeMethods.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
           EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           submit_doi_creation_request_job!(header: f.header)
         end

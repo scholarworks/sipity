@@ -26,6 +26,7 @@ module Sipity
       base.send(:include, EventLogMethods)
       base.send(:include, AccountPlaceholderMethods)
       base.send(:include, NotificationMethods)
+      base.send(:include, AdditionalAttributeMethods)
     end
   end
 end
