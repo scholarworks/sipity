@@ -33,7 +33,7 @@ module Sipity
       def submit_create_header_form(form, requested_by:)
         form.submit do |f|
           Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
-            Support::Collaborators.create!(header: header, collaborators: f.collaborators)
+            CollaboratorMethods.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
             AdditionalAttributeMethods.update_header_publication_date!(header: header, publication_date: f.publication_date)
             Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
             EventLogMethods.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by

@@ -5,10 +5,10 @@ module Sipity
       module Collaborators
         module_function
 
-        def create!(header:, collaborators:)
-          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
-          CollaboratorMethods.create_collaborators_for_header!(header: header, collaborators: collaborators)
-        end
+        # def create!(header:, collaborators:)
+        #   ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+        #   CollaboratorMethods.create_collaborators_for_header!(header: header, collaborators: collaborators)
+        # end
 
         def for(options = {})
           ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
