@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     RSpec.describe HeaderMethods, type: :repository_methods do
       it 'will have a permanent URL for a given header' do
         expect(test_repository.permanent_uri_for_header_id(123)).to be_a(URI)

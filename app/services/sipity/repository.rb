@@ -17,12 +17,12 @@ module Sipity
   #   object from Fedora, then request the object from a DB and layer the DB
   #   values on top of the Fedora values.
   class Repository
-    include Sipity::Repo::HeaderMethods
-    include Sipity::Repo::CitationMethods
-    include Sipity::Repo::DoiMethods
-    include Sipity::Repo::EventLogMethods
-    include Sipity::Repo::AccountPlaceholderMethods
-    include Sipity::Repo::NotificationMethods
+    include Sipity::RepositoryMethods::HeaderMethods
+    include Sipity::RepositoryMethods::CitationMethods
+    include Sipity::RepositoryMethods::DoiMethods
+    include Sipity::RepositoryMethods::EventLogMethods
+    include Sipity::RepositoryMethods::AccountPlaceholderMethods
+    include Sipity::RepositoryMethods::NotificationMethods
 
     def submit_etd_student_submission_trigger!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"

@@ -1,7 +1,7 @@
 require 'sipity/jobs'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     # DOI related methods
     module DoiMethods
       def doi_request_is_pending?(header)

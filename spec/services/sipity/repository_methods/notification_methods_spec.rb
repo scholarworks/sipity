@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     RSpec.describe NotificationMethods, type: :repository_methods do
       context '#send_notification_for_entity_trigger' do
         let(:notification) { double }

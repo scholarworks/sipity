@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     module Support
       RSpec.describe AdditionalAttributes do
         # Because of enum enforcement I need real key names

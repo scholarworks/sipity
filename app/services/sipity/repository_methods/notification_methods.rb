@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     # Responsible for coordinating with the notification layer.
     # What is the notification layer? Don't know yet. But I suspect it will
     # be us sending various emails to recipients.

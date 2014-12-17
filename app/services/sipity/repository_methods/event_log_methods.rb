@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     # Methods that are helpful for querying the event log
     module EventLogMethods
       # @param [Hash] options for conditional querying of the event log.

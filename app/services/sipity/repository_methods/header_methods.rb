@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     # Methods related to header creation
     module HeaderMethods
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze

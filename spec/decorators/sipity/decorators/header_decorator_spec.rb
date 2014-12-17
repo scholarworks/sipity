@@ -27,7 +27,7 @@ module Sipity
 
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
-        allow(Repo::Support::Collaborators).to receive(:for).with(header: header, role: 'author').and_return(authors)
+        allow(RepositoryMethods::Support::Collaborators).to receive(:for).with(header: header, role: 'author').and_return(authors)
         allow(CollaboratorDecorator).to receive(:decorate).with(authors[0])
         subject.authors
       end

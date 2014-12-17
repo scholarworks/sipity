@@ -1,5 +1,5 @@
 module Sipity
-  module Repo
+  module RepositoryMethods
     # Citation related methods
     module CitationMethods
       def citation_already_assigned?(header)

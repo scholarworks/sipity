@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 module Sipity
-  module Repo
+  module RepositoryMethods
     RSpec.describe CitationMethods, type: :repository_methods do
 
       context '#submit_assign_a_citation_form' do
