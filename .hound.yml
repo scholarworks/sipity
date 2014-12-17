@@ -193,6 +193,7 @@ Metrics/AbcSize:
   Enabled: true
   Exclude:
      - app/conversions/**/*.rb
+     - app/state_machines/**/*.rb
 
 DefWithParentheses:
   Description: 'Use def with parentheses when there are arguments.'
