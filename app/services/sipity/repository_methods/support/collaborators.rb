@@ -6,18 +6,18 @@ module Sipity
         module_function
 
         def create!(header:, collaborators:)
-          collaborators.each do |collaborator|
-            collaborator.header = header
-            collaborator.save!
-          end
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          CollaboratorMethods.create_collaborators_for_header!(header: header, collaborators: collaborators)
         end
 
         def for(options = {})
-          Models::Collaborator.includes(:header).where(options.slice(:header, :role))
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          CollaboratorMethods.header_collaborators_for(options)
         end
 
         def names_for(options = {})
-          self.for(options).pluck(:name)
+          ActiveSupport::Deprecation.warn("#{self}##{__method__} is deprecated")
+          CollaboratorMethods.header_collaborator_names_for(options)
         end
       end
     end
