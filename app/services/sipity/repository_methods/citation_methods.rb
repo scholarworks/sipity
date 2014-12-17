@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Citation related methods
     module CitationMethods

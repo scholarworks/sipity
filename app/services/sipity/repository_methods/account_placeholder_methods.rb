@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Responsible for coordination of creating and managing account placeholders.
     module AccountPlaceholderMethods

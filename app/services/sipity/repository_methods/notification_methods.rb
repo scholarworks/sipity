@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Responsible for coordinating with the notification layer.
     # What is the notification layer? Don't know yet. But I suspect it will

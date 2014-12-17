@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Methods that are helpful for querying the event log
     module EventLogMethods

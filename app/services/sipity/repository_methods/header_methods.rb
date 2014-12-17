@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Methods related to header creation
     module HeaderMethods

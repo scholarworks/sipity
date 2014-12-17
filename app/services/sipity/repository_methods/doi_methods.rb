@@ -1,6 +1,7 @@
 require 'sipity/jobs'
 
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # DOI related methods
     module DoiMethods
