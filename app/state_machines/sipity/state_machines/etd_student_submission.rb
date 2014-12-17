@@ -43,21 +43,39 @@ module Sipity
         raise Exceptions::StatePolicyQuestionRoleMapError, state: entity.processing_state, context: self
       end
 
-      def trigger!(event)
+      def trigger!(event, options = {})
         state_machine.trigger!(event)
-        after_successful_trigger!(event)
+        after_trigger_successful!(event, options)
       end
 
       private
 
-      def after_successful_trigger!(event)
-        case event
-        when :submit_for_review then
-          repository.send_notification(
-            notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
-          )
-          repository.send_notification(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
-        end
+      def after_trigger_successful!(event, options = {})
+        include_private_methods = true
+        send("after_trigger_#{event}", options) if respond_to?("after_trigger_#{event}", include_private_methods)
+      end
+
+      def after_trigger_submit_for_review(_options)
+        repository.send_notification(
+          notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
+        )
+        repository.send_notification(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+      end
+
+      def after_trigger_request_revisions(options)
+        comments = options.fetch(:comments)
+        repository.send_notification(
+          notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user', comments: comments
+        )
+      end
+
+      def after_trigger_ingest_completed(options)
+        additional_emails = options.fetch(:additional_emails)
+        repository.send_notification(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
+        repository.send_notification(
+          notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
+          to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: additional_emails
+        )
       end
 
       def build_state_machine
@@ -78,6 +96,7 @@ module Sipity
       end
 
       def build_state_machine_callbacks(state_machine)
+        # TODO: Extract this method into the after callbacks. I want a greater control of the sequencing.
         state_machine.on(:any) do |event_name|
           # REVIEW: Should I update the current entity instance's processing_state?
           repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)

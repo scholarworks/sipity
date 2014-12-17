@@ -145,8 +145,9 @@ module Sipity
       context 'processing_state transitions when' do
         let(:entity) { Models::Header.new(processing_state: initial_processing_state, id: 1) }
         let(:user) { User.new(id: 2) }
+        let(:options) { {} }
         subject { described_class.new(entity: entity, user: user, repository: repository) }
-        before { subject.trigger!(event) }
+        before { subject.trigger!(event, options) }
         context ':submit_for_review is triggered' do
           let(:initial_processing_state) { :new }
           let(:event) { :submit_for_review }
@@ -175,8 +176,16 @@ module Sipity
         context ':request_revisions is triggered' do
           let(:initial_processing_state) { :under_review }
           let(:event) { :request_revisions }
+          let(:options) { { comments: 'Hello World' } }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
-          it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments'
+          it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments' do
+            expect(repository).to(
+              have_received(:send_notification).with(
+                notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user',
+                comments: options.fetch(:comments)
+              )
+            )
+          end
           it 'will record the event for auditing purposes'  do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
@@ -190,7 +199,6 @@ module Sipity
         context ':approve_for_ingest is triggered' do
           let(:initial_processing_state) { :under_review }
           let(:event) { :approve_for_ingest }
-          it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)'
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
@@ -226,11 +234,23 @@ module Sipity
         context ':ingest_completed is triggered' do
           let(:initial_processing_state) { :ingested }
           let(:event) { :ingest_completed }
+          let(:options) { { additional_emails: 'hello@world.com' } }
+          it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)' do
+            expect(repository).to(
+              have_received(:send_notification).with(
+                notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
+                to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
+              )
+            )
+          end
           it 'will add permission entries for the catalog reviewers of the given ETD' do
             expect(repository).to have_received(:assign_group_roles_to_entity).
               with(entity: entity, roles: 'cataloger')
           end
-          it 'will send an email notification to the catalogers saying the ETD is ready for cataloging'
+          it 'will send an email notification to the catalogers saying the ETD is ready for cataloging' do
+            expect(repository).to have_received(:send_notification).
+              with(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
+          end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
@@ -265,7 +285,6 @@ module Sipity
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
           end
-
           it 'will update the ETDs processing_state to :done' do
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :done)
