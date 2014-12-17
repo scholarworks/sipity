@@ -216,7 +216,7 @@ module Sipity
           end
           it 'will trigger :ingest event' do
             expect(repository).to have_received(:submit_etd_student_submission_trigger!).
-              with(entity: entity, trigger: :ingest)
+              with(entity: entity, trigger: :ingest, user: user)
           end
         end
 
@@ -286,7 +286,7 @@ module Sipity
           end
           it 'will trigger the :finish event' do
             expect(repository).to have_received(:submit_etd_student_submission_trigger!).
-              with(entity: entity, trigger: :finish)
+              with(entity: entity, trigger: :finish, user: user)
           end
         end
 

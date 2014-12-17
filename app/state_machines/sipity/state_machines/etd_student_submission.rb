@@ -75,7 +75,7 @@ module Sipity
       end
 
       def after_trigger_approve_for_ingest(_options)
-        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest)
+        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest, user: user)
       end
 
       def after_trigger_ingest(_options)
@@ -93,7 +93,7 @@ module Sipity
       end
 
       def after_trigger_finish_cataloging(_options)
-        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish)
+        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish, user: user)
       end
 
       def build_state_machine
