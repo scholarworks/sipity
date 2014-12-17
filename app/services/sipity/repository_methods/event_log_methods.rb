@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Methods that are helpful for querying the event log
     module EventLogMethods
@@ -22,5 +23,6 @@ module Sipity
       module_function :log_event!
       public :log_event!
     end
+    private_constant :EventLogMethods
   end
 end

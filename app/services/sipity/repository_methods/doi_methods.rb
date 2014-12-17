@@ -1,6 +1,7 @@
 require 'sipity/jobs'
 
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # DOI related methods
     module DoiMethods
@@ -30,7 +31,7 @@ module Sipity
 
       def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           Support::AdditionalAttributes.update!(header: f.header, key: f.identifier_key, values: f.identifier)
         end
       end
@@ -45,7 +46,7 @@ module Sipity
             header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
           )
           Support::PublicationDate.create!(header: f.header, publication_date: f.publication_date)
-          Models::EventLog.create!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           submit_doi_creation_request_job!(header: f.header)
         end
       end
@@ -73,5 +74,6 @@ module Sipity
         request
       end
     end
+    private_constant :DoiMethods
   end
 end

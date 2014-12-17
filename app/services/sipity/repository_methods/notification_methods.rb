@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module RepositoryMethods
     # Responsible for coordinating with the notification layer.
     # What is the notification layer? Don't know yet. But I suspect it will
@@ -19,5 +20,6 @@ module Sipity
         @entity, @to_roles = roles, entity
       end
     end
+    private_constant :NotificationMethods
   end
 end

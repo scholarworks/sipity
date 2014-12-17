@@ -3,11 +3,6 @@ require 'rails_helper'
 module Sipity
   RSpec.describe Repository, type: :repository do
     subject { Repository }
-    its(:included_modules) { should include(Sipity::RepositoryMethods::HeaderMethods) }
-    its(:included_modules) { should include(Sipity::RepositoryMethods::DoiMethods) }
-    its(:included_modules) { should include(Sipity::RepositoryMethods::CitationMethods) }
-    its(:included_modules) { should include(Sipity::RepositoryMethods::EventLogMethods) }
-    its(:included_modules) { should include(Sipity::RepositoryMethods::AccountPlaceholderMethods) }
 
     context '#submit_etd_student_submission_trigger!' do
       it 'is a placeholder until I can spend some time focusing on it' do
@@ -37,7 +32,7 @@ module Sipity
       let(:modules_to_check_for_method_collision) do
         # I'm concerned about the methods I've mixed in. There are several
         # modules already included.
-        Sipity::Repository.included_modules.select { |mod| mod.to_s =~ /\ASipity::/ }
+        Sipity::Repository.included_modules.select { |mod| mod.to_s =~ /\ASipity::RepositoryMethods/ }
       end
 
       it 'will have unique method names for its mixed in modules' do

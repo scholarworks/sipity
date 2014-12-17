@@ -1,4 +1,3 @@
-require_relative './repository_methods'
 module Sipity
   # Defines and exposes the methods for interacting with the public API of the
   # persistence layer.
@@ -17,23 +16,16 @@ module Sipity
   #   you want to edit an object ingested into Fedora you might request the
   #   object from Fedora, then request the object from a DB and layer the DB
   #   values on top of the Fedora values.
-  class Repository
-    include RepositoryMethods
+  module RepositoryMethods
+    extend ActiveSupport::Concern
 
-    def submit_etd_student_submission_trigger!
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
-    end
-
-    def assign_group_roles_to_entity
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
-    end
-
-    def send_notification_for_entity_trigger(*_)
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
-    end
-
-    def submit_ingest_etd
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
+    included do |base|
+      base.send(:include, HeaderMethods)
+      base.send(:include, CitationMethods)
+      base.send(:include, DoiMethods)
+      base.send(:include, EventLogMethods)
+      base.send(:include, AccountPlaceholderMethods)
+      base.send(:include, NotificationMethods)
     end
   end
 end
