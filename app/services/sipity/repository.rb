@@ -39,5 +39,9 @@ module Sipity
     def send_notification
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
+
+    def submit_ingest_etd
+      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
+    end
   end
 end
