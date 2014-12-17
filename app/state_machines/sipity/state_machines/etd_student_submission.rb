@@ -74,6 +74,10 @@ module Sipity
           repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
           repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event_name))
         end
+        # TODO: MAGIC STRING ----------------------------------------------------------------------------------V
+        state_machine.on(:under_review) { repository.assign_group_roles_to_entity(entity: entity, roles: 'etd_reviewer') }
+        # TODO: MAGIC STRING -----------------------------------------------------------------------------------------V
+        state_machine.on(:ready_for_cataloging) { repository.assign_group_roles_to_entity(entity: entity, roles: 'cataloger') }
         state_machine.on(:ready_for_ingest) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest) }
         state_machine.on(:ingested) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest_completed) }
         state_machine.on(:cataloged) { repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :finish) }
