@@ -18,5 +18,6 @@ module Sipity
         end
       end
     end
+    private_constant :AccountPlaceholderMethods
   end
 end

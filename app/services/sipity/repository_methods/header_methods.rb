@@ -93,5 +93,6 @@ module Sipity
         ).uniq
       end
     end
+    private_constant :HeaderMethods
   end
 end
