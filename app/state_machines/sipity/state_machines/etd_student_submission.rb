@@ -80,8 +80,6 @@ module Sipity
 
       def after_trigger_ingest(_options)
         repository.submit_ingest_etd(entity: entity)
-        # REVIEW: Is this the correct thing? Probably not
-        repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest_completed)
       end
 
       def after_trigger_ingest_completed(options)

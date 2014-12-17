@@ -172,6 +172,9 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :under_review)
           end
+          it 'will NOT trigger another state change' do
+            expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
+          end
         end
 
         context ':request_revisions is triggered' do
@@ -194,6 +197,9 @@ module Sipity
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :under_review)
+          end
+          it 'will NOT trigger another state change' do
+            expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
           end
         end
 
@@ -229,9 +235,8 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :ingested)
           end
-          it 'will trigger :ingest_completed' do
-            expect(repository).to have_received(:submit_etd_student_submission_trigger!).
-              with(entity: entity, trigger: :ingest_completed)
+          it 'will NOT trigger another state change' do
+            expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
           end
         end
 
@@ -263,6 +268,9 @@ module Sipity
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :ready_for_cataloging)
           end
+          it 'will NOT trigger another state change' do
+            expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
+          end
         end
 
         context ':finish_cataloging is triggered' do
@@ -292,6 +300,9 @@ module Sipity
           it 'will update the ETDs processing_state to :done' do
             expect(repository).to have_received(:update_processing_state!).
               with(entity: entity, from: initial_processing_state, to: :done)
+          end
+          it 'will NOT trigger another state change' do
+            expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
           end
         end
       end
