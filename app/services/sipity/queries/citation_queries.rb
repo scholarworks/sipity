@@ -3,7 +3,7 @@ module Sipity
     # Queries
     module CitationQueries
       def citation_already_assigned?(header)
-        RepositoryMethods::AdditionalAttributeMethods::Queries.header_attribute_values_for(
+        AdditionalAttributeQueries.header_attribute_values_for(
           header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
         ).any?
       end

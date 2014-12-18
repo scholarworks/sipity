@@ -43,8 +43,8 @@ module Sipity
 
       def exposed_header_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
         (
-          RepositoryMethods::AdditionalAttributeMethods::Queries.header_default_attribute_keys_for(header: header) +
-          RepositoryMethods::AdditionalAttributeMethods::Queries.header_attribute_keys_for(header: header) +
+          AdditionalAttributeQueries.header_default_attribute_keys_for(header: header) +
+          AdditionalAttributeQueries.header_attribute_keys_for(header: header) +
           additional_attribute_names
         ).uniq
       end

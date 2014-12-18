@@ -17,7 +17,7 @@ module Sipity
       end
 
       def doi_already_assigned?(header)
-        RepositoryMethods::AdditionalAttributeMethods::Queries.header_attribute_values_for(
+        AdditionalAttributeQueries.header_attribute_values_for(
           header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME
         ).any?
       end

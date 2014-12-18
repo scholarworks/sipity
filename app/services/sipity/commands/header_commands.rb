@@ -38,7 +38,7 @@ module Sipity
       private
 
       def with_each_additional_attribute_for_header_form(form)
-        RepositoryMethods::AdditionalAttributeMethods::Queries.header_attribute_keys_for(header: form.header).each do |key|
+        Queries::AdditionalAttributeQueries.header_attribute_keys_for(header: form.header).each do |key|
           next unless  form.exposes?(key)
           yield(key, form.public_send(key))
         end
