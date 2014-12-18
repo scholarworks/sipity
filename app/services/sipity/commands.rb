@@ -9,5 +9,17 @@ module Sipity
   # @see http://martinfowler.com/bliki/CommandQuerySeparation.html Martin
   #   Folwer's article on Command/Query separation
   module Commands
+    extend ActiveSupport::Concern
+
+    included do |base|
+      base.send(:include, HeaderCommands)
+      base.send(:include, CitationCommands)
+      base.send(:include, DoiCommands)
+      base.send(:include, EventLogCommands)
+      base.send(:include, AccountPlaceholderCommands)
+      base.send(:include, NotificationCommands)
+      base.send(:include, AdditionalAttributeCommands)
+      base.send(:include, CollaboratorCommands)
+    end
   end
 end

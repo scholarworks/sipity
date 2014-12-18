@@ -11,5 +11,17 @@ module Sipity
   # @see http://martinfowler.com/bliki/CommandQuerySeparation.html Martin
   #   Folwer's article on Command/Query separation
   module Queries
+
+    extend ActiveSupport::Concern
+
+    included do |base|
+      base.send(:include, HeaderQueries)
+      base.send(:include, CitationQueries)
+      base.send(:include, DoiQueries)
+      base.send(:include, EventLogQueries)
+      base.send(:include, AccountPlaceholderQueries)
+      base.send(:include, AdditionalAttributeQueries)
+      base.send(:include, CollaboratorQueries)
+    end
   end
 end
