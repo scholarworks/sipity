@@ -3,16 +3,25 @@ module Sipity
   module RepositoryMethods
     # Responsible for coordination of creating and managing account placeholders.
     module CollaboratorMethods
-      module_function
-
-      # HACK: This is a command method
-      def create_collaborators_for_header!(header:, collaborators:)
-        collaborators.each do |collaborator|
-          collaborator.header = header
-          collaborator.save!
-        end
+      extend ActiveSupport::Concern
+      included do |base|
+        base.send(:include, Commands)
       end
-      public :create_collaborators_for_header!
+
+      module Commands
+        module_function
+
+        # HACK: This is a command method
+        def create_collaborators_for_header!(header:, collaborators:)
+          collaborators.each do |collaborator|
+            collaborator.header = header
+            collaborator.save!
+          end
+        end
+        public :create_collaborators_for_header!
+      end
+
+      module_function
 
       # HACK: This is a query method
       def header_collaborators_for(options = {})
