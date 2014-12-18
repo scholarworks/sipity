@@ -2,6 +2,10 @@ module Sipity
   module Commands
     # Commands
     module HeaderCommands
+      extend ActiveSupport::Concern
+      included do |base|
+        base.send(:include, Queries::HeaderQueries)
+      end
       # TODO: This is duplicationed
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
       def update_processing_state!(header:, new_processing_state:)

@@ -20,7 +20,8 @@ module Sipity
     extend ActiveSupport::Concern
 
     included do |base|
-      base.send(:include, HeaderMethods)
+      base.send(:include, Queries::HeaderQueries)
+      base.send(:include, Commands::HeaderCommands)
       base.send(:include, Queries::CitationQueries)
       base.send(:include, Commands::CitationCommands)
       base.send(:include, Queries::DoiQueries)
