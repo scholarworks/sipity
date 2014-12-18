@@ -70,13 +70,14 @@ module Sipity
         # @see [AREL gem](https://github.com/rails/arel) for information on
         #   constructing AREL queries
         def resolve
-          scope.where(scope.arel_table[:id].in(permission_subquery))
+          scope.where(scope.arel_table[:id].in(user_permission_subquery))
         end
 
         private
 
-        def permission_subquery(arel_table = Models::Permission.arel_table)
-          arel_table.project(arel_table[:id]).where(
+        def user_permission_subquery(arel_table = Models::Permission.arel_table)
+          # For user based queries
+          arel_table.project(arel_table[:entity_id]).where(
             arel_table[:actor_id].eq(polymorphic_actor_id).
             and(arel_table[:actor_type].eq(polymorphic_actor_type)).
             and(arel_table[:role].in(permitted_roles)).
