@@ -32,6 +32,16 @@ module Sipity
           MEMBER_MEMBERSHIP_ROLE => MEMBER_MEMBERSHIP_ROLE
         }
       )
+
+      # Note: This is also enforced on the database
+      after_initialize :set_initial_membership_role, if: :new_record?
+
+      private
+
+      def set_initial_membership_role
+        self.membership_role ||= MEMBER_MEMBERSHIP_ROLE
+      end
+
     end
   end
 end
