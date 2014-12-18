@@ -10,6 +10,11 @@ module Sipity
         let(:entity) { Models::Header.create! }
         let(:role) { Models::Permission::CREATING_USER }
         subject { test_repository }
+
+        it 'will return an empty result if there are no roles' do
+          Models::Permission.create!(entity: entity, actor: user, role: role)
+          expect(subject.scope_permission_resolver(user: user, roles: [], entity_type: entity.class.base_class)).to_not include(entity)
+        end
         it 'will return the entity for the creating user' do
           # TODO: Tease apart this service method; Its a command that I want to
           #   leverage.

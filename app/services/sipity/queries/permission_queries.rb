@@ -4,8 +4,19 @@ module Sipity
     module PermissionQueries
       module_function
 
-      # Welcome to the land of AREL.
+      # Responsible for returning a list of enitites:
+      # That match the given :entity_type
+      # And for which the given :user has at least one of the given :roles.
       #
+      # If no roles are given, no entities will be returned.
+      #
+      # @param user [User]
+      # @param roles [Array<String>]
+      # @param entity_type [Class]
+      #
+      # @return ActiveRecord::Relation
+      #
+      # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
       def scope_permission_resolver(entity_type:, user:, roles:)
         entity_type.where(
