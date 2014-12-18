@@ -52,8 +52,8 @@ module Sipity
 
         def exposed_header_attribute_names_for(header:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
           (
-            AdditionalAttributeMethods.header_default_attribute_keys_for(header: header) +
-            AdditionalAttributeMethods.header_attribute_keys_for(header: header) +
+            AdditionalAttributeMethods::Queries.header_default_attribute_keys_for(header: header) +
+            AdditionalAttributeMethods::Queries.header_attribute_keys_for(header: header) +
             additional_attribute_names
           ).uniq
         end
@@ -71,7 +71,7 @@ module Sipity
           form.submit do |f|
             Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
               CollaboratorMethods::Commands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
-              AdditionalAttributeMethods.update_header_publication_date!(header: header, publication_date: f.publication_date)
+              AdditionalAttributeMethods::Commands.update_header_publication_date!(header: header, publication_date: f.publication_date)
               Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
               EventLogMethods::Commands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
             end
@@ -83,7 +83,7 @@ module Sipity
             header = find_header(f.header.id)
             with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
             with_each_additional_attribute_for_header_form(f) do |key, values|
-              AdditionalAttributeMethods.update_header_attribute_values!(header: header, key: key, values: values)
+              AdditionalAttributeMethods::Commands.update_header_attribute_values!(header: header, key: key, values: values)
             end
             EventLogMethods::Commands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
             header
@@ -93,7 +93,7 @@ module Sipity
         private
 
         def with_each_additional_attribute_for_header_form(form)
-          AdditionalAttributeMethods.header_attribute_keys_for(header: form.header).each do |key|
+          AdditionalAttributeMethods::Queries.header_attribute_keys_for(header: form.header).each do |key|
             next unless  form.exposes?(key)
             yield(key, form.public_send(key))
           end

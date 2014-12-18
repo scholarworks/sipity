@@ -28,7 +28,7 @@ module Sipity
         end
 
         def doi_already_assigned?(header)
-          AdditionalAttributeMethods.header_attribute_values_for(
+          AdditionalAttributeMethods::Queries.header_attribute_values_for(
             header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME
           ).any?
         end
@@ -51,16 +51,18 @@ module Sipity
         def submit_assign_a_doi_form(form, requested_by:)
           form.submit do |f|
             EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
-            AdditionalAttributeMethods.update_header_attribute_values!(header: f.header, key: f.identifier_key, values: f.identifier)
+            AdditionalAttributeMethods::Commands.update_header_attribute_values!(
+              header: f.header, key: f.identifier_key, values: f.identifier
+            )
           end
         end
 
         def submit_request_a_doi_form(form, requested_by:)
           form.submit do |f|
-            AdditionalAttributeMethods.update_header_attribute_values!(
+            AdditionalAttributeMethods::Commands.update_header_attribute_values!(
               header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
             )
-            AdditionalAttributeMethods.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
+            AdditionalAttributeMethods::Commands.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
             EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
             submit_doi_creation_request_job!(header: f.header)
           end
@@ -74,7 +76,7 @@ module Sipity
         end
 
         def update_header_with_doi_predicate!(header:, values:)
-          AdditionalAttributeMethods.update_header_attribute_values!(
+          AdditionalAttributeMethods::Commands.update_header_attribute_values!(
             header: header, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values
           )
         end

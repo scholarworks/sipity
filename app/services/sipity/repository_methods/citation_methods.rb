@@ -12,7 +12,7 @@ module Sipity
       # Queries
       module Queries
         def citation_already_assigned?(header)
-          AdditionalAttributeMethods.header_attribute_values_for(
+          AdditionalAttributeMethods::Queries.header_attribute_values_for(
             header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
           ).any?
         end
@@ -26,10 +26,10 @@ module Sipity
       module Commands
         def submit_assign_a_citation_form(form, requested_by:)
           form.submit do |f|
-            AdditionalAttributeMethods.update_header_attribute_values!(
+            AdditionalAttributeMethods::Commands.update_header_attribute_values!(
               header: f.header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME, values: f.citation
             )
-            AdditionalAttributeMethods.update_header_attribute_values!(
+            AdditionalAttributeMethods::Commands.update_header_attribute_values!(
               header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
             )
             EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
