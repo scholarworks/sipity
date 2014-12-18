@@ -52,86 +52,27 @@ module Sipity
       # Responsible for building a scoped query to find a collection of
       # Model::Header objects for the given user.
       #
-      # Responsible for answering.
+      # Responsible for answering the following:
+      #
+      # Given a user and an array of permitted roles, what are all the entities
+      # within the scope that I can "see"
       #
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Header)
-          new(user, scope).resolve
+        def self.resolve(user:, scope: Models::Header, permitted_roles: [Models::Permission::CREATING_USER])
+          new(user, scope, permitted_roles: permitted_roles).resolve
         end
-        def initialize(user, scope = Models::Header)
+        def initialize(user, scope = Models::Header, permitted_roles: [Models::Permission::CREATING_USER])
           @user = user
           @scope = scope
+          @permitted_roles = permitted_roles
         end
-        attr_reader :user, :scope
-        private :user, :scope
+        attr_reader :user, :scope, :permitted_roles
+        private :user, :scope, :permitted_roles
 
-        # Switching to AREL
-        # @see [AREL gem](https://github.com/rails/arel) for information on
-        #   constructing AREL queries
         def resolve
-          scope.where(
-            scope.arel_table[:id].in(user_permission_subquery).
-            or(scope.arel_table[:id].in(group_permission_subquery))
-          )
-        end
-
-        private
-
-        # Responsible for returning entity ids to which the user has direct
-        # access.
-        def user_permission_subquery(perm_table = Models::Permission.arel_table)
-          # For user based queries
-          perm_table.project(perm_table[:entity_id]).where(
-            perm_table[:actor_id].eq(polymorphic_user_as_actor_id).
-            and(perm_table[:actor_type].eq(polymorphic_user_as_actor_type)).
-            and(perm_table[:role].in(permitted_roles)).
-            and(perm_table[:entity_type].eq(polymorphic_entity_type))
-          )
-        end
-
-        # Responsible for returning entity ids to which the user has direct
-        # inferred access based on group membership.
-        def group_permission_subquery(perm_table = Models::Permission.arel_table)
-          perm_table.project(perm_table[:entity_id]).where(
-            perm_table[:role].in(permitted_roles).
-            and(perm_table[:entity_type].eq(polymorphic_entity_type)).
-            and(perm_table[:actor_type].eq(polymorphic_group_as_actor_type)).
-            and(perm_table[:actor_id].in(user_group_membership_subquery))
-          )
-        end
-
-        # Responsible for returning group ids to which the user belongs.
-        def user_group_membership_subquery(membership_table = Models::GroupMembership.arel_table)
-          membership_table.project(membership_table[:group_id]).
-            where(membership_table[:user_id].eq(polymorphic_user_as_actor_id))
-        end
-
-        def permitted_roles
-          [Models::Permission::CREATING_USER]
-        end
-
-        def polymorphic_user_as_actor_id
-          user.to_key
-        end
-
-        def polymorphic_user_as_actor_type
-          # I Believe this is the correct way to handle the polymorphic relation
-          # on Models::Permission
-          user.class.base_class
-        end
-
-        def polymorphic_group_as_actor_type
-          # I Believe this is the correct way to handle the polymorphic relation
-          # on Models::Permission
-          Models::Group.base_class
-        end
-
-        def polymorphic_entity_type
-          # I Believe this is the correct way to handle the polymorphic relation
-          # on Models::Permission
-          scope.base_class
+          Queries::PermissionQueries.scope_permission_resolver(user: user, entity_type: scope, roles: permitted_roles)
         end
       end
     end

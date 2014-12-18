@@ -194,7 +194,7 @@ Metrics/AbcSize:
   Exclude:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
-     - app/policies/sipity/policies/header_policy.rb
+     - app/services/sipity/queries/permission_queries.rb
 
 DefWithParentheses:
   Description: 'Use def with parentheses when there are arguments.'

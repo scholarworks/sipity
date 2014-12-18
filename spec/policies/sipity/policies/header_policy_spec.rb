@@ -59,36 +59,11 @@ module Sipity
 
     RSpec.describe HeaderPolicy::Scope do
       let(:user) { User.new(id: 1234) }
-      let(:group) { Models::Group.new(id: 5678) }
-      let(:entity) { Models::Header.create! }
+      let(:entity) { Models::Header.new(id: 5678) }
       context '.resolve' do
-
-        it 'will return the entity for the creating user' do
-          # TODO: Tease apart this service method; Its a command that I want to
-          #   leverage.
-          # TODO: I have knowledge of the applicable ROLE, this should be passed to the
-          #   resolver.
-          Models::Permission.create!(entity: entity, actor: user, role: Models::Permission::CREATING_USER)
-          expect(HeaderPolicy::Scope.resolve(user: user)).to include(entity)
-        end
-
-        it 'will exclude the entity for a non creating user' do
-          expect(HeaderPolicy::Scope.resolve(user: user)).to_not include(entity)
-        end
-
-        it 'will return the entity for which the user is inferred by group' do
-          Models::GroupMembership.create!(user: user, group: group)
-          # TODO: Tease apart this service method; Its a command that I want to
-          #   leverage.
-          # TODO: I have knowledge of the applicable ROLE, this should be passed to the
-          #   resolver.
-          Models::Permission.create!(entity: entity, actor: group, role: Models::Permission::CREATING_USER)
-          expect(HeaderPolicy::Scope.resolve(user: user)).to include(entity)
-        end
-
-        it 'will exclude the entity for which the user is not part of the group' do
-          Models::Permission.create!(entity: entity, actor: group, role: Models::Permission::CREATING_USER)
-          expect(HeaderPolicy::Scope.resolve(user: user)).to_not include(entity)
+        it 'will use the scope_permission_resolver' do
+          allow(Queries::PermissionQueries).to receive(:scope_permission_resolver)
+          described_class.resolve(user: user)
         end
       end
     end
