@@ -9,6 +9,7 @@ module Sipity
         base.send(:include, Commands)
       end
 
+      # Queries
       module Queries
         def citation_already_assigned?(header)
           AdditionalAttributeMethods.header_attribute_values_for(
@@ -22,6 +23,7 @@ module Sipity
       end
 
 
+      # Commands
       module Commands
         def submit_assign_a_citation_form(form, requested_by:)
           form.submit do |f|

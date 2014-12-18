@@ -11,6 +11,7 @@ module Sipity
         base.send(:include, Queries)
       end
 
+      # Queries
       module Queries
         # Responsible for extracting the emails of people with the given role
         # for the given entity. Note, a role is not a group.
@@ -19,6 +20,7 @@ module Sipity
         end
       end
 
+      # Commands
       module Commands
         def send_notification_for_entity_trigger(notification:, entity:, to_roles:)
           # These instance variables are not needed; But to appeas Rubocop I'm

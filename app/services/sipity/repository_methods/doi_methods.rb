@@ -11,6 +11,7 @@ module Sipity
         base.send(:include, Commands)
       end
 
+      # Queries
       module Queries
         def doi_request_is_pending?(header)
           # @todo This query is not entirely correct. It needs to interrogate
@@ -45,6 +46,7 @@ module Sipity
         end
       end
 
+      # Commands
       module Commands
 
         def submit_assign_a_doi_form(form, requested_by:)

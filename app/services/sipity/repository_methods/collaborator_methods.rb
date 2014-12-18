@@ -9,6 +9,7 @@ module Sipity
         base.send(:include, Queries)
       end
 
+      # Commands
       module Commands
         module_function
 
@@ -21,6 +22,7 @@ module Sipity
         public :create_collaborators_for_header!
       end
 
+      # Queries
       module Queries
 
         def header_collaborators_for(options = {})

@@ -9,6 +9,7 @@ module Sipity
         base.send(:include, Commands)
       end
 
+      # Queries
       module Queries
         # @param [Hash] options for conditional querying of the event log.
         # @option options [User] :user; If given, what events were taken by the user
@@ -18,6 +19,7 @@ module Sipity
         end
       end
 
+      # Commands
       module Commands
         # @note This is both a module function and an instance function.
         # @see The underlying spec defines the behavior; Do not access

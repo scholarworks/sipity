@@ -13,6 +13,7 @@ module Sipity
         base.send(:include, Commands)
       end
 
+      # Commands
       module Commands
         def submit_create_orcid_account_placeholder_form(form, requested_by:)
           form.submit do |f|
@@ -27,6 +28,7 @@ module Sipity
         end
       end
 
+      # Queries
       module Queries
         def build_create_orcid_account_placeholder_form(attributes: {})
           Forms::CreateOrcidAccountPlaceholderForm.new(attributes)

@@ -10,6 +10,7 @@ module Sipity
         base.send(:include, Commands)
       end
 
+      # Queries
       module Queries
         def find_header(header_id)
           Models::Header.find(header_id)
@@ -58,6 +59,7 @@ module Sipity
         end
       end
 
+      # Commands
       module Commands
         def update_processing_state!(header:, new_processing_state:)
           # REVIEW: Should this be re-finding the header? Is it cheating to re-use
