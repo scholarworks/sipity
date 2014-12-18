@@ -19,7 +19,7 @@ module Sipity
       validates :publication_date, presence: true
 
       def authors(decorator: Decorators::CollaboratorDecorator)
-        RepositoryMethods::CollaboratorMethods.
+        RepositoryMethods::CollaboratorMethods::Queries.
           header_collaborators_for(header: header, role: 'author').
           map { |obj| decorator.decorate(obj) }
       end

@@ -6,6 +6,7 @@ module Sipity
       extend ActiveSupport::Concern
       included do |base|
         base.send(:include, Commands)
+        base.send(:include, Queries)
       end
 
       module Commands
@@ -21,19 +22,22 @@ module Sipity
         public :create_collaborators_for_header!
       end
 
-      module_function
+      module Queries
 
-      # HACK: This is a query method
-      def header_collaborators_for(options = {})
-        Models::Collaborator.includes(:header).where(options.slice(:header, :role))
-      end
-      public :header_collaborators_for
+        # HACK: This is a query method
+        def header_collaborators_for(options = {})
+          Models::Collaborator.includes(:header).where(options.slice(:header, :role))
+        end
+        module_function :header_collaborators_for
+        public :header_collaborators_for
 
-      # HACK: This is a query method
-      def header_collaborator_names_for(options = {})
-        header_collaborators_for(options).pluck(:name)
+        # HACK: This is a query method
+        def header_collaborator_names_for(options = {})
+          header_collaborators_for(options).pluck(:name)
+        end
+        module_function :header_collaborator_names_for
+        public :header_collaborator_names_for
       end
-      public :header_collaborator_names_for
     end
     # TODO: Restore `private_constant :CollaboratorMethods`
   end
