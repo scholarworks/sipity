@@ -31,7 +31,8 @@ module Sipity
       base.send(:include, Queries::AccountPlaceholderQueries)
       base.send(:include, Commands::AccountPlaceholderCommands)
       base.send(:include, Commands::NotificationCommands)
-      base.send(:include, AdditionalAttributeMethods)
+      base.send(:include, Queries::AdditionalAttributeQueries)
+      base.send(:include, Commands::AdditionalAttributeCommands)
       base.send(:include, Queries::CollaboratorQueries)
       base.send(:include, Commands::CollaboratorCommands)
     end

@@ -2,6 +2,11 @@ module Sipity
   module Commands
     # Commands
     module AdditionalAttributeCommands
+      extend ActiveSupport::Concern
+      included do |base|
+        base.send(:include, Queries::AdditionalAttributeQueries)
+      end
+
       def update_header_publication_date!(header:, publication_date:)
         return true unless publication_date.present?
         update_header_attribute_values!(
