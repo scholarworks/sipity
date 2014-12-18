@@ -31,7 +31,7 @@ MethodLength:
   Enabled: true
   Exclude:
     - 'app/controllers/sipity/controllers/dois_controller.rb'
-    - 'app/services/sipity/queries/notification_queries.rb'
+    - 'app/services/sipity/queries/permission_queries.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
