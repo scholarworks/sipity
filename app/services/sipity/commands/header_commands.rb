@@ -13,7 +13,7 @@ module Sipity
       def submit_create_header_form(form, requested_by:)
         form.submit do |f|
           Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
-            RepositoryMethods::CollaboratorMethods::Commands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
+            CollaboratorCommands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
             RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_publication_date!(
               header: header, publication_date: f.publication_date
             )

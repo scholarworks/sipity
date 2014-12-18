@@ -5,21 +5,8 @@ module Sipity
     module CollaboratorMethods
       extend ActiveSupport::Concern
       included do |base|
-        base.send(:include, Commands)
+        base.send(:include, Commands::CollaboratorCommands)
         base.send(:include, Queries)
-      end
-
-      # Commands
-      module Commands
-        module_function
-
-        def create_collaborators_for_header!(header:, collaborators:)
-          collaborators.each do |collaborator|
-            collaborator.header = header
-            collaborator.save!
-          end
-        end
-        public :create_collaborators_for_header!
       end
 
       # Queries
