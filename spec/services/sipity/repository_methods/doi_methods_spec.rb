@@ -131,7 +131,8 @@ module Sipity
         let(:header) { Models::Header.new(id: 1) }
         let(:value) { 'doi:oh-my' }
         it 'will update the underlying doi predicates' do
-          allow(AdditionalAttributeMethods::Commands).to receive(:update_header_attribute_values!).
+          # TODO: Going to privatize the commands
+          allow(Commands::AdditionalAttributeCommands).to receive(:update_header_attribute_values!).
             with(header: header, key: 'identifier.doi', values: value).and_call_original
           test_repository.update_header_with_doi_predicate!(header: header, values: value)
         end

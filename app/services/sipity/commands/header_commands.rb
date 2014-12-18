@@ -14,7 +14,7 @@ module Sipity
         form.submit do |f|
           Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
             CollaboratorCommands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
-            RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_publication_date!(
+            AdditionalAttributeCommands.update_header_publication_date!(
               header: header, publication_date: f.publication_date
             )
             Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
@@ -28,7 +28,7 @@ module Sipity
           header = find_header(f.header.id)
           with_header_attributes_for_form(f) { |attributes| header.update(attributes) }
           with_each_additional_attribute_for_header_form(f) do |key, values|
-            RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_attribute_values!(header: header, key: key, values: values)
+            AdditionalAttributeCommands.update_header_attribute_values!(header: header, key: key, values: values)
           end
           EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
           header
