@@ -5,21 +5,8 @@ module Sipity
     module CitationMethods
       extend ActiveSupport::Concern
       included do |base|
-        base.send(:include, Queries)
+        base.send(:include, Queries::CitationQueries)
         base.send(:include, Commands)
-      end
-
-      # Queries
-      module Queries
-        def citation_already_assigned?(header)
-          AdditionalAttributeMethods::Queries.header_attribute_values_for(
-            header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
-          ).any?
-        end
-
-        def build_assign_a_citation_form(attributes = {})
-          Forms::AssignACitationForm.new(attributes)
-        end
       end
 
       # Commands
