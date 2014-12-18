@@ -4,7 +4,7 @@ module Sipity
     module DoiCommands
       def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
-          RepositoryMethods::EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogCommands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_attribute_values!(
             header: f.header, key: f.identifier_key, values: f.identifier
           )
@@ -17,7 +17,7 @@ module Sipity
             header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
           )
           RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
-          RepositoryMethods::EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogCommands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           submit_doi_creation_request_job!(header: f.header)
         end
       end

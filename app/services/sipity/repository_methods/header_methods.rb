@@ -73,7 +73,7 @@ module Sipity
               CollaboratorMethods::Commands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
               AdditionalAttributeMethods::Commands.update_header_publication_date!(header: header, publication_date: f.publication_date)
               Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
-              EventLogMethods::Commands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
+              Sipity::Commands::EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
             end
           end
         end
@@ -85,7 +85,7 @@ module Sipity
             with_each_additional_attribute_for_header_form(f) do |key, values|
               AdditionalAttributeMethods::Commands.update_header_attribute_values!(header: header, key: key, values: values)
             end
-            EventLogMethods::Commands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
+            Sipity::Commands::EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
             header
           end
         end

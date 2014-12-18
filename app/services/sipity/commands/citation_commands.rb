@@ -10,7 +10,7 @@ module Sipity
           RepositoryMethods::AdditionalAttributeMethods::Commands.update_header_attribute_values!(
             header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
           )
-          RepositoryMethods::EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
+          EventLogCommands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
           f.header
         end
       end
