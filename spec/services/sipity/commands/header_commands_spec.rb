@@ -3,17 +3,6 @@ require 'rails_helper'
 module Sipity
   module Commands
     RSpec.describe HeaderCommands, type: :repository_methods do
-      context '#find_headers_for' do
-        let(:user_one) { User.new(id: 1) }
-        let(:user_two) { User.new(id: 2) }
-        let(:form) { test_repository.build_create_header_form(attributes: { title: 'My Title', work_publication_strategy: 'do_not_know' }) }
-        let!(:header_one) { test_repository.submit_create_header_form(form, requested_by: user_one) }
-        let!(:header_two) { test_repository.submit_create_header_form(form, requested_by: user_two) }
-        it 'will include headers that were created by the user' do
-          expect(test_repository.find_headers_for(user: user_one)).to eq([header_one])
-        end
-      end
-
       context '#assign_a_pid' do
         it 'will assign a unique permanent persisted identifier for the header'
       end
