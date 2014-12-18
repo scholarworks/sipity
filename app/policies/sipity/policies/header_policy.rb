@@ -79,9 +79,13 @@ module Sipity
           arel_table.project(arel_table[:id]).where(
             arel_table[:actor_id].eq(polymorphic_actor_id).
             and(arel_table[:actor_type].eq(polymorphic_actor_type)).
-            and(arel_table[:role].in([Models::Permission::CREATING_USER])).
+            and(arel_table[:role].in(permitted_roles)).
             and(arel_table[:entity_type].eq(polymorphic_entity_type))
           )
+        end
+
+        def permitted_roles
+          [Models::Permission::CREATING_USER]
         end
 
         def polymorphic_actor_id
