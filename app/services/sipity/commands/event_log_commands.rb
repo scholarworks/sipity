@@ -1,4 +1,5 @@
 module Sipity
+  # :nodoc:
   module Commands
     # Commands
     module EventLogCommands
