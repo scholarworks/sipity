@@ -31,6 +31,7 @@ MethodLength:
   Enabled: true
   Exclude:
     - 'app/controllers/sipity/controllers/dois_controller.rb'
+    - 'app/services/sipity/queries/notification_queries.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
@@ -195,6 +196,7 @@ Metrics/AbcSize:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
      - app/services/sipity/queries/permission_queries.rb
+     - app/services/sipity/queries/notification_queries.rb
 
 DefWithParentheses:
   Description: 'Use def with parentheses when there are arguments.'
