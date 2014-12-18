@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141216192315) do
+ActiveRecord::Schema.define(version: 20141218133748) do
 
   create_table "sipity_account_placeholders", force: true do |t|
     t.string   "identifier",                                     null: false
@@ -75,6 +75,14 @@ ActiveRecord::Schema.define(version: 20141216192315) do
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at"
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject"
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
+
+  create_table "sipity_groups", force: true do |t|
+    t.string   "name",       null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true
 
   create_table "sipity_headers", force: true do |t|
     t.string   "work_publication_strategy"
