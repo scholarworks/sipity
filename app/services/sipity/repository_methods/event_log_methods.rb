@@ -34,6 +34,5 @@ module Sipity
         public :log_event!
       end
     end
-    private_constant :EventLogMethods
   end
 end
