@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218133748) do
+ActiveRecord::Schema.define(version: 20141218135709) do
 
   create_table "sipity_account_placeholders", force: true do |t|
     t.string   "identifier",                                     null: false
@@ -75,6 +75,19 @@ ActiveRecord::Schema.define(version: 20141218133748) do
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at"
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject"
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
+
+  create_table "sipity_group_memberships", force: true do |t|
+    t.integer  "user_id",         null: false
+    t.integer  "group_id",        null: false
+    t.string   "membership_role", null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sipity_group_memberships", ["group_id", "membership_role"], name: "index_sipity_group_memberships_on_group_id_and_membership_role"
+  add_index "sipity_group_memberships", ["group_id", "user_id"], name: "index_sipity_group_memberships_on_group_id_and_user_id", unique: true
+  add_index "sipity_group_memberships", ["group_id"], name: "index_sipity_group_memberships_on_group_id"
+  add_index "sipity_group_memberships", ["user_id"], name: "index_sipity_group_memberships_on_user_id"
 
   create_table "sipity_groups", force: true do |t|
     t.string   "name",       null: false
