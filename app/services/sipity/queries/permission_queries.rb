@@ -67,7 +67,7 @@ module Sipity
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_permission_resolver(entity_type:, user:, roles:)
+      def scope_entities_for_user_and_roles(entity_type:, user:, roles:)
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         group_class =  Models::Group
@@ -91,7 +91,7 @@ module Sipity
           or(entity_type.arel_table[:id].in(subquery_entity_relation_to_user_by_group_membership))
         )
       end
-      public :scope_permission_resolver
+      public :scope_entities_for_user_and_roles
     end
   end
 end

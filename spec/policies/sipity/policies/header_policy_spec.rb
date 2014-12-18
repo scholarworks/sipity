@@ -61,8 +61,8 @@ module Sipity
       let(:user) { User.new(id: 1234) }
       let(:entity) { Models::Header.new(id: 5678) }
       context '.resolve' do
-        it 'will use the scope_permission_resolver' do
-          allow(Queries::PermissionQueries).to receive(:scope_permission_resolver)
+        it 'will use the scope_entities_for_user_and_roles' do
+          allow(Queries::PermissionQueries).to receive(:scope_entities_for_user_and_roles)
           described_class.resolve(user: user)
         end
       end
