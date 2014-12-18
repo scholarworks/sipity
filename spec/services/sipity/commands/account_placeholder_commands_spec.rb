@@ -1,13 +1,8 @@
 require 'rails_helper'
 
 module Sipity
-  module RepositoryMethods
-    RSpec.describe AccountPlaceholderMethods, type: :repository_methods do
-      context '#build_create_orcid_account_placeholder_form' do
-        subject { test_repository.build_create_orcid_account_placeholder_form }
-        it { should respond_to :identifier }
-        it { should respond_to :name }
-      end
+  module Commands
+    RSpec.describe AccountPlaceholderCommands, type: :repository_methods do
       context '#submit_create_orcid_account_placeholder_form' do
         Given(:user) { User.new(id: 1) }
         Given(:form) { test_repository.build_create_orcid_account_placeholder_form(attributes: { identifier: '0000-0002-8205-121X' }) }

@@ -1,4 +1,5 @@
-require_relative './repository_methods'
+require_relative './queries'
+require_relative './commands'
 module Sipity
   # Defines and exposes the methods for interacting with the public API of the
   # persistence layer.
@@ -18,9 +19,8 @@ module Sipity
   #   object from Fedora, then request the object from a DB and layer the DB
   #   values on top of the Fedora values.
   class Repository
-    # TODO: Separate Command and Query methods; This way other classes can
-    #   make use query methods without exposing command methods.
-    include RepositoryMethods
+    include Queries
+    include Commands
 
     def submit_etd_student_submission_trigger!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"

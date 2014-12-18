@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 module Sipity
-  module RepositoryMethods
-    RSpec.describe CollaboratorMethods, type: :repository_methods do
+  module Queries
+    RSpec.describe CollaboratorQueries, type: :repository_methods do
       let(:header) { Models::Header.new(id: '123') }
       let(:header_two) { Models::Header.new(id: '456') }
       subject { test_repository }

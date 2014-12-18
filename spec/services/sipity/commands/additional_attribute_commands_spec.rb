@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 module Sipity
-  module RepositoryMethods
-    RSpec.describe AdditionalAttributeMethods, type: :repository_methods do
+  module Commands
+    RSpec.describe AdditionalAttributeCommands, type: :repository_methods do
+      # TODO: These are horribly comingled with the queries.
+      #   Need to tease those apart.
       # Because of enum enforcement I need real key names
       let(:key) { Models::AdditionalAttribute::CITATION_PREDICATE_NAME }
       let(:key_2) { Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME }
