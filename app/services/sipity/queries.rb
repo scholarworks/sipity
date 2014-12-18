@@ -11,7 +11,6 @@ module Sipity
   # @see http://martinfowler.com/bliki/CommandQuerySeparation.html Martin
   #   Folwer's article on Command/Query separation
   module Queries
-
     extend ActiveSupport::Concern
 
     included do |base|
