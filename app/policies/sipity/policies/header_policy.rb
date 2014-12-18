@@ -70,33 +70,61 @@ module Sipity
         # @see [AREL gem](https://github.com/rails/arel) for information on
         #   constructing AREL queries
         def resolve
-          scope.where(scope.arel_table[:id].in(user_permission_subquery))
+          scope.where(
+            scope.arel_table[:id].in(user_permission_subquery).
+            or(scope.arel_table[:id].in(group_permission_subquery))
+          )
         end
 
         private
 
-        def user_permission_subquery(arel_table = Models::Permission.arel_table)
+        # Responsible for returning entity ids to which the user has direct
+        # access.
+        def user_permission_subquery(perm_table = Models::Permission.arel_table)
           # For user based queries
-          arel_table.project(arel_table[:entity_id]).where(
-            arel_table[:actor_id].eq(polymorphic_actor_id).
-            and(arel_table[:actor_type].eq(polymorphic_actor_type)).
-            and(arel_table[:role].in(permitted_roles)).
-            and(arel_table[:entity_type].eq(polymorphic_entity_type))
+          perm_table.project(perm_table[:entity_id]).where(
+            perm_table[:actor_id].eq(polymorphic_user_as_actor_id).
+            and(perm_table[:actor_type].eq(polymorphic_user_as_actor_type)).
+            and(perm_table[:role].in(permitted_roles)).
+            and(perm_table[:entity_type].eq(polymorphic_entity_type))
           )
+        end
+
+        # Responsible for returning entity ids to which the user has direct
+        # inferred access based on group membership.
+        def group_permission_subquery(perm_table = Models::Permission.arel_table)
+          perm_table.project(perm_table[:entity_id]).where(
+            perm_table[:role].in(permitted_roles).
+            and(perm_table[:entity_type].eq(polymorphic_entity_type)).
+            and(perm_table[:actor_type].eq(polymorphic_group_as_actor_type)).
+            and(perm_table[:actor_id].in(user_group_membership_subquery))
+          )
+        end
+
+        # Responsible for returning group ids to which the user belongs.
+        def user_group_membership_subquery(membership_table = Models::GroupMembership.arel_table)
+          membership_table.project(membership_table[:group_id]).
+            where(membership_table[:user_id].eq(polymorphic_user_as_actor_id))
         end
 
         def permitted_roles
           [Models::Permission::CREATING_USER]
         end
 
-        def polymorphic_actor_id
+        def polymorphic_user_as_actor_id
           user.to_key
         end
 
-        def polymorphic_actor_type
+        def polymorphic_user_as_actor_type
           # I Believe this is the correct way to handle the polymorphic relation
           # on Models::Permission
           user.class.base_class
+        end
+
+        def polymorphic_group_as_actor_type
+          # I Believe this is the correct way to handle the polymorphic relation
+          # on Models::Permission
+          Models::Group.base_class
         end
 
         def polymorphic_entity_type

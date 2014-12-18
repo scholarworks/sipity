@@ -41,7 +41,6 @@ module Sipity
       def set_initial_membership_role
         self.membership_role ||= MEMBER_MEMBERSHIP_ROLE
       end
-
     end
   end
 end

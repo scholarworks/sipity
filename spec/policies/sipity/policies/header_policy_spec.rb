@@ -58,14 +58,37 @@ module Sipity
     end
 
     RSpec.describe HeaderPolicy::Scope do
-      let(:user) { User.new(id: '1') }
-      subject { HeaderPolicy::Scope.new(user, Models::Header) }
-
-      its(:resolve) { should be_a(ActiveRecord::Relation) }
-
+      let(:user) { User.new(id: 1234) }
+      let(:group) { Models::Group.new(id: 5678) }
+      let(:entity) { Models::Header.create! }
       context '.resolve' do
-        it 'will instantiate the scope and resolve' do
-          expect(HeaderPolicy::Scope.resolve(user: user, scope: Models::Header)).to be_a(ActiveRecord::Relation)
+
+        it 'will return the entity for the creating user' do
+          # TODO: Tease apart this service method; Its a command that I want to
+          #   leverage.
+          # TODO: I have knowledge of the applicable ROLE, this should be passed to the
+          #   resolver.
+          Models::Permission.create!(entity: entity, actor: user, role: Models::Permission::CREATING_USER)
+          expect(HeaderPolicy::Scope.resolve(user: user)).to include(entity)
+        end
+
+        it 'will exclude the entity for a non creating user' do
+          expect(HeaderPolicy::Scope.resolve(user: user)).to_not include(entity)
+        end
+
+        it 'will return the entity for which the user is inferred by group' do
+          Models::GroupMembership.create!(user: user, group: group)
+          # TODO: Tease apart this service method; Its a command that I want to
+          #   leverage.
+          # TODO: I have knowledge of the applicable ROLE, this should be passed to the
+          #   resolver.
+          Models::Permission.create!(entity: entity, actor: group, role: Models::Permission::CREATING_USER)
+          expect(HeaderPolicy::Scope.resolve(user: user)).to include(entity)
+        end
+
+        it 'will exclude the entity for which the user is not part of the group' do
+          Models::Permission.create!(entity: entity, actor: group, role: Models::Permission::CREATING_USER)
+          expect(HeaderPolicy::Scope.resolve(user: user)).to_not include(entity)
         end
       end
     end
