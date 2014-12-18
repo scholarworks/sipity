@@ -29,7 +29,8 @@ module Sipity
       end
 
       def authors(decorator: Decorators::CollaboratorDecorator)
-        RepositoryMethods::Support::Collaborators.for(header: object, role: 'author').map { |obj| decorator.decorate(obj) }
+        RepositoryMethods::CollaboratorMethods.
+          header_collaborators_for(header: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
       def available_linked_actions

@@ -45,7 +45,7 @@ module Sipity
       end
 
       def creator
-        @creator ||= RepositoryMethods::Support::Collaborators.names_for(header: header, roles: 'author').join("; ")
+        @creator ||= repository.header_collaborator_names_for(header: header, roles: 'author').join("; ")
       end
 
       def publisher

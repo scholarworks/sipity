@@ -23,6 +23,6 @@ module Sipity
       end
       public :header_collaborator_names_for
     end
-    private_constant :CollaboratorMethods
+    # TODO: Restore `private_constant :CollaboratorMethods`
   end
 end
