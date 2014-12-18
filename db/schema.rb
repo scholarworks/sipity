@@ -76,7 +76,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject"
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
 
-  create_table "sipity_group_memberships", force: true do |t|
+  create_table "sipity_group_memberships", id: false, force: true do |t|
     t.integer  "user_id",         null: false
     t.integer  "group_id",        null: false
     t.string   "membership_role", null: false
@@ -107,7 +107,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_headers", ["processing_state"], name: "index_sipity_headers_on_processing_state"
 
-  create_table "sipity_permissions", force: true do |t|
+  create_table "sipity_permissions", id: false, force: true do |t|
     t.integer  "actor_id",               null: false
     t.string   "actor_type",  limit: 64, null: false
     t.integer  "entity_id",              null: false

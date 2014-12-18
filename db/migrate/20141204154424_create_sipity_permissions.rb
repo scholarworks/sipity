@@ -1,6 +1,6 @@
 class CreateSipityPermissions < ActiveRecord::Migration
   def change
-    create_table :sipity_permissions do |t|
+    create_table :sipity_permissions, id: false do |t|
       t.integer :actor_id, index: true
       t.string :actor_type, index: true, limit: 64
       t.integer :entity_id, index: true
