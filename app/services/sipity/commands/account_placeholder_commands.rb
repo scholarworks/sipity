@@ -20,5 +20,6 @@ module Sipity
         end
       end
     end
+    private_constant :AccountPlaceholderCommands
   end
 end

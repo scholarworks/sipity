@@ -22,7 +22,7 @@ module Sipity
               header: header, publication_date: f.publication_date
             )
             Models::Permission.create!(entity: header, user: requested_by, role: Models::Permission::CREATING_USER) if requested_by
-            Sipity::Commands::EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
+            EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
           end
         end
       end
@@ -56,5 +56,6 @@ module Sipity
         yield(attributes) if attributes.any?
       end
     end
+    private_constant :HeaderCommands
   end
 end

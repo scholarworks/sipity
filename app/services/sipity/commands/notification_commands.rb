@@ -17,5 +17,6 @@ module Sipity
         @entity, @to_roles = roles, entity
       end
     end
+    private_constant :NotificationCommands
   end
 end

@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 module Sipity
+  module Commands
+    # HACK: This is a cheat to get around the constraints of privatized
+    # constants.
+    class HeaderCommandRepository
+      include HeaderCommands
+    end
+  end
   module Queries
     RSpec.describe HeaderQueries, type: :repository_methods do
       it 'will have a permanent URL for a given header' do
@@ -9,12 +16,8 @@ module Sipity
 
       context '#find_headers_for' do
         # REVIEW: Crossing a boundary for this test; Is that adequate?
-        let!(:command_repository_class) do
-          Class.new do
-            include Sipity::Commands::HeaderCommands
-          end
-        end
-        let!(:command_repository) { command_repository_class.new }
+        let!(:command_repository) { Commands::HeaderCommandRepository.new }
+        after { Commands.send(:remove_const, :HeaderCommandRepository) }
         let(:user_one) { User.new(id: 1) }
         let(:user_two) { User.new(id: 2) }
         let(:form) { test_repository.build_create_header_form(attributes: { title: 'My Title', work_publication_strategy: 'do_not_know' }) }

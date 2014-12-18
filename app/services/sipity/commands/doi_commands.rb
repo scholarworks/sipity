@@ -47,5 +47,6 @@ module Sipity
         request
       end
     end
+    private_constant :DoiCommands
   end
 end

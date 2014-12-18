@@ -42,5 +42,6 @@ module Sipity
       module_function :destroy_header_attribute_values!
       public :destroy_header_attribute_values!
     end
+    private_constant :AdditionalAttributeCommands
   end
 end

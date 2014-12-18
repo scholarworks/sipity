@@ -4,7 +4,7 @@ module Sipity
     module CollaboratorCommands
       module_function
 
-      # TODO: Consider moving these into the HeaderCommands
+      # REVIEW: Consider moving these into the HeaderCommands
       def create_collaborators_for_header!(header:, collaborators:)
         collaborators.each do |collaborator|
           collaborator.header = header
