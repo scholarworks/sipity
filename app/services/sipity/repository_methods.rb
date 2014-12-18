@@ -21,7 +21,8 @@ module Sipity
 
     included do |base|
       base.send(:include, HeaderMethods)
-      base.send(:include, CitationMethods)
+      base.send(:include, Queries::CitationQueries)
+      base.send(:include, Commands::CitationCommands)
       base.send(:include, DoiMethods)
       base.send(:include, EventLogMethods)
       base.send(:include, Queries::AccountPlaceholderQueries)
