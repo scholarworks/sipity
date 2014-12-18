@@ -12,7 +12,6 @@ module Sipity
       module Commands
         module_function
 
-        # HACK: This is a command method
         def create_collaborators_for_header!(header:, collaborators:)
           collaborators.each do |collaborator|
             collaborator.header = header
@@ -24,14 +23,12 @@ module Sipity
 
       module Queries
 
-        # HACK: This is a query method
         def header_collaborators_for(options = {})
           Models::Collaborator.includes(:header).where(options.slice(:header, :role))
         end
         module_function :header_collaborators_for
         public :header_collaborators_for
 
-        # HACK: This is a query method
         def header_collaborator_names_for(options = {})
           header_collaborators_for(options).pluck(:name)
         end

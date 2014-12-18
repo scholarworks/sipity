@@ -12,8 +12,6 @@ module Sipity
       end
 
       module Queries
-        # HACK: This is a query method
-        #
         # Responsible for extracting the emails of people with the given role
         # for the given entity. Note, a role is not a group.
         def convert_entity_and_roles_to_email_recipients(roles:, entity:)
@@ -22,7 +20,6 @@ module Sipity
       end
 
       module Commands
-        # HACK: This is a command method
         def send_notification_for_entity_trigger(notification:, entity:, to_roles:)
           # These instance variables are not needed; But to appeas Rubocop I'm
           # using them.

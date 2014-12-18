@@ -19,7 +19,6 @@ module Sipity
       end
 
       module Commands
-        # HACK: This is a command method
         # @note This is both a module function and an instance function.
         # @see The underlying spec defines the behavior; Do not access
         def log_event!(entity:, user:, event_name:)
