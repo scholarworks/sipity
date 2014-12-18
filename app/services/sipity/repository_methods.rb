@@ -29,7 +29,7 @@ module Sipity
       base.send(:include, Commands::EventLogCommands)
       base.send(:include, Queries::AccountPlaceholderQueries)
       base.send(:include, Commands::AccountPlaceholderCommands)
-      base.send(:include, NotificationMethods)
+      base.send(:include, Commands::NotificationCommands)
       base.send(:include, AdditionalAttributeMethods)
       base.send(:include, CollaboratorMethods)
     end
