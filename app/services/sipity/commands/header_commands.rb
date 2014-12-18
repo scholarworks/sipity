@@ -17,15 +17,12 @@ module Sipity
 
       def submit_create_header_form(form, requested_by:)
         form.submit do |f|
-          Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy) do |header|
-            CollaboratorCommands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
-            AdditionalAttributeCommands.update_header_publication_date!(
-              header: header, publication_date: f.publication_date
-            )
-            # TODO: Tease this apart, I'd like either entity, user, or group to work
-            Models::Permission.create!(entity: header, actor: requested_by, role: Models::Permission::CREATING_USER) if requested_by
-            EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__) if requested_by
-          end
+          header = Models::Header.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          CollaboratorCommands.create_collaborators_for_header!(header: header, collaborators: f.collaborators)
+          AdditionalAttributeCommands.update_header_publication_date!(header: header, publication_date: f.publication_date)
+          PermissionCommands.grant_creating_user_permission_for!(entity: header, user: requested_by)
+          EventLogCommands.log_event!(entity: header, user: requested_by, event_name: __method__)
+          header
         end
       end
 
