@@ -56,7 +56,7 @@ module Sipity
         # HACK: This is a command method
         def submit_assign_a_doi_form(form, requested_by:)
           form.submit do |f|
-            EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
+            EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
             AdditionalAttributeMethods.update_header_attribute_values!(header: f.header, key: f.identifier_key, values: f.identifier)
           end
         end
@@ -68,7 +68,7 @@ module Sipity
               header: f.header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, values: f.publisher
             )
             AdditionalAttributeMethods.update_header_publication_date!(header: f.header, publication_date: f.publication_date)
-            EventLogMethods.log_event!(entity: f.header, user: requested_by, event_name: __method__)
+            EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
             submit_doi_creation_request_job!(header: f.header)
           end
         end

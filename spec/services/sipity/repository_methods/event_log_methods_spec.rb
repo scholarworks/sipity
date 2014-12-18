@@ -21,7 +21,7 @@ module Sipity
       context '.log_event!' do
         it 'is exposed as a module function as well' do
           expect(Models::EventLog).to receive(:create!).and_return(:created)
-          described_class.log_event!(user: user, entity: entity, event_name: event_name)
+          described_class::Commands.log_event!(user: user, entity: entity, event_name: event_name)
         end
       end
     end
