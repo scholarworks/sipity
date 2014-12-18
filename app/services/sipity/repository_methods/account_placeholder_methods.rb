@@ -9,8 +9,8 @@ module Sipity
       extend ActiveSupport::Concern
 
       included do |base|
-        base.send(:include, Queries::AdditionalAttributeQueries)
-        base.send(:include, Commands::AdditionalAttributeCommands)
+        base.send(:include, Queries::AccountPlaceholderQueries)
+        base.send(:include, Commands::AccountPlaceholderCommands)
       end
     end
   end

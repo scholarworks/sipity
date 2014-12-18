@@ -1,7 +1,7 @@
 module Sipity
   module Commands
     # Commands
-    module AdditionalAttributeCommands
+    module AccountPlaceholderCommands
       def submit_create_orcid_account_placeholder_form(form, requested_by:)
         form.submit do |f|
           placeholder = Models::AccountPlaceholder.create!(
