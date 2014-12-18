@@ -3,10 +3,12 @@ module Sipity
   module RepositoryMethods
     # Responsible for coordination of creating and managing account placeholders.
     module AccountPlaceholderMethods
+      # HACK: This is a query method
       def build_create_orcid_account_placeholder_form(attributes: {})
         Forms::CreateOrcidAccountPlaceholderForm.new(attributes)
       end
 
+      # HACK: This is a command
       def submit_create_orcid_account_placeholder_form(form, requested_by:)
         form.submit do |f|
           placeholder = Models::AccountPlaceholder.create!(

@@ -3,6 +3,7 @@ module Sipity
   module RepositoryMethods
     # Methods that are helpful for querying the event log
     module EventLogMethods
+      # HACK: This is a query method
       # @param [Hash] options for conditional querying of the event log.
       # @option options [User] :user; If given, what events were taken by the user
       # @option options [Entity] :entity; If given, what events happened to the entity.
@@ -10,6 +11,7 @@ module Sipity
         Models::EventLog.where(options.slice(:entity, :user)).order(created_at: :desc)
       end
 
+      # HACK: This is a command method
       # @note This is both a module function and an instance function.
       # @see The underlying spec defines the behavior; Do not access
       def log_event!(entity:, user:, event_name:)
