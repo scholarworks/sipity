@@ -44,7 +44,7 @@ module Sipity
       def default_permission_query_service
         lambda do |options|
           Models::Permission.
-            where(user: options.fetch(:user), entity: options.fetch(:entity), role: options.fetch(:roles)).any?
+            where(actor: options.fetch(:user), entity: options.fetch(:entity), role: options.fetch(:roles)).any?
         end
       end
 
@@ -77,10 +77,21 @@ module Sipity
 
         def permission_subquery(arel_table = Models::Permission.arel_table)
           arel_table.project(arel_table[:id]).where(
-            arel_table[:user_id].eq(user.to_key).
+            arel_table[:actor_id].eq(polymorphic_actor_id).
+            and(arel_table[:actor_type].eq(polymorphic_actor_type)).
             and(arel_table[:role].in([Models::Permission::CREATING_USER])).
             and(arel_table[:entity_type].eq(polymorphic_entity_type))
           )
+        end
+
+        def polymorphic_actor_id
+          user.to_key
+        end
+
+        def polymorphic_actor_type
+          # I Believe this is the correct way to handle the polymorphic relation
+          # on Models::Permission
+          user.class.base_class
         end
 
         def polymorphic_entity_type

@@ -108,7 +108,8 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_headers", ["processing_state"], name: "index_sipity_headers_on_processing_state"
 
   create_table "sipity_permissions", force: true do |t|
-    t.integer  "user_id",                null: false
+    t.integer  "actor_id",               null: false
+    t.string   "actor_type",  limit: 64, null: false
     t.integer  "entity_id",              null: false
     t.string   "entity_type", limit: 64, null: false
     t.string   "role",        limit: 32, null: false
@@ -116,9 +117,9 @@ ActiveRecord::Schema.define(version: 20141218135709) do
     t.datetime "updated_at"
   end
 
+  add_index "sipity_permissions", ["actor_id", "actor_type", "entity_id", "entity_type"], name: "sipity_permissions_actor_subject"
+  add_index "sipity_permissions", ["actor_id", "actor_type", "role"], name: "sipity_permissions_actor_role"
   add_index "sipity_permissions", ["entity_id", "entity_type", "role"], name: "sipity_permissions_entity_role"
-  add_index "sipity_permissions", ["user_id", "entity_id", "entity_type"], name: "sipity_permissions_user_subject"
-  add_index "sipity_permissions", ["user_id", "role"], name: "sipity_permissions_user_role"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

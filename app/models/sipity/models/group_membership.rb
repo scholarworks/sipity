@@ -1,5 +1,8 @@
 module Sipity
   module Models
+    # Responsible for associating a user to a group.
+    #
+    # @see Sipity::Models::Group
     class GroupMembership < ActiveRecord::Base
       # A privileged user of the group. They are allowed to alter membership
       # in the group. This does not bleed out into other things. That is to

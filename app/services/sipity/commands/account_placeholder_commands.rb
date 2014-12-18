@@ -15,7 +15,7 @@ module Sipity
             identifier: f.identifier, identifier_type: Models::AccountPlaceholder::ORCID_IDENTIFIER_TYPE,
             name: f.name
           )
-          Models::Permission.create!(entity: placeholder, user: requested_by, role: Models::Permission::CREATING_USER)
+          Models::Permission.create!(entity: placeholder, actor: requested_by, role: Models::Permission::CREATING_USER)
           EventLogCommands.log_event!(entity: placeholder, user: requested_by, event_name: __method__)
           placeholder
         end
