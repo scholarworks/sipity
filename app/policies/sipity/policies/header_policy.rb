@@ -41,6 +41,7 @@ module Sipity
 
       private
 
+      # TODO: Work with underlying Scoping query
       def default_permission_query_service
         lambda do |options|
           Models::Permission.
