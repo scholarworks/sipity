@@ -108,6 +108,5 @@ module Sipity
         end
       end
     end
-    private_constant :HeaderMethods
   end
 end

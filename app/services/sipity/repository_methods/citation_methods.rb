@@ -38,6 +38,5 @@ module Sipity
         end
       end
     end
-    private_constant :CitationMethods
   end
 end

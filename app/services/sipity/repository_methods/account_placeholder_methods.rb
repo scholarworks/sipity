@@ -13,6 +13,5 @@ module Sipity
         base.send(:include, Commands::AdditionalAttributeCommands)
       end
     end
-    private_constant :AccountPlaceholderMethods
   end
 end

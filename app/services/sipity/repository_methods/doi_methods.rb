@@ -90,6 +90,5 @@ module Sipity
         end
       end
     end
-    private_constant :DoiMethods
   end
 end

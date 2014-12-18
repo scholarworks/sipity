@@ -80,6 +80,5 @@ module Sipity
         public :header_default_attribute_keys_for
       end
     end
-    private_constant :AdditionalAttributeMethods
   end
 end

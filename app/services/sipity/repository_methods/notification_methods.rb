@@ -30,6 +30,5 @@ module Sipity
         end
       end
     end
-    private_constant :NotificationMethods
   end
 end
