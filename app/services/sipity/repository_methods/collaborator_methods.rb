@@ -24,7 +24,6 @@ module Sipity
 
       # Queries
       module Queries
-
         def header_collaborators_for(options = {})
           Models::Collaborator.includes(:header).where(options.slice(:header, :role))
         end

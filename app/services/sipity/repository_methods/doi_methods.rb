@@ -48,7 +48,6 @@ module Sipity
 
       # Commands
       module Commands
-
         def submit_assign_a_doi_form(form, requested_by:)
           form.submit do |f|
             EventLogMethods::Commands.log_event!(entity: f.header, user: requested_by, event_name: __method__)

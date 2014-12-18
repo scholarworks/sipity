@@ -22,7 +22,6 @@ module Sipity
         end
       end
 
-
       # Commands
       module Commands
         def submit_assign_a_citation_form(form, requested_by:)
