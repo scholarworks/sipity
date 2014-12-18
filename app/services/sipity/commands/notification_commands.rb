@@ -10,6 +10,7 @@ module Sipity
       end
 
       private
+
       # Responsible for extracting the emails of people with the given role
       # for the given entity. Note, a role is not a group.
       def get_entity_and_roles_to_email_recipients(roles:, entity:)
