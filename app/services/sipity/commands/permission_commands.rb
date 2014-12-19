@@ -2,6 +2,14 @@ module Sipity
   # :nodoc:
   module Commands
     # Commands related to the permission model
+    #
+    # TODO: Need to come up with a better way of handling this. Exposing
+    # module functions and instance methods is a bit insane. It works, but
+    # increases coupling. Possible solution, module provides a means for
+    # delegation to a proper class? The design goal is to provide a way for
+    # accessing repository services in other contexts. So the question is:
+    # How is that different from module functions and instance methods via
+    # mixin? Something to think about.
     module PermissionCommands
       module_function
 
