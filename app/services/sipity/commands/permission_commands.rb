@@ -13,6 +13,22 @@ module Sipity
     module PermissionCommands
       module_function
 
+      # Responsible for finding the groups that are assigned the given role for
+      # the given entity's sip type.
+      #
+      # @raise Exception if for any of the given roles, no group could be found
+      def grant_groups_permission_to_entity_for_role!(entity:, roles:)
+        map = { 'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging' }
+        Array.wrap(roles).each do |role|
+          group_names = map.fetch(role.to_s)
+          Array.wrap(group_names).each do |group_name|
+            group = Models::Group.find_or_create_by!(name: group_name)
+            grant_permission_for!(entity: entity, role: role, actors: group)
+          end
+        end
+      end
+      public :grant_groups_permission_to_entity_for_role!
+
       def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
         role = Models::Permission::CREATING_USER
         actors = [user, group, actor]
