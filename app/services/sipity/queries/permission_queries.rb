@@ -28,12 +28,13 @@ module Sipity
         user_table = user_class.arel_table
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
+        entity_id = entity.to_param
 
         subqyery_user_relation_entity = perm_table.project(perm_table[:actor_id]).where(
           perm_table[:actor_type].eq(user_class.base_class).
           and(perm_table[:role].in(roles)).
           and(perm_table[:entity_type].eq(entity.class.base_class)).
-          and(perm_table[:entity_id].eq(entity.to_key))
+          and(perm_table[:entity_id].eq(entity_id))
         )
 
         subquery_user_relation_to_entity_by_group_membership = memb_table.project(memb_table[:user_id]).where(
@@ -42,7 +43,7 @@ module Sipity
               perm_table[:actor_type].eq(group_class.base_class).
               and(perm_table[:role].in(roles)).
               and(perm_table[:entity_type].eq(entity.class.base_class)).
-              and(perm_table[:entity_id].eq(entity.to_key))
+              and(perm_table[:entity_id].eq(entity_id))
             )
           )
         )
@@ -71,9 +72,10 @@ module Sipity
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         group_class =  Models::Group
+        actor_id = user.to_param
 
         subquery_entity_relation_to_user = perm_table.project(perm_table[:entity_id]).where(
-          perm_table[:actor_id].eq(user.to_key).
+          perm_table[:actor_id].eq(actor_id).
           and(perm_table[:actor_type].eq(user.class.base_class)).
           and(perm_table[:role].in(roles)).
           and(perm_table[:entity_type].eq(entity_type.base_class))
@@ -83,7 +85,7 @@ module Sipity
           perm_table[:role].in(roles).
           and(perm_table[:entity_type].eq(entity_type.base_class)).
           and(perm_table[:actor_type].eq(group_class.base_class)).
-          and(perm_table[:actor_id].in(memb_table.project(memb_table[:group_id]).where(memb_table[:user_id].eq(user.to_key))))
+          and(perm_table[:actor_id].in(memb_table.project(memb_table[:group_id]).where(memb_table[:user_id].eq(actor_id))))
         )
 
         entity_type.where(
