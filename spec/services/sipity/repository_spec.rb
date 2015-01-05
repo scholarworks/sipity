@@ -10,12 +10,6 @@ module Sipity
       end
     end
 
-    context '#grant_groups_permission_to_entity_for_role!' do
-      it 'is a placeholder until I can spend some time focusing on it' do
-        expect { described_class.new.grant_groups_permission_to_entity_for_role! }.to raise_error(NotImplementedError)
-      end
-    end
-
     context '#send_notification_for_entity_trigger' do
       it 'is a placeholder until I can spend some time focusing on it' do
         expect { described_class.new.send_notification_for_entity_trigger }.to raise_error(NotImplementedError)
