@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state"
 
   create_table "sipity_additional_attributes", force: true do |t|
-    t.integer  "sip_id",  null: false
+    t.integer  "sip_id",     null: false
     t.string   "key",        null: false
     t.string   "value"
     t.datetime "created_at"
@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_additional_attributes", ["sip_id"], name: "index_sipity_additional_attributes_on_sip_id"
 
   create_table "sipity_collaborators", force: true do |t|
-    t.integer  "sip_id",  null: false
+    t.integer  "sip_id",     null: false
     t.integer  "sequence"
     t.string   "name"
     t.string   "role",       null: false
@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_collaborators", ["sip_id", "sequence"], name: "index_sipity_collaborators_on_sip_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: true do |t|
-    t.integer  "sip_id",                                              null: false
+    t.integer  "sip_id",                                                 null: false
     t.string   "state",            default: "request_not_yet_submitted", null: false
     t.string   "response_message"
     t.datetime "created_at"
@@ -97,16 +97,6 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true
 
-  create_table "sipity_sips", force: true do |t|
-    t.string   "work_publication_strategy"
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "processing_state",          limit: 64, default: "new", null: false
-  end
-
-  add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
-
   create_table "sipity_permissions", id: false, force: true do |t|
     t.integer  "actor_id",               null: false
     t.string   "actor_type",  limit: 64, null: false
@@ -120,6 +110,16 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_permissions", ["actor_id", "actor_type", "entity_id", "entity_type"], name: "sipity_permissions_actor_subject"
   add_index "sipity_permissions", ["actor_id", "actor_type", "role"], name: "sipity_permissions_actor_role"
   add_index "sipity_permissions", ["entity_id", "entity_type", "role"], name: "sipity_permissions_entity_role"
+
+  create_table "sipity_sips", force: true do |t|
+    t.string   "work_publication_strategy"
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "processing_state",          limit: 64, default: "new", null: false
+  end
+
+  add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
