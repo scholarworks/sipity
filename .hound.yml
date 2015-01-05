@@ -242,6 +242,9 @@ EmptyLinesAroundAccessModifier:
   Description: "Keep blank lines around access modifiers."
   Enabled: true
 
+EmptyLinesAroundBlockBody:
+  Enabled: false
+
 Style/EmptyLinesAroundMethodBody:
   Enabled: true
 
