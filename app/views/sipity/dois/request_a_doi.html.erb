@@ -1,5 +1,5 @@
 <h2>Request a DOI?</h2>
-<%= simple_form_for(model.request_a_doi_form, url: request_a_doi_header_doi_path(model.header), method: :post, as: :doi) do |f| %>
+<%= simple_form_for(model.request_a_doi_form, url: request_a_doi_sip_doi_path(model.sip), method: :post, as: :doi) do |f| %>
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <dl>

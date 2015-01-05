@@ -2,17 +2,17 @@ require 'sipity/models'
 module Sipity
   module Models
     # The most basic of information required for generating a valid SIP.
-    class Header < ActiveRecord::Base
-      self.table_name = 'sipity_headers'
+    class Sip < ActiveRecord::Base
+      self.table_name = 'sipity_sips'
 
-      # @!attribute [rw] :processing_state The processing state of the header.
+      # @!attribute [rw] :processing_state The processing state of the sip.
       #   @default :new (as enforced by the database)
       #   @return [String]
       alias_attribute :processing_status, :processing_state
 
-      has_many :collaborators, foreign_key: :header_id, dependent: :destroy
-      has_many :additional_attributes, foreign_key: :header_id, dependent: :destroy
-      has_one :doi_creation_request, foreign_key: :header_id, dependent: :destroy
+      has_many :collaborators, foreign_key: :sip_id, dependent: :destroy
+      has_many :additional_attributes, foreign_key: :sip_id, dependent: :destroy
+      has_one :doi_creation_request, foreign_key: :sip_id, dependent: :destroy
 
       # REVIEW: Do I really want to deal with nested attributes such as these?
       #   It smells suspicious.

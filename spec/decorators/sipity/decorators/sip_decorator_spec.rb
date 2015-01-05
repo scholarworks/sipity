@@ -2,11 +2,11 @@ require 'spec_helper'
 
 module Sipity
   module Decorators
-    RSpec.describe HeaderDecorator do
-      let(:header) { Models::Header.new(title: 'Hello World', id: 123) }
-      subject { HeaderDecorator.new(header) }
+    RSpec.describe SipDecorator do
+      let(:sip) { Models::Sip.new(title: 'Hello World', id: 123) }
+      subject { SipDecorator.new(sip) }
       it 'will have a #to_s equal its #title' do
-        expect(subject.to_s).to eq(header.title)
+        expect(subject.to_s).to eq(sip.title)
       end
 
       context '#available_linked_actions' do
@@ -21,14 +21,14 @@ module Sipity
         end
       end
 
-      it 'shares .object_class with Models::Header' do
-        expect(HeaderDecorator.object_class).to eq(Models::Header)
+      it 'shares .object_class with Models::Sip' do
+        expect(SipDecorator.object_class).to eq(Models::Sip)
       end
 
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
-        allow(Queries::CollaboratorQueries).to receive(:header_collaborators_for).
-          with(header: header, role: 'author').and_return(authors)
+        allow(Queries::CollaboratorQueries).to receive(:sip_collaborators_for).
+          with(sip: sip, role: 'author').and_return(authors)
         allow(CollaboratorDecorator).to receive(:decorate).with(authors[0])
         subject.authors
       end

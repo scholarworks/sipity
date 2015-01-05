@@ -1,34 +1,34 @@
 module Sipity
   module Runners
     module CitationRunners
-      # Responsible for responding with the state of the header's citation.
+      # Responsible for responding with the state of the sip's citation.
       class Show < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:)
-          header = repository.find_header(header_id)
-          authorization_layer.enforce!(show?: header) do
-            if repository.citation_already_assigned?(header)
-              callback(:citation_assigned, header)
+        def run(sip_id:)
+          sip = repository.find_sip(sip_id)
+          authorization_layer.enforce!(show?: sip) do
+            if repository.citation_already_assigned?(sip)
+              callback(:citation_assigned, sip)
             else
-              callback(:citation_not_assigned, header)
+              callback(:citation_not_assigned, sip)
             end
           end
         end
       end
 
-      # Responsible for responding with the correct form for the header's citation
+      # Responsible for responding with the correct form for the sip's citation
       class New < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:)
-          header = repository.find_header(header_id)
-          form = repository.build_assign_a_citation_form(header: header)
+        def run(sip_id:)
+          sip = repository.find_sip(sip_id)
+          form = repository.build_assign_a_citation_form(sip: sip)
           authorization_layer.enforce!(submit?: form) do
-            if repository.citation_already_assigned?(header)
-              callback(:citation_assigned, header)
+            if repository.citation_already_assigned?(sip)
+              callback(:citation_assigned, sip)
             else
               callback(:citation_not_assigned, form)
             end
@@ -41,12 +41,12 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:, attributes: {})
-          header = repository.find_header(header_id)
-          form = repository.build_assign_a_citation_form(attributes.merge(header: header))
+        def run(sip_id:, attributes: {})
+          sip = repository.find_sip(sip_id)
+          form = repository.build_assign_a_citation_form(attributes.merge(sip: sip))
           authorization_layer.enforce!(submit?: form) do
             if repository.submit_assign_a_citation_form(form, requested_by: current_user)
-              callback(:success, header)
+              callback(:success, sip)
             else
               callback(:failure, form)
             end

@@ -10,14 +10,14 @@ module Sipity
 
       def submit_assign_a_citation_form(form, requested_by:)
         form.submit do |f|
-          AdditionalAttributeCommands.update_header_attribute_values!(
-            header: f.header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME, values: f.citation
+          AdditionalAttributeCommands.update_sip_attribute_values!(
+            sip: f.sip, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME, values: f.citation
           )
-          AdditionalAttributeCommands.update_header_attribute_values!(
-            header: f.header, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
+          AdditionalAttributeCommands.update_sip_attribute_values!(
+            sip: f.sip, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: f.type
           )
-          EventLogCommands.log_event!(entity: f.header, user: requested_by, event_name: __method__)
-          f.header
+          EventLogCommands.log_event!(entity: f.sip, user: requested_by, event_name: __method__)
+          f.sip
         end
       end
     end

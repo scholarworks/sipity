@@ -14,7 +14,7 @@ module Sipity
     extend ActiveSupport::Concern
 
     included do |base|
-      base.send(:include, HeaderQueries)
+      base.send(:include, SipQueries)
       base.send(:include, CitationQueries)
       base.send(:include, DoiQueries)
       base.send(:include, EventLogQueries)

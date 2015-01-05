@@ -6,8 +6,8 @@ module Sipity
         expect(Collaborator.build_default).to be_a(Collaborator)
       end
 
-      it 'belongs to :header' do
-        expect(described_class.reflect_on_association(:header)).
+      it 'belongs to :sip' do
+        expect(described_class.reflect_on_association(:sip)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 

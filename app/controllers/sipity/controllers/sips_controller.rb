@@ -1,37 +1,37 @@
 module Sipity
   module Controllers
-    # The controller for creating headers.
-    class HeadersController < ApplicationController
+    # The controller for creating sips.
+    class SipsController < ApplicationController
       respond_to :html, :json
 
-      self.runner_container = Sipity::Runners::HeaderRunners
+      self.runner_container = Sipity::Runners::SipRunners
 
       def new
         _status, model = run
-        @model = Decorators::HeaderDecorator.decorate(model)
+        @model = Decorators::SipDecorator.decorate(model)
         respond_with(@model)
       end
 
       def create
         status, model = run(attributes: create_params)
-        @model = Decorators::HeaderDecorator.decorate(model)
+        @model = Decorators::SipDecorator.decorate(model)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
 
       def show
-        _status, model = run(header_id: header_id)
-        @model = Decorators::HeaderDecorator.decorate(model)
+        _status, model = run(sip_id: sip_id)
+        @model = Decorators::SipDecorator.decorate(model)
         respond_with(@model)
       end
 
       def edit
-        _status, @model = run(header_id: header_id)
+        _status, @model = run(sip_id: sip_id)
         respond_with(@model)
       end
 
       def update
-        status, @model = run(header_id: header_id, attributes: update_params)
+        status, @model = run(sip_id: sip_id, attributes: update_params)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
@@ -42,22 +42,22 @@ module Sipity
 
       private
 
-      def header_id
+      def sip_id
         params.require(:id)
       end
 
       def create_params
-        params.require(:header)
+        params.require(:sip)
       end
 
       def update_params
-        params.require(:header)
+        params.require(:sip)
       end
 
       # Without this, Rails will attempt to render views that are found in
-      # `app/views/sipity/controllers/headers` directory.
+      # `app/views/sipity/controllers/sips` directory.
       def controller_path
-        'sipity/headers'
+        'sipity/sips'
       end
     end
   end

@@ -11,17 +11,17 @@ module Sipity
         alias_method :status, :state
 
         def path_to_recommendation
-          helper.header_doi_path(header)
+          helper.sip_doi_path(sip)
         end
 
         private
 
         def doi_request_is_pending?
-          repository.doi_request_is_pending?(header)
+          repository.doi_request_is_pending?(sip)
         end
 
         def doi_already_assigned?
-          repository.doi_already_assigned?(header)
+          repository.doi_already_assigned?(sip)
         end
       end
     end

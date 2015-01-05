@@ -1,15 +1,15 @@
 module Sipity
   module Policies
-    # Responsible for enforcing access to a given Sipity::Header.
+    # Responsible for enforcing access to a given Sipity::Sip.
     #
     # This class answers can I take the given action based on the user and
-    # the header.
+    # the sip.
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
-    class HeaderPolicy < BasePolicy
-      def initialize(user, header, permission_query_service: nil)
-        super(user, header)
+    class SipPolicy < BasePolicy
+      def initialize(user, sip, permission_query_service: nil)
+        super(user, sip)
         @permission_query_service = permission_query_service || default_permission_query_service
       end
       attr_reader :permission_query_service, :original_entity
@@ -50,7 +50,7 @@ module Sipity
       end
 
       # Responsible for building a scoped query to find a collection of
-      # Model::Header objects for the given user.
+      # Model::Sip objects for the given user.
       #
       # Responsible for answering the following:
       #
@@ -60,10 +60,10 @@ module Sipity
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Header, permitted_roles: [Models::Permission::CREATING_USER])
+        def self.resolve(user:, scope: Models::Sip, permitted_roles: [Models::Permission::CREATING_USER])
           new(user, scope, permitted_roles: permitted_roles).resolve
         end
-        def initialize(user, scope = Models::Header, permitted_roles: [Models::Permission::CREATING_USER])
+        def initialize(user, scope = Models::Sip, permitted_roles: [Models::Permission::CREATING_USER])
           @user = user
           @scope = scope
           @permitted_roles = permitted_roles

@@ -1,4 +1,4 @@
-<h1>DOI Not Assigned for <span><%= model.header %></span></h1>
+<h1>DOI Not Assigned for <span><%= model.sip %></span></h1>
 
 <%= render template: 'sipity/dois/assign_a_doi' %>
 
@@ -9,4 +9,4 @@
 <p><strong>OR</strong></p>
 
 <h2>Not Now</h2>
-<a href="<%= header_path(model.header) %>" class="btn btn-primary">Go back to <%= model.header %></a>
+<a href="<%= sip_path(model.sip) %>" class="btn btn-primary">Go back to <%= model.sip %></a>

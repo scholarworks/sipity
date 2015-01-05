@@ -23,8 +23,8 @@ module Sipity
       end
 
       it "will lookup one by convention" do
-        header = Models::Header.new
-        expect(subject.find_policy_enforcer_for(entity: header)).to eq(Policies::HeaderPolicy)
+        sip = Models::Sip.new
+        expect(subject.find_policy_enforcer_for(entity: sip)).to eq(Policies::SipPolicy)
       end
 
       it "will fail if a policy_enforcer cannot be found" do

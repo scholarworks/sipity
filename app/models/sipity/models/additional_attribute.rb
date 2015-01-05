@@ -2,7 +2,7 @@ require 'sipity/models'
 module Sipity
   module Models
     # A rudimentary container for all (as of now string based) attributes
-    # associated with the Sipity::Header
+    # associated with the Sipity::Sip
     class AdditionalAttribute < ActiveRecord::Base
       # TODO: Create a map for input name to key and vice versa
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
@@ -12,7 +12,7 @@ module Sipity
       PUBLICATION_DATE_PREDICATE_NAME = 'publicationDate'.freeze
 
       self.table_name = 'sipity_additional_attributes'
-      belongs_to :header, foreign_key: 'header_id'
+      belongs_to :sip, foreign_key: 'sip_id'
 
       enum(
         key: {

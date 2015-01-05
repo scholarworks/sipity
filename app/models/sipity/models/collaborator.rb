@@ -12,11 +12,11 @@ module Sipity
         new(role: DEFAULT_ROLE)
       end
 
-      belongs_to :header, foreign_key: 'header_id'
+      belongs_to :sip, foreign_key: 'sip_id'
 
       self.table_name = 'sipity_collaborators'
 
-      # REVIEW: Do I want validations here? I'm relying on the CreateHeaderForm
+      # REVIEW: Do I want validations here? I'm relying on the CreateSipForm
       #   to check for collaborators and use the underlying ActiveRecord
       #   validations.
       validates :role, presence: true

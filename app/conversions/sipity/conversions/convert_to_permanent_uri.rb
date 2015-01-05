@@ -18,10 +18,10 @@ module Sipity
       #
       # @return Integer
       def convert_to_permanent_uri(input)
-        return convert_to_permanent_uri(input.id) if input.is_a?(Models::Header)
-        return convert_to_permanent_uri(input.header_id) if input.respond_to?(:header_id)
-        return convert_to_permanent_uri(input.header) if input.respond_to?(:header)
-        # TODO: The Header key may not be a Fixed num
+        return convert_to_permanent_uri(input.id) if input.is_a?(Models::Sip)
+        return convert_to_permanent_uri(input.sip_id) if input.respond_to?(:sip_id)
+        return convert_to_permanent_uri(input.sip) if input.respond_to?(:sip)
+        # TODO: The Sip key may not be a Fixed num
         return PERMANENT_URI_FORMAT % input if input.is_a?(Fixnum)
         fail Exceptions::PermanentUriConversionError, input
       end
