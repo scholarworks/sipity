@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    RSpec.describe Header, type: :model do
-      subject { Header.new }
+    RSpec.describe Sip, type: :model do
+      subject { Sip.new }
 
       it { should respond_to :processing_state }
       it { should respond_to :processing_state= }
@@ -12,8 +12,8 @@ module Sipity
 
       context '.work_publication_strategies' do
         it 'is a Hash of keys that equal their values' do
-          expect(Header.work_publication_strategies.keys).
-            to eq(Header.work_publication_strategies.values)
+          expect(Sip.work_publication_strategies.keys).
+            to eq(Sip.work_publication_strategies.values)
         end
       end
 
@@ -22,12 +22,12 @@ module Sipity
       end
 
       it 'has many :additional_attributes' do
-        expect(Header.reflect_on_association(:additional_attributes)).
+        expect(Sip.reflect_on_association(:additional_attributes)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
       it 'has one :doi_creation_request' do
-        expect(Header.reflect_on_association(:doi_creation_request)).
+        expect(Sip.reflect_on_association(:doi_creation_request)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
@@ -36,7 +36,7 @@ module Sipity
           expect do
             # Using .create! so an exception is thrown. If the exception is thrown
             # it means validation fails.
-            Header.create!(
+            Sip.create!(
               'title' => 'Hello World',
               'work_publication_strategy' => 'do_not_know',
               'collaborators_attributes' => { '0' => { 'name' => '' } }

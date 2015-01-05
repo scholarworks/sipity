@@ -2,31 +2,31 @@ module Sipity
   module Queries
     # Queries
     module AdditionalAttributeQueries
-      def header_attribute_values_for(header:, key:)
-        Models::AdditionalAttribute.where(header: header, key: key).pluck(:value)
+      def sip_attribute_values_for(sip:, key:)
+        Models::AdditionalAttribute.where(sip: sip, key: key).pluck(:value)
       end
-      module_function :header_attribute_values_for
-      public :header_attribute_values_for
+      module_function :sip_attribute_values_for
+      public :sip_attribute_values_for
 
-      def header_attribute_key_value_pairs(header:, keys: [])
-        query = Models::AdditionalAttribute.where(header: header).order(:header_id, :key)
+      def sip_attribute_key_value_pairs(sip:, keys: [])
+        query = Models::AdditionalAttribute.where(sip: sip).order(:sip_id, :key)
         query = query.where(key: keys) if keys.present?
         query.pluck(:key, :value)
       end
-      module_function :header_attribute_key_value_pairs
-      public :header_attribute_key_value_pairs
+      module_function :sip_attribute_key_value_pairs
+      public :sip_attribute_key_value_pairs
 
-      def header_attribute_keys_for(header:)
-        Models::AdditionalAttribute.where(header: header).order(:key).pluck('DISTINCT key')
+      def sip_attribute_keys_for(sip:)
+        Models::AdditionalAttribute.where(sip: sip).order(:key).pluck('DISTINCT key')
       end
-      module_function :header_attribute_keys_for
-      public :header_attribute_keys_for
+      module_function :sip_attribute_keys_for
+      public :sip_attribute_keys_for
 
-      def header_default_attribute_keys_for(*)
+      def sip_default_attribute_keys_for(*)
         [:publication_date]
       end
-      module_function :header_default_attribute_keys_for
-      public :header_default_attribute_keys_for
+      module_function :sip_default_attribute_keys_for
+      public :sip_default_attribute_keys_for
     end
   end
 end

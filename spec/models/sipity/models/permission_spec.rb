@@ -15,7 +15,7 @@ module Sipity
 
       it 'relies on the database to enforce the requirement of an :role' do
         user = User.new(id: 1)
-        entity = Models::Header.new(id: 1)
+        entity = Models::Sip.new(id: 1)
         expect { Permission.create!(actor: user, entity: entity) }.
           to raise_error(ActiveRecord::StatementInvalid, /role may not be NULL/)
       end

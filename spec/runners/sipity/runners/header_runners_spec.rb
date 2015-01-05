@@ -1,14 +1,14 @@
 require 'spec_helper'
-require 'sipity/runners/header_runners'
+require 'sipity/runners/sip_runners'
 
 module Sipity
   module Runners
-    module HeaderRunners
+    module SipRunners
       include RunnersSupport
       RSpec.describe New do
-        let(:header) { double }
+        let(:sip) { double }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(build_create_header_form: header) }
+        let(:context) { TestRunnerContext.new(build_create_sip_form: sip) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
@@ -26,19 +26,19 @@ module Sipity
 
         it 'issues the :success callback' do
           response = subject.run
-          expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([:success, header])
+          expect(handler).to have_received(:invoked).with("SUCCESS", sip)
+          expect(response).to eq([:success, sip])
         end
       end
 
       RSpec.describe Create do
-        let(:header) { double('Header') }
+        let(:sip) { double('Sip') }
         let(:form) { double('Form') }
         let(:user) { User.new(id: '1') }
         let(:context) do
           TestRunnerContext.new(
             current_user: user,
-            build_create_header_form: form, submit_create_header_form: creation_response,
+            build_create_sip_form: form, submit_create_sip_form: creation_response,
             policy_authorized_for?: true
           )
         end
@@ -59,16 +59,16 @@ module Sipity
           expect(described_class.authorization_layer).to eq(:default)
         end
 
-        context 'when header is saved' do
-          let(:creation_response) { header }
-          it 'will issue the :success callback and return the header' do
+        context 'when sip is saved' do
+          let(:creation_response) { sip }
+          it 'will issue the :success callback and return the sip' do
             response = subject.run(attributes: {})
-            expect(handler).to have_received(:invoked).with("SUCCESS", header)
-            expect(response).to eq([:success, header])
+            expect(handler).to have_received(:invoked).with("SUCCESS", sip)
+            expect(response).to eq([:success, sip])
           end
         end
 
-        context 'when header is not saved' do
+        context 'when sip is not saved' do
           let(:creation_response) { false }
           it 'will issue the :failure callback and return the form' do
             response = subject.run(attributes: {})
@@ -79,9 +79,9 @@ module Sipity
       end
 
       RSpec.describe Show do
-        let(:header) { double }
+        let(:sip) { double }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(find_header: header, current_user: user) }
+        let(:context) { TestRunnerContext.new(find_sip: sip, current_user: user) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
@@ -98,16 +98,16 @@ module Sipity
         end
 
         it 'issues the :success callback' do
-          response = subject.run(header_id: 1234)
-          expect(handler).to have_received(:invoked).with("SUCCESS", header)
-          expect(response).to eq([:success, header])
+          response = subject.run(sip_id: 1234)
+          expect(handler).to have_received(:invoked).with("SUCCESS", sip)
+          expect(response).to eq([:success, sip])
         end
       end
 
       RSpec.describe Index do
-        let(:header) { double('Header') }
+        let(:sip) { double('Sip') }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(current_user: user, find_headers_for: [header]) }
+        let(:context) { TestRunnerContext.new(current_user: user, find_sips_for: [sip]) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
@@ -121,20 +121,20 @@ module Sipity
 
         it 'will return only a list of objects that I can see' do
           subject.run
-          expect(context.repository).to have_received(:find_headers_for).with(user: user)
+          expect(context.repository).to have_received(:find_sips_for).with(user: user)
         end
 
         it 'issues the :success callback' do
           response = subject.run
-          expect(handler).to have_received(:invoked).with("SUCCESS", [header])
-          expect(response).to eq([:success, [header]])
+          expect(handler).to have_received(:invoked).with("SUCCESS", [sip])
+          expect(response).to eq([:success, [sip]])
         end
       end
 
       RSpec.describe Edit do
-        let(:header) { Models::Header.new(id: '123', title: 'My Title') }
+        let(:sip) { Models::Sip.new(id: '123', title: 'My Title') }
         let(:form) { double('Form') }
-        let(:context) { TestRunnerContext.new(find_header: header, build_update_header_form: form) }
+        let(:context) { TestRunnerContext.new(find_sip: sip, build_update_sip_form: form) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
@@ -150,9 +150,9 @@ module Sipity
           expect(described_class.authorization_layer).to eq(:default)
         end
 
-        context 'when header is found' do
-          it 'will issue the :success callback and return the header' do
-            response = subject.run(header_id: '123')
+        context 'when sip is found' do
+          it 'will issue the :success callback and return the sip' do
+            response = subject.run(sip_id: '123')
             expect(handler).to have_received(:invoked).with('SUCCESS', form)
             expect(response).to eq([:success, form])
           end
@@ -160,12 +160,12 @@ module Sipity
       end
 
       RSpec.describe Update do
-        let(:header) { double('Header') }
+        let(:sip) { double('Sip') }
         let(:form) { double('Form') }
         let(:user) { double('User') }
         let(:context) do
           TestRunnerContext.new(
-            find_header: header, build_update_header_form: form, submit_update_header_form: update_response, current_user: user
+            find_sip: sip, build_update_sip_form: form, submit_update_sip_form: update_response, current_user: user
           )
         end
         let(:update_response) { nil }
@@ -187,19 +187,19 @@ module Sipity
           expect(described_class.authorization_layer).to eq(:default)
         end
 
-        context 'when header is updated' do
-          let(:update_response) { header }
-          it 'will issue the :success callback and return the header' do
-            response = subject.run(header_id: '123', attributes: attributes)
-            expect(handler).to have_received(:invoked).with('SUCCESS', header)
-            expect(response).to eq([:success, header])
+        context 'when sip is updated' do
+          let(:update_response) { sip }
+          it 'will issue the :success callback and return the sip' do
+            response = subject.run(sip_id: '123', attributes: attributes)
+            expect(handler).to have_received(:invoked).with('SUCCESS', sip)
+            expect(response).to eq([:success, sip])
           end
         end
 
-        context 'when header update fails' do
+        context 'when sip update fails' do
           let(:update_response) { false }
           it 'will issue the :failure callback and return the form' do
-            response = subject.run(header_id: '123', attributes: attributes)
+            response = subject.run(sip_id: '123', attributes: attributes)
             expect(handler).to have_received(:invoked).with('FAILURE', form)
             expect(response).to eq([:failure, form])
           end

@@ -5,14 +5,14 @@ module Sipity
     module CollaboratorCommands
       module_function
 
-      # REVIEW: Consider moving these into the HeaderCommands
-      def create_collaborators_for_header!(header:, collaborators:)
+      # REVIEW: Consider moving these into the SipCommands
+      def create_collaborators_for_sip!(sip:, collaborators:)
         collaborators.each do |collaborator|
-          collaborator.header = header
+          collaborator.sip = sip
           collaborator.save!
         end
       end
-      public :create_collaborators_for_header!
+      public :create_collaborators_for_sip!
     end
   end
 end

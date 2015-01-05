@@ -1,9 +1,9 @@
 module Sipity
   module Decorators
-    # A decoration layer for Sipity::Header
-    class HeaderDecorator < Draper::Decorator
+    # A decoration layer for Sipity::Sip
+    class SipDecorator < Draper::Decorator
       def self.object_class
-        Models::Header
+        Models::Sip
       end
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
@@ -30,7 +30,7 @@ module Sipity
 
       def authors(decorator: Decorators::CollaboratorDecorator)
         Queries::CollaboratorQueries.
-          header_collaborators_for(header: object, role: 'author').map { |obj| decorator.decorate(obj) }
+          sip_collaborators_for(sip: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
       def available_linked_actions
@@ -39,7 +39,7 @@ module Sipity
         #   be applied?
         [
           LinkedAction.new(
-            label: "Edit #{model.title}", path: h.edit_header_path(object),
+            label: "Edit #{model.title}", path: h.edit_sip_path(object),
             html_options: { 'class' => 'btn btn-primary action-edit' }
           )
         ]
@@ -48,7 +48,7 @@ module Sipity
       private
 
       def recommendation_for(name)
-        Recommendations.const_get("#{name.classify}Recommendation").new(header: self)
+        Recommendations.const_get("#{name.classify}Recommendation").new(sip: self)
       end
     end
   end

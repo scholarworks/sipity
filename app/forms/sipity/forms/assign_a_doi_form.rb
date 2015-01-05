@@ -3,17 +3,17 @@ module Sipity
     # Responsible for capturing and validating the assignment of a DOI that
     # already exists but has not yet been assigned to the SIP
     class AssignADoiForm < BaseForm
-      self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
+      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
 
       def initialize(attributes = {})
-        self.header = attributes.fetch(:header)
+        self.sip = attributes.fetch(:sip)
         self.identifier = attributes.fetch(:identifier, nil)
       end
 
-      attr_accessor :header, :identifier
-      private(:header=) # Adding parenthesis because Beautify ruby was going crazy
+      attr_accessor :sip, :identifier
+      private(:sip=) # Adding parenthesis because Beautify ruby was going crazy
 
-      validates :header, presence: true
+      validates :sip, presence: true
       validates :identifier, presence: true
 
       # TODO: Get this out of here. There is an object that is a better owner of
@@ -29,7 +29,7 @@ module Sipity
       # TODO: Get this out of here. There is an object that is a better owner of
       # this method. But for now it is here based on a view implementation.
       def request_a_doi_form
-        RequestADoiForm.new(header: header)
+        RequestADoiForm.new(sip: sip)
       end
     end
   end

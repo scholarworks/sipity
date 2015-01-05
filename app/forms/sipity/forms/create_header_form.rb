@@ -1,12 +1,12 @@
 module Sipity
   module Forms
-    # Responsible for creating a new header.
+    # Responsible for creating a new sip.
     # What goes into this is more complicated that the entity might allow.
-    class CreateHeaderForm < BaseForm
-      self.policy_enforcer = Policies::HeaderPolicy
+    class CreateSipForm < BaseForm
+      self.policy_enforcer = Policies::SipPolicy
 
       def self.model_name
-        Models::Header.model_name
+        Models::Sip.model_name
       end
 
       def initialize(attributes = {})
@@ -46,7 +46,7 @@ module Sipity
       end
 
       def possible_work_publication_strategies
-        Models::Header.work_publication_strategies
+        Models::Sip.work_publication_strategies
       end
 
       private
@@ -57,7 +57,7 @@ module Sipity
       end
 
       def publication_date_required?
-        work_publication_strategy == Models::Header::ALREADY_PUBLISHED
+        work_publication_strategy == Models::Sip::ALREADY_PUBLISHED
       end
     end
   end

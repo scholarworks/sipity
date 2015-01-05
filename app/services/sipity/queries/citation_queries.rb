@@ -2,9 +2,9 @@ module Sipity
   module Queries
     # Queries
     module CitationQueries
-      def citation_already_assigned?(header)
-        AdditionalAttributeQueries.header_attribute_values_for(
-          header: header, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
+      def citation_already_assigned?(sip)
+        AdditionalAttributeQueries.sip_attribute_values_for(
+          sip: sip, key: Models::AdditionalAttribute::CITATION_PREDICATE_NAME
         ).any?
       end
 

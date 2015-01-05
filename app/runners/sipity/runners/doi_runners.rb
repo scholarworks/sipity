@@ -6,34 +6,34 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:)
-          header = repository.find_header(header_id)
-          authorization_layer.enforce!(show?: header) do
+        def run(sip_id:)
+          sip = repository.find_sip(sip_id)
+          authorization_layer.enforce!(show?: sip) do
             # TODO: Tease out state machine from DoiRecommendation
-            if repository.doi_already_assigned?(header)
-              callback(:doi_already_assigned, header)
-            elsif repository.doi_request_is_pending?(header)
-              callback(:doi_request_is_pending, header)
+            if repository.doi_already_assigned?(sip)
+              callback(:doi_already_assigned, sip)
+            elsif repository.doi_request_is_pending?(sip)
+              callback(:doi_request_is_pending, sip)
             else
-              callback(:doi_not_assigned, header)
+              callback(:doi_not_assigned, sip)
             end
           end
         end
       end
 
-      # Responsible for assigning a DOI to the header.
+      # Responsible for assigning a DOI to the sip.
       class AssignADoi < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:, identifier: nil)
-          header = repository.find_header(header_id)
-          form = repository.build_assign_a_doi_form(header: header, identifier: identifier)
+        def run(sip_id:, identifier: nil)
+          sip = repository.find_sip(sip_id)
+          form = repository.build_assign_a_doi_form(sip: sip, identifier: identifier)
           authorization_layer.enforce!(submit?: form) do
             if repository.submit_assign_a_doi_form(form, requested_by: current_user)
-              # TODO: Should this be the form or the header? Likely the form, but
-              # the controller implementations assume the header
-              callback(:success, header, form.identifier)
+              # TODO: Should this be the form or the sip? Likely the form, but
+              # the controller implementations assume the sip
+              callback(:success, sip, form.identifier)
             else
               callback(:failure, form)
             end
@@ -41,19 +41,19 @@ module Sipity
         end
       end
 
-      # Responsible for requesting a DOI for the header.
+      # Responsible for requesting a DOI for the sip.
       class RequestADoi < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(header_id:, attributes:)
-          header = repository.find_header(header_id)
-          form = repository.build_request_a_doi_form(attributes.merge(header: header))
+        def run(sip_id:, attributes:)
+          sip = repository.find_sip(sip_id)
+          form = repository.build_request_a_doi_form(attributes.merge(sip: sip))
           authorization_layer.enforce!(submit?: form) do
             if repository.submit_request_a_doi_form(form, requested_by: current_user)
-              # TODO: Should this be the form or the header? Likely the form, but
-              # the controller implementations assume the header
-              callback(:success, header)
+              # TODO: Should this be the form or the sip? Likely the form, but
+              # the controller implementations assume the sip
+              callback(:success, sip)
             else
               callback(:failure, form)
             end

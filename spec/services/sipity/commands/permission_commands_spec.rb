@@ -6,7 +6,7 @@ module Sipity
       subject { test_repository }
 
       context '#grant_creating_user_permission_for!' do
-        let(:entity) { Models::Header.new(id: 1) }
+        let(:entity) { Models::Sip.new(id: 1) }
         let(:user) { User.new(id: 2) }
         let(:group) { Models::Group.new(id: 3) }
 

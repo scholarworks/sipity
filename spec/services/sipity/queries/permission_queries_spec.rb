@@ -5,7 +5,7 @@ module Sipity
     # Queries
     RSpec.describe PermissionQueries, type: :repository_methods do
       context '#emails_for_associated_users' do
-        let(:entity) { Models::Header.create! }
+        let(:entity) { Models::Sip.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:associated_by_group_user) { Sipity::Factories.create_user(email: 'group_associated@hotmail.com') }
         let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
@@ -32,7 +32,7 @@ module Sipity
       context '#scope_entities_for_user_and_roles' do
         let(:user) { User.new(id: 1234) }
         let(:group) { Models::Group.new(id: 5678) }
-        let(:entity) { Models::Header.create! }
+        let(:entity) { Models::Sip.create! }
         let(:role) { Models::Permission::CREATING_USER }
         subject { test_repository }
 

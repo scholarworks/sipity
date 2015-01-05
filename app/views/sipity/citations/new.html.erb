@@ -1,5 +1,5 @@
 <h2>Assign a Citation?</h2>
-<%= simple_form_for(model, url: header_citation_path(model.header), method: :post, as: :citation) do |f| %>
+<%= simple_form_for(model, url: sip_citation_path(model.sip), method: :post, as: :citation) do |f| %>
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :citation, as: :text %>

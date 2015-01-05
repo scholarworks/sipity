@@ -2,16 +2,16 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe CreateHeaderForm do
+    RSpec.describe CreateSipForm do
       subject { described_class.new }
 
-      its(:policy_enforcer) { should eq Policies::HeaderPolicy }
+      its(:policy_enforcer) { should eq Policies::SipPolicy }
 
       it 'will have a #possible_work_publication_strategies' do
         expect(subject.possible_work_publication_strategies).to be_a(Hash)
       end
 
-      it 'will have a model name like Header' do
+      it 'will have a model name like Sip' do
         expect(described_class.model_name).to be_a(ActiveModel::Name)
       end
 

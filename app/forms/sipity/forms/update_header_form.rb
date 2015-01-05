@@ -1,32 +1,32 @@
 module Sipity
   module Forms
-    # Responsible for exposing attributes for editing a given header.
+    # Responsible for exposing attributes for editing a given sip.
     #
-    # Since a Header is a composite of many attributes from numerous sources
+    # Since a Sip is a composite of many attributes from numerous sources
     # this object is a bit different.
     #
-    # @see Sipity::Forms::UpdateHeaderForm#guard_against_existing_method_names!
-    # @see Sipity::Forms::UpdateHeaderForm#exposes?
-    # @see Sipity::Forms::UpdateHeaderForm#method_missing
-    # @see Sipity::Forms::UpdateHeaderForm#respond_to_missing?
-    class UpdateHeaderForm < BaseForm
-      self.policy_enforcer = Policies::EnrichHeaderByFormSubmissionPolicy
+    # @see Sipity::Forms::UpdateSipForm#guard_against_existing_method_names!
+    # @see Sipity::Forms::UpdateSipForm#exposes?
+    # @see Sipity::Forms::UpdateSipForm#method_missing
+    # @see Sipity::Forms::UpdateSipForm#respond_to_missing?
+    class UpdateSipForm < BaseForm
+      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
 
       def self.model_name
-        Models::Header.model_name
+        Models::Sip.model_name
       end
 
-      def initialize(header:, exposed_attribute_names: [], attributes: {})
-        @header = header
+      def initialize(sip:, exposed_attribute_names: [], attributes: {})
+        @sip = sip
         @attributes = attributes.stringify_keys
         self.exposed_attribute_names = exposed_attribute_names
       end
 
-      attr_reader :header
-      delegate :to_key, :to_param, :persisted?, to: :header
+      attr_reader :sip
+      delegate :to_key, :to_param, :persisted?, to: :sip
 
       validates :title, presence: true
-      validates :header, presence: true
+      validates :sip, presence: true
 
       def method_missing(method_name, *_args, &_block)
         if exposes?(method_name)

@@ -1,51 +1,51 @@
 module Sipity
   module Controllers
-    # The controller for creating headers.
+    # The controller for creating sips.
     class DoisController < ApplicationController
       respond_to :html, :json
 
       self.runner_container = Sipity::Runners::DoiRunners
 
       def show
-        run(header_id: header_id) do |on|
-          on.doi_not_assigned do |header|
-            doi_not_assigned_response(header)
+        run(sip_id: sip_id) do |on|
+          on.doi_not_assigned do |sip|
+            doi_not_assigned_response(sip)
           end
-          on.doi_already_assigned do |header|
-            redirect_to header_path(header), notice: message_for(:doi_already_assigned, title: header.title)
+          on.doi_already_assigned do |sip|
+            redirect_to sip_path(sip), notice: message_for(:doi_already_assigned, title: sip.title)
           end
-          on.doi_request_is_pending do |header, _doi_request|
-            redirect_to header_path(header), notice: message_for(:doi_request_is_pending, title: header.title)
+          on.doi_request_is_pending do |sip, _doi_request|
+            redirect_to sip_path(sip), notice: message_for(:doi_request_is_pending, title: sip.title)
           end
         end
       end
 
-      def doi_not_assigned_response(header)
-        header = Decorators::HeaderDecorator.decorate(header)
-        @model = Forms::AssignADoiForm.new(header: header)
+      def doi_not_assigned_response(sip)
+        sip = Decorators::SipDecorator.decorate(sip)
+        @model = Forms::AssignADoiForm.new(sip: sip)
         respond_with(@model) do |wants|
-          flash.now.alert = message_for(:doi_not_assigned, title: header.title)
+          flash.now.alert = message_for(:doi_not_assigned, title: sip.title)
           wants.html { render action: 'doi_not_assigned' }
         end
       end
       private :doi_not_assigned_response
 
       def assign_a_doi
-        run(header_id: header_id, identifier: doi) do |on|
-          on.success do |header, identifier|
-            redirect_to header_path(header), notice: message_for(:success, doi: identifier, title: header.title)
+        run(sip_id: sip_id, identifier: doi) do |on|
+          on.success do |sip, identifier|
+            redirect_to sip_path(sip), notice: message_for(:success, doi: identifier, title: sip.title)
           end
-          on.failure do |header|
-            @model = header
+          on.failure do |sip|
+            @model = sip
             respond_with(@model)
           end
         end
       end
 
       def request_a_doi
-        run(header_id: header_id, attributes: request_a_doi_attributes) do |on|
-          on.success do |header|
-            redirect_to header_path(header), notice: message_for(:success, title: header.title)
+        run(sip_id: sip_id, attributes: request_a_doi_attributes) do |on|
+          on.success do |sip|
+            redirect_to sip_path(sip), notice: message_for(:success, title: sip.title)
           end
           on.failure do |model|
             @model = model
@@ -64,8 +64,8 @@ module Sipity
         params.require(:doi)
       end
 
-      def header_id
-        params.require(:header_id)
+      def sip_id
+        params.require(:sip_id)
       end
 
       def doi

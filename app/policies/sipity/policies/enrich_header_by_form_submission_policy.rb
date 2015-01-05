@@ -4,33 +4,33 @@ module Sipity
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
-    # @see HeaderPolicy for more information on who can edit this object.
-    class EnrichHeaderByFormSubmissionPolicy < BasePolicy
-      attr_reader :header_policy
-      private :header_policy
+    # @see SipPolicy for more information on who can edit this object.
+    class EnrichSipByFormSubmissionPolicy < BasePolicy
+      attr_reader :sip_policy
+      private :sip_policy
       def initialize(user, entity, options = {})
         super(user, entity)
-        @header_policy = options.fetch(:header_policy) { default_header_policy }
+        @sip_policy = options.fetch(:sip_policy) { default_sip_policy }
       end
 
       define_policy_question :submit? do
         return false unless user.present?
-        return false unless entity.header.persisted?
-        header_policy.update?
+        return false unless entity.sip.persisted?
+        sip_policy.update?
       end
 
       private
 
       def entity=(object)
-        if object.respond_to?(:header) && object.header.present?
+        if object.respond_to?(:sip) && object.sip.present?
           super(object)
         else
-          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #header."
+          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #sip."
         end
       end
 
-      def default_header_policy
-        HeaderPolicy.new(user, entity.header)
+      def default_sip_policy
+        SipPolicy.new(user, entity.sip)
       end
     end
   end

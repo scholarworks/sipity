@@ -2,31 +2,31 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe UpdateHeaderForm do
-      let(:header) { double('Header') }
+    RSpec.describe UpdateSipForm do
+      let(:sip) { double('Sip') }
       subject do
         described_class.new(
-          header: header, exposed_attribute_names: [:title],
+          sip: sip, exposed_attribute_names: [:title],
           attributes: { title: 'My Title', not_exposed: 'Not Exposed' }
         )
       end
 
-      its(:policy_enforcer) { should eq Policies::EnrichHeaderByFormSubmissionPolicy }
+      its(:policy_enforcer) { should eq Policies::EnrichSipByFormSubmissionPolicy }
 
-      it 'will have a model_name that is the same as the Models::Header.model_name' do
-        expect(described_class.model_name).to eq(Models::Header.model_name)
+      it 'will have a model_name that is the same as the Models::Sip.model_name' do
+        expect(described_class.model_name).to eq(Models::Sip.model_name)
       end
 
       context 'exposing an attribute_name that is an already defined method' do
         it 'will raise an exception' do
-          expect { described_class.new(header: header, exposed_attribute_names: [:submit]) }.
+          expect { described_class.new(sip: sip, exposed_attribute_names: [:submit]) }.
             to raise_error(Exceptions::ExistingMethodsAlreadyDefined)
         end
       end
 
       context 'when no attribute_names are exposed' do
         it 'will NOT raise an exception' do
-          expect { described_class.new(header: header, exposed_attribute_names: []) }.
+          expect { described_class.new(sip: sip, exposed_attribute_names: []) }.
             to_not raise_error
         end
       end

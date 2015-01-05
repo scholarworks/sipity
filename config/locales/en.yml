@@ -22,7 +22,7 @@
 en:
   activerecord:
     models:
-      sipity/header: Deposit
+      sipity/sip: Deposit
   sipity/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'

@@ -2,18 +2,18 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
-      def self.submit(header_id)
-        new(header_id).work
+      def self.submit(sip_id)
+        new(sip_id).work
       end
 
-      def initialize(header_id, options = {})
+      def initialize(sip_id, options = {})
         @repository = options.fetch(:repository) { default_repository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
-        @header = repository.find_header(header_id)
-        @doi_creation_request = repository.find_doi_creation_request(header: header)
+        @sip = repository.find_sip(sip_id)
+        @doi_creation_request = repository.find_doi_creation_request(sip: sip)
       end
-      attr_reader :header, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
+      attr_reader :sip, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
 
       def work
         # TODO: Do we need to track history for the given person?
@@ -34,24 +34,24 @@ module Sipity
       end
 
       def transition_doi_creation_request_to_submitted!
-        repository.update_header_doi_creation_request_state!(header: header, state: :request_submitted)
+        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_submitted)
       end
 
       def submit_remote_request!
         transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
       rescue *Array.wrap(minter_handled_exceptions) => e
-        repository.update_header_doi_creation_request_state!(header: header, state: :request_failed, response_message: e.message)
+        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_failed, response_message: e.message)
         raise e
       end
 
       def handle_remote_response!(response)
-        repository.update_header_with_doi_predicate!(header: header, values: response.id)
-        repository.update_header_doi_creation_request_state!(header: header, state: :request_completed)
+        repository.update_sip_with_doi_predicate!(sip: sip, values: response.id)
+        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_completed)
       end
 
       def metadata
-        repository.gather_doi_creation_request_metadata(header: header)
+        repository.gather_doi_creation_request_metadata(sip: sip)
       end
 
       def default_minter

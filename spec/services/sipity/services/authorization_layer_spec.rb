@@ -4,7 +4,7 @@ module Sipity
   module Services
     RSpec.describe AuthorizationLayer do
       subject { described_class.new(context, policy_authorizer: policy_authorizer) }
-      let(:entity) { Models::Header.new(id: '2') }
+      let(:entity) { Models::Sip.new(id: '2') }
       let(:context) { double(current_user: User.new(id: '1')) }
       let(:policy_question) { :create? }
       let(:policy_authorizer) { double('PolicyAuthorizer', call: :called) }

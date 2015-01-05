@@ -10,21 +10,21 @@ module Sipity
     #   as something separate from the job.
     class DoiCreationRequestMetadataGatherer
       # A convenience method to codify the external API.
-      def self.call(header:)
-        new(header).as_hash
+      def self.call(sip:)
+        new(sip).as_hash
       end
 
-      def initialize(header, options = {})
-        @header = header
+      def initialize(sip, options = {})
+        @sip = sip
         # TODO: I don't want to craft a custom repository
         @repository = options.fetch(:repository) { default_repository }
       end
-      attr_reader :header, :repository
-      private :header, :repository
+      attr_reader :sip, :repository
+      private :sip, :repository
 
       def as_hash
         {
-          '_target' => permanent_uri_for_header,
+          '_target' => permanent_uri_for_sip,
           'datacite.title' => title,
           'datacite.creator' => creator,
           'datacite.publisher' => publisher,
@@ -36,30 +36,30 @@ module Sipity
 
       # The permanent URL in which we promise that you can always find this
       # object.
-      def permanent_uri_for_header
-        Conversions::ConvertToPermanentUri.call(header)
+      def permanent_uri_for_sip
+        Conversions::ConvertToPermanentUri.call(sip)
       end
 
       def title
-        header.title
+        sip.title
       end
 
       def creator
-        @creator ||= repository.header_collaborator_names_for(header: header, roles: 'author').join("; ")
+        @creator ||= repository.sip_collaborator_names_for(sip: sip, roles: 'author').join("; ")
       end
 
       def publisher
         @publisher ||= begin
-          repository.header_attribute_values_for(
-            header: header, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME
+          repository.sip_attribute_values_for(
+            sip: sip, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME
           ).join("; ")
         end
       end
 
       def publication_year
         @publication_year ||= begin
-          repository.header_attribute_values_for(
-            header: header, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME
+          repository.sip_attribute_values_for(
+            sip: sip, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME
           ).map { |publication_date| Conversions::ConvertToYear.call(publication_date).to_s }.join(", ")
         end
       end

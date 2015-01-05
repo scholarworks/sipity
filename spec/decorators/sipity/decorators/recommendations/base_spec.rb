@@ -4,24 +4,24 @@ module Sipity
   module Decorators
     module Recommendations
       RSpec.describe Base do
-        let(:header) { double('Header', title: 'My Title') }
+        let(:sip) { double('Sip', title: 'My Title') }
         let(:helper) { double('Helper') }
         let(:repository) { double('Repository') }
-        subject { described_class.new(header: header, helper: helper, repository: repository) }
+        subject { described_class.new(sip: sip, helper: helper, repository: repository) }
 
-        it 'requires the header to implement a #title' do
-          header = double('Header')
-          expect { described_class.new(header: header, helper: helper, repository: repository) }.
+        it 'requires the sip to implement a #title' do
+          sip = double('Sip')
+          expect { described_class.new(sip: sip, helper: helper, repository: repository) }.
             to raise_error(NotImplementedError)
         end
 
         it 'has assigns a default repository' do
-          expect(described_class.new(header: header, helper: helper).send(:repository)).to be_a(Repository)
+          expect(described_class.new(sip: sip, helper: helper).send(:repository)).to be_a(Repository)
         end
 
         it 'has a default helper' do
-          header = double('Header', h: helper, title: 'My Title')
-          expect(described_class.new(header: header).send(:helper)).to eq(helper)
+          sip = double('Sip', h: helper, title: 'My Title')
+          expect(described_class.new(sip: sip).send(:helper)).to eq(helper)
         end
 
         context 'upon extension' do
@@ -44,7 +44,7 @@ module Sipity
           after do
             Sipity::Decorators::Recommendations.send(:remove_const, :TestClass)
           end
-          subject { TestClass.new(header: header, helper: helper, repository: repository) }
+          subject { TestClass.new(sip: sip, helper: helper, repository: repository) }
           it 'has a translated #human_status' do
             expect(subject.human_status).to(
               eq("translation missing: en.sipity/decorators/recommendations/test_class.state.#{subject.state}")

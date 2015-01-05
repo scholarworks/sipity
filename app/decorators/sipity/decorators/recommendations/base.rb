@@ -5,11 +5,11 @@ module Sipity
       class Base
         extend ActiveModel::Translation
 
-        attr_reader :header, :repository, :helper
+        attr_reader :sip, :repository, :helper
         private :repository, :helper
 
-        def initialize(header:, repository: nil, helper: nil)
-          self.header = header
+        def initialize(sip:, repository: nil, helper: nil)
+          self.sip = sip
           @repository = repository || default_repository
           @helper = helper || default_helper
         end
@@ -23,11 +23,11 @@ module Sipity
         end
 
         def human_status
-          I18n.translate("state.#{state}", scope: translation_scope, title: header.title)
+          I18n.translate("state.#{state}", scope: translation_scope, title: sip.title)
         end
 
         def human_name
-          I18n.translate("name", scope: translation_scope, title: header.title)
+          I18n.translate("name", scope: translation_scope, title: sip.title)
         end
 
         def human_attribute_name(name)
@@ -36,11 +36,11 @@ module Sipity
 
         private
 
-        def header=(value)
+        def sip=(value)
           if value.respond_to?(:title)
-            @header = value
+            @sip = value
           else
-            fail NotImplementedError, "Expected #{value} to implement #title for #{self.class}#header"
+            fail NotImplementedError, "Expected #{value} to implement #title for #{self.class}#sip"
           end
         end
 
@@ -49,7 +49,7 @@ module Sipity
         end
 
         def default_helper
-          header.h
+          sip.h
         end
 
         def translation_scope

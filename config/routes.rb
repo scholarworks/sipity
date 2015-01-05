@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   scope module: :sipity do
     scope module: :controllers do
-      resources :headers do
+      resources :sips do
         resource :citation
         resource :doi do
           member do
@@ -16,5 +16,5 @@ Rails.application.routes.draw do
   mount Upmin::Engine => '/admin'
   root to: 'visitors#index'
   devise_for :users
-  get 'start', to: redirect('/headers/new'), as: 'start'
+  get 'start', to: redirect('/sips/new'), as: 'start'
 end
