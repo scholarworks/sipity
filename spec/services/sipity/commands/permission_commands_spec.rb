@@ -6,7 +6,7 @@ module Sipity
       subject { test_repository }
 
       context '#grant_groups_permission_to_entity_for_role!' do
-        let(:entity) { Models::Header.new(id: 1) }
+        let(:entity) { Models::Sip.new(id: 1) }
         context 'with a role' do
           context 'that has one (or more) groups associated by header type' do
             it 'will assign that group permission to the given header' do
