@@ -71,12 +71,6 @@ module Sipity
       def doi
         params.require(:doi).fetch(:identifier)
       end
-
-      # Without this, Rails will attempt to render views that are found in
-      # `app/views/sipity/controllers/dois` directory.
-      def controller_path
-        'sipity/dois'
-      end
     end
   end
 end

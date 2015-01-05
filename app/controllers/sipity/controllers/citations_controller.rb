@@ -55,12 +55,6 @@ module Sipity
       def create_attributes
         params.require(:citation)
       end
-
-      # Without this, Rails will attempt to render views that are found in
-      # `app/views/sipity/controllers/citations` directory.
-      def controller_path
-        'sipity/citations'
-      end
     end
   end
 end

@@ -53,12 +53,6 @@ module Sipity
       def update_params
         params.require(:sip)
       end
-
-      # Without this, Rails will attempt to render views that are found in
-      # `app/views/sipity/controllers/sips` directory.
-      def controller_path
-        'sipity/sips'
-      end
     end
   end
 end
