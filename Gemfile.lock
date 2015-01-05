@@ -434,6 +434,7 @@ DEPENDENCIES
   rb-fchange
   rb-fsevent
   rb-inotify
+  responders (~> 2.0.0)
   rspec-given
   rspec-html-matchers (~> 0.6)
   rspec-its
