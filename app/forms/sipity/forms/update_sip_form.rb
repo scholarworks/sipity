@@ -25,6 +25,10 @@ module Sipity
       attr_reader :sip
       delegate :to_key, :to_param, :persisted?, to: :sip
 
+      def to_model
+        sip
+      end
+
       validates :title, presence: true
       validates :sip, presence: true
 

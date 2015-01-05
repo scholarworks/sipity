@@ -12,6 +12,7 @@ module Sipity
       end
 
       its(:policy_enforcer) { should eq Policies::EnrichSipByFormSubmissionPolicy }
+      its(:to_model) { should eq(sip) }
 
       it 'will have a model_name that is the same as the Models::Sip.model_name' do
         expect(described_class.model_name).to eq(Models::Sip.model_name)
