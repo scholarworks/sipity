@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          assign_group_roles_to_entity: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
+          grant_groups_permission_to_entity_for_role!: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -20,7 +20,7 @@ module Sipity
         its(:repository) { should respond_to :log_event! }
         its(:repository) { should respond_to :update_processing_state! }
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
-        its(:repository) { should respond_to :assign_group_roles_to_entity }
+        its(:repository) { should respond_to :grant_groups_permission_to_entity_for_role! }
         its(:repository) { should respond_to :send_notification_for_entity_trigger }
         its(:repository) { should respond_to :submit_ingest_etd }
       end
@@ -161,7 +161,7 @@ module Sipity
               with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user')
           end
           it 'will add permission entries for the etd reviewers for the given ETD' do
-            expect(repository).to have_received(:assign_group_roles_to_entity).
+            expect(repository).to have_received(:grant_groups_permission_to_entity_for_role!).
               with(entity: entity, roles: 'etd_reviewer')
           end
           it 'will record the event for auditing purposes' do
@@ -253,7 +253,7 @@ module Sipity
             )
           end
           it 'will add permission entries for the catalog reviewers of the given ETD' do
-            expect(repository).to have_received(:assign_group_roles_to_entity).
+            expect(repository).to have_received(:grant_groups_permission_to_entity_for_role!).
               with(entity: entity, roles: 'cataloger')
           end
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging' do

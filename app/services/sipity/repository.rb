@@ -26,7 +26,7 @@ module Sipity
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
 
-    def assign_group_roles_to_entity
+    def grant_groups_permission_to_entity_for_role!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
 

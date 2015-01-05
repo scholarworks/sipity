@@ -10,9 +10,9 @@ module Sipity
       end
     end
 
-    context '#assign_group_roles_to_entity' do
+    context '#grant_groups_permission_to_entity_for_role!' do
       it 'is a placeholder until I can spend some time focusing on it' do
-        expect { described_class.new.assign_group_roles_to_entity }.to raise_error(NotImplementedError)
+        expect { described_class.new.grant_groups_permission_to_entity_for_role! }.to raise_error(NotImplementedError)
       end
     end
 
