@@ -1,0 +1,36 @@
+digraph "G" {
+    compound=true;
+    node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
+
+    subgraph cluster_0 {
+        label="Sipity ERD (Draft v1)"
+        color="seashell3"
+        style="filled"
+        node[style=filled fillcolor=white color="seashell4"]
+        edge[arrowhead="crow"]
+
+        user[label="{ User }"]
+        group_entity[label="{ Group | name }"]
+        group_membership[label="{ Group Membership | group | user | membership_role }"]
+        sip[label="{ SIP | title | processing_state }"]
+        event_log[label="{ EventLog | user | entity | event_name }"]
+        permission[label="{ Permission | actor | entity | role }"]
+        collaborators[label="{ Collaborators }"]
+        account_placeholder[label="{ AccountPlaceholder | identifier | identifier_type | state }"]
+        doi_creation_request[label="{ DoiCreationRequest | sip | state }"]
+        additional_attributes[label="{ AdditionalAttribute | sip | key | value }"]
+
+        user -> group_membership
+        group_entity -> group_membership
+
+        user -> permission[label="as actor"]
+        group_entity -> permission[label="as actor"]
+        sip -> permission[label="as entity"]
+        user -> event_log
+        sip -> collaborators
+        sip -> additional_attributes
+        sip -> doi_creation_request[arrowhead=none]
+        user -> account_placeholder[arrowhead=none]
+    }
+
+}
