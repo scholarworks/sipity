@@ -50,7 +50,7 @@ namespace :spec do
 end
 
 Rake::Task["default"].clear
-task default: ['rubocop', 'spec:all']
+task default: ['db:schema:load', 'rubocop', 'spec:all']
 
 namespace :sipity do
   task :stats_setup do
