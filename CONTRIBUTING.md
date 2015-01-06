@@ -26,6 +26,8 @@ echo '#!/bin/sh
 SPEC_OPTS="--format progress" bin/rake spec:travis' > .git/hooks/pre-push ; chmod +x .git/hooks/pre-push
 ```
 
+If you need to skip the `pre-push` hook, use the `--no-verify` option when you push to a branch.
+
 ## But Rubocop is complaining too much...
 
 Either submit a pull request modifying the `.hound.yml` file or submit an issue
