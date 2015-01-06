@@ -26,10 +26,6 @@ module Sipity
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end
 
-    def assign_group_roles_to_entity
-      fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
-    end
-
     def send_notification_for_entity_trigger(*_)
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"
     end

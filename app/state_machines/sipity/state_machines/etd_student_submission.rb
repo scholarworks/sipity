@@ -60,7 +60,7 @@ module Sipity
       end
 
       def after_trigger_submit_for_review(_options)
-        repository.assign_group_roles_to_entity(entity: entity, roles: 'etd_reviewer')
+        repository.grant_groups_permission_to_entity_for_role!(entity: entity, roles: 'etd_reviewer')
         repository.send_notification_for_entity_trigger(
           notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
         )
@@ -83,7 +83,7 @@ module Sipity
       end
 
       def after_trigger_ingest_completed(options)
-        repository.assign_group_roles_to_entity(entity: entity, roles: 'cataloger')
+        repository.grant_groups_permission_to_entity_for_role!(entity: entity, roles: 'cataloger')
         additional_emails = options.fetch(:additional_emails)
         repository.send_notification_for_entity_trigger(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
         repository.send_notification_for_entity_trigger(
