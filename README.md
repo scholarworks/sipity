@@ -185,3 +185,17 @@ Find out more about [Sipity's Services](https://github.com/ndlib/sipity/blob/mas
 For completeness, including a rudimentary Entity Relationship Diagram (ERD).
 
 ![Sipity ERD](artifacts/sipity-erd.png)
+
+## TODO Items
+
+Pieces remaining to complete; This is a non-complete list:
+
+* Ingest an ETD via the ROF into Curate
+* Expose a means of adminstering Groups/Roles
+* Deploy to a staging environment
+* Wire up emailing from staging environment
+* Write actual emails that should be sent out
+* Expose means for adding the requisite metadata to be an ETD
+* Expose available actions for a given user on a given object based on a given state
+* Deal with the permanent URL structure
+* Wire up a background job handler for Sipity (if this is needed?)
