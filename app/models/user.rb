@@ -11,4 +11,6 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  has_many :permissions, as: :actor, dependent: :destroy, class_name: 'Sipity::Models::Permission'
 end
