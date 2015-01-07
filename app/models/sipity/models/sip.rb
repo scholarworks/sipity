@@ -6,7 +6,6 @@ module Sipity
       self.table_name = 'sipity_sips'
 
       # @!attribute [rw] :processing_state The processing state of the sip.
-      #   @default :new (as enforced by the database)
       #   @return [String]
       alias_attribute :processing_status, :processing_state
 

@@ -7,6 +7,12 @@ module Sipity
     module ConvertToYear
       # A convenience method so that you don't need to include the conversion
       # module in your base class.
+      #
+      # @param input [Object] something coercable
+      #
+      # @return Integer
+      #
+      # @see #convert_to_year
       def self.call(input)
         convert_to_year(input)
       end
