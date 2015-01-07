@@ -44,6 +44,13 @@ module Sipity
       end
     end
 
+    # Unable to convert the given object into a permanent URI
+    class EntityTypeConversionError < RuntimeError
+      def initialize(attempted_conversion_object)
+        super("Unable to convert #{attempted_conversion_object.inspect} to an Entity Type")
+      end
+    end
+
     # As you are looking up something by name, within a given container.
     class ConceptNotFoundError < RuntimeError
       def initialize(name:, container:)
