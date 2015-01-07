@@ -17,7 +17,6 @@ module Sipity
       # @see The underlying spec defines the behavior; Do not access
       def log_event!(entity:, user:, event_name:)
         Models::EventLog.create!(entity: entity, user: user, event_name: event_name)
-        true
       end
       # TODO: Make this module a private constant. This means moving the modules
       #   into the same name space as where they are included. I'm trying to
