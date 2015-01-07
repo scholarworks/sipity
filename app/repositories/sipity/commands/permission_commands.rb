@@ -18,6 +18,8 @@ module Sipity
       #
       # @raise Exception if for any of the given roles, no group could be found
       def grant_groups_permission_to_entity_for_role!(entity:, roles:)
+        # TODO: Extract this map of roles to groups; Will we need roles by
+        #   sip type?
         map = { 'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging' }
         Array.wrap(roles).each do |role|
           group_names = map.fetch(role.to_s)
@@ -30,6 +32,8 @@ module Sipity
       public :grant_groups_permission_to_entity_for_role!
 
       def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
+        # REVIEW: Does the constant even make sense on the data structure? Or
+        #   is it more relevant here?
         role = Models::Permission::CREATING_USER
         actors = [user, group, actor]
         grant_permission_for!(entity: entity, actors: actors, role: role)
