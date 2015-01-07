@@ -2,7 +2,7 @@ module Sipity
   module Models
     # Responsible for giving a name to a group of people. This is not the role
     # nor responsibility that those people fill. It is an alias for a collection
-    # of people. A group may have a Role associated with it.
+    # of people.
     #
     # @see User
     class Group < ActiveRecord::Base
