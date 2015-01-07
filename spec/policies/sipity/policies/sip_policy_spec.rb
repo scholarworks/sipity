@@ -61,8 +61,8 @@ module Sipity
       let(:user) { User.new(id: 1234) }
       let(:entity) { Models::Sip.new(id: 5678) }
       context '.resolve' do
-        it 'will use the scope_entities_for_user_and_roles' do
-          allow(Queries::PermissionQueries).to receive(:scope_entities_for_user_and_roles)
+        it 'will use the scope_entities_for_user_and_roles_and_entity_type' do
+          allow(Queries::PermissionQueries).to receive(:scope_entities_for_user_and_roles_and_entity_type)
           described_class.resolve(user: user)
         end
       end
