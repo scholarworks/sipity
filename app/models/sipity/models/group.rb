@@ -12,6 +12,8 @@ module Sipity
       # not intending to create a form to represent this object. If things get
       # complicated, then a form will happen.
       validates :name, presence: true, uniqueness: true
+
+      has_many :permissions, as: :actor, dependent: :destroy
     end
   end
 end
