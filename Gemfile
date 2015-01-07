@@ -21,7 +21,8 @@ gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
 gem 'ezid-client', github: 'duke-libraries/ezid-client'
 gem 'micromachine', github: 'jeremyf/micromachine' # Ensuring code continues to exist
 group :doc do
-  gem 'yard'
+  gem 'yard', require: false
+  gem 'inch', require: false
 end
 group :development do
   gem 'spring'
