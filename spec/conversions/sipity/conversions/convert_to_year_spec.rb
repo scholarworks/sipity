@@ -26,6 +26,11 @@ module Sipity
       end
 
       context '#convert_to_year' do
+
+        it 'will be a private instance method' do
+          expect(self.class.private_instance_methods).to include(:convert_to_year)
+        end
+
         it "will return the object's year if the object responds to #year" do
           object = double(year: 1234)
           expect(convert_to_year(object)).to eq(object.year)

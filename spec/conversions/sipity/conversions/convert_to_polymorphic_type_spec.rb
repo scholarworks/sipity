@@ -27,6 +27,11 @@ module Sipity
       end
 
       context '#convert_to_polymorphic_type' do
+
+        it 'will be a private instance method' do
+          expect(self.class.private_instance_methods).to include(:convert_to_polymorphic_type)
+        end
+
         it "will return the object to_polymorphic_type" do
           object = double(to_polymorphic_type: 'Hello')
           expect(convert_to_polymorphic_type(object)).to eq('Hello')

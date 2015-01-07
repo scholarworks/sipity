@@ -2,6 +2,8 @@ module Sipity
   module Conversions
     # Exposes a conversion method to take an input and transform it into a
     # year.
+    #
+    # @see Sipity::Conversions for conventions regarding a conversion method
     module ConvertToYear
       # A convenience method so that you don't need to include the conversion
       # module in your base class.

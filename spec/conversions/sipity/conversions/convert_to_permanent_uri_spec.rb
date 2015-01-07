@@ -26,6 +26,11 @@ module Sipity
       end
 
       context '#convert_to_permanent_uri' do
+
+        it 'will be a private instance method' do
+          expect(self.class.private_instance_methods).to include(:convert_to_permanent_uri)
+        end
+
         it 'converts a decorated sip' do
           object = Decorators::SipDecorator.decorate(Models::Sip.new(id: 1234))
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
