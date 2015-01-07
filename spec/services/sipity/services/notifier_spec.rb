@@ -19,7 +19,7 @@ module Sipity
           expect(Mailers::EmailNotifier).to receive(existing_notification).
             with(entity: entity, to: emails, cc: [], bcc: []).and_return(mail_object)
 
-          described_class.deliver(entity: entity, notification: missing_notification, to: emails)
+          described_class.deliver(entity: entity, notification: existing_notification, to: emails)
 
           expect(mail_object).to have_received(:deliver)
         end
