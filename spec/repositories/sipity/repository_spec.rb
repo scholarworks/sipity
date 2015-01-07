@@ -10,12 +10,6 @@ module Sipity
       end
     end
 
-    context '#send_notification_for_entity_trigger' do
-      it 'is a placeholder until I can spend some time focusing on it' do
-        expect { described_class.new.send_notification_for_entity_trigger }.to raise_error(NotImplementedError)
-      end
-    end
-
     context '#submit_ingest_etd' do
       it 'is a placeholder until I can spend some time focusing on it' do
         expect { described_class.new.submit_ingest_etd }.to raise_error(NotImplementedError)
