@@ -72,7 +72,9 @@ module Sipity
         private :user, :scope, :permitted_roles
 
         def resolve
-          Queries::PermissionQueries.scope_entities_for_user_and_roles(user: user, entity_type: scope, roles: permitted_roles)
+          Queries::PermissionQueries.scope_entities_for_user_and_roles_and_entity_type(
+            user: user, entity_type: scope, roles: permitted_roles
+          )
         end
       end
     end
