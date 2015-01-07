@@ -3,6 +3,8 @@ module Sipity
     # Exposes a conversion method to take an input and transform it into a
     # URL that the web application's maintainer pinky promises will resolve long
     # into the future.
+    #
+    # @see Sipity::Conversions for conventions regarding a conversion method
     module ConvertToPermanentUri
       PERMANENT_URI_FORMAT = "https://change.me/show/%s".freeze
 
