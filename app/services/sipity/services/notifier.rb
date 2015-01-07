@@ -13,8 +13,8 @@ module Sipity
         bcc = options.fetch(:bcc) { [] }
         entity = options.fetch(:entity)
 
-        email_notifier = Sipity::Mailers::EmailNotifier.send(notification_name, entity: entity, to: to, cc: cc, bcc: bcc)
-        email_notifier.deliver
+        email_notifier = Sipity::Mailers::EmailNotifier.public_send(notification_name, entity: entity, to: to, cc: cc, bcc: bcc)
+        email_notifier.deliver_now
       end
     end
   end

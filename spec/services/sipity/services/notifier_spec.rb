@@ -7,7 +7,7 @@ module Sipity
         let(:missing_notification) { 'never_would_this_be_a_notification' }
         let(:emails) { ['hello@world.com'] }
         let(:entity) { double('Entity') }
-        let(:mail_object) { double('Mail', deliver: true) }
+        let(:mail_object) { double('Mail', deliver_now: true) }
         let(:existing_notification) { 'confirmation_of_entity_submitted_for_review' }
 
         it 'will raise an exception if a corresponding email notifier does not exist' do
@@ -21,7 +21,7 @@ module Sipity
 
           described_class.deliver(entity: entity, notification: existing_notification, to: emails)
 
-          expect(mail_object).to have_received(:deliver)
+          expect(mail_object).to have_received(:deliver_now)
         end
       end
     end
