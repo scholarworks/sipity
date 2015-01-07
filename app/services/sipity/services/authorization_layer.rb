@@ -1,6 +1,8 @@
 module Sipity
   module Services
     # A service object to find and enforce appropriate policies.
+    #
+    # @see Sipity::Policies
     class AuthorizationLayer
       def initialize(context, collaborators = {})
         @context = context
