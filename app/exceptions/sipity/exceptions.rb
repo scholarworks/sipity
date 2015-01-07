@@ -106,5 +106,8 @@ module Sipity
     # A refinement of InvalidStateError to provide an explicit context
     class InvalidDoiCreationRequestStateError < InvalidStateError
     end
+
+    class NotificationNotFoundError < RuntimeError
+    end
   end
 end

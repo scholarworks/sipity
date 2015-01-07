@@ -4,10 +4,17 @@ module Sipity
     class Notifier
       # Providing a singular end point for sending messages
       def self.deliver(options = {})
-        @notification_name = options.fetch(:notification)
-        @to = options.fetch(:to)
-        @cc = options.fetch(:cc) { [] }
-        @bcc = options.fetch(:bcc) { [] }
+        notification_name = options.fetch(:notification)
+        unless Sipity::Mailers::EmailNotifier.respond_to?(notification_name)
+          fail Exceptions::NotificationNotFoundError
+        end
+        to = options.fetch(:to)
+        cc = options.fetch(:cc) { [] }
+        bcc = options.fetch(:bcc) { [] }
+        entity = options.fetch(:entity)
+
+        email_notifier = Sipity::Mailers::EmailNotifier.public_send(notification_name, entity: entity, to: to, cc: cc, bcc: bcc)
+        email_notifier.deliver_now
       end
     end
   end
