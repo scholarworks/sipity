@@ -18,7 +18,8 @@ module Sipity
 
       # REVIEW: Do I want validations here? I'm relying on the CreateSipForm
       #   to check for collaborators and use the underlying ActiveRecord
-      #   validations.
+      #   validations. However, the role requirement is enforced via the
+      #   database.
       validates :role, presence: true
 
       # While this make look ridiculous, if I use an Array, the enum declaration
