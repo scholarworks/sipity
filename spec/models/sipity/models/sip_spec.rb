@@ -21,7 +21,7 @@ module Sipity
         end
 
         it 'accepts "ETD" as an acceptable work_type' do
-          expect { subject.work_type = 'ETD' }.to_not raise_error(ArgumentError)
+          expect { subject.work_type = 'ETD' }.to_not raise_error
         end
       end
 
