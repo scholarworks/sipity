@@ -6,7 +6,7 @@ module Sipity
       subject { described_class.new(context, policy_authorizer: policy_authorizer) }
       let(:entity) { Models::Sip.new(id: '2') }
       let(:context) { double(current_user: User.new(id: '1')) }
-      let(:policy_question) { :create? }
+      let(:action_to_authorize) { :create? }
       let(:policy_authorizer) { double('PolicyAuthorizer', call: :called) }
 
       it 'will have a default policy_authorizer' do
@@ -29,9 +29,9 @@ module Sipity
           before { allow(policy_authorizer).to receive(:call).and_return(false) }
           it 'will raise an exception and not yield to the caller' do
             allow(policy_authorizer).to receive(:call).
-              with(user: context.current_user, policy_question: :create?, entity: entity).and_return(true)
+              with(user: context.current_user, action_to_authorize: :create?, entity: entity).and_return(true)
             allow(policy_authorizer).to receive(:call).
-              with(user: context.current_user, policy_question: :show?, entity: entity).and_return(false)
+              with(user: context.current_user, action_to_authorize: :show?, entity: entity).and_return(false)
             expect do |b|
               expect do
                 subject.enforce!(create?: entity, show?: entity, &b)

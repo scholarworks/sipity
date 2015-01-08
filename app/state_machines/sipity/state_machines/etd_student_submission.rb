@@ -11,7 +11,7 @@ module Sipity
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
       #
-      # { state => { policy_question => roles } }
+      # { state => { action_to_authorize => roles } }
       STATE_POLICY_QUESTION_ROLE_MAP =
       {
         'new' => {
@@ -38,9 +38,9 @@ module Sipity
       attr_reader :entity, :state_machine, :user, :repository
       private :entity, :state_machine, :user, :repository
 
-      def roles_for_policy_question(policy_question)
+      def roles_for_action_to_authorize(action_to_authorize)
         # @TODO - Catch invalid state look up
-        STATE_POLICY_QUESTION_ROLE_MAP.fetch(entity.processing_state.to_s).fetch(policy_question, [])
+        STATE_POLICY_QUESTION_ROLE_MAP.fetch(entity.processing_state.to_s).fetch(action_to_authorize, [])
       rescue KeyError
         raise Exceptions::StatePolicyQuestionRoleMapError, state: entity.processing_state, context: self
       end

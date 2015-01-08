@@ -68,8 +68,8 @@ module Sipity
           let(:entity) { double('Entity') }
           before do
             MyRunner = Class.new(BaseRunner) do
-              def run(entity:, policy_question:)
-                authorization_layer.enforce!(policy_question, entity) do
+              def run(entity:, action_to_authorize:)
+                authorization_layer.enforce!(action_to_authorize, entity) do
                   callback(:success, entity)
                 end
               end
@@ -85,7 +85,7 @@ module Sipity
           end
           it 'will enforce! the policy then yield control to the runner' do
             expect(enforcer).to receive(:enforce!).with(:show?, entity).and_yield
-            response = subject.run(entity: entity, policy_question: :show?)
+            response = subject.run(entity: entity, action_to_authorize: :show?)
             expect(handler).to have_received(:invoked).with('SUCCESS', entity)
             expect(response).to eq([:success, entity])
           end

@@ -87,10 +87,10 @@ module Sipity
 
     # Exposing a custom AuthorizationFailureError
     class AuthorizationFailureError < RuntimeError
-      attr_reader :user, :policy_question, :entity
-      def initialize(user:, policy_question:, entity:)
-        @user, @policy_question, @entity = user, policy_question, entity
-        super("#{user} not allowed to #{policy_question} this #{entity}")
+      attr_reader :user, :action_to_authorize, :entity
+      def initialize(user:, action_to_authorize:, entity:)
+        @user, @action_to_authorize, @entity = user, action_to_authorize, entity
+        super("#{user} not allowed to #{action_to_authorize} this #{entity}")
       end
     end
 

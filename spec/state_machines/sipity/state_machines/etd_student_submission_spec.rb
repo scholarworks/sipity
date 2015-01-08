@@ -25,120 +25,120 @@ module Sipity
         its(:repository) { should respond_to :submit_ingest_etd }
       end
 
-      context '.roles_for_policy_question' do
+      context '.roles_for_action_to_authorize' do
         let(:initial_processing_state) { 'unknown' }
         it 'will raise an exception if the processing_state is unknown' do
-          expect { subject.roles_for_policy_question(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
+          expect { subject.roles_for_action_to_authorize(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
         end
         context 'for :new' do
           let(:initial_processing_state) { 'new' }
           it 'will allow :update? for [:creating_user, :advisor]' do
-            expect(subject.roles_for_policy_question(:update?)).to eq(['creating_user', 'advisor'])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq(['creating_user', 'advisor'])
           end
           it 'will allow :delete? for [:creating_user]' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq(['creating_user'])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq(['creating_user'])
           end
           it 'will allow :show? for [:creating_user, :advisor]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor'])
           end
           it 'will allow :submit_for_review? for [:creating_user]'do
-            expect(subject.roles_for_policy_question(:submit_for_review?)).to eq(['creating_user'])
+            expect(subject.roles_for_action_to_authorize(:submit_for_review?)).to eq(['creating_user'])
           end
         end
 
         context 'for :under_review' do
           let(:initial_processing_state) { 'under_review' }
           it 'will allow :update? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:update?)).to eq(['etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq(['etd_reviewer'])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :request_revisions? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:request_revisions?)).to eq(['etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:request_revisions?)).to eq(['etd_reviewer'])
           end
           it 'will allow :approve_for_ingest? for [:etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:approve_for_ingest?)).to eq(['etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:approve_for_ingest?)).to eq(['etd_reviewer'])
           end
         end
 
         context 'for :ready_for_ingest' do
           let(:initial_processing_state) { 'ready_for_ingest' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_policy_question(:update?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_policy_question(:ingest?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:ingest?)).to eq([])
           end
         end
 
         context 'for :ingested' do
           let(:initial_processing_state) { 'ingested' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_policy_question(:update?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_policy_question(:ingest_completed?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:ingest_completed?)).to eq([])
           end
         end
 
         context 'for :ready_for_cataloging' do
           let(:initial_processing_state) { 'ready_for_cataloging' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_policy_question(:update?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_policy_question(:finish_cataloging?)).to eq(['cataloger'])
+            expect(subject.roles_for_action_to_authorize(:finish_cataloging?)).to eq(['cataloger'])
           end
         end
 
         context 'for :cataloged' do
           let(:initial_processing_state) { 'cataloged' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_policy_question(:update?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_policy_question(:mark_as_done?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:mark_as_done?)).to eq([])
           end
         end
 
         context 'for :done' do
           let(:initial_processing_state) { 'done' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_policy_question(:update?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_policy_question(:delete?)).to eq([])
+            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_policy_question(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
         end
       end

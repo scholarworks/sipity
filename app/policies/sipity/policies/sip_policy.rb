@@ -15,25 +15,25 @@ module Sipity
       attr_reader :permission_query_service, :original_entity
       private :permission_query_service, :original_entity
 
-      define_policy_question :show? do
+      define_action_to_authorize :show? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
-      define_policy_question :update? do
+      define_action_to_authorize :update? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
       end
 
-      define_policy_question :create? do
+      define_action_to_authorize :create? do
         return false unless user.present?
         return false if entity.persisted?
         true
       end
 
-      define_policy_question :destroy? do
+      define_action_to_authorize :destroy? do
         return false unless user.present?
         return false unless entity.persisted?
         permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
