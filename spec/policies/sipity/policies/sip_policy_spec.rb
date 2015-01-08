@@ -11,7 +11,7 @@ module Sipity
       it 'has a default permission query service' do
         policy = SipPolicy.new(user, sip)
         service = policy.send(:permission_query_service)
-        expect(service.call(user: user, entity: sip, roles: ['hello_world'])).to eq(false)
+        expect(service.call(user: user, entity: sip, acting_as: ['hello_world'])).to eq(false)
       end
 
       context 'for a non-authenticated user' do
@@ -36,7 +36,7 @@ module Sipity
           end
           before do
             allow(query_service).to receive(:call).
-              with(user: user, entity: sip, roles: [Models::Permission::CREATING_USER]).
+              with(user: user, entity: sip, acting_as: [Models::Permission::CREATING_USER]).
               and_return(is_creating_user)
           end
           context 'that was created by the user' do
@@ -61,8 +61,8 @@ module Sipity
       let(:user) { User.new(id: 1234) }
       let(:entity) { Models::Sip.new(id: 5678) }
       context '.resolve' do
-        it 'will use the scope_entities_for_user_and_roles_and_entity_type' do
-          allow(Queries::PermissionQueries).to receive(:scope_entities_for_user_and_roles_and_entity_type)
+        it 'will use the scope_entities_for_entity_type_and_user_acting_as' do
+          allow(Queries::PermissionQueries).to receive(:scope_entities_for_entity_type_and_user_acting_as)
           described_class.resolve(user: user)
         end
       end

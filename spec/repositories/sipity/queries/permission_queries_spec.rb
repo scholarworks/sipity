@@ -9,36 +9,36 @@ module Sipity
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:associated_by_group_user) { Sipity::Factories.create_user(email: 'group_associated@hotmail.com') }
         let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
-        let(:user_with_wrong_role) { Sipity::Factories.create_user(email: 'wrong_role@hotmail.com') }
+        let(:user_with_wrong_acting_as) { Sipity::Factories.create_user(email: 'wrong_acting_as@hotmail.com') }
         let(:associated_group) { Models::Group.create!(name: 'associated') }
-        let(:role) { 'arbitrary' }
-        let(:wrong_role) { 'wrong_role' }
+        let(:acting_as) { 'arbitrary' }
+        let(:wrong_acting_as) { 'wrong_acting_as' }
 
         before do
           # REVIEW: Should I be using Repository services?
           Models::GroupMembership.create!(group: associated_group, user: associated_by_group_user)
 
-          Models::Permission.create!(actor: user_with_wrong_role, role: wrong_role, entity: entity)
-          Models::Permission.create!(actor: associated_group, role: role, entity: entity)
-          Models::Permission.create!(actor: associated_user, role: role, entity: entity)
+          Models::Permission.create!(actor: user_with_wrong_acting_as, acting_as: wrong_acting_as, entity: entity)
+          Models::Permission.create!(actor: associated_group, acting_as: acting_as, entity: entity)
+          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
         end
 
         it 'will return emails from users directly associated with the entity' do
-          results = test_repository.emails_for_associated_users(roles: role, entity: entity)
+          results = test_repository.emails_for_associated_users(acting_as: acting_as, entity: entity)
           expect(results.sort).to eq(['associated@hotmail.com', 'group_associated@hotmail.com'])
         end
       end
 
-      context '#scope_entities_for_user_and_roles_and_entity_type' do
+      context '#scope_entities_for_entity_type_and_user_acting_as' do
         let(:user) { User.new(id: 1234) }
         let(:group) { Models::Group.new(id: 5678) }
         let(:entity) { Models::Sip.create! }
-        let(:role) { Models::Permission::CREATING_USER }
+        let(:acting_as) { Models::Permission::CREATING_USER }
         subject { test_repository }
 
-        it 'will return an empty result if there are no roles' do
-          Models::Permission.create!(entity: entity, actor: user, role: role)
-          expect(subject.scope_entities_for_user_and_roles_and_entity_type(user: user, roles: [], entity_type: entity.class)).
+        it 'will return an empty result if there are no acting_as' do
+          Models::Permission.create!(entity: entity, actor: user, acting_as: acting_as)
+          expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: [], entity_type: entity.class)).
             to_not include(entity)
         end
         it 'will return the entity for the creating user' do
@@ -46,13 +46,13 @@ module Sipity
           #   leverage.
           # TODO: I have knowledge of the applicable ROLE, this should be passed to the
           #   resolver.
-          Models::Permission.create!(entity: entity, actor: user, role: role)
-          expect(subject.scope_entities_for_user_and_roles_and_entity_type(user: user, roles: role, entity_type: entity.class)).
+          Models::Permission.create!(entity: entity, actor: user, acting_as: acting_as)
+          expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: acting_as, entity_type: entity.class)).
             to include(entity)
         end
 
         it 'will exclude the entity for a non creating user' do
-          expect(subject.scope_entities_for_user_and_roles_and_entity_type(user: user, roles: role, entity_type: entity.class)).
+          expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: acting_as, entity_type: entity.class)).
             to_not include(entity)
         end
 
@@ -62,14 +62,14 @@ module Sipity
           #   leverage.
           # TODO: I have knowledge of the applicable ROLE, this should be passed to the
           #   resolver.
-          Models::Permission.create!(entity: entity, actor: group, role: role)
-          expect(subject.scope_entities_for_user_and_roles_and_entity_type(user: user, roles: role, entity_type: entity.class)).
+          Models::Permission.create!(entity: entity, actor: group, acting_as: acting_as)
+          expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: acting_as, entity_type: entity.class)).
             to include(entity)
         end
 
         it 'will exclude the entity for which the user is not part of the group' do
-          Models::Permission.create!(entity: entity, actor: group, role: role)
-          expect(subject.scope_entities_for_user_and_roles_and_entity_type(user: user, roles: role, entity_type: entity.class)).
+          Models::Permission.create!(entity: entity, actor: group, acting_as: acting_as)
+          expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: acting_as, entity_type: entity.class)).
             to_not include(entity)
         end
       end

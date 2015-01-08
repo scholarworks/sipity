@@ -11,7 +11,7 @@ module Sipity
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
       #
-      # { state => { action_to_authorize => roles } }
+      # { state => { action_to_authorize => acting_as } }
       STATE_POLICY_QUESTION_ROLE_MAP =
       {
         'new' => {
@@ -38,7 +38,7 @@ module Sipity
       attr_reader :entity, :state_machine, :user, :repository
       private :entity, :state_machine, :user, :repository
 
-      def roles_for_action_to_authorize(action_to_authorize)
+      def authorized_acting_as_for_action(action_to_authorize)
         # @TODO - Catch invalid state look up
         STATE_POLICY_QUESTION_ROLE_MAP.fetch(entity.processing_state.to_s).fetch(action_to_authorize, [])
       rescue KeyError
@@ -60,17 +60,19 @@ module Sipity
       end
 
       def after_trigger_submit_for_review(_options)
-        repository.grant_groups_permission_to_entity_for_role!(entity: entity, roles: 'etd_reviewer')
+        repository.grant_groups_permission_to_entity_for_acting_as!(entity: entity, acting_as: 'etd_reviewer')
         repository.send_notification_for_entity_trigger(
-          notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user'
+          notification: "confirmation_of_entity_submitted_for_review", entity: entity, acting_as: 'creating_user'
         )
-        repository.send_notification_for_entity_trigger(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+        repository.send_notification_for_entity_trigger(
+          notification: "entity_ready_for_review", entity: entity, acting_as: 'etd_reviewer'
+        )
       end
 
       def after_trigger_request_revisions(options)
         comments = options.fetch(:comments)
         repository.send_notification_for_entity_trigger(
-          notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user', comments: comments
+          notification: "request_revisions_from_creator", entity: entity, acting_as: 'creating_user', comments: comments
         )
       end
 
@@ -83,12 +85,14 @@ module Sipity
       end
 
       def after_trigger_ingest_completed(options)
-        repository.grant_groups_permission_to_entity_for_role!(entity: entity, roles: 'cataloger')
+        repository.grant_groups_permission_to_entity_for_acting_as!(entity: entity, acting_as: 'cataloger')
         additional_emails = options.fetch(:additional_emails)
-        repository.send_notification_for_entity_trigger(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
+        repository.send_notification_for_entity_trigger(
+          notification: "entity_ready_for_cataloging", entity: entity, acting_as: 'cataloger'
+        )
         repository.send_notification_for_entity_trigger(
           notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
-          to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: additional_emails
+          acting_as: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: additional_emails
         )
       end
 

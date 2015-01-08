@@ -30,17 +30,17 @@ ActiveRecord::Schema.define(version: 20150108164454) do
   create_table "sipity_actor_for_permission_assignments", force: :cascade do |t|
     t.integer  "actor_id",   null: false
     t.string   "actor_type", null: false
-    t.string   "role",       null: false
+    t.string   "acting_as",  null: false
     t.string   "work_type",  null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  add_index "sipity_actor_for_permission_assignments", ["actor_id", "actor_type", "role", "work_type"], name: "sipity_actor_for_permission_assignments_composite", unique: true
+  add_index "sipity_actor_for_permission_assignments", ["acting_as", "work_type"], name: "sipity_actor_for_permission_assignments_by_acting_as_work_type"
+  add_index "sipity_actor_for_permission_assignments", ["acting_as"], name: "index_sipity_actor_for_permission_assignments_on_acting_as"
+  add_index "sipity_actor_for_permission_assignments", ["actor_id", "actor_type", "acting_as", "work_type"], name: "sipity_actor_for_permission_assignments_composite", unique: true
   add_index "sipity_actor_for_permission_assignments", ["actor_id"], name: "index_sipity_actor_for_permission_assignments_on_actor_id"
   add_index "sipity_actor_for_permission_assignments", ["actor_type"], name: "index_sipity_actor_for_permission_assignments_on_actor_type"
-  add_index "sipity_actor_for_permission_assignments", ["role", "work_type"], name: "sipity_actor_for_permission_assignments_by_role_work_type"
-  add_index "sipity_actor_for_permission_assignments", ["role"], name: "index_sipity_actor_for_permission_assignments_on_role"
 
   create_table "sipity_additional_attributes", force: :cascade do |t|
     t.integer  "sip_id",     null: false
@@ -117,21 +117,21 @@ ActiveRecord::Schema.define(version: 20150108164454) do
   create_table "sipity_permissions", id: false, force: :cascade do |t|
     t.integer  "actor_id",               null: false
     t.string   "actor_type",  limit: 64, null: false
+    t.string   "acting_as",   limit: 32, null: false
     t.integer  "entity_id",              null: false
     t.string   "entity_type", limit: 64, null: false
-    t.string   "role",        limit: 32, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
+  add_index "sipity_permissions", ["acting_as"], name: "index_sipity_permissions_on_acting_as"
+  add_index "sipity_permissions", ["actor_id", "actor_type", "acting_as"], name: "sipity_permissions_actor_acting_as"
   add_index "sipity_permissions", ["actor_id", "actor_type", "entity_id", "entity_type"], name: "sipity_permissions_actor_subject"
-  add_index "sipity_permissions", ["actor_id", "actor_type", "role"], name: "sipity_permissions_actor_role"
   add_index "sipity_permissions", ["actor_id"], name: "index_sipity_permissions_on_actor_id"
   add_index "sipity_permissions", ["actor_type"], name: "index_sipity_permissions_on_actor_type"
-  add_index "sipity_permissions", ["entity_id", "entity_type", "role"], name: "sipity_permissions_entity_role"
+  add_index "sipity_permissions", ["entity_id", "entity_type", "acting_as"], name: "sipity_permissions_entity_acting_as"
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
-  add_index "sipity_permissions", ["role"], name: "index_sipity_permissions_on_role"
 
   create_table "sipity_sips", force: :cascade do |t|
     t.string   "work_publication_strategy"
