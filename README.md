@@ -198,4 +198,5 @@ Pieces remaining to complete; This is a non-complete list:
 * Expose means for adding the requisite metadata to be an ETD
 * Expose available actions for a given user on a given object based on a given state
 * Deal with the permanent URL structure
+  * This involves adding redirects to CurateND once an object has been successfully ingested
 * Wire up a background job handler for Sipity (if this is needed?)
