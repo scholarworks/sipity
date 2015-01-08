@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby -wU
+#
+# $ git checkout master; ./script/team-progress
+
+as_of = 'yesterday'
+
+# Count the number of commits since yesterday; I want to include merges to
+# reflect that team members are reviewing code as well.
+commits_since_yesterday = `git log --since=#{as_of} --pretty=format:"%H" | wc -l`
+
+# Find the first SHA since yesterday
+shas_for_today = `git log --pretty=format:"%H" --since=#{as_of} --reverse`
+first_sha_since_as_of = shas_for_today.split("\n").first
+last_sha_since_as_of = shas_for_today.split("\n").last
+
+# ShortStat
+short_stat = `git diff --shortstat #{first_sha_since_as_of}..`
+
+puts "SHA Range:\t#{first_sha_since_as_of}..#{last_sha_since_as_of}"
+puts "Commits:\t#{commits_since_yesterday.strip}"
+puts "Changes:\t#{short_stat.strip}"
+puts "Github URL:\thttps://github.com/ndlib/sipity/compare/#{first_sha_since_as_of}...#{last_sha_since_as_of}"
