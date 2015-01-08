@@ -3,9 +3,11 @@ module Sipity
   module Commands
     # Commands
     module NotificationCommands
+      # Responsible for delivering notifications (i.e., email)
       # @param notification [String] Name of the notification
       # @param entity [String] The entity that is the "subject" of the notification
       # @param to_roles [Array<String>]
+      # @return [void]
       def send_notification_for_entity_trigger(notification:, entity:, to_roles:)
         # These instance variables are not needed; But to appeas Rubocop I'm
         # using them.
