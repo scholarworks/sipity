@@ -9,6 +9,17 @@ module Sipity
       end
       public :emails_for_associated_users
 
+      def permission_definitions
+        { 'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging' }
+      end
+      public :permission_definitions
+
+      def permission_for(acting_as:)
+        permission_definitions.fetch(acting_as)
+      end
+      public :permission_for
+
+
       # Responsible for returning a User scope:
       # That will include all users
       # That have one or more acting_as
