@@ -13,7 +13,7 @@ module Sipity
         @sip_policy = options.fetch(:sip_policy) { default_sip_policy }
       end
 
-      define_policy_question :submit? do
+      define_action_to_authorize :submit? do
         return false unless user.present?
         return false unless entity.sip.persisted?
         sip_policy.update?

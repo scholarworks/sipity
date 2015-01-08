@@ -6,14 +6,14 @@ module Sipity
     subject { described_class }
     let(:user) { double('User') }
     let(:policy_enforcer) { double('Policy Enforcer', call: true) }
-    let(:policy_question) { :show? }
+    let(:action_to_authorize) { :show? }
     let(:entity) { double('Entity', policy_enforcer: policy_enforcer) }
 
     context '#authorized_for?' do
       it 'will use the found policy_enforcer' do
         allow(subject).to receive(:find_policy_enforcer_for).with(entity: entity).and_return(policy_enforcer)
-        expect(policy_enforcer).to receive(:call).with(user: user, entity: entity, policy_question: policy_question)
-        subject.authorized_for?(user: user, policy_question: policy_question, entity: entity)
+        expect(policy_enforcer).to receive(:call).with(user: user, entity: entity, action_to_authorize: action_to_authorize)
+        subject.authorized_for?(user: user, action_to_authorize: action_to_authorize, entity: entity)
       end
     end
 

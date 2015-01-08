@@ -2,7 +2,7 @@ module Sipity
   module Policies
     # At its core a policy must implement the following API
     #
-    # * .call(user:, entity:, policy_question:)
+    # * .call(user:, entity:, action_to_authorize:)
     # * #initialize(user, entity)
     class BasePolicy
       # Exposed as a convenience method and the public interface into the Policy
@@ -10,25 +10,25 @@ module Sipity
       #
       # @param user [User]
       # @param entity [#persisted?]
-      # @param policy_question [Symbol] In the general case this will be :show?,
+      # @param action_to_authorize [Symbol] In the general case this will be :show?,
       #   :create?, :update?, or :destroy?; However in other cases that may not
       #   be the correct answer.
       #
       # @return [Boolean] If the user can take the action, then return true.
       #   otherwise return false.
-      def self.call(user:, entity:, policy_question:)
-        new(user, entity).public_send(policy_question)
+      def self.call(user:, entity:, action_to_authorize:)
+        new(user, entity).public_send(action_to_authorize)
       end
 
-      class_attribute :registered_policy_questions, instance_writer: false
-      self.registered_policy_questions = Set.new
-      private :registered_policy_questions, :registered_policy_questions?
+      class_attribute :registered_action_to_authorizes, instance_writer: false
+      self.registered_action_to_authorizes = Set.new
+      private :registered_action_to_authorizes, :registered_action_to_authorizes?
 
-      def self.define_policy_question(method_name, &block)
-        self.registered_policy_questions += [method_name]
+      def self.define_action_to_authorize(method_name, &block)
+        self.registered_action_to_authorizes += [method_name]
         define_method(method_name, &block)
       end
-      private_class_method :define_policy_question
+      private_class_method :define_action_to_authorize
 
       def initialize(user, entity)
         self.user = user
@@ -38,7 +38,7 @@ module Sipity
       private :user, :user=, :entity=, :entity
 
       def available_actions_by_policy
-        registered_policy_questions.each_with_object([]) do |question, mem|
+        registered_action_to_authorizes.each_with_object([]) do |question, mem|
           mem << question if public_send(question)
           mem
         end
