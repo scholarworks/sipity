@@ -45,4 +45,7 @@ When a User attempts to take an Action on an Entity (via a Runner), the Authoriz
   * This is done by querying to see if a Permission entry (i.e. Entity, Actor, Role) exists
 * If no permission, then an exception is raised; Otherwise control passes back to the Runner
 
+The action take may or may not be available to a given user based on the state of the given entity.
+See https://github.com/ndlib/sipity/blob/master/app/state_machines/sipity/state_machines/etd_student_submission.rb#L15-L31 for reference.
+
 **Note: Role is to Action as Group is to User. It also means that actions and roles are being hard coded. I would like to reduce this to just actions. For now the system works.**
