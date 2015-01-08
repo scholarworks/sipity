@@ -40,8 +40,19 @@ module Sipity
         }
       )
 
+      attr_reader :work_type
+
       def possible_work_publication_strategies
         self.class.work_publication_strategies
+      end
+
+      def work_type=(work_type)
+        fail ArgumentError unless Sip.work_types.key?(work_type)
+        @work_type = Sip.work_types.fetch(work_type)
+      end
+
+      def self.work_types
+        { 'ETD' => 'ETD' }
       end
     end
   end
