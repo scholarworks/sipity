@@ -51,7 +51,7 @@ module Sipity
             expect(Models::Sip.count).to eq(1)
             expect(response.additional_attributes.count).to eq(1)
             expect(Models::Collaborator.count).to eq(1)
-            expect(Models::Permission.where(actor: user, role: Models::Permission::CREATING_USER).count).to eq(1)
+            expect(Models::Permission.where(actor: user, acting_as: Models::Permission::CREATING_USER).count).to eq(1)
             expect(Models::EventLog.where(user: user, event_name: 'submit_create_sip_form').count).to eq(1)
           end
         end

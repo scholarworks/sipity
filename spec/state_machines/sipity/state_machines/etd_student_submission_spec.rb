@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          grant_groups_permission_to_entity_for_role!: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
+          grant_groups_permission_to_entity_for_acting_as!: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -20,125 +20,125 @@ module Sipity
         its(:repository) { should respond_to :log_event! }
         its(:repository) { should respond_to :update_processing_state! }
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
-        its(:repository) { should respond_to :grant_groups_permission_to_entity_for_role! }
+        its(:repository) { should respond_to :grant_groups_permission_to_entity_for_acting_as! }
         its(:repository) { should respond_to :send_notification_for_entity_trigger }
         its(:repository) { should respond_to :submit_ingest_etd }
       end
 
-      context '.roles_for_action_to_authorize' do
+      context '.authorized_acting_as_for_action' do
         let(:initial_processing_state) { 'unknown' }
         it 'will raise an exception if the processing_state is unknown' do
-          expect { subject.roles_for_action_to_authorize(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
+          expect { subject.authorized_acting_as_for_action(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
         end
         context 'for :new' do
           let(:initial_processing_state) { 'new' }
           it 'will allow :update? for [:creating_user, :advisor]' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq(['creating_user', 'advisor'])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq(['creating_user', 'advisor'])
           end
           it 'will allow :delete? for [:creating_user]' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq(['creating_user'])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq(['creating_user'])
           end
           it 'will allow :show? for [:creating_user, :advisor]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor'])
           end
           it 'will allow :submit_for_review? for [:creating_user]'do
-            expect(subject.roles_for_action_to_authorize(:submit_for_review?)).to eq(['creating_user'])
+            expect(subject.authorized_acting_as_for_action(:submit_for_review?)).to eq(['creating_user'])
           end
         end
 
         context 'for :under_review' do
           let(:initial_processing_state) { 'under_review' }
           it 'will allow :update? for [:etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq(['etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq(['etd_reviewer'])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :request_revisions? for [:etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:request_revisions?)).to eq(['etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:request_revisions?)).to eq(['etd_reviewer'])
           end
           it 'will allow :approve_for_ingest? for [:etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:approve_for_ingest?)).to eq(['etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:approve_for_ingest?)).to eq(['etd_reviewer'])
           end
         end
 
         context 'for :ready_for_ingest' do
           let(:initial_processing_state) { 'ready_for_ingest' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_action_to_authorize(:ingest?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:ingest?)).to eq([])
           end
         end
 
         context 'for :ingested' do
           let(:initial_processing_state) { 'ingested' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_action_to_authorize(:ingest_completed?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:ingest_completed?)).to eq([])
           end
         end
 
         context 'for :ready_for_cataloging' do
           let(:initial_processing_state) { 'ready_for_cataloging' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_action_to_authorize(:finish_cataloging?)).to eq(['cataloger'])
+            expect(subject.authorized_acting_as_for_action(:finish_cataloging?)).to eq(['cataloger'])
           end
         end
 
         context 'for :cataloged' do
           let(:initial_processing_state) { 'cataloged' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
           it 'will allow :ingest? for []' do
-            expect(subject.roles_for_action_to_authorize(:mark_as_done?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:mark_as_done?)).to eq([])
           end
         end
 
         context 'for :done' do
           let(:initial_processing_state) { 'done' }
           it 'will allow :update? for []' do
-            expect(subject.roles_for_action_to_authorize(:update?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
           it 'will allow :delete? for []' do
-            expect(subject.roles_for_action_to_authorize(:delete?)).to eq([])
+            expect(subject.authorized_acting_as_for_action(:delete?)).to eq([])
           end
           it 'will allow :show? for [:creating_user, :advisor, :etd_reviewer, :cataloger]' do
-            expect(subject.roles_for_action_to_authorize(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
+            expect(subject.authorized_acting_as_for_action(:show?)).to eq(['creating_user', 'advisor', 'etd_reviewer', 'cataloger'])
           end
         end
       end
@@ -154,15 +154,15 @@ module Sipity
           let(:event) { :submit_for_review }
           it 'will send an email notification to the grad school' do
             expect(repository).to have_received(:send_notification_for_entity_trigger).
-              with(notification: "entity_ready_for_review", entity: entity, to_roles: 'etd_reviewer')
+              with(notification: "entity_ready_for_review", entity: entity, acting_as: 'etd_reviewer')
           end
           it 'will send an email confirmation to the student with a URL to that item' do
             expect(repository).to have_received(:send_notification_for_entity_trigger).
-              with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, to_roles: 'creating_user')
+              with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, acting_as: 'creating_user')
           end
           it 'will add permission entries for the etd reviewers for the given ETD' do
-            expect(repository).to have_received(:grant_groups_permission_to_entity_for_role!).
-              with(entity: entity, roles: 'etd_reviewer')
+            expect(repository).to have_received(:grant_groups_permission_to_entity_for_acting_as!).
+              with(entity: entity, acting_as: 'etd_reviewer')
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
@@ -185,7 +185,7 @@ module Sipity
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments' do
             expect(repository).to(
               have_received(:send_notification_for_entity_trigger).with(
-                notification: "request_revisions_from_creator", entity: entity, to_roles: 'creating_user',
+                notification: "request_revisions_from_creator", entity: entity, acting_as: 'creating_user',
                 comments: options.fetch(:comments)
               )
             )
@@ -248,17 +248,17 @@ module Sipity
             expect(repository).to(
               have_received(:send_notification_for_entity_trigger).with(
                 notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
-                to_roles: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
+                acting_as: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
               )
             )
           end
           it 'will add permission entries for the catalog reviewers of the given ETD' do
-            expect(repository).to have_received(:grant_groups_permission_to_entity_for_role!).
-              with(entity: entity, roles: 'cataloger')
+            expect(repository).to have_received(:grant_groups_permission_to_entity_for_acting_as!).
+              with(entity: entity, acting_as: 'cataloger')
           end
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging' do
             expect(repository).to have_received(:send_notification_for_entity_trigger).
-              with(notification: "entity_ready_for_cataloging", entity: entity, to_roles: 'cataloger')
+              with(notification: "entity_ready_for_cataloging", entity: entity, acting_as: 'cataloger')
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).

@@ -18,13 +18,13 @@ module Sipity
       define_action_to_authorize :show? do
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
       end
 
       define_action_to_authorize :update? do
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
       end
 
       define_action_to_authorize :create? do
@@ -36,7 +36,7 @@ module Sipity
       define_action_to_authorize :destroy? do
         return false unless user.present?
         return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, roles: [Models::Permission::CREATING_USER])
+        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
       end
 
       private
@@ -45,7 +45,7 @@ module Sipity
       def default_permission_query_service
         lambda do |options|
           Models::Permission.
-            where(actor: options.fetch(:user), entity: options.fetch(:entity), role: options.fetch(:roles)).any?
+            where(actor: options.fetch(:user), entity: options.fetch(:entity), acting_as: options.fetch(:acting_as)).any?
         end
       end
 
@@ -54,26 +54,26 @@ module Sipity
       #
       # Responsible for answering the following:
       #
-      # Given a user and an array of permitted roles, what are all the entities
+      # Given a user and an array of how the user could be acting, what are all the entities
       # within the scope that I can "see"
       #
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Sip, permitted_roles: [Models::Permission::CREATING_USER])
-          new(user, scope, permitted_roles: permitted_roles).resolve
+        def self.resolve(user:, scope: Models::Sip, acting_as: [Models::Permission::CREATING_USER])
+          new(user, scope, acting_as: acting_as).resolve
         end
-        def initialize(user, scope = Models::Sip, permitted_roles: [Models::Permission::CREATING_USER])
+        def initialize(user, scope = Models::Sip, acting_as: [Models::Permission::CREATING_USER])
           @user = user
           @scope = scope
-          @permitted_roles = permitted_roles
+          @acting_as = acting_as
         end
-        attr_reader :user, :scope, :permitted_roles
-        private :user, :scope, :permitted_roles
+        attr_reader :user, :scope, :acting_as
+        private :user, :scope, :acting_as
 
         def resolve
-          Queries::PermissionQueries.scope_entities_for_user_and_roles_and_entity_type(
-            user: user, entity_type: scope, roles: permitted_roles
+          Queries::PermissionQueries.scope_entities_for_entity_type_and_user_acting_as(
+            user: user, entity_type: scope, acting_as: acting_as
           )
         end
       end

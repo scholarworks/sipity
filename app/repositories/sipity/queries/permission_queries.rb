@@ -4,27 +4,27 @@ module Sipity
     module PermissionQueries
       module_function
 
-      def emails_for_associated_users(roles:, entity:)
-        scope_users_by_entity_and_roles(roles: roles, entity: entity).pluck(:email)
+      def emails_for_associated_users(acting_as:, entity:)
+        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
       end
       public :emails_for_associated_users
 
       # Responsible for returning a User scope:
       # That will include all users
-      # That have one or more roles
+      # That have one or more acting_as
       # In which the user has a direction relation to the entity
       # Or in which a relation to the entity can be inferred by group membership
       #
-      # If no roles are given, no entities will be returned.
+      # If no acting_as are given, no entities will be returned.
       #
-      # @param roles [Array<String>]
+      # @param acting_as [Array<String>]
       # @param entity [ActiveRecord::Base]
       #
       # @return ActiveRecord::Relation
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_users_by_entity_and_roles(roles:, entity:)
+      def scope_users_by_entity_and_acting_as(acting_as:, entity:)
         user_table = User.arel_table
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
@@ -36,7 +36,7 @@ module Sipity
 
         subqyery_user_relation_entity = perm_table.project(perm_table[:actor_id]).where(
           perm_table[:actor_type].eq(user_polymorphic_type).
-          and(perm_table[:role].in(roles)).
+          and(perm_table[:acting_as].in(acting_as)).
           and(perm_table[:entity_type].eq(entity_polymorphic_type)).
           and(perm_table[:entity_id].eq(entity_id))
         )
@@ -45,7 +45,7 @@ module Sipity
           memb_table[:user_id].in(
             perm_table.project(perm_table[:actor_id]).where(
               perm_table[:actor_type].eq(group_polymorphic_type).
-              and(perm_table[:role].in(roles)).
+              and(perm_table[:acting_as].in(acting_as)).
               and(perm_table[:entity_type].eq(entity_polymorphic_type)).
               and(perm_table[:entity_id].eq(entity_id))
             )
@@ -56,23 +56,23 @@ module Sipity
           or(user_table[:id].in(subqyery_user_relation_entity))
         )
       end
-      public :scope_users_by_entity_and_roles
+      public :scope_users_by_entity_and_acting_as
 
       # Responsible for returning a scope for the entity type:
       # That match the given :entity_type
-      # And for which the given :user has at least one of the given :roles.
+      # And for which the given :user has at least one of the given :acting_as.
       #
-      # If no roles are given, no entities will be returned.
+      # If no acting_as are given, no entities will be returned.
       #
       # @param user [User]
-      # @param roles [Array<String>]
+      # @param acting_as [Array<String>]
       # @param entity_type [Class]
       #
       # @return ActiveRecord::Relation
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_entities_for_user_and_roles_and_entity_type(entity_type:, user:, roles:)
+      def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         actor_id = user.to_param
@@ -83,12 +83,12 @@ module Sipity
         subquery_entity_relation_to_user = perm_table.project(perm_table[:entity_id]).where(
           perm_table[:actor_id].eq(actor_id).
           and(perm_table[:actor_type].eq(user_polymorphic_type)).
-          and(perm_table[:role].in(roles)).
+          and(perm_table[:acting_as].in(acting_as)).
           and(perm_table[:entity_type].eq(entity_polymorphic_type))
         )
 
         subquery_entity_relation_to_user_by_group_membership = perm_table.project(perm_table[:entity_id]).where(
-          perm_table[:role].in(roles).
+          perm_table[:acting_as].in(acting_as).
           and(perm_table[:entity_type].eq(entity_polymorphic_type)).
           and(perm_table[:actor_type].eq(group_polymorphic_type)).
           and(perm_table[:actor_id].in(memb_table.project(memb_table[:group_id]).where(memb_table[:user_id].eq(actor_id))))
@@ -99,7 +99,7 @@ module Sipity
           or(entity_type.arel_table[:id].in(subquery_entity_relation_to_user_by_group_membership))
         )
       end
-      public :scope_entities_for_user_and_roles_and_entity_type
+      public :scope_entities_for_entity_type_and_user_acting_as
     end
   end
 end

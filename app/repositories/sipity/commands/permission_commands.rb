@@ -13,35 +13,37 @@ module Sipity
     module PermissionCommands
       module_function
 
-      # Responsible for finding the groups that are assigned the given role for
+      # Responsible for finding the groups that are assigned the given acting_as for
       # the given entity's sip type.
       #
-      # @raise Exception if for any of the given roles, no group could be found
-      def grant_groups_permission_to_entity_for_role!(entity:, roles:)
-        # TODO: Extract this map of roles to groups; Will we need roles by
+      # @raise Exception if for any of the given acting_as, no group could be found
+      def grant_groups_permission_to_entity_for_acting_as!(entity:, acting_as:)
+        # TODO: Extract this map of acting_as to groups; Will we need acting_as by
         #   sip type?
         map = { 'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging' }
-        Array.wrap(roles).each do |role|
-          group_names = map.fetch(role.to_s)
+        Array.wrap(acting_as).each do |an_acting_as|
+          group_names = map.fetch(an_acting_as.to_s)
           Array.wrap(group_names).each do |group_name|
             group = Models::Group.find_or_create_by!(name: group_name)
-            grant_permission_for!(entity: entity, role: role, actors: group)
+            grant_permission_for!(entity: entity, acting_as: an_acting_as, actors: group)
           end
         end
       end
-      public :grant_groups_permission_to_entity_for_role!
+      public :grant_groups_permission_to_entity_for_acting_as!
 
       def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
         # REVIEW: Does the constant even make sense on the data structure? Or
         #   is it more relevant here?
-        role = Models::Permission::CREATING_USER
+        acting_as = Models::Permission::CREATING_USER
         actors = [user, group, actor]
-        grant_permission_for!(entity: entity, actors: actors, role: role)
+        grant_permission_for!(entity: entity, actors: actors, acting_as: acting_as)
       end
       public :grant_creating_user_permission_for!
 
-      def grant_permission_for!(entity:, actors:, role:)
-        Array.wrap(actors).flatten.compact.each { |an_actor| Models::Permission.create!(entity: entity, actor: an_actor, role: role) }
+      def grant_permission_for!(entity:, actors:, acting_as:)
+        Array.wrap(actors).flatten.compact.each do |an_actor|
+          Models::Permission.create!(entity: entity, actor: an_actor, acting_as: acting_as)
+        end
       end
       private :grant_permission_for!
       private_class_method :grant_permission_for!
