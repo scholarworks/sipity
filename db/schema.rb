@@ -11,9 +11,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141218135709) do
+ActiveRecord::Schema.define(version: 20150108151201) do
 
-  create_table "sipity_account_placeholders", force: true do |t|
+  create_table "sipity_account_placeholders", force: :cascade do |t|
     t.string   "identifier",                                     null: false
     t.string   "name"
     t.string   "identifier_type", limit: 32,                     null: false
@@ -27,7 +27,22 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_account_placeholders", ["name"], name: "index_sipity_account_placeholders_on_name"
   add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state"
 
-  create_table "sipity_additional_attributes", force: true do |t|
+  create_table "sipity_actor_for_permission_assignments", force: :cascade do |t|
+    t.integer  "actor_id",   null: false
+    t.string   "actor_type", null: false
+    t.string   "role",       null: false
+    t.string   "work_type",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "sipity_actor_for_permission_assignments", ["actor_id", "actor_type", "role", "work_type"], name: "sipity_actor_for_permission_assignments_composite", unique: true
+  add_index "sipity_actor_for_permission_assignments", ["actor_id"], name: "index_sipity_actor_for_permission_assignments_on_actor_id"
+  add_index "sipity_actor_for_permission_assignments", ["actor_type"], name: "index_sipity_actor_for_permission_assignments_on_actor_type"
+  add_index "sipity_actor_for_permission_assignments", ["role", "work_type"], name: "sipity_actor_for_permission_assignments_by_role_work_type"
+  add_index "sipity_actor_for_permission_assignments", ["role"], name: "index_sipity_actor_for_permission_assignments_on_role"
+
+  create_table "sipity_additional_attributes", force: :cascade do |t|
     t.integer  "sip_id",     null: false
     t.string   "key",        null: false
     t.string   "value"
@@ -38,7 +53,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_additional_attributes", ["sip_id", "key"], name: "index_sipity_additional_attributes_on_sip_id_and_key"
   add_index "sipity_additional_attributes", ["sip_id"], name: "index_sipity_additional_attributes_on_sip_id"
 
-  create_table "sipity_collaborators", force: true do |t|
+  create_table "sipity_collaborators", force: :cascade do |t|
     t.integer  "sip_id",     null: false
     t.integer  "sequence"
     t.string   "name"
@@ -49,7 +64,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_collaborators", ["sip_id", "sequence"], name: "index_sipity_collaborators_on_sip_id_and_sequence"
 
-  create_table "sipity_doi_creation_requests", force: true do |t|
+  create_table "sipity_doi_creation_requests", force: :cascade do |t|
     t.integer  "sip_id",                                                 null: false
     t.string   "state",            default: "request_not_yet_submitted", null: false
     t.string   "response_message"
@@ -60,7 +75,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_doi_creation_requests", ["sip_id"], name: "index_sipity_doi_creation_requests_on_sip_id", unique: true
   add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state"
 
-  create_table "sipity_event_logs", force: true do |t|
+  create_table "sipity_event_logs", force: :cascade do |t|
     t.integer  "user_id",                null: false
     t.integer  "entity_id",              null: false
     t.string   "entity_type", limit: 64, null: false
@@ -72,11 +87,13 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_event_logs", ["created_at"], name: "index_sipity_event_logs_on_created_at"
   add_index "sipity_event_logs", ["entity_id", "entity_type", "event_name"], name: "sipity_event_logs_entity_event_name"
   add_index "sipity_event_logs", ["entity_id", "entity_type"], name: "sipity_event_logs_subject"
+  add_index "sipity_event_logs", ["event_name"], name: "index_sipity_event_logs_on_event_name"
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at"
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject"
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
+  add_index "sipity_event_logs", ["user_id"], name: "index_sipity_event_logs_on_user_id"
 
-  create_table "sipity_group_memberships", id: false, force: true do |t|
+  create_table "sipity_group_memberships", id: false, force: :cascade do |t|
     t.integer  "user_id",         null: false
     t.integer  "group_id",        null: false
     t.string   "membership_role", null: false
@@ -89,7 +106,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
   add_index "sipity_group_memberships", ["group_id"], name: "index_sipity_group_memberships_on_group_id"
   add_index "sipity_group_memberships", ["user_id"], name: "index_sipity_group_memberships_on_user_id"
 
-  create_table "sipity_groups", force: true do |t|
+  create_table "sipity_groups", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -97,7 +114,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true
 
-  create_table "sipity_permissions", id: false, force: true do |t|
+  create_table "sipity_permissions", id: false, force: :cascade do |t|
     t.integer  "actor_id",               null: false
     t.string   "actor_type",  limit: 64, null: false
     t.integer  "entity_id",              null: false
@@ -109,9 +126,14 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_permissions", ["actor_id", "actor_type", "entity_id", "entity_type"], name: "sipity_permissions_actor_subject"
   add_index "sipity_permissions", ["actor_id", "actor_type", "role"], name: "sipity_permissions_actor_role"
+  add_index "sipity_permissions", ["actor_id"], name: "index_sipity_permissions_on_actor_id"
+  add_index "sipity_permissions", ["actor_type"], name: "index_sipity_permissions_on_actor_type"
   add_index "sipity_permissions", ["entity_id", "entity_type", "role"], name: "sipity_permissions_entity_role"
+  add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
+  add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
+  add_index "sipity_permissions", ["role"], name: "index_sipity_permissions_on_role"
 
-  create_table "sipity_sips", force: true do |t|
+  create_table "sipity_sips", force: :cascade do |t|
     t.string   "work_publication_strategy"
     t.string   "title"
     t.datetime "created_at"
@@ -121,7 +143,7 @@ ActiveRecord::Schema.define(version: 20141218135709) do
 
   add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"
