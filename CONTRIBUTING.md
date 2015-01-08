@@ -1,4 +1,17 @@
+# I Don't Know What To Do
+
+If you are just joining the project, or are unclear what to do, how about helping with documentation?
+
+We are leveraging [inch-ci.org](http://inch-ci.org) to show us where we might be able to improve [our documentation](http://inch-ci.org/github/ndlib/sipity).
+
+* Find a line from [Sipity's Inch-CI build](http://inch-ci.org/github/ndlib/sipity)
+* Make a new branch
+* Follow the suggestions as you write the inline documentation
+* Run `$ yard` and open the `./doc/index.html` to review your changes
+* Submit a pull request; Don't forget to add a `[skip ci]` line to the git commit message
+
 # Run Guard During Development
+
 Guard will watch for changes in your code, run your tests in the background, and notify you of their success or failure.
 Run it with:
 ```console
