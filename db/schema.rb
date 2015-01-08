@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108151201) do
+ActiveRecord::Schema.define(version: 20150108164454) do
 
   create_table "sipity_account_placeholders", force: :cascade do |t|
     t.string   "identifier",                                     null: false
@@ -139,9 +139,11 @@ ActiveRecord::Schema.define(version: 20150108151201) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "processing_state",          limit: 64, default: "new", null: false
+    t.string   "work_type",                                            null: false
   end
 
   add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
+  add_index "sipity_sips", ["work_type"], name: "index_sipity_sips_on_work_type"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

@@ -5,8 +5,13 @@ module Sipity
     RSpec.describe Sip, type: :model do
       subject { Sip.new }
 
-      it { should respond_to :processing_state }
-      it { should respond_to :processing_state= }
+      context 'database columns' do
+        subject { Sip }
+        its(:column_names) { should include('processing_state') }
+        its(:column_names) { should include('work_type') }
+        its(:column_names) { should include('work_publication_strategy') }
+        its(:column_names) { should include('title') }
+      end
 
       context '.work_types' do
         it 'is a Hash of keys that equal their values' do
