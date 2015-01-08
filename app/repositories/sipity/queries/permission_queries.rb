@@ -19,7 +19,6 @@ module Sipity
       end
       public :permission_for
 
-
       # Responsible for returning a User scope:
       # That will include all users
       # That have one or more acting_as
