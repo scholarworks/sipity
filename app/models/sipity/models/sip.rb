@@ -26,6 +26,8 @@ module Sipity
       GOING_TO_PUBLISH = 'going_to_publish'.freeze
       DO_NOT_KNOW = 'do_not_know'.freeze
 
+      ETD_WORK_TYPE = 'ETD'.freeze
+
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While
       # this might make more sense from a storage standpoint, it is not as clear
@@ -37,22 +39,25 @@ module Sipity
           ALREADY_PUBLISHED => ALREADY_PUBLISHED,
           GOING_TO_PUBLISH => GOING_TO_PUBLISH,
           DO_NOT_KNOW => DO_NOT_KNOW
+        },
+        work_type:
+        {
+          ETD_WORK_TYPE => ETD_WORK_TYPE
         }
       )
-
-      attr_reader :work_type
 
       def possible_work_publication_strategies
         self.class.work_publication_strategies
       end
 
-      def work_type=(work_type)
-        fail ArgumentError unless Sip.work_types.key?(work_type)
-        @work_type = Sip.work_types.fetch(work_type)
-      end
+      after_initialize :set_default_work_type, if:  :new_record?
 
-      def self.work_types
-        { 'ETD' => 'ETD' }
+      private
+
+      def set_default_work_type
+        # HACK: Given that we are first working on the ETD submission, this
+        # is an acceptable hack. However, as we move forward, it may not be.
+        self.work_type ||= ETD_WORK_TYPE
       end
     end
   end
