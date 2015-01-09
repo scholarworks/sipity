@@ -21,7 +21,7 @@ module Sipity
         # TODO: Extract this map of acting_as to groups; Will we need acting_as by
         #   sip type?
         Array.wrap(acting_as).each do |an_acting_as|
-          group_names = Queries::PermissionQueries.permission_for(acting_as: an_acting_as.to_s)
+          group_names = Queries::PermissionQueries.group_names_for_entity_and_acting_as(acting_as: an_acting_as, entity: entity)
           Array.wrap(group_names).each do |group_name|
             group = Models::Group.find_or_create_by!(name: group_name)
             grant_permission_for!(entity: entity, acting_as: an_acting_as, actors: group)
