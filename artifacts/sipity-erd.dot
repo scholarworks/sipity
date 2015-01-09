@@ -3,7 +3,7 @@ digraph "G" {
     node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="Sipity ERD (Draft v3)"
+        label="Sipity ERD (Draft v4)"
         color="seashell3"
         style="filled"
         node[style=filled fillcolor=white color="seashell4"]
@@ -14,12 +14,12 @@ digraph "G" {
         group_membership[label="{ Group Membership | group | user | membership_role }"]
         sip[label="{ SIP | title | processing_state }"]
         event_log[label="{ EventLog | user | entity | event_name }"]
-        permission[label="{ Permission | actor | entity | role }"]
-        collaborators[label="{ Collaborators }"]
+        permission[label="{ Permission | actor | entity | acting_as }"]
+        collaborators[label="{ Collaborators | name | role }"]
         account_placeholder[label="{ AccountPlaceholder | identifier | identifier_type | state }"]
         doi_creation_request[label="{ DoiCreationRequest | sip | state }"]
         additional_attributes[label="{ AdditionalAttribute | sip | key | value }"]
-        ActorForPermissionAssignment[label="{ ActorForPermissionAssignment | actor | role | work_type }"]
+        ActorForPermissionAssignment[label="{ ActorForPermissionAssignment | actor | acting_as | work_type }"]
 
         user -> group_membership
         group_entity -> ActorForPermissionAssignment[label="as actor"]
