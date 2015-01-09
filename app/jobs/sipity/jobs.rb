@@ -10,17 +10,15 @@ module Sipity
   #
   # @see https://github.com/resque/resque Resque gem
   module Jobs
-    module_function
-
     # Herein lies the inflection point. If you want to run things
     # asynchronously, this is your place to make changes.
-    def submit(job_name, *args)
+    module_function def submit(job_name, *args)
       job = find_job_by_name(job_name)
       verify_primativeness_of!(*args)
       job.submit(*args)
     end
 
-    def find_job_by_name(job_name)
+    module_function def find_job_by_name(job_name)
       job_name_as_constant = job_name.to_s.classify
       if const_defined?(job_name_as_constant)
         const_get(job_name_as_constant)
@@ -30,7 +28,7 @@ module Sipity
     end
     private_class_method :find_job_by_name
 
-    def verify_primativeness_of!(*)
+    module_function def verify_primativeness_of!(*)
       # REVIEW: Would it make sense to verify that each of the args is a
       #   primative? Given that we could be passing this information through
       #   REDIS
