@@ -50,9 +50,8 @@ lines = []
 lines << "SHA Range:\t#{sha_for_commit_just_prior_to_range}..#{ending_sha_for_range}"
 lines << "Commits:\t#{commit_count_for_range}"
 lines << "Changes:\t#{short_stat.strip}"
-# if `yard` =~ (/^ (\d{1,3}(\.\d+%)) *documented$/i)
-#   lines << "Documented:\t#{$1}"
-# end
+match = /^ (?<doc_percentage>\d{1,3}(\.\d+%)) *documented$/i.match(`yard`)
+lines << "Documented:\t#{match[:doc_percentage]}" if match
 lines << "Github URL:\thttps://github.com/ndlib/sipity/compare/#{sha_for_commit_just_prior_to_range}...#{ending_sha_for_range}"
 
 puts lines.join("\n")
