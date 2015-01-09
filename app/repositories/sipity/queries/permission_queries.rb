@@ -2,19 +2,17 @@ module Sipity
   module Queries
     # Queries
     module PermissionQueries
-      module_function
-
       ACTING_AS_TO_GROUP_NAME = {
         'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging'
       }.freeze
 
-      def group_names_for_entity_and_acting_as(options = {})
+      module_function def group_names_for_entity_and_acting_as(options = {})
         acting_as = options.fetch(:acting_as)
         Array.wrap(ACTING_AS_TO_GROUP_NAME.fetch(acting_as))
       end
       public :group_names_for_entity_and_acting_as
 
-      def emails_for_associated_users(acting_as:, entity:)
+      module_function def emails_for_associated_users(acting_as:, entity:)
         scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
       end
       public :emails_for_associated_users
@@ -34,7 +32,7 @@ module Sipity
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_users_by_entity_and_acting_as(acting_as:, entity:)
+      module_function def scope_users_by_entity_and_acting_as(acting_as:, entity:)
         user_table = User.arel_table
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
@@ -82,7 +80,7 @@ module Sipity
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
+      module_function def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         actor_id = user.to_param

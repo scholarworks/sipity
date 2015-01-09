@@ -23,14 +23,12 @@ module Sipity
   # @see [Elabs' Pundit gem](http://github.com/elabs/pundit) for
   #   further explanation of Policy and Scope objects.
   module Policies
-    module_function
-
-    def authorized_for?(user:, action_to_authorize:, entity:)
+    module_function def authorized_for?(user:, action_to_authorize:, entity:)
       policy_enforcer = find_policy_enforcer_for(entity: entity)
       policy_enforcer.call(user: user, entity: entity, action_to_authorize: action_to_authorize)
     end
 
-    def find_policy_enforcer_for(entity:)
+    module_function def find_policy_enforcer_for(entity:)
       return entity.policy_enforcer if entity.respond_to?(:policy_enforcer) && entity.policy_enforcer.present?
       policy_name_as_constant = "#{entity.class.to_s.demodulize}Policy"
       if const_defined?(policy_name_as_constant)
