@@ -1,22 +1,58 @@
 #!/usr/bin/env ruby -wU
+
+# ******************************************************************************
 #
-# $ git checkout master; ./script/team-progress
+# CONFIGURATION OPTIONS
+#
+# ******************************************************************************
 
-as_of = 'yesterday'
+CONFIG_KEYS = [:AFTER, :BEFORE].freeze
 
-# Count the number of commits since yesterday; I want to include merges to
-# reflect that team members are reviewing code as well.
-commits_since_yesterday = `git log --since=#{as_of} --pretty=format:"%H" | wc -l`
+AFTER = ENV.fetch('AFTER', '12am')
+BEFORE = ENV.fetch('BEFORE', 'tomorrow')
 
-# Find the first SHA since yesterday
-shas_for_today = `git log --pretty=format:"%H" --since=#{as_of} --reverse`
-first_sha_since_as_of = shas_for_today.split("\n").first
-last_sha_since_as_of = shas_for_today.split("\n").last
+# ******************************************************************************
+#
+# HELP OPTIONS
+#
+# ******************************************************************************
+
+if ARGV.grep(/-h/i).size == 1
+  $stdout.puts ""
+  $stdout.puts "$ ./script/#{File.basename(__FILE__)}"
+  $stdout.puts ""
+  $stdout.puts "This script will generate stats regarding team progress."
+  $stdout.puts ""
+  $stdout.puts ""
+  $stdout.puts "Current Configuration:"
+  CONFIG_KEYS.each do |key|
+    $stdout.puts "\t#{key}='#{Object.const_get(key)}'"
+  end
+  $stdout.puts ""
+  $stdout.puts "You can override the configuration option by adding the corresponding"
+  $stdout.puts "ENV variable."
+  exit(0)
+end
+
+# Find the range of sha's, I'm choosing reverse so the .first and .last make
+# more logical sense.
+sha_range = `git log --pretty=format:"%H" --after=#{AFTER} --before=#{BEFORE} --reverse`
+commit_count_for_range = sha_range.split("\n").count
+beginning_sha_for_range = sha_range.split("\n").first
+sha_for_commit_just_prior_to_range = `git rev-parse #{beginning_sha_for_range}~`.strip
+ending_sha_for_range = sha_range.split("\n").last
 
 # ShortStat
-short_stat = `git diff --shortstat #{first_sha_since_as_of}..`
+short_stat = `git diff --shortstat #{sha_for_commit_just_prior_to_range}..#{ending_sha_for_range}`
 
-puts "SHA Range:\t#{first_sha_since_as_of}..#{last_sha_since_as_of}"
-puts "Commits:\t#{commits_since_yesterday.strip}"
-puts "Changes:\t#{short_stat.strip}"
-puts "Github URL:\thttps://github.com/ndlib/sipity/compare/#{first_sha_since_as_of}...#{last_sha_since_as_of}"
+lines = []
+
+lines << "SHA Range:\t#{sha_for_commit_just_prior_to_range}..#{ending_sha_for_range}"
+lines << "Commits:\t#{commit_count_for_range}"
+lines << "Changes:\t#{short_stat.strip}"
+# if `yard` =~ (/^ (\d{1,3}(\.\d+%)) *documented$/i)
+#   lines << "Documented:\t#{$1}"
+# end
+lines << "Github URL:\thttps://github.com/ndlib/sipity/compare/#{sha_for_commit_just_prior_to_range}...#{ending_sha_for_range}"
+
+puts lines.join("\n")
