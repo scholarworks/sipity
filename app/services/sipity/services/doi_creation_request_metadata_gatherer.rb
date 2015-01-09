@@ -60,9 +60,10 @@ module Sipity
         @publication_year ||= begin
           repository.sip_attribute_values_for(
             sip: sip, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME
-          ).map { |publication_date| Conversions::ConvertToYear.call(publication_date).to_s }.join(", ")
+          ).map { |publication_date| convert_to_year(publication_date).to_s }.join(", ")
         end
       end
+      include Conversions::ConvertToYear
 
       def default_repository
         Repository.new
