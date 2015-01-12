@@ -1,12 +1,12 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
-  <%= model.fieldset_for('title') do %>
+  <%= model.with_form_card('title') do %>
     <%= f.input :title %>
   <% end %>
-  <%= model.fieldset_for('work_publication_strategy') do %>
+  <%= model.with_form_card('work_publication_strategy') do %>
     <%= render 'form_for_work_publication_strategy', { f: f } %>
   <% end %>
-  <%= model.fieldset_for('actions') do %>
+  <%= model.with_form_card('actions') do %>
     <%= f.submit %>
   <% end %>
 <% end %>

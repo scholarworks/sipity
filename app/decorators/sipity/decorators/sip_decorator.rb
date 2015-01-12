@@ -15,6 +15,7 @@ module Sipity
           yield
         end
       end
+      alias_method :with_form_card, :fieldset_for
 
       def to_s
         title
