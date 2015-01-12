@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150108164454) do
+ActiveRecord::Schema.define(version: 20150112142919) do
 
   create_table "sipity_account_placeholders", force: :cascade do |t|
     t.string   "identifier",                                     null: false
@@ -52,6 +52,19 @@ ActiveRecord::Schema.define(version: 20150108164454) do
 
   add_index "sipity_additional_attributes", ["sip_id", "key"], name: "index_sipity_additional_attributes_on_sip_id_and_key"
   add_index "sipity_additional_attributes", ["sip_id"], name: "index_sipity_additional_attributes_on_sip_id"
+
+  create_table "sipity_attachments", id: false, force: :cascade do |t|
+    t.integer  "sip_id",         null: false
+    t.string   "pid"
+    t.string   "predicate_name", null: false
+    t.string   "file_uid",       null: false
+    t.string   "file_name",      null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "sipity_attachments", ["pid"], name: "index_sipity_attachments_on_pid", unique: true
+  add_index "sipity_attachments", ["sip_id"], name: "index_sipity_attachments_on_sip_id"
 
   create_table "sipity_collaborators", force: :cascade do |t|
     t.integer  "sip_id",     null: false

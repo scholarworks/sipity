@@ -11,6 +11,7 @@ module Sipity
 
       has_many :collaborators, foreign_key: :sip_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :sip_id, dependent: :destroy
+      has_many :attachments, foreign_key: :sip_id, dependent: :destroy
       has_one :doi_creation_request, foreign_key: :sip_id, dependent: :destroy
 
       # REVIEW: Do I really want to deal with nested attributes such as these?
