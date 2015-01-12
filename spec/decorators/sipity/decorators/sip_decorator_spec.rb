@@ -15,9 +15,9 @@ module Sipity
         end
       end
 
-      context '.fieldset_for' do
+      context '.with_form_card' do
         it 'wrap the results of the block inside a fieldset tag' do
-          expect(subject.fieldset_for('attributes') { 'hello' }).to match(/\A<fieldset.*legend>hello<\/fieldset>/)
+          expect(subject.with_form_card('attributes') { 'hello' }).to match(/\A<fieldset.*legend>hello<\/fieldset>/)
         end
       end
 
