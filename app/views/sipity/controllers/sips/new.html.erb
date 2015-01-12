@@ -1,16 +1,12 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
-  <%= model.fieldset_for('attributes') do %>
+  <%= model.with_form_panel('attributes') do %>
     <%= f.input :title %>
-    <%= render 'form_for_work_publication_strategy', { f: f } %>
   <% end %>
-  <%= model.fieldset_for('collaborators') do %>
-    <%= f.fields_for :collaborators do |collaborator_form| %>
-      <%= collaborator_form.input :name %>
-      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
-    <% end %>
+  <%= model.with_form_panel('work_publication_strategy') do %>
+    <%= f.input :work_publication_strategy, as: :radio_buttons, collection: model.work_publication_strategies_for_select %>
   <% end %>
-  <%= model.fieldset_for('actions') do %>
+  <%= model.with_form_panel('actions') do %>
     <%= f.submit %>
   <% end %>
 <% end %>

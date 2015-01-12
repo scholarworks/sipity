@@ -8,12 +8,10 @@ module Sipity
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
 
-      def fieldset_for(name)
+      def with_form_panel(name, &block)
         # TODO: Translate name following active record internationalization
         # conventions.
-        h.field_set_tag(name, class: h.dom_class(object, name)) do
-          yield
-        end
+        h.render(layout: 'sipity/form_panel', locals: { name: name, object: self }, &block)
       end
 
       def to_s
@@ -43,6 +41,10 @@ module Sipity
             html_options: { 'class' => 'btn btn-primary action-edit' }
           )
         ]
+      end
+
+      def work_publication_strategies_for_select
+        self.class.object_class.work_publication_strategies.map { |elem| elem.first.to_sym }
       end
 
       private

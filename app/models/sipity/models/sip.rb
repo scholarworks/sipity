@@ -14,14 +14,6 @@ module Sipity
       has_many :attachments, foreign_key: :sip_id, dependent: :destroy
       has_one :doi_creation_request, foreign_key: :sip_id, dependent: :destroy
 
-      # REVIEW: Do I really want to deal with nested attributes such as these?
-      #   It smells suspicious.
-      accepts_nested_attributes_for(
-        :collaborators,
-        allow_destroy: true,
-        reject_if: ->(collaborator_attributes) { collaborator_attributes['name'].blank? }
-      )
-
       ALREADY_PUBLISHED = 'already_published'.freeze
       WILL_NOT_PUBLISH = 'will_not_publish'.freeze
       GOING_TO_PUBLISH = 'going_to_publish'.freeze
@@ -46,10 +38,6 @@ module Sipity
           ETD_WORK_TYPE => ETD_WORK_TYPE
         }
       )
-
-      def possible_work_publication_strategies
-        self.class.work_publication_strategies
-      end
 
       after_initialize :set_default_work_type, if:  :new_record?
 
