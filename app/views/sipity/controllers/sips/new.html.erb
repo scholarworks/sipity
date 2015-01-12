@@ -1,13 +1,12 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
-  <%= model.with_form_card('title') do %>
-    <%# Note: DO NOT RENDER THIS TO THE BUFFER use <% instead of <%= %>
+  <%= model.with_form_panel('attributes') do %>
     <%= f.input :title %>
   <% end %>
-  <%= model.with_form_card('work_publication_strategy') do %>
+  <%= model.with_form_panel('work_publication_strategy') do %>
     <%= render 'form_for_work_publication_strategy', { f: f } %>
   <% end %>
-  <%= model.with_form_card('actions') do %>
+  <%= model.with_form_panel('actions') do %>
     <%= f.submit %>
   <% end %>
 <% end %>

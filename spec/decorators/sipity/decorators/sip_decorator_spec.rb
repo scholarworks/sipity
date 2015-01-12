@@ -15,12 +15,12 @@ module Sipity
         end
       end
 
-      context '.with_form_card' do
+      context '.with_form_panel' do
         it 'wrap the results of the block inside a panel' do
-          rendered = subject.with_form_card('attributes') { 'hello' }
-          expect(rendered).to have_tag('.card') do
-            with_tag('.card-heading .card-title')
-            with_tag('.card-body', text: /hello/)
+          rendered = subject.with_form_panel('attributes') { 'hello' }
+          expect(rendered).to have_tag('.panel') do
+            with_tag('.panel-heading .panel-title')
+            with_tag('.panel-body', text: /hello/)
           end
         end
       end
