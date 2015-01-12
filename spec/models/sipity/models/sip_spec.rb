@@ -30,8 +30,6 @@ module Sipity
         end
       end
 
-      its(:possible_work_publication_strategies) { should eq(subject.class.work_publication_strategies) }
-
       context '.work_publication_strategies' do
         it 'is a Hash of keys that equal their values' do
           expect(Sip.work_publication_strategies.keys).

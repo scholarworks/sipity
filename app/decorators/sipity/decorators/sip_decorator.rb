@@ -43,6 +43,10 @@ module Sipity
         ]
       end
 
+      def work_publication_strategies_for_select
+        self.class.object_class.work_publication_strategies.map { |elem| elem.first.to_sym }
+      end
+
       private
 
       def recommendation_for(name)

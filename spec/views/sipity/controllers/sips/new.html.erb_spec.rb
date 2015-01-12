@@ -11,7 +11,7 @@ RSpec.describe 'sipity/controllers/sips/new.html.erb', type: :view do
         with_tag('input', with: { name: 'sip[title]' })
       end
       with_tag('fieldset.work_publication_strategy_sip') do
-        model.possible_work_publication_strategies.each do |name, _index|
+        model.work_publication_strategies_for_select.each do |name|
           with_tag('input', with: { name: 'sip[work_publication_strategy]', value: name })
         end
       end

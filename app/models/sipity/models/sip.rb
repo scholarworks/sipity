@@ -38,10 +38,6 @@ module Sipity
         }
       )
 
-      def possible_work_publication_strategies
-        self.class.work_publication_strategies
-      end
-
       after_initialize :set_default_work_type, if:  :new_record?
 
       private
