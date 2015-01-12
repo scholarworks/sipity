@@ -16,8 +16,12 @@ module Sipity
       end
 
       context '.with_form_card' do
-        it 'wrap the results of the block inside a fieldset tag' do
-          expect(subject.with_form_card('attributes') { 'hello' }).to match(/\A<fieldset.*legend>hello<\/fieldset>/)
+        it 'wrap the results of the block inside a panel' do
+          rendered = subject.with_form_card('attributes') { 'hello' }
+          expect(rendered).to have_tag('.card') do
+            with_tag('.card-heading .card-title')
+            with_tag('.card-body', text: /hello/)
+          end
         end
       end
 

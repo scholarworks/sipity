@@ -8,12 +8,10 @@ module Sipity
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
 
-      def with_form_card(name)
+      def with_form_card(name, &block)
         # TODO: Translate name following active record internationalization
         # conventions.
-        h.field_set_tag(name, class: h.dom_class(object, name)) do
-          yield
-        end
+        h.render('sipity/form_card', name: name, object: self, content: block)
       end
 
       def to_s

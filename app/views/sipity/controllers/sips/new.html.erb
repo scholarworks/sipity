@@ -1,6 +1,7 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
   <%= model.with_form_card('title') do %>
+    <%# Note: DO NOT RENDER THIS TO THE BUFFER use <% instead of <%= %>
     <%= f.input :title %>
   <% end %>
   <%= model.with_form_card('work_publication_strategy') do %>
