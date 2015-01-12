@@ -19,6 +19,7 @@ gem 'draper', '~> 1.4'
 gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
 gem 'ezid-client', github: 'duke-libraries/ezid-client'
 gem 'micromachine', github: 'jeremyf/micromachine' # Ensuring code continues to exist
+gem 'dragonfly', '~> 1.0.7'
 
 group :doc do
   gem 'yard', require: false

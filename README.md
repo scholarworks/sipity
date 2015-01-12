@@ -200,3 +200,4 @@ Pieces remaining to complete; This is a non-complete list:
 * Deal with the permanent URL structure
   * This involves adding redirects to CurateND once an object has been successfully ingested
 * Wire up a background job handler for Sipity (if this is needed?)
+* Handle file attachments
