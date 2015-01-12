@@ -48,6 +48,11 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
+      it 'has many :attachments' do
+        expect(Sip.reflect_on_association(:attachments)).
+          to be_a(ActiveRecord::Reflection::AssociationReflection)
+      end
+
       it 'has one :doi_creation_request' do
         expect(Sip.reflect_on_association(:doi_creation_request)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
