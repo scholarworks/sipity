@@ -4,12 +4,6 @@
     <%= f.input :title %>
     <%= render 'form_for_work_publication_strategy', { f: f } %>
   <% end %>
-  <%= model.fieldset_for('collaborators') do %>
-    <%= f.fields_for :collaborators do |collaborator_form| %>
-      <%= collaborator_form.input :name %>
-      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
-    <% end %>
-  <% end %>
   <%= model.fieldset_for('actions') do %>
     <%= f.submit %>
   <% end %>

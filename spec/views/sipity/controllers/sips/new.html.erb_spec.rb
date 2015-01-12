@@ -13,10 +13,6 @@ RSpec.describe 'sipity/controllers/sips/new.html.erb', type: :view do
           with_tag('input', with: { name: 'sip[work_publication_strategy]', value: name })
         end
       end
-      with_tag('fieldset.collaborators_sip') do
-        with_tag('input', with: { name: 'sip[collaborators_attributes][0][name]' })
-        with_tag('select', with: { name: 'sip[collaborators_attributes][0][role]' })
-      end
       with_tag('fieldset.attributes_sip') do
         with_tag('input', with: { type: 'submit' })
       end
