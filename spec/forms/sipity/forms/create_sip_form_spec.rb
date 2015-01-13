@@ -11,11 +11,27 @@ module Sipity
         expect(described_class.model_name).to be_a(ActiveModel::Name)
       end
 
+      it 'will have a default #access_rights_answer' do
+        expect(described_class.new.access_rights_answer).to be_present
+      end
+
       context 'validations for' do
         context '#title' do
           it 'must be present' do
             subject.valid?
             expect(subject.errors[:title]).to be_present
+          end
+        end
+        context '#access_rights_answer' do
+          it 'must be present' do
+            subject.access_rights_answer = nil
+            subject.valid?
+            expect(subject.errors[:access_rights_answer]).to be_present
+          end
+          it 'must be in the given list' do
+            subject.access_rights_answer = '__not_found__'
+            subject.valid?
+            expect(subject.errors[:access_rights_answer]).to be_present
           end
         end
         context '#work_type' do
