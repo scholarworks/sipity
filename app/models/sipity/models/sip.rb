@@ -14,6 +14,7 @@ module Sipity
       has_many :attachments, foreign_key: :sip_id, dependent: :destroy
       has_one :doi_creation_request, foreign_key: :sip_id, dependent: :destroy
 
+      # TODO: Extract to TransientAnswer
       ALREADY_PUBLISHED = 'already_published'.freeze
       WILL_NOT_PUBLISH = 'will_not_publish'.freeze
       GOING_TO_PUBLISH = 'going_to_publish'.freeze
