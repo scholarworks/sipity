@@ -15,8 +15,18 @@ module Sipity
         expect(described_class.new.access_rights_answer).to be_present
       end
 
-      it 'will have #access_rights_answer_for_select that are symbols for translation' do
-        expect(described_class.new.access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }).to be_truthy
+      context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
+        it 'will have #access_rights_answer_for_select' do
+          expect(described_class.new.access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }).to be_truthy
+        end
+
+        it 'will have #work_publication_strategies_for_select' do
+          expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
+        end
+
+        it 'will have #work_types_for_select' do
+          expect(subject.work_types_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
+        end
       end
 
       context 'validations for' do
@@ -66,6 +76,7 @@ module Sipity
             expect(subject.errors[:publication_date]).to_not be_present
           end
         end
+
       end
     end
   end

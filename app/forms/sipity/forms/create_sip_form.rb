@@ -33,6 +33,14 @@ module Sipity
         possible_access_right_answers.map(&:to_sym)
       end
 
+      def work_publication_strategies_for_select
+        possible_work_publication_strategies.map { |elem| elem.first.to_sym }
+      end
+
+      def work_types_for_select
+        possible_work_types.map { |elem| elem.first.to_sym }
+      end
+
       private
 
       def possible_work_types
@@ -45,7 +53,7 @@ module Sipity
 
       def possible_access_right_answers
         # TODO: This is a rather invasive question
-        @possible_access_right_answers ||= Models::TransientAnswer::ANSWERS.fetch(Models::TransientAnswer::ACCESS_RIGHTS_QUESTION)
+        Models::TransientAnswer::ANSWERS.fetch(Models::TransientAnswer::ACCESS_RIGHTS_QUESTION)
       end
 
       def publication_date_required?

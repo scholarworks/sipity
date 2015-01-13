@@ -29,18 +29,6 @@ module Sipity
         expect(SipDecorator.object_class).to eq(Models::Sip)
       end
 
-      context '#work_publication_strategies_for_select' do
-        it 'will be an array of symbols to enable simple form internationalization' do
-          expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
-        end
-      end
-
-      context '#work_types_for_select' do
-        it 'will be an array of symbols to enable simple form internationalization' do
-          expect(subject.work_types_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
-        end
-      end
-
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
         allow(Queries::CollaboratorQueries).to receive(:sip_collaborators_for).
