@@ -4,7 +4,7 @@ module Sipity
   module Jobs
     RSpec.describe DoiCreationRequestJob do
       let(:doi_creation_request) { Models::DoiCreationRequest.new(work: work) }
-      let(:work) { Models::Sip.new(id: 1, title: 'Hello') }
+      let(:work) { Models::Work.new(id: 1, title: 'Hello') }
       let(:minter) { double('Minter') }
       let(:repository) { Repository.new }
       let(:response) { double(id: 'doi:oh-my') }

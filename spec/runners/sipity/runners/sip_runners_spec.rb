@@ -139,7 +139,7 @@ module Sipity
       end
 
       RSpec.describe Edit do
-        let(:work) { Models::Sip.new(id: '123', title: 'My Title') }
+        let(:work) { Models::Work.new(id: '123', title: 'My Title') }
         let(:form) { double('Form') }
         let(:context) { TestRunnerContext.new(find_work: work, build_update_work_form: form) }
         let(:handler) { double(invoked: true) }

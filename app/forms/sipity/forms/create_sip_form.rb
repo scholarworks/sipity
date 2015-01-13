@@ -6,7 +6,7 @@ module Sipity
       self.policy_enforcer = Policies::SipPolicy
 
       def self.model_name
-        Models::Sip.model_name
+        Models::Work.model_name
       end
 
       def initialize(attributes = {})
@@ -44,11 +44,11 @@ module Sipity
       private
 
       def possible_work_types
-        Models::Sip.work_types
+        Models::Work.work_types
       end
 
       def possible_work_publication_strategies
-        Models::Sip.work_publication_strategies
+        Models::Work.work_publication_strategies
       end
 
       def possible_access_right_answers

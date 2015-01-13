@@ -4,7 +4,7 @@ module Sipity
     module SipQueries
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
       def find_work(work_id)
-        Models::Sip.find(work_id)
+        Models::Work.find(work_id)
       end
 
       # @todo Is this the right place for this? Should there a permanency layer?

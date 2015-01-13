@@ -14,8 +14,8 @@ module Sipity
       its(:policy_enforcer) { should eq Policies::EnrichSipByFormSubmissionPolicy }
       its(:to_model) { should eq(work) }
 
-      it 'will have a model_name that is the same as the Models::Sip.model_name' do
-        expect(described_class.model_name).to eq(Models::Sip.model_name)
+      it 'will have a model_name that is the same as the Models::Work.model_name' do
+        expect(described_class.model_name).to eq(Models::Work.model_name)
       end
 
       context 'exposing an attribute_name that is an already defined method' do

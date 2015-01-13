@@ -23,7 +23,7 @@ module Sipity
       end
 
       it "will lookup one by convention" do
-        work = Models::Sip.new
+        work = Models::Work.new
         expect(subject.find_policy_enforcer_for(entity: work)).to eq(Policies::SipPolicy)
       end
 

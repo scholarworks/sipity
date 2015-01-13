@@ -11,7 +11,7 @@ module Sipity
         ActionMailer::Base.deliveries.clear
       end
       context '#confirmation_of_entity_submitted_for_review' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.confirmation_of_entity_submitted_for_review(entity: entity, to: to).deliver_now
@@ -20,7 +20,7 @@ module Sipity
         end
       end
       context '#request_revisions_from_creator' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.request_revisions_from_creator(entity: entity, to: to).deliver_now
@@ -29,7 +29,7 @@ module Sipity
         end
       end
       context '#entity_ready_for_review' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_review(entity: entity, to: to).deliver_now
@@ -38,7 +38,7 @@ module Sipity
         end
       end
       context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
@@ -47,7 +47,7 @@ module Sipity
         end
       end
       context '#confirmation_of_entity_approved_for_ingest' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.confirmation_of_entity_approved_for_ingest(entity: entity, to: to).deliver_now
@@ -56,7 +56,7 @@ module Sipity
         end
       end
       context '#request_revisions_from_creator' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.request_revisions_from_creator(entity: entity, to: to).deliver_now
@@ -65,7 +65,7 @@ module Sipity
         end
       end
       context '#entity_ready_for_review' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_review(entity: entity, to: to).deliver_now
@@ -74,7 +74,7 @@ module Sipity
         end
       end
       context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
@@ -83,7 +83,7 @@ module Sipity
         end
       end
       context '#confirmation_of_entity_approved_for_ingest' do
-        let(:entity) { Models::Sip.new }
+        let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.confirmation_of_entity_approved_for_ingest(entity: entity, to: to).deliver_now

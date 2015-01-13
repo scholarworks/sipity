@@ -8,7 +8,7 @@ module Sipity
       # Because of enum enforcement I need real key names
       let(:key) { Models::AdditionalAttribute::CITATION_PREDICATE_NAME }
       let(:key_2) { Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME }
-      let(:work) { Models::Sip.new(id: '123') }
+      let(:work) { Models::Work.new(id: '123') }
 
       subject { test_repository }
 

@@ -38,7 +38,7 @@ module Sipity
         end
 
         it "will return an ActiveRecord::Base object's base_class" do
-          object = Models::Sip.new
+          object = Models::Work.new
           expect(convert_to_polymorphic_type(object)).to eq(Models::Sip)
         end
 

@@ -4,9 +4,9 @@ module Sipity
   module Policies
     RSpec.describe EnrichSipByFormSubmissionPolicy do
       let(:user) { User.new(id: '1') }
-      let(:work) { Models::Sip.new(id: '2') }
+      let(:work) { Models::Work.new(id: '2') }
       let(:entity) { double(work: work) }
-      let(:work_policy) { double('Sip Policy') }
+      let(:work_policy) { double('Work Policy') }
       subject { EnrichSipByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }
 
       it 'will have a default work_policy' do

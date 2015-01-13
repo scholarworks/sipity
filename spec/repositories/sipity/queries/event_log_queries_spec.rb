@@ -4,7 +4,7 @@ module Sipity
   module Queries
     RSpec.describe EventLogQueries, type: :repository_methods do
       Given(:user) { User.new(id: 1) }
-      Given(:entity) { Models::Sip.new(id: 1) }
+      Given(:entity) { Models::Work.new(id: 1) }
       Given(:event_name) { 'event_name' }
 
       context '#sequence_of_events_for' do

@@ -1,6 +1,6 @@
 module Sipity
   module Runners
-    # Container for Sip related actions.
+    # Container for Work related actions.
     module SipRunners
       # Responsible for building the model for a New Sip
       class New < BaseRunner
@@ -46,7 +46,7 @@ module Sipity
         end
       end
 
-      # Responsible for providing an index of Sips
+      # Responsible for providing an index of Works
       class Index < BaseRunner
         self.authentication_layer = :default
 

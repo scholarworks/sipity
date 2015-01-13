@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Services
     RSpec.describe DoiCreationRequestMetadataGatherer do
-      let(:work) { Models::Sip.new(id: 123, title: 'Live at Leeds') }
+      let(:work) { Models::Work.new(id: 123, title: 'Live at Leeds') }
       subject { described_class.new(work) }
 
       context '.call' do

@@ -40,7 +40,7 @@ module Sipity
         it 'raises an exception if nothing is found' do
           expect { test_repository.find_work('8675309') }.to raise_error
         end
-        it 'returns the Sip when the object is found' do
+        it 'returns the Work when the object is found' do
           allow(Models::Sip).to receive(:find).with('8675309').and_return(:found)
           expect(test_repository.find_work('8675309')).to eq(:found)
         end
@@ -53,7 +53,7 @@ module Sipity
       end
 
       context '#build_update_work_form' do
-        let(:work) { Models::Sip.new(title: 'Hello World', id: '123') }
+        let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
         it 'will raise an exception if the work is not persisted' do
           allow(work).to receive(:persisted?).and_return(false)
           expect { test_repository.build_update_work_form(work: work) }.

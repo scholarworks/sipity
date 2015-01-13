@@ -50,7 +50,7 @@ module Sipity
       end
 
       # Responsible for building a scoped query to find a collection of
-      # Model::Sip objects for the given user.
+      # Model::Work objects for the given user.
       #
       # Responsible for answering the following:
       #

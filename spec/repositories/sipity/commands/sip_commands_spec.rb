@@ -8,7 +8,7 @@ module Sipity
       end
 
       context '#update_processing_state!' do
-        let(:work) { Models::Sip.create! }
+        let(:work) { Models::Work.create! }
         it 'will update the underlying state of the object' do
           expect { test_repository.update_processing_state!(work: work, new_processing_state: 'hello') }.
             to change { work.processing_state }.to('hello')
@@ -31,7 +31,7 @@ module Sipity
           it 'will not create a a work' do
             allow(form).to receive(:valid?).and_return(false)
             expect { test_repository.submit_create_work_form(form, requested_by: user) }.
-              to_not change { Models::Sip.count }
+              to_not change { Models::Work.count }
           end
           it 'will return false' do
             allow(form).to receive(:valid?).and_return(false)
@@ -46,7 +46,7 @@ module Sipity
             response = test_repository.submit_create_work_form(form, requested_by: user)
 
             expect(response).to be_a(Models::Sip)
-            expect(Models::Sip.count).to eq(1)
+            expect(Models::Work.count).to eq(1)
             expect(Models::TransientAnswer.count).to eq(1)
             expect(response.additional_attributes.count).to eq(1)
             expect(Models::Permission.where(actor: user, acting_as: Models::Permission::CREATING_USER).count).to eq(1)
@@ -57,7 +57,7 @@ module Sipity
 
       context '#submit_update_work_form' do
         let(:user) { User.new(id: '123') }
-        let(:work) { Models::Sip.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
+        let(:work) { Models::Work.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
         let(:form) { test_repository.build_update_work_form(work: work, attributes: { title: 'My New Title', publisher: 'dance' }) }
         context 'with invalid data' do
           before do

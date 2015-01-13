@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     RSpec.describe AssignACitationForm do
-      let(:work) { Models::Sip.new(id: '1234') }
+      let(:work) { Models::Work.new(id: '1234') }
       subject { described_class.new(work: work) }
 
       it { should respond_to :work }

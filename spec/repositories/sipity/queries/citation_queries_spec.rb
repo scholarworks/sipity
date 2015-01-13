@@ -14,7 +14,7 @@ module Sipity
 
       context '#citation_already_assigned?' do
         it 'will query the work' do
-          work = Models::Sip.new(id: 1)
+          work = Models::Work.new(id: 1)
           expect(test_repository.citation_already_assigned?(work)).to eq(false)
         end
       end

@@ -32,17 +32,17 @@ module Sipity
         end
 
         it 'converts a decorated work' do
-          object = Decorators::SipDecorator.decorate(Models::Sip.new(id: 1234))
+          object = Decorators::SipDecorator.decorate(Models::Work.new(id: 1234))
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
         it 'converts a work' do
-          object = Models::Sip.new(id: 1234)
+          object = Models::Work.new(id: 1234)
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
         it 'converts an object related to a work' do
-          object = double(work: Models::Sip.new(id: 1234))
+          object = double(work: Models::Work.new(id: 1234))
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 

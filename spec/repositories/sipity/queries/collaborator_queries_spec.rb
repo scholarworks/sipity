@@ -3,8 +3,8 @@ require 'spec_helper'
 module Sipity
   module Queries
     RSpec.describe CollaboratorQueries, type: :repository_methods do
-      let(:work) { Models::Sip.new(id: '123') }
-      let(:work_two) { Models::Sip.new(id: '456') }
+      let(:work) { Models::Work.new(id: '123') }
+      let(:work_two) { Models::Work.new(id: '456') }
       subject { test_repository }
 
       context '.work_collaborators_for' do

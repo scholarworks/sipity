@@ -144,7 +144,7 @@ module Sipity
       end
 
       context 'processing_state transitions when' do
-        let(:entity) { Models::Sip.new(processing_state: initial_processing_state, id: 1) }
+        let(:entity) { Models::Work.new(processing_state: initial_processing_state, id: 1) }
         let(:user) { User.new(id: 2) }
         let(:options) { {} }
         subject { described_class.new(entity: entity, user: user, repository: repository) }

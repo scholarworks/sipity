@@ -4,7 +4,7 @@ module Sipity
   module Commands
     RSpec.describe DoiCommands, type: :repository_methods do
       context '#update_work_doi_creation_request_state!' do
-        let(:work) { Models::Sip.new(id: 123) }
+        let(:work) { Models::Work.new(id: 123) }
         let!(:doi_creation_request) { Models::DoiCreationRequest.create!(work: work) }
         context 'given a valid state' do
           let(:state) { 'request_completed' }
@@ -24,7 +24,7 @@ module Sipity
       end
 
       context '#submit_assign_a_doi_form' do
-        let(:work) { Models::Sip.new(id: '1234') }
+        let(:work) { Models::Work.new(id: '1234') }
         let(:user) { User.new(id: '123') }
         let(:attributes) { { work: work, identifier: identifier } }
         let(:form) { test_repository.build_assign_a_doi_form(attributes) }
@@ -48,7 +48,7 @@ module Sipity
 
       context '#submit_request_a_doi_form' do
         let(:user) { User.new(id: 12) }
-        let(:work) { Models::Sip.new(id: '1234') }
+        let(:work) { Models::Work.new(id: '1234') }
         let(:attributes) do
           { work: work, publisher: publisher, publication_date: '2014-10-11', authors: ['Frog', 'Toad'] }
         end
@@ -76,7 +76,7 @@ module Sipity
       end
 
       context '#update_work_with_doi_predicate!' do
-        let(:work) { Models::Sip.new(id: 1) }
+        let(:work) { Models::Work.new(id: 1) }
         let(:value) { 'doi:oh-my' }
         it 'will update the underlying doi predicates' do
           test_repository.update_work_with_doi_predicate!(work: work, values: value)

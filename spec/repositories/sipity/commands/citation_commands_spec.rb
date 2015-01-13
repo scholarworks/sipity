@@ -5,7 +5,7 @@ module Sipity
     RSpec.describe CitationCommands, type: :repository_methods do
 
       context '#submit_assign_a_citation_form' do
-        let(:work) { Models::Sip.new(id: '1234') }
+        let(:work) { Models::Work.new(id: '1234') }
         let(:attributes) { { work: work, citation: citation, type: '1234' } }
         let(:form) { test_repository.build_assign_a_citation_form(attributes) }
         let(:user) { User.new(id: 3) }

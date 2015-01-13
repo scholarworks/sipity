@@ -2,7 +2,7 @@ module Sipity
   module Forms
     # Responsible for exposing attributes for editing a given work.
     #
-    # Since a Sip is a composite of many attributes from numerous sources
+    # Since a Work is a composite of many attributes from numerous sources
     # this object is a bit different.
     #
     # @see Sipity::Forms::UpdateSipForm#guard_against_existing_method_names!
@@ -13,7 +13,7 @@ module Sipity
       self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
 
       def self.model_name
-        Models::Sip.model_name
+        Models::Work.model_name
       end
 
       def initialize(work:, exposed_attribute_names: [], attributes: {})

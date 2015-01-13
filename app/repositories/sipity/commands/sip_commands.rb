@@ -17,7 +17,7 @@ module Sipity
 
       def submit_create_work_form(form, requested_by:)
         form.submit do |f|
-          work = Models::Sip.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          work = Models::Work.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
           # TODO: Extract the method call below to a Repository command, because
           #   what happens based on answer could be very complicated.
           Models::TransientAnswer.create!(

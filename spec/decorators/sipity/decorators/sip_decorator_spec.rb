@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe SipDecorator do
-      let(:work) { Models::Sip.new(title: 'Hello World', id: 123) }
+      let(:work) { Models::Work.new(title: 'Hello World', id: 123) }
       subject { SipDecorator.new(work) }
       it 'will have a #to_s equal its #title' do
         expect(subject.to_s).to eq(work.title)

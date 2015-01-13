@@ -4,7 +4,7 @@ module Sipity
   module Queries
     RSpec.describe DoiQueries, type: :repository_methods do
       context '#find_doi_creation_request' do
-        let(:work) { Models::Sip.new(id: 123) }
+        let(:work) { Models::Work.new(id: 123) }
         it 'will find based on the work' do
           entity = Models::DoiCreationRequest.create!(work: work)
           expect(test_repository.find_doi_creation_request(work: work)).to eq(entity)
@@ -42,14 +42,14 @@ module Sipity
       end
 
       context '#doi_request_is_pending?' do
-        let(:work) { Models::Sip.new(id: 1) }
+        let(:work) { Models::Work.new(id: 1) }
         it 'will see if a DOI Creation Request exists' do
           expect(test_repository.doi_request_is_pending?(work)).to be_falsey
         end
       end
 
       context '#doi_already_assigned?' do
-        let(:work) { Models::Sip.new(id: 1) }
+        let(:work) { Models::Work.new(id: 1) }
         it 'will see if a DOI has been assigned to the work' do
           expect(test_repository.doi_already_assigned?(work)).to be_falsey
         end

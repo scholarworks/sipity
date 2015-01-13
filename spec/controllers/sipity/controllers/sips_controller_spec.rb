@@ -4,7 +4,7 @@ require 'hesburgh/lib/mock_runner'
 module Sipity
   module Controllers
     RSpec.describe SipsController, type: :controller do
-      let(:work) { Models::Sip.new(title: 'The Title', id: '1234') }
+      let(:work) { Models::Work.new(title: 'The Title', id: '1234') }
 
       context 'GET #new' do
         before { controller.runner = runner }

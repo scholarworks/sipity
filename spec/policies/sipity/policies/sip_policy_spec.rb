@@ -4,7 +4,7 @@ module Sipity
   module Policies
     RSpec.describe SipPolicy do
       let(:user) { User.new(id: '1') }
-      let(:work) { Models::Sip.new(id: '2') }
+      let(:work) { Models::Work.new(id: '2') }
       let(:query_service) { double('Query Service') }
       subject { SipPolicy.new(user, work, permission_query_service: query_service) }
 
@@ -59,7 +59,7 @@ module Sipity
 
     RSpec.describe SipPolicy::Scope do
       let(:user) { User.new(id: 1234) }
-      let(:entity) { Models::Sip.new(id: 5678) }
+      let(:entity) { Models::Work.new(id: 5678) }
       context '.resolve' do
         it 'will use the scope_entities_for_entity_type_and_user_acting_as' do
           allow(Queries::PermissionQueries).to receive(:scope_entities_for_entity_type_and_user_acting_as)
