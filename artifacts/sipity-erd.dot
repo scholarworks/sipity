@@ -3,7 +3,7 @@ digraph "G" {
     node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="Sipity ERD (Draft v6)"
+        label="Sipity ERD (Draft v7)"
         color="seashell3"
         style="filled"
         node[style=filled fillcolor=white color="seashell4"]
@@ -22,17 +22,29 @@ digraph "G" {
         ActorForPermissionAssignment[label="{ ActorForPermissionAssignment | actor | acting_as | work_type }"]
         AccessRight[label="{ AccessRight | entity | access_right | enforcement_start_date | enforcement_end_date }"]
         TransientAnswer[label="{ TransientAnswer | entity | question | answer }"]
+        attachment[label="{ Attachment | sip | file }"]
+        entity[label="Entity (Polymorphism)"]
+        actor[label="Actor (Polymorphism)"]
 
         user -> group_membership
-        group_entity -> ActorForPermissionAssignment[label="as actor"]
-        user -> ActorForPermissionAssignment[label="as actor"]
+        group_entity -> group_membership
+        sip -> attachment
 
-        sip -> AccessRight[label="as entity"]
-        sip -> TransientAnswer[label="as entity"]
-        user -> permission[label="as actor"]
-        group_entity -> permission[label="as actor"]
-        sip -> permission[label="as entity"]
+        attachment -> entity[label="is a" arrowhead=none]
+        sip -> entity[label="is a" arrowhead=none]
+
+        entity -> AccessRight
+        entity -> TransientAnswer
+        entity -> permission
+        entity -> event_log
+
+        group_entity -> actor[label="is a" arrowhead=none]
+        user -> actor[label="is a" arrowhead=none]
         user -> event_log
+
+        actor -> ActorForPermissionAssignment
+        actor -> permission
+
         sip -> collaborators
         sip -> additional_attributes
         sip -> doi_creation_request[arrowhead=none]
