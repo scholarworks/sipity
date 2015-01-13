@@ -15,6 +15,10 @@ module Sipity
         expect(described_class.new.access_rights_answer).to be_present
       end
 
+      it 'will have #access_rights_answer_for_select that are symbols for translation' do
+        expect(described_class.new.access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }).to be_truthy
+      end
+
       context 'validations for' do
         context '#title' do
           it 'must be present' do

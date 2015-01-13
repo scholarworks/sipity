@@ -29,6 +29,10 @@ module Sipity
       validates :access_rights_answer, inclusion: { in: :possible_access_right_answers }, presence: true
       validates(:publication_date, presence: { if: :publication_date_required? })
 
+      def access_rights_answer_for_select
+        possible_access_right_answers.map(&:to_sym)
+      end
+
       private
 
       def possible_work_types
@@ -41,7 +45,7 @@ module Sipity
 
       def possible_access_right_answers
         # TODO: This is a rather invasive question
-        Models::TransientAnswer::ANSWERS.fetch(Models::TransientAnswer::ACCESS_RIGHTS_QUESTION)
+        @possible_access_right_answers ||= Models::TransientAnswer::ANSWERS.fetch(Models::TransientAnswer::ACCESS_RIGHTS_QUESTION)
       end
 
       def publication_date_required?
