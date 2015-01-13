@@ -2,7 +2,7 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
-      def self.submit(sip_id)
+      def self.submit(work_id)
         new(work_id).call
       end
 
