@@ -29,12 +29,13 @@ module Sipity
       self.table_name = 'sipity_transient_answers'
 
       ACCESS_RIGHTS_QUESTION = 'access_rights'.freeze
+      ACCESS_RIGHTS_PRIVATE = 'private_access'.freeze
 
       QUESTIONS = [ACCESS_RIGHTS_QUESTION].freeze
 
       ANSWERS = {
         ACCESS_RIGHTS_QUESTION => [
-          'open_access', 'restricted_access', 'private_access', 'access_changes_over_time'
+          'open_access', 'restricted_access', ACCESS_RIGHTS_PRIVATE, 'access_changes_over_time'
         ].freeze
       }.freeze
 
