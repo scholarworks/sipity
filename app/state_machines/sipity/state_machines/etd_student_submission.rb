@@ -23,7 +23,7 @@ module Sipity
           request_revisions?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
         },
         'ready_for_ingest' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
-        'ingested' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
+        'ingesting' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
         'ready_for_cataloging' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'], finish_cataloging?: ['cataloger'] },
         'cataloged' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] },
         'done' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] }
@@ -105,8 +105,8 @@ module Sipity
         state_machine.when(:submit_for_review, 'new' => 'under_review')
         state_machine.when(:request_revisions, 'under_review' => 'under_review')
         state_machine.when(:approve_for_ingest, 'under_review' => 'ready_for_ingest')
-        state_machine.when(:ingest, 'ready_for_ingest' => 'ingested')
-        state_machine.when(:ingest_completed, 'ingested' => 'ready_for_cataloging')
+        state_machine.when(:ingest, 'ready_for_ingest' => 'ingesting')
+        state_machine.when(:ingest_completed, 'ingesting' => 'ready_for_cataloging')
         state_machine.when(:finish_cataloging, 'ready_for_cataloging' => 'cataloged')
         state_machine.when(:finish, 'cataloged' => 'done')
         state_machine
