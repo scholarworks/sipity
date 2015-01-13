@@ -3,7 +3,7 @@ module Sipity
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
       def self.submit(sip_id)
-        new(sip_id).work
+        new(sip_id).call
       end
 
       def initialize(sip_id, options = {})
@@ -15,7 +15,7 @@ module Sipity
       end
       attr_reader :sip, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
 
-      def work
+      def call
         # TODO: Do we need to track history for the given person?
         #   If so, who is the requester? Is it the DoiCreationRequest creating_user
         # TODO: Do we need to enforce via the authorization layer?
