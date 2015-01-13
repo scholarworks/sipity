@@ -13,7 +13,7 @@ module Sipity
       end
 
       context '#emails_for_associated_users' do
-        let(:entity) { Models::Sip.create! }
+        let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:associated_by_group_user) { Sipity::Factories.create_user(email: 'group_associated@hotmail.com') }
         let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
@@ -40,7 +40,7 @@ module Sipity
       context '#scope_entities_for_entity_type_and_user_acting_as' do
         let(:user) { User.new(id: 1234) }
         let(:group) { Models::Group.new(id: 5678) }
-        let(:entity) { Models::Sip.create! }
+        let(:entity) { Models::Work.create! }
         let(:acting_as) { Models::Permission::CREATING_USER }
         subject { test_repository }
 

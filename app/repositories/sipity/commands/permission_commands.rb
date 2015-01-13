@@ -12,12 +12,12 @@ module Sipity
     # mixin? Something to think about.
     module PermissionCommands
       # Responsible for finding the groups that are assigned the given acting_as for
-      # the given entity's sip type.
+      # the given entity's work type.
       #
       # @raise Exception if for any of the given acting_as, no group could be found
       module_function def grant_groups_permission_to_entity_for_acting_as!(entity:, acting_as:)
         # TODO: Extract this map of acting_as to groups; Will we need acting_as by
-        #   sip type?
+        #   work type?
         Array.wrap(acting_as).each do |an_acting_as|
           group_names = Queries::PermissionQueries.group_names_for_entity_and_acting_as(acting_as: an_acting_as, entity: entity)
           Array.wrap(group_names).each do |group_name|

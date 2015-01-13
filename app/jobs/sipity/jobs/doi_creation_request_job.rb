@@ -2,20 +2,20 @@ module Sipity
   module Jobs
     # Responsible for processing a remote request for minting a DOI.
     class DoiCreationRequestJob
-      def self.submit(sip_id)
-        new(sip_id).work
+      def self.submit(work_id)
+        new(work_id).call
       end
 
-      def initialize(sip_id, options = {})
+      def initialize(work_id, options = {})
         @repository = options.fetch(:repository) { default_repository }
         @minter = options.fetch(:minter) { default_minter }
         @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
-        @sip = repository.find_sip(sip_id)
-        @doi_creation_request = repository.find_doi_creation_request(sip: sip)
+        @work = repository.find_work(work_id)
+        @doi_creation_request = repository.find_doi_creation_request(work: work)
       end
-      attr_reader :sip, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
+      attr_reader :work, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
 
-      def work
+      def call
         # TODO: Do we need to track history for the given person?
         #   If so, who is the requester? Is it the DoiCreationRequest creating_user
         # TODO: Do we need to enforce via the authorization layer?
@@ -34,24 +34,24 @@ module Sipity
       end
 
       def transition_doi_creation_request_to_submitted!
-        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_submitted)
+        repository.update_work_doi_creation_request_state!(work: work, state: :request_submitted)
       end
 
       def submit_remote_request!
         transition_doi_creation_request_to_submitted!
         yield(minter.call(metadata))
       rescue *Array.wrap(minter_handled_exceptions) => e
-        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_failed, response_message: e.message)
+        repository.update_work_doi_creation_request_state!(work: work, state: :request_failed, response_message: e.message)
         raise e
       end
 
       def handle_remote_response!(response)
-        repository.update_sip_with_doi_predicate!(sip: sip, values: response.id)
-        repository.update_sip_doi_creation_request_state!(sip: sip, state: :request_completed)
+        repository.update_work_with_doi_predicate!(work: work, values: response.id)
+        repository.update_work_doi_creation_request_state!(work: work, state: :request_completed)
       end
 
       def metadata
-        repository.gather_doi_creation_request_metadata(sip: sip)
+        repository.gather_doi_creation_request_metadata(work: work)
       end
 
       def default_minter

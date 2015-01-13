@@ -1,25 +1,25 @@
 module Sipity
   module Forms
-    # Submit a request for a DOI for the given Sip
+    # Submit a request for a DOI for the given Work
     class RequestADoiForm < BaseForm
-      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
+      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
-        self.sip = attributes.fetch(:sip)
+        self.work = attributes.fetch(:work)
         @publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
       end
 
-      attr_accessor :publisher, :publication_date, :sip
-      private(:sip=) # Adding parenthesis because Beautify ruby was going crazy
+      attr_accessor :publisher, :publication_date, :work
+      private(:work=) # Adding parenthesis because Beautify ruby was going crazy
 
-      delegate :title, to: :sip
+      delegate :title, to: :work
 
-      validates :sip, presence: true
+      validates :work, presence: true
       validates :publisher, presence: true
       validates :publication_date, presence: true
 
       def authors(decorator: Decorators::CollaboratorDecorator)
-        Queries::CollaboratorQueries.sip_collaborators_for(sip: sip, role: 'author').
+        Queries::CollaboratorQueries.work_collaborators_for(work: work, role: 'author').
           map { |obj| decorator.decorate(obj) }
       end
     end

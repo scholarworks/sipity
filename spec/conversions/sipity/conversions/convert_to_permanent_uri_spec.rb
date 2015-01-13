@@ -31,23 +31,23 @@ module Sipity
           expect(self.class.private_instance_methods).to include(:convert_to_permanent_uri)
         end
 
-        it 'converts a decorated sip' do
-          object = Decorators::SipDecorator.decorate(Models::Sip.new(id: 1234))
+        it 'converts a decorated work' do
+          object = Decorators::WorkDecorator.decorate(Models::Work.new(id: 1234))
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
-        it 'converts a sip' do
-          object = Models::Sip.new(id: 1234)
+        it 'converts a work' do
+          object = Models::Work.new(id: 1234)
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
-        it 'converts an object related to a sip' do
-          object = double(sip: Models::Sip.new(id: 1234))
+        it 'converts an object related to a work' do
+          object = double(work: Models::Work.new(id: 1234))
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
-        it 'converts an object that has a sip_id' do
-          object = double(sip_id: 1234)
+        it 'converts an object that has a work_id' do
+          object = double(work_id: 1234)
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 

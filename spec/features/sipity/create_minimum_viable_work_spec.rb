@@ -7,7 +7,7 @@ feature 'Minimum viable SIP', :devise do
   scenario 'User can create a SIP' do
     login_as(user, scope: :user)
     visit '/start'
-    on('new_sip_page') do |the_page|
+    on('new_work_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.fill_in(:title, with: 'Hello World')
       the_page.select('ETD', from: :work_type)
@@ -15,7 +15,7 @@ feature 'Minimum viable SIP', :devise do
       the_page.submit_button.click
     end
 
-    on('sip_page') do |the_page|
+    on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['do_not_know'])
       the_page.click_recommendation('DOI')
@@ -27,16 +27,16 @@ feature 'Minimum viable SIP', :devise do
       the_page.submit_button.click
     end
 
-    on('sip_page') do |the_page|
+    on('work_page') do |the_page|
       the_page.click_edit
     end
 
-    on('edit_sip_page') do |the_page|
+    on('edit_work_page') do |the_page|
       the_page.fill_in(:title, with: 'New Value')
       the_page.submit_button.click
     end
 
-    on('sip_page') do |the_page|
+    on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['New Value'])
       the_page.click_recommendation('Citation')
     end

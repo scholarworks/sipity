@@ -1,37 +1,37 @@
 module Sipity
   module Controllers
-    # The controller for creating sips.
-    class SipsController < ApplicationController
+    # The controller for creating works.
+    class WorksController < ApplicationController
       respond_to :html, :json
 
-      self.runner_container = Sipity::Runners::SipRunners
+      self.runner_container = Sipity::Runners::WorkRunners
 
       def new
         _status, model = run(attributes: new_params)
-        @model = Decorators::SipDecorator.decorate(model)
+        @model = Decorators::WorkDecorator.decorate(model)
         respond_with(@model)
       end
 
       def create
         status, model = run(attributes: create_params)
-        @model = Decorators::SipDecorator.decorate(model)
+        @model = Decorators::WorkDecorator.decorate(model)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
 
       def show
-        _status, model = run(sip_id: sip_id)
-        @model = Decorators::SipDecorator.decorate(model)
+        _status, model = run(work_id: work_id)
+        @model = Decorators::WorkDecorator.decorate(model)
         respond_with(@model)
       end
 
       def edit
-        _status, @model = run(sip_id: sip_id)
+        _status, @model = run(work_id: work_id)
         respond_with(@model)
       end
 
       def update
-        status, @model = run(sip_id: sip_id, attributes: update_params)
+        status, @model = run(work_id: work_id, attributes: update_params)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
@@ -42,20 +42,20 @@ module Sipity
 
       private
 
-      def sip_id
+      def work_id
         params.require(:id)
       end
 
       def new_params
-        params[:sip] || {}
+        params[:work] || {}
       end
 
       def create_params
-        params.require(:sip)
+        params.require(:work)
       end
 
       def update_params
-        params.require(:sip)
+        params.require(:work)
       end
     end
   end

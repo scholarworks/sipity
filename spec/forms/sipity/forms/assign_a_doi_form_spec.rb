@@ -3,14 +3,14 @@ require 'spec_helper'
 module Sipity
   module Forms
     RSpec.describe AssignADoiForm do
-      let(:sip) { double('Sip') }
+      let(:work) { double('Work') }
 
-      subject { described_class.new(sip: sip) }
+      subject { described_class.new(work: work) }
 
-      it 'requires a sip' do
-        subject = described_class.new(sip: nil, decorator: nil)
+      it 'requires a work' do
+        subject = described_class.new(work: nil, decorator: nil)
         subject.valid?
-        expect(subject.errors[:sip]).to_not be_empty
+        expect(subject.errors[:work]).to_not be_empty
       end
 
       it 'requires an identifer' do

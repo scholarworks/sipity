@@ -6,7 +6,7 @@ module Sipity
       subject { test_repository }
 
       context '#grant_groups_permission_to_entity_for_acting_as!' do
-        let(:entity) { Models::Sip.new(id: 1) }
+        let(:entity) { Models::Work.new(id: 1) }
         context 'with a acting_as' do
           context 'that has one (or more) groups associated by header type' do
             it 'will assign that group permission to the given header' do
@@ -24,7 +24,7 @@ module Sipity
       end
 
       context '#grant_creating_user_permission_for!' do
-        let(:entity) { Models::Sip.new(id: 1) }
+        let(:entity) { Models::Work.new(id: 1) }
         let(:user) { User.new(id: 2) }
         let(:group) { Models::Group.new(id: 3) }
 

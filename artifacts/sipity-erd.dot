@@ -12,26 +12,26 @@ digraph "G" {
         user[label="{ User }"]
         group_entity[label="{ Group | name }"]
         group_membership[label="{ Group Membership | group | user | membership_role }"]
-        sip[label="{ SIP | title | processing_state }"]
+        work[label="{ SIP | title | processing_state }"]
         event_log[label="{ EventLog | user | entity | event_name }"]
         permission[label="{ Permission | actor | entity | acting_as }"]
         collaborators[label="{ Collaborators | name | role }"]
         account_placeholder[label="{ AccountPlaceholder | identifier | identifier_type | state }"]
-        doi_creation_request[label="{ DoiCreationRequest | sip | state }"]
-        additional_attributes[label="{ AdditionalAttribute | sip | key | value }"]
+        doi_creation_request[label="{ DoiCreationRequest | work | state }"]
+        additional_attributes[label="{ AdditionalAttribute | work | key | value }"]
         ActorForPermissionAssignment[label="{ ActorForPermissionAssignment | actor | acting_as | work_type }"]
         AccessRight[label="{ AccessRight | entity | access_right | enforcement_start_date | enforcement_end_date }"]
         TransientAnswer[label="{ TransientAnswer | entity | question | answer }"]
-        attachment[label="{ Attachment | sip | file }"]
+        attachment[label="{ Attachment | work | file }"]
         entity[label="Entity (Polymorphism)"]
         actor[label="Actor (Polymorphism)"]
 
         user -> group_membership
         group_entity -> group_membership
-        sip -> attachment
+        work -> attachment
 
         attachment -> entity[label="is a" arrowhead=none]
-        sip -> entity[label="is a" arrowhead=none]
+        work -> entity[label="is a" arrowhead=none]
 
         entity -> AccessRight
         entity -> TransientAnswer
@@ -45,9 +45,9 @@ digraph "G" {
         actor -> ActorForPermissionAssignment
         actor -> permission
 
-        sip -> collaborators
-        sip -> additional_attributes
-        sip -> doi_creation_request[arrowhead=none]
+        work -> collaborators
+        work -> additional_attributes
+        work -> doi_creation_request[arrowhead=none]
         user -> account_placeholder[arrowhead=none]
     }
 

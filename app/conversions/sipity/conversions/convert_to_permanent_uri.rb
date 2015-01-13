@@ -20,10 +20,10 @@ module Sipity
       #
       # @return Integer
       def convert_to_permanent_uri(input)
-        return convert_to_permanent_uri(input.id) if input.is_a?(Models::Sip)
-        return convert_to_permanent_uri(input.sip_id) if input.respond_to?(:sip_id)
-        return convert_to_permanent_uri(input.sip) if input.respond_to?(:sip)
-        # TODO: The Sip key may not be a Fixed num
+        return convert_to_permanent_uri(input.id) if input.is_a?(Models::Work)
+        return convert_to_permanent_uri(input.work_id) if input.respond_to?(:work_id)
+        return convert_to_permanent_uri(input.work) if input.respond_to?(:work)
+        # TODO: The Work key may not be a Fixed num
         return PERMANENT_URI_FORMAT % input if input.is_a?(Fixnum)
         fail Exceptions::PermanentUriConversionError, input
       end

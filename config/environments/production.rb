@@ -34,9 +34,9 @@ Rails.application.configure do
 
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
-  # Specifies the sip that your server uses for sending files.
-  # config.action_dispatch.x_sendfile_sip = "X-Sendfile" # for apache
-  # config.action_dispatch.x_sendfile_sip = 'X-Accel-Redirect' # for nginx
+  # Specifies the work that your server uses for sending files.
+  # config.action_dispatch.x_sendfile_work = "X-Sendfile" # for apache
+  # config.action_dispatch.x_sendfile_work = 'X-Accel-Redirect' # for nginx
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true

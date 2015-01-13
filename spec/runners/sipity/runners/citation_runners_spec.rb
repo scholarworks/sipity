@@ -6,17 +6,17 @@ module Sipity
     module CitationRunners
       include RunnersSupport
       RSpec.describe Show do
-        let(:sip) { double }
-        let(:sip_id) { 1234 }
+        let(:work) { double }
+        let(:work_id) { 1234 }
         let(:citation_already_assigned) { false }
         let(:context) do
-          TestRunnerContext.new(find_sip: sip, citation_already_assigned?: citation_already_assigned)
+          TestRunnerContext.new(find_work: work, citation_already_assigned?: citation_already_assigned)
         end
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
-            on.citation_not_assigned { |sip| handler.invoked("CITATION_NOT_ASSIGNED", sip) }
-            on.citation_assigned { |sip| handler.invoked("CITATION_ASSIGNED", sip) }
+            on.citation_not_assigned { |work| handler.invoked("CITATION_NOT_ASSIGNED", work) }
+            on.citation_assigned { |work| handler.invoked("CITATION_ASSIGNED", work) }
           end
         end
 
@@ -31,35 +31,35 @@ module Sipity
         context 'when a citation is not assigned' do
           let(:citation_already_assigned) { false }
           it 'issues the :citation_not_assigned callback' do
-            response = subject.run(sip_id: sip_id)
-            expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", sip)
-            expect(response).to eq([:citation_not_assigned, sip])
+            response = subject.run(work_id: work_id)
+            expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", work)
+            expect(response).to eq([:citation_not_assigned, work])
           end
         end
 
         context 'when a citation is already assigned' do
           let(:citation_already_assigned) { true }
           it 'issues the :citation_assigned callback' do
-            response = subject.run(sip_id: sip_id)
-            expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", sip)
-            expect(response).to eq([:citation_assigned, sip])
+            response = subject.run(work_id: work_id)
+            expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", work)
+            expect(response).to eq([:citation_assigned, work])
           end
         end
       end
 
       RSpec.describe New do
-        let(:sip) { double('Sip') }
-        let(:sip_id) { 1234 }
+        let(:work) { double('Work') }
+        let(:work_id) { 1234 }
         let(:form) { double('Form') }
         let(:citation_assigned) { nil }
         let(:context) do
-          TestRunnerContext.new(find_sip: sip, build_assign_a_citation_form: form, citation_already_assigned?: citation_assigned)
+          TestRunnerContext.new(find_work: work, build_assign_a_citation_form: form, citation_already_assigned?: citation_assigned)
         end
         let(:handler) { double('Handler', invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
-            on.citation_not_assigned { |sip| handler.invoked("CITATION_NOT_ASSIGNED", sip) }
-            on.citation_assigned { |sip| handler.invoked("CITATION_ASSIGNED", sip) }
+            on.citation_not_assigned { |work| handler.invoked("CITATION_NOT_ASSIGNED", work) }
+            on.citation_assigned { |work| handler.invoked("CITATION_ASSIGNED", work) }
           end
         end
 
@@ -74,7 +74,7 @@ module Sipity
         context 'when a citation is not assigned' do
           let(:citation_assigned) { false }
           it 'issues the :citation_not_assigned callback with the form' do
-            response = subject.run(sip_id: sip_id)
+            response = subject.run(work_id: work_id)
             expect(handler).to have_received(:invoked).with("CITATION_NOT_ASSIGNED", form)
             expect(response).to eq([:citation_not_assigned, form])
           end
@@ -82,22 +82,22 @@ module Sipity
 
         context 'when a citation is already assigned' do
           let(:citation_assigned) { true }
-          it 'issues the :citation_assigned callback with the sip' do
-            response = subject.run(sip_id: sip_id)
-            expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", sip)
-            expect(response).to eq([:citation_assigned, sip])
+          it 'issues the :citation_assigned callback with the work' do
+            response = subject.run(work_id: work_id)
+            expect(handler).to have_received(:invoked).with("CITATION_ASSIGNED", work)
+            expect(response).to eq([:citation_assigned, work])
           end
         end
       end
 
       RSpec.describe Create do
-        let(:sip) { double }
-        let(:sip_id) { 1234 }
+        let(:work) { double }
+        let(:work_id) { 1234 }
         let(:attributes) { { key: 'abc:123' } }
         let(:form) { double('Form') }
         let(:context) do
           TestRunnerContext.new(
-            current_user: User.new(id: 12), find_sip: sip, build_assign_a_citation_form: form, submit_assign_a_citation_form: true
+            current_user: User.new(id: 12), find_work: work, build_assign_a_citation_form: form, submit_assign_a_citation_form: true
           )
         end
         let(:handler) { double('Handler', invoked: true) }
@@ -120,7 +120,7 @@ module Sipity
           it 'issues the :failure callback' do
             expect(context.repository).
               to receive(:submit_assign_a_citation_form).with(form, requested_by: context.current_user).and_return(false)
-            response = subject.run(sip_id: sip_id, attributes: attributes)
+            response = subject.run(work_id: work_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
           end
@@ -130,9 +130,9 @@ module Sipity
           it 'issues the :success callback' do
             expect(context.repository).
               to receive(:submit_assign_a_citation_form).with(form, requested_by: context.current_user).and_return(true)
-            response = subject.run(sip_id: sip_id, attributes: attributes)
-            expect(handler).to have_received(:invoked).with("SUCCESS", sip)
-            expect(response).to eq([:success, sip])
+            response = subject.run(work_id: work_id, attributes: attributes)
+            expect(handler).to have_received(:invoked).with("SUCCESS", work)
+            expect(response).to eq([:success, work])
           end
         end
       end

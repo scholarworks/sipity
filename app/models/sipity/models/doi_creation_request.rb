@@ -4,7 +4,7 @@ module Sipity
     # Responsible for tracking the state of a remote DOI request.
     class DoiCreationRequest < ActiveRecord::Base
       self.table_name = 'sipity_doi_creation_requests'
-      belongs_to :sip, foreign_key: 'sip_id'
+      belongs_to :work, foreign_key: 'work_id'
 
       REQUEST_NOT_YET_SUBMITTED = 'request_not_yet_submitted'.freeze
       REQUEST_SUBMITTED = 'request_submitted'.freeze

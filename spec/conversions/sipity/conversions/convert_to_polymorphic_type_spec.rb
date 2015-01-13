@@ -38,13 +38,13 @@ module Sipity
         end
 
         it "will return an ActiveRecord::Base object's base_class" do
-          object = Models::Sip.new
-          expect(convert_to_polymorphic_type(object)).to eq(Models::Sip)
+          object = Models::Work.new
+          expect(convert_to_polymorphic_type(object)).to eq(Models::Work)
         end
 
         it "will return the base class of a class that extends ActiveRecord::Base" do
-          object = Models::Sip
-          expect(convert_to_polymorphic_type(object)).to eq(Models::Sip)
+          object = Models::Work
+          expect(convert_to_polymorphic_type(object)).to eq(Models::Work)
         end
 
         it "will raise an error on any old object" do

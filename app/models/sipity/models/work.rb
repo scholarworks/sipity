@@ -2,17 +2,17 @@ require 'sipity/models'
 module Sipity
   module Models
     # The most basic of information required for generating a valid SIP.
-    class Sip < ActiveRecord::Base
-      self.table_name = 'sipity_sips'
+    class Work < ActiveRecord::Base
+      self.table_name = 'sipity_works'
 
-      # @!attribute [rw] :processing_state The processing state of the sip.
+      # @!attribute [rw] :processing_state The processing state of the work.
       #   @return [String]
       alias_attribute :processing_status, :processing_state
 
-      has_many :collaborators, foreign_key: :sip_id, dependent: :destroy
-      has_many :additional_attributes, foreign_key: :sip_id, dependent: :destroy
-      has_many :attachments, foreign_key: :sip_id, dependent: :destroy
-      has_one :doi_creation_request, foreign_key: :sip_id, dependent: :destroy
+      has_many :collaborators, foreign_key: :work_id, dependent: :destroy
+      has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy
+      has_many :attachments, foreign_key: :work_id, dependent: :destroy
+      has_one :doi_creation_request, foreign_key: :work_id, dependent: :destroy
 
       # TODO: Extract to TransientAnswer
       ALREADY_PUBLISHED = 'already_published'.freeze

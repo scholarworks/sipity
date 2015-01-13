@@ -2,12 +2,12 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe CreateSipForm do
+    RSpec.describe CreateWorkForm do
       subject { described_class.new }
 
-      its(:policy_enforcer) { should eq Policies::SipPolicy }
+      its(:policy_enforcer) { should eq Policies::WorkPolicy }
 
-      it 'will have a model name like Sip' do
+      it 'will have a model name like Work' do
         expect(described_class.model_name).to be_a(ActiveModel::Name)
       end
 

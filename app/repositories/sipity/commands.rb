@@ -12,7 +12,7 @@ module Sipity
     extend ActiveSupport::Concern
 
     included do |base|
-      base.send(:include, SipCommands)
+      base.send(:include, WorkCommands)
       base.send(:include, CitationCommands)
       base.send(:include, DoiCommands)
       base.send(:include, EventLogCommands)
