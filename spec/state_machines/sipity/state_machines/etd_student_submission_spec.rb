@@ -81,8 +81,8 @@ module Sipity
           end
         end
 
-        context 'for :ingested' do
-          let(:initial_processing_state) { 'ingested' }
+        context 'for :ingesting' do
+          let(:initial_processing_state) { 'ingesting' }
           it 'will allow :update? for []' do
             expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
           end
@@ -223,7 +223,7 @@ module Sipity
         context ':ingest is triggered' do
           let(:initial_processing_state) { 'ready_for_ingest' }
           let(:event) { :ingest }
-          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingested object' do
+          it 'will submit an ROF job to ingest the ETD; Only ETD reviewers will have rights to the ingesting object' do
             expect(repository).to have_received(:submit_ingest_etd).
               with(entity: entity)
           end
@@ -233,7 +233,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :ingest_completed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "ingested")
+              with(entity: entity, from: initial_processing_state, to: "ingesting")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -241,7 +241,7 @@ module Sipity
         end
 
         context ':ingest_completed is triggered' do
-          let(:initial_processing_state) { 'ingested' }
+          let(:initial_processing_state) { 'ingesting' }
           let(:event) { :ingest_completed }
           let(:options) { { additional_emails: 'hello@world.com' } }
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)' do
