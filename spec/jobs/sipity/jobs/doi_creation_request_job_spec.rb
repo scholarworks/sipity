@@ -3,19 +3,19 @@ require 'spec_helper'
 module Sipity
   module Jobs
     RSpec.describe DoiCreationRequestJob do
-      let(:doi_creation_request) { Models::DoiCreationRequest.new(sip: sip) }
-      let(:sip) { Models::Sip.new(id: 1, title: 'Hello') }
+      let(:doi_creation_request) { Models::DoiCreationRequest.new(work: work) }
+      let(:work) { Models::Sip.new(id: 1, title: 'Hello') }
       let(:minter) { double('Minter') }
       let(:repository) { Repository.new }
       let(:response) { double(id: 'doi:oh-my') }
       let(:metadata) { double('Metadata') }
       subject do
-        described_class.new(sip.id, repository: repository, minter: minter, minter_handled_exceptions: RuntimeError)
+        described_class.new(work.id, repository: repository, minter: minter, minter_handled_exceptions: RuntimeError)
       end
 
       before do
-        allow(repository).to receive(:find_sip).with(sip.id).and_return(sip)
-        allow(repository).to receive(:find_doi_creation_request).with(sip: sip).and_return(doi_creation_request)
+        allow(repository).to receive(:find_work).with(work.id).and_return(work)
+        allow(repository).to receive(:find_doi_creation_request).with(work: work).and_return(doi_creation_request)
       end
 
       context '.submit' do
@@ -31,16 +31,16 @@ module Sipity
         before do
           # Not a fan of allow_any_instance_of but it helps with understanding default
           # behavior.
-          allow_any_instance_of(Repository).to receive(:find_sip).with(sip.id).and_return sip
-          allow_any_instance_of(Repository).to receive(:find_doi_creation_request).with(sip: sip).and_return sip
+          allow_any_instance_of(Repository).to receive(:find_work).with(work.id).and_return work
+          allow_any_instance_of(Repository).to receive(:find_doi_creation_request).with(work: work).and_return work
         end
-        subject { described_class.new(sip.id) }
+        subject { described_class.new(work.id) }
         its(:minter) { should respond_to :call }
-        its(:repository) { should respond_to :update_sip_doi_creation_request_state! }
-        its(:repository) { should respond_to :update_sip_with_doi_predicate! }
+        its(:repository) { should respond_to :update_work_doi_creation_request_state! }
+        its(:repository) { should respond_to :update_work_with_doi_predicate! }
         its(:repository) { should respond_to :gather_doi_creation_request_metadata }
         its(:repository) { should respond_to :find_doi_creation_request }
-        its(:repository) { should respond_to :find_sip }
+        its(:repository) { should respond_to :find_work }
       end
 
       context '#call' do
@@ -64,7 +64,7 @@ module Sipity
             subject.call
             # This reaches beyond the normal responsibility; But I want to make sure it calls.
             expect(
-              repository.sip_attribute_values_for(sip: sip, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)
+              repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME)
             ).to eq([response.id])
           end
         end

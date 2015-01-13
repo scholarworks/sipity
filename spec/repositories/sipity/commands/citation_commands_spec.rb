@@ -5,8 +5,8 @@ module Sipity
     RSpec.describe CitationCommands, type: :repository_methods do
 
       context '#submit_assign_a_citation_form' do
-        let(:sip) { Models::Sip.new(id: '1234') }
-        let(:attributes) { { sip: sip, citation: citation, type: '1234' } }
+        let(:work) { Models::Sip.new(id: '1234') }
+        let(:attributes) { { work: work, citation: citation, type: '1234' } }
         let(:form) { test_repository.build_assign_a_citation_form(attributes) }
         let(:user) { User.new(id: 3) }
 
@@ -19,11 +19,11 @@ module Sipity
 
         context 'on valid data' do
           let(:citation) { 'citation:abc' }
-          it 'will assign the Citation to the sip and create an event' do
+          it 'will assign the Citation to the work and create an event' do
             response = test_repository.submit_assign_a_citation_form(form, requested_by: user)
             expect(response).to be_truthy
-            expect(test_repository.citation_already_assigned?(sip)).to be_truthy
-            expect(sip.additional_attributes.count).to eq(2)
+            expect(test_repository.citation_already_assigned?(work)).to be_truthy
+            expect(work.additional_attributes.count).to eq(2)
             expect(Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count).to eq(1)
           end
         end

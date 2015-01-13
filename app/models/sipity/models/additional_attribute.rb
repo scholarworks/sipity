@@ -12,7 +12,7 @@ module Sipity
       PUBLICATION_DATE_PREDICATE_NAME = 'publicationDate'.freeze
 
       self.table_name = 'sipity_additional_attributes'
-      belongs_to :sip, foreign_key: 'sip_id'
+      belongs_to :work, foreign_key: 'work_id'
 
       enum(
         key: {

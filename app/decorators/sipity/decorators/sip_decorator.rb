@@ -28,7 +28,7 @@ module Sipity
 
       def authors(decorator: Decorators::CollaboratorDecorator)
         Queries::CollaboratorQueries.
-          sip_collaborators_for(sip: object, role: 'author').map { |obj| decorator.decorate(obj) }
+          work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
       def available_linked_actions
@@ -37,7 +37,7 @@ module Sipity
         #   be applied?
         [
           LinkedAction.new(
-            label: "Edit #{model.title}", path: h.edit_sip_path(object),
+            label: "Edit #{model.title}", path: h.edit_work_path(object),
             html_options: { 'class' => 'btn btn-primary action-edit' }
           )
         ]
@@ -46,7 +46,7 @@ module Sipity
       private
 
       def recommendation_for(name)
-        Recommendations.const_get("#{name.classify}Recommendation").new(sip: self)
+        Recommendations.const_get("#{name.classify}Recommendation").new(work: self)
       end
     end
   end

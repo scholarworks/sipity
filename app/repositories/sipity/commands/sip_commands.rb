@@ -9,49 +9,49 @@ module Sipity
       end
       # TODO: This is duplicationed
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
-      def update_processing_state!(sip:, new_processing_state:)
-        # REVIEW: Should this be re-finding the sip? Is it cheating to re-use
-        #   the given sip? Is it unsafe as far as state is concerned?
-        sip.update(processing_state: new_processing_state)
+      def update_processing_state!(work:, new_processing_state:)
+        # REVIEW: Should this be re-finding the work? Is it cheating to re-use
+        #   the given work? Is it unsafe as far as state is concerned?
+        work.update(processing_state: new_processing_state)
       end
 
-      def submit_create_sip_form(form, requested_by:)
+      def submit_create_work_form(form, requested_by:)
         form.submit do |f|
-          sip = Models::Sip.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          work = Models::Sip.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
           # TODO: Extract the method call below to a Repository command, because
           #   what happens based on answer could be very complicated.
           Models::TransientAnswer.create!(
-            entity: sip, question_code: Models::TransientAnswer::ACCESS_RIGHTS_QUESTION, answer_code: f.access_rights_answer
+            entity: work, question_code: Models::TransientAnswer::ACCESS_RIGHTS_QUESTION, answer_code: f.access_rights_answer
           )
-          AdditionalAttributeCommands.update_sip_publication_date!(sip: sip, publication_date: f.publication_date)
-          PermissionCommands.grant_creating_user_permission_for!(entity: sip, user: requested_by)
-          EventLogCommands.log_event!(entity: sip, user: requested_by, event_name: __method__)
-          sip
+          AdditionalAttributeCommands.update_work_publication_date!(work: work, publication_date: f.publication_date)
+          PermissionCommands.grant_creating_user_permission_for!(entity: work, user: requested_by)
+          EventLogCommands.log_event!(entity: work, user: requested_by, event_name: __method__)
+          work
         end
       end
 
-      def submit_update_sip_form(form, requested_by:)
+      def submit_update_work_form(form, requested_by:)
         form.submit do |f|
-          sip = find_sip(f.sip.id)
-          with_sip_attributes_for_form(f) { |attributes| sip.update(attributes) }
-          with_each_additional_attribute_for_sip_form(f) do |key, values|
-            AdditionalAttributeCommands.update_sip_attribute_values!(sip: sip, key: key, values: values)
+          work = find_work(f.work.id)
+          with_work_attributes_for_form(f) { |attributes| work.update(attributes) }
+          with_each_additional_attribute_for_work_form(f) do |key, values|
+            AdditionalAttributeCommands.update_work_attribute_values!(work: work, key: key, values: values)
           end
-          EventLogCommands.log_event!(entity: sip, user: requested_by, event_name: __method__) if requested_by
-          sip
+          EventLogCommands.log_event!(entity: work, user: requested_by, event_name: __method__) if requested_by
+          work
         end
       end
 
       private
 
-      def with_each_additional_attribute_for_sip_form(form)
-        Queries::AdditionalAttributeQueries.sip_attribute_keys_for(sip: form.sip).each do |key|
+      def with_each_additional_attribute_for_work_form(form)
+        Queries::AdditionalAttributeQueries.work_attribute_keys_for(work: form.work).each do |key|
           next unless  form.exposes?(key)
           yield(key, form.public_send(key))
         end
       end
 
-      def with_sip_attributes_for_form(form)
+      def with_work_attributes_for_form(form)
         attributes = {}
         BASE_HEADER_ATTRIBUTES.each do |attribute_name|
           attributes[attribute_name] = form.public_send(attribute_name) if form.exposes?(attribute_name)

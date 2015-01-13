@@ -1,4 +1,4 @@
-<h1>DOI for <%= model.sip %></h1>
+<h1>DOI for <%= model.work %></h1>
 
 <ul>
   <li>
@@ -6,7 +6,7 @@
   </li>
   <li>
     <h2>I have an existing DOI</h2>
-    <%= simple_form_for(model, url: sip_doi_path(model.sip)) do |f| %>
+    <%= simple_form_for(model, url: work_doi_path(model.work)) do |f| %>
       <%= f.input :identifier %>
       <%= f.submit %>
     <% end %>

@@ -3,10 +3,10 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe CollaboratorDecorator do
-      let(:sip) { Models::Collaborator.new(name: 'Hello') }
-      subject { CollaboratorDecorator.new(sip) }
+      let(:work) { Models::Collaborator.new(name: 'Hello') }
+      subject { CollaboratorDecorator.new(work) }
       it 'will have a #to_s equal its #name' do
-        expect(subject.to_s).to eq(sip.name)
+        expect(subject.to_s).to eq(work.name)
       end
 
       it 'will have a #human_attribute_name' do

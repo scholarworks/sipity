@@ -2,8 +2,8 @@ require 'site_prism'
 module SitePrism
   module Pages
     class NewSipPage < SitePrism::Page
-      DOM_CLASS = 'new_sip'.freeze
-      PARAM_NAME_CONTAINER = 'sip'.freeze
+      DOM_CLASS = 'new_work'.freeze
+      PARAM_NAME_CONTAINER = 'work'.freeze
 
       element :form, "form.#{DOM_CLASS}"
       element :input_title, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[title]']"
@@ -28,8 +28,8 @@ module SitePrism
     end
 
     class EditSipPage < SitePrism::Page
-      DOM_CLASS = 'edit_sip'.freeze
-      PARAM_NAME_CONTAINER = 'sip'.freeze
+      DOM_CLASS = 'edit_work'.freeze
+      PARAM_NAME_CONTAINER = 'work'.freeze
 
       element :form, "form.#{DOM_CLASS}"
       element :input_title, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[title]']"
@@ -54,7 +54,7 @@ module SitePrism
     end
 
     class SipPage < SitePrism::Page
-      DOM_CLASS = 'sip'.freeze
+      DOM_CLASS = 'work'.freeze
 
       def text_for(predicate)
         all(".#{DOM_CLASS} .value.#{predicate}").map(&:text)

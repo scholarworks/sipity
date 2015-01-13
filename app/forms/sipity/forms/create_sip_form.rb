@@ -1,6 +1,6 @@
 module Sipity
   module Forms
-    # Responsible for creating a new sip.
+    # Responsible for creating a new work.
     # What goes into this is more complicated that the entity might allow.
     class CreateSipForm < BaseForm
       self.policy_enforcer = Policies::SipPolicy

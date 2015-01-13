@@ -5,9 +5,9 @@ module Sipity
     module Recommendations
       RSpec.describe CitationRecommendation do
         let(:repository) { double(citation_already_assigned?: false) }
-        let(:helper) { double(sip_citation_path: true) }
-        let(:sip) { double('Sip', title: 'Hello World') }
-        subject { described_class.new(sip: sip, repository: repository, helper: helper) }
+        let(:helper) { double(work_citation_path: true) }
+        let(:work) { double('Sip', title: 'Hello World') }
+        subject { described_class.new(work: work, repository: repository, helper: helper) }
 
         it { should respond_to :human_attribute_name }
 
@@ -15,13 +15,13 @@ module Sipity
         its(:human_status) { should be_a(String) }
 
         it 'will have a :path_to_recommendation' do
-          expect(helper).to receive(:sip_citation_path).with(sip).and_return('/the/path')
+          expect(helper).to receive(:work_citation_path).with(work).and_return('/the/path')
           expect(subject.path_to_recommendation).to eq('/the/path')
         end
 
         context 'when a citation exists in the system its' do
           before do
-            expect(repository).to receive(:citation_already_assigned?).with(sip).and_return(true)
+            expect(repository).to receive(:citation_already_assigned?).with(work).and_return(true)
           end
           its(:state) { should eq :citation_already_assigned }
           its(:status) { should eq :citation_already_assigned }
@@ -29,7 +29,7 @@ module Sipity
 
         context 'when a citation does not exist nor do we have record of a citation request its' do
           before do
-            expect(repository).to receive(:citation_already_assigned?).with(sip).and_return(false)
+            expect(repository).to receive(:citation_already_assigned?).with(work).and_return(false)
           end
           its(:state) { should eq :citation_not_assigned }
           its(:status) { should eq :citation_not_assigned }

@@ -4,18 +4,18 @@ module Sipity
   module Policies
     RSpec.describe EnrichSipByFormSubmissionPolicy do
       let(:user) { User.new(id: '1') }
-      let(:sip) { Models::Sip.new(id: '2') }
-      let(:entity) { double(sip: sip) }
-      let(:sip_policy) { double('Sip Policy') }
-      subject { EnrichSipByFormSubmissionPolicy.new(user, entity, sip_policy: sip_policy) }
+      let(:work) { Models::Sip.new(id: '2') }
+      let(:entity) { double(work: work) }
+      let(:work_policy) { double('Sip Policy') }
+      subject { EnrichSipByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }
 
-      it 'will have a default sip_policy' do
-        expect(EnrichSipByFormSubmissionPolicy.new(user, entity).send(:sip_policy)).to be_a(SipPolicy)
+      it 'will have a default work_policy' do
+        expect(EnrichSipByFormSubmissionPolicy.new(user, entity).send(:work_policy)).to be_a(SipPolicy)
       end
 
-      it 'will fail to initialize if the entity does not have a #sip' do
+      it 'will fail to initialize if the entity does not have a #work' do
         entity = double
-        expect { EnrichSipByFormSubmissionPolicy.new(user, entity, sip_policy: sip_policy) }.
+        expect { EnrichSipByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }.
           to raise_error Exceptions::PolicyEntityExpectationError
       end
 
@@ -25,17 +25,17 @@ module Sipity
       end
 
       context 'for an authenticated user' do
-        context 'with a new sip' do
-          before { allow(sip).to receive(:persisted?).and_return(false) }
+        context 'with a new work' do
+          before { allow(work).to receive(:persisted?).and_return(false) }
           its(:submit?) { should eq(false) }
         end
-        context 'with an existing sip' do
+        context 'with an existing work' do
           before do
-            allow(sip).to receive(:persisted?).and_return(true)
+            allow(work).to receive(:persisted?).and_return(true)
           end
           context 'its :submit?' do
-            it 'will delegate to the provided sip_policy' do
-              expect(sip_policy).to receive(:update?).and_return(true)
+            it 'will delegate to the provided work_policy' do
+              expect(work_policy).to receive(:update?).and_return(true)
               expect(subject.submit?).to eq(true)
             end
           end

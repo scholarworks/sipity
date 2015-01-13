@@ -1,34 +1,34 @@
 module Sipity
   module Runners
     module CitationRunners
-      # Responsible for responding with the state of the sip's citation.
+      # Responsible for responding with the state of the work's citation.
       class Show < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:)
-          sip = repository.find_sip(sip_id)
-          authorization_layer.enforce!(show?: sip) do
-            if repository.citation_already_assigned?(sip)
-              callback(:citation_assigned, sip)
+        def run(work_id:)
+          work = repository.find_work(work_id)
+          authorization_layer.enforce!(show?: work) do
+            if repository.citation_already_assigned?(work)
+              callback(:citation_assigned, work)
             else
-              callback(:citation_not_assigned, sip)
+              callback(:citation_not_assigned, work)
             end
           end
         end
       end
 
-      # Responsible for responding with the correct form for the sip's citation
+      # Responsible for responding with the correct form for the work's citation
       class New < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:)
-          sip = repository.find_sip(sip_id)
-          form = repository.build_assign_a_citation_form(sip: sip)
+        def run(work_id:)
+          work = repository.find_work(work_id)
+          form = repository.build_assign_a_citation_form(work: work)
           authorization_layer.enforce!(submit?: form) do
-            if repository.citation_already_assigned?(sip)
-              callback(:citation_assigned, sip)
+            if repository.citation_already_assigned?(work)
+              callback(:citation_assigned, work)
             else
               callback(:citation_not_assigned, form)
             end
@@ -41,12 +41,12 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:, attributes: {})
-          sip = repository.find_sip(sip_id)
-          form = repository.build_assign_a_citation_form(attributes.merge(sip: sip))
+        def run(work_id:, attributes: {})
+          work = repository.find_work(work_id)
+          form = repository.build_assign_a_citation_form(attributes.merge(work: work))
           authorization_layer.enforce!(submit?: form) do
             if repository.submit_assign_a_citation_form(form, requested_by: current_user)
-              callback(:success, sip)
+              callback(:success, work)
             else
               callback(:failure, form)
             end

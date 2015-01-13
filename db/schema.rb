@@ -57,18 +57,18 @@ ActiveRecord::Schema.define(version: 20150113155503) do
   add_index "sipity_actor_for_permission_assignments", ["actor_type"], name: "index_sipity_actor_for_permission_assignments_on_actor_type"
 
   create_table "sipity_additional_attributes", force: :cascade do |t|
-    t.integer  "sip_id",     null: false
+    t.integer  "work_id",     null: false
     t.string   "key",        null: false
     t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sipity_additional_attributes", ["sip_id", "key"], name: "index_sipity_additional_attributes_on_sip_id_and_key"
-  add_index "sipity_additional_attributes", ["sip_id"], name: "index_sipity_additional_attributes_on_sip_id"
+  add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key"
+  add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id"
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
-    t.integer  "sip_id",         null: false
+    t.integer  "work_id",         null: false
     t.string   "pid"
     t.string   "predicate_name", null: false
     t.string   "file_uid",       null: false
@@ -78,10 +78,10 @@ ActiveRecord::Schema.define(version: 20150113155503) do
   end
 
   add_index "sipity_attachments", ["pid"], name: "index_sipity_attachments_on_pid", unique: true
-  add_index "sipity_attachments", ["sip_id"], name: "index_sipity_attachments_on_sip_id"
+  add_index "sipity_attachments", ["work_id"], name: "index_sipity_attachments_on_work_id"
 
   create_table "sipity_collaborators", force: :cascade do |t|
-    t.integer  "sip_id",     null: false
+    t.integer  "work_id",     null: false
     t.integer  "sequence"
     t.string   "name"
     t.string   "role",       null: false
@@ -89,17 +89,17 @@ ActiveRecord::Schema.define(version: 20150113155503) do
     t.datetime "updated_at"
   end
 
-  add_index "sipity_collaborators", ["sip_id", "sequence"], name: "index_sipity_collaborators_on_sip_id_and_sequence"
+  add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: :cascade do |t|
-    t.integer  "sip_id",                                                 null: false
+    t.integer  "work_id",                                                 null: false
     t.string   "state",            default: "request_not_yet_submitted", null: false
     t.string   "response_message"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "sipity_doi_creation_requests", ["sip_id"], name: "index_sipity_doi_creation_requests_on_sip_id", unique: true
+  add_index "sipity_doi_creation_requests", ["work_id"], name: "index_sipity_doi_creation_requests_on_work_id", unique: true
   add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state"
 
   create_table "sipity_event_logs", force: :cascade do |t|
@@ -160,7 +160,7 @@ ActiveRecord::Schema.define(version: 20150113155503) do
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
 
-  create_table "sipity_sips", force: :cascade do |t|
+  create_table "sipity_works", force: :cascade do |t|
     t.string   "work_publication_strategy"
     t.string   "title"
     t.datetime "created_at"
@@ -169,8 +169,8 @@ ActiveRecord::Schema.define(version: 20150113155503) do
     t.string   "work_type",                                            null: false
   end
 
-  add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
-  add_index "sipity_sips", ["work_type"], name: "index_sipity_sips_on_work_type"
+  add_index "sipity_works", ["processing_state"], name: "index_sipity_works_on_processing_state"
+  add_index "sipity_works", ["work_type"], name: "index_sipity_works_on_work_type"
 
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.integer  "entity_id",     null: false

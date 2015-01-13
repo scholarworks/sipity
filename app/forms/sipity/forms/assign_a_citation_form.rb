@@ -5,13 +5,13 @@ module Sipity
       self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
 
       def initialize(attributes = {})
-        @sip = attributes.fetch(:sip)
+        @work = attributes.fetch(:work)
         @type, @citation = attributes.values_at(:type, :citation)
       end
       attr_accessor :type, :citation
-      attr_reader :sip
+      attr_reader :work
 
-      validates :sip, presence: true
+      validates :work, presence: true
       validates :citation, presence: true
       validates :type, presence: true
     end

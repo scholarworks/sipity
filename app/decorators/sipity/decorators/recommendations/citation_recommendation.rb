@@ -10,13 +10,13 @@ module Sipity
         alias_method :status, :state
 
         def path_to_recommendation
-          helper.sip_citation_path(sip)
+          helper.work_citation_path(work)
         end
 
         private
 
         def citation_already_assigned?
-          repository.citation_already_assigned?(sip)
+          repository.citation_already_assigned?(work)
         end
       end
     end

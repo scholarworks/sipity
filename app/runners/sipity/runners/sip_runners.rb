@@ -8,9 +8,9 @@ module Sipity
         self.authorization_layer = :default
 
         def run(attributes: {})
-          sip = repository.build_create_sip_form(attributes: attributes)
-          authorization_layer.enforce!(create?: sip) do
-            callback(:success, sip)
+          work = repository.build_create_work_form(attributes: attributes)
+          authorization_layer.enforce!(create?: work) do
+            callback(:success, work)
           end
         end
       end
@@ -21,11 +21,11 @@ module Sipity
         self.authorization_layer = :default
 
         def run(attributes:)
-          form = repository.build_create_sip_form(attributes: attributes)
+          form = repository.build_create_work_form(attributes: attributes)
           authorization_layer.enforce!(create?: form) do
-            sip = repository.submit_create_sip_form(form, requested_by: current_user)
-            if sip
-              callback(:success, sip)
+            work = repository.submit_create_work_form(form, requested_by: current_user)
+            if work
+              callback(:success, work)
             else
               callback(:failure, form)
             end
@@ -38,10 +38,10 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:)
-          sip = repository.find_sip(sip_id)
-          authorization_layer.enforce!(show?: sip) do
-            callback(:success, sip)
+        def run(work_id:)
+          work = repository.find_work(work_id)
+          authorization_layer.enforce!(show?: work) do
+            callback(:success, work)
           end
         end
       end
@@ -51,19 +51,19 @@ module Sipity
         self.authentication_layer = :default
 
         def run
-          sips = repository.find_sips_for(user: current_user)
-          callback(:success, sips)
+          works = repository.find_works_for(user: current_user)
+          callback(:success, works)
         end
       end
 
-      # Responsible for instantiating the sip for edit
+      # Responsible for instantiating the work for edit
       class Edit < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:)
-          sip = repository.find_sip(sip_id)
-          form = repository.build_update_sip_form(sip: sip)
+        def run(work_id:)
+          work = repository.find_work(work_id)
+          form = repository.build_update_work_form(work: work)
           authorization_layer.enforce!(submit?: form) do
             callback(:success, form)
           end
@@ -75,13 +75,13 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run(sip_id:, attributes:)
-          sip = repository.find_sip(sip_id)
-          form = repository.build_update_sip_form(sip: sip, attributes: attributes)
+        def run(work_id:, attributes:)
+          work = repository.find_work(work_id)
+          form = repository.build_update_work_form(work: work, attributes: attributes)
           authorization_layer.enforce!(submit?: form) do
-            sip = repository.submit_update_sip_form(form, requested_by: current_user)
-            if sip
-              callback(:success, sip)
+            work = repository.submit_update_work_form(form, requested_by: current_user)
+            if work
+              callback(:success, work)
             else
               callback(:failure, form)
             end

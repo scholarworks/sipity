@@ -1,39 +1,39 @@
 module Sipity
   module Controllers
-    # Responsible for working on the citation of the given sip.
+    # Responsible for working on the citation of the given work.
     class CitationsController < ApplicationController
       respond_to :html, :json
 
       self.runner_container = Sipity::Runners::CitationRunners
 
       def show
-        run(sip_id: sip_id) do |on|
-          on.citation_not_assigned do |sip|
-            redirect_to(new_sip_citation_path(sip.to_param), alert: message_for(:citation_not_assigned, title: sip.title))
+        run(work_id: work_id) do |on|
+          on.citation_not_assigned do |work|
+            redirect_to(new_work_citation_path(work.to_param), alert: message_for(:citation_not_assigned, title: work.title))
           end
-          on.citation_assigned do |sip|
-            @model = sip
+          on.citation_assigned do |work|
+            @model = work
             respond_with(@model)
           end
         end
       end
 
       def new
-        run(sip_id: sip_id) do |on|
-          on.citation_not_assigned do |sip|
-            @model = sip
+        run(work_id: work_id) do |on|
+          on.citation_not_assigned do |work|
+            @model = work
             respond_with(@model)
           end
-          on.citation_assigned do |sip|
-            redirect_to(sip_citation_path(sip.to_param), notice: message_for(:citation_assigned, title: sip.title))
+          on.citation_assigned do |work|
+            redirect_to(work_citation_path(work.to_param), notice: message_for(:citation_assigned, title: work.title))
           end
         end
       end
 
       def create
-        run(sip_id: sip_id, attributes: create_attributes) do |on|
-          on.success do |sip|
-            redirect_to(sip_path(sip.to_param), notice: message_for(:success, title: sip.title))
+        run(work_id: work_id, attributes: create_attributes) do |on|
+          on.success do |work|
+            redirect_to(work_path(work.to_param), notice: message_for(:success, title: work.title))
           end
           on.failure do |form|
             @model = form
@@ -48,8 +48,8 @@ module Sipity
 
       private
 
-      def sip_id
-        params.require(:sip_id)
+      def work_id
+        params.require(:work_id)
       end
 
       def create_attributes

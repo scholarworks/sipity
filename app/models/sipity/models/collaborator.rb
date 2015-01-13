@@ -12,7 +12,7 @@ module Sipity
         new(role: DEFAULT_ROLE)
       end
 
-      belongs_to :sip, foreign_key: 'sip_id'
+      belongs_to :work, foreign_key: 'work_id'
 
       self.table_name = 'sipity_collaborators'
 

@@ -1,6 +1,6 @@
 module Sipity
   module Controllers
-    # The controller for creating sips.
+    # The controller for creating works.
     class SipsController < ApplicationController
       respond_to :html, :json
 
@@ -20,18 +20,18 @@ module Sipity
       end
 
       def show
-        _status, model = run(sip_id: sip_id)
+        _status, model = run(work_id: work_id)
         @model = Decorators::SipDecorator.decorate(model)
         respond_with(@model)
       end
 
       def edit
-        _status, @model = run(sip_id: sip_id)
+        _status, @model = run(work_id: work_id)
         respond_with(@model)
       end
 
       def update
-        status, @model = run(sip_id: sip_id, attributes: update_params)
+        status, @model = run(work_id: work_id, attributes: update_params)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
@@ -42,20 +42,20 @@ module Sipity
 
       private
 
-      def sip_id
+      def work_id
         params.require(:id)
       end
 
       def new_params
-        params[:sip] || {}
+        params[:work] || {}
       end
 
       def create_params
-        params.require(:sip)
+        params.require(:work)
       end
 
       def update_params
-        params.require(:sip)
+        params.require(:work)
       end
     end
   end

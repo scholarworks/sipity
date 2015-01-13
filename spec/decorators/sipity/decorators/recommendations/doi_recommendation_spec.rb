@@ -5,9 +5,9 @@ module Sipity
     module Recommendations
       RSpec.describe DoiRecommendation do
         let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false) }
-        let(:helper) { double(sip_doi_path: true) }
-        let(:sip) { double('Sip', title: 'Hello World') }
-        subject { described_class.new(sip: sip, repository: repository, helper: helper) }
+        let(:helper) { double(work_doi_path: true) }
+        let(:work) { double('Sip', title: 'Hello World') }
+        subject { described_class.new(work: work, repository: repository, helper: helper) }
 
         it { should respond_to :human_attribute_name }
         it { should respond_to :path_to_recommendation }
@@ -16,13 +16,13 @@ module Sipity
         its(:human_status) { should be_a(String) }
 
         it 'will have a :path_to_recommendation' do
-          expect(helper).to receive(:sip_doi_path).with(sip).and_return('/the/path')
+          expect(helper).to receive(:work_doi_path).with(work).and_return('/the/path')
           expect(subject.path_to_recommendation).to eq('/the/path')
         end
 
         context 'when a doi exists in the system its' do
           before do
-            expect(repository).to receive(:doi_already_assigned?).with(sip).and_return(true)
+            expect(repository).to receive(:doi_already_assigned?).with(work).and_return(true)
           end
           its(:state) { should eq :doi_already_assigned }
           its(:status) { should eq :doi_already_assigned }
@@ -30,8 +30,8 @@ module Sipity
 
         context 'when a doi does not exist in the system but a request was submitted its' do
           before do
-            expect(repository).to receive(:doi_already_assigned?).with(sip).and_return(false)
-            expect(repository).to receive(:doi_request_is_pending?).with(sip).and_return(true)
+            expect(repository).to receive(:doi_already_assigned?).with(work).and_return(false)
+            expect(repository).to receive(:doi_request_is_pending?).with(work).and_return(true)
           end
           its(:state) { should eq :doi_request_is_pending }
           its(:status) { should eq :doi_request_is_pending }
@@ -39,8 +39,8 @@ module Sipity
 
         context 'when a doi does not exist nor do we have record of a doi request its' do
           before do
-            expect(repository).to receive(:doi_already_assigned?).with(sip).and_return(false)
-            expect(repository).to receive(:doi_request_is_pending?).with(sip).and_return(false)
+            expect(repository).to receive(:doi_already_assigned?).with(work).and_return(false)
+            expect(repository).to receive(:doi_request_is_pending?).with(work).and_return(false)
           end
           its(:state) { should eq :doi_not_assigned }
           its(:status) { should eq :doi_not_assigned }

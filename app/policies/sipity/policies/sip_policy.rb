@@ -3,13 +3,13 @@ module Sipity
     # Responsible for enforcing access to a given Sipity::Sip.
     #
     # This class answers can I take the given action based on the user and
-    # the sip.
+    # the work.
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     class SipPolicy < BasePolicy
-      def initialize(user, sip, permission_query_service: nil)
-        super(user, sip)
+      def initialize(user, work, permission_query_service: nil)
+        super(user, work)
         @permission_query_service = permission_query_service || default_permission_query_service
       end
       attr_reader :permission_query_service, :original_entity

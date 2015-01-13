@@ -3,10 +3,10 @@ require 'spec_helper'
 module Sipity
   module Forms
     RSpec.describe AssignACitationForm do
-      let(:sip) { Models::Sip.new(id: '1234') }
-      subject { described_class.new(sip: sip) }
+      let(:work) { Models::Sip.new(id: '1234') }
+      subject { described_class.new(work: work) }
 
-      it { should respond_to :sip }
+      it { should respond_to :work }
       it { should respond_to :citation }
       it { should respond_to :citation= }
       it { should respond_to :type }
@@ -17,10 +17,10 @@ module Sipity
         expect(subject.errors[:citation]).to_not be_empty
       end
 
-      it 'will require a sip' do
-        subject = described_class.new(sip: nil)
+      it 'will require a work' do
+        subject = described_class.new(work: nil)
         subject.valid?
-        expect(subject.errors[:sip]).to_not be_empty
+        expect(subject.errors[:work]).to_not be_empty
       end
 
       it 'will require a type' do

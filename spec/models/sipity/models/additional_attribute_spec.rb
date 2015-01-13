@@ -3,8 +3,8 @@ require 'rails_helper'
 module Sipity
   module Models
     RSpec.describe AdditionalAttribute, type: :model do
-      it 'belongs to :sip' do
-        expect(described_class.reflect_on_association(:sip)).
+      it 'belongs to :work' do
+        expect(described_class.reflect_on_association(:work)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
