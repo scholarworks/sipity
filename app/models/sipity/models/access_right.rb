@@ -27,6 +27,8 @@ module Sipity
           PRIVATE_ACCESS => PRIVATE_ACCESS
         }
       )
+
+      belongs_to :entity, polymorphic: true
     end
   end
 end

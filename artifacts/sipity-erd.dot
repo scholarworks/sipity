@@ -3,7 +3,7 @@ digraph "G" {
     node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="Sipity ERD (Draft v4)"
+        label="Sipity ERD (Draft v5)"
         color="seashell3"
         style="filled"
         node[style=filled fillcolor=white color="seashell4"]
@@ -20,11 +20,13 @@ digraph "G" {
         doi_creation_request[label="{ DoiCreationRequest | sip | state }"]
         additional_attributes[label="{ AdditionalAttribute | sip | key | value }"]
         ActorForPermissionAssignment[label="{ ActorForPermissionAssignment | actor | acting_as | work_type }"]
+        AccessRight[label="{ AccessRight | entity | access_right | enforcement_start_date | enforcement_end_date }"]
 
         user -> group_membership
         group_entity -> ActorForPermissionAssignment[label="as actor"]
         user -> ActorForPermissionAssignment[label="as actor"]
 
+        sip -> AccessRight[label="as entity"]
         user -> permission[label="as actor"]
         group_entity -> permission[label="as actor"]
         sip -> permission[label="as entity"]
