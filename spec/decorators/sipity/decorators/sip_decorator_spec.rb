@@ -15,7 +15,7 @@ module Sipity
         end
       end
 
-      context '.with_form_panel' do
+      context '#with_form_panel' do
         it 'wrap the results of the block inside a panel' do
           rendered = subject.with_form_panel('attributes') { 'hello' }
           expect(rendered).to have_tag('.panel') do
@@ -27,6 +27,12 @@ module Sipity
 
       it 'shares .object_class with Models::Sip' do
         expect(SipDecorator.object_class).to eq(Models::Sip)
+      end
+
+      context '#work_publication_strategies_for_select' do
+        it 'will be an array of symbols to enable simple form internationalization' do
+          expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
+        end
       end
 
       let(:authors) { [double('Author')] }
