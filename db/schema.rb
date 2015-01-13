@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113145636) do
+ActiveRecord::Schema.define(version: 20150113155503) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -171,6 +171,18 @@ ActiveRecord::Schema.define(version: 20150113145636) do
 
   add_index "sipity_sips", ["processing_state"], name: "index_sipity_sips_on_processing_state"
   add_index "sipity_sips", ["work_type"], name: "index_sipity_sips_on_work_type"
+
+  create_table "sipity_transient_answers", force: :cascade do |t|
+    t.integer  "entity_id",     null: false
+    t.string   "entity_type",   null: false
+    t.string   "question_code", null: false
+    t.string   "answer_code",   null: false
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "sipity_transient_answers", ["entity_id", "entity_type", "question_code"], name: "sipity_transient_entity_answers", unique: true
+  add_index "sipity_transient_answers", ["entity_id", "entity_type"], name: "index_sipity_transient_answers_on_entity_id_and_entity_type"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
