@@ -39,6 +39,8 @@ module Sipity
         ].freeze
       }.freeze
 
+      # TODO: Should there be validation concerning the question and answer?
+
       belongs_to :entity, polymorphic: true
     end
   end

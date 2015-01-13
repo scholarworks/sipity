@@ -20,9 +20,7 @@ module Sipity
           work = Models::Work.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
           # TODO: Extract the method call below to a Repository command, because
           #   what happens based on answer could be very complicated.
-          Models::TransientAnswer.create!(
-            entity: work, question_code: Models::TransientAnswer::ACCESS_RIGHTS_QUESTION, answer_code: f.access_rights_answer
-          )
+          TransientAnswerCommands.handle_transient_access_rights_answer(entity: work, answer: f.access_rights_answer)
           AdditionalAttributeCommands.update_work_publication_date!(work: work, publication_date: f.publication_date)
           PermissionCommands.grant_creating_user_permission_for!(entity: work, user: requested_by)
           EventLogCommands.log_event!(entity: work, user: requested_by, event_name: __method__)
