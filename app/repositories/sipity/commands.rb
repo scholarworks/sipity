@@ -19,7 +19,6 @@ module Sipity
       base.send(:include, AccountPlaceholderCommands)
       base.send(:include, NotificationCommands)
       base.send(:include, AdditionalAttributeCommands)
-      base.send(:include, CollaboratorCommands)
       base.send(:include, PermissionCommands)
     end
   end
