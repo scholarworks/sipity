@@ -46,15 +46,6 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#confirmation_of_entity_approved_for_ingest' do
-        let(:entity) { Models::Work.new }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.confirmation_of_entity_approved_for_ingest(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
       context '#request_revisions_from_creator' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
@@ -82,11 +73,11 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#confirmation_of_entity_approved_for_ingest' do
+      context '#confirmation_of_entity_ingested' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.confirmation_of_entity_approved_for_ingest(entity: entity, to: to).deliver_now
+          described_class.confirmation_of_entity_ingested(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
