@@ -26,7 +26,7 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def confirmation_of_entity_approved_for_ingest(entity:, to:, cc: [], bcc: [])
+      def confirmation_of_entity_ingested(entity:, to:, cc: [], bcc: [])
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end

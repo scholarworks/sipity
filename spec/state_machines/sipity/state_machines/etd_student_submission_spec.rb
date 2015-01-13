@@ -247,7 +247,7 @@ module Sipity
           it 'will send an email notification to the student and grad school and any additional emails provided (i.e. ISSA)' do
             expect(repository).to(
               have_received(:send_notification_for_entity_trigger).with(
-                notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
+                notification: "confirmation_of_entity_ingested", entity: entity,
                 acting_as: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
               )
             )

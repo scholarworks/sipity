@@ -91,7 +91,7 @@ module Sipity
           notification: "entity_ready_for_cataloging", entity: entity, acting_as: 'cataloger'
         )
         repository.send_notification_for_entity_trigger(
-          notification: "confirmation_of_entity_approved_for_ingest", entity: entity,
+          notification: "confirmation_of_entity_ingested", entity: entity,
           acting_as: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: additional_emails
         )
       end
