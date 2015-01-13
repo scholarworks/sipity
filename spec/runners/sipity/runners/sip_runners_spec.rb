@@ -29,6 +29,13 @@ module Sipity
           expect(handler).to have_received(:invoked).with("SUCCESS", sip)
           expect(response).to eq([:success, sip])
         end
+
+        it 'allows attributes to be set via attributes' do
+          attributes = { title: 'Hello World' }
+          expect(context.repository).to receive(:build_create_sip_form).with(attributes: attributes)
+          response = subject.run(attributes: attributes)
+          expect(response).to eq([:success, sip])
+        end
       end
 
       RSpec.describe Create do

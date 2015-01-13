@@ -7,7 +7,7 @@ module Sipity
       self.runner_container = Sipity::Runners::SipRunners
 
       def new
-        _status, model = run
+        _status, model = run(attributes: new_params)
         @model = Decorators::SipDecorator.decorate(model)
         respond_with(@model)
       end
@@ -44,6 +44,10 @@ module Sipity
 
       def sip_id
         params.require(:id)
+      end
+
+      def new_params
+        params[:sip] || {}
       end
 
       def create_params

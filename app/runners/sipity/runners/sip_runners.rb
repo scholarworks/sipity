@@ -7,8 +7,8 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :default
 
-        def run
-          sip = repository.build_create_sip_form
+        def run(attributes: {})
+          sip = repository.build_create_sip_form(attributes: attributes)
           authorization_layer.enforce!(create?: sip) do
             callback(:success, sip)
           end
