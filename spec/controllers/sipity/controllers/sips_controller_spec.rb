@@ -10,14 +10,14 @@ module Sipity
         before { controller.runner = runner }
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
-            yields: yields, callback_name: callback_name, run_with: [], context: controller
+            yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
           )
         end
-
+        let(:attributes) { { 'title' => 'My Title' } }
         let(:yields) { sip }
         let(:callback_name) { :success }
         it 'will render the new page' do
-          get 'new'
+          get 'new', sip: attributes
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('new')
         end
