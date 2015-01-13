@@ -18,6 +18,11 @@ module Sipity
       def submit_create_sip_form(form, requested_by:)
         form.submit do |f|
           sip = Models::Sip.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          # TODO: Extract the method call below to a Repository command, because
+          #   what happens based on answer could be very complicated.
+          Models::TransientAnswer.create!(
+            entity: sip, question_code: Models::TransientAnswer::ACCESS_RIGHTS_QUESTION, answer_code: f.access_rights_answer
+          )
           AdditionalAttributeCommands.update_sip_publication_date!(sip: sip, publication_date: f.publication_date)
           PermissionCommands.grant_creating_user_permission_for!(entity: sip, user: requested_by)
           EventLogCommands.log_event!(entity: sip, user: requested_by, event_name: __method__)

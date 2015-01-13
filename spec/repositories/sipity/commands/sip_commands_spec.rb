@@ -23,9 +23,7 @@ module Sipity
               title: 'This is my title',
               work_publication_strategy: 'do_not_know',
               publication_date: '2014-11-12',
-              collaborators_attributes: {
-                "0" => { name: "The person", role: Models::Collaborator::DEFAULT_ROLE }
-              }
+              access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
             }
           )
         end
@@ -49,6 +47,7 @@ module Sipity
 
             expect(response).to be_a(Models::Sip)
             expect(Models::Sip.count).to eq(1)
+            expect(Models::TransientAnswer.count).to eq(1)
             expect(response.additional_attributes.count).to eq(1)
             expect(Models::Permission.where(actor: user, acting_as: Models::Permission::CREATING_USER).count).to eq(1)
             expect(Models::EventLog.where(user: user, event_name: 'submit_create_sip_form').count).to eq(1)
