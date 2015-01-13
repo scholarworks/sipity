@@ -10,6 +10,7 @@ feature 'Minimum viable SIP', :devise do
     on('new_sip_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.fill_in(:title, with: 'Hello World')
+      the_page.select('ETD', from: :work_type)
       the_page.choose(:work_publication_strategy, with: 'do_not_know')
       the_page.submit_button.click
     end

@@ -7,10 +7,6 @@ module Sipity
 
       its(:policy_enforcer) { should eq Policies::SipPolicy }
 
-      it 'will have a #possible_work_publication_strategies' do
-        expect(subject.possible_work_publication_strategies).to be_a(Hash)
-      end
-
       it 'will have a model name like Sip' do
         expect(described_class.model_name).to be_a(ActiveModel::Name)
       end
@@ -20,6 +16,12 @@ module Sipity
           it 'must be present' do
             subject.valid?
             expect(subject.errors[:title]).to be_present
+          end
+        end
+        context '#work_type' do
+          it 'must be present' do
+            subject.valid?
+            expect(subject.errors[:work_type]).to be_present
           end
         end
         context '#work_publication_strategy' do
