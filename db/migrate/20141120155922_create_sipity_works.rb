@@ -1,4 +1,4 @@
-class CreateSipitySips < ActiveRecord::Migration
+class CreateSipityWorks < ActiveRecord::Migration
   def change
     create_table :sipity_works do |t|
       t.string :work_publication_strategy

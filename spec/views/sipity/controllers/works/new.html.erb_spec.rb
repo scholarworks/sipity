@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'sipity/controllers/works/new.html.erb', type: :view do
-  let(:model) { Sipity::Decorators::SipDecorator.decorate(Sipity::Forms::CreateSipForm.new) }
+  let(:model) { Sipity::Decorators::WorkDecorator.decorate(Sipity::Forms::CreateWorkForm.new) }
 
   it 'renders the object and fieldsets' do
     # I want to pass the model to the view; Not using an instance variable

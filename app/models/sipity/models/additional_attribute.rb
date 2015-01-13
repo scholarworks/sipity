@@ -2,7 +2,7 @@ require 'sipity/models'
 module Sipity
   module Models
     # A rudimentary container for all (as of now string based) attributes
-    # associated with the Sipity::Sip
+    # associated with the Sipity::Work
     class AdditionalAttribute < ActiveRecord::Base
       # TODO: Create a map for input name to key and vice versa
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze

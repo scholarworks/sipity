@@ -3,7 +3,7 @@ require 'sipity/runners/work_runners'
 
 module Sipity
   module Runners
-    module SipRunners
+    module WorkRunners
       include RunnersSupport
       RSpec.describe New do
         let(:work) { double }
@@ -39,7 +39,7 @@ module Sipity
       end
 
       RSpec.describe Create do
-        let(:work) { double('Sip') }
+        let(:work) { double('Work') }
         let(:form) { double('Form') }
         let(:user) { User.new(id: '1') }
         let(:context) do
@@ -112,7 +112,7 @@ module Sipity
       end
 
       RSpec.describe Index do
-        let(:work) { double('Sip') }
+        let(:work) { double('Work') }
         let(:user) { double('User') }
         let(:context) { TestRunnerContext.new(current_user: user, find_works_for: [work]) }
         let(:handler) { double(invoked: true) }
@@ -167,7 +167,7 @@ module Sipity
       end
 
       RSpec.describe Update do
-        let(:work) { double('Sip') }
+        let(:work) { double('Work') }
         let(:form) { double('Form') }
         let(:user) { double('User') }
         let(:context) do

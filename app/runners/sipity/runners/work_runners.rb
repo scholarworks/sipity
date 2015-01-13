@@ -1,8 +1,8 @@
 module Sipity
   module Runners
     # Container for Work related actions.
-    module SipRunners
-      # Responsible for building the model for a New Sip
+    module WorkRunners
+      # Responsible for building the model for a New Work
       class New < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
@@ -15,7 +15,7 @@ module Sipity
         end
       end
 
-      # Responsible for creating and persisting a new Sip
+      # Responsible for creating and persisting a new Work
       class Create < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
@@ -33,7 +33,7 @@ module Sipity
         end
       end
 
-      # Responsible for instantiating the model for a Sip
+      # Responsible for instantiating the model for a Work
       class Show < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
@@ -70,7 +70,7 @@ module Sipity
         end
       end
 
-      # Responsible for creating and persisting a new Sip
+      # Responsible for creating and persisting a new Work
       class Update < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default

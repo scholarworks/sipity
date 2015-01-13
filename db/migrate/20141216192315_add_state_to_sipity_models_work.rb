@@ -1,4 +1,4 @@
-class AddStateToSipityModelsSip < ActiveRecord::Migration
+class AddStateToSipityModelsWork < ActiveRecord::Migration
   def change
     add_column :sipity_works, :processing_state, :string, default: :new, limit: 64
     add_index :sipity_works, :processing_state

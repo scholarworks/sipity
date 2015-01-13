@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     RSpec.describe RequestADoiForm do
-      let(:work) { double('Sip') }
+      let(:work) { double('Work') }
       subject { described_class.new(work: work) }
 
       it 'requires a work' do

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Commands
-    RSpec.describe SipCommands, type: :repository_methods do
+    RSpec.describe WorkCommands, type: :repository_methods do
       context '#assign_a_pid' do
         it 'will assign a unique permanent persisted identifier for the work'
       end
@@ -45,7 +45,7 @@ module Sipity
             allow(form).to receive(:valid?).and_return(true)
             response = test_repository.submit_create_work_form(form, requested_by: user)
 
-            expect(response).to be_a(Models::Sip)
+            expect(response).to be_a(Models::Work)
             expect(Models::Work.count).to eq(1)
             expect(Models::TransientAnswer.count).to eq(1)
             expect(response.additional_attributes.count).to eq(1)

@@ -1,4 +1,4 @@
-class AddWorkTypeToSip < ActiveRecord::Migration
+class AddWorkTypeToWork < ActiveRecord::Migration
   def change
     add_column :sipity_works, :work_type, :string
     add_index :sipity_works, :work_type

@@ -2,20 +2,20 @@ require 'spec_helper'
 
 module Sipity
   module Policies
-    RSpec.describe EnrichSipByFormSubmissionPolicy do
+    RSpec.describe EnrichWorkByFormSubmissionPolicy do
       let(:user) { User.new(id: '1') }
       let(:work) { Models::Work.new(id: '2') }
       let(:entity) { double(work: work) }
       let(:work_policy) { double('Work Policy') }
-      subject { EnrichSipByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }
+      subject { EnrichWorkByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }
 
       it 'will have a default work_policy' do
-        expect(EnrichSipByFormSubmissionPolicy.new(user, entity).send(:work_policy)).to be_a(SipPolicy)
+        expect(EnrichWorkByFormSubmissionPolicy.new(user, entity).send(:work_policy)).to be_a(WorkPolicy)
       end
 
       it 'will fail to initialize if the entity does not have a #work' do
         entity = double
-        expect { EnrichSipByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }.
+        expect { EnrichWorkByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }.
           to raise_error Exceptions::PolicyEntityExpectationError
       end
 

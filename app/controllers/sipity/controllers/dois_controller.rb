@@ -21,7 +21,7 @@ module Sipity
       end
 
       def doi_not_assigned_response(work)
-        work = Decorators::SipDecorator.decorate(work)
+        work = Decorators::WorkDecorator.decorate(work)
         @model = Forms::AssignADoiForm.new(work: work)
         respond_with(@model) do |wants|
           flash.now.alert = message_for(:doi_not_assigned, title: work.title)

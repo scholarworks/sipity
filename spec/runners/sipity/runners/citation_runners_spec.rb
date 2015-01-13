@@ -48,7 +48,7 @@ module Sipity
       end
 
       RSpec.describe New do
-        let(:work) { double('Sip') }
+        let(:work) { double('Work') }
         let(:work_id) { 1234 }
         let(:form) { double('Form') }
         let(:citation_assigned) { nil }

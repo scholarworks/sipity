@@ -16,7 +16,7 @@ module Sipity
 
       self.table_name = 'sipity_collaborators'
 
-      # REVIEW: Do I want validations here? I'm relying on the CreateSipForm
+      # REVIEW: Do I want validations here? I'm relying on the CreateWorkForm
       #   to check for collaborators and use the underlying ActiveRecord
       #   validations. However, the role requirement is enforced via the
       #   database.

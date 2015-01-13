@@ -5,12 +5,12 @@ module Sipity
     # Since a Work is a composite of many attributes from numerous sources
     # this object is a bit different.
     #
-    # @see Sipity::Forms::UpdateSipForm#guard_against_existing_method_names!
-    # @see Sipity::Forms::UpdateSipForm#exposes?
-    # @see Sipity::Forms::UpdateSipForm#method_missing
-    # @see Sipity::Forms::UpdateSipForm#respond_to_missing?
-    class UpdateSipForm < BaseForm
-      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
+    # @see Sipity::Forms::UpdateWorkForm#guard_against_existing_method_names!
+    # @see Sipity::Forms::UpdateWorkForm#exposes?
+    # @see Sipity::Forms::UpdateWorkForm#method_missing
+    # @see Sipity::Forms::UpdateWorkForm#respond_to_missing?
+    class UpdateWorkForm < BaseForm
+      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def self.model_name
         Models::Work.model_name

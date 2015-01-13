@@ -1,27 +1,27 @@
 module Sipity
   module Controllers
     # The controller for creating works.
-    class SipsController < ApplicationController
+    class WorksController < ApplicationController
       respond_to :html, :json
 
-      self.runner_container = Sipity::Runners::SipRunners
+      self.runner_container = Sipity::Runners::WorkRunners
 
       def new
         _status, model = run(attributes: new_params)
-        @model = Decorators::SipDecorator.decorate(model)
+        @model = Decorators::WorkDecorator.decorate(model)
         respond_with(@model)
       end
 
       def create
         status, model = run(attributes: create_params)
-        @model = Decorators::SipDecorator.decorate(model)
+        @model = Decorators::WorkDecorator.decorate(model)
         flash[:notice] = message_for(status, title: @model.title)
         respond_with(@model)
       end
 
       def show
         _status, model = run(work_id: work_id)
-        @model = Decorators::SipDecorator.decorate(model)
+        @model = Decorators::WorkDecorator.decorate(model)
         respond_with(@model)
       end
 

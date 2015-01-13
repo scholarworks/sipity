@@ -2,8 +2,8 @@ module Sipity
   module Forms
     # Responsible for creating a new work.
     # What goes into this is more complicated that the entity might allow.
-    class CreateSipForm < BaseForm
-      self.policy_enforcer = Policies::SipPolicy
+    class CreateWorkForm < BaseForm
+      self.policy_enforcer = Policies::WorkPolicy
 
       def self.model_name
         Models::Work.model_name
@@ -57,7 +57,7 @@ module Sipity
       end
 
       def publication_date_required?
-        work_publication_strategy == Models::Sip::ALREADY_PUBLISHED
+        work_publication_strategy == Models::Work::ALREADY_PUBLISHED
       end
 
       def default_access_rights_answer

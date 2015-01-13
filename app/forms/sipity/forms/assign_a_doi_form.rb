@@ -3,7 +3,7 @@ module Sipity
     # Responsible for capturing and validating the assignment of a DOI that
     # already exists but has not yet been assigned to the SIP
     class AssignADoiForm < BaseForm
-      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
+      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)

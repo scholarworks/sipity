@@ -4,13 +4,13 @@ module Sipity
   module Decorators
     module Recommendations
       RSpec.describe Base do
-        let(:work) { double('Sip', title: 'My Title') }
+        let(:work) { double('Work', title: 'My Title') }
         let(:helper) { double('Helper') }
         let(:repository) { double('Repository') }
         subject { described_class.new(work: work, helper: helper, repository: repository) }
 
         it 'requires the work to implement a #title' do
-          work = double('Sip')
+          work = double('Work')
           expect { described_class.new(work: work, helper: helper, repository: repository) }.
             to raise_error(NotImplementedError)
         end
@@ -20,7 +20,7 @@ module Sipity
         end
 
         it 'has a default helper' do
-          work = double('Sip', h: helper, title: 'My Title')
+          work = double('Work', h: helper, title: 'My Title')
           expect(described_class.new(work: work).send(:helper)).to eq(helper)
         end
 

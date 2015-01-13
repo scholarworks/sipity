@@ -1,8 +1,8 @@
 module Sipity
   module Forms
-    # Submit a request for a DOI for the given Sip
+    # Submit a request for a DOI for the given Work
     class RequestADoiForm < BaseForm
-      self.policy_enforcer = Policies::EnrichSipByFormSubmissionPolicy
+      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)

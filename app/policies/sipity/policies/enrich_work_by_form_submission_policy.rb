@@ -4,8 +4,8 @@ module Sipity
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
-    # @see SipPolicy for more information on who can edit this object.
-    class EnrichSipByFormSubmissionPolicy < BasePolicy
+    # @see WorkPolicy for more information on who can edit this object.
+    class EnrichWorkByFormSubmissionPolicy < BasePolicy
       attr_reader :work_policy
       private :work_policy
       def initialize(user, entity, options = {})
@@ -30,7 +30,7 @@ module Sipity
       end
 
       def default_work_policy
-        SipPolicy.new(user, entity.work)
+        WorkPolicy.new(user, entity.work)
       end
     end
   end

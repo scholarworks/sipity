@@ -4,20 +4,20 @@ module Sipity
   module Commands
     # HACK: This is a cheat to get around the constraints of privatized
     # constants.
-    class SipCommandRepository
-      include SipCommands
+    class WorkCommandRepository
+      include WorkCommands
     end
   end
   module Queries
-    RSpec.describe SipQueries, type: :repository_methods do
+    RSpec.describe WorkQueries, type: :repository_methods do
       it 'will have a permanent URL for a given work' do
         expect(test_repository.permanent_uri_for_work_id(123)).to be_a(URI)
       end
 
       context '#find_works_for' do
         # REVIEW: Crossing a boundary for this test; Is that adequate?
-        let!(:command_repository) { Commands::SipCommandRepository.new }
-        after { Commands.send(:remove_const, :SipCommandRepository) }
+        let!(:command_repository) { Commands::WorkCommandRepository.new }
+        after { Commands.send(:remove_const, :WorkCommandRepository) }
         let(:user_one) { User.new(id: 1) }
         let(:user_two) { User.new(id: 2) }
         let(:form) do
@@ -41,7 +41,7 @@ module Sipity
           expect { test_repository.find_work('8675309') }.to raise_error
         end
         it 'returns the Work when the object is found' do
-          allow(Models::Sip).to receive(:find).with('8675309').and_return(:found)
+          allow(Models::Work).to receive(:find).with('8675309').and_return(:found)
           expect(test_repository.find_work('8675309')).to eq(:found)
         end
       end

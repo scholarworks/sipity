@@ -2,11 +2,11 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    RSpec.describe Sip, type: :model do
+    RSpec.describe Work, type: :model do
       subject { Work.new }
 
       context 'database columns' do
-        subject { Sip }
+        subject { Work }
         its(:column_names) { should include('processing_state') }
         its(:column_names) { should include('work_type') }
         its(:column_names) { should include('work_publication_strategy') }

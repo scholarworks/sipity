@@ -2,9 +2,9 @@ require 'spec_helper'
 
 module Sipity
   module Decorators
-    RSpec.describe SipDecorator do
+    RSpec.describe WorkDecorator do
       let(:work) { Models::Work.new(title: 'Hello World', id: 123) }
-      subject { SipDecorator.new(work) }
+      subject { WorkDecorator.new(work) }
       it 'will have a #to_s equal its #title' do
         expect(subject.to_s).to eq(work.title)
       end
@@ -25,8 +25,8 @@ module Sipity
         end
       end
 
-      it 'shares .object_class with Models::Sip' do
-        expect(SipDecorator.object_class).to eq(Models::Sip)
+      it 'shares .object_class with Models::Work' do
+        expect(WorkDecorator.object_class).to eq(Models::Work)
       end
 
       let(:authors) { [double('Author')] }

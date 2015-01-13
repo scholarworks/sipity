@@ -1,7 +1,7 @@
 require 'site_prism'
 module SitePrism
   module Pages
-    class NewSipPage < SitePrism::Page
+    class NewWorkPage < SitePrism::Page
       DOM_CLASS = 'new_work'.freeze
       PARAM_NAME_CONTAINER = 'work'.freeze
 
@@ -27,7 +27,7 @@ module SitePrism
       end
     end
 
-    class EditSipPage < SitePrism::Page
+    class EditWorkPage < SitePrism::Page
       DOM_CLASS = 'edit_work'.freeze
       PARAM_NAME_CONTAINER = 'work'.freeze
 
@@ -53,7 +53,7 @@ module SitePrism
       end
     end
 
-    class SipPage < SitePrism::Page
+    class WorkPage < SitePrism::Page
       DOM_CLASS = 'work'.freeze
 
       def text_for(predicate)

@@ -2,14 +2,14 @@ require 'spec_helper'
 
 module Sipity
   module Policies
-    RSpec.describe SipPolicy do
+    RSpec.describe WorkPolicy do
       let(:user) { User.new(id: '1') }
       let(:work) { Models::Work.new(id: '2') }
       let(:query_service) { double('Query Service') }
-      subject { SipPolicy.new(user, work, permission_query_service: query_service) }
+      subject { WorkPolicy.new(user, work, permission_query_service: query_service) }
 
       it 'has a default permission query service' do
-        policy = SipPolicy.new(user, work)
+        policy = WorkPolicy.new(user, work)
         service = policy.send(:permission_query_service)
         expect(service.call(user: user, entity: work, acting_as: ['hello_world'])).to eq(false)
       end
@@ -57,7 +57,7 @@ module Sipity
       end
     end
 
-    RSpec.describe SipPolicy::Scope do
+    RSpec.describe WorkPolicy::Scope do
       let(:user) { User.new(id: 1234) }
       let(:entity) { Models::Work.new(id: 5678) }
       context '.resolve' do

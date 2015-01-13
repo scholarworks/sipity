@@ -6,7 +6,7 @@ module Sipity
       RSpec.describe DoiRecommendation do
         let(:repository) { double(doi_request_is_pending?: false, doi_already_assigned?: false) }
         let(:helper) { double(work_doi_path: true) }
-        let(:work) { double('Sip', title: 'Hello World') }
+        let(:work) { double('Work', title: 'Hello World') }
         subject { described_class.new(work: work, repository: repository, helper: helper) }
 
         it { should respond_to :human_attribute_name }

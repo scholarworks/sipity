@@ -1,9 +1,9 @@
 module Sipity
   module Decorators
-    # A decoration layer for Sipity::Sip
-    class SipDecorator < Draper::Decorator
+    # A decoration layer for Sipity::Work
+    class WorkDecorator < Draper::Decorator
       def self.object_class
-        Models::Sip
+        Models::Work
       end
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator

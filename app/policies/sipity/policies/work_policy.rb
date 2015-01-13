@@ -1,13 +1,13 @@
 module Sipity
   module Policies
-    # Responsible for enforcing access to a given Sipity::Sip.
+    # Responsible for enforcing access to a given Sipity::Work.
     #
     # This class answers can I take the given action based on the user and
     # the work.
     #
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
-    class SipPolicy < BasePolicy
+    class WorkPolicy < BasePolicy
       def initialize(user, work, permission_query_service: nil)
         super(user, work)
         @permission_query_service = permission_query_service || default_permission_query_service
@@ -60,10 +60,10 @@ module Sipity
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Sip, acting_as: [Models::Permission::CREATING_USER])
+        def self.resolve(user:, scope: Models::Work, acting_as: [Models::Permission::CREATING_USER])
           new(user, scope, acting_as: acting_as).resolve
         end
-        def initialize(user, scope = Models::Sip, acting_as: [Models::Permission::CREATING_USER])
+        def initialize(user, scope = Models::Work, acting_as: [Models::Permission::CREATING_USER])
           @user = user
           @scope = scope
           @acting_as = acting_as

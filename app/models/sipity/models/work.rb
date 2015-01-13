@@ -2,7 +2,7 @@ require 'sipity/models'
 module Sipity
   module Models
     # The most basic of information required for generating a valid SIP.
-    class Sip < ActiveRecord::Base
+    class Work < ActiveRecord::Base
       self.table_name = 'sipity_works'
 
       # @!attribute [rw] :processing_state The processing state of the work.

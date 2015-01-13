@@ -24,7 +24,7 @@ module Sipity
 
       it "will lookup one by convention" do
         work = Models::Work.new
-        expect(subject.find_policy_enforcer_for(entity: work)).to eq(Policies::SipPolicy)
+        expect(subject.find_policy_enforcer_for(entity: work)).to eq(Policies::WorkPolicy)
       end
 
       it "will fail if a policy_enforcer cannot be found" do

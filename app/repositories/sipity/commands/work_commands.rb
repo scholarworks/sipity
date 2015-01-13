@@ -2,10 +2,10 @@ module Sipity
   # :nodoc:
   module Commands
     # Commands
-    module SipCommands
+    module WorkCommands
       extend ActiveSupport::Concern
       included do |base|
-        base.send(:include, Queries::SipQueries)
+        base.send(:include, Queries::WorkQueries)
       end
       # TODO: This is duplicationed
       BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
@@ -59,6 +59,6 @@ module Sipity
         yield(attributes) if attributes.any?
       end
     end
-    private_constant :SipCommands
+    private_constant :WorkCommands
   end
 end

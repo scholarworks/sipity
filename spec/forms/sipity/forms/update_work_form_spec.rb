@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe UpdateSipForm do
-      let(:work) { double('Sip') }
+    RSpec.describe UpdateWorkForm do
+      let(:work) { double('Work') }
       subject do
         described_class.new(
           work: work, exposed_attribute_names: [:title],
@@ -11,7 +11,7 @@ module Sipity
         )
       end
 
-      its(:policy_enforcer) { should eq Policies::EnrichSipByFormSubmissionPolicy }
+      its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
       its(:to_model) { should eq(work) }
 
       it 'will have a model_name that is the same as the Models::Work.model_name' do
