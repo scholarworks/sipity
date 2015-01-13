@@ -20,7 +20,11 @@ module Sipity
         after { Commands.send(:remove_const, :SipCommandRepository) }
         let(:user_one) { User.new(id: 1) }
         let(:user_two) { User.new(id: 2) }
-        let(:form) { test_repository.build_create_sip_form(attributes: { title: 'My Title', work_publication_strategy: 'do_not_know' }) }
+        let(:form) do
+          test_repository.build_create_sip_form(
+            attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'ETD' }
+          )
+        end
         let!(:sip_one) { command_repository.submit_create_sip_form(form, requested_by: user_one) }
         let!(:sip_two) { command_repository.submit_create_sip_form(form, requested_by: user_two) }
         it 'will include sips that were created by the user' do

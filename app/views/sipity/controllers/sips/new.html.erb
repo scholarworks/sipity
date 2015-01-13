@@ -3,6 +3,9 @@
   <%= model.with_form_panel('attributes') do %>
     <%= f.input :title %>
   <% end %>
+  <%= model.with_form_panel('work_type') do %>
+    <%= f.input :work_type, as: :select, collection: model.work_types_for_select %>
+  <% end %>
   <%= model.with_form_panel('work_publication_strategy') do %>
     <%= f.input :work_publication_strategy, as: :radio_buttons, collection: model.work_publication_strategies_for_select %>
   <% end %>
