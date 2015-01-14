@@ -186,6 +186,33 @@ For completeness, including a rudimentary Entity Relationship Diagram (ERD).
 
 ![Sipity ERD](artifacts/sipity-erd.png)
 
+## Relationship Between Forms, Models, and Decorators
+
+* A decorator exposes a _logical group_ attributes that a user can see.
+* A form exposes a _logical group_ of attributes for a user to edit.
+* A model persists attributes in a _normalized_ manner.
+
+A decorator's attributes may be queried from numerous models.
+
+A form's attributes may end up persisted across numerous models.
+The initial value for any of those attributes may be retrieved from persisted models.
+
+Multiple forms may exist that modify the same underlying attribute.
+
+For example, we ask our patrons to provide a title when they create a work.
+If the patron then assigns DOI, there is a form that exposes the same title along with other attributes (i.e. publisher).
+If the patron then assigns a citation, and filled out a DOI, we'll leverage the same publisher as reported.
+
+The fundamental idea is that we are providing different contexts for our patrons to fill out information.
+And each metadatum may be shared across different contexts.
+
+The idea is stretched further, as we consider something like an geo-spatial data.
+
+If one context is "Tell us about your geo-spatial data" then that data will be required.
+If you don't want to fill it out, cancel what you are doing.
+
+If another context is "Tell us about your metadata" and we expose geo-spatial data, then that data would not be required.
+
 ## TODO Items
 
 Pieces remaining to complete; This is a non-complete list:
