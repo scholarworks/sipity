@@ -15,7 +15,7 @@ module Sipity
       # the given entity's work type.
       #
       # @raise Exception if for any of the given acting_as, no group could be found
-      module_function def grant_groups_permission_to_entity_for_acting_as!(entity:, acting_as:)
+      def grant_groups_permission_to_entity_for_acting_as!(entity:, acting_as:)
         # TODO: Extract this map of acting_as to groups; Will we need acting_as by
         #   work type?
         Array.wrap(acting_as).each do |an_acting_as|
@@ -26,22 +26,25 @@ module Sipity
           end
         end
       end
+      module_function :grant_groups_permission_to_entity_for_acting_as!
       public :grant_groups_permission_to_entity_for_acting_as!
 
-      module_function def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
+      def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
         # REVIEW: Does the constant even make sense on the data structure? Or
         #   is it more relevant here?
         acting_as = Models::Permission::CREATING_USER
         actors = [user, group, actor]
         grant_permission_for!(entity: entity, actors: actors, acting_as: acting_as)
       end
+      module_function :grant_creating_user_permission_for!
       public :grant_creating_user_permission_for!
 
-      module_function def grant_permission_for!(entity:, actors:, acting_as:)
+      def grant_permission_for!(entity:, actors:, acting_as:)
         Array.wrap(actors).flatten.compact.each do |an_actor|
           Models::Permission.create!(entity: entity, actor: an_actor, acting_as: acting_as)
         end
       end
+      module_function :grant_permission_for!
       private :grant_permission_for!
       private_class_method :grant_permission_for!
     end

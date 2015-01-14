@@ -6,15 +6,17 @@ module Sipity
         'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging'
       }.freeze
 
-      module_function def group_names_for_entity_and_acting_as(options = {})
+      def group_names_for_entity_and_acting_as(options = {})
         acting_as = options.fetch(:acting_as)
         Array.wrap(ACTING_AS_TO_GROUP_NAME.fetch(acting_as))
       end
+      module_function :group_names_for_entity_and_acting_as
       public :group_names_for_entity_and_acting_as
 
-      module_function def emails_for_associated_users(acting_as:, entity:)
+      def emails_for_associated_users(acting_as:, entity:)
         scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
       end
+      module_function :emails_for_associated_users
       public :emails_for_associated_users
 
       # Responsible for returning a User scope:
@@ -32,7 +34,7 @@ module Sipity
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      module_function def scope_users_by_entity_and_acting_as(acting_as:, entity:)
+      def scope_users_by_entity_and_acting_as(acting_as:, entity:)
         user_table = User.arel_table
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
@@ -64,6 +66,7 @@ module Sipity
           or(user_table[:id].in(subqyery_user_relation_entity))
         )
       end
+      module_function :scope_users_by_entity_and_acting_as
       public :scope_users_by_entity_and_acting_as
 
       # Responsible for returning a scope for the entity type:
@@ -80,7 +83,7 @@ module Sipity
       #
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
-      module_function def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
+      def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         actor_id = user.to_param
@@ -107,6 +110,7 @@ module Sipity
           or(entity_type.arel_table[:id].in(subquery_entity_relation_to_user_by_group_membership))
         )
       end
+      module_function :scope_entities_for_entity_type_and_user_acting_as
       public :scope_entities_for_entity_type_and_user_acting_as
     end
   end
