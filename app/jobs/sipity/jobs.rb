@@ -12,13 +12,14 @@ module Sipity
   module Jobs
     # Herein lies the inflection point. If you want to run things
     # asynchronously, this is your place to make changes.
-    module_function def submit(job_name, *args)
+    def submit(job_name, *args)
       job = find_job_by_name(job_name)
       verify_primativeness_of!(*args)
       job.submit(*args)
     end
+    module_function :submit
 
-    module_function def find_job_by_name(job_name)
+    def find_job_by_name(job_name)
       job_name_as_constant = job_name.to_s.classify
       if const_defined?(job_name_as_constant)
         const_get(job_name_as_constant)
@@ -26,14 +27,16 @@ module Sipity
         fail Exceptions::JobNotFoundError, name: job_name, container: self
       end
     end
+    module_function :find_job_by_name
     private_class_method :find_job_by_name
 
-    module_function def verify_primativeness_of!(*)
+    def verify_primativeness_of!(*)
       # REVIEW: Would it make sense to verify that each of the args is a
       #   primative? Given that we could be passing this information through
       #   REDIS
       true
     end
+    module_function :verify_primativeness_of!
     private_class_method :verify_primativeness_of!
   end
 end

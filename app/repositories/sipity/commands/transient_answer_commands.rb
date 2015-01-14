@@ -6,7 +6,7 @@ module Sipity
     #
     # @see Sipity::Models::TransientAnswer
     module TransientAnswerCommands
-      module_function def handle_transient_access_rights_answer(entity:, answer:)
+      def handle_transient_access_rights_answer(entity:, answer:)
         # REVIEW: Is a transient answer necessary for the the "trivial" answers?
         # That is to say the ones that write the more permanent "AccessRights"
         transient_answer = Models::TransientAnswer.create!(
@@ -22,6 +22,7 @@ module Sipity
         end
         transient_answer
       end
+      module_function :handle_transient_access_rights_answer
       public :handle_transient_access_rights_answer
     end
     private_constant :TransientAnswerCommands
