@@ -58,6 +58,7 @@ feature 'Minimum viable SIP', :devise do
       the_page.choose(:work_publication_strategy, with: 'do_not_know')
       the_page.submit_button.click
     end
+
     on('work_page') do |the_page|
       the_page.click_required('describe')
     end
@@ -68,4 +69,24 @@ feature 'Minimum viable SIP', :devise do
     end
   end
 
+  scenario 'User can attach files' do
+    login_as(user, scope: :user)
+    visit '/start'
+    on('new_work_page') do |the_page|
+      expect(the_page).to be_all_there
+      the_page.fill_in(:title, with: 'Hello World')
+      the_page.select('ETD', from: :work_type)
+      the_page.choose(:work_publication_strategy, with: 'do_not_know')
+      the_page.submit_button.click
+    end
+
+    on('work_page') do |the_page|
+      the_page.click_required('attach')
+    end
+
+    on('attach_page') do |the_page|
+      expect(the_page).to be_all_there
+      the_page.attach_file(__FILE__)
+    end
+  end
 end

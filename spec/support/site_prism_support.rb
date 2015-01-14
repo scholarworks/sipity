@@ -10,7 +10,7 @@ module SitePrism
       element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
 
       def fill_in(predicate, with: nil)
-        find("form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
 
       def choose(predicate, with: nil)
@@ -80,6 +80,16 @@ module SitePrism
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+      end
+    end
+
+    class AttachPage < SitePrism::Page
+      PARAM_NAME_CONTAINER = 'work'.freeze
+      element :form, "form[method='post']"
+      element :input_file, "form [name='#{PARAM_NAME_CONTAINER}[files][]'][multiple='multiple']"
+      def attach_file(path, options = {})
+        # NOTE: I believe this will work, however I am not certain
+        super("#{PARAM_NAME_CONTAINER}[files][]", path, options)
       end
     end
 
