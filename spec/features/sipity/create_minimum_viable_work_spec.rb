@@ -48,9 +48,25 @@ feature 'Minimum viable SIP', :devise do
     end
   end
 
-  # Given a user has filled out a publication date at creation
-  # When they go to request a DOI
-  # Then the publication_date is displayed
-  # And cannot be changed
+  scenario 'User can describe additional data' do
+    login_as(user, scope: :user)
+    visit '/start'
+    on('new_work_page') do |the_page|
+      expect(the_page).to be_all_there
+      the_page.fill_in(:title, with: 'Hello World')
+      the_page.select('ETD', from: :work_type)
+      the_page.choose(:work_publication_strategy, with: 'do_not_know')
+      the_page.submit_button.click
+    end
+
+    on('work_page') do |the_page|
+      the_page.click_required('describe')
+    end
+
+    on('describe_page') do |the_page|
+      expect(the_page).to be_all_there
+      the_page.fill_in(:abstract, with: 'Lorem ipsum')
+    end
+  end
 
 end
