@@ -1,7 +1,7 @@
 require 'sipity/models'
 module Sipity
   module Models
-    # The most basic of information required for generating a valid SIP.
+    # The most basic of information required for generating a valid work.
     class Work < ActiveRecord::Base
       self.table_name = 'sipity_works'
 
