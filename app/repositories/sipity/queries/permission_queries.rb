@@ -44,7 +44,7 @@ module Sipity
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
         user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
 
-        subqyery_user_relation_entity = perm_table.project(perm_table[:actor_id]).where(
+        subquery_user_relation_entity = perm_table.project(perm_table[:actor_id]).where(
           perm_table[:actor_type].eq(user_polymorphic_type).
           and(perm_table[:acting_as].in(acting_as)).
           and(perm_table[:entity_type].eq(entity_polymorphic_type)).
@@ -63,7 +63,7 @@ module Sipity
         )
         User.where(
           user_table[:id].in(subquery_user_relation_to_entity_by_group_membership).
-          or(user_table[:id].in(subqyery_user_relation_entity))
+          or(user_table[:id].in(subquery_user_relation_entity))
         )
       end
       module_function :scope_users_by_entity_and_acting_as
