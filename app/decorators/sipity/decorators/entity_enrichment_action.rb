@@ -6,14 +6,21 @@ module Sipity
     # REVIEW: Should this object respond to render? Instead of requiring the
     #   template to render different elements.
     class EntityEnrichmentAction
-      extend ActiveModel::Translation
       def initialize(entity:, name:)
         @entity, @name = entity, name
       end
       attr_reader :entity, :name
 
       def path
+        # REVIEW: Should I make use of a proper route method? Or is this even
+        #   the correct routing method?
         File.join("#{view_context.polymorphic_path(entity)}", name)
+      end
+
+      def label
+        i18n_options = { scope: "sipity/decorators/entitiy_enrichment_actions.#{name}" }
+        i18n_options[:entity_type] = entity.respond_to?(:work_type) ? entity.work_type : 'item'
+        I18n.t(:label, i18n_options).html_safe
       end
 
       private

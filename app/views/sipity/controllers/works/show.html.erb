@@ -37,12 +37,12 @@
   </div>
 </div>
 
-<%# REVIEW: This is ETD centric; and will need to be based on associated tasks; But for now its what we need %>
 <div>
   <h2>Required</h2>
   <ul>
-    <li><span><strong>Attach</strong> files</strong> to this <%= model.work_type %></span> <a class="btn btn-primary">Do It!</a></li>
-    <li><span>Further <strong>describe</strong> your <%= model.work_type %></span> <a class="btn btn-primary">Do It!</a></li>
+    <%- model.required_enrichment_actions.each do |action| -%>
+    <li class="require-<%= action.name %>"><span><%= action.label %></span> <a href="<%= action.path %>" class="btn btn-primary">Do It!</a></li>
+    <%- end -%>
   </ul>
 </div>
 

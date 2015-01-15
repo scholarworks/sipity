@@ -9,6 +9,10 @@ module Sipity
       its(:entity) { should eq(entity) }
       its(:name) { should eq(name) }
       its(:path) { should eq("/works/#{entity.to_param}/#{name}") }
+
+      it 'will have a translated label based on the given name and entity' do
+        expect(subject.label).to eq("translation missing: en.sipity/decorators/entitiy_enrichment_actions.#{name}.label")
+      end
     end
   end
 end
