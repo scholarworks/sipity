@@ -22,6 +22,7 @@ module Sipity
       base.send(:include, AdditionalAttributeQueries)
       base.send(:include, CollaboratorQueries)
       base.send(:include, PermissionQueries)
+      base.send(:include, DescriptionQueries)
     end
   end
 end
