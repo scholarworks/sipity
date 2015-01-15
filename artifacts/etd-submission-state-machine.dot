@@ -1,32 +1,48 @@
 digraph "G" {
     compound=true;
-    node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
+    node[color="grey15" margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="ETD Student Submission Cycle\n(DRAFT v3)"
-        color="seashell3"
-        style="filled"
+        label="ETD Student Submission Cycle\n(DRAFT v4)"
         node[style=filled fillcolor=white color="seashell4"]
 
-        new [shape="oval" label=":new"]
-        under_review[shape="oval" label=":under_review"]
-        ready_for_ingest[shape="oval" label=":ready_for_ingest"]
-        ingesting[shape="oval" label=":ingesting"]
-        ready_for_cataloging[shape="oval" label=":ready_for_cataloging"]
-        cataloged[shape="oval" label=":cataloged"]
-        done[shape="octagon" label=":done"]
+        # States
+        subgraph 0 {
+            label="States";
+            node[shape="record" fillcolor="seashell1" penwidth=5]
+            new [label="{ :new | Editable by: Student }"]
+            under_advisor_review [label="{ :under_advisor_review | Editable by: no one }"]
+            advisor_changes_requested [label="{ :advisor_changes_requested | Editable by: Student }"]
+            under_grad_school_review[label="{ :under_grad_school_review | Editable by: Grad Shool }"]
+            ready_for_ingest[label="{ :ready_for_ingest | Editable by: no one }"]
+            ingesting[label="{ :ingesting | Editable by: no one }"]
+            ready_for_cataloging[label="{ :ready_for_cataloging | Editable in CurateND by: Grad School }"]
+            cataloged[label="{ :cataloged | Editable in CurateND by: Grad School }"]
+            done[shape="octagon" label=":done\nEditable in CurateND\nby: Grad School"]
+        }
 
-        submit_for_ingest[shape="record" label="{ Event: submit_for_review | Send email to Grad School | Send email to Student | Grant etd_reviewers Permission | State: :under_review }"]
-        request_revisions[shape="record" label="{ Event: request_revisions | Send email to student with comments | State: :under_review }"]
-        approve_for_ingest[shape="record" label="{ Event: approve_for_ingest | Trigger :ingest event | State: :ready_for_ingest }"]
-        ingest[shape="record" label="{ Event: ingest | Submit ETD for ingest | State: :ingesting }"]
-        ingest_completed[shape="record" label="{ Event: ingest_completed | Send email to Catalogers | Send email to Submitter, Grad School, Advisor, ISSA | State: :ready_for_cataloging }"]
-        finish_cataloging[shape="record" label="{ Event: finish_cataloging | Trigger :mark_as_done | State: :cataloged }"]
-        mark_as_done[shape="record" label="{ Event: mark_as_done | Record the event | State: :done }"]
+        subgraph 1 {
+            label="Events"
+            node[shape="record" shape=record penwidth=1]
+            submit_for_advisor_signoff[label="{ Event: submit_for_advisor_signoff | Available To: Student | Send email to Grad School, Student, Advisor | Grant advisor, etd_reviewers Permission | State: :under_advisor_review }"]
+            advisor_signs_off[label="{ Event: advisor_signs_off | Available To: Advisor, Grad School |Send email to Grad School, Student Advisor | State: :under_grad_school_review }"]
+            advisor_requests_changes[label="{ Event: advisor_requests_changes | Available To: Advisor, Grad School | Send email to Grad School, Student Advisor | State: :advisor_changes_requested }"]
+            student_submits_advisor_requested_changes[label="{ Event: student_submits_advisor_requested_changes | Available To: Student | Send email to Grad School, Student, Student Advisor | State: :under_advisor_review }"]
+            request_revisions[label="{ Event: request_revisions | Available To: Grad School | Send email to student with comments | State: :under_grad_school_review }"]
+            approve_for_ingest[label="{ Event: approve_for_ingest | Available To: Grad School | Trigger :ingest event | State: :ready_for_ingest }"]
+            ingest[label="{ Event: ingest | Submit ETD for ingest | Available To: Ingester | State: :ingesting }"]
+            ingest_completed[label="{ Event: ingest_completed | Available To: Ingester | Send email to Catalogers | Send email to Submitter, Grad School, Advisor, ISSA | State: :ready_for_cataloging }"]
+            finish_cataloging[label="{ Event: finish_cataloging | Available To: Catalogers | Trigger :mark_as_done | State: :cataloged }"]
+            mark_as_done[label="{ Event: mark_as_done | Available To: Sipity | Record the event | State: :done }"]
+        }
 
-        new -> submit_for_ingest -> under_review
-        under_review -> request_revisions -> under_review
-        under_review -> approve_for_ingest -> ready_for_ingest
+        # State -> Event -> State graph
+        new -> submit_for_advisor_signoff -> under_advisor_review
+        under_advisor_review -> advisor_signs_off -> under_grad_school_review
+        under_advisor_review -> advisor_requests_changes -> advisor_changes_requested
+        advisor_changes_requested -> student_submits_advisor_requested_changes -> under_advisor_review
+        under_grad_school_review -> request_revisions -> under_grad_school_review
+        under_grad_school_review -> approve_for_ingest -> ready_for_ingest
         ready_for_ingest -> ingest -> ingesting
         ingesting -> ingest_completed -> ready_for_cataloging
         ready_for_cataloging -> finish_cataloging -> cataloged
