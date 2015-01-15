@@ -212,19 +212,3 @@ If one context is "Tell us about your geo-spatial data" then that data will be r
 If you don't want to fill it out, cancel what you are doing.
 
 If another context is "Tell us about your metadata" and we expose geo-spatial data, then that data would not be required.
-
-## TODO Items
-
-Pieces remaining to complete; This is a non-complete list:
-
-* Ingest an ETD via the ROF into Curate
-* Expose a means of adminstering Groups/Roles
-* Deploy to a staging environment
-* Wire up emailing from staging environment
-* Write actual emails that should be sent out
-* Expose means for adding the requisite metadata to be an ETD
-* Expose available actions for a given user on a given object based on a given state
-* Deal with the permanent URL structure
-  * This involves adding redirects to CurateND once an object has been successfully ingested
-* Wire up a background job handler for Sipity (if this is needed?)
-* Handle file attachments
