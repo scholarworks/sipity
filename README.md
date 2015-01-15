@@ -158,12 +158,12 @@ objects.
 
 Find out more about [Sipity's Policies](https://github.com/ndlib/sipity/blob/master/app/policies/sipity/policies.rb)
 
-### Services
+### Repositories
 
 Of particular note is the Sipity::Repository class. Here are methods for
 interacting with the persistence layer; either by way of commands or queries.
 
-Find out more about [Sipity's Services](https://github.com/ndlib/sipity/blob/master/app/repositories/sipity/repository.rb)
+Find out more about [Sipity's Repositories](https://github.com/ndlib/sipity/blob/master/app/repositories/sipity/repository.rb)
 
 ### Runners
 
@@ -212,3 +212,4 @@ If one context is "Tell us about your geo-spatial data" then that data will be r
 If you don't want to fill it out, cancel what you are doing.
 
 If another context is "Tell us about your metadata" and we expose geo-spatial data, then that data would not be required.
+
