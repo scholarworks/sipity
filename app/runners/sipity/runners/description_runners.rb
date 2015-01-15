@@ -1,7 +1,6 @@
 module Sipity
   module Runners
     module DescriptionRunners
-
       # Responsible for responding with the correct form for the work's description
       class New < BaseRunner
         self.authentication_layer = :default

@@ -17,6 +17,12 @@ module Sipity
         File.join("#{view_context.polymorphic_path(entity)}", name)
       end
 
+      def path_to_new
+        # REVIEW: Should I make use of a proper route method? Or is this even
+        #   the correct routing method?
+        File.join(path, 'new')
+      end
+
       def label
         i18n_options = { scope: "sipity/decorators/entitiy_enrichment_actions.#{name}" }
         i18n_options[:entity_type] = entity.respond_to?(:work_type) ? entity.work_type : 'item'

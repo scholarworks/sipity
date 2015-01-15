@@ -7,7 +7,7 @@ module Sipity
       self.runner_container = Sipity::Runners::DescriptionRunners
 
       def new
-        _status, model = run(work_id: work_id)
+        _status, @model = run(work_id: work_id)
         respond_with(@model)
       end
 

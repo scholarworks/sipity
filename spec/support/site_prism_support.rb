@@ -65,7 +65,7 @@ module SitePrism
       end
 
       def click_required(name)
-        find(".required-#{name.downcase} a").click
+        find(".require-#{name.downcase} a").click
       end
 
       def click_edit
@@ -74,8 +74,8 @@ module SitePrism
     end
 
     class DescribePage < SitePrism::Page
-      DOM_CLASS = "describe"
-      PARAM_NAME_CONTAINER = 'work'.freeze
+      DOM_CLASS = "new_describe"
+      PARAM_NAME_CONTAINER = 'describe'.freeze
       element :form, "form.#{DOM_CLASS}"
       element :input_abstract, "form.#{DOM_CLASS} textarea[name='#{PARAM_NAME_CONTAINER}[abstract]']"
 

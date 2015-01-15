@@ -58,9 +58,8 @@ feature 'Minimum viable SIP', :devise do
       the_page.choose(:work_publication_strategy, with: 'do_not_know')
       the_page.submit_button.click
     end
-
     on('work_page') do |the_page|
-      the_page.click_required('describe')
+      the_page.click_required('work_description')
     end
 
     on('describe_page') do |the_page|

@@ -3,6 +3,7 @@ Rails.application.routes.draw do
     scope module: :controllers do
       resources :works do
         resource :citation
+        resource :work_description
         resource :doi do
           member do
             post :assign_a_doi
