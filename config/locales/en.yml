@@ -28,6 +28,11 @@ en:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
       doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
+  sipity/decorators/entitiy_enrichment_actions:
+    attach:
+      label: "<strong>Attach</strong> files to this %{entity_type}"
+    describe:
+      label: "Further <strong>describe</strong> your %{entity_type}"
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
