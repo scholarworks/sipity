@@ -64,8 +64,23 @@ module SitePrism
         find(".recommendation .value .recommendation-#{recommendation.downcase}").click
       end
 
+      def click_required(name)
+        find(".require-#{name.downcase} a").click
+      end
+
       def click_edit
         find('.action-edit').click
+      end
+    end
+
+    class DescribePage < SitePrism::Page
+      DOM_CLASS = "new_describe"
+      PARAM_NAME_CONTAINER = 'describe'.freeze
+      element :form, "form.#{DOM_CLASS}"
+      element :input_abstract, "form.#{DOM_CLASS} textarea[name='#{PARAM_NAME_CONTAINER}[abstract]']"
+
+      def fill_in(predicate, with: nil)
+        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
     end
 
