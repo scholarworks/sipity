@@ -25,8 +25,8 @@ module Sipity
             attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'ETD' }
           )
         end
-        let!(:work_one) { command_repository.submit_create_work_form(form, requested_by: user_one) }
-        let!(:work_two) { command_repository.submit_create_work_form(form, requested_by: user_two) }
+        let!(:work_one) { form.submit(repository: Sipity::Repository.new, requested_by: user_one) }
+        let!(:work_two) { form.submit(repository: Sipity::Repository.new, requested_by: user_two) }
         it 'will include works that were created by the user' do
           expect(test_repository.find_works_for(user: user_one)).to eq([work_one])
         end

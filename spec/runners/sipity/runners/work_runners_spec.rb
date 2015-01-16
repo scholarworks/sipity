@@ -40,13 +40,11 @@ module Sipity
 
       RSpec.describe Create do
         let(:work) { double('Work') }
-        let(:form) { double('Form') }
+        let(:form) { double('Form', submit: creation_response) }
         let(:user) { User.new(id: '1') }
         let(:context) do
           TestRunnerContext.new(
-            current_user: user,
-            build_create_work_form: form, submit_create_work_form: creation_response,
-            policy_authorized_for?: true
+            current_user: user, build_create_work_form: form, policy_authorized_for?: true
           )
         end
         let(:creation_response) { nil }

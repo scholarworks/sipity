@@ -19,6 +19,7 @@ module Sipity
       base.send(:include, NotificationCommands)
       base.send(:include, AdditionalAttributeCommands)
       base.send(:include, PermissionCommands)
+      base.send(:include, TransientAnswerCommands)
     end
   end
 end
