@@ -27,6 +27,28 @@ module Sipity
         subject.valid?
         expect(subject.errors[:type]).to_not be_empty
       end
+
+      context 'submit' do
+        subject { described_class.new(work: work, type: 'ala', citation: citation) }
+        context 'on invalid data' do
+          let(:citation) { '' }
+          let(:repository) { double }
+          let(:user) { double }
+          it 'returns false and does not assign a Citation' do
+            expect(subject.submit(repository: repository, requested_by: user)).to eq(false)
+          end
+        end
+
+        context 'on valid data' do
+          let(:citation) { 'citation:abc' }
+          let(:repository) { double(update_work_attribute_values!: true, log_event!: true) }
+          let(:user) { User.new(id: '123') }
+          it 'will assign the Citation to the work and create an event' do
+            response = subject.submit(repository: repository, requested_by: user)
+            expect(response).to eq(work)
+          end
+        end
+      end
     end
   end
 end

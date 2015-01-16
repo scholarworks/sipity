@@ -13,7 +13,6 @@ module Sipity
 
     included do |base|
       base.send(:include, WorkCommands)
-      base.send(:include, CitationCommands)
       base.send(:include, DoiCommands)
       base.send(:include, EventLogCommands)
       base.send(:include, AccountPlaceholderCommands)
