@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Commands
-    RSpec.describe CitationCommands, type: :repository_methods do
+    RSpec.describe CitationCommands, type: :command_repository do
 
       context '#submit_assign_a_citation_form' do
         let(:work) { Models::Work.new(id: '1234') }
@@ -24,11 +24,10 @@ module Sipity
             expect(response).to be_truthy
             expect(test_repository.citation_already_assigned?(work)).to be_truthy
             expect(work.additional_attributes.count).to eq(2)
-            expect(Models::EventLog.where(user: user, event_name: 'submit_assign_a_citation_form').count).to eq(1)
+            expect(Models::EventLog.where(user: user, event_name: 'assign_a_citation_form/submit').count).to eq(1)
           end
         end
       end
-
     end
   end
 end
