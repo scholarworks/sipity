@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Commands
-    RSpec.describe WorkCommands, type: :repository_methods do
+    RSpec.describe WorkCommands, type: :command_repository do
       context '#assign_a_pid' do
         it 'will assign a unique permanent persisted identifier for the work'
       end
@@ -12,46 +12,6 @@ module Sipity
         it 'will update the underlying state of the object' do
           expect { test_repository.update_processing_state!(work: work, new_processing_state: 'hello') }.
             to change { work.processing_state }.to('hello')
-        end
-      end
-
-      context '#submit_create_work_form' do
-        let(:user) { User.new(id: '123') }
-        let(:form) do
-          test_repository.build_create_work_form(
-            attributes: {
-              title: 'This is my title',
-              work_publication_strategy: 'do_not_know',
-              publication_date: '2014-11-12',
-              access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
-            }
-          )
-        end
-        context 'with invalid data' do
-          it 'will not create a a work' do
-            allow(form).to receive(:valid?).and_return(false)
-            expect { test_repository.submit_create_work_form(form, requested_by: user) }.
-              to_not change { Models::Work.count }
-          end
-          it 'will return false' do
-            allow(form).to receive(:valid?).and_return(false)
-            expect(test_repository.submit_create_work_form(form, requested_by: user)).to eq(false)
-          end
-        end
-        context 'with valid data' do
-          let(:user) { User.new(id: '123') }
-          it 'will return the work having created the work, added the attributes,
-              assigned collaborators, assigned permission, and loggged the event' do
-            allow(form).to receive(:valid?).and_return(true)
-            response = test_repository.submit_create_work_form(form, requested_by: user)
-
-            expect(response).to be_a(Models::Work)
-            expect(Models::Work.count).to eq(1)
-            expect(Models::TransientAnswer.count).to eq(1)
-            expect(response.additional_attributes.count).to eq(1)
-            expect(Models::Permission.where(actor: user, acting_as: Models::Permission::CREATING_USER).count).to eq(1)
-            expect(Models::EventLog.where(user: user, event_name: 'submit_create_work_form').count).to eq(1)
-          end
         end
       end
 
