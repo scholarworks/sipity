@@ -45,7 +45,7 @@ module Sipity
           work = repository.find_work(work_id)
           form = repository.build_assign_a_citation_form(attributes.merge(work: work))
           authorization_layer.enforce!(submit?: form) do
-            if repository.submit_assign_a_citation_form(form, requested_by: current_user)
+            if form.submit(repository: repository, requested_by: current_user)
               callback(:success, work)
             else
               callback(:failure, form)
