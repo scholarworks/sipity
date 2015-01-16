@@ -5,7 +5,6 @@ module Sipity
       self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
-        puts "initialize"
         @work = attributes.fetch(:work)
         @abstract = attributes[:abstract]
       end
