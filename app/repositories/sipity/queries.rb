@@ -26,3 +26,7 @@ module Sipity
     end
   end
 end
+
+Dir[File.expand_path('../queries/*.rb', __FILE__)].each do |filename|
+  require_relative "./queries/#{File.basename(filename)}"
+end

@@ -23,3 +23,7 @@ module Sipity
     end
   end
 end
+
+Dir[File.expand_path('../commands/*.rb', __FILE__)].each do |filename|
+  require_relative "./commands/#{File.basename(filename)}"
+end
