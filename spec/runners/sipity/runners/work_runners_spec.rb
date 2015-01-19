@@ -166,13 +166,9 @@ module Sipity
 
       RSpec.describe Update do
         let(:work) { double('Work') }
-        let(:form) { double('Form') }
+        let(:form) { double('Form', submit: update_response) }
         let(:user) { double('User') }
-        let(:context) do
-          TestRunnerContext.new(
-            find_work: work, build_update_work_form: form, submit_update_work_form: update_response, current_user: user
-          )
-        end
+        let(:context) { TestRunnerContext.new(find_work: work, build_update_work_form: form, current_user: user) }
         let(:update_response) { nil }
         let(:handler) { double(invoked: true) }
         let(:attributes) { {} }

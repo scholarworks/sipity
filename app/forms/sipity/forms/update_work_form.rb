@@ -48,7 +48,42 @@ module Sipity
         exposes?(method_name) || super
       end
 
+      def submit(repository:, requested_by:)
+        super() do |_form|
+          # TODO: Switch to a repository method for updating attributes?
+          with_work_attributes { |attributes| work.update(attributes) }
+          with_each_additional_attribute do |key, values|
+            repository.update_work_attribute_values!(work: work, key: key, values: values)
+          end
+          repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+          work
+        end
+      end
+
       private
+
+      # TODO: This is duplicationed
+      BASE_HEADER_ATTRIBUTES = [:title, :work_publication_strategy].freeze
+
+      def event_name
+        File.join(self.class.to_s.demodulize.underscore, 'submit')
+      end
+
+      def with_each_additional_attribute
+        # TODO: Rely on the repository for these methods, not direct access to the query
+        Queries::AdditionalAttributeQueries.work_attribute_keys_for(work: work).each do |key|
+          next unless  exposes?(key)
+          yield(key, public_send(key))
+        end
+      end
+
+      def with_work_attributes
+        attributes = {}
+        BASE_HEADER_ATTRIBUTES.each do |attribute_name|
+          attributes[attribute_name] = public_send(attribute_name) if exposes?(attribute_name)
+        end
+        yield(attributes) if attributes.any?
+      end
 
       def exposed_attribute_names=(names)
         method_names = names.map(&:to_s)
