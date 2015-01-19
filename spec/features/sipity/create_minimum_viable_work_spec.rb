@@ -59,7 +59,7 @@ feature 'Minimum viable SIP', :devise do
       the_page.submit_button.click
     end
     on('work_page') do |the_page|
-      the_page.click_required('work_description')
+      the_page.click_required('describe')
     end
 
     on('describe_page') do |the_page|

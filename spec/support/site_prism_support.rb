@@ -74,13 +74,12 @@ module SitePrism
     end
 
     class DescribePage < SitePrism::Page
-      DOM_CLASS = "new_describe"
-      PARAM_NAME_CONTAINER = 'describe'.freeze
-      element :form, "form.#{DOM_CLASS}"
-      element :input_abstract, "form.#{DOM_CLASS} textarea[name='#{PARAM_NAME_CONTAINER}[abstract]']"
+      PARAM_NAME_CONTAINER = 'work'.freeze
+      element :form, "form[method='post']"
+      element :input_abstract, "form [name='#{PARAM_NAME_CONTAINER}[abstract]']"
 
       def fill_in(predicate, with: nil)
-        find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
+        find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
       end
     end
 

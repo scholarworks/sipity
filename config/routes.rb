@@ -3,7 +3,6 @@ Rails.application.routes.draw do
     scope module: :controllers do
       resources :works do
         resource :citation
-        resource :work_description
         resource :doi do
           member do
             post :assign_a_doi
@@ -11,6 +10,8 @@ Rails.application.routes.draw do
           end
         end
       end
+      get 'works/:work_id/describe', to: 'work_descriptions#new', as: 'describe_work'
+      post 'works/:work_id/describe', to: 'work_descriptions#create'
     end
   end
 
