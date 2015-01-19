@@ -41,7 +41,7 @@
   <h2>Required</h2>
   <ul>
     <%- model.required_enrichment_actions.each do |action| -%>
-      <li class="require-<%= action.name %>"><span><%= action.label %></span><%= link_to action.label, action.path_to_new %></li>
+      <li class="require-<%= action.name %>"><span><%= action.label %></span><%= link_to action.label, action.path %></li>
     <%- end -%>
   </ul>
 </div>

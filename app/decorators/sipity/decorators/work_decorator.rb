@@ -36,7 +36,7 @@ module Sipity
         # REVIEW: This is dependent on work type,  state and perhaps current user.
         [
           EntityEnrichmentAction.new(entity: self, name: 'attach'),
-          EntityEnrichmentAction.new(entity: self, name: 'work_description')
+          EntityEnrichmentAction.new(entity: self, name: 'describe')
         ]
       end
 
