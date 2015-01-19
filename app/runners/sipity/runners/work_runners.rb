@@ -79,7 +79,7 @@ module Sipity
           work = repository.find_work(work_id)
           form = repository.build_update_work_form(work: work, attributes: attributes)
           authorization_layer.enforce!(submit?: form) do
-            work = repository.submit_update_work_form(form, requested_by: current_user)
+            work = form.submit(repository: repository, requested_by: current_user)
             if work
               callback(:success, work)
             else
