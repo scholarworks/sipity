@@ -3,7 +3,7 @@ digraph "G" {
     node[color="grey15" margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="ETD Student Submission Cycle\n(DRAFT v4)"
+        label="ETD Student Submission Cycle\n(DRAFT v5)"
         node[style=filled fillcolor=white color="seashell4"]
 
         # States
@@ -16,8 +16,6 @@ digraph "G" {
             under_grad_school_review[label="{ :under_grad_school_review | Editable by: Grad Shool }"]
             ready_for_ingest[label="{ :ready_for_ingest | Editable by: no one }"]
             ingesting[label="{ :ingesting | Editable by: no one }"]
-            ready_for_cataloging[label="{ :ready_for_cataloging | Editable in CurateND by: Grad School }"]
-            cataloged[label="{ :cataloged | Editable in CurateND by: Grad School }"]
             done[shape="octagon" label=":done\nEditable in CurateND\nby: Grad School"]
         }
 
@@ -31,9 +29,7 @@ digraph "G" {
             request_revisions[label="{ Event: request_revisions | Available To: Grad School | Send email to student with comments | State: :under_grad_school_review }"]
             approve_for_ingest[label="{ Event: approve_for_ingest | Available To: Grad School | Trigger :ingest event | State: :ready_for_ingest }"]
             ingest[label="{ Event: ingest | Submit ETD for ingest | Available To: Ingester | State: :ingesting }"]
-            ingest_completed[label="{ Event: ingest_completed | Available To: Ingester | Send email to Catalogers | Send email to Submitter, Grad School, Advisor, ISSA | State: :ready_for_cataloging }"]
-            finish_cataloging[label="{ Event: finish_cataloging | Available To: Catalogers | Trigger :mark_as_done | State: :cataloged }"]
-            mark_as_done[label="{ Event: mark_as_done | Available To: Sipity | Record the event | State: :done }"]
+            ingest_completed[label="{ Event: ingest_completed | Available To: Ingester | Send email to Catalogers | Send email to Submitter, Grad School, Advisor | State: :done }"]
         }
 
         # State -> Event -> State graph
@@ -44,9 +40,7 @@ digraph "G" {
         under_grad_school_review -> request_revisions -> under_grad_school_review
         under_grad_school_review -> approve_for_ingest -> ready_for_ingest
         ready_for_ingest -> ingest -> ingesting
-        ingesting -> ingest_completed -> ready_for_cataloging
-        ready_for_cataloging -> finish_cataloging -> cataloged
-        cataloged -> mark_as_done -> done
+        ingesting -> ingest_completed -> done
     }
 
 }
