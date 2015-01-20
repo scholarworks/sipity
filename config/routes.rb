@@ -12,6 +12,11 @@ Rails.application.routes.draw do
       end
       get 'works/:work_id/describe', to: 'work_descriptions#new', as: 'describe_work'
       post 'works/:work_id/describe', to: 'work_descriptions#create'
+
+      # TODO: This is the incorrect routing location, but I want to push the
+      #   underlying tests one step closer to completion.
+      get 'works/:work_id/attach', to: 'work_descriptions#new', as: 'attach_work'
+      post 'works/:work_id/attach', to: 'work_descriptions#create'
     end
   end
 
