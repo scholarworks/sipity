@@ -7,7 +7,7 @@ module Sipity
       self.runner_container = Sipity::Runners::WorkEnrichmentRunners
 
       def edit
-        _status, @model = run(work_id: work_id)
+        _status, @model = run(work_id: work_id, enrichment_type: enrichment_type)
         respond_with(@model)
       end
 
@@ -19,6 +19,10 @@ module Sipity
 
       def work_id
         params.require(:work_id)
+      end
+
+      def enrichment_type
+        params.require(:enrichment_type)
       end
     end
   end
