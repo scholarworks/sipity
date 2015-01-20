@@ -11,6 +11,14 @@ module Sipity
       end
       attr_reader :entity, :name
 
+
+      def status
+        # REVIEW: This should not be static but is based on the state of the
+        #   entity and the particular enrichment in question. It will be set
+        #   elsewhere.
+        'incomplete'
+      end
+
       def path
         # REVIEW: Should I make use of a proper route method? Or is this even
         #   the correct routing method?

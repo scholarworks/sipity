@@ -8,6 +8,7 @@ module Sipity
       before { allow(entity).to receive(:persisted?).and_return(true) }
       its(:entity) { should eq(entity) }
       its(:name) { should eq(name) }
+      its(:status) { should be_a(String) }
       its(:path) { should eq("/works/#{entity.to_param}/#{name}") }
 
       it 'will have a translated label based on the given name and entity' do
