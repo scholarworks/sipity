@@ -6,6 +6,8 @@ module Sipity
       let(:work) { Models::Work.new(id: '1234') }
       subject { described_class.new(work: work) }
 
+      its(:policy_enforcer) { should be_present }
+
       context 'validations' do
         it 'will require a work' do
           subject = described_class.new(work: nil)

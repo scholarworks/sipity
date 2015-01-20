@@ -2,6 +2,8 @@ module Sipity
   module Forms
     # Exposes a means for attaching files to the associated work.
     class AttachFilesToWorkForm < BaseForm
+      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
         @files = attributes[:files]
