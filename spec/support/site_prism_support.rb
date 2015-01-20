@@ -65,7 +65,7 @@ module SitePrism
       end
 
       def click_required(name)
-        find(".required-#{name.downcase} a").click
+        find("[itemprop='name'][content='required>#{name.downcase}']+[itemprop='url']").click
       end
 
       def click_edit
