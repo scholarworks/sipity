@@ -6,7 +6,7 @@ module SitePrism
 
       element :form, "form"
       element :input_title, "form [name='#{PARAM_NAME_CONTAINER}[title]']"
-      element :submit_button, "form input[type='submit']"
+      element :submit_button, "form [type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
@@ -31,7 +31,7 @@ module SitePrism
 
       element :form, "form"
       element :input_title, "form [name='#{PARAM_NAME_CONTAINER}[title]']"
-      element :submit_button, "form input[type='submit']"
+      element :submit_button, "form [type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
@@ -94,7 +94,7 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'doi'.freeze
       element :form, "form.#{DOM_CLASS}"
       element :input_identifier, "form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[identifier]']"
-      element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
+      element :submit_button, "form.#{DOM_CLASS} [type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
@@ -106,7 +106,7 @@ module SitePrism
       element :form, "form"
       element :input_citation, "form textarea[name='#{PARAM_NAME_CONTAINER}[citation]']"
       element :input_type, "form [name='#{PARAM_NAME_CONTAINER}[type]']"
-      element :submit_button, "form input[type='submit']"
+      element :submit_button, "form [type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
