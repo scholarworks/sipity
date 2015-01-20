@@ -1,0 +1,9 @@
+<!-- TODO: Internationalize the enrichment option -->
+<h2>Describe your work</h2>
+<%= simple_form_for(model, url: describe_work_path(model.work), method: :post, as: :work) do |f| %>
+  <%= f.error_notification %>
+  <%= field_set_tag do %>
+    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
+    <%= f.submit %>
+  <% end %>
+<% end %>
