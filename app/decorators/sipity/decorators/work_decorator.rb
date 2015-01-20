@@ -52,7 +52,18 @@ module Sipity
         ]
       end
 
+      def each_todo_item_set
+        todo_list.sets.each { |name, items| yield(name, items) if items.present? }
+      end
+
       private
+
+      def todo_list
+        @todo_list = TodoList.new(entity: self) do |list|
+          list.add_to(set: 'required', name: 'attach')
+          list.add_to(set: 'required', name: 'describe')
+        end
+      end
 
       def recommendation_for(name)
         Recommendations.const_get("#{name.classify}Recommendation").new(work: self)

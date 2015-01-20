@@ -37,13 +37,22 @@
   </div>
 </div>
 
-<div>
-  <h2>Required</h2>
-  <ul>
-    <%- model.required_enrichment_actions.each do |action| -%>
-      <li class="require-<%= action.name %>"><span><%= action.label %></span><%= link_to action.label, action.path %></li>
-    <%- end -%>
-  </ul>
+<div class="todo">
+  <%- model.each_todo_item_set do |set, actions| -%>
+    <%# TODO: the set should be an object not a string; That object should have I18n %>
+    <div class="todo todo-<%= set %>">
+      <h2><%= set %></h2>
+      <ul>
+        <%- actions.each do |action| -%>
+          <li class="<%= set %>-<%= action.name %>">
+            <span><%= action.status %></span>
+            <span><%= action.label %></span>
+            <%= link_to 'Do it!', action.path %>
+          </li>
+        <%- end -%>
+      <ul>
+    </div>
+  <%- end -%>
 </div>
 
 <div class="recommendations">

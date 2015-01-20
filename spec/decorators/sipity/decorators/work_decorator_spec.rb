@@ -9,6 +9,12 @@ module Sipity
         expect(subject.to_s).to eq(work.title)
       end
 
+      context '#each_todo_item_set' do
+        it 'will be an enumerable' do
+          expect { |b| subject.each_todo_item_set(&b) }.to yield_with_args('required', Set)
+        end
+      end
+
       context '#available_linked_actions' do
         it 'will return an enumerable in which all elements responds to render' do
           expect(subject.available_linked_actions.all? { |link| link.respond_to?(:render) }).to be_truthy

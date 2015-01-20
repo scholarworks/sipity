@@ -7,16 +7,19 @@ module Sipity
       let(:item_builder) { ->(value) { value } }
       subject { described_class.new(entity: entity, item_builder: item_builder) }
 
-      context '#add_to_item_set' do
-        it 'will create a new named item_set' do
-          expect { subject.add_to(item_set: 'required', item_name: 'describe') }.
-            to change { subject.item_sets.count }.by(1)
+      it 'will accept a block on initialize' do
+        expect { |b| described_class.new(entity: entity, &b) }.to yield_with_args(described_class)
+      end
+      context '#add_to' do
+        it 'will create a new named set' do
+          expect { subject.add_to(set: 'required', name: 'describe') }.
+            to change { subject.sets.count }.by(1)
         end
 
-        it 'will append an item to an existing item_set' do
-          subject.add_to(item_set: 'required', item_name: 'describe')
-          expect { subject.add_to(item_set: 'required', item_name: 'attach' ) }.
-            to_not change { subject.item_sets.count }
+        it 'will append an item to an existing set' do
+          subject.add_to(set: 'required', name: 'describe')
+          expect { subject.add_to(set: 'required', name: 'attach') }.
+            to_not change { subject.sets.count }
         end
       end
     end

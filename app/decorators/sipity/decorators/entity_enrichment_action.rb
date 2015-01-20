@@ -11,7 +11,6 @@ module Sipity
       end
       attr_reader :entity, :name
 
-
       def status
         # REVIEW: This should not be static but is based on the state of the
         #   entity and the particular enrichment in question. It will be set
