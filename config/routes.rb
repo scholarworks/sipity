@@ -15,8 +15,8 @@ Rails.application.routes.draw do
 
       # TODO: This is the incorrect routing location, but I want to push the
       #   underlying tests one step closer to completion.
-      get 'works/:work_id/attach', to: 'work_descriptions#new', as: 'attach_work'
-      post 'works/:work_id/attach', to: 'work_descriptions#create'
+      get 'works/:work_id/attach', to: 'work_enrichments#edit', as: 'enrich_work'
+      post 'works/:work_id/attach', to: 'work_enrichments#update'
     end
   end
 
