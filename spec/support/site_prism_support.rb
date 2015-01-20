@@ -5,7 +5,7 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'work'.freeze
 
       element :form, "form"
-      element :input_title, "form input[name='#{PARAM_NAME_CONTAINER}[title]']"
+      element :input_title, "form [name='#{PARAM_NAME_CONTAINER}[title]']"
       element :submit_button, "form input[type='submit']"
 
       def fill_in(predicate, with: nil)
@@ -13,7 +13,7 @@ module SitePrism
       end
 
       def choose(predicate, with: nil)
-        all("form input[name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").each do |input|
+        all("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").each do |input|
           if input.value == with
             input.set(true)
             break
@@ -30,7 +30,7 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'work'.freeze
 
       element :form, "form"
-      element :input_title, "form input[name='#{PARAM_NAME_CONTAINER}[title]']"
+      element :input_title, "form [name='#{PARAM_NAME_CONTAINER}[title]']"
       element :submit_button, "form input[type='submit']"
 
       def fill_in(predicate, with: nil)
@@ -93,7 +93,7 @@ module SitePrism
       DOM_CLASS = 'assign_a_doi'.freeze
       PARAM_NAME_CONTAINER = 'doi'.freeze
       element :form, "form.#{DOM_CLASS}"
-      element :input_identifier, "form.#{DOM_CLASS} input[name='#{PARAM_NAME_CONTAINER}[identifier]']"
+      element :input_identifier, "form.#{DOM_CLASS} [name='#{PARAM_NAME_CONTAINER}[identifier]']"
       element :submit_button, "form.#{DOM_CLASS} input[type='submit']"
 
       def fill_in(predicate, with: nil)
@@ -105,7 +105,7 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'citation'.freeze
       element :form, "form"
       element :input_citation, "form textarea[name='#{PARAM_NAME_CONTAINER}[citation]']"
-      element :input_type, "form input[name='#{PARAM_NAME_CONTAINER}[type]']"
+      element :input_type, "form [name='#{PARAM_NAME_CONTAINER}[type]']"
       element :submit_button, "form input[type='submit']"
 
       def fill_in(predicate, with: nil)
