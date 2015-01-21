@@ -21,7 +21,7 @@ end
 
 namespace :spec do
   desc "Run all specs"
-  RSpec::Core::RakeTask.new(:all) do
+  RSpec::Core::RakeTask.new(all: 'sipity:rebuild_interfaces') do
     ENV['COVERAGE'] = 'true'
   end
 
@@ -51,16 +51,4 @@ end
 
 Rake::Task["default"].clear
 task default: ['db:schema:load', 'rubocop', 'spec:all']
-
-namespace :sipity do
-  task :stats_setup do
-    require 'rails/code_statistics'
-    types.each do |type, dir|
-      name = type.pluralize.capitalize
-      ::STATS_DIRECTORIES << [name, dir] unless ::STATS_DIRECTORIES.find { |array| array[0] == name }
-    end
-    ::STATS_DIRECTORIES.sort!
-  end
-end
-
 task stats: ['sipity:stats_setup']

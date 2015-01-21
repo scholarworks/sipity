@@ -23,6 +23,8 @@ AllCops:
     - config/**/*
     - 'spec/fixtures/**/*'
     - 'vendor/**/*'
+    - 'scripts/**/*'
+    - 'spec/support/sipity/command_repository_interface.rb'
 
 MethodLength:
   Max: 10
