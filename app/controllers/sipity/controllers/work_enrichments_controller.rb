@@ -9,18 +9,18 @@ module Sipity
       def edit
         _status, @model = run(work_id: work_id, enrichment_type: enrichment_type)
         respond_with(@model) do |wants|
-          wants.html { render action: @model.enrichment_type }
+          wants.html { render action: enrichment_type }
         end
       end
 
       def update
         run(work_id: work_id, enrichment_type: enrichment_type, attributes: update_params) do |on|
-          on.success { |work| redirect_to work_path(work), notice: message_for("#{work.enrichment_type}_enrichment", title: work.title) }
+          on.success { |work| redirect_to work_path(work), notice: message_for("#{enrichment_type}_enrichment", title: work.title) }
           on.failure do |model|
             @model = model
             # HACK: Consider the JSON; But for now this will have to do as the
             #   Rubocop is complaining about cyclomatic complexity.
-            render action: model.enrichment_type
+            render action: enrichment_type
           end
         end
       end
