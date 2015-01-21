@@ -14,6 +14,17 @@ module Sipity
             to change { work.processing_state }.to('hello')
         end
       end
+
+      context '#attach_file_to' do
+        let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
+        let(:user) { User.new(id: 1234) }
+        let(:work) { Models::Work.create! }
+        let(:pid_minter) { -> { 'abc123' } }
+        it 'will increment the number of attachments in the system' do
+          expect { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }.
+            to change { Models::Attachment.count }.by(1)
+        end
+      end
     end
   end
 end
