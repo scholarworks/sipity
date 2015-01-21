@@ -8,6 +8,8 @@ module Sipity
   #
   # @see http://martinfowler.com/bliki/CommandQuerySeparation.html Martin
   #   Folwer's article on Command/Query separation
+  # @see 'sipity:rebuild_interfaces' rake task for information about rebuilding
+  #   the Sipity command interface from the existing method signatures.
   module Commands
     extend ActiveSupport::Concern
 
