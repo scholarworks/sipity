@@ -60,8 +60,8 @@ module SitePrism
         find(".recommendation .value .recommendation-#{recommendation.downcase}").click
       end
 
-      def click_required(name)
-        find("[itemprop='name'][content='required>#{name.downcase}']+[itemprop='url']").click
+      def click_named_link(name)
+        find("[itemprop='name'][content='#{name.downcase}']+[itemprop='url']").click
       end
 
       def click_edit

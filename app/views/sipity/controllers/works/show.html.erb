@@ -52,7 +52,7 @@
           <li itemscope itemtype="http://schema.org/Action">
             <span itemprop="actionStatus"><%= action.status %></span>
             <span itemprop="description"><%= action.label %></span>
-            <meta itemprop="name" content="<%= set %>><%= action.name %>">
+            <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
             <a itemprop="url" href="<%= action.path %>">Do it!</a>
           </li>
         <%- end -%>
