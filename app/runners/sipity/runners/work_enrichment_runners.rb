@@ -14,6 +14,24 @@ module Sipity
           end
         end
       end
+
+      # Responsible for updating an enrichment
+      class Update < BaseRunner
+        self.authentication_layer = :default
+        self.authorization_layer = :default
+
+        def run(work_id:, enrichment_type:, attributes:)
+          work = repository.find_work(work_id)
+          form = repository.build_enrichment_form(attributes.merge(work: work, enrichment_type: enrichment_type))
+          authorization_layer.enforce!(submit?: form) do
+            if form.submit(repository: repository, requested_by: current_user)
+              callback(:success, work)
+            else
+              callback(:failure, form)
+            end
+          end
+        end
+      end
     end
   end
 end
