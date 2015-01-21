@@ -2,11 +2,6 @@ module Sipity
   module Queries
     # Queries
     module EnrichmentQueries
-      def build_create_describe_work_form(attributes = {})
-        build_enrichment_form(attributes.merge(enrichment_type: 'describe'))
-      end
-      deprecate :build_create_describe_work_form
-
       # TODO: Consolidate :build_enrichment_form and
       #   :build_create_describe_work_form
       #
