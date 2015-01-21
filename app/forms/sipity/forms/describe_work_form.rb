@@ -14,6 +14,20 @@ module Sipity
 
       validates :abstract, presence: true
       validates :work, presence: true
+
+      def submit(repository:, requested_by:)
+        super() do |_f|
+          repository.update_work_attribute_values!(work: work, key: 'abstract', values: abstract)
+          repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+          work
+        end
+      end
+
+      private
+
+      def event_name
+        File.join(self.class.to_s.demodulize.underscore, 'submit')
+      end
     end
   end
 end
