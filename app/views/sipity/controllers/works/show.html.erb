@@ -40,14 +40,20 @@
 <div class="todo">
   <%- model.each_todo_item_set do |set, actions| -%>
     <%# TODO: the set should be an object not a string; That object should have I18n %>
-    <div class="todo todo-<%= set %>">
+    <div>
       <h2><%= set %></h2>
       <ul>
         <%- actions.each do |action| -%>
-          <li class="<%= set %>-<%= action.name %>">
-            <span><%= action.status %></span>
-            <span><%= action.label %></span>
-            <%= link_to 'Do it!', action.path %>
+          <%# REVIEW: This is an experimental idea; We are using the Schema.org
+              structure to drive our automated testing. This should be viewed as
+              experimental and will be part of an ongoing conversation amongst
+              the developers.
+          %>
+          <li itemscope itemtype="http://schema.org/Action">
+            <span itemprop="actionStatus"><%= action.status %></span>
+            <span itemprop="description"><%= action.label %></span>
+            <meta itemprop="name" content="<%= set %>><%= action.name %>">
+            <a itemprop="url" href="<%= action.path %>">Do it!</a>
           </li>
         <%- end -%>
       <ul>
