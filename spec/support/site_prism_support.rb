@@ -71,8 +71,8 @@ module SitePrism
 
     class DescribePage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
-      element :form, "form[method='post']"
       element :input_abstract, "form [name='#{PARAM_NAME_CONTAINER}[abstract]']"
+      element :submit_button, "form [name='form>describe>submit'][type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)

@@ -3,6 +3,6 @@
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :abstract, as: :text %>
-    <%= f.submit %>
+    <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
   <% end %>
 <% end %>
