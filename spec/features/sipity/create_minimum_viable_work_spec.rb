@@ -66,6 +66,7 @@ feature 'Minimum viable SIP', :devise do
     on('describe_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.fill_in(:abstract, with: 'Lorem ipsum')
+      the_page.submit_button.click
     end
   end
 
