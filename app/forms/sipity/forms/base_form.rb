@@ -33,6 +33,10 @@ module Sipity
       # @yield [BaseForm] when the form is valid yield control to the caller
       # @yieldparam form [BaseForm]
       # @yieldreturn the sender's response successful
+      #
+      # REVIEW: Rework to account for submit handling the save behavior
+      #   Allow repository and requested_by to be passed; Consider setting those
+      #   values on initialization instead.
       def submit
         return false unless valid?
         return yield(self)
