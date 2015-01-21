@@ -1,5 +1,9 @@
 module Sipity
   class CommandRepositoryInterface
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def attach_file_to(work:, file:, user: user, pid_minter: Services::PidMinter)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def create_work_attribute_values!(work:, key:, values:)
     end

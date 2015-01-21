@@ -8,7 +8,9 @@ module Sipity
 
       def edit
         _status, @model = run(work_id: work_id, enrichment_type: enrichment_type)
-        respond_with(@model)
+        respond_with(@model) do |wants|
+          wants.html { render action: @model.enrichment_type }
+        end
       end
 
       attr_reader :model

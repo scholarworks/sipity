@@ -6,10 +6,11 @@ module Sipity
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
+        @enrichment_type = attributes.fetch(:enrichment_type) { 'describe' }
         @abstract = attributes[:abstract]
       end
       attr_accessor :abstract
-      attr_reader :work
+      attr_reader :work, :enrichment_type
 
       validates :abstract, presence: true
       validates :work, presence: true

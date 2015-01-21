@@ -1,5 +1,5 @@
 <h2>Describe your work</h2>
-<%= simple_form_for(model, url: describe_work_path(model.work), method: :post, as: :work) do |f| %>
+<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :abstract, as: :text %>

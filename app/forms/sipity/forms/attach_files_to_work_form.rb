@@ -6,10 +6,11 @@ module Sipity
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
+        @enrichment_type = attributes.fetch(:enrichment_type) { 'attach' }
         @files = attributes[:files]
       end
 
-      attr_reader :work
+      attr_reader :work, :enrichment_type
       attr_accessor :files
 
       validates :work, presence: true

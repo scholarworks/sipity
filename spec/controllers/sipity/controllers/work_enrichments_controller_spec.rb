@@ -4,7 +4,7 @@ require 'hesburgh/lib/mock_runner'
 module Sipity
   module Controllers
     RSpec.describe WorkEnrichmentsController, type: :controller do
-      let(:work) { double('Work') }
+      let(:work) { double('Work', enrichment_type: 'describe') }
       context 'GET #edit' do
         let(:enrichment_type) { 'attach' }
         before { controller.runner = runner }

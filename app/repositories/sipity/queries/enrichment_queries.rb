@@ -18,7 +18,7 @@ module Sipity
           when 'attach' then Forms::AttachFilesToWorkForm
           when 'describe' then Forms::DescribeWorkForm
           else
-            raise Exceptions::EnrichmentNotFoundError, name: enrichment_type, container: 'EnrichmentTypes(Virtual)'
+            fail Exceptions::EnrichmentNotFoundError, name: enrichment_type, container: 'EnrichmentTypes(Virtual)'
           end
         end
 
