@@ -64,6 +64,10 @@ module Sipity
       end
     end
 
+    # When you ask for an enrichment but none can be found
+    class EnrichmentNotFoundError < ConceptNotFoundError
+    end
+
     # When you just can't find that job, throw an exception.
     class JobNotFoundError < ConceptNotFoundError
     end
