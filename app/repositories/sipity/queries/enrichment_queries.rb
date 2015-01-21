@@ -1,7 +1,7 @@
 module Sipity
   module Queries
     # Queries
-    module DescriptionQueries
+    module EnrichmentQueries
       def build_create_describe_work_form(attributes = {})
         Forms::DescribeWorkForm.new(attributes)
       end

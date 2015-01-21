@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Queries
-    RSpec.describe DescriptionQueries, type: :repository_methods do
+    RSpec.describe EnrichmentQueries, type: :repository_methods do
       context '#build_create_describe_work_form' do
         let(:work) { double }
         subject { test_repository.build_create_describe_work_form(work: work) }
