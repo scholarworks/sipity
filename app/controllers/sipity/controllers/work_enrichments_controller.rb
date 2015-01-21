@@ -15,14 +15,12 @@ module Sipity
 
       def update
         run(work_id: work_id, enrichment_type: enrichment_type, attributes: update_params) do |on|
-          on.success do |work|
-            redirect_to work_path(work), notice: message_for("#{work.enrichment_type}_enrichment", title: work.title)
-          end
+          on.success { |work| redirect_to work_path(work), notice: message_for("#{work.enrichment_type}_enrichment", title: work.title) }
           on.failure do |model|
             @model = model
-            respond_with(@model) do |wants|
-              wants.html { render action: @model.enrichment_type }
-            end
+            # HACK: Consider the JSON; But for now this will have to do as the
+            #   Rubocop is complaining about cyclomatic complexity.
+            render action: model.enrichment_type
           end
         end
       end
