@@ -37,18 +37,24 @@ module Sipity
       end
     end
 
-    # Unable to convert the given object into a permanent URI
-    class PermanentUriConversionError < RuntimeError
+    # An abstract conversion error
+    class ConversionError < RuntimeError
+      class_attribute :conversion_target, instance_writer: false
+      self.conversion_target = '<Undefined Target>'
+
       def initialize(attempted_conversion_object)
-        super("Unable to convert #{attempted_conversion_object.inspect} to a PermanentUri")
+        super("Unable to convert #{attempted_conversion_object.inspect} to a #{conversion_target}")
       end
     end
 
     # Unable to convert the given object into a permanent URI
-    class EntityTypeConversionError < RuntimeError
-      def initialize(attempted_conversion_object)
-        super("Unable to convert #{attempted_conversion_object.inspect} to an Entity Type")
-      end
+    class PermanentUriConversionError < ConversionError
+      self.conversion_target = 'PermanentURI'
+    end
+
+    # Unable to convert the given object into a permanent URI
+    class EntityTypeConversionError < ConversionError
+      self.conversion_target = 'EntityType'
     end
 
     # As you are looking up something by name, within a given container.
