@@ -12,6 +12,13 @@ module Sipity
         #   the given work? Is it unsafe as far as state is concerned?
         work.update(processing_state: new_processing_state)
       end
+
+      # TODO: Create a PidMinter service
+      # REVIEW: Is this the correct location to put this behavior?
+      def attach_file_to(work:, file:, user: user, pid_minter: Services::PidMinter)
+        pid = pid_minter.call
+        Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
+      end
     end
     private_constant :WorkCommands
   end
