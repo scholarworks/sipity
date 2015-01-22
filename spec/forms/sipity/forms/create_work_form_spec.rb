@@ -80,9 +80,9 @@ module Sipity
 
       context '#submit' do
         let(:user) { User.new(id: '123') }
-        let(:repository) { Repository.new }
+        let(:repository) { CommandRepositoryInterface.new }
         subject do
-          repository.build_create_work_form(
+          described_class.new(
             attributes: {
               title: 'This is my title',
               work_publication_strategy: 'do_not_know',
@@ -108,13 +108,7 @@ module Sipity
               assigned collaborators, assigned permission, and loggged the event' do
             allow(subject).to receive(:valid?).and_return(true)
             response = subject.submit(repository: repository, requested_by: user)
-
             expect(response).to be_a(Models::Work)
-            expect(Models::Work.count).to eq(1)
-            expect(Models::TransientAnswer.count).to eq(1)
-            expect(response.additional_attributes.count).to eq(1)
-            expect(Models::Permission.where(actor: user, acting_as: Models::Permission::CREATING_USER).count).to eq(1)
-            expect(Models::EventLog.where(user: user).count).to eq(1)
           end
         end
       end

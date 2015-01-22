@@ -43,6 +43,8 @@ module Sipity
 
       def submit(repository:, requested_by:)
         super() do |f|
+          # REVIEW: Should the create work behavior be extracted to a repository
+          #   command?
           work = Models::Work.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
           repository.handle_transient_access_rights_answer(entity: work, answer: f.access_rights_answer)
           repository.update_work_publication_date!(work: work, publication_date: f.publication_date)
