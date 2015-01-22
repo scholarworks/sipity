@@ -23,6 +23,9 @@ en:
   activerecord:
     models:
       sipity/work: Deposit
+  application:
+    title: 'Repository Deposit Interface'
+    description: 'Welcome to the deposit interface of our digital repository.'
   sipity/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
