@@ -1,7 +1,7 @@
 module Sipity
   module Conversions
-    # Exposes a conversion method to take an input and transform it into a
-    # year.
+    # Exposes a conversion method to take an input and transform it the
+    # polymorphic base class.
     #
     # @see Sipity::Conversions for conventions regarding a conversion method
     module ConvertToPolymorphicType
