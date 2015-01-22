@@ -80,6 +80,10 @@ module Sipity
     class NotificationNotFoundError < ConceptNotFoundError
     end
 
+    # A WorkType was not found.
+    class WorkTypeNotFoundError < ConceptNotFoundError
+    end
+
     # Exposing a custom AuthenticationFailureError
     class AuthenticationFailureError < RuntimeError
       def initialize(context)
