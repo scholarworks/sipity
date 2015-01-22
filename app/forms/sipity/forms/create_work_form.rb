@@ -49,6 +49,7 @@ module Sipity
           repository.handle_transient_access_rights_answer(entity: work, answer: f.access_rights_answer)
           repository.update_work_publication_date!(work: work, publication_date: f.publication_date)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+          repository.create_work_todo_list_for_current_state(work: work, processing_state: work.processing_state)
           repository.log_event!(entity: work, user: requested_by, event_name: __method__)
           work
         end

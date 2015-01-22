@@ -8,7 +8,7 @@ module Sipity
       context '#create_work_todo_list_for_current_state' do
         it 'will' do
           expect { test_repository.create_work_todo_list_for_current_state(work: work) }.
-          to change { Models::TodoItemState.count }.by(2)
+            to change { Models::TodoItemState.count }.by(2)
         end
       end
     end
