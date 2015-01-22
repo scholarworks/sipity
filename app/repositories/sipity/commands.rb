@@ -22,6 +22,7 @@ module Sipity
       base.send(:include, AdditionalAttributeCommands)
       base.send(:include, PermissionCommands)
       base.send(:include, TransientAnswerCommands)
+      base.send(:include, TodoListCommands)
     end
   end
 end

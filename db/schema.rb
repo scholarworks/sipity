@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122142820) do
+ActiveRecord::Schema.define(version: 20150122181425) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -159,6 +159,19 @@ ActiveRecord::Schema.define(version: 20150122142820) do
   add_index "sipity_permissions", ["entity_id", "entity_type", "acting_as"], name: "sipity_permissions_entity_acting_as"
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
+
+  create_table "sipity_todo_item_states", id: false, force: :cascade do |t|
+    t.integer  "entity_id",               null: false
+    t.string   "entity_type",             null: false
+    t.string   "entity_processing_state", null: false
+    t.string   "enrichment_type",         null: false
+    t.string   "enrichment_state",        null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "sipity_todo_item_states", ["entity_id", "entity_type", "entity_processing_state", "enrichment_type"], name: "sipity_todo_item_states_key", unique: true
+  add_index "sipity_todo_item_states", ["entity_id", "entity_type"], name: "index_sipity_todo_item_states_on_entity_id_and_entity_type"
 
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.integer  "entity_id",     null: false

@@ -8,6 +8,10 @@ module Sipity
     def create_work_attribute_values!(work:, key:, values:)
     end
 
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def create_work_todo_list_for_current_state(work:, processing_state: work.processing_state, work_type: work.work_type)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def destroy_work_attribute_values!(work:, key:, values:)
     end
