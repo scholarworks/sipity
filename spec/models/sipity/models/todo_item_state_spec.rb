@@ -3,6 +3,15 @@ require 'rails_helper'
 module Sipity
   module Models
     RSpec.describe TodoItemState, type: :model do
+      context 'data structure' do
+        subject { described_class }
+        its(:column_names) { should include('entity_id') }
+        its(:column_names) { should include('entity_type') }
+        its(:column_names) { should include('entity_processing_state') }
+        its(:column_names) { should include('enrichment_type') }
+        its(:column_names) { should include('enrichment_state') }
+      end
+
       subject { described_class.new }
 
       it 'belongs to a :entity' do
