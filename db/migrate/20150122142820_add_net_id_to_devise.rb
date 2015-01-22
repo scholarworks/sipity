@@ -4,6 +4,6 @@ class AddNetIdToDevise < ActiveRecord::Migration
     change_column_null :users, :username, false
     change_column_null :users, :email, true, nil
     change_column_default :users, :email, nil
-    add_index :users, :username
+    add_index :users, :username, unique: true
   end
 end
