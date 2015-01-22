@@ -14,9 +14,7 @@ module Sipity
       end
 
       it 'relies on the database to enforce the requirement of an :acting_as' do
-        user = User.new(id: 1)
-        entity = Models::Work.new(id: 1)
-        expect { Permission.create!(actor: user, entity: entity) }.
+        expect { Permission.create!(actor_id: '1', actor_type: 'User', entity_id: '1', entity_type: 'Sipity::Models::Work') }.
           to raise_error(ActiveRecord::StatementInvalid, /acting_as may not be NULL/)
       end
     end
