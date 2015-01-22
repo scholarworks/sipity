@@ -18,8 +18,8 @@ module Sipity
         # REVIEW: Crossing a boundary for this test; Is that adequate?
         let!(:command_repository) { Commands::WorkCommandRepository.new }
         after { Commands.send(:remove_const, :WorkCommandRepository) }
-        let(:user_one) { User.new(id: 1) }
-        let(:user_two) { User.new(id: 2) }
+        let(:user_one) { User.new(id: 1, username: 'user_one') }
+        let(:user_two) { User.new(id: 2, username: 'user_two') }
         let(:form) do
           test_repository.build_create_work_form(
             attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'ETD' }
