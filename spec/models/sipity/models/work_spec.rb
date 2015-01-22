@@ -25,8 +25,12 @@ module Sipity
           expect { subject.work_type = '__incorrect_work_type__' }.to raise_error(ArgumentError)
         end
 
-        it 'accepts "ETD" as an acceptable work_type' do
-          expect { subject.work_type = 'ETD' }.to_not raise_error
+        it 'accepts "etd" as an acceptable work_type' do
+          expect { subject.work_type = 'etd' }.to_not raise_error
+        end
+
+        it 'will not accept "ETD" as it is case sensitive' do
+          expect { subject.work_type = 'ETD' }.to raise_error(ArgumentError)
         end
       end
 

@@ -20,7 +20,7 @@ module Sipity
       GOING_TO_PUBLISH = 'going_to_publish'.freeze
       DO_NOT_KNOW = 'do_not_know'.freeze
 
-      ETD_WORK_TYPE = 'ETD'.freeze
+      ETD_WORK_TYPE = 'etd'.freeze
 
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While

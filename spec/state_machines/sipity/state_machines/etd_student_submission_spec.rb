@@ -4,7 +4,7 @@ module Sipity
   module StateMachines
     RSpec.describe EtdStudentSubmission do
       let(:initial_processing_state) { 'new' }
-      let(:entity) { double('ETD', processing_state: initial_processing_state) }
+      let(:entity) { double('etd', processing_state: initial_processing_state) }
       let(:user) { double('User') }
       let(:repository) do
         double(

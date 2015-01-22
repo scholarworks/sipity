@@ -22,7 +22,7 @@ module Sipity
         let(:user_two) { User.new(id: 2, username: 'user_two') }
         let(:form) do
           test_repository.build_create_work_form(
-            attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'ETD' }
+            attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'etd' }
           )
         end
         let!(:work_one) { form.submit(repository: Sipity::Repository.new, requested_by: user_one) }
