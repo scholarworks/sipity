@@ -45,7 +45,7 @@ module Sipity
         subject { test_repository }
 
         it 'will return an empty result if there are no acting_as' do
-          Models::Permission.create!(entity: entity, actor: user, acting_as: acting_as)
+          Models::Permission.create!(entity: entity, actor_id: user.id, actor_type: 'User', acting_as: acting_as)
           expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: [], entity_type: entity.class)).
             to_not include(entity)
         end
@@ -54,7 +54,7 @@ module Sipity
           #   leverage.
           # TODO: I have knowledge of the applicable ROLE, this should be passed to the
           #   resolver.
-          Models::Permission.create!(entity: entity, actor: user, acting_as: acting_as)
+          Models::Permission.create!(entity: entity, actor_id: user.id, actor_type: 'User', acting_as: acting_as)
           expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: acting_as, entity_type: entity.class)).
             to include(entity)
         end
@@ -65,7 +65,7 @@ module Sipity
         end
 
         it 'will return the entity for which the user is inferred by group' do
-          Models::GroupMembership.create!(user: user, group: group)
+          Models::GroupMembership.create!(user_id: user.id, group: group)
           # TODO: Tease apart this service method; Its a command that I want to
           #   leverage.
           # TODO: I have knowledge of the applicable ROLE, this should be passed to the
