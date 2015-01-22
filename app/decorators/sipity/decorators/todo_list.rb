@@ -18,16 +18,16 @@ module Sipity
       attr_reader :item_builder
       private :item_builder
 
-      def add_to(set:, name:)
+      def add_to(set:, name:, state:)
         sets[set.to_s] ||= Set.new
-        sets[set.to_s] << item_builder.call(name)
+        sets[set.to_s] << item_builder.call(name, state)
       end
 
       private
 
       def default_item_builder
-        lambda do |name|
-          EntityEnrichmentAction.new(entity: entity, name: name)
+        lambda do |name, state|
+          EntityEnrichmentAction.new(entity: entity, name: name, state: state)
         end
       end
     end

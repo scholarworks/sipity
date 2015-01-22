@@ -27,8 +27,8 @@ module Sipity
         #   information should be assigned. The TODO subsystem is based on
         #   entity and user, so I need to explore how that will get set.
         Decorators::TodoList.new(entity: entity) do |list|
-          list.add_to(set: 'required', name: 'attach')
-          list.add_to(set: 'required', name: 'describe')
+          list.add_to(set: 'required', name: 'attach', state: 'incomplete')
+          list.add_to(set: 'required', name: 'describe', state: 'incomplete')
         end
       end
       module_function :build_enrichment_todo_list

@@ -6,17 +6,13 @@ module Sipity
     # REVIEW: Should this object respond to render? Instead of requiring the
     #   template to render different elements.
     class EntityEnrichmentAction
-      def initialize(entity:, name:)
-        @entity, @name = entity, name
+      def initialize(entity:, name:, state: 'incomplete')
+        @entity, @name, @state = entity, name, state
       end
-      attr_reader :entity, :name
+      attr_reader :entity, :name, :state
 
-      def status
-        # REVIEW: This should not be static but is based on the state of the
-        #   entity and the particular enrichment in question. It will be set
-        #   elsewhere.
-        'incomplete'
-      end
+      alias_method :status, :state
+      deprecate :status
 
       def path
         # REVIEW: Should I make use of a proper route method? Or is this even
