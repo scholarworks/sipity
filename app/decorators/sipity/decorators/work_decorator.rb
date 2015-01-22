@@ -31,15 +31,6 @@ module Sipity
           work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      def required_enrichment_actions
-        # REVIEW: Should I have an EnrichmentActionSet that could be rendered?
-        # REVIEW: This is dependent on work type,  state and perhaps current user.
-        [
-          EntityEnrichmentAction.new(entity: self, name: 'attach'),
-          EntityEnrichmentAction.new(entity: self, name: 'describe')
-        ]
-      end
-
       def available_linked_actions
         # TODO: This is dependent on object state
         # TODO: What to do when I have a non-persisted state? Can this decorator
@@ -59,6 +50,8 @@ module Sipity
       private
 
       def todo_list
+        # TODO: An EntityType and User defines the TodoList; This is an
+        #   incomplete and naive implementation.
         @todo_list = TodoList.new(entity: self) do |list|
           list.add_to(set: 'required', name: 'attach')
           list.add_to(set: 'required', name: 'describe')

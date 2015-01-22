@@ -21,12 +21,6 @@ module Sipity
         end
       end
 
-      context '#required_enrichment_actions' do
-        it 'will return an enumerable in which all elements responds to path' do
-          expect(subject.required_enrichment_actions.all? { |action| action.respond_to?(:path) }).to be_truthy
-        end
-      end
-
       context '#with_form_panel' do
         it 'wrap the results of the block inside a panel' do
           rendered = subject.with_form_panel('attributes') { 'hello' }
