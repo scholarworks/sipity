@@ -50,7 +50,7 @@ module Sipity
       private
 
       def todo_list
-        Queries::EnrichmentQueries.build_enrichment_todo_list(entity: self)
+        Queries::EnrichmentQueries.todo_list_for_current_processing_state_of_work(work: self)
       end
 
       def recommendation_for(name)

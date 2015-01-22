@@ -20,19 +20,19 @@ module Sipity
         builder.new(attributes)
       end
 
-      def build_enrichment_todo_list(options = {})
-        entity = options.fetch(:entity)
-        # REVIEW: This is a concension for the existing behavior, it will change
-        #   but I need to sever that connection. The question is when this
-        #   information should be assigned. The TODO subsystem is based on
-        #   entity and user, so I need to explore how that will get set.
-        Decorators::TodoList.new(entity: entity) do |list|
-          list.add_to(set: 'required', name: 'attach', state: 'incomplete')
-          list.add_to(set: 'required', name: 'describe', state: 'incomplete')
+      def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
+        # TODO: Can I tease apart the collaborator? I'd like to send a builder object
+        # as a parameter. It would ease the entaglement that is happening here.
+        Decorators::TodoList.new(entity: work) do |list|
+          Models::TodoItemState.where(entity: work, entity_processing_state: processing_state).each do |todo_item|
+            # REVIEW: Why is this the 'required' set; It should be based on something else.
+            # For now, however, it stands.
+            list.add_to(set: 'required', name: todo_item.enrichment_type, state: todo_item.enrichment_state)
+          end
         end
       end
-      module_function :build_enrichment_todo_list
-      public :build_enrichment_todo_list
+      module_function :todo_list_for_current_processing_state_of_work
+      public :todo_list_for_current_processing_state_of_work
     end
   end
 end
