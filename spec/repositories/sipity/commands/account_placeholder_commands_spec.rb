@@ -12,11 +12,13 @@ module Sipity
           Then { response == false }
         end
         context 'with valid data' do
+          before do
+            expect(PermissionCommands).to receive(:grant_creating_user_permission_for!)
+            expect(EventLogCommands).to receive(:log_event!)
+          end
           When(:model) { test_repository.submit_create_orcid_account_placeholder_form(form, requested_by: user) }
           Then { model.persisted? }
           And { model.is_a?(Models::AccountPlaceholder) }
-          And { Models::EventLog.count == 1 }
-          And { Models::Permission.count == 1 }
         end
       end
     end
