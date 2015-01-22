@@ -7,10 +7,7 @@ class User < ActiveRecord::Base
     self.role ||= :user
   end
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+  devise :cas_authenticatable, :trackable
 
   has_many :permissions, as: :actor, dependent: :destroy, class_name: 'Sipity::Models::Permission'
 end
