@@ -20,6 +20,16 @@ module Sipity
           end
         end
       end
+      context '#build_enrichment_todo_list' do
+        let(:entity) { double('Entity') }
+        let(:user) { double('User') }
+
+        subject { test_repository.build_enrichment_todo_list(entity: entity, user: user) }
+
+        it { should respond_to :sets }
+        it { should respond_to :entity }
+        its(:sets) { should_not be_empty }
+      end
     end
   end
 end

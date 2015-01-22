@@ -50,12 +50,7 @@ module Sipity
       private
 
       def todo_list
-        # TODO: An EntityType and User defines the TodoList; This is an
-        #   incomplete and naive implementation.
-        @todo_list = TodoList.new(entity: self) do |list|
-          list.add_to(set: 'required', name: 'attach')
-          list.add_to(set: 'required', name: 'describe')
-        end
+        Queries::EnrichmentQueries.build_enrichment_todo_list(entity: self)
       end
 
       def recommendation_for(name)
