@@ -11,9 +11,6 @@ module Sipity
       end
       attr_reader :entity, :name, :state
 
-      alias_method :status, :state
-      deprecate :status
-
       def path
         # REVIEW: Should I make use of a proper route method? Or is this even
         #   the correct routing method?
