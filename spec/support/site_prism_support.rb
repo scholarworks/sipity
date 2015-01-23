@@ -76,11 +76,12 @@ module SitePrism
 
       def find_named_object(name)
         object_name_node = find("[itemprop='name'][content='#{name.downcase}']")
-        # WARNING: This is stepping up exactly one element and assuming that
-        # is the parent container for the object. I'm reviewing XPath to
-        # determine how I might get this information
-        parent_path = object_name_node.path.sub(/\/\w+$/, '')
-        find(parent_path)
+        # Because Capybara does not support an ancestors find method, I need to
+        # dive into the native object (i.e. a Nokogiri node). The end goal is to
+        # find the named object element and thus be able to retrieve any of the
+        # underlying attributes.
+        parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
+        find(parent_ng_node.path)
       end
     end
 
