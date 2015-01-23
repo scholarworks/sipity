@@ -1,0 +1,11 @@
+fieldset.panel {
+  position:relative;
+
+  legend {
+    position:absolute;
+  }
+
+  legend + .panel-body {
+    margin-top:37px; // Assumes a 16px font size (like h3)
+  }
+}

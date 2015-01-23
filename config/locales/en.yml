@@ -24,8 +24,9 @@ en:
     models:
       sipity/work: Deposit
   application:
-    title: 'Repository Deposit Interface'
     description: 'Welcome to the deposit interface of our digital repository.'
+    name: 'Sipty'
+    title: 'Repository Deposit Interface'
   sipity/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
