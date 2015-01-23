@@ -8,6 +8,11 @@ module Sipity
       # TODO: This is the wrong form, but works to solve the specified test.
       def build_enrichment_form(attributes = {})
         enrichment_type = attributes.fetch(:enrichment_type)
+        builder = find_enrichment_form_builder(enrichment_type)
+        builder.new(attributes)
+      end
+
+      def find_enrichment_form_builder(enrichment_type)
         builder = begin
           case enrichment_type
           when 'attach' then Forms::AttachWorkEnrichmentForm
@@ -16,9 +21,8 @@ module Sipity
             fail Exceptions::EnrichmentNotFoundError, name: enrichment_type, container: 'EnrichmentTypes(Virtual)'
           end
         end
-
-        builder.new(attributes)
       end
+      private :find_enrichment_form_builder
 
       def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object
