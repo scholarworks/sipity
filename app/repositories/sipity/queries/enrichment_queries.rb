@@ -1,22 +1,16 @@
+require 'sipity/forms/work_enrichments'
+
 module Sipity
   module Queries
     # Queries
     module EnrichmentQueries
       def build_enrichment_form(attributes = {})
+        # REVIEW: Should this entire behavior be delegated to the
+        #   Form::WorkEnrichments module?
         enrichment_type = attributes.fetch(:enrichment_type)
-        builder = find_enrichment_form_builder(enrichment_type)
+        builder = Forms::WorkEnrichments.find_enrichment_form_builder(enrichment_type: enrichment_type)
         builder.new(attributes)
       end
-
-      def find_enrichment_form_builder(enrichment_type)
-        form_name_by_convention = "#{enrichment_type.classify}Form"
-        if Forms::WorkEnrichments.const_defined?(form_name_by_convention)
-          Forms::WorkEnrichments.const_get(form_name_by_convention)
-        else
-          fail Exceptions::EnrichmentNotFoundError, name: form_name_by_convention, container: Forms::WorkEnrichments
-        end
-      end
-      private :find_enrichment_form_builder
 
       def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object

@@ -6,18 +6,11 @@ module Sipity
       context '#build_enrichment_form' do
         let(:work) { double }
         let(:valid_enrichment_type) { 'attach' }
-        let(:invalid_enrichment_type) { '__very_much_not_valid__' }
-        context 'with valid enrichment type' do
+        context 'with valid enrichment type (to demonstrate collaboration)' do
           subject { test_repository.build_enrichment_form(work: work, enrichment_type: valid_enrichment_type) }
           it { should respond_to :work }
           it { should respond_to :submit }
           it { should respond_to :valid? }
-        end
-        context 'with invalid enrichment type' do
-          it 'will raise an exception' do
-            expect { test_repository.build_enrichment_form(work: work, enrichment_type: invalid_enrichment_type) }.
-              to raise_error(Exceptions::EnrichmentNotFoundError)
-          end
         end
       end
 
