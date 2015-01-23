@@ -35,6 +35,11 @@ module Sipity
 
           expect(todo_item.reload.enrichment_state).to eq(done_state)
         end
+
+        it 'will create a new "done" todo item if a matching todo item does not exist because we should acknowledge their achievement' do
+          expect { test_repository.mark_work_todo_item_as_done(work: work, enrichment_type: existing_enrichment_type) }.
+            to change { Models::TodoItemState.count }.by(1)
+        end
       end
     end
   end

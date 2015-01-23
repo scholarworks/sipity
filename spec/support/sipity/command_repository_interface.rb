@@ -5,7 +5,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def create_named_entity_todo_item_for_current_state(entity:, entity_processing_state:, enrichment_type:)
+    def create_named_entity_todo_item_for_current_state(entity:, entity_processing_state:, enrichment_type:, enrichment_state: nil)
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
