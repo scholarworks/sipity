@@ -17,7 +17,9 @@ module Sipity
     module TodoListCommands
       def create_work_todo_list_for_current_state(work:, processing_state: work.processing_state, work_type: work.work_type)
         WORK_TYPE_PROCESSING_STATE_TODO_LIST_ITEMS.fetch(work_type).fetch(processing_state).each do |item_name|
-          create_named_entity_todo_item_for_current_state(entity: work, entity_processing_state: processing_state, enrichment_type: item_name)
+          create_named_entity_todo_item_for_current_state(
+            entity: work, entity_processing_state: processing_state, enrichment_type: item_name
+          )
         end
       end
 

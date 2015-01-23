@@ -15,7 +15,7 @@ module Sipity
 
       # TODO: Create a PidMinter service
       # REVIEW: Is this the correct location to put this behavior?
-      def attach_file_to(work:, file:, user: user, pid_minter: Services::PidMinter)
+      def attach_file_to(work:, file:, user: user, pid_minter: -> {})
         pid = pid_minter.call
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end

@@ -50,7 +50,7 @@ module Sipity
             expect(returned_value).to eq(work)
           end
 
-          it "will transition the work's 'describe' enrichment todo item to :done" do
+          it "will transition the work's corresponding enrichment todo item to :done" do
             expect(repository).to receive(:mark_work_todo_item_as_done).and_call_original
             subject.submit(repository: repository, requested_by: user)
           end
@@ -65,7 +65,6 @@ module Sipity
             subject.submit(repository: repository, requested_by: user)
           end
         end
-
       end
     end
   end
