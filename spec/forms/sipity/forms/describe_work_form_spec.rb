@@ -24,7 +24,7 @@ module Sipity
       end
 
       context '#submit' do
-        let(:repository) { double('Repository', log_event!: true, update_work_attribute_values!: true) }
+        let(:repository) { CommandRepositoryInterface.new }
         let(:user) { double('User') }
         context 'with invalid data' do
           before do
@@ -50,15 +50,19 @@ module Sipity
             expect(returned_value).to eq(work)
           end
 
-          it 'will add additional attributes entries' do
+          it "will transition the work's 'describe' enrichment todo item to :done" do
+            expect(repository).to receive(:mark_work_todo_item_as_done).and_call_original
             subject.submit(repository: repository, requested_by: user)
-            expect(repository).to have_received(:update_work_attribute_values!).
-              with(work: work, key: 'abstract', values: subject.abstract)
+          end
+
+          it 'will add additional attributes entries' do
+            expect(repository).to receive(:update_work_attribute_values!).and_call_original
+            subject.submit(repository: repository, requested_by: user)
           end
 
           it 'will record the event' do
+            expect(repository).to receive(:log_event!).and_call_original
             subject.submit(repository: repository, requested_by: user)
-            expect(repository).to have_received(:log_event!).with(entity: work, user: user, event_name: 'describe_work_form/submit')
           end
         end
 

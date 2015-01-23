@@ -18,6 +18,7 @@ module Sipity
       def submit(repository:, requested_by:)
         super() do |_f|
           repository.update_work_attribute_values!(work: work, key: 'abstract', values: abstract)
+          repository.mark_work_todo_item_as_done(work: work, enrichment_type: enrichment_type)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
           work
         end
