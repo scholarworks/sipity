@@ -160,7 +160,7 @@ ActiveRecord::Schema.define(version: 20150122181425) do
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
 
-  create_table "sipity_todo_item_states", id: false, force: :cascade do |t|
+  create_table "sipity_todo_item_states", force: :cascade do |t|
     t.integer  "entity_id",               null: false
     t.string   "entity_type",             null: false
     t.string   "entity_processing_state", null: false
