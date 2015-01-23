@@ -2,7 +2,6 @@ module Sipity
   module Forms
     # A container for the various WorkEnrichment forms
     module WorkEnrichments
-
       module_function
 
       def find_enrichment_form_builder(enrichment_type:)

@@ -7,8 +7,6 @@ module Sipity
     class TodoList
       def initialize(options = {})
         @entity = options.fetch(:entity)
-        # REVIEW: Should I be including this? Or is it up to the initializer of
-        #   this object?
         @item_builder = options.fetch(:item_builder) { default_item_builder }
         @sets = {}
         yield(self) if block_given?

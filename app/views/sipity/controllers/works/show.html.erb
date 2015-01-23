@@ -44,11 +44,6 @@
       <h2><%= set %></h2>
       <ul>
         <%- actions.each do |action| -%>
-          <%# REVIEW: This is an experimental idea; We are using the Schema.org
-              structure to drive our automated testing. This should be viewed as
-              experimental and will be part of an ongoing conversation amongst
-              the developers.
-          %>
           <li itemscope itemtype="http://schema.org/Action">
             <span itemprop="actionStatus"><%= action.state %></span>
             <span itemprop="description"><%= action.label %></span>

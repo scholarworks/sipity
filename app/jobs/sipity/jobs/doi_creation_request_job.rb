@@ -55,10 +55,6 @@ module Sipity
       end
 
       def default_minter
-        # REVIEW: Do I need an insulating layer?
-        # I chose a lambda instead of capturing the method as the method signature
-        # of the underlying Ezid::Identifer is not under my control and could be
-        # something I would want to tease apart.
         ->(metadata) { Ezid::Identifier.create(metadata: metadata) }
       end
 

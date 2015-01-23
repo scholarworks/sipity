@@ -4,7 +4,7 @@ class CreateSipityModelsTodoItemStates < ActiveRecord::Migration
       t.integer :entity_id
       t.string :entity_type
       t.string :entity_processing_state
-      t.string :enrichment_type # REVIEW: Should this be todo item or enrichment_type? How are they the same?
+      t.string :enrichment_type
       t.string :enrichment_state
 
       t.timestamps null: false
