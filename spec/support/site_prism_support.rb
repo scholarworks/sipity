@@ -60,7 +60,7 @@ module SitePrism
         find(".recommendation .value .recommendation-#{recommendation.downcase}").click
       end
 
-      def click_named_link(name)
+      def click_todo_item(name)
         find_named_object(name).find("[itemprop='url']").click
       end
 

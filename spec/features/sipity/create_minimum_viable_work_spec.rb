@@ -60,7 +60,7 @@ feature 'Minimum viable SIP', :devise do
     end
 
     on('work_page') do |the_page|
-      the_page.click_named_link('todo>required>describe')
+      the_page.click_todo_item('todo>required>describe')
     end
 
     on('describe_page') do |the_page|
@@ -86,7 +86,7 @@ feature 'Minimum viable SIP', :devise do
     end
 
     on('work_page') do |the_page|
-      the_page.click_named_link('todo>required>attach')
+      the_page.click_todo_item('todo>required>attach')
     end
 
     on('attach_page') do |the_page|
