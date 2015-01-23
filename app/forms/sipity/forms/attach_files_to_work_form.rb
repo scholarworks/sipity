@@ -24,6 +24,7 @@ module Sipity
           Array.wrap(files).compact.each do |file|
             repository.attach_file_to(work: work, file: file, user: requested_by)
           end
+          repository.mark_work_todo_item_as_done(work: work, enrichment_type: enrichment_type)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
           work
         end

@@ -1,7 +1,11 @@
 module Sipity
   class CommandRepositoryInterface
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def attach_file_to(work:, file:, user: user, pid_minter: Services::PidMinter)
+    def attach_file_to(work:, file:, user: user, pid_minter: -> {})
+    end
+
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def create_named_entity_todo_item_for_current_state(entity:, entity_processing_state:, enrichment_type:)
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
@@ -34,6 +38,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/event_log_commands.rb
     def log_event!(entity:, user:, event_name:)
+    end
+
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
