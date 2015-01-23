@@ -1,7 +1,7 @@
 module Sipity
   module Forms
     # Exposes a means for attaching files to the associated work.
-    class AttachFilesToWorkForm < BaseForm
+    class AttachWorkEnrichmentForm < BaseForm
       self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
