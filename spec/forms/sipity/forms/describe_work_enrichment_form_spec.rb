@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe DescribeWorkForm do
+    RSpec.describe DescribeWorkEnrichmentForm do
       let(:work) { Models::Work.new(id: '1234') }
       subject { described_class.new(work: work) }
 

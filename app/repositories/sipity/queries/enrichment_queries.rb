@@ -11,7 +11,7 @@ module Sipity
         builder = begin
           case enrichment_type
           when 'attach' then Forms::AttachFilesToWorkForm
-          when 'describe' then Forms::DescribeWorkForm
+          when 'describe' then Forms::DescribeWorkEnrichmentForm
           else
             fail Exceptions::EnrichmentNotFoundError, name: enrichment_type, container: 'EnrichmentTypes(Virtual)'
           end

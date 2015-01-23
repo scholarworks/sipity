@@ -1,7 +1,7 @@
 module Sipity
   module Forms
     # Responsible for capturing and validating information for describe.
-    class DescribeWorkForm < BaseForm
+    class DescribeWorkEnrichmentForm < BaseForm
       self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
 
       def initialize(attributes = {})
