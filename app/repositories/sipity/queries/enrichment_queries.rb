@@ -9,11 +9,11 @@ module Sipity
       end
 
       def find_enrichment_form_builder(enrichment_type)
-        form_name_by_convention = "#{enrichment_type.classify}WorkEnrichmentForm"
-        if Forms.const_defined?(form_name_by_convention)
-          Forms.const_get(form_name_by_convention)
+        form_name_by_convention = "#{enrichment_type.classify}Form"
+        if Forms::WorkEnrichments.const_defined?(form_name_by_convention)
+          Forms::WorkEnrichments.const_get(form_name_by_convention)
         else
-          fail Exceptions::EnrichmentNotFoundError, name: form_name_by_convention, container: Forms
+          fail Exceptions::EnrichmentNotFoundError, name: form_name_by_convention, container: Forms::WorkEnrichments
         end
       end
       private :find_enrichment_form_builder
