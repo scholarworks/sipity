@@ -68,6 +68,10 @@ feature 'Minimum viable SIP', :devise do
       the_page.fill_in(:abstract, with: 'Lorem ipsum')
       the_page.submit_button.click
     end
+
+    on('work_page') do |the_page|
+      expect(the_page.todo_item_named_status_for('todo>required>describe')).to eq('done')
+    end
   end
 
   scenario 'User can attach files' do

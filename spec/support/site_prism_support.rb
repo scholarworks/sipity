@@ -61,11 +61,26 @@ module SitePrism
       end
 
       def click_named_link(name)
-        find("[itemprop='name'][content='#{name.downcase}']+[itemprop='url']").click
+        find_named_object(name).find("[itemprop='url']").click
       end
 
       def click_edit
         find('.action-edit').click
+      end
+
+      def todo_item_named_status_for(name)
+        find_named_object(name).find("[itemprop='actionStatus']").text
+      end
+
+      private
+
+      def find_named_object(name)
+        object_name_node = find("[itemprop='name'][content='#{name.downcase}']")
+        # WARNING: This is stepping up exactly one element and assuming that
+        # is the parent container for the object. I'm reviewing XPath to
+        # determine how I might get this information
+        parent_path = object_name_node.path.sub(/\/\w+$/, '')
+        find(parent_path)
       end
     end
 
