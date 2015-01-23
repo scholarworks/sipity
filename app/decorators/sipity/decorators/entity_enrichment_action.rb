@@ -12,9 +12,8 @@ module Sipity
       attr_reader :entity, :name, :state
 
       def path
-        # REVIEW: Should I make use of a proper route method? Or is this even
-        #   the correct routing method?
-        File.join("#{view_context.polymorphic_path(entity)}", name)
+        # REVIEW: Does EntityEnrichment even make sense?
+        view_context.enrich_work_path(entity, name)
       end
 
       def label
