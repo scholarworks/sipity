@@ -2,10 +2,6 @@ module Sipity
   module Queries
     # Queries
     module EnrichmentQueries
-      # TODO: Consolidate :build_enrichment_form and
-      #   :build_create_describe_work_form
-      #
-      # TODO: This is the wrong form, but works to solve the specified test.
       def build_enrichment_form(attributes = {})
         enrichment_type = attributes.fetch(:enrichment_type)
         builder = find_enrichment_form_builder(enrichment_type)
