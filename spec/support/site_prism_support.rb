@@ -60,12 +60,12 @@ module SitePrism
         find(".recommendation .value .recommendation-#{recommendation.downcase}").click
       end
 
-      def click_todo_item(name)
-        find_named_object(name).find("[itemprop='url']").click
-      end
-
       def click_edit
         find('.action-edit').click
+      end
+
+      def click_todo_item(name)
+        find_named_object(name).find("[itemprop='url']").click
       end
 
       def todo_item_named_status_for(name)
