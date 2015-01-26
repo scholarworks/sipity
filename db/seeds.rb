@@ -8,7 +8,7 @@
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
 
-puts 'Configuring Work Type Todo List...'
+$stdout.puts 'Configuring Work Type Todo List...'
 [
   ['etd', 'new', 'describe', 'required'],
   ['etd', 'new', 'attach', 'required']
