@@ -23,6 +23,17 @@ module Sipity
       end
       module_function :todo_list_for_current_processing_state_of_work
       public :todo_list_for_current_processing_state_of_work
+
+      def required_todo_items_are_done_for_work?(work:, processing_state: work.processing_state)
+        # TODO: We got a magic string
+        Models::TodoItemState.where(entity: work, entity_processing_state: processing_state, enrichment_state: 'done')
+        # TODO: How do I know what items are required?
+      end
+
+      def required_enrichment_types_for_work_type_and_processing_state
+        # TODO: Model this
+        ['attach', 'describe']
+      end
     end
   end
 end

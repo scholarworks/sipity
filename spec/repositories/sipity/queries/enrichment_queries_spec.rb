@@ -30,6 +30,34 @@ module Sipity
           expect(subject.sets.fetch('required').map(&:name)).to eq([todo_item_1.enrichment_type, todo_item_2.enrichment_type])
         end
       end
+
+      context '#required_todo_items_are_done?' do
+        let(:work) { Models::Work.new(id: 123, processing_state: 'new', work_type: 'etd') }
+        let(:required_enrichment_types) { ['describe', 'attach'] }
+        let(:persist_todo_item_state) do
+          lambda do |work, enrichment_type, enrichment_state|
+            Models::TodoItemState.create!(
+              entity_id: work.id, entity_type: Conversions::ConvertToPolymorphicType.call(work),
+              entity_processing_state: work.processing_state, enrichment_type: enrichment_type, enrichment_state: enrichment_state
+            )
+          end
+        end
+        before do
+          expect(test_repository).to receive(:required_enrichment_types_for_work_type_and_processing_state).
+            and_return(required_enrichment_types)
+        end
+
+        it 'will return true if all required todo items are "done"' do
+          required_enrichment_types.each do |enrichment_type|
+            persist_todo_item_state.call(work, enrichment_type, 'done')
+          end
+          expect(test_repository.required_todo_items_are_done_for_work?(work: work)).to eq(true)
+        end
+
+        it 'will return false if any required todo items are not "done"'
+
+        it 'will return false if there are missing todo items that are required'
+      end
     end
   end
 end
