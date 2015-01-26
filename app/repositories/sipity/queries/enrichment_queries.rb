@@ -18,7 +18,7 @@ module Sipity
 
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
-      def current_todo_item_states_for(entity:, work_type:, enrichment_group:, work_processing_state:)
+      def current_todo_item_states_for(entity:, work_type:, enrichment_group: nil, work_processing_state:)
         states = Models::TodoItemState.arel_table
         configs = Models::WorkTypeTodoListConfig.arel_table
         entity_id = entity.id
@@ -29,12 +29,16 @@ module Sipity
           and(states[:entity_processing_state].eq(configs[:work_processing_state]))
         ).join_sources
 
+        base_where_clause = configs[:work_processing_state].eq(work_processing_state).
+          and(configs[:work_type].eq(work_type))
+
+        if enrichment_group
+          base_where_clause = base_where_clause.and(configs[:enrichment_group].eq(enrichment_group))
+        end
+
         Models::WorkTypeTodoListConfig.
-          select(configs[:enrichment_type], states[:enrichment_state], configs[:work_processing_state]).
-        where(
-          configs[:enrichment_group].eq(enrichment_group).
-          and(configs[:work_processing_state].eq(work_processing_state)).
-        and(configs[:work_type].eq(work_type))).
+          select(configs[:enrichment_group], configs[:enrichment_type], states[:enrichment_state], configs[:work_processing_state]).
+          where(base_where_clause).
         where(
           states[:entity_id].eq(entity_id).
           and(states[:entity_type].eq(entity_type)).
