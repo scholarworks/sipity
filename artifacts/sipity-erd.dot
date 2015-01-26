@@ -3,7 +3,7 @@ digraph "G" {
     node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="Sipity ERD (Draft v8)"
+        label="Sipity ERD (Draft v9)"
         color="seashell3"
         node[style=filled fillcolor=white color="seashell4"]
         edge[arrowhead="crow"]
@@ -25,24 +25,28 @@ digraph "G" {
         attachment[label="{ Attachment | work | file }"]
         entity[label="Entity (Polymorphism)"]
         actor[label="Actor (Polymorphism)"]
-        WorkTypeTodoListConfig[label="{ WorkTypeTodoListConfig | work_type | work_processing_status | enrichment_type | enrichment_group }"]
+        WorkTypeTodoListConfig[label="{ WorkTypeTodoListConfig | work_type | work_processing_state | enrichment_type | enrichment_group }"]
+        TodoItemState [label="{ TodoItemState | entity | entity_processing_state | enrichment_type | enrichment_state }"]
 
         user -> group_membership
         group_entity -> group_membership
         work -> attachment
         work -> work_type
         work_type -> WorkTypeTodoListConfig
+        work_type -> ActorForPermissionAssignment
 
-        attachment -> entity[label="is a" arrowhead=none]
-        work -> entity[label="is a" arrowhead=none]
+        attachment -> entity[label="is a" arrowhead=none style="dashed"]
+        work -> entity[label="is a" arrowhead=none style="dashed"]
+        WorkTypeTodoListConfig -> TodoItemState[label="related to" arrowhead=none style="dotted"]
 
         entity -> AccessRight
         entity -> TransientAnswer
         entity -> permission
         entity -> event_log
+        entity -> TodoItemState
 
-        group_entity -> actor[label="is a" arrowhead=none]
-        user -> actor[label="is a" arrowhead=none]
+        group_entity -> actor[label="is a" arrowhead=none style="dashed"]
+        user -> actor[label="is a" arrowhead=none style="dashed"]
         user -> event_log
 
         actor -> ActorForPermissionAssignment
