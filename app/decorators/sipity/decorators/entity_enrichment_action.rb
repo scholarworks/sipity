@@ -6,7 +6,7 @@ module Sipity
     # REVIEW: Should this object respond to render? Instead of requiring the
     #   template to render different elements.
     class EntityEnrichmentAction
-      def initialize(entity:, name:, state: 'incomplete')
+      def initialize(entity:, name:, state:)
         @entity, @name, @state = entity, name, state
       end
       attr_reader :entity, :name, :state
