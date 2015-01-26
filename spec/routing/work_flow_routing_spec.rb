@@ -11,7 +11,9 @@ describe 'work flow routing spec' do
 
       it "will route POST /works/:work_id/#{enrichment_type}" do
         expect(post: "/works/#{work_id}/#{enrichment_type}").
-          to route_to(controller: 'sipity/controllers/work_enrichments', action: 'update', work_id: work_id, enrichment_type: enrichment_type)
+        to route_to(
+          controller: 'sipity/controllers/work_enrichments', action: 'update', work_id: work_id, enrichment_type: enrichment_type
+        )
       end
 
       it "will generate a path via an enrich_work_path(work_id, '#{enrichment_type}')" do
@@ -28,12 +30,16 @@ describe 'work flow routing spec' do
     end
   end
 
-
-  context 'event trigger routes' do
+  context 'event request routes' do
     let(:event_name) { 'do_it' }
-    it 'will route GET /works/:work_id/trigger/:event_name' do
-      expect(get: "/works/#{work_id}/trigger/#{event_name}").
-        to route_to(controller: 'sipity/controllers/work_triggers', action: 'confirm', work_id: work_id, event_name: event_name)
+    it 'will route GET /works/:work_id/request/:event_name' do
+      expect(get: "/works/#{work_id}/request/#{event_name}").
+        to route_to(controller: 'sipity/controllers/work_event_requests', action: 'new', work_id: work_id, event_name: event_name)
+    end
+
+    it 'will route POST /works/:work_id/request/:event_name' do
+      expect(post: "/works/#{work_id}/request/#{event_name}").
+        to route_to(controller: 'sipity/controllers/work_event_requests', action: 'create', work_id: work_id, event_name: event_name)
     end
   end
 end
