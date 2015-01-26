@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150122181425) do
+ActiveRecord::Schema.define(version: 20150126150056) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -185,6 +185,18 @@ ActiveRecord::Schema.define(version: 20150122181425) do
   add_index "sipity_transient_answers", ["entity_id", "entity_type", "question_code"], name: "sipity_transient_entity_answers", unique: true
   add_index "sipity_transient_answers", ["entity_id", "entity_type"], name: "index_sipity_transient_answers_on_entity_id_and_entity_type"
 
+  create_table "sipity_work_type_todo_list_configs", force: :cascade do |t|
+    t.string   "work_type",             null: false
+    t.string   "work_processing_state", null: false
+    t.string   "enrichment_type",       null: false
+    t.string   "enrichment_group",      null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_group"], name: "sipity_work_type_todo_list_config_completion_index"
+  add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_type"], name: "sipity_work_type_todo_list_config_composite_index", unique: true
+
   create_table "sipity_works", force: :cascade do |t|
     t.string   "work_publication_strategy"
     t.string   "title"
@@ -213,6 +225,6 @@ ActiveRecord::Schema.define(version: 20150122181425) do
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
-  add_index "users", ["username"], name: "index_users_on_username"
+  add_index "users", ["username"], name: "index_users_on_username", unique: true
 
 end

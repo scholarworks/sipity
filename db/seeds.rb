@@ -5,7 +5,18 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
-user = CreateAdminService.new.call
-puts 'CREATED ADMIN USER: ' << user.email
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
+
+$stdout.puts 'Configuring Work Type Todo List...'
+[
+  ['etd', 'new', 'describe', 'required'],
+  ['etd', 'new', 'attach', 'required']
+].each do |work_type, processing_state, enrichment_type, enrichment_group|
+  Sipity::Models::WorkTypeTodoListConfig.create!(
+    work_type: work_type,
+    work_processing_state: processing_state,
+    enrichment_type: enrichment_type,
+    enrichment_group: enrichment_group
+  )
+end
