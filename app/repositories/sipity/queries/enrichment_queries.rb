@@ -54,8 +54,12 @@ module Sipity
         # as a parameter. It would ease the entaglement that is happening here.
         Decorators::TodoList.new(entity: work) do |list|
           current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
-            # REVIEW: I've got a magic string; I would like a
-            list.add_to(set: todo_item.enrichment_group, name: todo_item.enrichment_type, state: todo_item.enrichment_state || 'incomplete')
+            # TODO: LOW PRIORITY: The todo_item is a composite todo item based on the above query.
+            list.add_to(
+              set: todo_item.enrichment_group,
+              name: todo_item.enrichment_type,
+              state: todo_item.enrichment_state || Models::TodoItemState::ENRICHMENT_STATE_INCOMPLETE
+            )
           end
         end
       end
