@@ -13,7 +13,7 @@ module Sipity
       def are_all_of_the_required_todo_items_done_for_work?(work:, work_processing_state: work.processing_state)
         current_todo_item_states_for(
           entity: work, work_type: work.work_type, work_processing_state: work_processing_state, enrichment_group: 'required'
-        ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done'}
+        ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
 
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
@@ -29,8 +29,7 @@ module Sipity
           and(states[:entity_processing_state].eq(configs[:work_processing_state]))
         ).join_sources
 
-        base_where_clause = configs[:work_processing_state].eq(work_processing_state).
-          and(configs[:work_type].eq(work_type))
+        base_where_clause = configs[:work_processing_state].eq(work_processing_state).and(configs[:work_type].eq(work_type))
 
         if enrichment_group
           base_where_clause = base_where_clause.and(configs[:enrichment_group].eq(enrichment_group))
@@ -39,23 +38,24 @@ module Sipity
         Models::WorkTypeTodoListConfig.
           select(configs[:enrichment_group], configs[:enrichment_type], states[:enrichment_state], configs[:work_processing_state]).
           where(base_where_clause).
-        where(
-          states[:entity_id].eq(entity_id).
-          and(states[:entity_type].eq(entity_type)).
-          or(states[:entity_id].eq(nil))
-        ).
+          where(
+            states[:entity_id].eq(entity_id).
+            and(states[:entity_type].eq(entity_type)).
+            or(states[:entity_id].eq(nil))
+          ).
           joins(state_configs)
       end
+      module_function :current_todo_item_states_for
+      private_class_method :current_todo_item_states_for
       private :current_todo_item_states_for
 
       def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object
         # as a parameter. It would ease the entaglement that is happening here.
         Decorators::TodoList.new(entity: work) do |list|
-          Models::TodoItemState.where(entity: work, entity_processing_state: processing_state).each do |todo_item|
-            # REVIEW: Why is this the 'required' set; It should be based on something else.
-            # For now, however, it stands.
-            list.add_to(set: 'required', name: todo_item.enrichment_type, state: todo_item.enrichment_state)
+          current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
+            # REVIEW: I've got a magic string; I would like a
+            list.add_to(set: todo_item.enrichment_group, name: todo_item.enrichment_type, state: todo_item.enrichment_state || 'incomplete')
           end
         end
       end
