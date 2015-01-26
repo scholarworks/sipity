@@ -3,16 +3,16 @@ digraph "G" {
     node[color="grey15" shape=record penwidth=2 margin="0.15, 0.125"];
 
     subgraph cluster_0 {
-        label="Sipity ERD (Draft v7)"
+        label="Sipity ERD (Draft v8)"
         color="seashell3"
-        style="filled"
         node[style=filled fillcolor=white color="seashell4"]
         edge[arrowhead="crow"]
 
         user[label="{ User }"]
         group_entity[label="{ Group | name }"]
         group_membership[label="{ Group Membership | group | user | membership_role }"]
-        work[label="{ SIP | title | processing_state }"]
+        work[label="{ Work | title | processing_state | work_type }"]
+        work_type[label="{ WorkType (Enumeration)| name }"]
         event_log[label="{ EventLog | user | entity | event_name }"]
         permission[label="{ Permission | actor | entity | acting_as }"]
         collaborators[label="{ Collaborators | name | role }"]
@@ -25,10 +25,13 @@ digraph "G" {
         attachment[label="{ Attachment | work | file }"]
         entity[label="Entity (Polymorphism)"]
         actor[label="Actor (Polymorphism)"]
+        WorkTypeTodoListConfig[label="{ WorkTypeTodoListConfig | work_type | work_processing_status | enrichment_type | enrichment_group }"]
 
         user -> group_membership
         group_entity -> group_membership
         work -> attachment
+        work -> work_type
+        work_type -> WorkTypeTodoListConfig
 
         attachment -> entity[label="is a" arrowhead=none]
         work -> entity[label="is a" arrowhead=none]
