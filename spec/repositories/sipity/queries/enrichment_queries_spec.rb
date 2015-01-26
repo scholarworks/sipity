@@ -3,8 +3,40 @@ require 'rails_helper'
 module Sipity
   module Queries
     RSpec.describe EnrichmentQueries, type: :repository_methods do
+      let(:work) { Models::Work.new(id: 123, processing_state: 'new') }
+      let(:todo_list_configurator) do
+        lambda do
+          [
+            ['etd', 'new', 'describe', 'required'],
+            ['etd', 'new', 'attach', 'required'],
+            ['etd', 'new', 'mogrify', 'optional'],
+            ['etd', 'next', 'attach', 'required'],
+            ['etd', 'next', 'another', 'required']
+          ].each do |work_type, processing_state, enrichment_type, enrichment_group|
+            Sipity::Models::WorkTypeTodoListConfig.create!(
+              work_type: work_type,
+              work_processing_state: processing_state,
+              enrichment_type: enrichment_type,
+              enrichment_group: enrichment_group
+            )
+          end
+        end
+      end
+      let(:persist_todo_item_state) do
+        lambda do |options|
+          work = options.fetch(:work)
+          entity_type = Conversions::ConvertToPolymorphicType.call(work)
+          processing_state = options.fetch(:processing_state) { work.processing_state }
+          enrichment_type = options.fetch(:enrichment_type)
+          enrichment_state = options.fetch(:enrichment_state)
+          Models::TodoItemState.create!(
+            entity_id: work.id, entity_type: entity_type,
+            entity_processing_state: processing_state, enrichment_type: enrichment_type, enrichment_state: enrichment_state
+          )
+        end
+      end
+
       context '#build_enrichment_form' do
-        let(:work) { double }
         let(:valid_enrichment_type) { 'attach' }
         context 'with valid enrichment type (to demonstrate collaboration)' do
           subject { test_repository.build_enrichment_form(work: work, enrichment_type: valid_enrichment_type) }
@@ -15,7 +47,6 @@ module Sipity
       end
 
       context '#todo_list_for_current_processing_state_of_work' do
-        let(:work) { Models::Work.new(id: 123, processing_state: 'new') }
         let(:todo_attributes) { { entity: work, entity_processing_state: work.processing_state  } }
         let(:todo_item_1) { Models::TodoItemState.new(todo_attributes.merge(enrichment_type: 'describe', enrichment_state: 'incomplete')) }
         let(:todo_item_2) { Models::TodoItemState.new(todo_attributes.merge(enrichment_type: 'attach', enrichment_state: 'done')) }
@@ -32,36 +63,7 @@ module Sipity
       end
 
       context '#are_all_of_the_required_todo_items_done_for_work?' do
-        before do
-          [
-            ['etd', 'new', 'describe', 'required'],
-            ['etd', 'new', 'attach', 'required'],
-            ['etd', 'new', 'mogrify', 'optional'],
-            ['etd', 'next', 'attach', 'required'],
-            ['etd', 'next', 'another', 'required']
-          ].each do |work_type, processing_state, enrichment_type, enrichment_group|
-            Sipity::Models::WorkTypeTodoListConfig.create!(
-              work_type: work_type,
-              work_processing_state: processing_state,
-              enrichment_type: enrichment_type,
-              enrichment_group: enrichment_group
-            )
-          end
-        end
-        let(:work) { Models::Work.new(id: 123, processing_state: 'new', work_type: 'etd') }
-        let(:persist_todo_item_state) do
-          lambda do |options|
-            work = options.fetch(:work)
-            entity_type = Conversions::ConvertToPolymorphicType.call(work)
-            processing_state = options.fetch(:processing_state) { work.processing_state }
-            enrichment_type = options.fetch(:enrichment_type)
-            enrichment_state = options.fetch(:enrichment_state)
-            Models::TodoItemState.create!(
-              entity_id: work.id, entity_type: entity_type,
-              entity_processing_state: processing_state, enrichment_type: enrichment_type, enrichment_state: enrichment_state
-            )
-          end
-        end
+        before { todo_list_configurator.call }
 
         it 'will return true if all required todo items are "done"' do
           persist_todo_item_state.call(work: work, enrichment_type: 'describe', enrichment_state: 'done')
