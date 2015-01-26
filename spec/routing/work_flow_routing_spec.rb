@@ -10,9 +10,10 @@ describe 'work flow routing spec' do
       end
 
       it "will route POST /works/:work_id/#{enrichment_type}" do
-        expect(post: "/works/#{work_id}/#{enrichment_type}").
-        to route_to(
-          controller: 'sipity/controllers/work_enrichments', action: 'update', work_id: work_id, enrichment_type: enrichment_type
+        expect(post: "/works/#{work_id}/#{enrichment_type}").to(
+          route_to(
+            controller: 'sipity/controllers/work_enrichments', action: 'update', work_id: work_id, enrichment_type: enrichment_type
+          )
         )
       end
 
