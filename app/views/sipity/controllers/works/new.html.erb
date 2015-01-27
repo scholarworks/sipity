@@ -1,17 +1,19 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
-  <%= model.with_form_panel('attributes') do %>
-    <%= f.input :title %>
-  <% end %>
-  <%= model.with_form_panel('work_type') do %>
-    <%= f.input :work_type, as: :select, collection: model.work_types_for_select %>
-  <% end %>
-  <%= model.with_form_panel('work_publication_strategy') do %>
-    <%= f.input :work_publication_strategy, as: :radio_buttons, collection: model.work_publication_strategies_for_select %>
-  <% end %>
-  <%= model.with_form_panel('access_rights_answer') do %>
-    <%= f.input :access_rights_answer, as: :radio_buttons, collection: model.access_rights_answer_for_select %>
-  <% end %>
+  <div class="panel-tiles">
+    <%= model.with_form_panel('attributes') do %>
+      <%= f.input :title %>
+    <% end %>
+    <%= model.with_form_panel('work_type') do %>
+      <%= f.input :work_type, as: :select, collection: model.work_types_for_select %>
+    <% end %>
+    <%= model.with_form_panel('work_publication_strategy') do %>
+      <%= f.input :work_publication_strategy, as: :radio_buttons, collection: model.work_publication_strategies_for_select %>
+    <% end %>
+    <%= model.with_form_panel('access_rights_answer') do %>
+      <%= f.input :access_rights_answer, as: :radio_buttons, collection: model.access_rights_answer_for_select %>
+    <% end %>
+  </div>
   <%= model.with_action_pane('actions') do %>
     <%= f.submit %>
   <% end %>
