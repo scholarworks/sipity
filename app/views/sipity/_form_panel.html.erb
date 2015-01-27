@@ -1,8 +1,9 @@
 <%# TODO: Do we really need both panel and card? panel is for bootstrap but I like the card language %>
-<fieldset class="<%= dom_class(object, name) %> panel panel-default">
+<% theme ||= :default %>
+<fieldset class="<%= dom_class(object, name) %> panel <%= "panel-#{theme}" %>">
   <legend class="panel-heading">
-    <%# TODO: Translate the name into a question %>
-    <h3 class="panel-title"><%= name %></h3>
+    <%# TODO: make the translation generic e.g. based on the action %>
+    <%= content_tag :h3, t("sipity/works.label.#{name}").html_safe, class: 'panel-title' %>
   </legend>
   <div class="panel-body">
     <%= yield %>

@@ -1,10 +1,14 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
-  <%= field_set_tag do %>
-    <%= f.input :title %>
-    <%= render 'form_for_work_publication_strategy', { f: f } %>
-  <% end %>
-  <%= field_set_tag do %>
-    <%= f.submit %>
+  <div class="panel-tiles">
+    <%= model.with_form_panel('attributes', :info) do %>
+      <%= f.input :title %>
+    <% end %>
+    <%= model.with_form_panel('work_publication_strategy', :info) do %>
+      <%= render 'form_for_work_publication_strategy', { f: f } %>
+    <% end %>
+  </div>
+  <%= model.with_action_pane('actions') do %>
+    <%= f.submit t('sipity/works.action/update.action_label') %>
   <% end %>
 <% end %>

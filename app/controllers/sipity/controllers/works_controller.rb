@@ -27,6 +27,7 @@ module Sipity
 
       def edit
         _status, @model = run(work_id: work_id)
+        @model = Decorators::WorkDecorator.decorate(model)
         respond_with(@model)
       end
 
