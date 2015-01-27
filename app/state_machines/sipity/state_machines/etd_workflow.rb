@@ -7,7 +7,7 @@ module Sipity
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
-    class EtdStudentSubmission
+    class EtdWorkflow
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
       #

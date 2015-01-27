@@ -34,7 +34,7 @@ module Sipity
       def save(repository:, requested_by:)
         yield if block_given?
         # TODO: This works, but is inelegant and very much hard-coded
-        # I knew to use the EtdStudentSubmission because the work is an ETD
+        # I knew to use the EtdWorkflow because the work is an ETD
         # I knew to trigger the event via a symbol because that is how the state
         # machine operates. Encode those assumptions to clarify intent.
         event_to_trigger.call(repository: repository, requested_by: requested_by)
@@ -49,7 +49,7 @@ module Sipity
         lambda do |options|
           user = options.fetch(:requested_by)
           repository = options.fetch(:repository)
-          StateMachines::EtdStudentSubmission.new(entity: work, user: user, repository: repository).trigger!(event_name.to_sym)
+          StateMachines::EtdWorkflow.new(entity: work, user: user, repository: repository).trigger!(event_name.to_sym)
         end
       end
     end
