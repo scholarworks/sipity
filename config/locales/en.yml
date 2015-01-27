@@ -29,7 +29,9 @@ en:
     title: 'Repository Deposit Interface'
   helpers:
     submit:
-      sipity/work: 'Continue'
+      work:
+        create: 'Continue'
+        update: 'Update'
   sipity/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
@@ -44,11 +46,9 @@ en:
     action/create:
       failure: 'There is a problem with your sumbission.'
       success: 'Thank you for your submission!'
-      action_label: 'Continue'
     action/update:
       failure: 'That update could not be made.'
       success: 'Update successful!'
-      action_label: 'Update'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<strong>Attach</strong> files to this %{entity_type}"
