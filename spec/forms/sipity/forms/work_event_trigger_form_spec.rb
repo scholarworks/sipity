@@ -4,7 +4,7 @@ module Sipity
   module Forms
     RSpec.describe WorkEventTriggerForm do
       let(:work) { Models::Work.new(id: '1234') }
-      subject { described_class.new(work: work) }
+      subject { described_class.new(work: work, event_name: 'submit_for_review') }
 
       its(:policy_enforcer) { should eq(Policies::EnrichWorkByFormSubmissionPolicy) }
 
@@ -33,8 +33,6 @@ module Sipity
         end
 
         context 'with valid data' do
-          subject { described_class.new(work: work) }
-
           before do
             expect(subject).to receive(:valid?).and_return(true)
           end
