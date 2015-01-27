@@ -41,8 +41,8 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-spring'
   gem 'guard-rubocop'
+  gem 'i18n-debug'
   gem 'quiet_assets'
-  gem 'rails-i18n-debug'
   gem 'rails_layout'
   gem 'rb-fchange', :require=>false
   gem 'rb-fsevent', :require=>false
