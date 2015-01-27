@@ -11,7 +11,7 @@ module Sipity
     module_function
 
     def find_state_machine_for(work_type:)
-      state_machine_name_by_convention = "#{work_type.classify}Workflow"
+      state_machine_name_by_convention = "#{work_type.classify}StateMachine"
       if const_defined?(state_machine_name_by_convention)
         const_get(state_machine_name_by_convention)
       else

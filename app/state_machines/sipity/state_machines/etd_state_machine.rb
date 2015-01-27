@@ -7,7 +7,7 @@ module Sipity
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
-    class EtdWorkflow
+    class EtdStateMachine
       # The public facing API for the ETD Workflow
       def self.trigger!(options = {})
         entity = options.fetch(:entity)
