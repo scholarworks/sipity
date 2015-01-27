@@ -1,9 +1,9 @@
 require 'site_prism'
 module SitePrism
   module Pages
-    module WithEntryPointHandling
+    module WithNamedObjectBehavior
       def take_named_action(name)
-        take_action_on(find_named_entry_point(name))
+        take_action_on(find_named_object(name))
       end
 
       private
@@ -23,14 +23,14 @@ module SitePrism
         action.click
       end
 
-      def find_named_entry_point(name)
-        object_name_node = find("[itemtype='http://schema.org/EntryPoint'] [itemprop='name'][content='#{name.downcase}']")
+      def find_named_object(name, itemtype: 'EntryPoint')
+        object_name_node = find("[itemtype='http://schema.org/#{itemtype}'] [itemprop='name'][content='#{name.downcase}']")
         # Because Capybara does not support an ancestors find method, I need to
         # dive into the native object (i.e. a Nokogiri node). The end goal is to
         # find the named object element and thus be able to retrieve any of the
         # underlying attributes.
         parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
-        find(parent_ng_node.path)
+        find(parent_ng_node.css_path)
       end
     end
 
@@ -85,7 +85,7 @@ module SitePrism
     end
 
     class WorkPage < SitePrism::Page
-      include WithEntryPointHandling
+      include WithNamedObjectBehavior
 
       def text_for(predicate)
         all(" .value.#{predicate}").map(&:text)
@@ -100,16 +100,20 @@ module SitePrism
       end
 
       def click_todo_item(name)
-        take_action_on(find_named_entry_point(name))
+        take_action_on(find_named_object(name))
       end
 
       def todo_item_named_status_for(name)
-        find_named_entry_point(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
+        find_named_object(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
+      end
+
+      def processing_state
+        find_named_object('work>processing_state', itemtype: 'Enumeration').find("[itemprop='description']").text
       end
     end
 
     class EventTriggerPage < SitePrism::Page
-      include WithEntryPointHandling
+      include WithNamedObjectBehavior
     end
 
     class DescribePage < SitePrism::Page
