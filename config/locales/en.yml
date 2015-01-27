@@ -35,6 +35,7 @@ en:
   sipity/works:
     action/create:
       failure: 'There is a problem with your sumbission.'
+      action_label: 'Continue'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<strong>Attach</strong> files to this %{entity_type}"
