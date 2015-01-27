@@ -15,6 +15,14 @@ module Sipity
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
 
+      context '.trigger! (public API)' do
+        it 'will instantiate the workflow and trigger the event' do
+          allow(described_class).to receive(:new).and_call_original
+          expect_any_instance_of(described_class).to receive(:trigger!).with(:submit_for_review, {})
+          described_class.trigger!(entity: entity, user: user, repository: repository, event_name: 'submit_for_review')
+        end
+      end
+
       context 'with the default repository' do
         subject { described_class.new(entity: entity, user: user) }
         its(:repository) { should respond_to :log_event! }
@@ -25,7 +33,7 @@ module Sipity
         its(:repository) { should respond_to :submit_ingest_etd }
       end
 
-      context '.authorized_acting_as_for_action' do
+      context '#authorized_acting_as_for_action' do
         let(:initial_processing_state) { 'unknown' }
         it 'will raise an exception if the processing_state is unknown' do
           expect { subject.authorized_acting_as_for_action(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
@@ -166,7 +174,7 @@ module Sipity
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :under_review'  do
             expect(repository).to have_received(:update_processing_state!).
@@ -192,7 +200,7 @@ module Sipity
           end
           it 'will record the event for auditing purposes'  do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
@@ -208,7 +216,7 @@ module Sipity
           let(:event) { :approve_for_ingest }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :ready_for_ingest' do
             expect(repository).to have_received(:update_processing_state!).
@@ -229,7 +237,7 @@ module Sipity
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :ingest_completed' do
             expect(repository).to have_received(:update_processing_state!).
@@ -262,7 +270,7 @@ module Sipity
           end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :ready_for_cataloging' do
             expect(repository).to have_received(:update_processing_state!).
@@ -278,7 +286,7 @@ module Sipity
           let(:event) { :finish_cataloging }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :cataloged' do
             expect(repository).to have_received(:update_processing_state!).
@@ -295,7 +303,7 @@ module Sipity
           let(:event) { :finish }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
-              with(entity: entity, user: user, event_name: "etd_student_submission/#{event}")
+              with(entity: entity, user: user, event_name: "etd_workflow/#{event}")
           end
           it 'will update the ETDs processing_state to :done' do
             expect(repository).to have_received(:update_processing_state!).
