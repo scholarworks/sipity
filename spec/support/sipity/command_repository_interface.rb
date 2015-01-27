@@ -61,7 +61,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def update_processing_state!(work:, from:, to:)
+    def update_processing_state!(work:, to:)
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
