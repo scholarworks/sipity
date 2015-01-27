@@ -1,3 +1,5 @@
+@import "bootstrap/variables";
+
 fieldset.panel {
   position:relative;
 
@@ -6,6 +8,11 @@ fieldset.panel {
   }
 
   legend + .panel-body {
-    margin-top:37px; // Assumes a 16px font size (like h3)
+    margin-top:37px; // Assumes a 16px font size (like .panel-title h3)
+  }
+
+  // Field validations are automatically placed in span.help-inline
+  .help-inline {
+    color:$alert-danger-text;
   }
 }
