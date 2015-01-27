@@ -4,7 +4,8 @@ module Sipity
   module Forms
     RSpec.describe WorkEventTriggerForm do
       let(:work) { Models::Work.new(id: '1234') }
-      subject { described_class.new(work: work, event_name: 'submit_for_review') }
+      let(:event_to_trigger) { double(call: true) }
+      subject { described_class.new(work: work, event_name: 'submit_for_review', event_to_trigger: event_to_trigger) }
 
       its(:policy_enforcer) { should eq(Policies::EnrichWorkByFormSubmissionPolicy) }
 
@@ -42,9 +43,9 @@ module Sipity
             expect(returned_value).to eq(work)
           end
 
-          it 'will record the event' do
-            expect(repository).to receive(:log_event!).and_call_original
-            subject.submit(repository: repository, requested_by: user)
+          it 'will build an event object and trigger it' do
+            returned_value = subject.submit(repository: repository, requested_by: user)
+            expect(event_to_trigger).to have_received(:call).with(repository: repository, requested_by: user)
           end
         end
       end

@@ -10,9 +10,16 @@ module Sipity
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
         @event_name = attributes.fetch(:event_name) { 'standard' }
+        # TODO: This is not the final form; I believe I need to build the proper
+        # event object that has a clear API. Its not the same as the form, because
+        # the form is responsible for validations. The event is responsible for
+        # being triggered.
+        @event_to_trigger = attributes.fetch(:event_to_trigger) { default_event_to_trigger }
       end
 
       attr_reader :work, :event_name
+      attr_reader :event_to_trigger
+      private :event_to_trigger
 
       validates :work, presence: true
       validates :event_name, presence: true
@@ -26,12 +33,22 @@ module Sipity
 
       def save(repository:, requested_by:)
         yield if block_given?
-        repository.log_event!(entity: work, user: requested_by, event_name: logged_event_name)
+        # TODO: This works, but is inelegant and very much hard-coded
+        # I knew to use the EtdStudentSubmission because the work is an ETD
+        # I knew to trigger the event via a symbol because that is how the state
+        # machine operates. Encode those assumptions to clarify intent.
+        event_to_trigger.call(repository: repository, requested_by: requested_by)
         work
       end
 
       def logged_event_name
         File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit', event_name)
+      end
+
+      def default_event_to_trigger
+        ->(repository:, requested_by:) {
+          StateMachines::EtdStudentSubmission.new(entity: work, user: requested_by, repository: repository).trigger!(event_name.to_sym)
+        }
       end
     end
   end
