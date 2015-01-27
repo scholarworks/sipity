@@ -9,6 +9,11 @@ module Sipity
 
       its(:policy_enforcer) { should eq(Policies::EnrichWorkByFormSubmissionPolicy) }
 
+      context 'with defaults' do
+        subject { described_class.new(work: work, event_name: 'submit_for_review') }
+        its(:event_receiver) { should respond_to :trigger! }
+      end
+
       context 'validations' do
         it 'will require a work' do
           subject = described_class.new(work: nil)
