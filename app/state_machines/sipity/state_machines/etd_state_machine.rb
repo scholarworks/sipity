@@ -8,16 +8,6 @@ module Sipity
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
     class EtdStateMachine
-      # The public facing API for the ETD Workflow
-      def self.trigger!(options = {})
-        entity = options.fetch(:entity)
-        user = options.fetch(:user)
-        repository = options.fetch(:repository, nil)
-        event_name = options.fetch(:event_name).to_sym
-        new(entity: entity, user: user, repository: repository).
-          trigger!(event_name, options.except(:entity, :user, :repository, :event_name))
-      end
-
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
       #

@@ -15,14 +15,6 @@ module Sipity
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
 
-      context '.trigger! (public API)' do
-        it 'will instantiate the workflow and trigger the event' do
-          allow(described_class).to receive(:new).and_call_original
-          expect_any_instance_of(described_class).to receive(:trigger!).with(:submit_for_review, {})
-          described_class.trigger!(entity: entity, user: user, repository: repository, event_name: 'submit_for_review')
-        end
-      end
-
       context 'with the default repository' do
         subject { described_class.new(entity: entity, user: user) }
         its(:repository) { should respond_to :log_event! }
