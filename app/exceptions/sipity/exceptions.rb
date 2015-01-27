@@ -84,6 +84,10 @@ module Sipity
     class WorkTypeNotFoundError < ConceptNotFoundError
     end
 
+    # A StateMachine was not found.
+    class StateMachineNotFoundError < ConceptNotFoundError
+    end
+
     # Exposing a custom AuthenticationFailureError
     class AuthenticationFailureError < RuntimeError
       def initialize(context)

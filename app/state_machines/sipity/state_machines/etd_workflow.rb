@@ -8,7 +8,6 @@ module Sipity
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
     class EtdWorkflow
-
       # The public facing API for the ETD Workflow
       def self.trigger!(options = {})
         entity = options.fetch(:entity)
