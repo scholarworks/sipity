@@ -5,7 +5,8 @@ module Sipity
     RSpec.describe WorkEventTriggerPolicy do
       let(:user) { User.new(id: 123) }
       let(:work) { Models::Work.new(id: 123, work_type: 'etd') }
-      subject { described_class.new(user, work) }
+      let(:form) { double(work: work) }
+      subject { described_class.new(user, form) }
 
       context 'for a non-authenticated user' do
         let(:user) { nil }
