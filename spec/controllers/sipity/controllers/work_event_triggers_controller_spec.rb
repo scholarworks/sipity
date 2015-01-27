@@ -3,7 +3,7 @@ require 'hesburgh/lib/mock_runner'
 
 module Sipity
   module Controllers
-    RSpec.describe WorkEventRequestsController, type: :controller do
+    RSpec.describe WorkEventTriggersController, type: :controller do
       let(:work) { double('Work', persisted?: true, title: 'Hello World') }
       let(:event_name) { 'submit_for_review' }
       context 'GET #new' do

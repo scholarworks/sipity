@@ -46,9 +46,11 @@ module Sipity
       end
 
       def default_event_to_trigger
-        ->(repository:, requested_by:) {
-          StateMachines::EtdStudentSubmission.new(entity: work, user: requested_by, repository: repository).trigger!(event_name.to_sym)
-        }
+        lambda do |options|
+          user = options.fetch(:requested_by)
+          repository = options.fetch(:repository)
+          StateMachines::EtdStudentSubmission.new(entity: work, user: user, repository: repository).trigger!(event_name.to_sym)
+        end
       end
     end
   end

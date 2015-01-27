@@ -1,6 +1,6 @@
 module Sipity
   module Runners
-    module WorkEventRequestRunners
+    module WorkEventTriggerRunners
       # Responsible for responding with the correct form for the work's description
       class New < BaseRunner
         self.authentication_layer = :default

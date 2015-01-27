@@ -44,7 +44,7 @@ module Sipity
           end
 
           it 'will build an event object and trigger it' do
-            returned_value = subject.submit(repository: repository, requested_by: user)
+            subject.submit(repository: repository, requested_by: user)
             expect(event_to_trigger).to have_received(:call).with(repository: repository, requested_by: user)
           end
         end

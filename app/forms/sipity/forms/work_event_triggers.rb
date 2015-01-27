@@ -6,7 +6,7 @@ module Sipity
     module WorkEventTriggers
       module_function
 
-      def find_event_trigger_form_builder(event_name:)
+      def find_event_trigger_form_builder(_options = {})
         WorkEventTriggerForm
       end
     end

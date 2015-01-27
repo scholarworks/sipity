@@ -170,7 +170,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :under_review'  do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "under_review")
+              with(entity: entity, to: "under_review")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -196,7 +196,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "under_review")
+              with(entity: entity, to: "under_review")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -212,7 +212,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :ready_for_ingest' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "ready_for_ingest")
+              with(entity: entity, to: "ready_for_ingest")
           end
           it 'will trigger :ingest event' do
             expect(repository).to have_received(:submit_etd_student_submission_trigger!).
@@ -233,7 +233,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :ingest_completed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "ingesting")
+              with(entity: entity, to: "ingesting")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -266,7 +266,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :ready_for_cataloging' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "ready_for_cataloging")
+              with(entity: entity, to: "ready_for_cataloging")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -282,7 +282,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :cataloged' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "cataloged")
+              with(entity: entity, to: "cataloged")
           end
           it 'will trigger the :finish event' do
             expect(repository).to have_received(:submit_etd_student_submission_trigger!).
@@ -299,7 +299,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :done' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, from: initial_processing_state, to: "done")
+              with(entity: entity, to: "done")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)

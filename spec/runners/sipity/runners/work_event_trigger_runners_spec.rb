@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/runners/work_event_request_runners'
+require 'sipity/runners/work_event_trigger_runners'
 
 module Sipity
   module Runners
-    module WorkEventRequestRunners
+    module WorkEventTriggerRunners
       include RunnersSupport
       RSpec.describe New do
         let(:work) { double('Work', id: '1234') }
