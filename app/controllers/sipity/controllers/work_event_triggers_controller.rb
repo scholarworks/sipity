@@ -12,6 +12,16 @@ module Sipity
         respond_with(@model)
       end
 
+      def create
+        run(work_id: work_id, event_name: event_name) do |on|
+          on.success { |work| redirect_to work_path(work), notice: message_for("#{event_name}_triggered", title: work.title) }
+          on.failure do |model|
+            @model = model
+            render action: 'new'
+          end
+        end
+      end
+
       attr_reader :model
       protected :model
       helper_method :model
