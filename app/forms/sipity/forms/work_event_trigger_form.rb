@@ -31,10 +31,6 @@ module Sipity
         work
       end
 
-      def logged_event_name
-        File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit', event_name)
-      end
-
       def default_event_receiver
         StateMachines
       end
