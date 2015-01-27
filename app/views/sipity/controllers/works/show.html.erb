@@ -44,11 +44,13 @@
       <h2><%= set %></h2>
       <ul>
         <%- actions.each do |action| -%>
-          <li itemscope itemtype="http://schema.org/Action">
+          <li itemscope itemtype="http://schema.org/EntryPoint">
             <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
-            <span itemprop="actionStatus"><%= action.state %></span>
             <span itemprop="description"><%= action.label %></span>
-            <a itemprop="url" href="<%= action.path %>">Do it!</a>
+            <div itemtype="http://schema.org/Action" itemscope itemprop='potentialAction'>
+              <span itemprop="actionStatus"><%= action.state %></span>
+              <a itemprop="url" href="<%= action.path %>"><span itemprop="name">Do it!</span></a>
+            </div>
           </li>
         <%- end -%>
       <ul>
