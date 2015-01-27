@@ -7,7 +7,7 @@ module Sipity
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
-    class EtdStudentSubmission
+    class EtdStateMachine
       # TODO: Extract policy questions into separate class; There is a
       # relationship, but is this necessary.
       #
@@ -53,7 +53,7 @@ module Sipity
       private
 
       def after_trigger_successful!(event, options = {})
-        repository.update_processing_state!(entity: entity, from: entity.processing_state, to: state_machine.state)
+        repository.update_processing_state!(entity: entity, to: state_machine.state)
         repository.log_event!(entity: entity, user: user, event_name: convert_to_logged_name(event))
         include_private_methods = true
         send("after_trigger_#{event}", options) if respond_to?("after_trigger_#{event}", include_private_methods)

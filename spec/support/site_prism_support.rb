@@ -1,6 +1,39 @@
 require 'site_prism'
 module SitePrism
   module Pages
+    module WithNamedObjectBehavior
+      def take_named_action(name)
+        take_action_on(find_named_object(name))
+      end
+
+      private
+
+      def take_action_on(entry_point)
+        # I'm thinking how can I click on either a submit button or an a-tag.
+        #
+        # Since names are helpful, but machines like URLs better, I opted to
+        # first find the URL, and fallback to the named action for something to
+        # click on.
+        action =
+        begin
+          entry_point.find("[itemprop='potentialAction'] [itemprop='url']")
+        rescue Capybara::ElementNotFound
+          entry_point.find("[itemprop='potentialAction'] [itemprop='name']")
+        end
+        action.click
+      end
+
+      def find_named_object(name, itemtype: 'EntryPoint')
+        object_name_node = find("[itemtype='http://schema.org/#{itemtype}'] [itemprop='name'][content='#{name.downcase}']")
+        # Because Capybara does not support an ancestors find method, I need to
+        # dive into the native object (i.e. a Nokogiri node). The end goal is to
+        # find the named object element and thus be able to retrieve any of the
+        # underlying attributes.
+        parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
+        find(parent_ng_node.css_path)
+      end
+    end
+
     class NewWorkPage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
 
@@ -52,6 +85,8 @@ module SitePrism
     end
 
     class WorkPage < SitePrism::Page
+      include WithNamedObjectBehavior
+
       def text_for(predicate)
         all(" .value.#{predicate}").map(&:text)
       end
@@ -65,39 +100,20 @@ module SitePrism
       end
 
       def click_todo_item(name)
-        take_action_on(find_named_entry_point(name))
+        take_action_on(find_named_object(name))
       end
 
       def todo_item_named_status_for(name)
-        find_named_entry_point(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
+        find_named_object(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
       end
 
-      private
-
-      def take_action_on(entry_point)
-        # I'm thinking how can I click on either a submit button or an a-tag.
-        #
-        # Since names are helpful, but machines like URLs better, I opted to
-        # first find the URL, and fallback to the named action for something to
-        # click on.
-        action =
-        begin
-          entry_point.find("[itemprop='potentialAction'] [itemprop='url']")
-        rescue Capybara::ElementNotFound
-          entry_point.find("[itemprop='potentialAction'] [itemprop='name']")
-        end
-        action.click
+      def processing_state
+        find_named_object('work>processing_state', itemtype: 'Enumeration').find("[itemprop='description']").text
       end
+    end
 
-      def find_named_entry_point(name)
-        object_name_node = find("[itemtype='http://schema.org/EntryPoint'] [itemprop='name'][content='#{name.downcase}']")
-        # Because Capybara does not support an ancestors find method, I need to
-        # dive into the native object (i.e. a Nokogiri node). The end goal is to
-        # find the named object element and thus be able to retrieve any of the
-        # underlying attributes.
-        parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
-        find(parent_ng_node.path)
-      end
+    class EventTriggerPage < SitePrism::Page
+      include WithNamedObjectBehavior
     end
 
     class DescribePage < SitePrism::Page

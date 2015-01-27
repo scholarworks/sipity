@@ -7,10 +7,11 @@ module Sipity
       included do |base|
         base.send(:include, Queries::WorkQueries)
       end
-      def update_processing_state!(work:, new_processing_state:)
+
+      def update_processing_state!(entity:, to:)
         # REVIEW: Should this be re-finding the work? Is it cheating to re-use
         #   the given work? Is it unsafe as far as state is concerned?
-        work.update(processing_state: new_processing_state)
+        entity.update(processing_state: to)
       end
 
       # TODO: Create a PidMinter service

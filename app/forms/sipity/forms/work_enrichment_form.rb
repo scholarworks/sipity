@@ -14,7 +14,6 @@ module Sipity
       end
 
       attr_reader :work, :enrichment_type
-      attr_accessor :files
 
       validates :work, presence: true
 

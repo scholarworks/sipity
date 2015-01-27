@@ -1,0 +1,7 @@
+<form itemscope itemtype="http://schema.org/EntryPoint" method="post" action="<%= event_trigger_for_work_path(model.work, model.event_name) %>">
+  <link itemprop="url" href="<%= event_trigger_for_work_path(model.work, model.event_name) %>">
+  <meta itemprop="name" content="confirm>event_trigger>submit_for_review">
+  <div itemtype="http://schema.org/Action" itemscope itemprop='potentialAction'>
+    <%= submit_tag("Submit", itemprop: 'name') %>
+  </div>
+</form>
