@@ -16,15 +16,15 @@ module SitePrism
         # click on.
         action =
         begin
-          entry_point.find("[itemprop='potentialAction'] [itemprop='url']")
+          entry_point.find("[itemprop='target'] [itemprop='url']")
         rescue Capybara::ElementNotFound
-          entry_point.find("[itemprop='potentialAction'] [itemprop='name']")
+          entry_point.find("[itemprop='target'] [itemprop='name']")
         end
         action.click
       end
 
-      def find_named_object(name, itemtype: 'EntryPoint')
-        object_name_node = find("[itemtype='http://schema.org/#{itemtype}'] [itemprop='name'][content='#{name.downcase}']")
+      def find_named_object(name, itemprop: 'potentialAction')
+        object_name_node = find("[itemprop='#{itemprop}'] [itemprop='name'][content='#{name.downcase}']")
         # Because Capybara does not support an ancestors find method, I need to
         # dive into the native object (i.e. a Nokogiri node). The end goal is to
         # find the named object element and thus be able to retrieve any of the
@@ -104,11 +104,11 @@ module SitePrism
       end
 
       def todo_item_named_status_for(name)
-        find_named_object(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
+        find_named_object(name).find("[itemprop='actionStatus']").text
       end
 
       def processing_state
-        find_named_object('work>processing_state', itemtype: 'Enumeration').find("[itemprop='description']").text
+        find_named_object('work>processing_state', itemprop: 'hasPart').find("[itemprop='description']").text
       end
     end
 

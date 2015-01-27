@@ -1,13 +1,6 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
 <div class="card">
   <h2 itemprop="name"><%= model.title %></h2>
-  <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
-    <meta itemprop="name" content="work>processing_state" />
-    <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
-    the underlying tests will need to change to find[:content] instead of
-    find.text %>
-    <h3 itemprop="description"><%= model.processing_state %></h3>
-  </div>
   <dl class="work">
     <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
     <dd class="value title"><%= model.title %></dt>
@@ -52,11 +45,11 @@
       <h2><%= set %></h2>
       <ul>
         <%- actions.each do |action| -%>
-          <li itemscope itemtype="http://schema.org/EntryPoint">
+          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
             <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
             <span itemprop="description"><%= action.label %></span>
-            <div itemtype="http://schema.org/Action" itemscope itemprop='potentialAction'>
-              <span itemprop="actionStatus"><%= action.state %></span>
+            <span itemprop="actionStatus"><%= action.state %></span>
+            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
               <a itemprop="url" href="<%= action.path %>"><span itemprop="name">Do it!</span></a>
             </div>
           </li>
@@ -68,17 +61,22 @@
 
 <!-- TODO: This is hard-coded for now; I want to get to auto-generation -->
 <div>
-  <ul>
-    <li>
-      <form itemscope itemtype="http://schema.org/EntryPoint" method="get" action="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-        <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+  <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
+    <meta itemprop="name" content="work>processing_state" />
+    <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
+    the underlying tests will need to change to find[:content] instead of
+    find.text %>
+    <h3 itemprop="description"><%= model.processing_state %></h3>
+    <ul>
+      <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
         <meta itemprop="name" content="event_trigger>submit_for_review">
-        <div itemtype="http://schema.org/Action" itemscope itemprop='potentialAction'>
+        <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+        <form itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" method="get" action="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
           <%= submit_tag("Submit for Review", itemprop: 'name') %>
-        </div>
-      </form>
-    </li>
-  </ul>
+        </form>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <div class="recommendations">
