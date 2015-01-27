@@ -11,6 +11,7 @@ module Sipity
         # TODO: Write a custom file validator. There must be at least one file
         #   uploaded.
         validates :files, presence: true
+        attr_accessor :files
 
         private
 
