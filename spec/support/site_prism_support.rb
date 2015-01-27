@@ -107,7 +107,10 @@ module SitePrism
       def todo_item_named_status_for(name)
         find_named_entry_point(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
       end
+    end
 
+    class EventTriggerPage < SitePrism::Page
+      include WithEntryPointHandling
     end
 
     class DescribePage < SitePrism::Page
