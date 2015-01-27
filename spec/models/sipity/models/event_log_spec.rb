@@ -15,7 +15,7 @@ module Sipity
 
       it 'relies on the database to enforce the requirement of an :event_name' do
         expect { EventLog.create!(user_id: '1', entity_id: '2', entity_type: 'Sipity::Models::Work') }.
-          to raise_error(ActiveRecord::StatementInvalid, /event_name may not be NULL/)
+          to raise_error(ActiveRecord::StatementInvalid)
       end
     end
   end
