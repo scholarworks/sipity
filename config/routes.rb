@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       post 'works/:work_id/:enrichment_type', to: 'work_enrichments#update', constraints: enrichment_constraint
 
       # # Are there constraints?
-      get 'works/:work_id/request/:event_name', to: 'work_event_requests#new', as: 'event_for_work'
+      get 'works/:work_id/request/:event_name', to: 'work_event_requests#new', as: 'event_trigger_for_work'
       post 'works/:work_id/request/:event_name', to: 'work_event_requests#create'
     end
   end
