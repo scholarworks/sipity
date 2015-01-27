@@ -26,6 +26,19 @@ section {
   margin-top: 20px;
 }
 
+// Mobile navbar layout
+.navbar .navbar-toggle {
+  margin-right:0;
+}
+.navbar .navbar-brand {
+  padding-left:0;
+}
+@media only screen and (min-width: $screen-sm-min) {
+  .navbar .navbar-brand {
+    padding-left:15px;
+  }
+}
+
 // Correcting alert styles
 .alert-error {
   @extend .alert-danger;
