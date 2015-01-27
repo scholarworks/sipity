@@ -57,6 +57,7 @@ app
 |-- repositories
 |-- runners
 |-- services
+|-- state_machines
 |-- views
 ```
 
@@ -179,6 +180,10 @@ The grand dumping ground of classes that do a bit more than conversions and
 may not be a direct interaction with the repository.
 
 Find out more about [Sipity's Services](https://github.com/ndlib/sipity/blob/master/app/services/sipity/services.rb)
+
+### StateMachines
+
+Responsible for the enforcement of proper state transitions on objects.
 
 ### Models
 

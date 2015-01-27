@@ -6,9 +6,13 @@ Dir[File.expand_path("../#{named_concept}/*.rb", __FILE__)].each do |filename|
 end
 
 module Sipity
-  # Container for all StateMachines
+  # A submodule that is responsible for handling all state changes.
   module StateMachines
     # Exposes the interface and expectations of that interface.
+    #
+    # REVIEW: As I was working on this solution, I was not pleased with the
+    #   direction of interactions. However, I made a concession of convenience
+    #   to "ship it".
     module Interface
       module_function
 
