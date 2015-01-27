@@ -67,6 +67,7 @@ module SitePrism
       def click_todo_item(name)
         take_action_on(find_named_entry_point(name))
       end
+      alias_method :take_named_action, :click_todo_item
 
       def todo_item_named_status_for(name)
         find_named_entry_point(name).find("[itemprop='potentialAction'] [itemprop='actionStatus']").text
