@@ -1,16 +1,16 @@
 <%= simple_form_for(model) do |f| %>
   <%= f.error_notification %>
   <div class="panel-tiles">
-    <%= model.with_form_panel('attributes') do %>
+    <%= model.with_form_panel('attributes', :primary) do %>
       <%= f.input :title %>
     <% end %>
-    <%= model.with_form_panel('work_type') do %>
+    <%= model.with_form_panel('work_type', :primary) do %>
       <%= f.input :work_type, as: :select, collection: model.work_types_for_select %>
     <% end %>
-    <%= model.with_form_panel('work_publication_strategy') do %>
+    <%= model.with_form_panel('work_publication_strategy', :primary) do %>
       <%= f.input :work_publication_strategy, as: :radio_buttons, collection: model.work_publication_strategies_for_select %>
     <% end %>
-    <%= model.with_form_panel('access_rights_answer') do %>
+    <%= model.with_form_panel('access_rights_answer', :primary) do %>
       <%= f.input :access_rights_answer, as: :radio_buttons, collection: model.access_rights_answer_for_select %>
     <% end %>
   </div>

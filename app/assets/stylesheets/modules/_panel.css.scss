@@ -17,7 +17,12 @@ fieldset.panel {
   }
 }
 
+// Form Panel Theme
+.panel-primary .panel-title b {
+  color:#FFEC87;
+}
 
+// Grid of panels
 @media only screen and (min-width: 550px) {
   .panel-tiles {
     display: -webkit-box;

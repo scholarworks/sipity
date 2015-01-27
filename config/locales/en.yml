@@ -35,6 +35,10 @@ en:
   sipity/works:
     action/create:
       failure: 'There is a problem with your sumbission.'
+      attributes_label: 'What is the <b>title</b> of your work?'
+      work_type_label: 'What <b>kind</b> of work is this?'
+      work_publication_strategy_label: 'Do you have <b>publishing</b> plans?'
+      access_rights_answer_label: 'Who can <b>see</b> the completed submmission?'
       action_label: 'Continue'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
