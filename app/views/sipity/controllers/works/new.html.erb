@@ -12,7 +12,7 @@
   <%= model.with_form_panel('access_rights_answer') do %>
     <%= f.input :access_rights_answer, as: :radio_buttons, collection: model.access_rights_answer_for_select %>
   <% end %>
-  <%= model.with_form_panel('actions') do %>
+  <%= model.with_action_pane('actions') do %>
     <%= f.submit %>
   <% end %>
 <% end %>

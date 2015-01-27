@@ -15,7 +15,7 @@ RSpec.describe 'sipity/controllers/works/new.html.erb', type: :view do
           with_tag('input', with: { name: 'work[work_publication_strategy]', value: name })
         end
       end
-      with_tag('fieldset.actions_work') do
+      with_tag('.actions_work') do
         with_tag('input', with: { type: 'submit' })
       end
     end
