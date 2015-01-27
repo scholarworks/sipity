@@ -27,6 +27,11 @@ en:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Sipty'
     title: 'Repository Deposit Interface'
+  helpers:
+    submit:
+      work:
+        create: 'Continue'
+        update: 'Update'
   sipity/dois:
     action/show:
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
@@ -34,18 +39,16 @@ en:
       doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
   sipity/works:
     label:
-      attributes: 'What is the <b>title</b> of your work?'
-      work_type: 'What <b>kind</b> of work is this?'
-      work_publication_strategy: 'Do you have <b>publishing</b> plans?'
-      access_rights_answer: 'Who can <b>see</b> the completed submmission?'
+      attributes_html: 'What is the <b>title</b> of your work?'
+      work_type_html: 'What <b>kind</b> of work is this?'
+      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
+      access_rights_answer_html: 'Who can <b>see</b> the completed submmission?'
     action/create:
       failure: 'There is a problem with your sumbission.'
       success: 'Thank you for your submission!'
-      action_label: 'Continue'
     action/update:
       failure: 'That update could not be made.'
       success: 'Update successful!'
-      action_label: 'Update'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<strong>Attach</strong> files to this %{entity_type}"
