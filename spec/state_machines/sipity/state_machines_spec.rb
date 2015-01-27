@@ -7,7 +7,7 @@ module Sipity
     let(:user) { double('user') }
     let(:repository) { double('repository') }
     it 'exposes the .trigger! interface' do
-      expect { described_class.trigger!(entity: entity, user: user, repository: repository, event_name: 'submit_for_review') }.
+      expect(StateMachines::Interface.trigger!(entity: entity, user: user, repository: repository, event_name: 'submit_for_review')).
         to_not have_failed
     end
   end
