@@ -23,6 +23,7 @@ module Sipity
       base.send(:include, CollaboratorQueries)
       base.send(:include, PermissionQueries)
       base.send(:include, EnrichmentQueries)
+      base.send(:include, EventTriggerQueries)
     end
   end
 end
