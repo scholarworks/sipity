@@ -2,7 +2,6 @@ require 'site_prism'
 module SitePrism
   module Pages
     module WithEntryPointHandling
-
       def take_named_action(name)
         take_action_on(find_named_entry_point(name))
       end

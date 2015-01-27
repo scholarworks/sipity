@@ -8,17 +8,20 @@ end
 module Sipity
   # Container for all StateMachines
   module StateMachines
+    # Exposes the interface and expectations of that interface.
     module Interface
       module_function
 
       def trigger!(options = {})
         entity = options.fetch(:entity)
-        user = options.fetch(:user)
-        repository = options.fetch(:repository)
-        event_name = options.fetch(:event_name).to_sym
+        options.fetch(:user)
+        options.fetch(:repository)
+        options.fetch(:event_name).to_sym
         entity.work_type
+        :trigger!
       end
     end
+
     module_function
 
     # The public facing API for the ETD Workflow
