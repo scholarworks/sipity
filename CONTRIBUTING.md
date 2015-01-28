@@ -45,3 +45,9 @@ If you need to skip the `pre-push` hook, use the `--no-verify` option when you p
 
 Either submit a pull request modifying the `.hound.yml` file or submit an issue
 and I can take a look at it.
+
+# Submitting a Pull Request
+
+When submitting a pull request, make sure to submit a useful description of what you are doing.
+If your pull request contains multiple commits, consider using `./script/build-multi-commit-message`.
+It will generate rudimentary markdown from all of the commit messages.
