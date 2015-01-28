@@ -2,7 +2,7 @@
   <%= f.error_notification %>
   <div class="panel-tiles">
     <%= model.with_form_panel('attributes', :primary) do %>
-      <%= f.input :title %>
+      <%= f.input :title, input_html: { autofocus: true } %>
     <% end %>
     <%= model.with_form_panel('work_type', :primary) do %>
       <%= f.input :work_type, as: :select, collection: model.work_types_for_select %>
