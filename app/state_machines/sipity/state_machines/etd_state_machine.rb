@@ -8,8 +8,11 @@ module Sipity
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
     class EtdStateMachine
+      def self.state_diagram
+        STATE_POLICY_QUESTION_ROLE_MAP
+      end
       # TODO: Extract policy questions into separate class; There is a
-      # relationship, but is this necessary.
+      # relationship, but is this necessary. How to derive the StateDiagram
       #
       # { state => { action_to_authorize => acting_as } }
       STATE_POLICY_QUESTION_ROLE_MAP =
