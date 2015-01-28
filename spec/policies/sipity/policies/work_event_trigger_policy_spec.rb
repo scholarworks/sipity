@@ -13,6 +13,19 @@ module Sipity
       let(:form) { double('Form', work: work, event_name: event_name, state_diagram: state_diagram) }
       subject { described_class.new(user, form, repository: repository) }
 
+      context 'initialization' do
+        it 'fails if the form does not have a work' do
+          form = double
+          expect { described_class.new(user, form) }.to raise_error Exceptions::PolicyEntityExpectationError
+        end
+
+        it 'fails if the form does not have a work' do
+          work = double('Work')
+          form = double(work: work, event_name: event_name)
+          expect { described_class.new(user, form) }.to raise_error Exceptions::PolicyEntityExpectationError
+        end
+      end
+
       context 'for a non-authenticated user' do
         let(:user) { nil }
         its(:submit?) { should eq(false) }

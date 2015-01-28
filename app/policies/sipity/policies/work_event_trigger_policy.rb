@@ -27,22 +27,23 @@ module Sipity
 
       private
 
+      def valid_state_transition?
+        # This may be a duplication of logic, but it prevents a database hit.
+        processing_state_actors_for_event_name.present?
+      end
+
       def user_can_trigger_event_for_work?
-        # TODO: Need a better state diagram, see below.
-        allowed_if_acting_as = form.state_diagram.fetch(work.processing_state).fetch(event_name_for_lookup)
+        allowed_if_acting_as = processing_state_actors_for_event_name
         repository.can_the_user_act_on_the_entity?(user: user, acting_as: allowed_if_acting_as, entity: work)
-      rescue KeyError
-        false
+      end
+
+      def processing_state_actors_for_event_name
+        # TODO: Need a better state diagram, see below.
+        @processing_state_actors_for_event_name ||= form.state_diagram.fetch(work.processing_state, {}).fetch(event_name_for_lookup, [])
       end
 
       def all_required_todo_items_are_done?
         repository.are_all_of_the_required_todo_items_done_for_work?(work: work)
-      end
-
-      def valid_state_transition?
-        form.state_diagram.fetch(work.processing_state).fetch(event_name_for_lookup)
-      rescue KeyError
-        false
       end
 
       def event_name_for_lookup
@@ -50,11 +51,20 @@ module Sipity
       end
 
       def entity=(object)
-        if object.respond_to?(:work) && object.work.present?
+        if object.respond_to?(:work) && object.work.present? && object.respond_to?(:event_name) && object.event_name.present?
           super(object)
-          @work = object.work
+          self.work = object.work
         else
-          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #work."
+          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #work and #event_name."
+        end
+      end
+
+      def work=(object)
+        # A Subtle violation of demeter; I already have asked the entity for the work
+        if object.respond_to?(:processing_state) && object.processing_state.present?
+          @work = object
+        else
+          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #processing_state."
         end
       end
 
