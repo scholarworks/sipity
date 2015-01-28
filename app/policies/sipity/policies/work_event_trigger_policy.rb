@@ -10,12 +10,23 @@ module Sipity
       define_action_to_authorize :submit? do
         return false unless user.present?
         return false unless work.persisted?
+        return false unless valid_state_transition?
       end
 
       alias_method :form, :entity
       attr_reader :work
 
       private
+
+      def valid_state_transition?
+        form.state_diagram.fetch(work.processing_state).fetch(event_name_for_lookup)
+      rescue KeyError
+        false
+      end
+
+      def event_name_for_lookup
+        "#{form.event_name}?".to_sym
+      end
 
       def entity=(object)
         if object.respond_to?(:work) && object.work.present?
