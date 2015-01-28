@@ -7,16 +7,37 @@ module Sipity
     #   oriented authorizaiton.
     # @see WorkPolicy for more information on who can edit this object.
     class WorkEventTriggerPolicy < BasePolicy
+      def initialize(user, entity, collaborators = {})
+        self.user = user
+        self.entity = entity
+        @repository = collaborators.fetch(:repository) { default_repository }
+      end
+
       define_action_to_authorize :submit? do
         return false unless user.present?
         return false unless work.persisted?
         return false unless valid_state_transition?
+        return false unless all_required_todo_items_are_done?
+        return false unless user_can_trigger_event_for_work?
+        true
       end
 
       alias_method :form, :entity
-      attr_reader :work
+      attr_reader :work, :repository
 
       private
+
+      def user_can_trigger_event_for_work?
+        # TODO: Need a better state diagram, see below.
+        allowed_if_acting_as = form.state_diagram.fetch(work.processing_state).fetch(event_name_for_lookup)
+        repository.can_the_user_act_on_the_entity?(user: user, acting_as: allowed_if_acting_as, entity: work)
+      rescue KeyError
+        false
+      end
+
+      def all_required_todo_items_are_done?
+        repository.are_all_of_the_required_todo_items_done_for_work?(work: work)
+      end
 
       def valid_state_transition?
         form.state_diagram.fetch(work.processing_state).fetch(event_name_for_lookup)
@@ -35,6 +56,10 @@ module Sipity
         else
           fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #work."
         end
+      end
+
+      def default_repository
+        Repository.new
       end
     end
   end
