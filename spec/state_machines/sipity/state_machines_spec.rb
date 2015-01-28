@@ -29,7 +29,7 @@ module Sipity
       let(:valid_work_type) { 'etd' }
       context 'with valid enrichment type' do
         subject { described_class.state_diagram_for(work_type: valid_work_type) }
-        it { should respond_to(:fetch) }
+        it { should be_a(StateMachines::StateDiagram) }
         it { should eq(StateMachines::EtdStateMachine.state_diagram) }
       end
     end

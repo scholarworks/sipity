@@ -17,7 +17,8 @@ module Sipity
 
       context 'class methods' do
         subject { described_class }
-        its(:state_diagram) { should respond_to :fetch }
+        its(:state_diagram) { should respond_to :event_trigger_availability }
+        its(:state_diagram) { should respond_to :available_event_triggers }
       end
 
       context 'with the default repository' do
@@ -33,7 +34,7 @@ module Sipity
       context '#authorized_acting_as_for_action' do
         let(:initial_processing_state) { 'unknown' }
         it 'will raise an exception if the processing_state is unknown' do
-          expect { subject.authorized_acting_as_for_action(:update?) }.to raise_error(Exceptions::StatePolicyQuestionRoleMapError)
+          expect(subject.authorized_acting_as_for_action(:update?)).to eq([])
         end
         context 'for :new' do
           let(:initial_processing_state) { 'new' }

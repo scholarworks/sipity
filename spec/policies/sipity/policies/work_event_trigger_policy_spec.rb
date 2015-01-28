@@ -9,7 +9,10 @@ module Sipity
       let(:repository) do
         double('Repository', are_all_of_the_required_todo_items_done_for_work?: true, can_the_user_act_on_the_entity?: true)
       end
-      let(:state_diagram) { StateMachines::EtdStateMachine::STATE_POLICY_QUESTION_ROLE_MAP }
+      # TODO: Disentangle the ETD State Machine
+      let(:state_diagram) do
+        StateMachines::StateDiagram.new('new' => { submit_for_review?: 'creating_user' })
+      end
       let(:form) { double('Form', work: work, event_name: event_name, state_diagram: state_diagram) }
       subject { described_class.new(user, form, repository: repository) }
 

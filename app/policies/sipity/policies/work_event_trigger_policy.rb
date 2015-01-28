@@ -28,7 +28,6 @@ module Sipity
       private
 
       def valid_state_transition?
-        # This may be a duplication of logic, but it prevents a database hit.
         processing_state_actors_for_event_name.present?
       end
 
@@ -39,7 +38,9 @@ module Sipity
 
       def processing_state_actors_for_event_name
         # TODO: Need a better state diagram, see below.
-        @processing_state_actors_for_event_name ||= form.state_diagram.fetch(work.processing_state, {}).fetch(event_name_for_lookup, [])
+        @processing_state_actors_for_event_name ||= form.state_diagram.event_trigger_availability(
+          current_state: work.processing_state, event_name: event_name_for_lookup
+        ).acting_as
       end
 
       def all_required_todo_items_are_done?

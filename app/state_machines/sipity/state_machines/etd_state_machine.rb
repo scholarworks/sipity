@@ -8,15 +8,8 @@ module Sipity
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
     class EtdStateMachine
-      def self.state_diagram
-        STATE_POLICY_QUESTION_ROLE_MAP
-      end
-      # TODO: Extract policy questions into separate class; There is a
-      # relationship, but is this necessary. How to derive the StateDiagram
-      #
-      # { state => { action_to_authorize => acting_as } }
-      STATE_POLICY_QUESTION_ROLE_MAP =
-      {
+      class_attribute :state_diagram, instance_writer: false
+      self.state_diagram = StateDiagram.new(
         'new' => {
           update?: ['creating_user', 'advisor'], show?: ['creating_user', 'advisor'],
           delete?: ['creating_user'], submit_for_review?: ['creating_user']
@@ -30,7 +23,7 @@ module Sipity
         'ready_for_cataloging' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'], finish_cataloging?: ['cataloger'] },
         'cataloged' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] },
         'done' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] }
-      }.freeze
+      )
 
       def initialize(entity:, user:, repository: nil)
         @entity, @user = entity, user
@@ -42,10 +35,7 @@ module Sipity
       private :entity, :state_machine, :user, :repository
 
       def authorized_acting_as_for_action(action_to_authorize)
-        # @TODO - Catch invalid state look up
-        STATE_POLICY_QUESTION_ROLE_MAP.fetch(entity.processing_state.to_s).fetch(action_to_authorize, [])
-      rescue KeyError
-        raise Exceptions::StatePolicyQuestionRoleMapError, state: entity.processing_state, context: self
+        state_diagram.event_trigger_availability(current_state: entity.processing_state, event_name: action_to_authorize).acting_as
       end
 
       def trigger!(event, options = {})
