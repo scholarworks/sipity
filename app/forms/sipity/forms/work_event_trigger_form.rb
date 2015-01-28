@@ -5,7 +5,7 @@ module Sipity
       # TODO: I do not believe that this is the correct policy. We need a policy
       #   that will verify the state of the work and whether the event trigger
       #   can happen.
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::WorkEventTriggerPolicy
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
@@ -22,6 +22,11 @@ module Sipity
         return false unless valid?
         save(repository: repository, requested_by: requested_by)
       end
+
+      def state_diagram
+        event_receiver.state_diagram_for(work_type: work.work_type)
+      end
+      deprecate :state_diagram
 
       private
 
