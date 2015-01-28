@@ -16,9 +16,9 @@ module Sipity
         { 'valid' => 'invalid' },
         { 'valid' => { 'invalid?' => [] } },
         { 'valid' => { 'invalid' => [] } },
-        { 'valid' => { :valid? => :invalid } },
-        { 'valid' => { :invalid => 'valid' } },
-        { 'valid' => { :valid? => [:invalid, 'valid'] } },
+        { 'valid' => { valid?: :invalid } },
+        { 'valid' => { invalid: 'valid' } },
+        { 'valid' => { valid?: [:invalid, 'valid'] } },
         'invalid?',
         { 'invalid?' => {} },
         { invalid: {} }
