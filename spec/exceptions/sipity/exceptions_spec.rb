@@ -19,6 +19,12 @@ module Sipity
       its(:conversion_target) { should be_a(String) }
     end
 
+    RSpec.describe InvalidStateDiagramRawStructure do
+      subject { described_class.new(structure: 'hello') }
+      its(:message) { should be_a(String) }
+      its(:structure) { should eq('hello') }
+    end
+
     RSpec.describe AuthenticationFailureError do
       subject { described_class.new('hello') }
       its(:message) { should be_a(String) }

@@ -112,6 +112,15 @@ module Sipity
       end
     end
 
+    # The proposed state diagram was malformed.
+    class InvalidStateDiagramRawStructure < RuntimeError
+      attr_reader :structure
+      def initialize(structure:)
+        @structure = structure
+        super("#{structure} is not well formed for StateDiagram")
+      end
+    end
+
     # For some reason, you have an entity in an incorrect state. Push up what
     # information we can to be helpful to the end user.
     class InvalidStateError < RuntimeError
