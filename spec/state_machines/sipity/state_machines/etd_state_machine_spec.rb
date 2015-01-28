@@ -15,6 +15,11 @@ module Sipity
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
 
+      context 'class methods' do
+        subject { described_class }
+        its(:state_diagram) { should respond_to :fetch }
+      end
+
       context 'with the default repository' do
         subject { described_class.new(entity: entity, user: user) }
         its(:repository) { should respond_to :log_event! }

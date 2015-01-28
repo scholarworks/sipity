@@ -25,7 +25,16 @@ module Sipity
       end
     end
 
-    context '#find_state_machine_for' do
+    context '.state_diagram_for' do
+      let(:valid_work_type) { 'etd' }
+      context 'with valid enrichment type' do
+        subject { described_class.state_diagram_for(work_type: valid_work_type) }
+        it { should respond_to(:fetch) }
+        it { should eq(StateMachines::EtdStateMachine.state_diagram) }
+      end
+    end
+
+    context '.find_state_machine_for' do
       let(:valid_work_type) { 'etd' }
       let(:invalid_work_type) { '__very_much_not_valid__' }
       context 'with valid enrichment type' do

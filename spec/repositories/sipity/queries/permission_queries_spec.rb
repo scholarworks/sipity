@@ -12,7 +12,44 @@ module Sipity
         Then { group_names == ['graduate_school'] }
       end
 
+      context '#can_the_user_act_on_the_entity?' do
+        let(:entity) { Models::Work.create! }
+        let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
+        let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
+        let(:acting_as) { 'arbitrary' }
+
+        before do
+          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
+          expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
+        end
+        it 'will return true if there is a match on the user, acting_as, and entity' do
+          expect(test_repository.can_the_user_act_on_the_entity?(user: associated_user, acting_as: acting_as, entity: entity)).
+            to eq(true)
+        end
+        it 'will return false if there is NOT a match on the user, acting_as, and entity' do
+          expect(test_repository.can_the_user_act_on_the_entity?(user: not_associated_user, acting_as: acting_as, entity: entity)).
+            to eq(false)
+        end
+      end
+
       context '#emails_for_associated_users' do
+        let(:entity) { Models::Work.create! }
+        let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
+        let(:acting_as) { 'arbitrary' }
+
+        before do
+          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
+        end
+
+        it 'will return emails from users directly associated with the entity' do
+          # See tests for #scope_users_by_entity_and_acting_as; I'm just making sure the pluck works
+          expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
+          results = test_repository.emails_for_associated_users(acting_as: acting_as, entity: entity)
+          expect(results.sort).to eq(['associated@hotmail.com'])
+        end
+      end
+
+      context '#scope_users_by_entity_and_acting_as' do
         let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:associated_by_group_user) { Sipity::Factories.create_user(email: 'group_associated@hotmail.com') }
@@ -23,17 +60,15 @@ module Sipity
         let(:wrong_acting_as) { 'wrong_acting_as' }
 
         before do
-          # REVIEW: Should I be using Repository services?
           Models::GroupMembership.create!(group: associated_group, user: associated_by_group_user)
-
           Models::Permission.create!(actor: user_with_wrong_acting_as, acting_as: wrong_acting_as, entity: entity)
           Models::Permission.create!(actor: associated_group, acting_as: acting_as, entity: entity)
           Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
         end
 
         it 'will return emails from users directly associated with the entity' do
-          results = test_repository.emails_for_associated_users(acting_as: acting_as, entity: entity)
-          expect(results.sort).to eq(['associated@hotmail.com', 'group_associated@hotmail.com'])
+          results = test_repository.scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity)
+          expect(results.sort).to eq([associated_user, associated_by_group_user].sort)
         end
       end
 

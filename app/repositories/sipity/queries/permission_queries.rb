@@ -19,6 +19,12 @@ module Sipity
       module_function :emails_for_associated_users
       public :emails_for_associated_users
 
+      def can_the_user_act_on_the_entity?(user:, acting_as:, entity:)
+        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).
+          where(User.arel_table[:id].eq(user.id)).
+          count > 0
+      end
+
       # Responsible for returning a User scope:
       # That will include all users
       # That have one or more acting_as
