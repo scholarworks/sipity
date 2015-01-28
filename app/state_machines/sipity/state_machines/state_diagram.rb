@@ -13,17 +13,17 @@ module Sipity
       attr_reader :data_structure
       private :data_structure
 
-      def event_trigger_availability(current_state:, event_name:)
-        normalized_event_name = event_name.to_s.sub(/([^\?])\Z/, '\1?').to_sym
-        acting_as = data_structure.fetch(current_state.to_s, {}).fetch(normalized_event_name, [])
-        ActionAvailability.new(event_name, acting_as, current_state)
-      end
-
       def available_event_triggers(current_state:)
         data_structure.fetch(current_state.to_s, {}).each_with_object(Set.new) do |(event_name, acting_as), mem|
           mem << ActionAvailability.new(event_name, acting_as, current_state)
           mem
         end.to_a
+      end
+
+      def event_trigger_availability(current_state:, event_name:)
+        normalized_event_name = event_name.to_s.sub(/([^\?])\Z/, '\1?').to_sym
+        acting_as = data_structure.fetch(current_state.to_s, {}).fetch(normalized_event_name, [])
+        ActionAvailability.new(event_name, acting_as, current_state)
       end
 
       private

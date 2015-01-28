@@ -11,23 +11,6 @@ module Sipity
         }
       end
 
-      [
-        nil,
-        { 'valid' => 'invalid' },
-        { 'valid' => { 'invalid?' => [] } },
-        { 'valid' => { 'invalid' => [] } },
-        { 'valid' => { valid?: :invalid } },
-        { 'valid' => { invalid: 'valid' } },
-        { 'valid' => { valid?: [:invalid, 'valid'] } },
-        'invalid?',
-        { 'invalid?' => {} },
-        { invalid: {} }
-      ].each_with_index do |malformed, index|
-        it "will not initialize scenario ##{index}" do
-          expect { described_class.new(malformed) }.to raise_error(Exceptions::InvalidStateDiagramRawStructure)
-        end
-      end
-
       context '#available_event_triggers' do
         subject { described_class.new(data_structure) }
         it 'will return an array of ActionAvailability items' do
@@ -62,6 +45,23 @@ module Sipity
           its(:acting_as) { should eq([]) }
           its(:current_state) { should eq('new') }
           its(:event_name) { should eq('mangle_the_data') }
+        end
+      end
+
+      [
+        nil,
+        { 'valid' => 'invalid' },
+        { 'valid' => { 'invalid?' => [] } },
+        { 'valid' => { 'invalid' => [] } },
+        { 'valid' => { valid?: :invalid } },
+        { 'valid' => { invalid: 'valid' } },
+        { 'valid' => { valid?: [:invalid, 'valid'] } },
+        'invalid?',
+        { 'invalid?' => {} },
+        { invalid: {} }
+      ].each_with_index do |malformed, index|
+        it "will not initialize scenario ##{index}" do
+          expect { described_class.new(malformed) }.to raise_error(Exceptions::InvalidStateDiagramRawStructure)
         end
       end
     end
