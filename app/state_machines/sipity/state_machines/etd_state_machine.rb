@@ -9,9 +9,7 @@ module Sipity
     #   to runners? Is symmetry worth pursuing?
     class EtdStateMachine
       class_attribute :state_diagram, instance_writer: false
-
-      STATE_POLICY_QUESTION_ROLE_MAP =
-      {
+      self.state_diagram = StateDiagram.new(
         'new' => {
           update?: ['creating_user', 'advisor'], show?: ['creating_user', 'advisor'],
           delete?: ['creating_user'], submit_for_review?: ['creating_user']
@@ -25,8 +23,7 @@ module Sipity
         'ready_for_cataloging' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'], finish_cataloging?: ['cataloger'] },
         'cataloged' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] },
         'done' => { show?: ['creating_user', 'advisor', 'etd_reviewer', 'cataloger'] }
-      }
-      self.state_diagram = StateDiagram.new(STATE_POLICY_QUESTION_ROLE_MAP)
+      )
 
       def initialize(entity:, user:, repository: nil)
         @entity, @user = entity, user
