@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Queries
-    RSpec.describe CitationQueries, type: :repository_methods do
+    RSpec.describe CitationQueries, type: :isolated_repository_module do
       context '#build_assign_a_citation_form object' do
         let(:work) { double }
         subject { test_repository.build_assign_a_citation_form(work: work) }

@@ -9,7 +9,7 @@ module Sipity
     end
   end
   module Queries
-    RSpec.describe WorkQueries, type: :repository_methods do
+    RSpec.describe WorkQueries, type: :isolated_repository_module do
       it 'will have a permanent URL for a given work' do
         expect(test_repository.permanent_uri_for_work_id(123)).to be_a(URI)
       end

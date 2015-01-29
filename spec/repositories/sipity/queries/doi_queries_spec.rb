@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Queries
-    RSpec.describe DoiQueries, type: :repository_methods do
+    RSpec.describe DoiQueries, type: :isolated_repository_module do
       context '#find_doi_creation_request' do
         let(:work) { Models::Work.new(id: 123) }
         it 'will find based on the work' do
