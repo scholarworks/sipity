@@ -21,6 +21,5 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
     end
-    private_constant :WorkCommands
   end
 end

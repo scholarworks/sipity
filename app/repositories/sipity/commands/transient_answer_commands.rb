@@ -25,6 +25,5 @@ module Sipity
       module_function :handle_transient_access_rights_answer
       public :handle_transient_access_rights_answer
     end
-    private_constant :TransientAnswerCommands
   end
 end

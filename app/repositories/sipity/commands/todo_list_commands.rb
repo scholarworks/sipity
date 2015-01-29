@@ -46,6 +46,5 @@ module Sipity
         )
       end
     end
-    private_constant :TodoListCommands
   end
 end
