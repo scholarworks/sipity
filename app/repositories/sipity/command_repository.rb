@@ -1,6 +1,10 @@
 module Sipity
+  # The module that contains various interactions with the underlying
+  # persistence layer.
   module Commands
   end
+
+  # The object you can use to interaction with the commands.
   class CommandRepository < DelegateClass(QueryRepository)
     def initialize(query_repository_instance: QueryRepository.new)
       super(query_repository_instance)

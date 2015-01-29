@@ -1,4 +1,5 @@
 module Sipity
+  # The module that contains the various query submodules
   module Queries
   end
   # Defines and exposes the query methods for interacting with the public API of
