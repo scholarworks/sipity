@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
     if request.get?
       @repository = Sipity::QueryRepository.new
     else
-      @repository = Sipity::Repository.new
+      @repository = Sipity::CommandRepository.new
     end
   end
   helper_method :repository

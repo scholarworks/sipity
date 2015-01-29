@@ -8,7 +8,7 @@ RSpec.describe ApplicationController do
     end
     it 'will be a Repository for a non-GET request' do
       expect(request).to receive(:get?).and_return(false)
-      expect(controller.repository).to be_a(Sipity::Repository)
+      expect(controller.repository).to be_a(Sipity::CommandRepository)
     end
   end
   context '#runner' do
