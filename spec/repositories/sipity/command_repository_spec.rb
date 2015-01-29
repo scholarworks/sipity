@@ -21,6 +21,18 @@ module Sipity
       expect(subject).to_not be_a(Sipity::QueryRepository)
     end
 
+    context '#submit_etd_student_submission_trigger!' do
+      it 'is a placeholder until I can spend some time focusing on it' do
+        expect { described_class.new.submit_etd_student_submission_trigger! }.to raise_error(NotImplementedError)
+      end
+    end
+
+    context '#submit_ingest_etd' do
+      it 'is a placeholder until I can spend some time focusing on it' do
+        expect { described_class.new.submit_ingest_etd }.to raise_error(NotImplementedError)
+      end
+    end
+
     xit 'will not include query modules' do
       expect(Sipity::CommandRepository.included_modules.none? { |mod| mod.to_s =~ /Queries::/ }).to be_truthy
     end

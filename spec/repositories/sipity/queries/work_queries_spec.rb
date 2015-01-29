@@ -1,13 +1,6 @@
 require 'rails_helper'
 
 module Sipity
-  module Commands
-    # HACK: This is a cheat to get around the constraints of privatized
-    # constants.
-    class WorkCommandRepository
-      include WorkCommands
-    end
-  end
   module Queries
     RSpec.describe WorkQueries, type: :isolated_repository_module do
       it 'will have a permanent URL for a given work' do
