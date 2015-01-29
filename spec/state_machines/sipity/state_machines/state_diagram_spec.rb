@@ -7,8 +7,28 @@ module Sipity
         {
           'new' => {
             delete?: ['creating_user'], submit_for_review?: ['creating_user']
+          },
+          'under_review' => {
+            edit?: [], send_back?: ['a_reviewer'], withdraw?: ['creating_user']
           }
         }
+      end
+
+      context '#available_events_for_when_acting_as' do
+        subject { described_class.new(data_structure) }
+        [
+          { current_state: 'new', acting_as: 'creating_user', expected: ['delete', 'submit_for_review'] },
+          { current_state: 'new', acting_as: 'a_reviewer', expected: [] },
+          { current_state: 'new', acting_as: nil, expected: [] },
+          { current_state: 'under_review', acting_as: 'a_reviewer', expected: ['send_back'] },
+          { current_state: 'chicken', acting_as: 'a_reviewer', expected: [] }
+        ].each_with_index do |scenario, index|
+          it "will work as expected for scenario ##{index}" do
+            actual = subject.available_events_for_when_acting_as(scenario.slice(:current_state, :acting_as))
+            expect(actual).to eq(scenario.fetch(:expected))
+          end
+        end
+
       end
 
       context '#available_event_triggers' do
