@@ -45,7 +45,7 @@ module Sipity
         end
 
         def default_repository
-          Repository.new
+          QueryRepository.new
         end
 
         def default_helper

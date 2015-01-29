@@ -114,7 +114,7 @@ module Sipity
       # REVIEW: Given that I need a repository, should this be teased into a
       # runner.
       def default_repository
-        Repository.new
+        CommandRepository.new
       end
     end
   end
