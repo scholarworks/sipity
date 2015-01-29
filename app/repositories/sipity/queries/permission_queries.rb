@@ -25,6 +25,11 @@ module Sipity
           count > 0
       end
 
+      # @return Array<String> of acting_as
+      def user_can_act_as_the_following_on_entity(user:, entity:)
+        scope_acting_as_by_entity_and_user(user: user, entity: entity).pluck(:acting_as)
+      end
+
       # Given a user and entity, return all of the permissions by:
       #
       # * Direct user association

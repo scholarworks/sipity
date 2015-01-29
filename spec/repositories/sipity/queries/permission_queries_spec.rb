@@ -49,7 +49,7 @@ module Sipity
         end
       end
 
-      context '#scope_acting_as_by_entity_and_user' do
+      context 'querying for augmented permission records' do
         let(:entity) { Models::Work.new(id: 1) }
         let(:user) { User.new(id: 2) }
         let(:group) { Models::Group.new(id: 3) }
@@ -59,39 +59,47 @@ module Sipity
             entity_id: entity.id, entity_type: entity.class.base_class
           )
         end
-
         let(:indirect_user_permission) do
           Models::Permission.new(
             actor_id: group.id, actor_type: group.class.base_class, acting_as: 'as_a_group',
             entity_id: entity.id, entity_type: entity.class.base_class
           )
         end
-
         before do
           Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
         end
 
-        context 'for direct user permission' do
-          it 'will return an Active Record relationship' do
+        context '#user_can_act_as_the_following_on_entity' do
+          it 'will return an array of strings' do
             direct_user_permission.save!
-            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-            expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as].sort)
+            results = test_repository.user_can_act_as_the_following_on_entity(user: user, entity: entity)
+            expect(results).to eq([direct_user_permission.acting_as])
           end
         end
 
-        context 'for both direct and indirect user permission' do
-          it 'will return an Active Record relationship' do
-            direct_user_permission.save!
-            indirect_user_permission.save!
-            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-            expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as, indirect_user_permission.acting_as].sort)
+        context '#scope_acting_as_by_entity_and_user' do
+          context 'for direct user permission' do
+            it 'will return an Active Record relationship' do
+              direct_user_permission.save!
+              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+              expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as].sort)
+            end
           end
-        end
-        context 'for indirect user permission via group' do
-          it 'will return an Active Record relationship' do
-            indirect_user_permission.save!
-            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-            expect(results.pluck(:acting_as).sort).to eq([indirect_user_permission.acting_as].sort)
+
+          context 'for both direct and indirect user permission' do
+            it 'will return an Active Record relationship' do
+              direct_user_permission.save!
+              indirect_user_permission.save!
+              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+              expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as, indirect_user_permission.acting_as].sort)
+            end
+          end
+          context 'for indirect user permission via group' do
+            it 'will return an Active Record relationship' do
+              indirect_user_permission.save!
+              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+              expect(results.pluck(:acting_as).sort).to eq([indirect_user_permission.acting_as].sort)
+            end
           end
         end
       end
