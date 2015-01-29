@@ -8,12 +8,14 @@ class ApplicationController < ActionController::Base
 
   include Hesburgh::Lib::ControllerWithRunner
 
-  # So you can easily invoke the public repository of Hydramata.
-  # It is these repository that indicate what the application can and is doing.
-  #
-  # @see Cur8Nd::Repository for the default methods
+  # So you can easily invoke the public repository of Sipity.
+  # It is the repository that indicates what the application can and is doing.
   def repository
-    @repository = Sipity::Repository.new
+    if request.get?
+      @repository = Sipity::QueryRepository.new
+    else
+      @repository = Sipity::CommandRepository.new
+    end
   end
   helper_method :repository
 

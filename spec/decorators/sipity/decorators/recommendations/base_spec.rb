@@ -16,7 +16,7 @@ module Sipity
         end
 
         it 'has assigns a default repository' do
-          expect(described_class.new(work: work, helper: helper).send(:repository)).to be_a(Repository)
+          expect(described_class.new(work: work, helper: helper).send(:repository)).to be_a(QueryRepository)
         end
 
         it 'has a default helper' do

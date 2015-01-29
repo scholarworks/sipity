@@ -1,7 +1,16 @@
 require 'spec_helper'
 
 RSpec.describe ApplicationController do
-  its(:repository) { should be_a Sipity::Repository }
+  context '#repository' do
+    it 'will be a QueryRepository for a GET request' do
+      expect(request).to receive(:get?).and_return(true)
+      expect(controller.repository).to be_a(Sipity::QueryRepository)
+    end
+    it 'will be a Repository for a non-GET request' do
+      expect(request).to receive(:get?).and_return(false)
+      expect(controller.repository).to be_a(Sipity::CommandRepository)
+    end
+  end
   context '#runner' do
     it 'can be replaced at runtime' do
       my_runner = double(run: true)

@@ -16,11 +16,21 @@ module RepositoryHelpers
       attr_reader :test_repository
     end
   end
-  module CommandRepository
+  module CommandWithRelatedQuery
     extend ActiveSupport::Concern
-    included do
+    included do |rspec_context|
       before do
-        @test_repository = Sipity::Repository.new
+        klass = Class.new do
+          possible_query_module = rspec_context.described_class.to_s.gsub(/Commands/, 'Queries')
+          include possible_query_module.constantize
+          include rspec_context.described_class
+          def to_s
+            "Test Repository for #{rspec_context.described_class}"
+          end
+          alias_method :inspect, :to_s
+          alias_method :to_str, :to_s
+        end
+        @test_repository = klass.new
       end
       attr_reader :test_repository
     end
@@ -28,6 +38,6 @@ module RepositoryHelpers
 end
 
 RSpec.configure do |config|
-  config.include RepositoryHelpers::IsolatedRepository, type: :repository_methods
-  config.include RepositoryHelpers::CommandRepository, type: :command_repository
+  config.include RepositoryHelpers::IsolatedRepository, type: :isolated_repository_module
+  config.include RepositoryHelpers::CommandWithRelatedQuery, type: :command_with_related_query
 end

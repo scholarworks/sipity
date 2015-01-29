@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Commands
-    RSpec.describe WorkCommands, type: :command_repository do
+    RSpec.describe WorkCommands, type: :command_with_related_query do
       context '#assign_a_pid' do
         it 'will assign a unique permanent persisted identifier for the work'
       end

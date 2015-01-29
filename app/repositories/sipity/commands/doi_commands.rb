@@ -3,10 +3,6 @@ module Sipity
   module Commands
     # Commands
     module DoiCommands
-      extend ActiveSupport::Concern
-      included do |base|
-        base.send(:include, Queries::DoiQueries)
-      end
       def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
           EventLogCommands.log_event!(entity: f.work, user: requested_by, event_name: __method__)
@@ -48,6 +44,5 @@ module Sipity
         request
       end
     end
-    private_constant :DoiCommands
   end
 end

@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Queries
     # Queries
-    RSpec.describe PermissionQueries, type: :repository_methods do
+    RSpec.describe PermissionQueries, type: :isolated_repository_module do
 
       context '#group_names_for_entity_and_acting_as' do
         Given(:acting_as) { 'etd_reviewer' }

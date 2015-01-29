@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Commands
-    RSpec.describe PermissionCommands, type: :repository_methods do
+    RSpec.describe PermissionCommands, type: :isolated_repository_module do
       subject { test_repository }
 
       context '#grant_groups_permission_to_entity_for_acting_as!' do

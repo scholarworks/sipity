@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Queries
-    RSpec.describe CollaboratorQueries, type: :repository_methods do
+    RSpec.describe CollaboratorQueries, type: :isolated_repository_module do
       let(:work) { Models::Work.new(id: '123') }
       let(:work_two) { Models::Work.new(id: '456') }
       subject { test_repository }

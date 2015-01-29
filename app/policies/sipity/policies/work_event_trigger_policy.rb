@@ -70,7 +70,7 @@ module Sipity
       end
 
       def default_repository
-        Repository.new
+        QueryRepository.new
       end
     end
   end

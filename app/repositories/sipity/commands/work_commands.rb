@@ -3,11 +3,6 @@ module Sipity
   module Commands
     # Commands
     module WorkCommands
-      extend ActiveSupport::Concern
-      included do |base|
-        base.send(:include, Queries::WorkQueries)
-      end
-
       def update_processing_state!(entity:, to:)
         # REVIEW: Should this be re-finding the work? Is it cheating to re-use
         #   the given work? Is it unsafe as far as state is concerned?
@@ -21,6 +16,5 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
     end
-    private_constant :WorkCommands
   end
 end

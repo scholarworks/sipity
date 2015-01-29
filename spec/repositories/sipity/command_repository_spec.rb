@@ -1,8 +1,25 @@
 require 'rails_helper'
 
 module Sipity
-  RSpec.describe Repository, type: :repository do
-    subject { Repository }
+  RSpec.describe CommandRepository, type: :repository do
+    let(:query_repository_instance) { double(this_is_a_query_method: :returned_value) }
+    subject { CommandRepository.new(query_repository_instance: query_repository_instance) }
+
+    it 'will respond to the underlying query repository methods' do
+      expect(subject).to respond_to(:this_is_a_query_method)
+    end
+
+    it 'will call the underlying query methods' do
+      expect(subject.this_is_a_query_method).to eq(query_repository_instance.this_is_a_query_method)
+    end
+
+    it 'will be a Sipity::CommandRepository' do
+      expect(subject).to be_a(Sipity::CommandRepository)
+    end
+
+    it 'will not be a Sipity::QueryRepository' do
+      expect(subject).to_not be_a(Sipity::QueryRepository)
+    end
 
     context '#submit_etd_student_submission_trigger!' do
       it 'is a placeholder until I can spend some time focusing on it' do
@@ -16,11 +33,15 @@ module Sipity
       end
     end
 
+    xit 'will not include query modules' do
+      expect(Sipity::CommandRepository.included_modules.none? { |mod| mod.to_s =~ /Queries::/ }).to be_truthy
+    end
+
     context 'verifying method definition interaction' do
       let(:modules_to_check_for_method_collision) do
         # I'm concerned about the methods I've mixed in. There are several
         # modules already included.
-        Sipity::Repository.included_modules.select { |mod| mod.to_s =~ /\ASipity::/ }
+        Sipity::CommandRepository.included_modules.select { |mod| mod.to_s =~ /\ASipity::/ }
       end
 
       it 'will have unique method names for its mixed in modules' do

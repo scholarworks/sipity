@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Queries
-    RSpec.describe EnrichmentQueries, type: :repository_methods do
+    RSpec.describe EnrichmentQueries, type: :isolated_repository_module do
       let(:work) { Models::Work.new(id: 123, processing_state: 'new') }
       let(:todo_list_configurator) do
         lambda do

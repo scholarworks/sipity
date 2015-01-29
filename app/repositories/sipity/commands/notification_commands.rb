@@ -16,6 +16,5 @@ module Sipity
         Services::Notifier.deliver(notification: notification, to: to_emails, entity: entity)
       end
     end
-    private_constant :NotificationCommands
   end
 end

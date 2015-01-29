@@ -48,6 +48,5 @@ module Sipity
       private :grant_permission_for!
       private_class_method :grant_permission_for!
     end
-    private_constant :PermissionCommands
   end
 end

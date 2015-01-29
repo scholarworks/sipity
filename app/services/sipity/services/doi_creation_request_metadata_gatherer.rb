@@ -66,7 +66,7 @@ module Sipity
       include Conversions::ConvertToYear
 
       def default_repository
-        Repository.new
+        QueryRepository.new
       end
     end
   end

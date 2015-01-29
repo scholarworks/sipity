@@ -2,7 +2,7 @@ require 'rails_helper'
 
 module Sipity
   module Commands
-    RSpec.describe DoiCommands, type: :repository_methods do
+    RSpec.describe DoiCommands, type: :command_with_related_query do
       context '#update_work_doi_creation_request_state!' do
         let(:work) { Models::Work.new(id: 123) }
         let!(:doi_creation_request) { Models::DoiCreationRequest.create!(work: work) }
