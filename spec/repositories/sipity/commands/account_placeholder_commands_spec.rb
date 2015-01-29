@@ -3,7 +3,7 @@ require 'rails_helper'
 module Sipity
   module Commands
     RSpec.describe AccountPlaceholderCommands do
-      context '#submit_create_orcid_account_placeholder_form', type: :isolated_command_module do
+      context '#submit_create_orcid_account_placeholder_form', type: :command_with_related_query do
         Given(:user) { User.new(id: 1) }
         Given(:form) { test_repository.build_create_orcid_account_placeholder_form(attributes: { identifier: '0000-0002-8205-121X' }) }
         context 'with invalid data' do

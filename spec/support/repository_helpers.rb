@@ -16,7 +16,7 @@ module RepositoryHelpers
       attr_reader :test_repository
     end
   end
-  module IsolatedCommandModule
+  module CommandWithRelatedQuery
     extend ActiveSupport::Concern
     included do |rspec_context|
       before do
@@ -49,5 +49,5 @@ end
 RSpec.configure do |config|
   config.include RepositoryHelpers::IsolatedRepository, type: :repository_methods
   config.include RepositoryHelpers::CommandRepository, type: :command_repository
-  config.include RepositoryHelpers::IsolatedCommandModule, type: :isolated_command_module
+  config.include RepositoryHelpers::CommandWithRelatedQuery, type: :command_with_related_query
 end
