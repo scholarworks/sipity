@@ -39,12 +39,7 @@ module Sipity
         # TODO: This is dependent on object state
         # TODO: What to do when I have a non-persisted state? Can this decorator
         #   be applied?
-        [
-          LinkedAction.new(
-            label: "Edit #{model.title}", path: h.edit_work_path(object),
-            html_options: { 'class' => 'btn btn-primary action-edit' }
-          )
-        ]
+        ['edit']
       end
 
       def each_todo_item_set

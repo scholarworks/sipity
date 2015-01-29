@@ -33,7 +33,7 @@
 
   <div>
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
-    <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
+    <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
       <meta itemprop="name" content="work>processing_state" />
       <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
       the underlying tests will need to change to find[:content] instead of
@@ -42,9 +42,12 @@
       <ul>
         <% model.available_linked_actions(user: current_user).each do |action| %>
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-            <meta itemprop="name" content="event_trigger><%= action.label %>">
-            <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-            <%= action.render(self) %>
+            <meta itemprop="name" content="event_trigger><%= action %>">
+            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+              <a itemprop="url" href="<%= edit_work_path(model) %>" class="btn btn-primary action-edit">
+                <span itemprop='name'>Edit</span>
+              </a>
+            </div>
           </li>
         <% end %>
         <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">

@@ -10,6 +10,7 @@ module Sipity
       def initialize(label:, path:, html_options: {})
         @label, @path, @html_options = label, path, html_options
       end
+      deprecate :initialize
 
       # @todo: Should we translate the label? If so, we need more information
       #   regarding the context of the link (i.e. the entity to which this was
