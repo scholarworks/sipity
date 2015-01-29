@@ -36,6 +36,22 @@
     <% model.available_linked_actions(user: current_user).each do |action| %>
       <%= action.render(self) %>
     <% end %>
+    <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
+      <meta itemprop="name" content="work>processing_state" />
+      <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
+      the underlying tests will need to change to find[:content] instead of
+      find.text %>
+      <h3 itemprop="description"><%= model.processing_state %></h3>
+      <ul>
+        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+          <meta itemprop="name" content="event_trigger>submit_for_review">
+          <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+          <form itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" method="get" action="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+            <%= submit_tag("Submit for Review", itemprop: 'name') %>
+          </form>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -58,26 +74,6 @@
       <ul>
     </div>
   <%- end -%>
-</div>
-
-<!-- TODO: This is hard-coded for now; I want to get to auto-generation -->
-<div>
-  <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
-    <meta itemprop="name" content="work>processing_state" />
-    <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
-    the underlying tests will need to change to find[:content] instead of
-    find.text %>
-    <h3 itemprop="description"><%= model.processing_state %></h3>
-    <ul>
-      <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-        <meta itemprop="name" content="event_trigger>submit_for_review">
-        <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-        <form itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" method="get" action="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-          <%= submit_tag("Submit for Review", itemprop: 'name') %>
-        </form>
-      </li>
-    </ul>
-  </div>
 </div>
 
 <div class="recommendations">
