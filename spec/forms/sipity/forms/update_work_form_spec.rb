@@ -67,7 +67,7 @@ module Sipity
         #   are changes being made.
         let(:user) { User.new(id: '123') }
         let(:work) { Models::Work.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
-        let(:repository) { Sipity::Repository.new }
+        let(:repository) { CommandRepository.new }
         let(:form) { repository.build_update_work_form(work: work, attributes: { title: 'My New Title', publisher: 'new publisher' }) }
         context 'with invalid data' do
           before do

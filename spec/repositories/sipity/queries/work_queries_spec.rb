@@ -16,8 +16,6 @@ module Sipity
 
       context '#find_works_for' do
         # REVIEW: Crossing a boundary for this test; Is that adequate?
-        let!(:command_repository) { Commands::WorkCommandRepository.new }
-        after { Commands.send(:remove_const, :WorkCommandRepository) }
         let(:user_one) { User.new(id: 1, username: 'user_one') }
         let(:user_two) { User.new(id: 2, username: 'user_two') }
         let(:form) do
@@ -25,8 +23,8 @@ module Sipity
             attributes: { title: 'My Title', work_publication_strategy: 'do_not_know', work_type: 'etd' }
           )
         end
-        let!(:work_one) { form.submit(repository: Sipity::Repository.new, requested_by: user_one) }
-        let!(:work_two) { form.submit(repository: Sipity::Repository.new, requested_by: user_two) }
+        let!(:work_one) { form.submit(repository: Sipity::CommandRepository.new, requested_by: user_one) }
+        let!(:work_two) { form.submit(repository: Sipity::CommandRepository.new, requested_by: user_two) }
         it 'will include works that were created by the user' do
           expect(test_repository.find_works_for(user: user_one)).to eq([work_one])
         end

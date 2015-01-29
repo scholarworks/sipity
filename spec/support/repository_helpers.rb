@@ -20,7 +20,7 @@ module RepositoryHelpers
     extend ActiveSupport::Concern
     included do
       before do
-        @test_repository = Sipity::Repository.new
+        @test_repository = Sipity::CommandRepository.new
       end
       attr_reader :test_repository
     end

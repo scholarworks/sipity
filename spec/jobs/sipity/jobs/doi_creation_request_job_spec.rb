@@ -6,7 +6,7 @@ module Sipity
       let(:doi_creation_request) { Models::DoiCreationRequest.new(work: work) }
       let(:work) { Models::Work.new(id: 1, title: 'Hello') }
       let(:minter) { double('Minter') }
-      let(:repository) { Repository.new }
+      let(:repository) { CommandRepository.new }
       let(:response) { double(id: 'doi:oh-my') }
       let(:metadata) { double('Metadata') }
       subject do
@@ -31,8 +31,8 @@ module Sipity
         before do
           # Not a fan of allow_any_instance_of but it helps with understanding default
           # behavior.
-          allow_any_instance_of(Repository).to receive(:find_work).with(work.id).and_return work
-          allow_any_instance_of(Repository).to receive(:find_doi_creation_request).with(work: work).and_return work
+          allow_any_instance_of(CommandRepository).to receive(:find_work).with(work.id).and_return work
+          allow_any_instance_of(CommandRepository).to receive(:find_doi_creation_request).with(work: work).and_return work
         end
         subject { described_class.new(work.id) }
         its(:minter) { should respond_to :call }

@@ -64,7 +64,7 @@ module Sipity
 
       def default_repository
         # REVIEW: Do I want multiple repositories to exist?
-        Repository.new
+        CommandRepository.new
       end
     end
   end
