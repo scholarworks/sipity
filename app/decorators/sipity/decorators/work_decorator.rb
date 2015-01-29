@@ -35,7 +35,8 @@ module Sipity
           work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      def available_linked_actions
+      def available_linked_actions(user: nil)
+        return [] unless user.present?
         # TODO: This is dependent on object state
         # TODO: What to do when I have a non-persisted state? Can this decorator
         #   be applied?

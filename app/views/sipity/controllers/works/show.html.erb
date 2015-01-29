@@ -32,7 +32,8 @@
   </dl>
 
   <div>
-    <% model.available_linked_actions.each do |action| %>
+    <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
+    <% model.available_linked_actions(user: current_user).each do |action| %>
       <%= action.render(self) %>
     <% end %>
   </div>
