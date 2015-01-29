@@ -13,8 +13,20 @@ module Sipity
       attr_reader :data_structure
       private :data_structure
 
+      # REVIEW: This is really complicated
+      def available_events_for_when_acting_as(current_state:, acting_as:)
+        events_and_acting_as_for(current_state).each_with_object(Set.new) do |(event_name, possible_acting_as), mem|
+          to_keep = (Array.wrap(possible_acting_as) & Array.wrap(acting_as))
+          if to_keep.present?
+            # Normalizing event name
+            mem << ActionAvailability.new(event_name, to_keep, current_state)
+          end
+          mem
+        end.map(&:event_name)
+      end
+
       def available_event_triggers(current_state:)
-        data_structure.fetch(current_state.to_s, {}).each_with_object(Set.new) do |(event_name, acting_as), mem|
+        events_and_acting_as_for(current_state).each_with_object(Set.new) do |(event_name, acting_as), mem|
           mem << ActionAvailability.new(event_name, acting_as, current_state)
           mem
         end.to_a
@@ -22,11 +34,15 @@ module Sipity
 
       def event_trigger_availability(current_state:, event_name:)
         normalized_event_name = event_name.to_s.sub(/([^\?])\Z/, '\1?').to_sym
-        acting_as = data_structure.fetch(current_state.to_s, {}).fetch(normalized_event_name, [])
+        acting_as = events_and_acting_as_for(current_state).fetch(normalized_event_name, [])
         ActionAvailability.new(event_name, acting_as, current_state)
       end
 
       private
+
+      def events_and_acting_as_for(current_state)
+        data_structure.fetch(current_state.to_s, {})
+      end
 
       # Crafting a welformed object
       ActionAvailability = Struct.new(:event_name, :acting_as, :current_state) do
