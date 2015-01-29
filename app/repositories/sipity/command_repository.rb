@@ -1,5 +1,6 @@
-require_relative './commands'
 module Sipity
+  module Commands
+  end
   class CommandRepository < DelegateClass(QueryRepository)
     def initialize(query_repository_instance: QueryRepository.new)
       super(query_repository_instance)

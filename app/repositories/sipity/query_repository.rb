@@ -1,5 +1,6 @@
-require_relative './queries'
 module Sipity
+  module Queries
+  end
   # Defines and exposes the query methods for interacting with the public API of
   # the persistence layer.
   class QueryRepository
