@@ -50,7 +50,7 @@ module Sipity
       end
 
       context 'querying for augmented permission records' do
-        let(:entity) { Models::Work.new(id: 1) }
+        let(:entity) { Models::Work.new(id: 1, work_type: 'etd', processing_state: 'new') }
         let(:user) { User.new(id: 2) }
         let(:group) { Models::Group.new(id: 3) }
         let(:direct_user_permission) do
@@ -67,6 +67,15 @@ module Sipity
         end
         before do
           Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
+        end
+
+        context '#available_event_triggers_for' do
+          it 'will return an array of strings' do
+            # TODO: This is a test coupled to the behavior of an existing state diagram.
+            expect(test_repository).to receive(:user_can_act_as_the_following_on_entity).and_return(['creating_user'])
+            actual = test_repository.available_event_triggers_for(user: user, entity: entity)
+            expect(actual).to eq(["update", "show", "delete", "submit_for_review"])
+          end
         end
 
         context '#user_can_act_as_the_following_on_entity' do
