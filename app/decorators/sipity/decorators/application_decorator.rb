@@ -1,5 +1,8 @@
 module Sipity
   module Decorators
+    # Responsible for encoding the various application decorations available.
+    #
+    # @see #repository
     class ApplicationDecorator < Draper::Decorator
       def initialize(object, options = {})
         @repository = options.fetch(:repository) { default_repository }
@@ -10,6 +13,7 @@ module Sipity
 
       private
 
+      # A decorator need not have the keys to the kingdom.
       def default_repository
         QueryRepository.new
       end
