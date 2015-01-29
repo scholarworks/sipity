@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Commands
-    RSpec.describe TransientAnswerCommands, type: :repository_methods do
+    RSpec.describe TransientAnswerCommands, type: :isolated_repository_module do
       context '#handle_transient_access_rights_answer' do
         Given(:entity) { Models::Work.new(id: 123) }
 
