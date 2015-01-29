@@ -1,7 +1,7 @@
 module Sipity
   module Decorators
     # A decoration layer for Sipity::Work
-    class WorkDecorator < Draper::Decorator
+    class WorkDecorator < ApplicationDecorator
       def self.object_class
         Models::Work
       end
@@ -31,8 +31,7 @@ module Sipity
       end
 
       def authors(decorator: Decorators::CollaboratorDecorator)
-        Queries::CollaboratorQueries.
-          work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
+        repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
       def available_linked_actions(user: nil)

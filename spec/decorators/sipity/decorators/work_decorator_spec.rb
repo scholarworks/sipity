@@ -4,7 +4,8 @@ module Sipity
   module Decorators
     RSpec.describe WorkDecorator do
       let(:work) { Models::Work.new(title: 'Hello World', id: 123) }
-      subject { WorkDecorator.new(work) }
+      let(:repository) { double('Repository') }
+      subject { WorkDecorator.new(work, repository: repository) }
       it 'will have a #to_s equal its #title' do
         expect(subject.to_s).to eq(work.title)
       end
@@ -54,7 +55,7 @@ module Sipity
 
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
-        allow(Queries::CollaboratorQueries).to receive(:work_collaborators_for).
+        expect(repository).to receive(:work_collaborators_for).
           with(work: work, role: 'author').and_return(authors)
         allow(CollaboratorDecorator).to receive(:decorate).with(authors[0])
         subject.authors
