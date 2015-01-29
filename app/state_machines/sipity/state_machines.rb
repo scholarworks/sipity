@@ -43,6 +43,12 @@ module Sipity
       find_state_machine_for(work_type: work_type).state_diagram
     end
 
+    def available_event_triggers_for(user:, entity:, repository:)
+      diagram = state_diagram_for(work_type: entity.work_type)
+      acting_as = repository.user_can_act_as_the_following_on_entity(user: user, entity: entity)
+      diagram.available_events_for_when_acting_as(current_state: entity.processing_state, acting_as: acting_as)
+    end
+
     def find_state_machine_for(work_type:)
       state_machine_name_by_convention = "#{work_type.classify}StateMachine"
       if const_defined?(state_machine_name_by_convention)

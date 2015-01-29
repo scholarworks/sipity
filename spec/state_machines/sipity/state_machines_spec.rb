@@ -25,6 +25,17 @@ module Sipity
       end
     end
 
+    context '.available_event_triggers_for' do
+      let(:user) { double('user') }
+      let(:repository) { double('repository', user_can_act_as_the_following_on_entity: 'creating_user') }
+      let(:entity) { Models::Work.new(work_type: 'etd', processing_state: 'new') }
+      it 'will return an array of strings' do
+        # TODO: This is a test coupled to the behavior of an existing state diagram.
+        actual = described_class.available_event_triggers_for(user: user, entity: entity, repository: repository)
+        expect(actual).to eq(["update", "show", "delete", "submit_for_review"])
+      end
+    end
+
     context '.state_diagram_for' do
       let(:valid_work_type) { 'etd' }
       context 'with valid enrichment type' do
