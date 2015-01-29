@@ -35,19 +35,9 @@ module RepositoryHelpers
       attr_reader :test_repository
     end
   end
-  module CommandRepository
-    extend ActiveSupport::Concern
-    included do
-      before do
-        @test_repository = Sipity::CommandRepository.new
-      end
-      attr_reader :test_repository
-    end
-  end
 end
 
 RSpec.configure do |config|
   config.include RepositoryHelpers::IsolatedRepository, type: :isolated_repository_module
-  config.include RepositoryHelpers::CommandRepository, type: :command_repository
   config.include RepositoryHelpers::CommandWithRelatedQuery, type: :command_with_related_query
 end
