@@ -18,8 +18,16 @@ module Sipity
       end
 
       context '#available_linked_actions' do
-        it 'will return an enumerable in which all elements responds to render' do
-          expect(subject.available_linked_actions.all? { |link| link.respond_to?(:render) }).to be_truthy
+        context 'for a null user' do
+          it 'will be an empty array' do
+            expect(subject.available_linked_actions(user: nil)).to be_empty
+          end
+        end
+        context 'for a current_user' do
+          let(:user) { double('User') }
+          it 'will return an enumerable in which all elements responds to render' do
+            expect(subject.available_linked_actions(user: user)).to_not be_empty
+          end
         end
       end
 
