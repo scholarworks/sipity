@@ -33,9 +33,6 @@
 
   <div>
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
-    <% model.available_linked_actions(user: current_user).each do |action| %>
-      <%= action.render(self) %>
-    <% end %>
     <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration">
       <meta itemprop="name" content="work>processing_state" />
       <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
@@ -43,11 +40,19 @@
       find.text %>
       <h3 itemprop="description"><%= model.processing_state %></h3>
       <ul>
+        <% model.available_linked_actions(user: current_user).each do |action| %>
+          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+            <meta itemprop="name" content="event_trigger><%= action.label %>">
+            <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+            <%= action.render(self) %>
+          </li>
+        <% end %>
         <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
           <meta itemprop="name" content="event_trigger>submit_for_review">
-          <link itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-          <form itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" method="get" action="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-            <%= submit_tag("Submit for Review", itemprop: 'name') %>
+          <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+            <a itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
+              <span itemprop='name'>Submit for Review</span>
+            </a>
           </form>
         </li>
       </ul>
