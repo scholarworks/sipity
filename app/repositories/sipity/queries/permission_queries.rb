@@ -44,7 +44,7 @@ module Sipity
         user_table = User.arel_table
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
-        entity_id = entity.to_param
+        entity_id = entity.id
 
         entity_polymorphic_type = Conversions::ConvertToPolymorphicType.call(entity)
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
@@ -92,7 +92,7 @@ module Sipity
       def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
-        actor_id = user.to_param
+        actor_id = user.id
         entity_polymorphic_type = Conversions::ConvertToPolymorphicType.call(entity_type)
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
         user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(user)
