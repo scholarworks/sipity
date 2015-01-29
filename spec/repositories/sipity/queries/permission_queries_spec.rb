@@ -49,6 +49,53 @@ module Sipity
         end
       end
 
+      context '#scope_acting_as_by_entity_and_user' do
+        let(:entity) { Models::Work.new(id: 1) }
+        let(:user) { User.new(id: 2) }
+        let(:group) { Models::Group.new(id: 3) }
+        let(:direct_user_permission) do
+          Models::Permission.new(
+            actor_id: user.id, actor_type: user.class.base_class, acting_as: 'as_a_user',
+            entity_id: entity.id, entity_type: entity.class.base_class
+          )
+        end
+
+        let(:indirect_user_permission) do
+          Models::Permission.new(
+            actor_id: group.id, actor_type: group.class.base_class, acting_as: 'as_a_group',
+            entity_id: entity.id, entity_type: entity.class.base_class
+          )
+        end
+
+        before do
+          Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
+        end
+
+        context 'for direct user permission' do
+          it 'will return an Active Record relationship' do
+            direct_user_permission.save!
+            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+            expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as].sort)
+          end
+        end
+
+        context 'for both direct and indirect user permission' do
+          it 'will return an Active Record relationship' do
+            direct_user_permission.save!
+            indirect_user_permission.save!
+            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+            expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as, indirect_user_permission.acting_as].sort)
+          end
+        end
+        context 'for indirect user permission via group' do
+          it 'will return an Active Record relationship' do
+            indirect_user_permission.save!
+            results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
+            expect(results.pluck(:acting_as).sort).to eq([indirect_user_permission.acting_as].sort)
+          end
+        end
+      end
+
       context '#scope_users_by_entity_and_acting_as' do
         let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
@@ -66,7 +113,7 @@ module Sipity
           Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
         end
 
-        it 'will return emails from users directly associated with the entity' do
+        it 'will return the users' do
           results = test_repository.scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity)
           expect(results.sort).to eq([associated_user, associated_by_group_user].sort)
         end
