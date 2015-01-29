@@ -48,14 +48,14 @@ module Sipity
       end
 
       def each_todo_item_set
-        todo_list.sets.each { |name, items| yield(name, items) if items.present? }
+        # TODO: There is a violation of demeter, in part because I don't have the concept
+        # of a todo_list set.
+        repository.todo_list_for_current_processing_state_of_work(work: self).sets.each do |name, items|
+          yield(name, items) if items.present?
+        end
       end
 
       private
-
-      def todo_list
-        Queries::EnrichmentQueries.todo_list_for_current_processing_state_of_work(work: self)
-      end
 
       def recommendation_for(name)
         Recommendations.const_get("#{name.classify}Recommendation").new(work: self)

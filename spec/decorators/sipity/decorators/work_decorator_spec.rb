@@ -32,6 +32,14 @@ module Sipity
         end
       end
 
+      context '#each_todo_item_set' do
+        it 'will yield todo list name and items' do
+          expect(repository).to receive(:todo_list_for_current_processing_state_of_work).
+            and_return(double(sets: { key: ['value'], empty: [] }))
+          expect { |b| subject.each_todo_item_set(&b) }.to yield_with_args(:key, ['value'])
+        end
+      end
+
       context '#with_form_panel' do
         it 'wrap the results of the block inside a panel' do
           rendered = subject.with_form_panel('attributes') { 'hello' }
