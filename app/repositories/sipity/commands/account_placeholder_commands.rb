@@ -3,12 +3,6 @@ module Sipity
   module Commands
     # Commands
     module AccountPlaceholderCommands
-      # HACK: This is a stop gap
-      extend ActiveSupport::Concern
-      included do |base|
-        base.send(:include, Queries::AccountPlaceholderQueries)
-      end
-
       def submit_create_orcid_account_placeholder_form(form, requested_by:)
         form.submit do |f|
           identifier_type = Models::AccountPlaceholder::ORCID_IDENTIFIER_TYPE
@@ -19,6 +13,5 @@ module Sipity
         end
       end
     end
-    private_constant :AccountPlaceholderCommands
   end
 end

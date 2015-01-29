@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Commands
-    RSpec.describe AdditionalAttributeCommands, type: :repository_methods do
+    RSpec.describe AdditionalAttributeCommands, type: :isolated_command_module do
       # TODO: These are horribly comingled with the queries.
       #   Need to tease those apart.
       # Because of enum enforcement I need real key names

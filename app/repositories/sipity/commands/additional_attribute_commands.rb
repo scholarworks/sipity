@@ -3,11 +3,6 @@ module Sipity
   module Commands
     # Commands
     module AdditionalAttributeCommands
-      extend ActiveSupport::Concern
-      included do |base|
-        base.send(:include, Queries::AdditionalAttributeQueries)
-      end
-
       def update_work_publication_date!(work:, publication_date:)
         return true unless publication_date.present?
         update_work_attribute_values!(
@@ -43,6 +38,5 @@ module Sipity
       module_function :destroy_work_attribute_values!
       public :destroy_work_attribute_values!
     end
-    private_constant :AdditionalAttributeCommands
   end
 end

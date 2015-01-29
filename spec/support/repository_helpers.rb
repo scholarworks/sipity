@@ -16,6 +16,25 @@ module RepositoryHelpers
       attr_reader :test_repository
     end
   end
+  module IsolatedCommandModule
+    extend ActiveSupport::Concern
+    included do |rspec_context|
+      before do
+        klass = Class.new do
+          possible_query_module = rspec_context.described_class.to_s.gsub(/Commands/, 'Queries')
+          include possible_query_module.constantize
+          include rspec_context.described_class
+          def to_s
+            "Test Repository for #{rspec_context.described_class}"
+          end
+          alias_method :inspect, :to_s
+          alias_method :to_str, :to_s
+        end
+        @test_repository = klass.new
+      end
+      attr_reader :test_repository
+    end
+  end
   module CommandRepository
     extend ActiveSupport::Concern
     included do
@@ -30,4 +49,5 @@ end
 RSpec.configure do |config|
   config.include RepositoryHelpers::IsolatedRepository, type: :repository_methods
   config.include RepositoryHelpers::CommandRepository, type: :command_repository
+  config.include RepositoryHelpers::IsolatedCommandModule, type: :isolated_command_module
 end
