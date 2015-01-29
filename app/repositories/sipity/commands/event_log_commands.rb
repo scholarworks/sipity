@@ -25,6 +25,5 @@ module Sipity
       module_function :log_event!
       public :log_event!
     end
-    private_constant :EventLogCommands
   end
 end

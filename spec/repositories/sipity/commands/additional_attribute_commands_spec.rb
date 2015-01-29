@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Commands
-    RSpec.describe AdditionalAttributeCommands, type: :isolated_command_module do
+    RSpec.describe AdditionalAttributeCommands, type: :command_with_related_query do
       # TODO: These are horribly comingled with the queries.
       #   Need to tease those apart.
       # Because of enum enforcement I need real key names
@@ -46,8 +46,6 @@ module Sipity
         subject.destroy_work_attribute_values!(work: work, key: key, values: [])
         expect(subject.work_attribute_values_for(work: work, key: key)).to eq(['abc'])
       end
-
-      its(:work_default_attribute_keys_for) { should be_a(Array) }
     end
   end
 end
