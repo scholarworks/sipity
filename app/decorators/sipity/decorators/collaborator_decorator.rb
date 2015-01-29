@@ -1,7 +1,7 @@
 module Sipity
   module Decorators
     # A decoration layer for Sipity::Collaborator
-    class CollaboratorDecorator < Draper::Decorator
+    class CollaboratorDecorator < ApplicationDecorator
       def self.object_class
         Models::Collaborator
       end
