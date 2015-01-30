@@ -4,7 +4,11 @@ module Sipity
     # based on event_names.
     class ActionSet
       include Enumerable
-      Action = Struct.new(:name, :availability_state)
+      Action = Struct.new(:name, :availability_state) do
+        def available?
+          availability_state == 'available'
+        end
+      end
 
       UNKNOWN_CURRENT_ACTION = '__unknown_current_action__'.freeze
       ANALOGOUS_NAMED_ACTIONS = {
@@ -29,6 +33,8 @@ module Sipity
       def each
         actions.each {|action| yield(action) }
       end
+
+      delegate :present?, :empty?, to: :actions
 
       private
 

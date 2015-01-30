@@ -7,10 +7,12 @@ module Sipity
       let(:repository) { double('Query Repository', are_all_of_the_required_todo_items_done_for_work?: are_todo_items_done?) }
       let(:are_todo_items_done?) { true }
 
-      context 'default configuration' do
+      context 'default configuration (and an event_name)' do
         subject { described_class.new(entity: entity, event_names: 'show') }
         its(:current_action) { should eq(described_class::UNKNOWN_CURRENT_ACTION) }
         its(:repository) { should be_a(QueryRepository) }
+        its(:present?) { should be_truthy }
+        its(:empty?) { should be_falsey }
         it { should respond_to :each }
         it { should be_a Enumerable }
       end
@@ -40,6 +42,7 @@ module Sipity
             and_return(example.fetch(:are_todo_items_done?))
           subject = described_class.new(entity: entity, repository: repository, event_names: example.fetch(:event_name)).actions.first
           expect(subject.availability_state).to eq(example.fetch(:expected_availability_state))
+          expect(subject.available?).to eq(example.fetch(:expected_availability_state) == 'available')
         end
       end
     end
