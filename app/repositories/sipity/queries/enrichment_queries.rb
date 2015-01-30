@@ -18,9 +18,11 @@ module Sipity
 
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
-      def scope_current_todo_item_states_for(entity:, work_type:, enrichment_group: nil, work_processing_state:)
-        # TODO: URGENT - Write a test to bombard this query; There are some
-        # nuances that I'm not certain I'm covering.
+      def scope_current_todo_item_states_for(options = {})
+        entity = options.fetch(:entity)
+        work_type = options.fetch(:work_type) { entity.work_type }
+        enrichment_group = options.fetch(:enrichment_group) { nil }
+        work_processing_state = options.fetch(:work_processing_state) { entity.processing_state }
         states = Models::TodoItemState.arel_table
         configs = Models::WorkTypeTodoListConfig.arel_table
         entity_id = entity.id
