@@ -1,16 +1,7 @@
+require_relative '../actions'
 module Sipity
   module Decorators
     module Actions
-        ANALOGOUS_RESOURCEFUL_ACTION_NAMES = {
-          'show' => ['show'],
-          'update' => ['edit', 'update'],
-          'edit' => ['edit', 'update'],
-          'create' => ['new', 'create'],
-          'new' => ['new', 'create'],
-          'destroy' => ['destroy']
-        }.freeze
-
-        RESOURCEFUL_ACTION_NAMES = ANALOGOUS_RESOURCEFUL_ACTION_NAMES.freeze
       # This action represents an action that is part of the Rails default
       # list of Resource based actions (i.e. show, new, edit, create, update,
       # destroy)
