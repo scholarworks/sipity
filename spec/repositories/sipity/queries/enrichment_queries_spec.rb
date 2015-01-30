@@ -46,7 +46,7 @@ module Sipity
         end
       end
 
-      context "#scope_current_todo_item_states_for" do
+      context "#find_current_todo_item_states_for" do
         before { todo_list_configurator.call }
         let(:work1) { Models::Work.new(id: 1, processing_state: 'new', work_type: 'etd') }
         let(:work2) { Models::Work.new(id: 2, processing_state: 'new', work_type: 'etd') }
@@ -55,7 +55,7 @@ module Sipity
           persist_todo_item_state.call(work: work1, enrichment_state: 'done', enrichment_type: 'attach')
           persist_todo_item_state.call(work: work2, enrichment_state: 'done', enrichment_type: 'describe')
           # Can't use size because the finder does not quite work as a scope
-          expect(test_repository.scope_current_todo_item_states_for(entity: work1).size).
+          expect(test_repository.find_current_todo_item_states_for(entity: work1).size).
             to eq(3)
         end
       end

@@ -11,7 +11,7 @@ module Sipity
       end
 
       def are_all_of_the_required_todo_items_done_for_work?(work:, work_processing_state: work.processing_state)
-        scope_current_todo_item_states_for(
+        find_current_todo_item_states_for(
           entity: work, work_type: work.work_type, work_processing_state: work_processing_state, enrichment_group: 'required'
         ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
@@ -34,7 +34,7 @@ module Sipity
       #
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
-      def scope_current_todo_item_states_for(options = {})
+      def find_current_todo_item_states_for(options = {})
         entity = options.fetch(:entity)
         work_type = options.fetch(:work_type) { entity.work_type }
         enrichment_group = options.fetch(:enrichment_group) { nil }
@@ -62,14 +62,14 @@ module Sipity
           where(base_where_clause).
           joins(state_configs)
       end
-      module_function :scope_current_todo_item_states_for
-      public :scope_current_todo_item_states_for
+      module_function :find_current_todo_item_states_for
+      public :find_current_todo_item_states_for
 
       def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object
         # as a parameter. It would ease the entaglement that is happening here.
         Decorators::TodoList.new(entity: work) do |list|
-          scope_current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
+          find_current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
             # TODO: LOW PRIORITY: The todo_item is a composite todo item based on the above query.
             list.add_to(
               set: todo_item.enrichment_group,
