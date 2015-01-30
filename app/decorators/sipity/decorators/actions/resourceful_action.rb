@@ -1,10 +1,6 @@
 module Sipity
   module Decorators
     module Actions
-      # This action represents an action that is part of the Rails default
-      # list of Resource based actions (i.e. show, new, edit, create, update,
-      # destroy)
-      class ResourcefulAction
         ANALOGOUS_RESOURCEFUL_ACTION_NAMES = {
           'show' => ['show'],
           'update' => ['edit', 'update'],
@@ -15,6 +11,10 @@ module Sipity
         }.freeze
 
         RESOURCEFUL_ACTION_NAMES = ANALOGOUS_RESOURCEFUL_ACTION_NAMES.freeze
+      # This action represents an action that is part of the Rails default
+      # list of Resource based actions (i.e. show, new, edit, create, update,
+      # destroy)
+      class ResourcefulAction
         def initialize(options = {})
           self.name = options.fetch(:name)
           @entity = options.fetch(:entity)
