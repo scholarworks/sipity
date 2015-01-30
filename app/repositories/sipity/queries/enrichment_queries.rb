@@ -17,21 +17,10 @@ module Sipity
         ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
 
-      # SELECT
-      #   "sipity_work_type_todo_list_configs"."enrichment_group",
-      #   "sipity_work_type_todo_list_configs"."enrichment_type",
-      #   "sipity_todo_item_states"."enrichment_state",
-      #   "sipity_work_type_todo_list_configs"."work_processing_state"
-      # FROM "sipity_work_type_todo_list_configs"
-      # LEFT JOIN "sipity_todo_item_states"
-      #   ON "sipity_todo_item_states"."enrichment_type" = "sipity_work_type_todo_list_configs"."enrichment_type"
-      #   AND "sipity_todo_item_states"."entity_id" = :entity_id
-      #   AND "sipity_todo_item_states"."entity_type" = :entity_type
-      #   AND "sipity_work_type_todo_list_configs"."work_processing_state" = "sipity_todo_item_states"."entity_processing_state"
-      # WHERE (
-      #   "sipity_work_type_todo_list_configs"."work_processing_state" = :work_processing_state
-      #   AND "sipity_work_type_todo_list_configs"."work_type" = :work_type
-      # )
+
+      # Find all of the Possible Todo List Items for the given Entity
+      # For each of the Possible Todo List Items, if there is a enrichment_state
+      #   for that Entity's Todo Item, report that; Otherwise it is NULL.
       #
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
