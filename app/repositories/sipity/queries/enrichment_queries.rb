@@ -16,6 +16,22 @@ module Sipity
         ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
 
+      # SELECT
+      #   "sipity_work_type_todo_list_configs"."enrichment_group",
+      #   "sipity_work_type_todo_list_configs"."enrichment_type",
+      #   "sipity_todo_item_states"."enrichment_state",
+      #   "sipity_work_type_todo_list_configs"."work_processing_state"
+      # FROM "sipity_work_type_todo_list_configs"
+      # LEFT JOIN "sipity_todo_item_states"
+      #   ON "sipity_todo_item_states"."enrichment_type" = "sipity_work_type_todo_list_configs"."enrichment_type"
+      #   AND "sipity_todo_item_states"."entity_id" = :entity_id
+      #   AND "sipity_todo_item_states"."entity_type" = :entity_type
+      #   AND "sipity_work_type_todo_list_configs"."work_processing_state" = "sipity_todo_item_states"."entity_processing_state"
+      # WHERE (
+      #   "sipity_work_type_todo_list_configs"."work_processing_state" = :work_processing_state
+      #   AND "sipity_work_type_todo_list_configs"."work_type" = :work_type
+      # )
+      #
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
       def scope_current_todo_item_states_for(options = {})
@@ -30,7 +46,9 @@ module Sipity
 
         state_configs = configs.join(states, Arel::Nodes::OuterJoin).on(
           states[:enrichment_type].eq(configs[:enrichment_type]).
-          and(states[:entity_processing_state].eq(configs[:work_processing_state]))
+          and(states[:entity_processing_state].eq(configs[:work_processing_state])).
+          and(states[:entity_id].eq(entity_id)).
+          and(states[:entity_type].eq(entity_type))
         ).join_sources
 
         base_where_clause = configs[:work_processing_state].eq(work_processing_state).and(configs[:work_type].eq(work_type))
@@ -42,11 +60,6 @@ module Sipity
         Models::WorkTypeTodoListConfig.
           select(configs[:enrichment_group], configs[:enrichment_type], states[:enrichment_state], configs[:work_processing_state]).
           where(base_where_clause).
-          where(
-            states[:entity_id].eq(entity_id).
-            and(states[:entity_type].eq(entity_type)).
-            or(states[:entity_id].eq(nil))
-          ).
           joins(state_configs)
       end
       module_function :scope_current_todo_item_states_for
