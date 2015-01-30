@@ -17,6 +17,21 @@ module Sipity
           expect(actual).to eq(example.fetch(:expected_names))
         end
       end
+
+      [
+        { action_name: 'new', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'create', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'show', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'edit', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'update', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'destroy', expected_builder: Actions::ResourcefulAction },
+        { action_name: 'anything_else', expected_builder: Actions::ProcessingStateChangingAction },
+      ].each_with_index do |example, index|
+        it "will return a #{example[:expected_builder]} for action #{example[:action_name]} (Scenario ##{index}" do
+          expect(described_class.builder_for_action_name(example.fetch(:action_name))).
+            to eq(example.fetch(:expected_builder))
+        end
+      end
     end
   end
 end
