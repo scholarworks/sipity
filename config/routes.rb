@@ -21,6 +21,9 @@ Rails.application.routes.draw do
       get 'works/:work_id/:enrichment_type', to: 'work_enrichments#edit', as: 'enrich_work', constraints: enrichment_constraint
       post 'works/:work_id/:enrichment_type', to: 'work_enrichments#update', constraints: enrichment_constraint
 
+      get 'works/:id/trigger/update', to: 'works#edit'
+      get 'works/:id/trigger/show', to: 'works#show'
+
       # # Are there constraints?
       get 'works/:work_id/trigger/:event_name', to: 'work_event_triggers#new', as: 'event_trigger_for_work'
       post 'works/:work_id/trigger/:event_name', to: 'work_event_triggers#create'

@@ -21,13 +21,16 @@ module Sipity
       context '#available_linked_actions' do
         context 'for a null user' do
           it 'will be an empty array' do
-            expect(subject.available_linked_actions(user: nil)).to be_empty
+            expect(subject.available_linked_actions(user: nil, action_name: 'show')).to be_empty
           end
         end
         context 'for a current_user' do
           let(:user) { double('User') }
           it 'will return an enumerable in which all elements responds to render' do
-            expect(subject.available_linked_actions(user: user)).to_not be_empty
+            action_set_builder = double('Action Set Builder', call: :action_set_builder_called)
+            expect(repository).to receive(:available_event_triggers_for).and_return(['show', 'submit_for_review'])
+            expect(subject.available_linked_actions(user: user, action_name: 'show', action_set_builder: action_set_builder)).
+              to eq(action_set_builder.call)
           end
         end
       end

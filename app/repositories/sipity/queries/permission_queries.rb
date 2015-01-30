@@ -26,8 +26,8 @@ module Sipity
       end
 
       def available_event_triggers_for(user:, entity:)
-        diagram = StateMachines.state_diagram_for(work_type: entity.work_type)
         acting_as = user_can_act_as_the_following_on_entity(user: user, entity: entity)
+        diagram = StateMachines.state_diagram_for(work_type: entity.work_type)
         diagram.available_events_for_when_acting_as(current_state: entity.processing_state, acting_as: acting_as)
       end
 

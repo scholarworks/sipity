@@ -40,24 +40,23 @@
       find.text %>
       <h3 itemprop="description"><%= model.processing_state %></h3>
       <ul>
-        <% model.available_linked_actions(user: current_user).each do |action| %>
+        <% model.available_linked_actions(user: current_user, action_name: action_name).each do |action| %>
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-            <meta itemprop="name" content="event_trigger><%= action %>">
-            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-              <a itemprop="url" href="<%= edit_work_path(model) %>">
-                <span itemprop='name'>Edit</span>
-              </a>
-            </div>
+            <meta itemprop="name" content="event_trigger><%= action.name %>">
+            <span itemprop="actionStatus"><%= action.availability_state %></span>
+            <% if action.available? %>
+              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                <a itemprop="url" href="<%= event_trigger_for_work_path(model, action.name) %>">
+                  <span itemprop='name'><%= action.name %></span>
+                </a>
+              </div>
+            <% else %>
+              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                <span itemprop='name'><%= action.name %></span>
+              </div>
+            <% end %>
           </li>
         <% end %>
-        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-          <meta itemprop="name" content="event_trigger>submit_for_review">
-          <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-            <a itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-              <span itemprop='name'>Submit for Review</span>
-            </a>
-          </form>
-        </li>
       </ul>
     </div>
   </div>

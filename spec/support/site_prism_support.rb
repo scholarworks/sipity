@@ -6,8 +6,6 @@ module SitePrism
         take_action_on(find_named_object(name))
       end
 
-      private
-
       def take_action_on(entry_point)
         # I'm thinking how can I click on either a submit button or an a-tag.
         #
@@ -96,7 +94,7 @@ module SitePrism
       end
 
       def click_edit
-        take_action_on(find_named_object('event_trigger>edit'))
+        take_action_on(find_named_object('event_trigger>update'))
       end
 
       def click_todo_item(name)
