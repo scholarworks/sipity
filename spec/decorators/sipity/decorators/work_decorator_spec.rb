@@ -27,8 +27,10 @@ module Sipity
         context 'for a current_user' do
           let(:user) { double('User') }
           it 'will return an enumerable in which all elements responds to render' do
-            allow(repository).to receive(:available_event_triggers_for).and_return('show', 'submit_for_review')
-            expect(subject.available_linked_actions(user: user, action_name: 'show')).to be_present
+            action_set_builder = double('Action Set Builder', call: :action_set_builder_called)
+            expect(repository).to receive(:available_event_triggers_for).and_return(['show', 'submit_for_review'])
+            expect(subject.available_linked_actions(user: user, action_name: 'show', action_set_builder: action_set_builder)).
+              to eq(action_set_builder.call)
           end
         end
       end
