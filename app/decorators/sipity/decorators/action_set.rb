@@ -35,10 +35,6 @@ module Sipity
         end
       end
 
-      def event_names_without_current_event
-        event_names - Array.wrap(Actions::ANALOGOUS_RESOURCEFUL_ACTION_NAMES[current_action])
-      end
-
       def default_repository
         QueryRepository.new
       end
