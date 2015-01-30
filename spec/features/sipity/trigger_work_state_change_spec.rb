@@ -35,11 +35,8 @@ feature "Trigger Work State Change", :devise do
     on('work_page') do |the_page|
       # The state was advanced
       expect(the_page.processing_state).to eq('under_review')
-
-      # NOTE: The link will be gone. More important, however, is that we won't
-      #   be able to submit that task.
-      expect { the_page.take_named_action('event_trigger>submit_for_review') }.
-        to raise_error(Sipity::Exceptions::AuthorizationFailureError)
+      expect { the_page.find_named_object('event_trigger>submit_for_review') }.
+        to raise_error(Capybara::ElementNotFound)
     end
   end
 end
