@@ -44,20 +44,12 @@
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
             <meta itemprop="name" content="event_trigger><%= action %>">
             <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-              <a itemprop="url" href="<%= edit_work_path(model) %>">
-                <span itemprop='name'>Edit</span>
+              <a itemprop="url" href="<%= event_trigger_for_work_path(model, action) %>">
+                <span itemprop='name'><%= action %></span>
               </a>
             </div>
           </li>
         <% end %>
-        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-          <meta itemprop="name" content="event_trigger>submit_for_review">
-          <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-            <a itemprop="url" href="<%= event_trigger_for_work_path(model, 'submit_for_review') %>">
-              <span itemprop='name'>Submit for Review</span>
-            </a>
-          </form>
-        </li>
       </ul>
     </div>
   </div>

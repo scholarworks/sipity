@@ -96,7 +96,7 @@ module SitePrism
       end
 
       def click_edit
-        take_action_on(find_named_object('event_trigger>edit'))
+        take_action_on(find_named_object('event_trigger>update'))
       end
 
       def click_todo_item(name)

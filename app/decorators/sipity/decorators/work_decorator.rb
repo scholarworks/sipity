@@ -39,7 +39,7 @@ module Sipity
         # TODO: This is dependent on object state
         # TODO: What to do when I have a non-persisted state? Can this decorator
         #   be applied?
-        ['edit']
+        repository.available_event_triggers_for(user: user, entity: self)
       end
 
       def each_todo_item_set
