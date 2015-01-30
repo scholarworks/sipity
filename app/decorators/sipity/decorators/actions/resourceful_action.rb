@@ -30,10 +30,6 @@ module Sipity
             view_context.edit_work_path(entity)
           when 'new', 'create'
             view_context.new_work_path
-          else
-            # A catch in case the above magic strings and the above constant
-            # get out of sink.
-            fail Exceptions::UnprocessableResourcefulActionNameError, name
           end
         end
 
