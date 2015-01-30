@@ -17,7 +17,6 @@ module Sipity
         ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
 
-
       # Find all of the Possible Todo List Items for the given Entity
       # For each of the Possible Todo List Items, if there is a enrichment_state
       #   for that Entity's Todo Item, report that; Otherwise it is NULL.

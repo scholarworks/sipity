@@ -30,11 +30,7 @@ module Sipity
         build_actions!
       end
 
-      def each
-        actions.each {|action| yield(action) }
-      end
-
-      delegate :present?, :empty?, to: :actions
+      delegate :each, :present?, :empty?, to: :actions
 
       private
 
@@ -56,8 +52,16 @@ module Sipity
 
       def determine_availability_state_for(event_name)
         return 'available' if INTRA_STATE_ACTIONS.include?(event_name)
-        return 'available' if repository.are_all_of_the_required_todo_items_done_for_work?(work: entity)
+        return 'available' if are_all_of_the_required_todo_items_done_for_work?
         'unavailable'
+      end
+
+      def are_all_of_the_required_todo_items_done_for_work?
+        if defined?(@are_all_of_the_required_todo_items_done_for_work)
+          return @are_all_of_the_required_todo_items_done_for_work
+        else
+          @are_all_of_the_required_todo_items_done_for_work = repository.are_all_of_the_required_todo_items_done_for_work?(work: entity)
+        end
       end
     end
   end
