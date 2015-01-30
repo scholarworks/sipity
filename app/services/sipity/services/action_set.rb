@@ -35,11 +35,8 @@ module Sipity
       def build_actions!
         @actions = []
         event_names_without_current_event.each do |event_name|
-          if INTRA_STATE_ACTIONS.include?(event_name)
-            @actions << Action.new(event_name, 'available')
-          else
-            @actions << Action.new(event_name, available_state_for_work_processing_state_changers)
-          end
+          availability_state = determine_availability_state_for(event_name)
+          @actions << Action.new(event_name, availability_state)
         end
       end
 
@@ -51,12 +48,10 @@ module Sipity
         QueryRepository.new
       end
 
-      def available_state_for_work_processing_state_changers
-        if repository.are_all_of_the_required_todo_items_done_for_work?(work: entity)
-          'available'
-        else
-          'unavailable'
-        end
+      def determine_availability_state_for(event_name)
+        return 'available' if INTRA_STATE_ACTIONS.include?(event_name)
+        return 'available' if repository.are_all_of_the_required_todo_items_done_for_work?(work: entity)
+        'unavailable'
       end
     end
   end
