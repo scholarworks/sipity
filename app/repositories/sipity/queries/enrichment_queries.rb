@@ -11,14 +11,16 @@ module Sipity
       end
 
       def are_all_of_the_required_todo_items_done_for_work?(work:, work_processing_state: work.processing_state)
-        current_todo_item_states_for(
+        scope_current_todo_item_states_for(
           entity: work, work_type: work.work_type, work_processing_state: work_processing_state, enrichment_group: 'required'
         ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
       end
 
       # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
       #   Slide #150
-      def current_todo_item_states_for(entity:, work_type:, enrichment_group: nil, work_processing_state:)
+      def scope_current_todo_item_states_for(entity:, work_type:, enrichment_group: nil, work_processing_state:)
+        # TODO: URGENT - Write a test to bombard this query; There are some
+        # nuances that I'm not certain I'm covering.
         states = Models::TodoItemState.arel_table
         configs = Models::WorkTypeTodoListConfig.arel_table
         entity_id = entity.id
@@ -45,15 +47,14 @@ module Sipity
           ).
           joins(state_configs)
       end
-      module_function :current_todo_item_states_for
-      private_class_method :current_todo_item_states_for
-      private :current_todo_item_states_for
+      module_function :scope_current_todo_item_states_for
+      public :scope_current_todo_item_states_for
 
       def todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object
         # as a parameter. It would ease the entaglement that is happening here.
         Decorators::TodoList.new(entity: work) do |list|
-          current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
+          scope_current_todo_item_states_for(entity: work, work_type: work.work_type, work_processing_state: processing_state).each do |todo_item|
             # TODO: LOW PRIORITY: The todo_item is a composite todo item based on the above query.
             list.add_to(
               set: todo_item.enrichment_group,
