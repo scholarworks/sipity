@@ -11,6 +11,8 @@ module Sipity
         subject { described_class.new(entity: entity, event_names: 'show') }
         its(:current_action) { should eq(described_class::UNKNOWN_CURRENT_ACTION) }
         its(:repository) { should be_a(QueryRepository) }
+        it { should respond_to :each }
+        it { should be_a Enumerable }
       end
 
       [

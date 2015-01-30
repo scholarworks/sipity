@@ -3,6 +3,7 @@ module Sipity
     # A service object to help query and build a heterogeneous set of actions
     # based on event_names.
     class ActionSet
+      include Enumerable
       Action = Struct.new(:name, :availability_state)
 
       UNKNOWN_CURRENT_ACTION = '__unknown_current_action__'.freeze
@@ -23,6 +24,10 @@ module Sipity
         @current_action = options.fetch(:current_action) { UNKNOWN_CURRENT_ACTION }
         @repository = options.fetch(:repository) { default_repository }
         build_actions!
+      end
+
+      def each
+        actions.each {|action| yield(action) }
       end
 
       private
