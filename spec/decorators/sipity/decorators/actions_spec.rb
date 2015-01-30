@@ -27,9 +27,18 @@ module Sipity
         { action_name: 'destroy', expected_builder: Actions::ResourcefulAction },
         { action_name: 'anything_else', expected_builder: Actions::ProcessingStateChangingAction },
       ].each_with_index do |example, index|
-        it "will return a #{example[:expected_builder]} for action #{example[:action_name]} (Scenario ##{index}" do
-          expect(described_class.builder_for_action_name(example.fetch(:action_name))).
-            to eq(example.fetch(:expected_builder))
+        context '#builder_for_action_name' do
+          it "will return a #{example[:expected_builder]} for action #{example[:action_name]} (Scenario ##{index}" do
+            expect(described_class.builder_for_action_name(example.fetch(:action_name))).
+              to eq(example.fetch(:expected_builder))
+          end
+        end
+
+        context '#build' do
+          it "will instantiate a #{example[:expected_builder]} for action #{example[:action_name]} (Scenario ##{index}" do
+            expect(described_class.build(name: example.fetch(:action_name), repository: double, view_context: double, entity: double)).
+              to be_a(example.fetch(:expected_builder))
+          end
         end
       end
     end

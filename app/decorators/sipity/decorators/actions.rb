@@ -25,6 +25,10 @@ module Sipity
           ProcessingStateChangingAction
         end
       end
+
+      def build(options = {})
+        builder_for_action_name(options.fetch(:name)).new(options)
+      end
     end
   end
 end

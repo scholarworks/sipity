@@ -25,9 +25,7 @@ module Sipity
       def build_actions!
         @actions = []
         Actions.action_names_without_current_action_and_analogies(current_action_name: current_action, action_names: event_names).each do |event_name|
-          # TODO: This could be tidied up, but for now it will have to do.
-          builder = Actions.builder_for_action_name(event_name)
-          @actions << builder.new(name: event_name, entity: entity, repository: repository)
+          @actions << Actions.build(name: event_name, entity: entity, repository: repository)
         end
       end
 
