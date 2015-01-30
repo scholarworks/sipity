@@ -20,6 +20,7 @@ module Sipity
     class NonPrimativeParameterError < RuntimeError
     end
 
+    # This is not a defined resourceful action
     class UnprocessableResourcefulActionNameError < RuntimeError
       def initialize(name)
         super("Received unexpected action name (#{name})")

@@ -33,7 +33,7 @@ module Sipity
           else
             # A catch in case the above magic strings and the above constant
             # get out of sink.
-            raise Exceptions::UnprocessableResourcefulActionNameError, name
+            fail Exceptions::UnprocessableResourcefulActionNameError, name
           end
         end
 
@@ -43,7 +43,7 @@ module Sipity
           if RESOURCEFUL_ACTION_NAMES.include?(value)
             @name = value
           else
-            raise Exceptions::UnprocessableResourcefulActionNameError, value
+            fail Exceptions::UnprocessableResourcefulActionNameError, value
           end
         end
 

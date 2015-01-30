@@ -24,7 +24,7 @@ module Sipity
           { name: 'update', expected_path: "/works/1234/edit" },
           { name: 'destroy', expected_path: "/works/1234" }
         ].each_with_index do |example, index|
-          it "will have a path #{example[:expected_path].inspect} for action name #{example[:name].inspect}" do
+          it "will have a path #{example[:expected_path].inspect} for action name #{example[:name].inspect} (Scenario ##{index})" do
             subject = described_class.new(name: example.fetch(:name), entity: entity)
             expect(subject.path).to eq(example.fetch(:expected_path))
           end

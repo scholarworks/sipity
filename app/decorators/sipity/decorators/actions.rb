@@ -1,5 +1,6 @@
 module Sipity
   module Decorators
+    # Container for interacting and defining Actions.
     module Actions
       ANALOGOUS_RESOURCEFUL_ACTION_NAMES = {
         'show' => ['show'],
