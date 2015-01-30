@@ -46,7 +46,7 @@
             <span itemprop="actionStatus"><%= action.availability_state %></span>
             <% if action.available? %>
               <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                <a itemprop="url" href="<%= event_trigger_for_work_path(model, action.name) %>">
+                <a itemprop="url" href="<%= action.path %>">
                   <span itemprop='name'><%= action.name %></span>
                 </a>
               </div>

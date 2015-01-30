@@ -19,6 +19,11 @@ module Sipity
       its(:conversion_target) { should be_a(String) }
     end
 
+    RSpec.describe UnprocessableResourcefulActionNameError do
+      subject { described_class.new('hello') }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe InvalidStateDiagramRawStructure do
       subject { described_class.new(structure: 'hello') }
       its(:message) { should be_a(String) }

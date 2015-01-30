@@ -20,6 +20,13 @@ module Sipity
     class NonPrimativeParameterError < RuntimeError
     end
 
+    # This is not a defined resourceful action
+    class UnprocessableResourcefulActionNameError < RuntimeError
+      def initialize(name)
+        super("Received unexpected action name (#{name})")
+      end
+    end
+
     # There was a problem referencing the state for a policy lookup.
     class StatePolicyQuestionRoleMapError < RuntimeError
       def initialize(state:, context:)
