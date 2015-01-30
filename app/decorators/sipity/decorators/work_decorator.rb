@@ -34,7 +34,7 @@ module Sipity
         repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      def available_linked_actions(user:, action_name:, action_set_builder: Services::ActionSet.method(:new))
+      def available_linked_actions(user:, action_name:, action_set_builder: ActionSet.method(:new))
         return [] unless user.present?
         event_names = repository.available_event_triggers_for(user: user, entity: self)
         action_set_builder.call(repository: repository, event_names: event_names, entity: self, current_action: action_name)

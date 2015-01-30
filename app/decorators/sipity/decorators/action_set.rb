@@ -1,5 +1,5 @@
 module Sipity
-  module Services
+  module Decorators
     # A service object to help query and build a heterogeneous set of actions
     # based on event_names.
     class ActionSet

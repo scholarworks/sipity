@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module Sipity
-  module Services
+  module Decorators
     RSpec.describe ActionSet do
       let(:entity) { double('Entity') }
       let(:repository) { double('Query Repository', are_all_of_the_required_todo_items_done_for_work?: are_todo_items_done?) }
