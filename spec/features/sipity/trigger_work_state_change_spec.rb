@@ -9,7 +9,7 @@ feature "Trigger Work State Change", :devise do
     expect(Sipity::Services::Notifier).to receive(:deliver).at_least(:once)
   end
 
-  scenario 'User can create a SIP' do
+  scenario 'User can advance an object through state' do
     login_as(user, scope: :user)
     visit '/start'
     login_as(user, scope: :user)
@@ -37,6 +37,37 @@ feature "Trigger Work State Change", :devise do
       expect(the_page.processing_state).to eq('under_review')
       expect { the_page.find_named_object('event_trigger>submit_for_review') }.
         to raise_error(Capybara::ElementNotFound)
+    end
+  end
+
+  context 'with required TODO Items' do
+    before do
+      Sipity::Models::WorkTypeTodoListConfig.create!(
+        work_type: 'etd',
+        work_processing_state: 'new',
+        enrichment_type: 'describe',
+        enrichment_group: 'required'
+      )
+    end
+    scenario 'User will not see option to advance state if todo items are not done' do
+      login_as(user, scope: :user)
+      visit '/start'
+      login_as(user, scope: :user)
+      visit '/start'
+      on('new_work_page') do |the_page|
+        expect(the_page).to be_all_there
+        the_page.fill_in(:title, with: 'Hello World')
+        the_page.select('etd', from: :work_type)
+        the_page.choose(:work_publication_strategy, with: 'do_not_know')
+        the_page.submit_button.click
+      end
+
+      on('work_page') do |the_page|
+        expect(the_page.processing_state).to eq('new')
+        # Because there are no required steps; I can continue
+        expect { the_page.find_named_object('event_trigger>submit_for_review') }.
+          to raise_error(Capybara::ElementNotFound)
+      end
     end
   end
 end
