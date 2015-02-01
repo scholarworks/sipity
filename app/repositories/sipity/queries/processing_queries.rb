@@ -7,6 +7,11 @@ module Sipity
         entity = convert_to_processing_entity(entity)
       end
 
+      # For the given user:, return an ActiveRecord::Relation, that if resolved,
+      # will be all of the associated processing actors.
+      #
+      # @param user [User]
+      # @return ActiveRecord::Relation<Models::Processing::Actor>
       def scope_processing_actors_for(user:)
         user_table = User.arel_table
         memb_table = Models::GroupMembership.arel_table
@@ -30,7 +35,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity [Processing::Entity]
-      # @return ActiveRecord::Relation
+      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_processing_strategy_roles_for_user_and_entity(user:, entity:)
         entity = convert_to_processing_entity(entity)
         strategy_scope = scope_processing_strategy_roles_for(user: user, strategy: entity.strategy)
@@ -47,7 +52,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity [Processing::Strategy]
-      # @return ActiveRecord::Relation
+      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_processing_strategy_roles_for(user:, strategy:)
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
@@ -75,7 +80,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity [Processing::Entity]
-      # @return ActiveRecord::Relation
+      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_entity_specific_processing_strategy_roles(user:, entity:)
         entity = convert_to_processing_entity(entity)
         actor_scope = scope_processing_actors_for(user: user)
