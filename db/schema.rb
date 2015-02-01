@@ -198,15 +198,6 @@ ActiveRecord::Schema.define(version: 20150201002904) do
 
   add_index "sipity_processing_entity_permissions", ["strategy_authority_id", "entity_id"], name: "sipity_processing_entity_permissions_aggregate", unique: true
 
-  create_table "sipity_processing_roles", force: :cascade do |t|
-    t.integer  "strategy_id", null: false
-    t.integer  "role_id",     null: false
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-  end
-
-  add_index "sipity_processing_roles", ["strategy_id", "role_id"], name: "sipity_processing_roles_aggregate", unique: true
-
   create_table "sipity_processing_strategies", force: :cascade do |t|
     t.string   "name",        null: false
     t.text     "description"
@@ -244,15 +235,26 @@ ActiveRecord::Schema.define(version: 20150201002904) do
   add_index "sipity_processing_strategy_event_permissions", ["strategy_role_id", "strategy_event_id"], name: "sipity_processing_strategy_event_permissions_aggregate", unique: true
 
   create_table "sipity_processing_strategy_events", force: :cascade do |t|
-    t.integer  "state_id",                              null: false
-    t.integer  "action_id",                             null: false
-    t.string   "event_form_class_name",                 null: false
-    t.boolean  "completion_required",   default: false
-    t.datetime "created_at",                            null: false
-    t.datetime "updated_at",                            null: false
+    t.integer  "initial_strategy_state_id",                   null: false
+    t.integer  "strategy_action_id",                          null: false
+    t.integer  "resulting_strategy_state_id",                 null: false
+    t.string   "event_form_class_name",                       null: false
+    t.boolean  "completion_required",         default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
   end
 
-  add_index "sipity_processing_strategy_events", ["state_id", "action_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
+  add_index "sipity_processing_strategy_events", ["initial_strategy_state_id", "strategy_action_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
+  add_index "sipity_processing_strategy_events", ["resulting_strategy_state_id"], name: "sipity_processing_strategy_events_resulting_state"
+
+  create_table "sipity_processing_strategy_roles", force: :cascade do |t|
+    t.integer  "strategy_id", null: false
+    t.integer  "role_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_strategy_roles", ["strategy_id", "role_id"], name: "sipity_processing_strategy_roles_aggregate", unique: true
 
   create_table "sipity_processing_strategy_states", force: :cascade do |t|
     t.integer  "strategy_id", null: false
