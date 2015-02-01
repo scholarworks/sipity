@@ -3,6 +3,8 @@ class CreateSipityModelsProcessingStrategyAction < ActiveRecord::Migration
     create_table :sipity_processing_strategy_actions do |t|
       t.integer :strategy_id, null: false
       t.string :name, null: false
+      t.string :form_class_name
+      t.boolean :completion_required, default: false
 
       t.timestamps null: false
     end

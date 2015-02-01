@@ -4,8 +4,6 @@ class CreateSipityModelsProcessingStrategyEvent < ActiveRecord::Migration
       t.integer :originating_strategy_state_id, null: false
       t.integer :strategy_action_id, null: false
       t.integer :resulting_strategy_state_id, null: false
-      t.string :event_form_class_name
-      t.boolean :completion_required, default: false
 
       t.timestamps null: false
     end
