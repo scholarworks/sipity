@@ -34,7 +34,7 @@ module Sipity
       # strategy responsibilities and the entity specific responsibilities.
       #
       # @param user [User]
-      # @param entity [Processing::Entity]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_processing_strategy_roles_for_user_and_entity(user:, entity:)
         entity = convert_to_processing_entity(entity)
@@ -79,7 +79,7 @@ module Sipity
       # assigned to specifically to the entity (and not the parent strategy).
       #
       # @param user [User]
-      # @param entity [Processing::Entity]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_entity_specific_processing_strategy_roles(user:, entity:)
         entity = convert_to_processing_entity(entity)
@@ -108,6 +108,7 @@ module Sipity
       # permission to do something.
       #
       # @param user [User]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
       def scope_permitted_entity_strategy_events(user:, entity:)
         entity = convert_to_processing_entity(entity)
@@ -127,6 +128,19 @@ module Sipity
             )
           )
         )
+      end
+
+      # For the given :user and :entity, return an ActiveRecord::Relation,
+      # that if resolved, that is limited to only the strategy events that are
+      # available to the given :strategy_state
+      #
+      # @param user [User]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      def scope_permitted_entity_strategy_events_for_current_state(user:, entity:, strategy_state: entity.strategy_state)
+        entity = convert_to_processing_entity(entity)
+        events_scope = scope_permitted_entity_strategy_events(user: user, entity: entity)
+        events_scope.where(originating_strategy_state_id: strategy_state.id)
       end
     end
   end

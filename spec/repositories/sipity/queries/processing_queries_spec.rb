@@ -9,7 +9,7 @@ module Sipity
       let(:group) { Models::Group.new(id: 2) }
       let(:role) { Models::Role.new(id: 3) }
       let(:strategy) { Models::Processing::Strategy.new(id: 4) }
-      let(:entity) { Models::Processing::Entity.new(id: 5, strategy_id: strategy.id) }
+      let(:entity) { Models::Processing::Entity.new(id: 5, strategy_id: strategy.id, strategy_state_id: originating_state.id) }
       let(:user_processing_actor) do
         Models::Processing::Actor.create!(proxy_for_id: user.id, proxy_for_type: convert_to_polymorphic_type(user))
       end
@@ -106,6 +106,30 @@ module Sipity
           entity_specific_responsibility
           event_permission
           expect(subject).to eq([event_permission.strategy_event])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_permitted_entity_strategy_events' do
+        subject { test_repository.scope_permitted_entity_strategy_events_for_current_state(user: user, entity: entity) }
+        before do
+          entity.strategy = strategy
+          entity.strategy_state = originating_state
+        end
+        it "will include permitted strategy_events" do
+          user_processing_actor
+          entity_specific_responsibility
+          event_permission
+          expect(subject).to eq([event_permission.strategy_event])
+        end
+        it "will skip those not in the correct state" do
+          user_processing_actor
+          entity_specific_responsibility
+          event_permission
+          entity.strategy_state = resulting_state
+          expect(subject).to eq([])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
