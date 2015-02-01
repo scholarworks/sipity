@@ -109,8 +109,14 @@ module Sipity
         end
       end
 
-      context '#scope_permitted_entity_strategy_events' do
+      context '#scope_permitted_entity_strategy_events_for_current_state' do
         subject { test_repository.scope_permitted_entity_strategy_events_for_current_state(user: user, entity: entity) }
+        let!(:unavailable_state_event) do
+          Models::Processing::StrategyEvent.create!(
+            originating_strategy_state_id: resulting_state.id, resulting_strategy_state_id: 8676309,
+            strategy_action_id: action.id
+          )
+        end
         before do
           entity.strategy = strategy
           entity.strategy_state = originating_state
@@ -127,6 +133,42 @@ module Sipity
           event_permission
           entity.strategy_state = resulting_state
           expect(subject).to eq([])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_strategy_actions_with_prerequisites' do
+        subject { test_repository.scope_strategy_actions_with_prerequisites(entity: entity) }
+        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        before do
+          entity.strategy = strategy
+        end
+        it "will include permitted strategy_events" do
+          Models::Processing::StrategyActionPrerequisite.create!(
+            guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+          )
+          expect(subject).to eq([guarded_action])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_strategy_actions_without_prerequisites' do
+        subject { test_repository.scope_strategy_actions_without_prerequisites(entity: entity) }
+        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        before do
+          entity.strategy = strategy
+        end
+        it "will include actions that do not have prerequisites" do
+          Models::Processing::StrategyActionPrerequisite.create!(
+            guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+          )
+          action.save! unless action.persisted?
+          puts subject.to_sql
+          expect(subject).to eq([action])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
