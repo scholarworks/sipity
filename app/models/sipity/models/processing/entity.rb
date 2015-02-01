@@ -6,6 +6,7 @@ module Sipity
 
         belongs_to :proxy_for, polymorphic: true
         belongs_to :strategy
+        belongs_to :strategy_state
 
         has_many :entity_event_registers, dependent: :destroy
         has_many :entity_permissions, dependent: :destroy

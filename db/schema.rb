@@ -170,15 +170,17 @@ ActiveRecord::Schema.define(version: 20150201002904) do
   add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_strategy"], name: "sipity_processing_actors_proxy_for", unique: true
 
   create_table "sipity_processing_entities", force: :cascade do |t|
-    t.integer  "proxy_for_id",   null: false
-    t.string   "proxy_for_type", null: false
-    t.integer  "strategy_id",    null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "proxy_for_id",      null: false
+    t.string   "proxy_for_type",    null: false
+    t.integer  "strategy_id",       null: false
+    t.string   "strategy_state_id", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "sipity_processing_entities", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_entities_proxy_for", unique: true
   add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
+  add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", unique: true
 
   create_table "sipity_processing_entity_event_registers", force: :cascade do |t|
     t.integer  "strategy_event_id", null: false
