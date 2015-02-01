@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201002859) do
+ActiveRecord::Schema.define(version: 20150201002860) do
+
+  create_table "processing_type_state", force: :cascade do |t|
+    t.integer  "processing_type_id", null: false
+    t.string   "state",              null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "processing_type_state", ["processing_type_id", "state"], name: "processing_type_state_aggregate", unique: true
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
