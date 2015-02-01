@@ -101,6 +101,33 @@ module Sipity
           )
         )
       end
+
+      # For the given :user and :entity, return an ActiveRecord::Relation,
+      # that if resolved, will be collection of
+      # Sipity::Models::Processing::StrategyEvent object to which the user has
+      # permission to do something.
+      #
+      # @param user [User]
+      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      def scope_permitted_entity_strategy_events(user:, entity:)
+        entity = convert_to_processing_entity(entity)
+        events = Models::Processing::StrategyEvent
+        permissions = Models::Processing::StrategyEventPermission
+        role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
+        events.where(
+          events.arel_table[:id].in(
+            permissions.arel_table.project(
+              permissions.arel_table[:strategy_event_id]
+            ).where(
+              permissions.arel_table[:strategy_role_id].in(
+                role_scope.arel_table.project(role_scope.arel_table[:id]).where(
+                  role_scope.arel.constraints.reduce
+                )
+              )
+            )
+          )
+        )
+      end
     end
   end
 end
