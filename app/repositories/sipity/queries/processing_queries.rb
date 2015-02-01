@@ -24,6 +24,30 @@ module Sipity
         Models::Processing::Actor.where(user_constraints.or(group_constraints))
       end
 
+      # For the given :user and :entity, return an ActiveRecord::Relation that,
+      # if resolved, will be all of the assocated strategy roles for both the
+      # strategy responsibilities and the entity specific responsibilities.
+      #
+      # @param user [User]
+      # @param entity [Processing::Entity]
+      # @return ActiveRecord::Relation
+      def scope_processing_strategy_roles_for_user_and_entity(user:, entity:)
+        entity = convert_to_processing_entity(entity)
+        strategy_scope = scope_processing_strategy_roles_for(user: user, strategy: entity.strategy)
+        entity_specific_scope = scope_entity_specific_processing_strategy_roles(user: user, entity: entity)
+        strategy_role_table = Models::Processing::StrategyRole.arel_table
+        Models::Processing::StrategyRole.where(
+          strategy_scope.arel.constraints.reduce.or(entity_specific_scope.arel.constraints.reduce)
+        )
+      end
+
+      # For the given :user and :strategy, return an ActiveRecord::Relation that,
+      # if resolved, will be all of the assocated strategy roles that are
+      # assigned to directly to the strategy.
+      #
+      # @param user [User]
+      # @param entity [Processing::Strategy]
+      # @return ActiveRecord::Relation
       def scope_processing_strategy_roles_for(user:, strategy:)
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
@@ -45,8 +69,16 @@ module Sipity
         )
       end
 
-      def scope_custom_processing_strategy_roles_for_user_and_entity(user:, entity:)
-        actor_constraints = scope_processing_actors_for(user: user)
+      # For the given :user and :entity, return an ActiveRecord::Relation that,
+      # if resolved, will be all of the assocated strategy roles that are
+      # assigned to specifically to the entity (and not the parent strategy).
+      #
+      # @param user [User]
+      # @param entity [Processing::Entity]
+      # @return ActiveRecord::Relation
+      def scope_entity_specific_processing_strategy_roles(user:, entity:)
+        entity = convert_to_processing_entity(entity)
+        actor_scope = scope_processing_actors_for(user: user)
         specific_resp_table = Models::Processing::EntitySpecificResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
@@ -55,10 +87,10 @@ module Sipity
             specific_resp_table.project(specific_resp_table[:strategy_role_id]).
             where(
               specific_resp_table[:actor_id].in(
-                actor_constraints.arel_table.project(
-                  actor_constraints.arel_table[:id]
+                actor_scope.arel_table.project(
+                  actor_scope.arel_table[:id]
                 ).where(
-                  actor_constraints.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id)))
+                actor_scope.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id)))
               )
             )
           )

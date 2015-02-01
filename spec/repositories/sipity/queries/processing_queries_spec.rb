@@ -30,38 +30,58 @@ module Sipity
 
       end
 
+      context '#scope_processing_strategy_roles_for_user_and_entity' do
+        subject { test_repository.scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity) }
+        before { entity.strategy = strategy }
+        it "will include the strategy specific roles for the given user" do
+          user_processing_actor
+          user_strategy_responsibility
+          expect(subject).to eq([strategy_role])
+        end
+        it "will include the entity specific specific roles for the given user" do
+          user_processing_actor
+          entity_specific_responsibility
+          expect(subject).to eq([strategy_role])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_processing_actors_for' do
-        before do
+        subject { test_repository.scope_processing_actors_for(user: user) }
+        it 'will return an array of both user ' do
           user_processing_actor
           group_processing_actor
           Models::GroupMembership.create(user_id: user.id, group_id: group.id)
+          expect(subject).to eq([user_processing_actor, group_processing_actor])
         end
-
-        it 'will return an array of both user ' do
-          expect(test_repository.scope_processing_actors_for(user: user)).
-            to eq([user_processing_actor, group_processing_actor])
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
       context '#scope_processing_strategy_roles_for' do
-        before do
+        subject { test_repository.scope_processing_strategy_roles_for(user: user, strategy: strategy) }
+        it "will include the associated strategy roles for the given user" do
           user_processing_actor
           user_strategy_responsibility
+          expect(subject).to eq([strategy_role])
         end
-        it "will include the associated strategy roles for the given user" do
-          expect(test_repository.scope_processing_strategy_roles_for(user: user, strategy: strategy)).
-            to eq([strategy_role])
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
-      context '#scope_custom_processing_strategy_roles_for_user_and_entity' do
-        before do
+      context '#scope_entity_specific_processing_strategy_roles' do
+        subject { test_repository.scope_entity_specific_processing_strategy_roles(user: user, entity: entity) }
+        it "will include the associated strategy roles for the given user" do
           user_processing_actor
           entity_specific_responsibility
+          expect(subject).to eq([strategy_role])
         end
-        it "will include the associated strategy roles for the given user" do
-          expect(test_repository.scope_custom_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)).
-            to eq([strategy_role])
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
     end
