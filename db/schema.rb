@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201002862) do
+ActiveRecord::Schema.define(version: 20150201002863) do
 
   create_table "processing_type_actions", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
@@ -21,6 +21,15 @@ ActiveRecord::Schema.define(version: 20150201002862) do
   end
 
   add_index "processing_type_actions", ["processing_type_id", "action_name"], name: "processing_type_actions_aggregate", unique: true
+
+  create_table "processing_type_event_permissions", force: :cascade do |t|
+    t.integer  "processing_type_role_id",  null: false
+    t.integer  "processing_type_event_id", null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "processing_type_event_permissions", ["processing_type_role_id", "processing_type_event_id"], name: "processing_type_event_permissions_aggregate", unique: true
 
   create_table "processing_type_events", force: :cascade do |t|
     t.integer  "processing_type_state_id",                  null: false
