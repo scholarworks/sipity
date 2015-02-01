@@ -192,14 +192,18 @@ ActiveRecord::Schema.define(version: 20150201002904) do
 
   add_index "sipity_processing_entity_event_registers", ["strategy_event_id", "entity_id"], name: "sipity_processing_entity_event_registers_aggregate", unique: true
 
-  create_table "sipity_processing_entity_permissions", force: :cascade do |t|
-    t.integer  "strategy_responsibility_id", null: false
-    t.integer  "entity_id",                  null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+  create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
+    t.integer  "strategy_role_id", null: false
+    t.integer  "entity_id",        null: false
+    t.integer  "actor_id",         null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
-  add_index "sipity_processing_entity_permissions", ["strategy_responsibility_id", "entity_id"], name: "sipity_processing_entity_permissions_aggregate", unique: true
+  add_index "sipity_processing_entity_specific_responsibilities", ["actor_id"], name: "sipity_processing_entity_specific_responsibilities_actor"
+  add_index "sipity_processing_entity_specific_responsibilities", ["entity_id"], name: "sipity_processing_entity_specific_responsibilities_entity"
+  add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id", "entity_id", "actor_id"], name: "sipity_processing_entity_specific_responsibilities_aggregate", unique: true
+  add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id"], name: "sipity_processing_entity_specific_responsibilities_role"
 
   create_table "sipity_processing_strategies", force: :cascade do |t|
     t.string   "name",        null: false

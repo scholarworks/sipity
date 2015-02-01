@@ -15,6 +15,7 @@ module Sipity
 
         belongs_to :proxy_for, polymorphic: true
         has_many :strategy_responsibilities, dependent: :destroy
+        has_many :entity_specific_responsibilities, dependent: :destroy
       end
     end
   end
