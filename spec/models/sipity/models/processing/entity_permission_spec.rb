@@ -2,8 +2,10 @@ require 'rails_helper'
 
 module Sipity
   module Models
-    RSpec.describe ProcessingEntityPermission, type: :model do
-      pending "add some examples to (or delete) #{__FILE__}"
+    module Processing
+      RSpec.describe EntityPermission, type: :model do
+        pending "add some examples to (or delete) #{__FILE__}"
+      end
     end
   end
 end

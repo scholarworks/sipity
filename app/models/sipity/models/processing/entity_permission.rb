@@ -1,7 +1,9 @@
 module Sipity
   module Models
-    class ProcessingEntityPermission < ActiveRecord::Base
-      self.table_name = 'sipity_processing_entity_permissions'
+    module Processing
+      class EntityPermission < ActiveRecord::Base
+        self.table_name = 'sipity_processing_entity_permissions'
+      end
     end
   end
 end
