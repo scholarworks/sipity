@@ -6,7 +6,7 @@ module Sipity
 
         belongs_to :role, class_name: '::Sipity::Models::Role'
         belongs_to :strategy
-        has_many :strategy_authorities, dependent: :destroy
+        has_many :strategy_responsibilities, dependent: :destroy
         has_many :strategy_event_permissions, dependent: :destroy
       end
     end

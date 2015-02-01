@@ -14,7 +14,7 @@ module Sipity
         self.table_name = 'sipity_processing_actors'
 
         belongs_to :proxy_for, polymorphic: true
-        has_many :strategy_authorities, dependent: :destroy
+        has_many :strategy_responsibilities, dependent: :destroy
       end
     end
   end
