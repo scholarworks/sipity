@@ -9,6 +9,7 @@
 # See http://railsapps.github.io/rails-environment-variables.html
 
 $stdout.puts 'Configuring Work Type Todo List...'
+
 [
   ['etd', 'new', 'describe', 'required'],
   ['etd', 'new', 'attach', 'required']
@@ -19,4 +20,42 @@ $stdout.puts 'Configuring Work Type Todo List...'
     enrichment_type: enrichment_type,
     enrichment_group: enrichment_group
   )
+end
+
+$stdout.puts 'Creating ETD Reviewer Role...'
+etd_reviewer_role = Sipity::Models::Role.create!(name: 'etd_reviewer')
+
+
+$stdout.puts 'Creating ETD State Diagram...'
+Sipity::Models::Processing::Strategy.create!(name: 'etd') do |etd_strategy|
+  etd_strategy.strategy_roles.build(role: etd_reviewer_role)
+
+  etd_states = {}
+  [
+    'new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review',
+    'ready_for_ingest', 'ingesting', 'done'
+  ].each do |name|
+    etd_states[name] = etd_strategy.strategy_states.build(name: name)
+  end
+
+  etd_actions = {}
+  [
+    'submit_for_advisor_signoff', 'advisor_signs_off', 'advisor_requests_changes',
+    'student_submits_advisor_requested_changes', 'request_revisions', 'approve_for_ingest',
+    'ingest', 'ingest_completed'
+  ].each do |name|
+    etd_actions[name] = etd_strategy.strategy_actions.build(name: name)
+  end
+
+  [
+    ['new', 'submit_for_advisor_signoff', 'under_advisor_review']
+  ].each do |originating, action_name, resulting|
+    action = etd_actions.fetch(action_name)
+    originating_state = etd_states.fetch(originating)
+    resulting_state = etd_states.fetch(resulting)
+
+    action.strategy_events.build(
+      originating_strategy_state: originating_state, resulting_strategy_state: resulting_state
+    )
+  end
 end
