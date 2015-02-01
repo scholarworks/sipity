@@ -8,6 +8,7 @@ module Sipity
         belongs_to :strategy
 
         has_many :entity_event_registers, dependent: :destroy
+        has_many :entity_permissions, dependent: :destroy
       end
     end
   end
