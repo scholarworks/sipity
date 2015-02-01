@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201002863) do
+ActiveRecord::Schema.define(version: 20150201002904) do
 
   create_table "processing_type_actions", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
@@ -42,14 +42,14 @@ ActiveRecord::Schema.define(version: 20150201002863) do
 
   add_index "processing_type_events", ["processing_type_state_id", "processing_type_action_id"], name: "processing_type_events_aggregate", unique: true
 
-  create_table "processing_type_state", force: :cascade do |t|
+  create_table "processing_type_states", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
     t.string   "state",              null: false
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
 
-  add_index "processing_type_state", ["processing_type_id", "state"], name: "processing_type_state_aggregate", unique: true
+  add_index "processing_type_states", ["processing_type_id", "state"], name: "processing_type_state_aggregate", unique: true
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -218,14 +218,23 @@ ActiveRecord::Schema.define(version: 20150201002863) do
   add_index "sipity_processing_entities", ["processing_type_id"], name: "index_sipity_processing_entities_on_processing_type_id", unique: true
   add_index "sipity_processing_entities", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_entities_proxy_for", unique: true
 
-  create_table "sipity_processing_entity_authorities", force: :cascade do |t|
+  create_table "sipity_processing_entity_event_registers", force: :cascade do |t|
+    t.integer  "processing_type_event_id", null: false
+    t.integer  "processing_entity_id",     null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "sipity_processing_entity_event_registers", ["processing_type_event_id", "processing_entity_id"], name: "sipity_processing_entity_event_registers_aggregate", unique: true
+
+  create_table "sipity_processing_entity_permissions", force: :cascade do |t|
     t.integer  "processing_type_authority_id", null: false
     t.integer  "processing_entity_id",         null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
   end
 
-  add_index "sipity_processing_entity_authorities", ["processing_type_authority_id", "processing_entity_id"], name: "sipity_processing_entity_authorities_aggregate", unique: true
+  add_index "sipity_processing_entity_permissions", ["processing_type_authority_id", "processing_entity_id"], name: "sipity_processing_entity_permissions_aggregate", unique: true
 
   create_table "sipity_processing_roles", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
