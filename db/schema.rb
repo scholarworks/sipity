@@ -238,7 +238,7 @@ ActiveRecord::Schema.define(version: 20150201002904) do
     t.integer  "originating_strategy_state_id",                 null: false
     t.integer  "strategy_action_id",                            null: false
     t.integer  "resulting_strategy_state_id",                   null: false
-    t.string   "event_form_class_name",                         null: false
+    t.string   "event_form_class_name"
     t.boolean  "completion_required",           default: false
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
