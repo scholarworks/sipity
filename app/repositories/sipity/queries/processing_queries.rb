@@ -25,21 +25,40 @@ module Sipity
       end
 
       def scope_processing_strategy_roles_for(user:, strategy:)
-        actor_constraints = scope_processing_actors_for(user: user)
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
-        response = Models::Processing::StrategyRole.where(
-          strategy_role_table[:strategy_id].eq(strategy.id).
-          and(
-            strategy_role_table[:id].in(
-              responsibility_table.project(responsibility_table[:strategy_role_id]).
-              where(
-                responsibility_table[:actor_id].in(
-                  actor_constraints.arel_table.project(
-                    actor_constraints.arel_table[:id]
-                  ).where(actor_constraints.arel.constraints)
-                )
+        actor_constraints = scope_processing_actors_for(user: user)
+        strategy_role_subquery = strategy_role_table[:id].in(
+          responsibility_table.project(responsibility_table[:strategy_role_id]).
+          where(
+            responsibility_table[:actor_id].in(
+              actor_constraints.arel_table.project(
+                actor_constraints.arel_table[:id]
+              ).where(actor_constraints.arel.constraints)
+            )
+          )
+        )
+
+        Models::Processing::StrategyRole.where(
+          strategy_role_table[:strategy_id].eq(strategy.id).and(strategy_role_subquery)
+        )
+      end
+
+      def scope_custom_processing_strategy_roles_for_user_and_entity(user:, entity:)
+        actor_constraints = scope_processing_actors_for(user: user)
+        specific_resp_table = Models::Processing::EntitySpecificResponsibility.arel_table
+        strategy_role_table = Models::Processing::StrategyRole.arel_table
+
+        Models::Processing::StrategyRole.where(
+          strategy_role_table[:id].in(
+            specific_resp_table.project(specific_resp_table[:strategy_role_id]).
+            where(
+              specific_resp_table[:actor_id].in(
+                actor_constraints.arel_table.project(
+                  actor_constraints.arel_table[:id]
+                ).where(
+                  actor_constraints.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id)))
               )
             )
           )
