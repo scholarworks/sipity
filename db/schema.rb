@@ -141,13 +141,6 @@ ActiveRecord::Schema.define(version: 20150201173801) do
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true
 
-  create_table "sipity_models_processing_strategy_action_prerequisites", force: :cascade do |t|
-    t.integer  "prequisite_strategy_action_id"
-    t.integer  "strategy_action_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
   create_table "sipity_permissions", id: false, force: :cascade do |t|
     t.integer  "actor_id",               null: false
     t.string   "actor_type",  limit: 64, null: false
@@ -220,6 +213,15 @@ ActiveRecord::Schema.define(version: 20150201173801) do
   end
 
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
+
+  create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
+    t.integer  "guarded_strategy_action_id"
+    t.integer  "prequisite_strategy_action_id"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
     t.integer  "strategy_id",                         null: false
