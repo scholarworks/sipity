@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126150056) do
+ActiveRecord::Schema.define(version: 20150201002853) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -159,6 +159,15 @@ ActiveRecord::Schema.define(version: 20150126150056) do
   add_index "sipity_permissions", ["entity_id", "entity_type", "acting_as"], name: "sipity_permissions_entity_acting_as"
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
+
+  create_table "sipity_processing_types", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_types", ["name"], name: "index_sipity_processing_types_on_name", unique: true
 
   create_table "sipity_todo_item_states", force: :cascade do |t|
     t.integer  "entity_id",               null: false
