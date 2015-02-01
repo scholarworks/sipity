@@ -13,44 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20150201002904) do
 
-  create_table "processing_type_actions", force: :cascade do |t|
-    t.integer  "processing_type_id", null: false
-    t.string   "action_name",        null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  add_index "processing_type_actions", ["processing_type_id", "action_name"], name: "processing_type_actions_aggregate", unique: true
-
-  create_table "processing_type_event_permissions", force: :cascade do |t|
-    t.integer  "processing_type_role_id",  null: false
-    t.integer  "processing_type_event_id", null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
-  end
-
-  add_index "processing_type_event_permissions", ["processing_type_role_id", "processing_type_event_id"], name: "processing_type_event_permissions_aggregate", unique: true
-
-  create_table "processing_type_events", force: :cascade do |t|
-    t.integer  "processing_type_state_id",                  null: false
-    t.integer  "processing_type_action_id",                 null: false
-    t.string   "event_form_class_name",                     null: false
-    t.boolean  "completion_required",       default: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-  end
-
-  add_index "processing_type_events", ["processing_type_state_id", "processing_type_action_id"], name: "processing_type_events_aggregate", unique: true
-
-  create_table "processing_type_states", force: :cascade do |t|
-    t.integer  "processing_type_id", null: false
-    t.string   "state",              null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  add_index "processing_type_states", ["processing_type_id", "state"], name: "processing_type_state_aggregate", unique: true
-
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
     t.string   "entity_type",            null: false
@@ -199,51 +161,51 @@ ActiveRecord::Schema.define(version: 20150201002904) do
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
 
   create_table "sipity_processing_actors", force: :cascade do |t|
+    t.integer  "proxy_for_id",       null: false
+    t.string   "proxy_for_strategy", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_strategy"], name: "sipity_processing_actors_proxy_for", unique: true
+
+  create_table "sipity_processing_entities", force: :cascade do |t|
     t.integer  "proxy_for_id",   null: false
     t.string   "proxy_for_type", null: false
+    t.integer  "strategy_id",    null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
 
-  add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_actors_proxy_for", unique: true
-
-  create_table "sipity_processing_entities", force: :cascade do |t|
-    t.integer  "proxy_for_id",       null: false
-    t.string   "proxy_for_type",     null: false
-    t.integer  "processing_type_id", null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
-  end
-
-  add_index "sipity_processing_entities", ["processing_type_id"], name: "index_sipity_processing_entities_on_processing_type_id", unique: true
   add_index "sipity_processing_entities", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_entities_proxy_for", unique: true
+  add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
 
   create_table "sipity_processing_entity_event_registers", force: :cascade do |t|
-    t.integer  "processing_type_event_id", null: false
-    t.integer  "processing_entity_id",     null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "strategy_event_id", null: false
+    t.integer  "entity_id",         null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "sipity_processing_entity_event_registers", ["processing_type_event_id", "processing_entity_id"], name: "sipity_processing_entity_event_registers_aggregate", unique: true
+  add_index "sipity_processing_entity_event_registers", ["strategy_event_id", "entity_id"], name: "sipity_processing_entity_event_registers_aggregate", unique: true
 
   create_table "sipity_processing_entity_permissions", force: :cascade do |t|
-    t.integer  "processing_type_authority_id", null: false
-    t.integer  "processing_entity_id",         null: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.integer  "strategy_authority_id", null: false
+    t.integer  "entity_id",             null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
-  add_index "sipity_processing_entity_permissions", ["processing_type_authority_id", "processing_entity_id"], name: "sipity_processing_entity_permissions_aggregate", unique: true
+  add_index "sipity_processing_entity_permissions", ["strategy_authority_id", "entity_id"], name: "sipity_processing_entity_permissions_aggregate", unique: true
 
   create_table "sipity_processing_roles", force: :cascade do |t|
-    t.integer  "processing_type_id", null: false
-    t.integer  "role_id",            null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.integer  "strategy_id", null: false
+    t.integer  "role_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "sipity_processing_roles", ["processing_type_id", "role_id"], name: "sipity_processing_roles_proxy_for", unique: true
+  add_index "sipity_processing_roles", ["strategy_id", "role_id"], name: "sipity_processing_roles_aggregate", unique: true
 
   create_table "sipity_processing_strategies", force: :cascade do |t|
     t.string   "name",        null: false
@@ -254,14 +216,52 @@ ActiveRecord::Schema.define(version: 20150201002904) do
 
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
 
-  create_table "sipity_processing_strategy_authorities", force: :cascade do |t|
-    t.integer  "processing_actor_id",     null: false
-    t.integer  "processing_type_role_id", null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+  create_table "sipity_processing_strategy_actions", force: :cascade do |t|
+    t.integer  "strategy_id", null: false
+    t.string   "action_name", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  add_index "sipity_processing_strategy_authorities", ["processing_actor_id", "processing_type_role_id"], name: "sipity_processing_strategy_authorities_aggregate", unique: true
+  add_index "sipity_processing_strategy_actions", ["strategy_id", "action_name"], name: "sipity_processing_strategy_actions_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_authorities", force: :cascade do |t|
+    t.integer  "actor_id",         null: false
+    t.integer  "strategy_role_id", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "sipity_processing_strategy_authorities", ["actor_id", "strategy_role_id"], name: "sipity_processing_strategy_authorities_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_event_permissions", force: :cascade do |t|
+    t.integer  "strategy_role_id",  null: false
+    t.integer  "strategy_event_id", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "sipity_processing_strategy_event_permissions", ["strategy_role_id", "strategy_event_id"], name: "sipity_processing_strategy_event_permissions_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_events", force: :cascade do |t|
+    t.integer  "state_id",                              null: false
+    t.integer  "action_id",                             null: false
+    t.string   "event_form_class_name",                 null: false
+    t.boolean  "completion_required",   default: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "sipity_processing_strategy_events", ["state_id", "action_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_states", force: :cascade do |t|
+    t.integer  "strategy_id", null: false
+    t.string   "state_name",  null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_strategy_states", ["strategy_id", "state_name"], name: "sipity_processing_type_state_aggregate", unique: true
 
   create_table "sipity_roles", force: :cascade do |t|
     t.string   "name",        null: false

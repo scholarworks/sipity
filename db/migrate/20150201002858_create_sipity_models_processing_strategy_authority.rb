@@ -1,4 +1,4 @@
-class CreateSipityModelsProcessingTypeAuthority < ActiveRecord::Migration
+class CreateSipityModelsProcessingStrategyAuthority < ActiveRecord::Migration
   def change
     create_table :sipity_processing_strategy_authorities do |t|
       t.integer :actor_id, null: false

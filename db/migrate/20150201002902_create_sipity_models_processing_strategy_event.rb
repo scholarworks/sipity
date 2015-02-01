@@ -1,4 +1,4 @@
-class CreateSipityModelsProcessingTypeEvent < ActiveRecord::Migration
+class CreateSipityModelsProcessingStrategyEvent < ActiveRecord::Migration
   def change
     create_table :sipity_processing_strategy_events do |t|
       t.integer :state_id, null: false
@@ -9,7 +9,7 @@ class CreateSipityModelsProcessingTypeEvent < ActiveRecord::Migration
       t.timestamps null: false
     end
 
-    add_index :sipity_processing_strategy_events, [:processing_type_state_id, :processing_type_action_id],
+    add_index :sipity_processing_strategy_events, [:state_id, :action_id],
       unique: true, name: :sipity_processing_strategy_events_aggregate
   end
 end
