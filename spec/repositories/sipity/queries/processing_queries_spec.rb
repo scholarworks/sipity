@@ -39,9 +39,6 @@ module Sipity
           strategy_role_id: strategy_role.id, strategy_event_id: strategy_event.id
         )
       end
-      context '#available_processing_events_for' do
-
-      end
 
       context '#scope_processing_strategy_roles_for_user_and_entity' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity) }

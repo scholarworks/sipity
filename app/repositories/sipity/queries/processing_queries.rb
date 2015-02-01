@@ -2,11 +2,7 @@ module Sipity
   module Queries
     module ProcessingQueries
       include Conversions::ConvertToProcessingEntity
-      def available_processing_events_for(user:, entity:)
-        processing_actors = scope_processing_actors_for(user: user)
-        entity = convert_to_processing_entity(entity)
-      end
-
+      include Conversions::ConvertToPolymorphicType
       # For the given user:, return an ActiveRecord::Relation, that if resolved,
       # will be all of the associated processing actors.
       #
@@ -17,8 +13,8 @@ module Sipity
         memb_table = Models::GroupMembership.arel_table
         actor_table = Models::Processing::Actor.arel_table
 
-        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
-        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+        group_polymorphic_type = convert_to_polymorphic_type(Models::Group)
+        user_polymorphic_type = convert_to_polymorphic_type(user)
 
         user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).
           and(actor_table[:proxy_for_id].eq(user.id))
