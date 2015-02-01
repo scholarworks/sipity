@@ -1,6 +1,8 @@
 module Sipity
   module Models
     module Processing
+      # For a given processing strategy, what roles have a part to play in
+      # the processing?
       class StrategyRole < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_roles'
 
