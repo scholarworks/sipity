@@ -1,13 +1,13 @@
 class CreateSipityModelsProcessingTypeState < ActiveRecord::Migration
   def change
-    create_table :processing_type_states do |t|
-      t.integer :processing_type_id, null: false
-      t.string :state, null: false
+    create_table :sipity_processing_strategy_states do |t|
+      t.integer :strategy_id, null: false
+      t.string :state_name, null: false
 
       t.timestamps null: false
     end
 
-    add_index :processing_type_states, [:processing_type_id, :state],
-      unique: true, name: :processing_type_state_aggregate
+    add_index :sipity_processing_strategy_states, [:strategy_id, :state_name],
+      unique: true, name: :sipity_processing_type_state_aggregate
   end
 end
