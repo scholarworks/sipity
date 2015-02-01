@@ -1,6 +1,8 @@
 module Sipity
   module Models
     module Processing
+      # The intersection of an Actor and a Role. In other words, what are the
+      # actor's responsibilities?
       class StrategyAuthority < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_authorities'
         belongs_to :actor
