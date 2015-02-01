@@ -216,12 +216,12 @@ ActiveRecord::Schema.define(version: 20150201173801) do
 
   create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_action_id"
-    t.integer  "prequisite_strategy_action_id"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.integer  "prerequisite_strategy_action_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
-  add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
+  add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
     t.integer  "strategy_id",                         null: false
