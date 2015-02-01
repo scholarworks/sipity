@@ -11,16 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201002861) do
+ActiveRecord::Schema.define(version: 20150201002862) do
 
-  create_table "processing_type_action", force: :cascade do |t|
+  create_table "processing_type_actions", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
     t.string   "action_name",        null: false
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end
 
-  add_index "processing_type_action", ["processing_type_id", "action_name"], name: "processing_type_action_aggregate", unique: true
+  add_index "processing_type_actions", ["processing_type_id", "action_name"], name: "processing_type_actions_aggregate", unique: true
+
+  create_table "processing_type_events", force: :cascade do |t|
+    t.integer  "processing_type_state_id",                  null: false
+    t.integer  "processing_type_action_id",                 null: false
+    t.string   "event_form_class_name",                     null: false
+    t.boolean  "completion_required",       default: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
+  add_index "processing_type_events", ["processing_type_state_id", "processing_type_action_id"], name: "processing_type_events_aggregate", unique: true
 
   create_table "processing_type_state", force: :cascade do |t|
     t.integer  "processing_type_id", null: false
