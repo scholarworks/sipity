@@ -163,6 +163,7 @@ ActiveRecord::Schema.define(version: 20150201002904) do
   create_table "sipity_processing_actors", force: :cascade do |t|
     t.integer  "proxy_for_id",       null: false
     t.string   "proxy_for_strategy", null: false
+    t.string   "name_of_proxy"
     t.datetime "created_at",         null: false
     t.datetime "updated_at",         null: false
   end

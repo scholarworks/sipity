@@ -3,6 +3,7 @@ class CreateSipityModelsProcessingActors < ActiveRecord::Migration
     create_table :sipity_processing_actors do |t|
       t.integer :proxy_for_id, null: false
       t.string :proxy_for_strategy, null: false
+      t.string :name_of_proxy
 
       t.timestamps null: false
     end
