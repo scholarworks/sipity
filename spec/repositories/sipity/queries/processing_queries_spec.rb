@@ -157,7 +157,7 @@ module Sipity
       end
 
       context '#scope_strategy_actions_without_prerequisites' do
-        subject { test_repository.scope_strategy_actions_without_prerequisites(entity: entity) }
+        subject { test_repository.scope_strategy_actions_without_prerequisites(entity: entity, strategy: strategy) }
         let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
         before do
           entity.strategy = strategy
@@ -167,7 +167,6 @@ module Sipity
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
           )
           action.save! unless action.persisted?
-          puts subject.to_sql
           expect(subject).to eq([action])
         end
         it "will be a chainable scope" do
