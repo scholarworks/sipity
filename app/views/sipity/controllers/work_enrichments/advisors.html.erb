@@ -1,0 +1,8 @@
+<!-- TODO: Internationalize the enrichment option -->
+<h2>Tell us about your advisors</h2>
+<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
+  <%= f.error_notification %>
+  <%= field_set_tag do %>
+    <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
+  <% end %>
+<% end %>
