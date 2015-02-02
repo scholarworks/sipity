@@ -12,7 +12,7 @@ $stdout.puts 'Configuring Work Type Todo List...'
 [
   ['etd', 'new', 'describe', 'required'],
   ['etd', 'new', 'attach', 'required'],
-  ['etd', 'new', 'advisors', 'required']
+  ['etd', 'new', 'collaborators', 'required']
 ].each do |work_type, processing_state, enrichment_type, enrichment_group|
   Sipity::Models::WorkTypeTodoListConfig.create!(
     work_type: work_type,
