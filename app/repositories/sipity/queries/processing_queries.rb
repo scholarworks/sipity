@@ -165,8 +165,9 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_strategy_actions_without_prerequisites(entity:, strategy: entity.strategy)
+      def scope_strategy_actions_without_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
+        strategy ||= entity.strategy
         actions = Models::Processing::StrategyAction
         action_prereqs = Models::Processing::StrategyActionPrerequisite
 
