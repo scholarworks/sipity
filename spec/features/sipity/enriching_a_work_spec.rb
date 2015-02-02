@@ -88,4 +88,17 @@ feature 'Enriching a Work', :devise do
       the_page.attach_file(__FILE__)
     end
   end
+
+  scenario 'User can add advisors' do
+    login_as(user, scope: :user)
+    create_a_work(work_type: 'etd')
+
+    on('work_page') do |the_page|
+      the_page.click_todo_item('todo>required>advisors')
+    end
+
+    on('advisors_page') do |the_page|
+      expect(the_page).to be_all_there
+    end
+  end
 end
