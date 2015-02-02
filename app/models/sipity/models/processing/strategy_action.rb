@@ -5,6 +5,9 @@ module Sipity
       class StrategyAction < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_actions'
         belongs_to :strategy
+
+        has_many :entity_action_registers, dependent: :destroy
+
         has_many :strategy_events, dependent: :destroy
         has_many :guarding_strategy_action_prerequisites,
           dependent: :destroy,

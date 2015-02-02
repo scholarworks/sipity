@@ -183,14 +183,14 @@ ActiveRecord::Schema.define(version: 20150201173801) do
   add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
   add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", unique: true
 
-  create_table "sipity_processing_entity_event_registers", force: :cascade do |t|
+  create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
     t.integer  "strategy_event_id", null: false
     t.integer  "entity_id",         null: false
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
   end
 
-  add_index "sipity_processing_entity_event_registers", ["strategy_event_id", "entity_id"], name: "sipity_processing_entity_event_registers_aggregate", unique: true
+  add_index "sipity_processing_entity_action_registers", ["strategy_event_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate"
 
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
     t.integer  "strategy_role_id", null: false
