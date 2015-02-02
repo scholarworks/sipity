@@ -133,8 +133,9 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_permitted_entity_strategy_events_for_current_state(user:, entity:, strategy_state: entity.strategy_state)
+      def scope_permitted_entity_strategy_events_for_current_state(user:, entity:, strategy_state: nil)
         entity = convert_to_processing_entity(entity)
+        strategy_state ||= entity.strategy_state
         events_scope = scope_permitted_entity_strategy_events(user: user, entity: entity)
         events_scope.where(originating_strategy_state_id: strategy_state.id)
       end
@@ -144,8 +145,9 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_strategy_actions_with_prerequisites(entity:, strategy: entity.strategy)
+      def scope_strategy_actions_with_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
+        strategy ||= entity.strategy
         actions = Models::Processing::StrategyAction
         action_prereqs = Models::Processing::StrategyActionPrerequisite
         actions.where(
@@ -178,6 +180,23 @@ module Sipity
               action_prereqs.arel_table.project(
                 action_prereqs.arel_table[:guarded_strategy_action_id]
               )
+            )
+          )
+        )
+      end
+
+      def scope_statetegy_actions_that_have_been_taken(entity:, strategy: nil)
+        entity = convert_to_processing_entity(entity)
+        strategy ||= entity.strategy
+        actions = Models::Processing::StrategyAction
+        register = Models::Processing::EntityActionRegister
+
+        actions.where(
+          actions.arel_table[:strategy_id].eq(strategy.id).
+          and(
+            actions.arel_table[:id].in(
+              register.arel_table.project(register.arel_table[:strategy_action_id]).
+              where(register.arel_table[:entity_id].eq(entity.id))
             )
           )
         )

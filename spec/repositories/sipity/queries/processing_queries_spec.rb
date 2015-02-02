@@ -173,6 +173,39 @@ module Sipity
           expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
+
+      # context '#scope_strategy_actions_with_completed_prerequisites' do
+      #   subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity, strategy: strategy) }
+      #   let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+      #   before do
+      #     entity.strategy = strategy
+      #   end
+      #   it "will include actions that do not have prerequisites" do
+      #     Models::Processing::StrategyActionPrerequisite.create!(
+      #       guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+      #     )
+      #     action.save! unless action.persisted?
+      #     expect(subject).to eq([action, guarded_action])
+      #   end
+      #   it "will be a chainable scope" do
+      #     expect(subject).to be_a(ActiveRecord::Relation)
+      #   end
+      # end
+
+      context '#scope_statetegy_actions_that_have_been_taken' do
+        subject { test_repository.scope_statetegy_actions_that_have_been_taken(entity: entity, strategy: strategy) }
+        before do
+          entity.strategy = strategy
+        end
+        it "will include actions that do not have prerequisites" do
+          Models::Processing::EntityActionRegister.create!(entity_id: entity.id, strategy_action_id: action.id)
+          action.save! unless action.persisted?
+          expect(subject).to eq([action])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
     end
   end
 end
