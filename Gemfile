@@ -48,7 +48,8 @@ group :development do
   gem 'rb-fsevent', :require=>false
   gem 'rb-inotify', :require=>false
   gem 'spring-commands-rspec'
-  gem 'terminal-notifier-guard', '~> 1.5.3'
+  gem 'terminal-notifier'
+  gem 'terminal-notifier-guard', '~> 1.6.4'
   gem 'pry-rails'
   gem 'pry-rescue'
   gem 'pry-byebug'
