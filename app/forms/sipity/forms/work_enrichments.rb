@@ -1,9 +1,3 @@
-# Because of the `const_defined?` I'm requiring the various sipity work
-# enrichment forms.
-Dir[File.expand_path('../work_enrichments/*.rb', __FILE__)].each do |filename|
-  require_relative "./work_enrichments/#{File.basename(filename)}"
-end
-
 module Sipity
   module Forms
     # A container for the various WorkEnrichment forms

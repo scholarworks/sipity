@@ -1,10 +1,3 @@
-# Because of the `const_defined?` I'm requiring the various sipity state
-# machines
-named_concept = File.basename(__FILE__, '.rb')
-Dir[File.expand_path("../#{named_concept}/*.rb", __FILE__)].each do |filename|
-  require_relative "./#{named_concept}/#{File.basename(filename)}"
-end
-
 module Sipity
   # A submodule that is responsible for handling all state changes.
   module StateMachines

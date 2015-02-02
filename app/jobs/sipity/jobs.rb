@@ -1,8 +1,3 @@
-# Because of the above `const_defined?` I'm requiring the various sipity
-# jobs
-Dir[File.expand_path('../jobs/*.rb', __FILE__)].each do |filename|
-  require_relative "./jobs/#{File.basename(filename)}"
-end
 module Sipity
   # Responsible for processing a single concept in an asynchronous manner.
   # That means we are only passing primatives to the Jobs and it is
@@ -21,11 +16,9 @@ module Sipity
 
     def find_job_by_name(job_name)
       job_name_as_constant = job_name.to_s.classify
-      if const_defined?(job_name_as_constant)
-        const_get(job_name_as_constant)
-      else
-        fail Exceptions::JobNotFoundError, name: job_name, container: self
-      end
+      return "#{self}::#{job_name_as_constant}".constantize
+    rescue NameError
+      raise Exceptions::JobNotFoundError, name: job_name_as_constant, container: self
     end
     module_function :find_job_by_name
     private_class_method :find_job_by_name
