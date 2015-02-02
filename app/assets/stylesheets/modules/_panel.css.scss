@@ -1,19 +1,31 @@
 @import "bootstrap/variables";
 
-fieldset.panel {
+fieldset.panel,
+form.panel {
   position:relative;
+ 
+  &.with-footer {
+    padding-bottom: 4em;
+  }
 
-  legend {
+  legend.panel-heading {
     position:absolute;
   }
 
-  legend + .panel-body {
+  legend.panel-heading + .panel-body {
     margin-top:37px; // Assumes a 16px font size (like .panel-title h3)
   }
 
   // Field validations are automatically placed in span.help-inline
   .help-inline {
     color:$alert-danger-text;
+  }
+
+  .panel-footer {
+    bottom:0;
+    left:0;
+    position:absolute;
+    width:100%;
   }
 }
 

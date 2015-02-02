@@ -1,7 +1,16 @@
-<h2>Request a DOI?</h2>
-<%= simple_form_for(model.request_a_doi_form, url: request_a_doi_work_doi_path(model.work), method: :post, as: :doi) do |f| %>
-  <%= f.error_notification %>
-  <%= field_set_tag do %>
+<%= simple_form_for(
+  model.request_a_doi_form,
+  url: request_a_doi_work_doi_path(model.work),
+  method: :post,
+  as: :doi,
+  html: { class: 'create_a_doi panel panel-primary with-footer' }
+) do |f| %>
+  <legend class="panel-heading">
+    <%= content_tag :h3, t('sipity/dois.panels.new_doi.title_html'), class: 'panel-title' %>
+  </legend>
+  <fieldset class="panel-body">
+    <%= content_tag :p, t('sipity/dois.panels.new_doi.hint'), class: 'panel-hint' %>
+    <%= f.error_notification %>
     <dl>
       <dt>Title</dt>
       <dd><%= f.object.title %></dd>
@@ -20,6 +29,8 @@
     <% end %>
     <%= f.input :publisher %>
     <%= f.input :publication_date %>
+  </fieldset>
+  <%= model.work.with_action_pane('new_doi', 'panel-footer') do %>
     <%= f.submit %>
   <% end %>
 <% end %>

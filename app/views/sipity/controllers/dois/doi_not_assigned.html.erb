@@ -1,12 +1,11 @@
-<h1>DOI Not Assigned for <span><%= model.work %></span></h1>
+<%= content_tag :h1, t('sipity/dois.action/show.call_to_action') %>
+<%= content_tag :p, t('sipity/dois.action/show.description_html') %>
 
-<%= render template: 'sipity/controllers/dois/assign_a_doi' %>
+<div class="panel-tiles">
+  <%= render template: 'sipity/controllers/dois/assign_a_doi' %>
+  <%= render template: 'sipity/controllers/dois/request_a_doi' %>
+</div>
 
-<p><strong>OR</strong></p>
-
-<%= render template: 'sipity/controllers/dois/request_a_doi' %>
-
-<p><strong>OR</strong></p>
-
-<h2>Not Now</h2>
-<a href="<%= work_path(model.work) %>" class="btn btn-primary">Go back to <%= model.work %></a>
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t('sipity/dois.action/show.cancel'), work_path(model.work), class: 'btn btn-primary' %>
+<% end %>

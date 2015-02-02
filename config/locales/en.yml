@@ -32,17 +32,29 @@ en:
       work:
         create: 'Continue'
         update: 'Update'
+      doi:
+        create: 'Assign a DOI'
   sipity/dois:
     action/show:
+      call_to_action: 'DOI Assignment'
+      cancel: 'Return without assigning a DOI'
+      description_html: 'A <a href="http://simple.wikipedia.org/wiki/Digital_Object_Identifier">Digital Object Identifer</a> is the best way to cite an online work (like this one) in academic publications.'
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
-      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
       doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
+      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
+    panels:
+      existing_doi:
+        hint: 'If you published this work elsewhere you may already have a DOI.'
+        title_html: 'Do you <b>already have</b> a DOI?'
+      new_doi:
+        hint: 'We need a bit more information to create a DOI for you:'
+        title_html: 'Would you like to <b>create</b> a DOI?'
   sipity/works:
     label:
-      attributes_html: 'What is the <b>title</b> of your work?'
-      work_type_html: 'What <b>kind</b> of work is this?'
-      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
       access_rights_answer_html: 'Who can <b>see</b> the completed submmission?'
+      attributes_html: 'What is the <b>title</b> of your work?'
+      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
+      work_type_html: 'What <b>kind</b> of work is this?'
     action/create:
       failure: 'There is a problem with your sumbission.'
       success: 'Thank you for your submission!'
@@ -65,3 +77,7 @@ en:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
+  simple_form:
+    labels:
+      doi:
+        identifier: 'Existing DOI'
