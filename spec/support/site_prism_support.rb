@@ -124,9 +124,9 @@ module SitePrism
       end
     end
 
-    class AdvisorsPage < SitePrism::Page
+    class CollaboratorsPage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
-      element :submit_button, "form [name='form>advisors>submit'][type='submit']"
+      element :submit_button, "form [name='form>collaborators>submit'][type='submit']"
     end
 
     class AttachPage < SitePrism::Page

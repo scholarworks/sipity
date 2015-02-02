@@ -89,15 +89,15 @@ feature 'Enriching a Work', :devise do
     end
   end
 
-  scenario 'User can add advisors' do
+  scenario 'User can add collaborators' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
-      the_page.click_todo_item('todo>required>advisors')
+      the_page.click_todo_item('todo>required>collaborators')
     end
 
-    on('advisors_page') do |the_page|
+    on('collaborators_page') do |the_page|
       expect(the_page).to be_all_there
     end
   end
