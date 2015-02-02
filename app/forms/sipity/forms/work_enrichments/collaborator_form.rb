@@ -2,10 +2,10 @@ module Sipity
   module Forms
     module WorkEnrichments
       # Exposes a means for attaching files to the associated work.
-      class AdvisorForm < Forms::WorkEnrichmentForm
+      class CollaboratorForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @advisor_attributes = attributes[:advisor_attributes]
+          @collaborators_attributes = attributes[:collaborators_attributes]
         end
       end
     end

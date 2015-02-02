@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     module WorkEnrichments
-      RSpec.describe AdvisorForm do
+      RSpec.describe CollaboratorForm do
         let(:work) { Models::Work.new(id: '1234') }
         subject { described_class.new(work: work) }
 
@@ -26,10 +26,6 @@ module Sipity
             end
             it 'will return false if not valid' do
               expect(subject.submit(repository: repository, requested_by: user))
-            end
-            it 'will not create create any additional attributes entries' do
-              expect { subject.submit(repository: repository, requested_by: user) }.
-                to_not change { Models::Collaborators.count }
             end
           end
 
