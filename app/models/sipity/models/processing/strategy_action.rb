@@ -11,7 +11,7 @@ module Sipity
         has_many :strategy_events, dependent: :destroy
         has_many :guarding_strategy_action_prerequisites,
           dependent: :destroy,
-          foreign_key: :required_strategy_action_id,
+          foreign_key: :prerequisite_strategy_action_id,
           class_name: 'Sipity::Models::Processing::StrategyActionPrerequisite'
 
         has_many :requiring_strategy_action_prerequisites,

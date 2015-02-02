@@ -30,7 +30,7 @@ module Sipity
       let(:resulting_state) { Models::Processing::StrategyState.new(id: 8, strategy_id: strategy.id, name: 'done') }
       let(:strategy_event) do
         Models::Processing::StrategyEvent.create!(
-          id: 9, originating_strategy_state_id: originating_state.id, resulting_strategy_state_id: resulting_state.id,
+          originating_strategy_state_id: originating_state.id, resulting_strategy_state_id: resulting_state.id,
           strategy_action_id: action.id
         )
       end
@@ -174,24 +174,6 @@ module Sipity
         end
       end
 
-      # context '#scope_strategy_actions_with_completed_prerequisites' do
-      #   subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity, strategy: strategy) }
-      #   let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
-      #   before do
-      #     entity.strategy = strategy
-      #   end
-      #   it "will include actions that do not have prerequisites" do
-      #     Models::Processing::StrategyActionPrerequisite.create!(
-      #       guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
-      #     )
-      #     action.save! unless action.persisted?
-      #     expect(subject).to eq([action, guarded_action])
-      #   end
-      #   it "will be a chainable scope" do
-      #     expect(subject).to be_a(ActiveRecord::Relation)
-      #   end
-      # end
-
       context '#scope_statetegy_actions_that_have_been_taken' do
         subject { test_repository.scope_statetegy_actions_that_have_been_taken(entity: entity, strategy: strategy) }
         before do
@@ -206,6 +188,46 @@ module Sipity
           expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
+
+      context '#scope_available_and_permitted_events' do
+        subject { test_repository.scope_available_and_permitted_events(entity: entity, user: user) }
+        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        before do
+          entity.strategy = strategy
+          entity.strategy_state = originating_state
+        end
+
+        it "will include actions that do not have prerequisites" do
+          action.save! unless action.persisted?
+          action_with_completed_prerequisites = Models::Processing::StrategyAction.
+          create!(strategy_id: strategy.id, name: 'completed_prerequisites') do |current_action|
+            current_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action_id: action.id)
+            current_action.entity_action_registers.build(entity_id: entity.id)
+          end
+
+          action_with_incomplete_prerequisites = Models::Processing::StrategyAction.
+          create!(strategy_id: strategy.id, name: 'without_prerequisites') do |current_action|
+            current_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action_id: action_with_completed_prerequisites.id)
+          end
+
+          event_with_no_prerequisites = Models::Processing::StrategyEvent.create!(
+            originating_strategy_state_id: originating_state.id, resulting_strategy_state_id: resulting_state.id,
+            strategy_action_id: action.id
+          )
+
+          # Making sure that I have the expected counts
+          expect(Models::Processing::StrategyAction.count).to eq(3)
+          expect(Models::Processing::EntityActionRegister.count).to eq(1)
+          expect(Models::Processing::StrategyActionPrerequisite.count).to eq(2)
+
+          expect(subject).to eq([action])
+        end
+
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
     end
   end
 end
