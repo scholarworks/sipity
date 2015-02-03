@@ -7,10 +7,28 @@ module Sipity
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) { Models::Collaborator.new(name: 'Jeremy', role: 'advisor') }
-
         it 'will create an collaborator' do
+          expect(test_repository).to receive(:create_sipity_user_from).with(netid: collaborator.netid)
           expect { test_repository.assign_collaborators_to(work: work, collaborators: collaborator) }.
             to change { Models::Collaborator.where(work_id: work.id).count }.by(1)
+        end
+      end
+
+      context '#create_sipity_user_from' do
+        it 'will create a user from the given netid if one does not exist' do
+          expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
+            to change { User.count }.by(1)
+        end
+        it 'will skip user creation of the netID exists' do
+          test_repository.create_sipity_user_from(netid: 'helloworld')
+
+          expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
+            to_not change { User.count }
+        end
+
+        it 'will skip user creation if no netid is given' do
+          expect { test_repository.create_sipity_user_from(netid: '') }.
+            to_not change { User.count }
         end
       end
 
