@@ -19,6 +19,12 @@ feature 'Enriching a Work', :devise do
     end
   end
 
+  scenario 'User creates a work then sees it on their dashboard' do
+    login_as(user, scope: :user)
+    create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
+    visit '/dashboard'
+  end
+
   scenario 'User can create a Work' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')

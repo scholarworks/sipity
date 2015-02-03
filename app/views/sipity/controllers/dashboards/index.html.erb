@@ -1,0 +1,31 @@
+<div>
+  <h2>Search Pane</h2>
+  <form method="get">
+    <fieldset>
+      <select name="work_type"><option value="etd">ETD</option></select>
+      <select name="processing_state"><option value="under_review">Under Review</option></select>
+      <input type="search">
+      <input type="submit">
+    </fieldset>
+  </form>
+</div>
+
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Work</th>
+        <th>Type</th>
+        <th>Processing State</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% view.each do |work| %>
+        <tr>
+          <td><%= link_to(work.title, work_path(work)) %></td>
+          <td><%= work.work_type %></td>
+          <td><%= work.processing_state %></td>
+        </tr>
+      <% end %>
+  </table>
+</div>
