@@ -6,6 +6,10 @@
 module Sipity
   class CommandRepositoryInterface
     # @see ./app/repositories/sipity/commands/work_commands.rb
+    def assign_collaborators_to(work:, collaborators:)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
     def attach_file_to(work:, file:, user: user, pid_minter: -> {})
     end
 

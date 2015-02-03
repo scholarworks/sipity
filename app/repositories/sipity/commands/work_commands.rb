@@ -3,6 +3,14 @@ module Sipity
   module Commands
     # Commands
     module WorkCommands
+      # Responsible for assigning collaborators to a work.
+      def assign_collaborators_to(work:, collaborators:)
+        Array.wrap(collaborators).each do |collaborator|
+          collaborator.work_id = work.id
+          collaborators.save!
+        end
+      end
+
       def update_processing_state!(entity:, to:)
         # REVIEW: Should this be re-finding the work? Is it cheating to re-use
         #   the given work? Is it unsafe as far as state is concerned?

@@ -3,8 +3,15 @@ require 'rails_helper'
 module Sipity
   module Commands
     RSpec.describe WorkCommands, type: :command_with_related_query do
-      context '#assign_a_pid' do
-        it 'will assign a unique permanent persisted identifier for the work'
+
+      context '#assign_collaborators_to' do
+        let(:work) { Models::Work.new(id: 123) }
+        let(:collaborator) { Models::Collaborator.new(name: 'Jeremy', role: 'advisor') }
+
+        it 'will create an collaborator' do
+          expect { test_repository.assign_collaborators_to(work: work, collaborators: collaborator) }.
+            to change { Models::Collaborator.where(work_id: work.id).count }.by(1)
+        end
       end
 
       context '#update_processing_state!' do

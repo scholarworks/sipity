@@ -15,11 +15,6 @@ module Sipity
           @collaborators || collaborators_from_work
         end
 
-        def collaborators_from_work
-          return [] unless work
-          work.collaborators.present? ? work.collaborators : [Models::Collaborator.build_default]
-        end
-
         validate :each_collaborator_must_be_valid
 
         # Mirroring the expected behavior/implementation of the
@@ -35,19 +30,21 @@ module Sipity
           @collaborators_attributes = inputs
         end
 
+        private
+
+        def save(repository:, requested_by:)
+          super { repository.assign_collaborators_to(work: work, collaborators: collaborators) }
+        end
+
+        def collaborators_from_work
+          return [] unless work
+          work.collaborators.present? ? work.collaborators : [Models::Collaborator.build_default]
+        end
+
         def each_collaborator_must_be_valid
           return true if collaborators.all?(&:valid?)
           errors.add(:collaborators_attributes, 'are incomplete')
         end
-        private :each_collaborator_must_be_valid
-
-        def save(repository:, requested_by:)
-          super do
-            # A little cheat. I was assuming I would use a repository object
-            work.collaborators.each(&:save!)
-          end
-        end
-        private :save
 
         def build_collaborator_from_input(collection, attributes)
           return if !attributes[:name].present? && !attributes[:id].present?
