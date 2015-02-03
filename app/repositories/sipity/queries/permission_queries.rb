@@ -142,6 +142,7 @@ module Sipity
       # @note Welcome to the land of AREL.
       # @see https://github.com/rails/arel AREL - A Relational Algebra
       def scope_entities_for_entity_type_and_user_acting_as(entity_type:, user:, acting_as:)
+        return entity_type.where("0 = 1") unless user.present?
         perm_table = Models::Permission.arel_table
         memb_table = Models::GroupMembership.arel_table
         actor_id = user.id

@@ -6,7 +6,7 @@ module Sipity
       respond_to :html, :json
 
       def index
-        @view = Models::Work.all
+        @view = repository.find_works_for(user: current_user)
         respond_with(@view)
       end
       attr_reader :view
