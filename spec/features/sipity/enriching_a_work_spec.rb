@@ -7,16 +7,21 @@ feature 'Enriching a Work', :devise do
     Warden.test_mode!
   end
   let(:user) { Sipity::Factories.create_user }
-  scenario 'User can create a Work' do
-    login_as(user, scope: :user)
+
+  def create_a_work(options = {})
     visit '/start'
     on('new_work_page') do |the_page|
       expect(the_page).to be_all_there
-      the_page.fill_in(:title, with: 'Hello World')
-      the_page.select('etd', from: :work_type)
-      the_page.choose(:work_publication_strategy, with: 'do_not_know')
+      the_page.fill_in(:title, with: options.fetch(:title, 'Hello World'))
+      the_page.select(options.fetch(:work_type, 'etd'), from: :work_type)
+      the_page.choose(:work_publication_strategy, with: options.fetch(:work_publication_strategy, 'do_not_know'))
       the_page.submit_button.click
     end
+  end
+
+  scenario 'User can create a Work' do
+    login_as(user, scope: :user)
+    create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['Hello World'])
@@ -53,14 +58,7 @@ feature 'Enriching a Work', :devise do
 
   scenario 'User can describe additional data' do
     login_as(user, scope: :user)
-    visit '/start'
-    on('new_work_page') do |the_page|
-      expect(the_page).to be_all_there
-      the_page.fill_in(:title, with: 'Hello World')
-      the_page.select('etd', from: :work_type)
-      the_page.choose(:work_publication_strategy, with: 'do_not_know')
-      the_page.submit_button.click
-    end
+    create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('todo>required>describe')
@@ -79,14 +77,7 @@ feature 'Enriching a Work', :devise do
 
   scenario 'User can attach files' do
     login_as(user, scope: :user)
-    visit '/start'
-    on('new_work_page') do |the_page|
-      expect(the_page).to be_all_there
-      the_page.fill_in(:title, with: 'Hello World')
-      the_page.select('etd', from: :work_type)
-      the_page.choose(:work_publication_strategy, with: 'do_not_know')
-      the_page.submit_button.click
-    end
+    create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('todo>required>attach')
@@ -95,6 +86,19 @@ feature 'Enriching a Work', :devise do
     on('attach_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.attach_file(__FILE__)
+    end
+  end
+
+  scenario 'User can add collaborators' do
+    login_as(user, scope: :user)
+    create_a_work(work_type: 'etd')
+
+    on('work_page') do |the_page|
+      the_page.click_todo_item('todo>required>collaborators')
+    end
+
+    on('collaborators_page') do |the_page|
+      expect(the_page).to be_all_there
     end
   end
 end

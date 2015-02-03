@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150126150056) do
+ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -81,14 +81,19 @@ ActiveRecord::Schema.define(version: 20150126150056) do
   add_index "sipity_attachments", ["work_id"], name: "index_sipity_attachments_on_work_id"
 
   create_table "sipity_collaborators", force: :cascade do |t|
-    t.integer  "work_id",    null: false
+    t.integer  "work_id",                                null: false
     t.integer  "sequence"
     t.string   "name"
-    t.string   "role",       null: false
+    t.string   "role",                                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "netid"
+    t.string   "email"
+    t.boolean  "responsible_for_review", default: false
   end
 
+  add_index "sipity_collaborators", ["email"], name: "index_sipity_collaborators_on_email"
+  add_index "sipity_collaborators", ["netid"], name: "index_sipity_collaborators_on_netid"
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: :cascade do |t|
@@ -159,6 +164,136 @@ ActiveRecord::Schema.define(version: 20150126150056) do
   add_index "sipity_permissions", ["entity_id", "entity_type", "acting_as"], name: "sipity_permissions_entity_acting_as"
   add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
   add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
+
+  create_table "sipity_processing_actors", force: :cascade do |t|
+    t.integer  "proxy_for_id",   null: false
+    t.string   "proxy_for_type", null: false
+    t.string   "name_of_proxy"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_actors_proxy_for", unique: true
+
+  create_table "sipity_processing_entities", force: :cascade do |t|
+    t.integer  "proxy_for_id",      null: false
+    t.string   "proxy_for_type",    null: false
+    t.integer  "strategy_id",       null: false
+    t.string   "strategy_state_id", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "sipity_processing_entities", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_entities_proxy_for", unique: true
+  add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
+  add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", unique: true
+
+  create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
+    t.integer  "strategy_action_id", null: false
+    t.integer  "entity_id",          null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate"
+
+  create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
+    t.integer  "strategy_role_id", null: false
+    t.integer  "entity_id",        null: false
+    t.integer  "actor_id",         null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "sipity_processing_entity_specific_responsibilities", ["actor_id"], name: "sipity_processing_entity_specific_responsibilities_actor"
+  add_index "sipity_processing_entity_specific_responsibilities", ["entity_id"], name: "sipity_processing_entity_specific_responsibilities_entity"
+  add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id", "entity_id", "actor_id"], name: "sipity_processing_entity_specific_responsibilities_aggregate", unique: true
+  add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id"], name: "sipity_processing_entity_specific_responsibilities_role"
+
+  create_table "sipity_processing_strategies", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
+
+  create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
+    t.integer  "guarded_strategy_action_id"
+    t.integer  "prerequisite_strategy_action_id"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_actions", force: :cascade do |t|
+    t.integer  "strategy_id",                         null: false
+    t.string   "name",                                null: false
+    t.string   "form_class_name"
+    t.boolean  "completion_required", default: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "sipity_processing_strategy_actions", ["strategy_id", "name"], name: "sipity_processing_strategy_actions_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_event_permissions", force: :cascade do |t|
+    t.integer  "strategy_role_id",  null: false
+    t.integer  "strategy_event_id", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "sipity_processing_strategy_event_permissions", ["strategy_role_id", "strategy_event_id"], name: "sipity_processing_strategy_event_permissions_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_events", force: :cascade do |t|
+    t.integer  "originating_strategy_state_id", null: false
+    t.integer  "strategy_action_id",            null: false
+    t.integer  "resulting_strategy_state_id",   null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "sipity_processing_strategy_events", ["originating_strategy_state_id", "strategy_action_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
+  add_index "sipity_processing_strategy_events", ["resulting_strategy_state_id"], name: "sipity_processing_strategy_events_resulting_state"
+
+  create_table "sipity_processing_strategy_responsibilities", force: :cascade do |t|
+    t.integer  "actor_id",         null: false
+    t.integer  "strategy_role_id", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+  end
+
+  add_index "sipity_processing_strategy_responsibilities", ["actor_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_roles", force: :cascade do |t|
+    t.integer  "strategy_id", null: false
+    t.integer  "role_id",     null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_strategy_roles", ["strategy_id", "role_id"], name: "sipity_processing_strategy_roles_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_states", force: :cascade do |t|
+    t.integer  "strategy_id", null: false
+    t.string   "name",        null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_processing_strategy_states", ["strategy_id", "name"], name: "sipity_processing_type_state_aggregate", unique: true
+
+  create_table "sipity_roles", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_roles", ["name"], name: "index_sipity_roles_on_name", unique: true
 
   create_table "sipity_todo_item_states", force: :cascade do |t|
     t.integer  "entity_id",               null: false

@@ -10,7 +10,7 @@ module Sipity
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
-        @enrichment_type = attributes.fetch(:enrichment_type) { 'attach' }
+        @enrichment_type = attributes.fetch(:enrichment_type) { default_enrichment_type }
       end
 
       attr_reader :work, :enrichment_type
@@ -33,6 +33,10 @@ module Sipity
 
       def event_name
         File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
+      end
+
+      def default_enrichment_type
+        self.class.to_s.sub(/^.*:(\w+)Form$/, '\1').underscore
       end
     end
   end
