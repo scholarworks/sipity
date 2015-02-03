@@ -20,17 +20,36 @@ module Sipity
 
         context '#submit' do
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { double('User') }
+          let(:user) { User.new(id: '1') }
           context 'with invalid data' do
             before do
               expect(subject).to receive(:valid?).and_return(false)
             end
+
             it 'will return false if not valid' do
               expect(subject.submit(repository: repository, requested_by: user))
             end
           end
 
+          context 'with nested validation' do
+            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+            let(:collaborators_attributes) do
+              # Because the role is empty!----------V
+              { __sequence: { name: "Jeremy", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+            end
+            its(:valid?) { should be_falsey }
+          end
+
           context 'with valid data' do
+            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+            let(:collaborators_attributes) do
+              { __sequence: { name: "Jeremy", role: "author", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+            end
+
+            it 'will create a collaborator' do
+              expect(repository).to receive(:assign_collaborators_to).and_call_original
+              subject.submit(repository: repository, requested_by: user)
+            end
           end
         end
       end
