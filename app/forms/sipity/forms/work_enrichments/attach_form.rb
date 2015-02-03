@@ -13,6 +13,11 @@ module Sipity
         validates :files, presence: true
         attr_accessor :files
 
+        def attachments(decorator: Decorators::AttachmentDecorator)
+          Queries::AttachmentQueries.work_attachments(work: work).
+              map { |obj| decorator.decorate(obj) }
+        end
+
         private
 
         def save(repository:, requested_by:)
