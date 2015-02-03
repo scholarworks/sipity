@@ -1,3 +1,9 @@
+# Getting Started
+
+* Clone the repository
+* Run `$ bundle`
+* Run `$ rake bootstrap`
+
 # I Don't Know What To Do
 
 If you are just joining the project, or are unclear what to do, how about helping with documentation?
