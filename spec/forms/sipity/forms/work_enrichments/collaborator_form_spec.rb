@@ -10,6 +10,7 @@ module Sipity
         its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
 
         it { should respond_to :work }
+        its(:enrichment_type) { should eq('collaborator') }
 
         it 'will require a work' do
           subject = described_class.new(work: nil)

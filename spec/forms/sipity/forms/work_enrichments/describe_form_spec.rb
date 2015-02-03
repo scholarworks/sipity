@@ -7,6 +7,7 @@ module Sipity
         let(:work) { Models::Work.new(id: '1234') }
         subject { described_class.new(work: work) }
 
+        its(:enrichment_type) { should eq('describe') }
         its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
 
         it { should respond_to :work }

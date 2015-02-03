@@ -8,6 +8,7 @@ module Sipity
         subject { described_class.new(work: work) }
 
         its(:policy_enforcer) { should be_present }
+        its(:enrichment_type) { should eq('attach') }
 
         context 'validations' do
           it 'will require a work' do
