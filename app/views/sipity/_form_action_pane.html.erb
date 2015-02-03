@@ -1,3 +1,4 @@
-<div class="<%= dom_class(object, name) %> action-pane">
+<% css_class ||= '' %>
+<div class="<%= dom_class(object, name) %> <%= css_class %> action-pane">
   <%= yield %>
 </div>

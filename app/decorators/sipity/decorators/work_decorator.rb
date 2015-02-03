@@ -14,8 +14,8 @@ module Sipity
         h.render(layout: 'sipity/form_panel', locals: { name: name, theme: theme, object: self }, &block)
       end
 
-      def with_action_pane(name, &block)
-        h.render(layout: 'sipity/form_action_pane', locals: { name: name, object: self }, &block)
+      def with_action_pane(name, css_class = '', &block)
+        h.render(layout: 'sipity/form_action_pane', locals: { name: name, css_class: css_class, object: self }, &block)
       end
 
       def to_s
