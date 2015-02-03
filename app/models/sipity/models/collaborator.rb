@@ -22,6 +22,21 @@ module Sipity
       #   database.
       validates :role, presence: true
 
+      # REVIEW: I don't like the validations on the model, but this is a concession
+      #   for DLTP-360. Ideally another form builder tool would work.
+      #   I would prefer forms to represent business logic/validations.
+      validates :name, presence: true
+      validate :validate_required_information_if_responsible_for_review
+
+      def validate_required_information_if_responsible_for_review
+        return true unless responsible_for_review?
+        return true if netid.present? || email.present?
+        errors.add(:netid)
+        errors.add(:email)
+        errors.add(:responsible_for_review)
+      end
+      private :validate_required_information_if_responsible_for_review
+
       # While this make look ridiculous, if I use an Array, the enum declaration
       # insists on persisting the value as the index instead of the key. While
       # this might make more sense from a storage standpoint, it is not as clear

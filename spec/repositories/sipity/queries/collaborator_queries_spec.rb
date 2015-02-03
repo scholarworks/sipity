@@ -9,13 +9,13 @@ module Sipity
 
       context '.work_collaborators_for' do
         it 'returns the collaborators for the given work and role' do
-          Models::Collaborator.create!(work: work, role: 'author')
+          Models::Collaborator.create!(work: work, role: 'author', name: 'jeremy')
           expect(subject.work_collaborators_for(work: work, role: 'author').count).to eq(1)
         end
         it 'returns the collaborators for the given work' do
-          one = Models::Collaborator.create!(work: work, role: 'author')
-          two = Models::Collaborator.create!(work: work, role: 'advisor')
-          three = Models::Collaborator.create!(work: work_two, role: 'advisor')
+          one = Models::Collaborator.create!(work: work, role: 'author', name: 'jeremy')
+          two = Models::Collaborator.create!(work: work, role: 'advisor', name: 'jeremy')
+          three = Models::Collaborator.create!(work: work_two, role: 'advisor', name: 'jeremy')
           expect(subject.work_collaborators_for(work: work)).to eq([one, two])
           expect(subject.work_collaborators_for(role: 'advisor')).to eq([two, three])
         end
