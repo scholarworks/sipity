@@ -1,13 +1,17 @@
 <div>
-  <h2>Search Pane</h2>
-  <form method="get">
+  <%= form_tag(dashboard_path, method: 'get') do %>
     <fieldset>
-      <select name="work_type"><option value="etd">ETD</option></select>
-      <select name="processing_state"><option value="under_review">Under Review</option></select>
-      <input type="search">
-      <input type="submit">
+      <%# This is the very specific case, to get things working. %>
+      <%= select_tag(
+            :processing_state,
+            options_from_collection_for_select(
+              ::Sipity::StateMachines::EtdStateMachine.state_diagram.states, :to_s, :to_s, params[:processing_state]
+            ),
+            include_blank: true
+      ) %>
+      <%= submit_tag("Filter") %>
     </fieldset>
-  </form>
+  <% end %>
 </div>
 
 <div>
