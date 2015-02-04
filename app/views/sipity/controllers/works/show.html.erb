@@ -1,102 +1,120 @@
-<div itemscope itemtype="http://schema.org/CreativeWork">
-<div class="card">
-  <h2 itemprop="name"><%= model.title %></h2>
-  <dl class="work">
-    <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-    <dd class="value title"><%= model.title %></dt>
-    <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-    <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
-    <% if model.collaborators.any? %>
-      <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
-      <dd class="value collaborators">
-        <ul class="collaborators-list">
-          <% model.collaborators.each do |collaborator| %>
-            <li class="collaborators-list-item">
-              <dl class="collaborator">
-                <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
-                <dd class="value name"><%= collaborator.name %></dd>
-                <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
-                <dd class="value role"><%= collaborator.role %></dd>
+<section itemscope itemtype="http://schema.org/CreativeWork">
+
+  <article class="work-description">
+    <h2 itemprop="name" class="work-title"><%= model.title %></h2>
+    <p class="work-type"><%= model.work_type %></p>
+    <dl class="work attribute-listing">
+      <dt class="predicate title visuallyhidden"><%= model.human_attribute_name(:title) %></dt>
+      <dd class="value title visuallyhidden"><%= model.title %></dt>
+      <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
+      <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
+      <% if model.collaborators.any? %>
+        <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
+        <dd class="value collaborators">
+          <ul class="collaborators-list">
+            <% model.collaborators.each do |collaborator| %>
+              <li class="collaborators-list-item">
+                <dl class="collaborator">
+                  <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
+                  <dd class="value name"><%= collaborator.name %></dd>
+                  <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
+                  <dd class="value role"><%= collaborator.role %></dd>
+                </dl>
+              </li>
+            <% end %>
+          </ul>
+        </dd>
+      <% end %>
+      <% if model.additional_attributes.any? %>
+        <% model.additional_attributes.each do |attribute| %>
+          <dt><%= attribute.key %></dt>
+          <dd><%= attribute.value %></dd>
+        <% end %>
+      <% end %>
+    </dl>
+  </article>
+
+  <aside class="work-tasks">
+    <h2>Submission ToDo List</h2>
+
+    <div class="todo">
+      <% model.each_todo_item_set do |set, actions| %>
+      <%# TODO: the set should be an object not a string; That object should have I18n %>
+        <div class="item-set">
+          <h3 class="set-title"><%= set.titleize %></h3>
+          <ul class="item-list">
+            <% actions.each do |action| %>
+              <% is_done = (action.state == 'done') %>
+              <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
+                <span class="icon-wrapper-24">
+                  <% if is_done %>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  <% end %>
+                </span>
+                <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
+                <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                  <% button_class = is_done ? 'btn-default' : 'btn-primary' %>
+                  <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                    <span itemprop="name"><%= action.label %></span>
+                  </a>
+                </span>
+                <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+              </li>
+            <% end %>
+          <ul>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="recommendations">
+      <h3>Recommended</h3>
+      <ul class="recommendations-list">
+        <% %w(doi citation).each do |recommendation_name| %>
+          <% model.with_recommendation(recommendation_name) do |recommendation| %>
+            <li class="recommendations-list-item">
+              <h4><%= recommendation.human_name %></h4>
+              <dl class="recommendation">
+                <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
+                <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: "recommendation-#{recommendation_name}" %></dd>
               </dl>
             </li>
           <% end %>
-        </ul>
-      </dd>
-    <% end %>
-    <% if model.additional_attributes.any? %>
-      <% model.additional_attributes.each do |attribute| %>
-        <dt><%= attribute.key %></dt>
-        <dd><%= attribute.value %></dd>
-      <% end %>
-    <% end %>
-  </dl>
+        <% end %>
+      </ul>
+    </div>
+  </aside>
 
-  <div>
+  <div class="work-actions">
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
     <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
       <meta itemprop="name" content="work>processing_state" />
       <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
       the underlying tests will need to change to find[:content] instead of
       find.text %>
-      <h3 itemprop="description"><%= model.processing_state %></h3>
-      <ul>
+      <p>
+        <%= t("sipity/works.processing_state.label.#{model.processing_state}") %>
+        <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
+      </p>
+      <ul class="action-listing">
         <% model.available_linked_actions(user: current_user, action_name: action_name).each do |action| %>
-          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
+          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
             <meta itemprop="name" content="event_trigger><%= action.name %>">
-            <span itemprop="actionStatus"><%= action.availability_state %></span>
             <% if action.available? %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
                 <a itemprop="url" href="<%= action.path %>">
-                  <span itemprop='name'><%= action.name %></span>
+                  <span itemprop="name" class="btn btn-default"><%= action.name %></span>
                 </a>
               </div>
             <% else %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                <span itemprop='name'><%= action.name %></span>
+              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                <span itemprop="name" class="btn btn-default disabled"><%= action.name %></span>
               </div>
             <% end %>
+            <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
           </li>
         <% end %>
       </ul>
     </div>
   </div>
-</div>
 
-<div class="todo">
-  <%- model.each_todo_item_set do |set, actions| -%>
-    <%# TODO: the set should be an object not a string; That object should have I18n %>
-    <div>
-      <h2><%= set %></h2>
-      <ul>
-        <%- actions.each do |action| -%>
-          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-            <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
-            <span itemprop="description"><%= action.label %></span>
-            <span itemprop="actionStatus"><%= action.state %></span>
-            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-              <a itemprop="url" href="<%= action.path %>"><span itemprop="name">Do it!</span></a>
-            </div>
-          </li>
-        <%- end -%>
-      <ul>
-    </div>
-  <%- end -%>
-</div>
-
-<div class="recommendations">
-  <h2>Recommendations</h2>
-  <ul class="recommendations-list">
-    <% %w(doi citation).each do |recommendation_name| %>
-      <% model.with_recommendation(recommendation_name) do |recommendation| %>
-        <li class="recommendations-list-item">
-          <h3><%= recommendation.human_name %></h3>
-          <dl class="recommendation">
-            <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
-            <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: "recommendation-#{recommendation_name}" %></dd>
-          </dl>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
-</div>
-</div>
+</section>

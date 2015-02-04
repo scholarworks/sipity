@@ -1,0 +1,24 @@
+ul.item-list {
+  list-style-type:none;
+}
+
+.item-list {
+  margin:0;
+  padding:0;
+}
+
+.todo-item {
+  margin-bottom:.5em;
+}
+
+.icon-wrapper-24{
+  display:inline-block;
+  line-height:36px;
+  position:relative;
+  width:24px;
+}
+
+.icon-wrapper-24 svg{
+  bottom:-8px;
+  position:absolute;
+}
