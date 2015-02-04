@@ -6,7 +6,7 @@ module Sipity
       class StrategyState < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_states'
         belongs_to :strategy
-        has_many(:originating_strategy_actions,
+        has_many(:originating_strategy_state_actions,
           dependent: :destroy,
           class_name: 'StrategyStateAction',
           foreign_key: :originating_strategy_state_id

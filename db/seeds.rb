@@ -87,10 +87,10 @@ ActiveRecord::Base.transaction do
     ].each do |originating_state_name, action_name, role_names|
       action = etd_actions.fetch(action_name)
       originating_state = etd_states.fetch(originating_state_name)
-      event = action.strategy_actions.find_or_initialize_by(originating_strategy_state: originating_state)
+      event = action.strategy_state_actions.find_or_initialize_by(originating_strategy_state: originating_state)
 
       Array.wrap(role_names).each do |role_name|
-        etd_strategy_roles.fetch(role_name).strategy_action_permissions.find_or_initialize_by(strategy_action: event)
+        etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
       end
     end
   end
