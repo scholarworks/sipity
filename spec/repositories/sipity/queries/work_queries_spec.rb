@@ -21,6 +21,10 @@ module Sipity
         it 'will include works that were created by the user' do
           expect(test_repository.find_works_for(user: user_one)).to eq([work_one])
         end
+
+        it 'will allow scoping by processing_state' do
+          expect(test_repository.find_works_for(user: user_one, processing_state: 'abc')).to eq([])
+        end
       end
 
       context '#assign_a_pid' do

@@ -143,6 +143,14 @@ module Sipity
         let(:acting_as) { Models::Permission::CREATING_USER }
         subject { test_repository }
 
+        it 'will return an empty result if we do not have a user' do
+          expect(
+            subject.scope_entities_for_entity_type_and_user_acting_as(
+              user: nil, acting_as: ['creating_user'], entity_type: entity.class
+            )
+          ).to eq([])
+        end
+
         it 'will return an empty result if there are no acting_as' do
           Models::Permission.create!(entity: entity, actor_id: user.id, actor_type: 'User', acting_as: acting_as)
           expect(subject.scope_entities_for_entity_type_and_user_acting_as(user: user, acting_as: [], entity_type: entity.class)).

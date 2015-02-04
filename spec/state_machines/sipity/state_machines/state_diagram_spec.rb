@@ -14,8 +14,10 @@ module Sipity
         }
       end
 
+      subject { described_class.new(data_structure) }
+      its(:states) { should eq(data_structure.keys.map(&:to_s)) }
+
       context '#available_events_for_when_acting_as' do
-        subject { described_class.new(data_structure) }
         [
           { current_state: 'new', acting_as: 'creating_user', expected: ['delete', 'submit_for_review'] },
           { current_state: 'new', acting_as: 'a_reviewer', expected: [] },
@@ -32,7 +34,6 @@ module Sipity
       end
 
       context '#available_event_triggers' do
-        subject { described_class.new(data_structure) }
         it 'will return an array of ActionAvailability items' do
           expect(subject.available_event_triggers(current_state: 'new')).to eq(
             [
