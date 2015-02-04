@@ -5,9 +5,10 @@ module Sipity
     class DashboardsController < ApplicationController
       respond_to :html, :json
 
+      self.runner_container = Sipity::Runners::DashboardRunners
+
       def index
-        # TODO: Extract the runner
-        @view = repository.find_works_for(user: current_user, processing_state: processing_state)
+        _status, @view = run(processing_state: processing_state)
         respond_with(@view)
       end
       attr_reader :view
