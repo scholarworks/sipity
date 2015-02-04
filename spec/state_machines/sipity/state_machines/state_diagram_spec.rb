@@ -18,7 +18,7 @@ module Sipity
       its(:states) { should eq(data_structure.keys.map(&:to_s)) }
 
       context '#available_events_for_when_acting_as' do
-         [
+        [
           { current_state: 'new', acting_as: 'creating_user', expected: ['delete', 'submit_for_review'] },
           { current_state: 'new', acting_as: 'a_reviewer', expected: [] },
           { current_state: 'new', acting_as: nil, expected: [] },
