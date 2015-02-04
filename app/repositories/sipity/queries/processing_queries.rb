@@ -1,5 +1,7 @@
 module Sipity
   module Queries
+    # Separation of Processing Related queries. The processing queries have a
+    # direct relation to what can someone do to something.
     module ProcessingQueries
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToPolymorphicType
@@ -9,17 +11,22 @@ module Sipity
       # @param user [User]
       # @return ActiveRecord::Relation<Models::Processing::Actor>
       def scope_processing_actors_for(user:)
-        user_table = User.arel_table
         memb_table = Models::GroupMembership.arel_table
         actor_table = Models::Processing::Actor.arel_table
 
         group_polymorphic_type = convert_to_polymorphic_type(Models::Group)
         user_polymorphic_type = convert_to_polymorphic_type(user)
 
-        user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).
-          and(actor_table[:proxy_for_id].eq(user.id))
-        group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).
-          and(actor_table[:proxy_for_id].in(memb_table.project(memb_table[:group_id]).where(memb_table[:user_id].eq(user.id))))
+        user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).and(actor_table[:proxy_for_id].eq(user.id))
+
+        group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).and(
+          actor_table[:proxy_for_id].in(
+            memb_table.project(memb_table[:group_id]).where(
+              memb_table[:user_id].eq(user.id)
+            )
+          )
+        )
+
         # Because AND takes precedence over OR, this query works.
         # WHERE (a AND b OR c AND d) == WHERE (a AND b) OR (c AND d)
         Models::Processing::Actor.where(user_constraints.or(group_constraints))
@@ -36,7 +43,6 @@ module Sipity
         entity = convert_to_processing_entity(entity)
         strategy_scope = scope_processing_strategy_roles_for(user: user, strategy: entity.strategy)
         entity_specific_scope = scope_entity_specific_processing_strategy_roles(user: user, entity: entity)
-        strategy_role_table = Models::Processing::StrategyRole.arel_table
         Models::Processing::StrategyRole.where(
           strategy_scope.arel.constraints.reduce.or(entity_specific_scope.arel.constraints.reduce)
         )
@@ -191,9 +197,8 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_statetegy_actions_that_have_been_taken(entity:, strategy: nil)
+      def scope_statetegy_actions_that_have_been_taken(entity:)
         entity = convert_to_processing_entity(entity)
-        strategy ||= entity.strategy
         actions = Models::Processing::StrategyEvent
         register = Models::Processing::EntityEventRegister
 
@@ -208,7 +213,6 @@ module Sipity
         )
       end
 
-
       # For the given :user and :entity, return an ActiveRecord::Relation, that
       # if resolved, that is only the strategy events that can be taken.
       #
@@ -222,10 +226,10 @@ module Sipity
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_available_and_permitted_events(user:, entity:)
-        entity = convert_to_processing_entity(entity)
+        _user = user
+        _entity = convert_to_processing_entity(entity)
         events = Models::Processing::StrategyAction
         # register = Models::Processing::EntityEventRegister
-
         events.where('1 = 0')
         # actions.where(
         #   actions.arel_table[:strategy_id].eq(entity.strategy_id).

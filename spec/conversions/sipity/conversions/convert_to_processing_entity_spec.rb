@@ -15,7 +15,8 @@ module Sipity
       context '.convert_to_processing_entity' do
         it 'will be private' do
           object = double(to_processing_entity: 1234)
-          expect { described_class.convert_to_processing_entity(object) }.to raise_error(NoMethodError, /private method `convert_to_processing_entity'/)
+          expect { described_class.convert_to_processing_entity(object) }.
+            to raise_error(NoMethodError, /private method `convert_to_processing_entity'/)
         end
       end
 

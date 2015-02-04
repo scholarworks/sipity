@@ -193,15 +193,19 @@ module Sipity
 
         it "will include actions that do not have prerequisites" do
           action.save! unless action.persisted?
-          action_with_completed_prerequisites = Models::Processing::StrategyEvent.
-          create!(strategy_id: strategy.id, name: 'completed_prerequisites') do |current_action|
+          action_with_completed_prerequisites = Models::Processing::StrategyEvent.create!(
+            strategy_id: strategy.id, name: 'completed_prerequisites'
+          ) do |current_action|
             current_action.requiring_strategy_event_prerequisites.build(prerequisite_strategy_event_id: action.id)
             current_action.entity_event_registers.build(entity_id: entity.id)
           end
 
-          action_with_incomplete_prerequisites = Models::Processing::StrategyEvent.
-          create!(strategy_id: strategy.id, name: 'without_prerequisites') do |current_action|
-            current_action.requiring_strategy_event_prerequisites.build(prerequisite_strategy_event_id: action_with_completed_prerequisites.id)
+          action_with_incomplete_prerequisites = Models::Processing::StrategyEvent.create!(
+            strategy_id: strategy.id, name: 'without_prerequisites'
+          ) do |current_action|
+            current_action.requiring_strategy_event_prerequisites.build(
+              prerequisite_strategy_event_id: action_with_completed_prerequisites.id
+            )
           end
 
           event_with_no_prerequisites = Models::Processing::StrategyAction.create!(
