@@ -2,7 +2,7 @@ namespace :sipity do
 
   desc 'Create a user based on $USER'
   task :create_user do
-    $stdout.puts "Creating User '#{ENV['USER']}' (from ENV['USER'])"...
+    $stdout.puts "Creating User '#{ENV['USER']}' (from ENV['USER'])..."
     User.find_or_create_by!(username: ENV['USER'])
   end
 
