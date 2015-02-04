@@ -114,11 +114,11 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_permitted_entity_strategy_actions(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyAction
+        actions = Models::Processing::StrategyAction
         permissions = Models::Processing::StrategyActionPermission
         role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
-        events.where(
-          events.arel_table[:id].in(
+        actions.where(
+          actions.arel_table[:id].in(
             permissions.arel_table.project(
               permissions.arel_table[:strategy_action_id]
             ).where(
@@ -147,19 +147,19 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy actions that have prerequisites
+      # resolved, that is only the strategy events that have prerequisites
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
       def scope_strategy_events_with_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
-        actions = Models::Processing::StrategyEvent
+        events = Models::Processing::StrategyEvent
         action_prereqs = Models::Processing::StrategyEventPrerequisite
-        actions.where(
-          actions.arel_table[:strategy_id].eq(strategy.id).
+        events.where(
+          events.arel_table[:strategy_id].eq(strategy.id).
           and(
-            actions.arel_table[:id].in(
+            events.arel_table[:id].in(
               action_prereqs.arel_table.project(
                 action_prereqs.arel_table[:guarded_strategy_event_id]
               )
@@ -169,20 +169,20 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy actions that have no prerequisites.
+      # resolved, that is only the strategy events that have no prerequisites.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
       def scope_strategy_events_without_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
-        actions = Models::Processing::StrategyEvent
+        events = Models::Processing::StrategyEvent
         action_prereqs = Models::Processing::StrategyEventPrerequisite
 
-        actions.where(
-          actions.arel_table[:strategy_id].eq(strategy.id).
+        events.where(
+          events.arel_table[:strategy_id].eq(strategy.id).
           and(
-            actions.arel_table[:id].not_in(
+            events.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
                 action_prereqs.arel_table[:guarded_strategy_event_id]
               )
