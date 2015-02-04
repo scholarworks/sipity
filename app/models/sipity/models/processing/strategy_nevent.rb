@@ -9,7 +9,7 @@ module Sipity
 
         has_many :entity_nevent_registers, dependent: :destroy
 
-        has_many :strategy_events, dependent: :destroy
+        has_many :strategy_actions, dependent: :destroy
         has_many :guarding_strategy_nevent_prerequisites,
           dependent: :destroy,
           foreign_key: :prerequisite_strategy_nevent_id,

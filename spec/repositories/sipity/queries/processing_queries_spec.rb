@@ -28,12 +28,12 @@ module Sipity
       let(:action) { Models::Processing::StrategyNevent.new(id: 6, strategy_id: strategy.id, name: 'complete') }
       let(:originating_state) { Models::Processing::StrategyState.new(id: 7, strategy_id: strategy.id, name: 'new') }
       let(:resulting_state) { Models::Processing::StrategyState.new(id: 8, strategy_id: strategy.id, name: 'done') }
-      let(:strategy_event) do
+      let(:strategy_action) do
         Models::Processing::StrategyAction.create!(originating_strategy_state_id: originating_state.id, strategy_nevent_id: action.id)
       end
       let(:event_permission) do
         Models::Processing::StrategyActionPermission.create!(
-          strategy_role_id: strategy_role.id, strategy_event_id: strategy_event.id
+          strategy_role_id: strategy_role.id, strategy_action_id: strategy_action.id
         )
       end
 
@@ -92,22 +92,22 @@ module Sipity
         end
       end
 
-      context '#scope_permitted_entity_strategy_events' do
-        subject { test_repository.scope_permitted_entity_strategy_events(user: user, entity: entity) }
+      context '#scope_permitted_entity_strategy_actions' do
+        subject { test_repository.scope_permitted_entity_strategy_actions(user: user, entity: entity) }
         before { entity.strategy = strategy }
-        it "will include permitted strategy_events" do
+        it "will include permitted strategy_actions" do
           user_processing_actor
           entity_specific_responsibility
           event_permission
-          expect(subject).to eq([event_permission.strategy_event])
+          expect(subject).to eq([event_permission.strategy_action])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
-      context '#scope_permitted_entity_strategy_events_for_current_state' do
-        subject { test_repository.scope_permitted_entity_strategy_events_for_current_state(user: user, entity: entity) }
+      context '#scope_permitted_entity_strategy_actions_for_current_state' do
+        subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
         let!(:unavailable_state_event) do
           Models::Processing::StrategyAction.create!(originating_strategy_state_id: resulting_state.id, strategy_nevent_id: action.id)
         end
@@ -115,11 +115,11 @@ module Sipity
           entity.strategy = strategy
           entity.strategy_state = originating_state
         end
-        it "will include permitted strategy_events" do
+        it "will include permitted strategy_actions" do
           user_processing_actor
           entity_specific_responsibility
           event_permission
-          expect(subject).to eq([event_permission.strategy_event])
+          expect(subject).to eq([event_permission.strategy_action])
         end
         it "will skip those not in the correct state" do
           user_processing_actor
@@ -139,7 +139,7 @@ module Sipity
         before do
           entity.strategy = strategy
         end
-        it "will include permitted strategy_events" do
+        it "will include permitted strategy_actions" do
           Models::Processing::StrategyNeventPrerequisite.create!(
             guarded_strategy_nevent_id: guarded_action.id, prerequisite_strategy_nevent_id: action.id
           )
