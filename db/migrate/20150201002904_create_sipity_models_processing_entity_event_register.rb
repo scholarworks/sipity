@@ -1,4 +1,4 @@
-class CreateSipityModelsProcessingEntityNeventRegister < ActiveRecord::Migration
+class CreateSipityModelsProcessingEntityEventRegister < ActiveRecord::Migration
   def change
     create_table :sipity_processing_entity_nevent_registers do |t|
       t.integer :strategy_nevent_id, null: false

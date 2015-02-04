@@ -13,7 +13,7 @@ module Sipity
         )
         has_many(:resulting_strategy_nevents,
           dependent: :destroy,
-          class_name: 'StrategyNevent',
+          class_name: 'StrategyEvent',
           foreign_key: :resulting_strategy_state_id
         )
         has_many(:entities) # TODO: should this be destroyed
