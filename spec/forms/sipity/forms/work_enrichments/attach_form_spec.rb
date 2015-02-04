@@ -40,8 +40,9 @@ module Sipity
           end
 
           context 'with valid data' do
-            subject { described_class.new(work: work, files: [file]) }
+            subject { described_class.new(work: work, files: [file], remove_files:[remove_file])  }
             let(:file) { double('A File') }
+            let(:remove_file) { double('File to delete') }
 
             before do
               expect(subject).to receive(:valid?).and_return(true)
@@ -54,6 +55,11 @@ module Sipity
 
             it 'will attach each file' do
               expect(repository).to receive(:attach_file_to).and_call_original
+              subject.submit(repository: repository, requested_by: user)
+            end
+
+            it 'will remove files from work' do
+              expect(repository).to receive(:remove_files_from).and_call_original
               subject.submit(repository: repository, requested_by: user)
             end
 

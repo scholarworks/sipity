@@ -12,6 +12,10 @@ module Sipity
         object.class.human_attribute_name(name)
       end
 
+      def name
+        file_name
+      end
+
       def to_s
         name
       end
