@@ -45,8 +45,8 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
 
-      def remove_files_from(work:, file_name:, user: user)
-        #TODO add event or notification saying that user deleted a file
+      def remove_files_from(file_name:, user: user)
+        # TODO: add event or notification saying that user deleted a file
         Models::Attachment.where(file_name: file_name).destroy_all
       end
 

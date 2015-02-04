@@ -6,7 +6,7 @@ module Sipity
         def initialize(attributes = {})
           super
           @files = attributes[:files]
-          @remove_files= attributes[:remove_files]
+          @remove_files = attributes[:remove_files]
         end
 
         # TODO: Write a custom file validator. There must be at least one file
@@ -17,7 +17,7 @@ module Sipity
 
         def attachments(decorator: Decorators::AttachmentDecorator)
           Queries::AttachmentQueries.work_attachments(work: work).
-              map { |obj| decorator.decorate(obj) }
+            map { |obj| decorator.decorate(obj) }
         end
 
         private
@@ -28,7 +28,7 @@ module Sipity
               repository.attach_file_to(work: work, file: file, user: requested_by)
             end
             Array.wrap(remove_files).compact.each do |file_name|
-              repository.remove_files_from(work: work, file_name: file_name, user: requested_by)
+              repository.remove_files_from(file_name: file_name, user: requested_by)
             end
           end
         end

@@ -40,7 +40,7 @@ module Sipity
           end
 
           context 'with valid data' do
-            subject { described_class.new(work: work, files: [file], remove_files:[remove_file])  }
+            subject { described_class.new(work: work, files: [file], remove_files: [remove_file])  }
             let(:file) { double('A File') }
             let(:remove_file) { double('File to delete') }
 

@@ -70,7 +70,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def remove_files_from(work:, file_name:, user: user)
+    def remove_files_from(file_name:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb

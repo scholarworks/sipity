@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe AttachmentDecorator do
-      let(:attachment) { Models::Attachment.new(pid: 'abc123', file_name:"my file") }
+      let(:attachment) { Models::Attachment.new(pid: 'abc123', file_name: "my file") }
       subject { AttachmentDecorator.new(attachment) }
       it 'will have a #to_s equal its #name' do
         expect(subject.to_s).to eq(attachment.file_name)
