@@ -6,11 +6,33 @@ module Sipity
 
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
-        let(:collaborator) { Models::Collaborator.new(name: 'Jeremy', role: 'advisor') }
-        it 'will create an collaborator' do
-          expect(test_repository).to receive(:create_sipity_user_from).with(netid: collaborator.netid)
-          expect { test_repository.assign_collaborators_to(work: work, collaborators: collaborator) }.
-            to change { Models::Collaborator.where(work_id: work.id).count }.by(1)
+        let(:collaborator) do
+          Models::Collaborator.new(responsible_for_review: is_responsible_for_review?, name: 'Jeremy', role: 'advisor', netid: 'somebody')
+        end
+        context 'when a collaborator is responsible_for_review' do
+          let(:is_responsible_for_review?) { false }
+          it 'will create a collaborator but not a user nor permission' do
+            expect do
+              expect do
+                expect do
+                  test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+                end.to change(Models::Collaborator, :count).by(1)
+              end.to_not change(Models::Permission, :count)
+            end.to_not change(User, :count)
+          end
+        end
+
+        context 'when a collaborator is responsible_for_review' do
+          let(:is_responsible_for_review?) { true }
+          it 'will create a collaborator, user, and permission' do
+            expect do
+              expect do
+                expect do
+                  test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+                end.to change(Models::Collaborator, :count).by(1)
+              end.to change(Models::Permission, :count).by(1)
+            end.to change(User, :count).by(1)
+          end
         end
       end
 
