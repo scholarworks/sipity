@@ -48,8 +48,8 @@ ActiveRecord::Base.transaction do
       'ready_for_ingest',
       'ingesting',
       'done'
-    ].each do |name|
-      etd_states[name] = etd_strategy.strategy_states.build(name: name)
+    ].each do |state_name|
+      etd_states[state_name] = etd_strategy.strategy_states.build(name: state_name)
     end
 
     etd_actions = {}
@@ -65,17 +65,17 @@ ActiveRecord::Base.transaction do
       ['approve_for_ingest', 'ready_for_ingest'],
       ['ingest', 'ingesting'],
       ['ingest_completed', 'done']
-    ].each do |name, strategy_state|
-      resulting_state = strategy_state ? etd_states.fetch(strategy_state) : nil
-      etd_actions[name] = etd_strategy.strategy_actions.build(name: name, resulting_strategy_state: resulting_state)
+    ].each do |action_name, strategy_state_name|
+      resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
+      etd_actions[action_name] = etd_strategy.strategy_actions.build(name: action_name, resulting_strategy_state: resulting_state)
     end
 
     [
       ['new', 'submit_for_advisor_signoff', ['creating_user']],
       ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']]
-    ].each do |originating, action_name, role_names|
+    ].each do |originating_state_name, action_name, role_names|
       action = etd_actions.fetch(action_name)
-      originating_state = etd_states.fetch(originating)
+      originating_state = etd_states.fetch(originating_state_name)
       event = action.strategy_events.build(originating_strategy_state: originating_state)
 
       Array.wrap(role_names).each do |role_name|
