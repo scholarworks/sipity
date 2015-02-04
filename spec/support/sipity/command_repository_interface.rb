@@ -10,7 +10,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def attach_file_to(work:, file:, user: user, pid_minter: -> {})
+    def attach_file_to(work:, file:, user: user, pid_minter: pid_minter)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
@@ -51,6 +51,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def pid_minter
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb

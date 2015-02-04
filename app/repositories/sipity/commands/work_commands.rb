@@ -23,7 +23,7 @@ module Sipity
 
       # TODO: Create a PidMinter service
       # REVIEW: Is this the correct location to put this behavior?
-      def attach_file_to(work:, file:, user: user, pid_minter: -> {})
+      def attach_file_to(work:, file:, user: user, pid_minter: pid_minter)
         pid = pid_minter.call
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
@@ -34,6 +34,14 @@ module Sipity
         user = User.find_or_create_by!(username: netid)
         yield(user) if block_given?
         user
+      end
+
+      # @return [#call] A call-able object that when called will return a String
+      #
+      # @note This is not a PID as per Fedora 3, but is something random,
+      #   unique, and stringy. Which for these purposes is adequate.
+      def pid_minter
+        -> { Digest::UUID.uuid_v4 }
       end
     end
   end

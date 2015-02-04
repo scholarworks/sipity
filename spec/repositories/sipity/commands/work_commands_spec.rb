@@ -36,6 +36,12 @@ module Sipity
         end
       end
 
+      context '#pid_minter' do
+        subject { test_repository.pid_minter }
+        it { should respond_to(:call) }
+        its(:call) { should be_a(String) }
+      end
+
       context '#create_sipity_user_from' do
         it 'will create a user from the given netid if one does not exist' do
           expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
