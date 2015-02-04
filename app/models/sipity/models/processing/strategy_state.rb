@@ -9,14 +9,14 @@ module Sipity
         has_many(:originating_strategy_events,
           dependent: :destroy,
           class_name: 'StrategyEvent',
-          foreign_key: :originating_strategy_event_id
+          foreign_key: :originating_strategy_state_id
         )
-        has_many(:resulting_strategy_events,
+        has_many(:resulting_strategy_actions,
           dependent: :destroy,
-          class_name: 'StrategyEvent',
-          foreign_key: :resulting_strategy_event_id
+          class_name: 'StrategyAction',
+          foreign_key: :resulting_strategy_state_id
         )
-        has_many(:entities)
+        has_many(:entities) # TODO: should this be destroyed
       end
     end
   end

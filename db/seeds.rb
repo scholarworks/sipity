@@ -41,31 +41,42 @@ ActiveRecord::Base.transaction do
 
     etd_states = {}
     [
-      'new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review',
-      'ready_for_ingest', 'ingesting', 'done'
+      'new',
+      'under_advisor_review',
+      'advisor_changes_requested',
+      'under_grad_school_review',
+      'ready_for_ingest',
+      'ingesting',
+      'done'
     ].each do |name|
       etd_states[name] = etd_strategy.strategy_states.build(name: name)
     end
 
     etd_actions = {}
     [
-      'submit_for_advisor_signoff', 'advisor_signs_off', 'advisor_requests_changes',
-      'student_submits_advisor_requested_changes', 'request_revisions', 'approve_for_ingest',
-      'ingest', 'ingest_completed'
-    ].each do |name|
-      etd_actions[name] = etd_strategy.strategy_actions.build(name: name)
+      ['show', nil],
+      ['edit', nil],
+      ['destroy', nil],
+      ['submit_for_advisor_signoff', 'under_advisor_review'],
+      ['advisor_signs_off', 'under_grad_school_review'],
+      ['advisor_requests_changes', 'advisor_changes_requested'],
+      ['student_submits_advisor_requested_changes', 'under_advisor_review'],
+      ['request_revisions', 'under_advisor_review'],
+      ['approve_for_ingest', 'ready_for_ingest'],
+      ['ingest', 'ingesting'],
+      ['ingest_completed', 'done']
+    ].each do |name, strategy_state|
+      resulting_state = strategy_state ? etd_states.fetch(strategy_state) : nil
+      etd_actions[name] = etd_strategy.strategy_actions.build(name: name, resulting_strategy_state: resulting_state)
     end
 
     [
-      ['new', 'submit_for_advisor_signoff', 'under_advisor_review', ['creating_user']]
-    ].each do |originating, action_name, resulting, role_names|
+      ['new', 'submit_for_advisor_signoff', ['creating_user']],
+      ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']]
+    ].each do |originating, action_name, role_names|
       action = etd_actions.fetch(action_name)
       originating_state = etd_states.fetch(originating)
-      resulting_state = etd_states.fetch(resulting)
-
-      event = action.strategy_events.build(
-        originating_strategy_state: originating_state, resulting_strategy_state: resulting_state
-      )
+      event = action.strategy_events.build(originating_strategy_state: originating_state)
 
       Array.wrap(role_names).each do |role_name|
         etd_strategy_roles.fetch(role_name).strategy_event_permissions.build(strategy_event: event)
