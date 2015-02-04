@@ -7,10 +7,10 @@ module Sipity
       # In some cases, it is possible that some actions are not available to
       # take if other events have not been triggered.
       class EntityNeventRegister < ActiveRecord::Base
-        self.table_name = 'sipity_processing_entity_action_registers'
+        self.table_name = 'sipity_processing_entity_nevent_registers'
 
         belongs_to :entity
-        belongs_to :strategy_action
+        belongs_to :strategy_nevent
       end
     end
   end

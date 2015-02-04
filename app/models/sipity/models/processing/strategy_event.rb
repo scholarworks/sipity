@@ -6,7 +6,7 @@ module Sipity
       class StrategyEvent < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_events'
         belongs_to :originating_strategy_state, class_name: 'StrategyState'
-        belongs_to :strategy_action
+        belongs_to :strategy_nevent
         has_many :strategy_event_permissions, dependent: :destroy
       end
     end

@@ -68,7 +68,7 @@ ActiveRecord::Base.transaction do
       ['ingest_completed', 'done']
     ].each do |action_name, strategy_state_name|
       resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
-      etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(name: action_name, resulting_strategy_state: resulting_state)
+      etd_actions[action_name] = etd_strategy.strategy_nevents.find_or_initialize_by(name: action_name, resulting_strategy_state: resulting_state)
     end
 
     [
