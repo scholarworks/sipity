@@ -190,9 +190,9 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
     t.integer  "strategy_action_id", null: false
-    t.integer  "entity_id",         null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.integer  "entity_id",          null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate"
@@ -222,8 +222,8 @@ ActiveRecord::Schema.define(version: 20150202142340) do
   create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_action_id"
     t.integer  "prerequisite_strategy_action_id"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
@@ -270,7 +270,7 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_processing_strategy_state_actions", force: :cascade do |t|
     t.integer  "originating_strategy_state_id", null: false
-    t.integer  "strategy_action_id",             null: false
+    t.integer  "strategy_action_id",            null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
   end

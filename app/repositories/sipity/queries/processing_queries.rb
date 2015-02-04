@@ -133,7 +133,7 @@ module Sipity
       end
 
       # For the given :user and :entity, return an ActiveRecord::Relation,
-      # that if resolved, is only the strategy events that are available to the
+      # that if resolved, is only the strategy actions that are available to the
       # given :strategy_state
       #
       # @param user [User]
@@ -141,23 +141,23 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_permitted_entity_strategy_state_actions_for_current_state(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        events_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
-        events_scope.where(originating_strategy_state_id: entity.strategy_state_id)
+        actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
+        actions_scope.where(originating_strategy_state_id: entity.strategy_state_id)
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy events that have prerequisites
+      # resolved, that is only the strategy actions that have prerequisites
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_strategy_actions_with_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyAction
+        actions = Models::Processing::StrategyAction
         action_prereqs = Models::Processing::StrategyActionPrerequisite
-        events.where(
-          events.arel_table[:strategy_id].eq(entity.strategy_id).
+        actions.where(
+          actions.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
-            events.arel_table[:id].in(
+            actions.arel_table[:id].in(
               action_prereqs.arel_table.project(
                 action_prereqs.arel_table[:guarded_strategy_action_id]
               )
@@ -172,19 +172,19 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy events that have no prerequisites.
+      # resolved, that is only the strategy actions that have no prerequisites.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_strategy_actions_without_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyAction
+        actions = Models::Processing::StrategyAction
         action_prereqs = Models::Processing::StrategyActionPrerequisite
 
-        events.where(
-          events.arel_table[:strategy_id].eq(entity.strategy_id).
+        actions.where(
+          actions.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
-            events.arel_table[:id].not_in(
+            actions.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
                 action_prereqs.arel_table[:guarded_strategy_action_id]
               )
@@ -194,19 +194,19 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy events that have occurred.
+      # resolved, that is only the strategy actions that have occurred.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_statetegy_events_that_have_occurred(entity:)
+      def scope_statetegy_actions_that_have_occurred(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyAction
+        actions = Models::Processing::StrategyAction
         register = Models::Processing::EntityActionRegister
 
-        events.where(
-          events.arel_table[:strategy_id].eq(entity.strategy_id).
+        actions.where(
+          actions.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
-            events.arel_table[:id].in(
+            actions.arel_table[:id].in(
               register.arel_table.project(register.arel_table[:strategy_action_id]).
               where(register.arel_table[:entity_id].eq(entity.id))
             )
@@ -215,10 +215,10 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that
-      # if resolved, that lists all of the events available for the entity and
+      # if resolved, that lists all of the actions available for the entity and
       # its current state.
       #
-      # * All actions that are associated with events that do not have prerequsites
+      # * All actions that are associated with actions that do not have prerequsites
       # * All actions that have prerequisites and all of those prerequisites are complete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
@@ -228,13 +228,13 @@ module Sipity
       end
 
       # For the given :user and :entity, return an ActiveRecord::Relation, that
-      # if resolved, that is only the strategy events that can be taken.
+      # if resolved, that is only the strategy actions that can be taken.
       #
-      # The events would include:
+      # The actions would include:
       #
       # * Any unguarded actions
       # * Any guarded action that has had all of its prerequisites completed
-      # * Only events permitted to the user
+      # * Only actions permitted to the user
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
@@ -242,13 +242,13 @@ module Sipity
       def scope_available_and_permitted_actions(user:, entity:)
         _user = user
         _entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyStateAction
+        actions = Models::Processing::StrategyStateAction
 
         # Find all actions available to the given user
         # @see #scope_permitted_entity_strategy_state_actions_for_current_state
         # Intersect with all actions currently available for the given entity.
 
-        events.where('1 = 0')
+        actions.where('1 = 0')
       end
     end
   end
