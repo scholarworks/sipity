@@ -3,6 +3,9 @@
 <%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
   <%= f.error_notification %>
   <%= field_set_tag do %>
+    <%= render 'form_for_list_attachment', { f:f, model: model } %>
+  <% end %>
+  <%= field_set_tag do %>
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
     <%= f.submit %>
   <% end %>
