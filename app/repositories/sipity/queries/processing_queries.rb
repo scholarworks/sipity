@@ -100,16 +100,16 @@ module Sipity
 
       # For the given :user and :entity, return an ActiveRecord::Relation,
       # that if resolved, will be collection of
-      # Sipity::Models::Processing::StrategyEvent object to which the user has
+      # Sipity::Models::Processing::StrategyAction object to which the user has
       # permission to do something.
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_permitted_entity_strategy_events(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyEvent
-        permissions = Models::Processing::StrategyEventPermission
+        events = Models::Processing::StrategyAction
+        permissions = Models::Processing::StrategyActionPermission
         role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
         events.where(
           events.arel_table[:id].in(
@@ -132,7 +132,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_permitted_entity_strategy_events_for_current_state(user:, entity:, strategy_state: nil)
         entity = convert_to_processing_entity(entity)
         strategy_state ||= entity.strategy_state
@@ -220,10 +220,10 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_available_and_permitted_events(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyEvent
+        events = Models::Processing::StrategyAction
         # register = Models::Processing::EntityNeventRegister
 
         events.where('1 = 0')

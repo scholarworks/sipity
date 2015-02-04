@@ -29,10 +29,10 @@ module Sipity
       let(:originating_state) { Models::Processing::StrategyState.new(id: 7, strategy_id: strategy.id, name: 'new') }
       let(:resulting_state) { Models::Processing::StrategyState.new(id: 8, strategy_id: strategy.id, name: 'done') }
       let(:strategy_event) do
-        Models::Processing::StrategyEvent.create!(originating_strategy_state_id: originating_state.id, strategy_nevent_id: action.id)
+        Models::Processing::StrategyAction.create!(originating_strategy_state_id: originating_state.id, strategy_nevent_id: action.id)
       end
       let(:event_permission) do
-        Models::Processing::StrategyEventPermission.create!(
+        Models::Processing::StrategyActionPermission.create!(
           strategy_role_id: strategy_role.id, strategy_event_id: strategy_event.id
         )
       end
@@ -109,7 +109,7 @@ module Sipity
       context '#scope_permitted_entity_strategy_events_for_current_state' do
         subject { test_repository.scope_permitted_entity_strategy_events_for_current_state(user: user, entity: entity) }
         let!(:unavailable_state_event) do
-          Models::Processing::StrategyEvent.create!(originating_strategy_state_id: resulting_state.id, strategy_nevent_id: action.id)
+          Models::Processing::StrategyAction.create!(originating_strategy_state_id: resulting_state.id, strategy_nevent_id: action.id)
         end
         before do
           entity.strategy = strategy
@@ -204,7 +204,7 @@ module Sipity
             current_action.requiring_strategy_nevent_prerequisites.build(prerequisite_strategy_nevent_id: action_with_completed_prerequisites.id)
           end
 
-          event_with_no_prerequisites = Models::Processing::StrategyEvent.create!(
+          event_with_no_prerequisites = Models::Processing::StrategyAction.create!(
             originating_strategy_state_id: originating_state.id, strategy_nevent_id: action.id
           )
 

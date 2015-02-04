@@ -1,4 +1,4 @@
-class CreateSipityModelsProcessingStrategyEventPermission < ActiveRecord::Migration
+class CreateSipityModelsProcessingStrategyActionPermission < ActiveRecord::Migration
   def change
     create_table :sipity_processing_strategy_event_permissions do |t|
       t.integer :strategy_role_id, null: false

@@ -8,7 +8,7 @@ module Sipity
         belongs_to :strategy
         has_many(:originating_strategy_events,
           dependent: :destroy,
-          class_name: 'StrategyEvent',
+          class_name: 'StrategyAction',
           foreign_key: :originating_strategy_state_id
         )
         has_many(:resulting_strategy_nevents,
