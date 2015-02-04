@@ -8,7 +8,10 @@ module Sipity
         Array.wrap(collaborators).each do |collaborator|
           collaborator.work_id = work.id
           collaborators.save!
-          create_sipity_user_from(netid: collaborator.netid)
+          next unless collaborator.responsible_for_review?
+          create_sipity_user_from(netid: collaborator.netid) do |user|
+            PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Permission::ADVISOR)
+          end
         end
       end
 
@@ -28,7 +31,9 @@ module Sipity
       def create_sipity_user_from(netid:)
         return false unless netid.present?
         # This assumes a valid NetID.
-        User.find_or_create_by!(username: netid)
+        user = User.find_or_create_by!(username: netid)
+        yield(user) if block_given?
+        user
       end
     end
   end
