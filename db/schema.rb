@@ -219,6 +219,24 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
 
+  create_table "sipity_processing_strategy_event_permissions", force: :cascade do |t|
+    t.integer  "strategy_role_id",  null: false
+    t.integer  "strategy_event_id", null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "sipity_processing_strategy_event_permissions", ["strategy_role_id", "strategy_event_id"], name: "sipity_processing_strategy_event_permissions_aggregate", unique: true
+
+  create_table "sipity_processing_strategy_events", force: :cascade do |t|
+    t.integer  "originating_strategy_state_id", null: false
+    t.integer  "strategy_nevent_id",            null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "sipity_processing_strategy_events", ["originating_strategy_state_id", "strategy_nevent_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
+
   create_table "sipity_processing_strategy_nevent_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_nevent_id"
     t.integer  "prerequisite_strategy_nevent_id"
@@ -240,24 +258,6 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   add_index "sipity_processing_strategy_nevents", ["resulting_strategy_state_id"], name: "sipity_processing_strategy_nevents_resulting_strategy_state"
   add_index "sipity_processing_strategy_nevents", ["strategy_id", "name"], name: "sipity_processing_strategy_nevents_aggregate", unique: true
-
-  create_table "sipity_processing_strategy_event_permissions", force: :cascade do |t|
-    t.integer  "strategy_role_id",  null: false
-    t.integer  "strategy_event_id", null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
-  add_index "sipity_processing_strategy_event_permissions", ["strategy_role_id", "strategy_event_id"], name: "sipity_processing_strategy_event_permissions_aggregate", unique: true
-
-  create_table "sipity_processing_strategy_events", force: :cascade do |t|
-    t.integer  "originating_strategy_state_id", null: false
-    t.integer  "strategy_nevent_id",            null: false
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-  end
-
-  add_index "sipity_processing_strategy_events", ["originating_strategy_state_id", "strategy_nevent_id"], name: "sipity_processing_strategy_events_aggregate", unique: true
 
   create_table "sipity_processing_strategy_responsibilities", force: :cascade do |t|
     t.integer  "actor_id",         null: false
