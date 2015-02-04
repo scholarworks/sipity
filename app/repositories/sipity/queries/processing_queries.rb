@@ -192,20 +192,19 @@ module Sipity
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy actions that have been taken/
-      # completed.
+      # resolved, that is only the strategy events that have occurred.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_statetegy_actions_that_have_been_taken(entity:)
+      def scope_statetegy_events_that_have_occurred(entity:)
         entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyEvent
+        events = Models::Processing::StrategyEvent
         register = Models::Processing::EntityEventRegister
 
-        actions.where(
-          actions.arel_table[:strategy_id].eq(entity.strategy_id).
+        events.where(
+          events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
-            actions.arel_table[:id].in(
+            events.arel_table[:id].in(
               register.arel_table.project(register.arel_table[:strategy_event_id]).
               where(register.arel_table[:entity_id].eq(entity.id))
             )

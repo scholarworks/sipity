@@ -168,8 +168,8 @@ module Sipity
         end
       end
 
-      context '#scope_statetegy_actions_that_have_been_taken' do
-        subject { test_repository.scope_statetegy_actions_that_have_been_taken(entity: entity, strategy: strategy) }
+      context '#scope_statetegy_events_that_have_occurred' do
+        subject { test_repository.scope_statetegy_events_that_have_occurred(entity: entity, strategy: strategy) }
         before do
           entity.strategy = strategy
         end
