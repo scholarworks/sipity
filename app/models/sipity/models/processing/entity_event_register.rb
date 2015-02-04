@@ -10,7 +10,7 @@ module Sipity
         self.table_name = 'sipity_processing_entity_event_registers'
 
         belongs_to :entity
-        belongs_to :strategy_event
+        belongs_to :strategy_action
       end
     end
   end

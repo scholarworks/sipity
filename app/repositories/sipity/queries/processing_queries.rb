@@ -149,17 +149,17 @@ module Sipity
       # resolved, that is only the strategy events that have prerequisites
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_events_with_prerequisites(entity:)
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_with_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyEvent
-        action_prereqs = Models::Processing::StrategyEventPrerequisite
+        events = Models::Processing::StrategyAction
+        action_prereqs = Models::Processing::StrategyActionPrerequisite
         events.where(
           events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             events.arel_table[:id].in(
               action_prereqs.arel_table.project(
-                action_prereqs.arel_table[:guarded_strategy_event_id]
+                action_prereqs.arel_table[:guarded_strategy_action_id]
               )
             )
           )
@@ -175,18 +175,18 @@ module Sipity
       # resolved, that is only the strategy events that have no prerequisites.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_events_without_prerequisites(entity:)
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_without_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyEvent
-        action_prereqs = Models::Processing::StrategyEventPrerequisite
+        events = Models::Processing::StrategyAction
+        action_prereqs = Models::Processing::StrategyActionPrerequisite
 
         events.where(
           events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             events.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
-                action_prereqs.arel_table[:guarded_strategy_event_id]
+                action_prereqs.arel_table[:guarded_strategy_action_id]
               )
             )
           )
@@ -197,17 +197,17 @@ module Sipity
       # resolved, that is only the strategy events that have occurred.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_statetegy_events_that_have_occurred(entity:)
         entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyEvent
+        events = Models::Processing::StrategyAction
         register = Models::Processing::EntityEventRegister
 
         events.where(
           events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             events.arel_table[:id].in(
-              register.arel_table.project(register.arel_table[:strategy_event_id]).
+              register.arel_table.project(register.arel_table[:strategy_action_id]).
               where(register.arel_table[:entity_id].eq(entity.id))
             )
           )
