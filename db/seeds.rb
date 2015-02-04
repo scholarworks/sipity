@@ -73,7 +73,9 @@ ActiveRecord::Base.transaction do
 
     [
       ['new', 'submit_for_advisor_signoff', ['creating_user']],
-      ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']]
+      ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['new', 'edit', ['creating_user', 'etd_reviewer']],
+      ['new', 'destroy', ['creating_user', 'etd_reviewer']],
     ].each do |originating_state_name, action_name, role_names|
       action = etd_actions.fetch(action_name)
       originating_state = etd_states.fetch(originating_state_name)
