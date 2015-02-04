@@ -145,7 +145,7 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_nevents_with_prerequisites(entity:, strategy: nil)
+      def scope_strategy_events_with_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
         actions = Models::Processing::StrategyEvent
@@ -155,7 +155,7 @@ module Sipity
           and(
             actions.arel_table[:id].in(
               action_prereqs.arel_table.project(
-                action_prereqs.arel_table[:guarded_strategy_nevent_id]
+                action_prereqs.arel_table[:guarded_strategy_event_id]
               )
             )
           )
@@ -167,7 +167,7 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_nevents_without_prerequisites(entity:, strategy: nil)
+      def scope_strategy_events_without_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
         actions = Models::Processing::StrategyEvent
@@ -178,7 +178,7 @@ module Sipity
           and(
             actions.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
-                action_prereqs.arel_table[:guarded_strategy_nevent_id]
+                action_prereqs.arel_table[:guarded_strategy_event_id]
               )
             )
           )
@@ -201,7 +201,7 @@ module Sipity
           actions.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             actions.arel_table[:id].in(
-              register.arel_table.project(register.arel_table[:strategy_nevent_id]).
+              register.arel_table.project(register.arel_table[:strategy_event_id]).
               where(register.arel_table[:entity_id].eq(entity.id))
             )
           )
@@ -231,7 +231,7 @@ module Sipity
         #   actions.arel_table[:strategy_id].eq(entity.strategy_id).
         #   and(
         #     actions.arel_table[:id].in(
-        #       register.arel_table.project(register.arel_table[:strategy_nevent_id]).
+        #       register.arel_table.project(register.arel_table[:strategy_event_id]).
         #       where(register.arel_table[:entity_id].eq(entity.id))
         #     )
         #   )

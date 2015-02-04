@@ -14,7 +14,7 @@ module Sipity
         belongs_to :strategy
         belongs_to :strategy_state
 
-        has_many :entity_nevent_registers, dependent: :destroy
+        has_many :entity_event_registers, dependent: :destroy
         has_many :entity_specific_responsibilities, dependent: :destroy
       end
     end

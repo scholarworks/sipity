@@ -188,14 +188,14 @@ ActiveRecord::Schema.define(version: 20150202142340) do
   add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
   add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", unique: true
 
-  create_table "sipity_processing_entity_nevent_registers", force: :cascade do |t|
-    t.integer  "strategy_nevent_id", null: false
-    t.integer  "entity_id",          null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+  create_table "sipity_processing_entity_event_registers", force: :cascade do |t|
+    t.integer  "strategy_event_id", null: false
+    t.integer  "entity_id",         null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
-  add_index "sipity_processing_entity_nevent_registers", ["strategy_nevent_id", "entity_id"], name: "sipity_processing_entity_nevent_registers_aggregate"
+  add_index "sipity_processing_entity_event_registers", ["strategy_event_id", "entity_id"], name: "sipity_processing_entity_event_registers_aggregate"
 
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
     t.integer  "strategy_role_id", null: false
@@ -230,23 +230,23 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
     t.integer  "originating_strategy_state_id", null: false
-    t.integer  "strategy_nevent_id",            null: false
+    t.integer  "strategy_event_id",             null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
   end
 
-  add_index "sipity_processing_strategy_actions", ["originating_strategy_state_id", "strategy_nevent_id"], name: "sipity_processing_strategy_actions_aggregate", unique: true
+  add_index "sipity_processing_strategy_actions", ["originating_strategy_state_id", "strategy_event_id"], name: "sipity_processing_strategy_actions_aggregate", unique: true
 
-  create_table "sipity_processing_strategy_nevent_prerequisites", force: :cascade do |t|
-    t.integer  "guarded_strategy_nevent_id"
-    t.integer  "prerequisite_strategy_nevent_id"
-    t.datetime "created_at",                      null: false
-    t.datetime "updated_at",                      null: false
+  create_table "sipity_processing_strategy_event_prerequisites", force: :cascade do |t|
+    t.integer  "guarded_strategy_event_id"
+    t.integer  "prerequisite_strategy_event_id"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
   end
 
-  add_index "sipity_processing_strategy_nevent_prerequisites", ["guarded_strategy_nevent_id", "prerequisite_strategy_nevent_id"], name: "sipity_processing_strategy_nevent_prerequisites_aggregate", unique: true
+  add_index "sipity_processing_strategy_event_prerequisites", ["guarded_strategy_event_id", "prerequisite_strategy_event_id"], name: "sipity_processing_strategy_event_prerequisites_aggregate", unique: true
 
-  create_table "sipity_processing_strategy_nevents", force: :cascade do |t|
+  create_table "sipity_processing_strategy_events", force: :cascade do |t|
     t.integer  "strategy_id",                                 null: false
     t.integer  "resulting_strategy_state_id"
     t.string   "name",                                        null: false
@@ -256,8 +256,8 @@ ActiveRecord::Schema.define(version: 20150202142340) do
     t.datetime "updated_at",                                  null: false
   end
 
-  add_index "sipity_processing_strategy_nevents", ["resulting_strategy_state_id"], name: "sipity_processing_strategy_nevents_resulting_strategy_state"
-  add_index "sipity_processing_strategy_nevents", ["strategy_id", "name"], name: "sipity_processing_strategy_nevents_aggregate", unique: true
+  add_index "sipity_processing_strategy_events", ["resulting_strategy_state_id"], name: "sipity_processing_strategy_events_resulting_strategy_state"
+  add_index "sipity_processing_strategy_events", ["strategy_id", "name"], name: "sipity_processing_strategy_events_aggregate", unique: true
 
   create_table "sipity_processing_strategy_responsibilities", force: :cascade do |t|
     t.integer  "actor_id",         null: false
