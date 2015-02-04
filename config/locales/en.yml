@@ -34,13 +34,25 @@ en:
         update: 'Update'
       doi:
         create: 'Assign a DOI'
+      citation:
+        create: 'Create a citation'
+  sipity/citations:
+    action/show:
+      call_to_action: 'Create a Citation'
+      cancel: 'Return without creating a citation'
+      description_html: 'A well-formed citation is crucial for tracking how your work is cited by others.'
+      citation_not_assigned: 'We recommend providing a citation for %{title}.'
+    panels:
+      new_citation:
+        hint: 'Please provide a citation properly formatted for the type you select.'
+        title_html: 'How would you like your work to be <b>cited</b>?'
   sipity/dois:
     action/show:
       call_to_action: 'DOI Assignment'
       cancel: 'Return without assigning a DOI'
       description_html: 'A <a href="http://simple.wikipedia.org/wiki/Digital_Object_Identifier">Digital Object Identifer</a> is the best way to cite an online work (like this one) in academic publications.'
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
-      doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
+      doi_not_assigned: 'We recommend assigning a DOI to %{title}.'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
     panels:
       existing_doi:
@@ -63,9 +75,9 @@ en:
       success: 'Update successful!'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
-      label: "<strong>Attach</strong> files to this %{entity_type}"
+      label_html: "<strong>Attach</strong> files to this %{entity_type}"
     describe:
-      label: "Further <strong>describe</strong> your %{entity_type}"
+      label_html: "Further <strong>describe</strong> your %{entity_type}"
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
@@ -81,3 +93,5 @@ en:
     labels:
       doi:
         identifier: 'Existing DOI'
+      citation:
+        type: 'Citation format'
