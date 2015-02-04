@@ -106,16 +106,16 @@ module Sipity
 
       # For the given :user and :entity, return an ActiveRecord::Relation,
       # that if resolved, will be collection of
-      # Sipity::Models::Processing::StrategyAction object to which the user has
+      # Sipity::Models::Processing::StrategyStateAction object to which the user has
       # permission to do something.
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_permitted_entity_strategy_actions(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyAction
-        permissions = Models::Processing::StrategyActionPermission
+        actions = Models::Processing::StrategyStateAction
+        permissions = Models::Processing::StrategyStateActionPermission
         role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
         actions.where(
           actions.arel_table[:id].in(
@@ -138,7 +138,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
         entity = convert_to_processing_entity(entity)
         events_scope = scope_permitted_entity_strategy_actions(user: user, entity: entity)
@@ -168,7 +168,7 @@ module Sipity
 
       def scope_strategy_actions_without_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyAction
+        actions = Models::Processing::StrategyStateAction
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
@@ -222,7 +222,7 @@ module Sipity
       # * All actions that have prerequisites and all of those prerequisites are complete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_strategy_actions_available_for_current_state(entity:)
         entity = convert_to_processing_entity(entity)
       end
@@ -238,11 +238,11 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_available_and_permitted_actions(user:, entity:)
         _user = user
         _entity = convert_to_processing_entity(entity)
-        events = Models::Processing::StrategyAction
+        events = Models::Processing::StrategyStateAction
 
         # Find all actions available to the given user
         # @see #scope_permitted_entity_strategy_actions_for_current_state

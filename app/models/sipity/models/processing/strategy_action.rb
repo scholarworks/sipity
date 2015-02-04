@@ -1,9 +1,8 @@
 module Sipity
   module Models
     module Processing
-      # When an actor attempts to take an action what is the originating state
-      # and what is the resulting state?
-      class StrategyAction < ActiveRecord::Base
+      # An actor can take the given action
+      class StrategyStateAction < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_actions'
         belongs_to :originating_strategy_state, class_name: 'StrategyState'
         belongs_to :strategy_event
