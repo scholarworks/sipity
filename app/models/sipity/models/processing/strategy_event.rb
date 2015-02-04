@@ -1,7 +1,7 @@
 module Sipity
   module Models
     module Processing
-      # A named action that, during the processing of an entity, may be taken.
+      # A named thing that "happens" to a processing entity.
       class StrategyEvent < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_events'
         belongs_to :strategy

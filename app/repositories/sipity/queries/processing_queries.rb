@@ -166,6 +166,11 @@ module Sipity
         )
       end
 
+      def scope_strategy_actions_without_prerequisites(entity:)
+        entity = convert_to_processing_entity(entity)
+        actions = Models::Processing::StrategyAction
+      end
+
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy events that have no prerequisites.
       #
