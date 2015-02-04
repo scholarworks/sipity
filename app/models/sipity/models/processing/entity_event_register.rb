@@ -6,7 +6,7 @@ module Sipity
       #
       # In some cases, it is possible that some actions are not available to
       # take if other events have not been triggered.
-      class EntityEventRegister < ActiveRecord::Base
+      class EntityActionRegister < ActiveRecord::Base
         self.table_name = 'sipity_processing_entity_event_registers'
 
         belongs_to :entity

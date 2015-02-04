@@ -201,7 +201,7 @@ module Sipity
       def scope_statetegy_events_that_have_occurred(entity:)
         entity = convert_to_processing_entity(entity)
         events = Models::Processing::StrategyAction
-        register = Models::Processing::EntityEventRegister
+        register = Models::Processing::EntityActionRegister
 
         events.where(
           events.arel_table[:strategy_id].eq(entity.strategy_id).
