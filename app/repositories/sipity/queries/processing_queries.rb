@@ -139,11 +139,10 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:, strategy_state: nil)
+      def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        strategy_state ||= entity.strategy_state
         events_scope = scope_permitted_entity_strategy_actions(user: user, entity: entity)
-        events_scope.where(originating_strategy_state_id: strategy_state.id)
+        events_scope.where(originating_strategy_state_id: entity.strategy_state_id)
       end
 
       # For the given :entity, return an ActiveRecord::Relation, that if
@@ -151,13 +150,12 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_events_with_prerequisites(entity:, strategy: nil)
+      def scope_strategy_events_with_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        strategy ||= entity.strategy
         events = Models::Processing::StrategyEvent
         action_prereqs = Models::Processing::StrategyEventPrerequisite
         events.where(
-          events.arel_table[:strategy_id].eq(strategy.id).
+          events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             events.arel_table[:id].in(
               action_prereqs.arel_table.project(
@@ -173,14 +171,13 @@ module Sipity
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyEvent>
-      def scope_strategy_events_without_prerequisites(entity:, strategy: nil)
+      def scope_strategy_events_without_prerequisites(entity:)
         entity = convert_to_processing_entity(entity)
-        strategy ||= entity.strategy
         events = Models::Processing::StrategyEvent
         action_prereqs = Models::Processing::StrategyEventPrerequisite
 
         events.where(
-          events.arel_table[:strategy_id].eq(strategy.id).
+          events.arel_table[:strategy_id].eq(strategy_id).
           and(
             events.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
