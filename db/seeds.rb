@@ -28,7 +28,11 @@ ActiveRecord::Base.transaction do
   $stdout.puts 'Creating ETD Reviewer Role...'
   roles = {}
 
-  ['creating_user', 'etd_reviewer', 'advisor'].each do |role_name|
+  [
+    'creating_user',
+    'etd_reviewer',
+    'advisor'
+  ].each do |role_name|
     roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
   end
 
@@ -36,7 +40,11 @@ ActiveRecord::Base.transaction do
   Sipity::Models::Processing::Strategy.find_or_create_by!(name: 'etd') do |etd_strategy|
     etd_strategy_roles = {}
 
-    ['creating_user', 'etd_reviewer', 'advisor'].each do |role_name|
+    [
+      'creating_user',
+      'etd_reviewer',
+      'advisor'
+    ].each do |role_name|
       etd_strategy_roles[role_name] = etd_strategy.strategy_roles.find_or_initialize_by(role: roles.fetch(role_name))
     end
 
