@@ -144,12 +144,12 @@ module Sipity
       # resolved, that is only the strategy actions that have prerequisites
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyNevent>
       def scope_strategy_actions_with_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
-        actions = Models::Processing::StrategyAction
-        action_prereqs = Models::Processing::StrategyActionPrerequisite
+        actions = Models::Processing::StrategyNevent
+        action_prereqs = Models::Processing::StrategyNeventPrerequisite
         actions.where(
           actions.arel_table[:strategy_id].eq(strategy.id).
           and(
@@ -166,12 +166,12 @@ module Sipity
       # resolved, that is only the strategy actions that have no prerequisites.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyNevent>
       def scope_strategy_actions_without_prerequisites(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
-        actions = Models::Processing::StrategyAction
-        action_prereqs = Models::Processing::StrategyActionPrerequisite
+        actions = Models::Processing::StrategyNevent
+        action_prereqs = Models::Processing::StrategyNeventPrerequisite
 
         actions.where(
           actions.arel_table[:strategy_id].eq(strategy.id).
@@ -190,12 +190,12 @@ module Sipity
       # completed.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyNevent>
       def scope_statetegy_actions_that_have_been_taken(entity:, strategy: nil)
         entity = convert_to_processing_entity(entity)
         strategy ||= entity.strategy
-        actions = Models::Processing::StrategyAction
-        register = Models::Processing::EntityActionRegister
+        actions = Models::Processing::StrategyNevent
+        register = Models::Processing::EntityNeventRegister
 
         actions.where(
           actions.arel_table[:strategy_id].eq(entity.strategy_id).
@@ -224,7 +224,7 @@ module Sipity
       def scope_available_and_permitted_events(user:, entity:)
         entity = convert_to_processing_entity(entity)
         events = Models::Processing::StrategyEvent
-        # register = Models::Processing::EntityActionRegister
+        # register = Models::Processing::EntityNeventRegister
 
         events.where('1 = 0')
         # actions.where(

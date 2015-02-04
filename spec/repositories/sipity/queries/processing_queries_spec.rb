@@ -25,7 +25,7 @@ module Sipity
           strategy_role_id: strategy_role.id, actor_id: user_processing_actor.id, entity_id: entity.id
         )
       end
-      let(:action) { Models::Processing::StrategyAction.new(id: 6, strategy_id: strategy.id, name: 'complete') }
+      let(:action) { Models::Processing::StrategyNevent.new(id: 6, strategy_id: strategy.id, name: 'complete') }
       let(:originating_state) { Models::Processing::StrategyState.new(id: 7, strategy_id: strategy.id, name: 'new') }
       let(:resulting_state) { Models::Processing::StrategyState.new(id: 8, strategy_id: strategy.id, name: 'done') }
       let(:strategy_event) do
@@ -135,12 +135,12 @@ module Sipity
 
       context '#scope_strategy_actions_with_prerequisites' do
         subject { test_repository.scope_strategy_actions_with_prerequisites(entity: entity) }
-        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        let(:guarded_action) { Models::Processing::StrategyNevent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         before do
           entity.strategy = strategy
         end
         it "will include permitted strategy_events" do
-          Models::Processing::StrategyActionPrerequisite.create!(
+          Models::Processing::StrategyNeventPrerequisite.create!(
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
           )
           expect(subject).to eq([guarded_action])
@@ -152,12 +152,12 @@ module Sipity
 
       context '#scope_strategy_actions_without_prerequisites' do
         subject { test_repository.scope_strategy_actions_without_prerequisites(entity: entity, strategy: strategy) }
-        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        let(:guarded_action) { Models::Processing::StrategyNevent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         before do
           entity.strategy = strategy
         end
         it "will include actions that do not have prerequisites" do
-          Models::Processing::StrategyActionPrerequisite.create!(
+          Models::Processing::StrategyNeventPrerequisite.create!(
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
           )
           action.save! unless action.persisted?
@@ -174,7 +174,7 @@ module Sipity
           entity.strategy = strategy
         end
         it "will include actions that do not have prerequisites" do
-          Models::Processing::EntityActionRegister.create!(entity_id: entity.id, strategy_action_id: action.id)
+          Models::Processing::EntityNeventRegister.create!(entity_id: entity.id, strategy_action_id: action.id)
           action.save! unless action.persisted?
           expect(subject).to eq([action])
         end
@@ -185,7 +185,7 @@ module Sipity
 
       context '#scope_available_and_permitted_events' do
         subject { test_repository.scope_available_and_permitted_events(entity: entity, user: user) }
-        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
+        let(:guarded_action) { Models::Processing::StrategyNevent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         before do
           entity.strategy = strategy
           entity.strategy_state = originating_state
@@ -193,13 +193,13 @@ module Sipity
 
         it "will include actions that do not have prerequisites" do
           action.save! unless action.persisted?
-          action_with_completed_prerequisites = Models::Processing::StrategyAction.
+          action_with_completed_prerequisites = Models::Processing::StrategyNevent.
           create!(strategy_id: strategy.id, name: 'completed_prerequisites') do |current_action|
             current_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action_id: action.id)
             current_action.entity_action_registers.build(entity_id: entity.id)
           end
 
-          action_with_incomplete_prerequisites = Models::Processing::StrategyAction.
+          action_with_incomplete_prerequisites = Models::Processing::StrategyNevent.
           create!(strategy_id: strategy.id, name: 'without_prerequisites') do |current_action|
             current_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action_id: action_with_completed_prerequisites.id)
           end
@@ -209,9 +209,9 @@ module Sipity
           )
 
           # Making sure that I have the expected counts
-          expect(Models::Processing::StrategyAction.count).to eq(3)
-          expect(Models::Processing::EntityActionRegister.count).to eq(1)
-          expect(Models::Processing::StrategyActionPrerequisite.count).to eq(2)
+          expect(Models::Processing::StrategyNevent.count).to eq(3)
+          expect(Models::Processing::EntityNeventRegister.count).to eq(1)
+          expect(Models::Processing::StrategyNeventPrerequisite.count).to eq(2)
 
           expect(subject).to eq([action])
         end
