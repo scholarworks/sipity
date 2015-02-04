@@ -220,10 +220,10 @@ ActiveRecord::Schema.define(version: 20150202142340) do
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
 
   create_table "sipity_processing_strategy_action_permissions", force: :cascade do |t|
-    t.integer  "strategy_role_id",  null: false
+    t.integer  "strategy_role_id",   null: false
     t.integer  "strategy_action_id", null: false
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
   end
 
   add_index "sipity_processing_strategy_action_permissions", ["strategy_role_id", "strategy_action_id"], name: "sipity_processing_strategy_action_permissions_aggregate", unique: true

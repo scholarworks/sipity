@@ -67,7 +67,7 @@ module Sipity
 
         it 'will have elements in the "required" set' do
           expect(subject.sets.keys).to eq(['required', 'optional'])
-          expect(subject.sets.fetch('required').map(&:name)).to eq(['attach', 'describe'])
+          expect(subject.sets.fetch('required').map(&:name).sort).to eq(['attach', 'describe'])
         end
       end
 
