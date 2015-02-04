@@ -7,7 +7,7 @@ module Sipity
         belongs_to :strategy
         belongs_to :resulting_strategy_state, class_name: 'StrategyState'
 
-        has_many :entity_event_registers, dependent: :destroy
+        has_many :entity_action_registers, dependent: :destroy
 
         has_many :strategy_state_actions, dependent: :destroy
         has_many :guarding_strategy_action_prerequisites,
