@@ -177,7 +177,7 @@ module Sipity
         action_prereqs = Models::Processing::StrategyEventPrerequisite
 
         events.where(
-          events.arel_table[:strategy_id].eq(strategy_id).
+          events.arel_table[:strategy_id].eq(entity.strategy_id).
           and(
             events.arel_table[:id].not_in(
               action_prereqs.arel_table.project(
@@ -209,6 +209,19 @@ module Sipity
         )
       end
 
+      # For the given :entity, return an ActiveRecord::Relation, that
+      # if resolved, that lists all of the events available for the entity and
+      # its current state.
+      #
+      # * All actions that are associated with events that do not have prerequsites
+      # * All actions that have prerequisites and all of those prerequisites are complete
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_available_for_current_state(entity:)
+        entity = convert_to_processing_entity(entity)
+      end
+
       # For the given :user and :entity, return an ActiveRecord::Relation, that
       # if resolved, that is only the strategy events that can be taken.
       #
@@ -221,21 +234,16 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_available_and_permitted_events(user:, entity:)
+      def scope_available_and_permitted_actions(user:, entity:)
         _user = user
         _entity = convert_to_processing_entity(entity)
         events = Models::Processing::StrategyAction
-        # register = Models::Processing::EntityEventRegister
+
+        # Find all actions available to the given user
+        # @see #scope_permitted_entity_strategy_actions_for_current_state
+        # Intersect with all actions currently available for the given entity.
+
         events.where('1 = 0')
-        # actions.where(
-        #   actions.arel_table[:strategy_id].eq(entity.strategy_id).
-        #   and(
-        #     actions.arel_table[:id].in(
-        #       register.arel_table.project(register.arel_table[:strategy_event_id]).
-        #       where(register.arel_table[:entity_id].eq(entity.id))
-        #     )
-        #   )
-        # )
       end
     end
   end

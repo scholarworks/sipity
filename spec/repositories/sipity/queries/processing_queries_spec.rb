@@ -25,13 +25,13 @@ module Sipity
           strategy_role_id: strategy_role.id, actor_id: user_processing_actor.id, entity_id: entity.id
         )
       end
-      let(:action) { Models::Processing::StrategyEvent.new(id: 6, strategy_id: strategy.id, name: 'complete') }
+      let(:event) { Models::Processing::StrategyEvent.new(id: 6, strategy_id: strategy.id, name: 'complete') }
       let(:originating_state) { Models::Processing::StrategyState.new(id: 7, strategy_id: strategy.id, name: 'new') }
       let(:resulting_state) { Models::Processing::StrategyState.new(id: 8, strategy_id: strategy.id, name: 'done') }
       let(:strategy_action) do
-        Models::Processing::StrategyAction.create!(originating_strategy_state_id: originating_state.id, strategy_event_id: action.id)
+        Models::Processing::StrategyAction.create!(originating_strategy_state_id: originating_state.id, strategy_event_id: event.id)
       end
-      let(:event_permission) do
+      let(:action_permission) do
         Models::Processing::StrategyActionPermission.create!(
           strategy_role_id: strategy_role.id, strategy_action_id: strategy_action.id
         )
@@ -98,8 +98,8 @@ module Sipity
         it "will include permitted strategy_actions" do
           user_processing_actor
           entity_specific_responsibility
-          event_permission
-          expect(subject).to eq([event_permission.strategy_action])
+          action_permission
+          expect(subject).to eq([action_permission.strategy_action])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
@@ -109,7 +109,7 @@ module Sipity
       context '#scope_permitted_entity_strategy_actions_for_current_state' do
         subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
         let!(:unavailable_state_event) do
-          Models::Processing::StrategyAction.create!(originating_strategy_state_id: resulting_state.id, strategy_event_id: action.id)
+          Models::Processing::StrategyAction.create!(originating_strategy_state_id: resulting_state.id, strategy_event_id: event.id)
         end
         before do
           entity.strategy = strategy
@@ -118,13 +118,13 @@ module Sipity
         it "will include permitted strategy_actions" do
           user_processing_actor
           entity_specific_responsibility
-          event_permission
-          expect(subject).to eq([event_permission.strategy_action])
+          action_permission
+          expect(subject).to eq([action_permission.strategy_action])
         end
         it "will skip those not in the correct state" do
           user_processing_actor
           entity_specific_responsibility
-          event_permission
+          action_permission
           entity.strategy_state = resulting_state
           expect(subject).to eq([])
         end
@@ -135,15 +135,12 @@ module Sipity
 
       context '#scope_strategy_events_with_prerequisites' do
         subject { test_repository.scope_strategy_events_with_prerequisites(entity: entity) }
-        let(:guarded_action) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
-        before do
-          entity.strategy = strategy
-        end
+        let(:guarded_event) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         it "will include permitted strategy_actions" do
           Models::Processing::StrategyEventPrerequisite.create!(
-            guarded_strategy_event_id: guarded_action.id, prerequisite_strategy_event_id: action.id
+            guarded_strategy_event_id: guarded_event.id, prerequisite_strategy_event_id: event.id
           )
-          expect(subject).to eq([guarded_action])
+          expect(subject).to eq([guarded_event])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
@@ -151,17 +148,14 @@ module Sipity
       end
 
       context '#scope_strategy_events_without_prerequisites' do
-        subject { test_repository.scope_strategy_events_without_prerequisites(entity: entity, strategy: strategy) }
-        let(:guarded_action) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
-        before do
-          entity.strategy = strategy
-        end
+        subject { test_repository.scope_strategy_events_without_prerequisites(entity: entity) }
+        let(:guarded_event) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         it "will include actions that do not have prerequisites" do
           Models::Processing::StrategyEventPrerequisite.create!(
-            guarded_strategy_event_id: guarded_action.id, prerequisite_strategy_event_id: action.id
+            guarded_strategy_event_id: guarded_event.id, prerequisite_strategy_event_id: event.id
           )
-          action.save! unless action.persisted?
-          expect(subject).to eq([action])
+          event.save! unless event.persisted?
+          expect(subject).to eq([event])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
@@ -169,34 +163,30 @@ module Sipity
       end
 
       context '#scope_statetegy_events_that_have_occurred' do
-        subject { test_repository.scope_statetegy_events_that_have_occurred(entity: entity, strategy: strategy) }
-        before do
-          entity.strategy = strategy
-        end
+        subject { test_repository.scope_statetegy_events_that_have_occurred(entity: entity) }
         it "will include actions that do not have prerequisites" do
-          Models::Processing::EntityEventRegister.create!(entity_id: entity.id, strategy_event_id: action.id)
-          action.save! unless action.persisted?
-          expect(subject).to eq([action])
+          Models::Processing::EntityEventRegister.create!(entity_id: entity.id, strategy_event_id: event.id)
+          event.save! unless event.persisted?
+          expect(subject).to eq([event])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
-      context '#scope_available_and_permitted_events' do
-        subject { test_repository.scope_available_and_permitted_events(entity: entity, user: user) }
-        let(:guarded_action) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
+      context '#scope_available_and_permitted_actions' do
+        subject { test_repository.scope_available_and_permitted_actions(entity: entity, user: user) }
+        let(:guarded_event) { Models::Processing::StrategyEvent.create!(strategy_id: strategy.id, name: 'with_prereq') }
         before do
-          entity.strategy = strategy
           entity.strategy_state = originating_state
         end
 
         it "will include actions that do not have prerequisites" do
-          action.save! unless action.persisted?
+          event.save! unless event.persisted?
           action_with_completed_prerequisites = Models::Processing::StrategyEvent.create!(
             strategy_id: strategy.id, name: 'completed_prerequisites'
           ) do |current_action|
-            current_action.requiring_strategy_event_prerequisites.build(prerequisite_strategy_event_id: action.id)
+            current_action.requiring_strategy_event_prerequisites.build(prerequisite_strategy_event_id: event.id)
             current_action.entity_event_registers.build(entity_id: entity.id)
           end
 
@@ -209,7 +199,7 @@ module Sipity
           end
 
           event_with_no_prerequisites = Models::Processing::StrategyAction.create!(
-            originating_strategy_state_id: originating_state.id, strategy_event_id: action.id
+            originating_strategy_state_id: originating_state.id, strategy_event_id: event.id
           )
 
           # Making sure that I have the expected counts
@@ -217,7 +207,7 @@ module Sipity
           expect(Models::Processing::EntityEventRegister.count).to eq(1)
           expect(Models::Processing::StrategyEventPrerequisite.count).to eq(2)
 
-          expect(subject).to eq([action])
+          expect(subject).to eq([event])
         end
 
         it "will be a chainable scope" do
