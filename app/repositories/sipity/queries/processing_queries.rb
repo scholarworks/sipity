@@ -166,11 +166,6 @@ module Sipity
         )
       end
 
-      def scope_strategy_state_actions_without_prerequisites(entity:)
-        entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyStateAction
-      end
-
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy actions that have no prerequisites.
       #
@@ -189,6 +184,26 @@ module Sipity
                 action_prereqs.arel_table[:guarded_strategy_action_id]
               )
             )
+          )
+        )
+      end
+
+      # For the given :entity return an ActiveRecord::Relation that when
+      # resolved will be only the strategy actions that:
+      #
+      # * Do not have prerequisites
+      # * And are available for the current action's state
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_without_prerequisites_for_current_state(entity:)
+        entity = convert_to_processing_entity(entity)
+        action_scope = scope_strategy_actions_without_prerequisites(entity: entity)
+        state_actions_table = Models::Processing::StrategyStateAction.arel_table
+        action_scope.where(
+          action_scope.arel_table[:id].in(
+            state_actions_table.project(state_actions_table[:strategy_action_id]).
+            where(state_actions_table[:originating_strategy_state_id].eq(entity.strategy_state_id))
           )
         )
       end

@@ -162,6 +162,27 @@ module Sipity
         end
       end
 
+      context '#scope_strategy_actions_without_prerequisites_for_current_state' do
+        subject { test_repository.scope_strategy_actions_without_prerequisites_for_current_state(entity: entity) }
+        let(:wrong_state_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'another_action') }
+        it "will include actions that do not have prerequisites" do
+          action.save! unless action.persisted?
+          expect(resulting_state.id).to_not eq(entity.strategy_state_id)
+
+          Models::Processing::StrategyStateAction.create!(
+            strategy_action_id: wrong_state_action.id, originating_strategy_state_id: resulting_state.id
+          )
+          Models::Processing::StrategyStateAction.create!(
+            strategy_action_id: action.id, originating_strategy_state_id: entity.strategy_state_id
+          )
+
+          expect(subject).to eq([action])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_statetegy_actions_that_have_occurred' do
         subject { test_repository.scope_statetegy_actions_that_have_occurred(entity: entity) }
         it "will include actions that do not have prerequisites" do
