@@ -45,8 +45,7 @@ module Sipity
         end
       end
       module_function :grant_permission_for!
-      private :grant_permission_for!
-      private_class_method :grant_permission_for!
+      public :grant_permission_for!
     end
   end
 end

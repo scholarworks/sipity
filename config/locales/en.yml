@@ -32,17 +32,41 @@ en:
       work:
         create: 'Continue'
         update: 'Update'
+      doi:
+        create: 'Assign a DOI'
+      citation:
+        create: 'Create a citation'
+  sipity/citations:
+    action/show:
+      call_to_action: 'Create a Citation'
+      cancel: 'Return without creating a citation'
+      description_html: 'A well-formed citation is crucial for tracking how your work is cited by others.'
+      citation_not_assigned: 'We recommend providing a citation for %{title}.'
+    panels:
+      new_citation:
+        hint: 'Please provide a citation properly formatted for the type you select.'
+        title_html: 'How would you like your work to be <b>cited</b>?'
   sipity/dois:
     action/show:
+      call_to_action: 'DOI Assignment'
+      cancel: 'Return without assigning a DOI'
+      description_html: 'A <a href="http://simple.wikipedia.org/wiki/Digital_Object_Identifier">Digital Object Identifer</a> is the best way to cite an online work (like this one) in academic publications.'
       doi_already_assigned: 'A DOI has already been assigned to %{title}.'
+      doi_not_assigned: 'We recommend assigning a DOI to %{title}.'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
-      doi_not_assigned: 'It appears that you do not have a DOI for %{title}. Would you like to fix that?'
+    panels:
+      existing_doi:
+        hint: 'If you published this work elsewhere you may already have a DOI.'
+        title_html: 'Do you <b>already have</b> a DOI?'
+      new_doi:
+        hint: 'We need a bit more information to create a DOI for you:'
+        title_html: 'Would you like to <b>create</b> a DOI?'
   sipity/works:
     label:
-      attributes_html: 'What is the <b>title</b> of your work?'
-      work_type_html: 'What <b>kind</b> of work is this?'
-      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
       access_rights_answer_html: 'Who can <b>see</b> the completed submmission?'
+      attributes_html: 'What is the <b>title</b> of your work?'
+      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
+      work_type_html: 'What <b>kind</b> of work is this?'
     action/create:
       failure: 'There is a problem with your sumbission.'
       success: 'Thank you for your submission!'
@@ -51,9 +75,9 @@ en:
       success: 'Update successful!'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
-      label: "<strong>Attach</strong> files to this %{entity_type}"
+      label_html: "<strong>Attach</strong> files to this %{entity_type}"
     describe:
-      label: "Further <strong>describe</strong> your %{entity_type}"
+      label_html: "Further <strong>describe</strong> your %{entity_type}"
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
@@ -65,3 +89,9 @@ en:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
+  simple_form:
+    labels:
+      doi:
+        identifier: 'Existing DOI'
+      citation:
+        type: 'Citation format'

@@ -1,0 +1,15 @@
+<!-- TODO: Internationalize the enrichment option -->
+<h2>Tell us about your advisors</h2>
+<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
+  <%= f.error_notification %>
+  <%= field_set_tag do %>
+    <%= f.fields_for :collaborators do |collaborator_form| %>
+      <%= collaborator_form.input :name %>
+      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
+      <%= collaborator_form.input :netid %>
+      <%= collaborator_form.input :email, as: :email %>
+      <%= collaborator_form.input :responsible_for_review, as: :select %>
+    <% end %>
+    <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
+  <% end %>
+<% end %>

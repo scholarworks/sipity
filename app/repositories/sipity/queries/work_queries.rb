@@ -14,9 +14,14 @@ module Sipity
         URI.parse("http://change.me/show/#{work_id}")
       end
 
-      def find_works_for(user:)
+      def find_works_for(user:, processing_state: nil)
         # REVIEW: Is this bleeding into the authorization layer?
-        Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work)
+        scope = Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work)
+        if processing_state.present?
+          scope.where(processing_state: processing_state)
+        else
+          scope
+        end
       end
 
       def build_create_work_form(attributes: {})

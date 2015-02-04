@@ -14,9 +14,10 @@ ActiveRecord::Base.transaction do
 
   [
     ['etd', 'new', 'describe', 'required'],
-    ['etd', 'new', 'attach', 'required']
+    ['etd', 'new', 'attach', 'required'],
+    ['etd', 'new', 'collaborators', 'required']
   ].each do |work_type, processing_state, enrichment_type, enrichment_group|
-    Sipity::Models::WorkTypeTodoListConfig.create!(
+    Sipity::Models::WorkTypeTodoListConfig.find_or_create_by!(
       work_type: work_type,
       work_processing_state: processing_state,
       enrichment_type: enrichment_type,
@@ -28,15 +29,15 @@ ActiveRecord::Base.transaction do
   roles = {}
 
   ['creating_user', 'etd_reviewer', 'advisor'].each do |role_name|
-    roles[role_name] = Sipity::Models::Role.create!(name: role_name)
+    roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
   end
 
   $stdout.puts 'Creating ETD State Diagram...'
-  Sipity::Models::Processing::Strategy.create!(name: 'etd') do |etd_strategy|
+  Sipity::Models::Processing::Strategy.find_or_create_by!(name: 'etd') do |etd_strategy|
     etd_strategy_roles = {}
 
     ['creating_user', 'etd_reviewer', 'advisor'].each do |role_name|
-      etd_strategy_roles[role_name] = etd_strategy.strategy_roles.build(role: roles.fetch(role_name))
+      etd_strategy_roles[role_name] = etd_strategy.strategy_roles.find_or_initialize_by(role: roles.fetch(role_name))
     end
 
     etd_states = {}
@@ -49,7 +50,7 @@ ActiveRecord::Base.transaction do
       'ingesting',
       'done'
     ].each do |state_name|
-      etd_states[state_name] = etd_strategy.strategy_states.build(name: state_name)
+      etd_states[state_name] = etd_strategy.strategy_states.find_or_initialize_by(name: state_name)
     end
 
     etd_actions = {}
@@ -67,7 +68,7 @@ ActiveRecord::Base.transaction do
       ['ingest_completed', 'done']
     ].each do |action_name, strategy_state_name|
       resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
-      etd_actions[action_name] = etd_strategy.strategy_actions.build(name: action_name, resulting_strategy_state: resulting_state)
+      etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(name: action_name, resulting_strategy_state: resulting_state)
     end
 
     [
@@ -76,10 +77,10 @@ ActiveRecord::Base.transaction do
     ].each do |originating_state_name, action_name, role_names|
       action = etd_actions.fetch(action_name)
       originating_state = etd_states.fetch(originating_state_name)
-      event = action.strategy_events.build(originating_strategy_state: originating_state)
+      event = action.strategy_events.find_or_initialize_by(originating_strategy_state: originating_state)
 
       Array.wrap(role_names).each do |role_name|
-        etd_strategy_roles.fetch(role_name).strategy_event_permissions.build(strategy_event: event)
+        etd_strategy_roles.fetch(role_name).strategy_event_permissions.find_or_initialize_by(strategy_event: event)
       end
     end
   end

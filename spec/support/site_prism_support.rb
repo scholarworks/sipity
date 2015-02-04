@@ -124,6 +124,11 @@ module SitePrism
       end
     end
 
+    class CollaboratorsPage < SitePrism::Page
+      PARAM_NAME_CONTAINER = 'work'.freeze
+      element :submit_button, "form [name='form>collaborators>submit'][type='submit']"
+    end
+
     class AttachPage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
       element :form, "form[method='post']"

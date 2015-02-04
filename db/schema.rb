@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150201173801) do
+ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -81,14 +81,19 @@ ActiveRecord::Schema.define(version: 20150201173801) do
   add_index "sipity_attachments", ["work_id"], name: "index_sipity_attachments_on_work_id"
 
   create_table "sipity_collaborators", force: :cascade do |t|
-    t.integer  "work_id",    null: false
+    t.integer  "work_id",                                null: false
     t.integer  "sequence"
     t.string   "name"
-    t.string   "role",       null: false
+    t.string   "role",                                   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "netid"
+    t.string   "email"
+    t.boolean  "responsible_for_review", default: false
   end
 
+  add_index "sipity_collaborators", ["email"], name: "index_sipity_collaborators_on_email"
+  add_index "sipity_collaborators", ["netid"], name: "index_sipity_collaborators_on_netid"
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence"
 
   create_table "sipity_doi_creation_requests", force: :cascade do |t|

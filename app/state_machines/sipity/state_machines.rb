@@ -1,10 +1,3 @@
-# Because of the `const_defined?` I'm requiring the various sipity state
-# machines
-named_concept = File.basename(__FILE__, '.rb')
-Dir[File.expand_path("../#{named_concept}/*.rb", __FILE__)].each do |filename|
-  require_relative "./#{named_concept}/#{File.basename(filename)}"
-end
-
 module Sipity
   # A submodule that is responsible for handling all state changes.
   module StateMachines
@@ -45,11 +38,9 @@ module Sipity
 
     def find_state_machine_for(work_type:)
       state_machine_name_by_convention = "#{work_type.classify}StateMachine"
-      if const_defined?(state_machine_name_by_convention)
-        const_get(state_machine_name_by_convention)
-      else
-        fail Exceptions::StateMachineNotFoundError, name: state_machine_name_by_convention, container: self
-      end
+      return "#{self}::#{state_machine_name_by_convention}".constantize
+    rescue NameError
+      raise Exceptions::StateMachineNotFoundError, name: state_machine_name_by_convention, container: self
     end
   end
 end

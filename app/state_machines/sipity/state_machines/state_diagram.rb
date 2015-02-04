@@ -13,6 +13,10 @@ module Sipity
       attr_reader :data_structure
       private :data_structure
 
+      def states
+        @states ||= data_structure.keys.map(&:to_s)
+      end
+
       # REVIEW: This is really complicated
       def available_events_for_when_acting_as(current_state:, acting_as:)
         events_and_acting_as_for(current_state).each_with_object(Set.new) do |(event_name, possible_acting_as), mem|

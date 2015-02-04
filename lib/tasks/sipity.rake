@@ -1,4 +1,11 @@
 namespace :sipity do
+
+  desc 'Create a user based on $USER'
+  task :create_user do
+    $stdout.puts "Creating User '#{ENV['USER']}' (from ENV['USER'])..."
+    User.find_or_create_by!(username: ENV['USER'])
+  end
+
   desc 'Build the various repository interfaces for testing purposes; These are descriptive interfaces'
   task :rebuild_interfaces do
     Rake::Task['sipity:build_command_repository_interface'].invoke unless ENV['TRAVIS']

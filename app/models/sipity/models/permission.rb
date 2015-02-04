@@ -33,6 +33,7 @@ module Sipity
     #   DeclarativeAuthorization gem
     class Permission < ActiveRecord::Base
       CREATING_USER = 'creating_user'.freeze
+      ADVISOR = 'advisor'.freeze
       self.table_name = 'sipity_permissions'
       belongs_to :actor, polymorphic: true
       belongs_to :entity, polymorphic: true

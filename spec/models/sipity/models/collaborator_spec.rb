@@ -18,6 +18,36 @@ module Sipity
         end
       end
 
+      context 'validations' do
+        subject { described_class.new(role: 'author', name: 'Jeremy', responsible_for_review: false) }
+        it 'will require a role' do
+          subject.role = nil
+          subject.valid?
+          expect(subject.errors[:role]).to be_present
+        end
+        it 'will require a name' do
+          subject.name = nil
+          subject.valid?
+          expect(subject.errors[:name]).to be_present
+        end
+
+        context 'when responsible for review' do
+          it 'will have errors on netid and email if none are given' do
+            subject.responsible_for_review = true
+            subject.valid?
+            expect(subject.errors[:email]).to be_present
+            expect(subject.errors[:netid]).to be_present
+            expect(subject.errors[:responsible_for_review]).to be_present
+          end
+
+          it 'will not have errors on netid and email one (or both) are given' do
+            subject.responsible_for_review = true
+            subject.email = 'hello@test.com'
+            expect(subject.valid?).to be_truthy
+          end
+        end
+      end
+
       its(:possible_roles) { should eq(described_class.roles) }
 
       it 'will raise an ArgumentError if you provide an invalid role' do

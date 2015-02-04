@@ -7,6 +7,7 @@ module Sipity
       subject { described_class.new(work: work) }
 
       its(:policy_enforcer) { should eq(Policies::EnrichWorkByFormSubmissionPolicy) }
+      its(:enrichment_type) { should eq('work_enrichment') }
 
       context 'validations' do
         it 'will require a work' do
