@@ -21,7 +21,7 @@ module Sipity
       include Conversions::ConvertToPolymorphicType
       let(:user) { User.find_or_create_by!(username: 'user') }
       let(:group) { Models::Group.find_or_create_by!(name: 'group') }
-      let(:role) { Models::Role.find_or_create_by!(name: 'role') }
+      let(:role) { Models::Role.find_or_create_by!(name: Models::Role.valid_names.first) }
       let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy') }
       let(:entity) do
         Models::Processing::Entity.find_or_create_by!(

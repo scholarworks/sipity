@@ -9,6 +9,24 @@ module Sipity
       has_many :processing_strategy_roles,
         dependent: :destroy,
         class_name: 'Sipity::Models::Processing::StrategyRole'
+
+      # As I don't have a means for assigning roles for a given processing type
+      # I need a controlled vocabulary for roles.
+      enum(
+        name: {
+          'creating_user' => 'creating_user',
+          'etd_reviewer' => 'etd_reviewer',
+          'advisor' => 'advisor'
+        }
+      )
+
+      def self.[](name)
+        where(name: name.to_s).first!
+      end
+
+      def self.valid_names
+        names.keys
+      end
     end
   end
 end
