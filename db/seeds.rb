@@ -44,7 +44,7 @@ ActiveRecord::Base.transaction do
   end
 
   $stdout.puts 'Creating ETD State Diagram...'
-  Sipity::Models::Processing::Strategy.find_or_create_by!(proxy_for: work_types.fetch('etd'), name: 'etd processing') do |etd_strategy|
+  work_types.fetch('etd').default_processing_strategy do |etd_strategy|
     etd_strategy_roles = {}
 
     [

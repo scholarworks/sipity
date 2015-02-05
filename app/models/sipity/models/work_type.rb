@@ -32,6 +32,15 @@ module Sipity
       end
 
       has_one :default_processing_strategy, as: :proxy_for, class_name: 'Sipity::Models::Processing::Strategy', dependent: :destroy
+
+      def find_or_initialize_default_processing_strategy(&block)
+        if default_processing_strategy
+          block_given? yield(default_processing_strategy)
+          default_processing_strategy
+        else
+          build_default_processing_strategy(name: "#{name} processing", &block)
+        end
+      end
     end
   end
 end
