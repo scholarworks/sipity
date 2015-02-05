@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150202142340) do
+ActiveRecord::Schema.define(version: 20150204172806) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20150202142340) do
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.integer  "work_id",        null: false
-    t.string   "pid"
+    t.string   "pid",            null: false
     t.string   "predicate_name", null: false
     t.string   "file_uid",       null: false
     t.string   "file_name",      null: false

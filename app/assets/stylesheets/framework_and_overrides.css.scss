@@ -75,3 +75,10 @@ section {
 .authform fieldset {
   @extend .well;
 }
+
+// Theme adjustments
+.btn-primary b,
+.btn-primary strong,
+.panel-primary .panel-title b {
+  color:#FFEC87;
+}
