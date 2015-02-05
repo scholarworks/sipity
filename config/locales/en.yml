@@ -75,7 +75,7 @@ en:
       success: 'Update successful!'
     processing_state:
       label:
-        new: "This work has not been submitted for review."
+        new: "You must complete the required todo items before you can submit your work for review."
   sipity/decorators/entitiy_enrichments:
     describe:
       call_to_action: 'Finish describting your work'
@@ -98,11 +98,13 @@ en:
       doi_not_assigned: 'DOI Not Yet Assigned'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
     name: 'DOI'
+    action_label: 'Assign a <b>DOI</b>'
   sipity/decorators/recommendations/citation_recommendation:
     state:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
+    action_label: 'Create a <b>citation</b>'
   simple_form:
     labels:
       doi:

@@ -1,38 +1,6 @@
 <section itemscope itemtype="http://schema.org/CreativeWork">
-
-  <article class="work-description">
-    <h2 itemprop="name" class="work-title"><%= model.title %></h2>
-    <p class="work-type"><%= model.work_type %></p>
-    <dl class="work attribute-listing">
-      <dt class="predicate title visuallyhidden"><%= model.human_attribute_name(:title) %></dt>
-      <dd class="value title visuallyhidden"><%= model.title %></dt>
-      <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-      <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
-      <% if model.collaborators.any? %>
-        <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
-        <dd class="value collaborators">
-          <ul class="collaborators-list">
-            <% model.collaborators.each do |collaborator| %>
-              <li class="collaborators-list-item">
-                <dl class="collaborator">
-                  <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
-                  <dd class="value name"><%= collaborator.name %></dd>
-                  <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
-                  <dd class="value role"><%= collaborator.role %></dd>
-                </dl>
-              </li>
-            <% end %>
-          </ul>
-        </dd>
-      <% end %>
-      <% if model.additional_attributes.any? %>
-        <% model.additional_attributes.each do |attribute| %>
-          <dt><%= attribute.key %></dt>
-          <dd><%= attribute.value %></dd>
-        <% end %>
-      <% end %>
-    </dl>
-  </article>
+  <h2 itemprop="name" class="work-title"><%= model.title %></h2>
+  <p class="work-type"><%= model.work_type %></p>
 
   <aside class="work-tasks">
     <h2>Submission ToDo List</h2>
@@ -66,23 +34,64 @@
       <% end %>
     </div>
 
-    <div class="recommendations">
-      <h3>Recommended</h3>
-      <ul class="recommendations-list">
+    <div class="recommendations item-set">
+      <h3 class="set-title">Recommended</h3>
+      <ul class="item-list">
         <% %w(doi citation).each do |recommendation_name| %>
           <% model.with_recommendation(recommendation_name) do |recommendation| %>
-            <li class="recommendations-list-item">
-              <h4><%= recommendation.human_name %></h4>
-              <dl class="recommendation">
-                <dt class="predicate status"><%= recommendation.human_attribute_name(:status) %></dt>
-                <dd class="value status"><%= link_to recommendation.human_status, recommendation.path_to_recommendation, class: "recommendation-#{recommendation_name}" %></dd>
-              </dl>
+            <li class="todo-item">
+              <span class="icon-wrapper-24">
+                <% if recommendation.done? %>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                <% end %>
+              </span>
+              <% button_class = recommendation.done? ? 'btn-default' : 'btn-primary' %>
+              <a itemprop="url" href="<%= recommendation.path_to_recommendation %>" class="btn <%= button_class %>">
+                <%= recommendation.human_action_label %>
+              </a>
+              <% if recommendation.pending? %>
+                <span class="status">
+                  <%= recommendation.human_state %>
+                </span>
+              <% end %>
             </li>
           <% end %>
         <% end %>
       </ul>
     </div>
   </aside>
+
+  <article class="work-description">
+    <dl class="work attribute-listing">
+      <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
+      <dd class="value title"><%= model.title %></dt>
+      <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
+      <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
+      <% if model.collaborators.any? %>
+        <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
+        <dd class="value collaborators">
+          <ul class="collaborators-list">
+            <% model.collaborators.each do |collaborator| %>
+              <li class="collaborators-list-item">
+                <dl class="collaborator">
+                  <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
+                  <dd class="value name"><%= collaborator.name %></dd>
+                  <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
+                  <dd class="value role"><%= collaborator.role %></dd>
+                </dl>
+              </li>
+            <% end %>
+          </ul>
+        </dd>
+      <% end %>
+      <% if model.additional_attributes.any? %>
+        <% model.additional_attributes.each do |attribute| %>
+          <dt><%= attribute.key %></dt>
+          <dd><%= attribute.value %></dd>
+        <% end %>
+      <% end %>
+    </dl>
+  </article>
 
   <div class="work-actions">
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
