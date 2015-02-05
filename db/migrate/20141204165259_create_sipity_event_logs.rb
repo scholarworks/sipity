@@ -10,7 +10,7 @@ class CreateSipityEventLogs < ActiveRecord::Migration
     end
 
     add_index :sipity_event_logs, [:user_id, :entity_id, :entity_type], name: :sipity_event_logs_user_subject
-    add_index :sipity_event_logs, [:entity_id, :entity_type, :event_name], name: :sipity_event_logs_entity_event_name
+    add_index :sipity_event_logs, [:entity_id, :entity_type, :event_name], name: :sipity_event_logs_entity_action_name
     add_index :sipity_event_logs, [:entity_id, :entity_type], name: :sipity_event_logs_subject
     add_index :sipity_event_logs, [:user_id, :event_name], name: :sipity_event_logs_user_event_name
 

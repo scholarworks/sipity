@@ -64,6 +64,11 @@ module Sipity
       self.conversion_target = 'EntityType'
     end
 
+    # Unable to convert the given object into a permanent URI
+    class ProcessingEntityConversionError < ConversionError
+      self.conversion_target = 'Processing::Entity'
+    end
+
     # As you are looking up something by name, within a given container.
     class ConceptNotFoundError < RuntimeError
       def initialize(name:, container:)

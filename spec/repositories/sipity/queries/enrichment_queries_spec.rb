@@ -66,8 +66,8 @@ module Sipity
         subject { test_repository.todo_list_for_current_processing_state_of_work(work: work) }
 
         it 'will have elements in the "required" set' do
-          expect(subject.sets.keys).to eq(['required', 'optional'])
-          expect(subject.sets.fetch('required').map(&:name)).to eq(['attach', 'describe'])
+          expect(subject.sets.keys.sort).to eq(['required', 'optional'].sort)
+          expect(subject.sets.fetch('required').map(&:name).sort).to eq(['attach', 'describe'])
         end
       end
 

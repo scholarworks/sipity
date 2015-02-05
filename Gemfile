@@ -25,6 +25,7 @@ gem 'dragonfly', '~> 1.0.7'
 group :doc do
   gem 'yard', require: false
   gem 'inch', require: false
+  gem 'railroady', require: false
 end
 
 group :development do

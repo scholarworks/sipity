@@ -24,8 +24,8 @@ module Sipity
       MEMBER_MEMBERSHIP_ROLE = 'member'.freeze
 
       self.table_name = 'sipity_group_memberships'
-      belongs_to :user
-      belongs_to :group
+      belongs_to :user, class_name: '::User'
+      belongs_to :group, class_name: 'Sipity::Models::Group'
       enum(
         membership_role: {
           MANAGER_MEMBERSHIP_ROLE => MANAGER_MEMBERSHIP_ROLE,
