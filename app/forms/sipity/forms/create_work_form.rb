@@ -43,9 +43,9 @@ module Sipity
 
       def submit(repository:, requested_by:)
         super() do |f|
-          # REVIEW: Should the create work behavior be extracted to a repository
-          #   command?
-          work = Models::Work.create!(title: f.title, work_publication_strategy: f.work_publication_strategy)
+          # This method shows an intimate knowledge of the data structure of
+          # what goes into a work. It works for now, but is something to consider.
+          work = repository.create_work!(title: title, work_publication_strategy: work_publication_strategy, work_type: work_type)
           repository.handle_transient_access_rights_answer(entity: work, answer: f.access_rights_answer)
           repository.update_work_publication_date!(work: work, publication_date: f.publication_date)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
