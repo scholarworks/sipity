@@ -76,7 +76,6 @@ ActiveRecord::Base.transaction do
       ['submit_for_advisor_signoff', 'under_advisor_review'],
       ['advisor_signs_off', 'under_grad_school_review'],
       ['advisor_requests_changes', 'advisor_changes_requested'],
-      ['student_submits_advisor_requested_changes', 'under_advisor_review'],
       ['request_revisions', 'under_advisor_review'],
       ['approve_for_ingest', 'ready_for_ingest'],
       ['ingest', 'ingesting'],
@@ -91,6 +90,22 @@ ActiveRecord::Base.transaction do
       ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['new', 'edit', ['creating_user', 'etd_reviewer']],
       ['new', 'destroy', ['creating_user', 'etd_reviewer']],
+      ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['under_advisor_review', 'edit', ['etd_reviewer']],
+      ['under_advisor_review', 'destroy', ['etd_reviewer']],
+      ['under_advisor_review', 'advisor_signs_off', ['etd_reviewer', 'advisor']],
+      ['under_advisor_review', 'advisor_requests_changes', ['etd_reviewer', 'advisor']],
+      ['advisor_changes_requested', 'submit_for_advisor_signoff', ['creating_user']],
+      ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['advisor_changes_requested', 'edit', ['creating_user', 'etd_reviewer']],
+      ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],
+      ['under_grad_school_review', 'request_revisisions', ['etd_reviewer']],
+      ['under_grad_school_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['under_grad_school_review', 'edit', ['etd_reviewer']],
+      ['under_grad_school_review', 'destroy', ['etd_reviewer']],
+      ['ready_for_ingest', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['ingesting', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+      ['done', 'show', ['creating_user', 'advisor', 'etd_reviewer']]
     ].each do |originating_state_name, action_name, role_names|
       action = etd_actions.fetch(action_name)
       originating_state = etd_states.fetch(originating_state_name)
