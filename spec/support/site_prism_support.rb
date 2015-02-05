@@ -133,10 +133,26 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'work'.freeze
       element :form, "form[method='post']"
       element :input_file, "form [name='#{PARAM_NAME_CONTAINER}[files][]'][multiple='multiple']"
+      element :attachment, "form [name='#{PARAM_NAME_CONTAINER}[remove_files][]'][type='checkbox']"
+      element :submit_button, "form [name='commit'][type='submit']"
+
       def attach_file(path, options = {})
-        # NOTE: I believe this will work, however I am not certain
         super("#{PARAM_NAME_CONTAINER}[files][]", path, options)
       end
+
+      def select_check_box(predicate, with: nil)
+        all("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}][]']").each do |input|
+          if input.value == with
+            input.set(true)
+            break
+          end
+        end
+      end
+
+      def attached_file_name
+        attachment.value
+      end
+
     end
 
     class AssignDoiPage < SitePrism::Page
