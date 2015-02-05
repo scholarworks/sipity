@@ -64,14 +64,19 @@ module Sipity
       self.conversion_target = 'EntityType'
     end
 
+    # Unable to convert the given object into a Role
+    class RoleConversionError < ConversionError
+      self.conversion_target = 'Models::Role'
+    end
+
     # Unable to convert the given object into a processing entity
     class ProcessingEntityConversionError < ConversionError
-      self.conversion_target = 'Processing::Entity'
+      self.conversion_target = 'Models::Processing::Entity'
     end
 
     # Unable to convert the given object into a processing actor
     class ProcessingActorConversionError < ConversionError
-      self.conversion_target = 'Processing::Actor'
+      self.conversion_target = 'Models::Processing::Actor'
     end
 
     # As you are looking up something by name, within a given container.
