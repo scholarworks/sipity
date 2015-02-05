@@ -50,12 +50,12 @@ module Sipity
         Models::Attachment.where(file_name: file_name).destroy_all
       end
 
-      def mark_as_representative(file_name: , user: requested_by)
+      def mark_as_representative(file_name:, user: user)
         # TODO: convert file name pid
-        return true unless file_name.present?
-        attachement= Models::Attachment.where(file_name: file_name).first
-        attachement.mark_as_representative=true
-        attachement.save!
+        attachment = Models::Attachment.where(file_name: file_name).first
+        return true unless attachment.present?
+        attachment.mark_as_representative = true
+        attachment.save!
       end
 
       def create_sipity_user_from(netid:)

@@ -19,7 +19,7 @@ feature 'Enriching a Work', :devise do
     end
   end
 
-  def attach_file_work(options = {})
+  def attach_file_work
     login_as(user, scope: :user)
     create_a_work(work_type: 'etd')
 
@@ -111,6 +111,7 @@ feature 'Enriching a Work', :devise do
 
   scenario 'User can remove files' do
     attach_file_work
+
     on('work_page') do |the_page|
       the_page.click_todo_item('todo>required>attach')
     end
@@ -121,6 +122,7 @@ feature 'Enriching a Work', :devise do
       the_page.attach_file(File.join(Rails.root, 'spec/fixtures/attachments/hello-world.txt'))
       the_page.submit_button.click
     end
+
     on('work_page') do |the_page|
       the_page.click_todo_item('todo>required>attach')
     end
@@ -130,7 +132,6 @@ feature 'Enriching a Work', :devise do
     end
 
   end
-
 
   scenario 'User can add collaborators' do
     login_as(user, scope: :user)

@@ -19,11 +19,11 @@ module Sipity
 
         def attachments_from_work
           return [] unless work
-          work.attachments.present? ? work.attachments.map { |elem| elem.file_name } : []
+          work.attachments.present? ? work.attachments.map(&:file_name) : []
         end
 
         def representative
-          work.attachments.map { |elem| elem.file_name }
+          work.attachments.map(&:file_name)
         end
 
         def attachments(decorator: Decorators::AttachmentDecorator)

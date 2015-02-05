@@ -152,7 +152,6 @@ module SitePrism
       def attached_file_name
         attachment.value
       end
-
     end
 
     class AssignDoiPage < SitePrism::Page
