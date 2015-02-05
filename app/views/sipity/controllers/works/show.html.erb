@@ -1,104 +1,118 @@
-<section itemscope itemtype="http://schema.org/CreativeWork">
-  <h2 itemprop="name" class="work-title"><%= model.title %></h2>
-  <p class="work-type"><%= model.work_type %></p>
+<section itemscope itemtype="http://schema.org/CreativeWork" class="container">
+  <div class="row">
+    <div class="page-header">
+      <h1 itemprop="name" class="page-title work-title"><%= model.title %>
+        <small class="work-type"><%= model.work_type %></small>
+      </h1>
+    </div>
+  </div>
 
-  <aside class="work-tasks">
-    <%= content_tag :h2, t('sipity/works.action/show.label.todo_section') %>
+  <div class="row">
 
-    <div class="todo">
-      <% model.each_todo_item_set do |set, actions| %>
-      <%# TODO: the set should be an object not a string; That object should have I18n %>
-        <div class="item-set">
-          <h3 class="set-title"><%= set.titleize %></h3>
-          <ul class="item-list">
-            <% actions.each do |action| %>
-              <% is_done = (action.state == 'done') %>
-              <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
+    <aside class="col-sm-6 work-tasks">
+      <%= content_tag :h2, t('sipity/works.action/show.label.todo_section'), class: 'task-heading' %>
+
+      <div class="todo">
+        <% model.each_todo_item_set do |set, actions| %>
+        <%# TODO: the set should be an object not a string; That object should have I18n %>
+          <div class="item-set">
+            <h3 class="set-title"><%= set.titleize %></h3>
+            <ul class="item-list">
+              <% actions.each do |action| %>
+                <% is_done = (action.state == 'done') %>
+                <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
+                  <span class="icon-wrapper-24">
+                    <% if is_done %>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                    <% end %>
+                  </span>
+                  <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
+                  <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                    <% button_class = is_done ? 'btn-default' : 'btn-primary' %>
+                    <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                      <span itemprop="name"><%= action.label %></span>
+                    </a>
+                  </span>
+                  <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+                </li>
+              <% end %>
+            <ul>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="recommendations item-set">
+        <%= content_tag :h3, t('sipity/works.action/show.label.recommended_actions'), class: 'set-title' %>
+        <ul class="item-list">
+          <% %w(doi citation).each do |recommendation_name| %>
+            <% model.with_recommendation(recommendation_name) do |recommendation| %>
+              <li class="todo-item">
                 <span class="icon-wrapper-24">
-                  <% if is_done %>
+                  <% if recommendation.done? %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                   <% end %>
                 </span>
-                <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
-                <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                  <% button_class = is_done ? 'btn-default' : 'btn-primary' %>
-                  <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
-                    <span itemprop="name"><%= action.label %></span>
-                  </a>
-                </span>
-                <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+                <% button_class = recommendation.done? ? 'btn-default' : 'btn-primary' %>
+                <a itemprop="url" href="<%= recommendation.path_to_recommendation %>" class="btn <%= button_class %>">
+                  <%= recommendation.human_action_label %>
+                </a>
+                <% if recommendation.pending? %>
+                  <span class="status">
+                    <%= recommendation.human_state %>
+                  </span>
+                <% end %>
               </li>
             <% end %>
-          <ul>
-        </div>
-      <% end %>
-    </div>
+          <% end %>
+        </ul>
+      </div>
+    </aside>
 
-    <div class="recommendations item-set">
-      <%= content_tag :h3, t('sipity/works.action/show.label.recommended_actions'), class: 'set-title' %>
-      <ul class="item-list">
-        <% %w(doi citation).each do |recommendation_name| %>
-          <% model.with_recommendation(recommendation_name) do |recommendation| %>
-            <li class="todo-item">
-              <span class="icon-wrapper-24">
-                <% if recommendation.done? %>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+
+  <div class="col-sm-6">
+    <article class="panel panel-default work-description">
+      <div class="panel-heading">
+        <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
+      </div>
+      <div class="panel-body">
+        <dl class="work attribute-listing">
+          <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
+          <dd class="value title"><%= model.title %></dt>
+          <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
+          <dd class="value work-type"><%= model.work_type %></dt>
+          <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
+          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
+          <% if model.collaborators.any? %>
+            <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
+            <dd class="value collaborators">
+              <ul class="collaborators-list">
+                <% model.collaborators.each do |collaborator| %>
+                  <li class="collaborators-list-item">
+                    <dl class="collaborator">
+                      <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
+                      <dd class="value name"><%= collaborator.name %></dd>
+                      <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
+                      <dd class="value role"><%= collaborator.role %></dd>
+                    </dl>
+                  </li>
                 <% end %>
-              </span>
-              <% button_class = recommendation.done? ? 'btn-default' : 'btn-primary' %>
-              <a itemprop="url" href="<%= recommendation.path_to_recommendation %>" class="btn <%= button_class %>">
-                <%= recommendation.human_action_label %>
-              </a>
-              <% if recommendation.pending? %>
-                <span class="status">
-                  <%= recommendation.human_state %>
-                </span>
-              <% end %>
-            </li>
+              </ul>
+            </dd>
           <% end %>
-        <% end %>
-      </ul>
-    </div>
-  </aside>
-
-  <article class="panel panel-default work-description">
-    <div class="panel-heading">
-      <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
-    </div>
-    <div class="panel-body">
-      <dl class="work attribute-listing">
-        <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-        <dd class="value title"><%= model.title %></dt>
-        <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-        <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
-        <% if model.collaborators.any? %>
-          <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
-          <dd class="value collaborators">
-            <ul class="collaborators-list">
-              <% model.collaborators.each do |collaborator| %>
-                <li class="collaborators-list-item">
-                  <dl class="collaborator">
-                    <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
-                    <dd class="value name"><%= collaborator.name %></dd>
-                    <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
-                    <dd class="value role"><%= collaborator.role %></dd>
-                  </dl>
-                </li>
-              <% end %>
-            </ul>
-          </dd>
-        <% end %>
-        <% if model.additional_attributes.any? %>
-          <% model.additional_attributes.each do |attribute| %>
-            <dt><%= attribute.key %></dt>
-            <dd><%= attribute.value %></dd>
+          <% if model.additional_attributes.any? %>
+            <% model.additional_attributes.each do |attribute| %>
+              <dt><%= attribute.key %></dt>
+              <dd><%= attribute.value %></dd>
+            <% end %>
           <% end %>
-        <% end %>
-      </dl>
-    </div>
-  </article>
+        </dl>
+      </div>
+    </article>
+  </div>
 
-  <div class="work-actions">
+  </div><!-- /row -->
+
+  <div class="row work-actions">
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
     <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
       <meta itemprop="name" content="work>processing_state" />

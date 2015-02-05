@@ -1,3 +1,7 @@
+.task-heading {
+  margin-top:0;
+}
+
 ul.item-list {
   list-style-type:none;
 }
@@ -17,14 +21,22 @@ ul.item-list {
   margin-top:.5em;
 }
 
-.icon-wrapper-24{
+.icon-wrapper-24 {
   display:inline-block;
   line-height:36px;
   position:relative;
   width:24px;
 }
 
-.icon-wrapper-24 svg{
+.icon-wrapper-24 svg {
   bottom:-8px;
   position:absolute;
+}
+
+.recommendations {
+  margin-bottom:2em;
+}
+
+.work-actions {
+  padding-top:1em;
 }
