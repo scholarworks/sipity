@@ -22,7 +22,7 @@ module Sipity
       let(:user) { User.find_or_create_by!(username: 'user') }
       let(:group) { Models::Group.find_or_create_by!(name: 'group') }
       let(:role) { Models::Role.find_or_create_by!(name: Models::Role.valid_names.first) }
-      let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy') }
+      let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy', proxy_for_id: '1', proxy_for_type: 'AnWorkType') }
       let(:entity) do
         Models::Processing::Entity.find_or_create_by!(
           proxy_for_id: 1, proxy_for_type: 'AnEntity', strategy: strategy, strategy_state: originating_state
