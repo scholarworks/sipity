@@ -73,11 +73,16 @@ en:
     action/update:
       failure: 'That update could not be made.'
       success: 'Update successful!'
+    processing_state:
+      label:
+        new: "This work has not been submitted for review."
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label_html: "<strong>Attach</strong> files to this %{entity_type}"
     describe:
       label_html: "Further <strong>describe</strong> your %{entity_type}"
+    collaborators:
+      label_html: "Itentify your <strong>collaborators</strong> on this %{entity_type}"
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
