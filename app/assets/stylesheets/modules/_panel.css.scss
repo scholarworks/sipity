@@ -16,6 +16,10 @@ form.panel {
     margin-top:37px; // Assumes a 16px font size (like .panel-title h3)
   }
 
+  .panel-body {
+    width:100%;
+  }
+
   // Field validations are automatically placed in span.help-inline
   .help-inline {
     color:$alert-danger-text;

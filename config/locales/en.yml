@@ -30,7 +30,7 @@ en:
   helpers:
     submit:
       work:
-        create: 'Continue'
+        create: 'Save and continue'
         update: 'Update'
       doi:
         create: 'Assign a DOI'
@@ -76,13 +76,22 @@ en:
     processing_state:
       label:
         new: "This work has not been submitted for review."
+  sipity/decorators/entitiy_enrichments:
+    describe:
+      call_to_action: 'Finish describting your work'
+      description_html: ''
+      cancel: 'Return without saving'
+      panels:
+        abstract:
+          title_html: 'Please provide an <b>abstract</b> of your work'
+          hint: 'Please keep your abstract to around 300 words.'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
-      label_html: "<strong>Attach</strong> files to this %{entity_type}"
+      label: "<b>Attach</b> files to this %{entity_type}"
     describe:
-      label_html: "Further <strong>describe</strong> your %{entity_type}"
+      label: "Further <b>describe</b> your %{entity_type}"
     collaborators:
-      label_html: "Itentify your <strong>collaborators</strong> on this %{entity_type}"
+      label: "Itentify your <b>collaborators</b> on this %{entity_type}"
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
