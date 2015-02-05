@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150205172137) do
+ActiveRecord::Schema.define(version: 20150205183848) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -185,8 +185,8 @@ ActiveRecord::Schema.define(version: 20150205172137) do
   end
 
   add_index "sipity_processing_entities", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_entities_proxy_for", unique: true
-  add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id", unique: true
-  add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", unique: true
+  add_index "sipity_processing_entities", ["strategy_id"], name: "index_sipity_processing_entities_on_strategy_id"
+  add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id"
 
   create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
     t.integer  "strategy_action_id", null: false

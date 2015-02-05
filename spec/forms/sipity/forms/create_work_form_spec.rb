@@ -104,11 +104,13 @@ module Sipity
         end
         context 'with valid data' do
           let(:user) { User.new(id: '123') }
+          let(:work) { double }
           it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
             allow(subject).to receive(:valid?).and_return(true)
+            expect(repository).to receive(:create_work!).and_return(work)
             response = subject.submit(repository: repository, requested_by: user)
-            expect(response).to be_a(Models::Work)
+            expect(response).to eq(work)
           end
         end
       end

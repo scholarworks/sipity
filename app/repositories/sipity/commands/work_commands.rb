@@ -15,6 +15,17 @@ module Sipity
         end
       end
 
+      def create_work!(attributes = {})
+        Models::Work.create!(attributes.slice(:title, :work_publication_strategy, :work_type)) do |work|
+          named_work_type = attributes.fetch(:work_type)
+          work_type = Models::WorkType.find_or_create_by!(name: named_work_type)
+          # A bit of a weirdness as I splice in the new behavior
+          strategy = attributes.fetch(:processing_strategy) { work_type.find_or_initialize_default_processing_strategy.tap(&:save!) }
+          strategy_state = attributes.fetch(:processing_strategy_state) { strategy.initial_strategy_state }
+          work.build_processing_entity(strategy_state: strategy_state, strategy: strategy)
+        end
+      end
+
       def update_processing_state!(entity:, to:)
         # REVIEW: Should this be re-finding the work? Is it cheating to re-use
         #   the given work? Is it unsafe as far as state is concerned?

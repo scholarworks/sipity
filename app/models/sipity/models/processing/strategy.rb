@@ -6,6 +6,7 @@ module Sipity
       # type felt to much of a noun, not conveying potentiality. Strategy
       # conveys "things will happen" because of this.
       class Strategy < ActiveRecord::Base
+        DEFAULT_INITIAL_STRATEGY_STATE = 'new'.freeze
         self.table_name = 'sipity_processing_strategies'
 
         has_many :entities, dependent: :destroy
@@ -15,6 +16,10 @@ module Sipity
         has_many :roles, through: :strategy_roles
 
         belongs_to :proxy_for, polymorphic: true
+
+        def initial_strategy_state
+          strategy_states.find_or_create_by!(name: DEFAULT_INITIAL_STRATEGY_STATE)
+        end
       end
     end
   end

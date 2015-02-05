@@ -21,6 +21,10 @@ module Sipity
     def create_sipity_user_from(netid:)
     end
 
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def create_work!(attributes = {})
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def create_work_attribute_values!(work:, key:, values:)
     end
