@@ -124,8 +124,12 @@ module Sipity
 
       context '#scope_strategy_actions_with_completed_prerequisites' do
         subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity) }
-        let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq') }
-        let(:other_guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq') }
+        let(:guarded_action) do
+          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
+        end
+        let(:other_guarded_action) do
+          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
+        end
         it "will include permitted strategy_state_actions" do
           action.save unless action.persisted?
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
@@ -172,8 +176,12 @@ module Sipity
 
       context '#scope_strategy_state_actions_available_for_current_state' do
         subject { test_repository.scope_strategy_state_actions_available_for_current_state(entity: entity) }
-        let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq') }
-        let(:other_guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq') }
+        let(:guarded_action) do
+          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
+        end
+        let(:other_guarded_action) do
+          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
+        end
         it "will include permitted strategy_state_actions" do
           action.save unless action.persisted?
           [action, guarded_action, other_guarded_action].each do |the_action|
@@ -212,17 +220,13 @@ module Sipity
             current_action.entity_action_registers.build(entity: entity)
           end
 
-          action_with_incomplete_prerequisites = Models::Processing::StrategyAction.find_or_create_by!(
-            strategy: strategy, name: 'without_prerequisites'
-          ) do |current_action|
+          Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: 'with_incomplete_prereqs') do |current_action|
             current_action.requiring_strategy_action_prerequisites.build(
               prerequisite_strategy_action: action_with_completed_prerequisites
             )
           end
 
-          action_with_no_prerequisites = Models::Processing::StrategyStateAction.find_or_create_by!(
-            originating_strategy_state: originating_state, strategy_action: action
-          )
+          Models::Processing::StrategyStateAction.find_or_create_by!(originating_strategy_state: originating_state, strategy_action: action)
 
           # Making sure that I have the expected counts
           expect(User.count).to eq(1)

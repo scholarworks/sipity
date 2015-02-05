@@ -197,9 +197,9 @@ module Sipity
         actions = Models::Processing::StrategyAction
         action_prereqs = Models::Processing::StrategyActionPrerequisite
         actions_that_occurred = scope_statetegy_actions_that_have_occurred(entity: entity)
-        completed_guarded_actions_subquery = action_prereqs.arel_table.
-          project(action_prereqs.arel_table[:guarded_strategy_action_id]).
-        where(
+        completed_guarded_actions_subquery = action_prereqs.arel_table.project(
+          action_prereqs.arel_table[:guarded_strategy_action_id]
+        ).where(
           action_prereqs.arel_table[:prerequisite_strategy_action_id].in(
             actions_that_occurred.arel_table.project(actions_that_occurred.arel_table[:id]).
             where(actions_that_occurred.arel.constraints.reduce)
