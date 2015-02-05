@@ -46,8 +46,16 @@ module Sipity
       end
 
       def remove_files_from(file_name:, user: user)
-        # TODO: add event or notification saying that user deleted a file
+        # TODO: convert file name pid
         Models::Attachment.where(file_name: file_name).destroy_all
+      end
+
+      def mark_as_representative(file_name: , user: requested_by)
+        # TODO: convert file name pid
+        return true unless file_name.present?
+        attachement= Models::Attachment.where(file_name: file_name).first
+        attachement.mark_as_representative=true
+        attachement.save!
       end
 
       def create_sipity_user_from(netid:)

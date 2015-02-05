@@ -7,6 +7,7 @@ module Sipity
           super
           @files = attributes[:files]
           @remove_files = attributes[:remove_files]
+          @mark_as_representative = attributes[:mark_as_representative]
         end
 
         # TODO: Write a custom file validator. There must be at least one file
@@ -14,6 +15,16 @@ module Sipity
         validates :files, presence: true
         attr_accessor :files
         attr_accessor :remove_files
+        attr_accessor :mark_as_representative
+
+        def attachments_from_work
+          return [] unless work
+          work.attachments.present? ? work.attachments.map { |elem| elem.file_name } : []
+        end
+
+        def representative
+          work.attachments.map { |elem| elem.file_name }
+        end
 
         def attachments(decorator: Decorators::AttachmentDecorator)
           Queries::AttachmentQueries.work_attachments(work: work).
@@ -30,6 +41,7 @@ module Sipity
             Array.wrap(remove_files).compact.each do |file_name|
               repository.remove_files_from(file_name: file_name, user: requested_by)
             end
+            repository.mark_as_representative(file_name: mark_as_representative, user: requested_by)
           end
         end
       end
