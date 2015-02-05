@@ -167,6 +167,33 @@ module Sipity
         )
       end
 
+      # For the given :entity return an ActiveRecord::Relation that when
+      # resolved will be only the strategy actions that:
+      #
+      # * Have prerequisites
+      # * And all of those prerequisites have been completed
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_with_completed_prerequisites(entity:)
+        entity = convert_to_processing_entity(entity)
+        actions = Models::Processing::StrategyAction
+        action_prereqs = Models::Processing::StrategyActionPrerequisite
+        actions_that_occurred = scope_statetegy_actions_that_have_occurred(entity: entity)
+        completed_guarded_actions_subquery = action_prereqs.arel_table.
+          project(action_prereqs.arel_table[:guarded_strategy_action_id]).
+          where(
+            action_prereqs.arel_table[:prerequisite_strategy_action_id].in(
+              actions_that_occurred.arel_table.project(:id).
+                where(actions_that_occurred.arel.constraints.reduce)
+              )
+            )
+        actions.where(
+          actions.arel_table[:strategy_id].eq(entity.strategy_id).
+          and(actions.arel_table[:id].in(completed_guarded_actions_subquery))
+        )
+      end
+
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy actions that have no prerequisites.
       #
@@ -209,6 +236,28 @@ module Sipity
         )
       end
 
+      # For the given :entity return an ActiveRecord::Relation that when
+      # resolved will be only the strategy actions that:
+      #
+      # * Have one or more prerequisites
+      # * And all of the prerequsites are complete
+      # * And are available for the current action's state
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_with_completed_prerequisites_for_current_state(entity:)
+        raise 'TODO'
+        # entity = convert_to_processing_entity(entity)
+        # action_scope = scope_strategy_actions_without_prerequisites(entity: entity)
+        # state_actions_table = Models::Processing::StrategyStateAction.arel_table
+        # action_scope.where(
+        #   action_scope.arel_table[:id].in(
+        #     state_actions_table.project(state_actions_table[:strategy_action_id]).
+        #     where(state_actions_table[:originating_strategy_state_id].eq(entity.strategy_state_id))
+        #   )
+        # )
+      end
+
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy actions that have occurred.
       #
@@ -241,6 +290,7 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_strategy_state_actions_available_for_current_state(entity:)
         entity = convert_to_processing_entity(entity)
+        strategy_actions = scope_strategy_actions_without_prerequisites_for_current_state(entity: entity)
       end
 
       # For the given :user and :entity, return an ActiveRecord::Relation, that
