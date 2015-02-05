@@ -1,12 +1,55 @@
 module Sipity
   module Queries
-    # Separation of Processing Related queries. The processing queries have a
-    # direct relation to what can someone do to something.
+    # Welcome intrepid developer. You have stumbled into some complex data
+    # interactions. There are a lot of data collaborators regarding these tests.
+    # I would love this to be more in isolation, but that is not in the cards as
+    # there are at least 16 database tables interacting to ultimately answer the
+    # following question:
+    #
+    # * What actions can a given user take on an entity?
+    #
+    # Could there be more efficient queries? Yes. However, the composition of
+    # queries has proven to be a very powerful means of understanding and
+    # exploring the problem.
+    #
+    # @note There is an indication of public or private api. The intent of this
+    #   is to differentiate what are methods that are the primary entry points
+    #   as understood as of the commit that has the @api tag. However, these are
+    #   public methods because they have been tested in isolation and are used
+    #   to help compose the `@api public` methods.
     module ProcessingQueries
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToPolymorphicType
-      # For the given user:, return an ActiveRecord::Relation, that if resolved,
-      # will be all of the associated processing actors.
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Any unguarded actions
+      # * Any guarded action that has had all of its prerequisites completed
+      # * Only actions permitted to the user
+      #
+      # @param user [User]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_permitted_strategy_state_actions_available_for_current_state(user:, entity:)
+        strategy_actions_scope = scope_strategy_state_actions_available_for_current_state(entity: entity)
+        strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
+        strategy_actions_scope.where(
+          strategy_actions_scope.arel_table[:id].in(
+            strategy_state_actions_scope.arel_table.project(
+              strategy_state_actions_scope.arel_table[:strategy_action_id]
+            ).where(strategy_state_actions_scope.constraints.reduce)
+          )
+        )
+      end
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * All of the Processing Actors directly associated with the given :user
+      # * All of the Processing Actors indirectly associated with the given
+      #   :user through the user's group membership.
       #
       # @param user [User]
       # @return ActiveRecord::Relation<Models::Processing::Actor>
@@ -32,6 +75,8 @@ module Sipity
         Models::Processing::Actor.where(user_constraints.or(group_constraints))
       end
 
+      # @api public
+      #
       # For the given :user and :entity, return an ActiveRecord::Relation that,
       # if resolved, will be all of the assocated strategy roles for both the
       # strategy responsibilities and the entity specific responsibilities.
@@ -49,6 +94,8 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :user and :strategy, return an ActiveRecord::Relation that,
       # if resolved, will be all of the assocated strategy roles that are
       # assigned to directly to the strategy.
@@ -77,6 +124,8 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :user and :entity, return an ActiveRecord::Relation that,
       # if resolved, will be all of the assocated strategy roles that are
       # assigned to specifically to the entity (and not the parent strategy).
@@ -133,40 +182,8 @@ module Sipity
         )
       end
 
-      # For the given :user and :entity, return an ActiveRecord::Relation,
-      # that if resolved, is only the strategy actions that are available to the
-      # given :strategy_state
+      # @api private
       #
-      # @param user [User]
-      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
-      def scope_permitted_entity_strategy_state_actions_for_current_state(user:, entity:)
-        entity = convert_to_processing_entity(entity)
-        actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
-        actions_scope.where(originating_strategy_state_id: entity.strategy_state_id)
-      end
-
-      # For the given :entity, return an ActiveRecord::Relation, that if
-      # resolved, that is only the strategy actions that have prerequisites
-      #
-      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_strategy_actions_with_prerequisites(entity:)
-        entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyAction
-        action_prereqs = Models::Processing::StrategyActionPrerequisite
-        actions.where(
-          actions.arel_table[:strategy_id].eq(entity.strategy_id).
-          and(
-            actions.arel_table[:id].in(
-              action_prereqs.arel_table.project(
-                action_prereqs.arel_table[:guarded_strategy_action_id]
-              )
-            )
-          )
-        )
-      end
-
       # For the given :entity return an ActiveRecord::Relation that when
       # resolved will be only the strategy actions that:
       #
@@ -194,6 +211,8 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy actions that have no prerequisites.
       #
@@ -216,23 +235,8 @@ module Sipity
         )
       end
 
-      # For the given :entity return an ActiveRecord::Relation that when
-      # resolved will be only the strategy actions that:
+      # @api public
       #
-      # * Do not have prerequisites
-      # * And are available for the current action's state
-      #
-      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_strategy_actions_without_prerequisites_for_current_state(entity:)
-        entity = convert_to_processing_entity(entity)
-        action_scope = scope_strategy_actions_without_prerequisites(entity: entity)
-        action_current_state_scope = scope_strategy_actions_for_current_state(entity: entity)
-        action_scope.where(
-          action_current_state_scope.arel.constraints.reduce
-        )
-      end
-
       # For the given :entity return an ActiveRecord::Relation that when
       # resolved will be only the strategy actions that:
       #
@@ -252,6 +256,8 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :entity, return an ActiveRecord::Relation, that if
       # resolved, that is only the strategy actions that have occurred.
       #
@@ -273,6 +279,8 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :entity, return an ActiveRecord::Relation, that
       # if resolved, that lists all of the actions available for the entity and
       # its current state.
@@ -297,26 +305,6 @@ module Sipity
             )
           )
         )
-      end
-
-      # For the given :user and :entity, return an ActiveRecord::Relation, that
-      # if resolved, that is only the strategy actions that can be taken.
-      #
-      # The actions would include:
-      #
-      # * Any unguarded actions
-      # * Any guarded action that has had all of its prerequisites completed
-      # * Only actions permitted to the user
-      #
-      # @param user [User]
-      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyRoleAction>
-      def scope_permitted_strategy_state_actions_available_for_current_state(user:, entity:)
-        _user = user
-        _entity = convert_to_processing_entity(entity)
-        strategy_actions_scope = scope_strategy_state_actions_available_for_current_state(entity: entity)
-        strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
-
       end
     end
   end
