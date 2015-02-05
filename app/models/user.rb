@@ -6,4 +6,8 @@ class User < ActiveRecord::Base
   has_many :group_memberships, dependent: :destroy, class_name: 'Sipity::Models::GroupMembership'
   has_many :group, through: :group_memberships, class_name: 'Sipity::Models::Group'
   has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
+  has_many :event_logs, class_name: 'Sipity::Models::EventLog'
+
+  has_many :actor_for_permission_assignments, as: :actor, dependent: :destroy, class_name: 'Sipity::Models::ActorForPermissionAssignment'
+  deprecate :actor_for_permission_assignments
 end
