@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150204172806) do
+ActiveRecord::Schema.define(version: 20150205172137) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -211,13 +211,16 @@ ActiveRecord::Schema.define(version: 20150204172806) do
   add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id"], name: "sipity_processing_entity_specific_responsibilities_role"
 
   create_table "sipity_processing_strategies", force: :cascade do |t|
-    t.string   "name",        null: false
+    t.string   "name",           null: false
     t.text     "description"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "proxy_for_id",   null: false
+    t.string   "proxy_for_type", null: false
   end
 
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
+  add_index "sipity_processing_strategies", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_strategies_proxy_for", unique: true
 
   create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_action_id"
@@ -331,6 +334,15 @@ ActiveRecord::Schema.define(version: 20150204172806) do
 
   add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_group"], name: "sipity_work_type_todo_list_config_completion_index"
   add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_type"], name: "sipity_work_type_todo_list_config_composite_index", unique: true
+
+  create_table "sipity_work_types", force: :cascade do |t|
+    t.string   "name",        null: false
+    t.text     "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "sipity_work_types", ["name"], name: "index_sipity_work_types_on_name", unique: true
 
   create_table "sipity_works", force: :cascade do |t|
     t.string   "work_publication_strategy"

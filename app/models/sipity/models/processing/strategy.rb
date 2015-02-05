@@ -13,6 +13,8 @@ module Sipity
         has_many :strategy_actions, dependent: :destroy
         has_many :strategy_roles, dependent: :destroy
         has_many :roles, through: :strategy_roles
+
+        belongs_to :proxy_for, polymorphic: true
       end
     end
   end

@@ -25,6 +25,13 @@ ActiveRecord::Base.transaction do
     )
   end
 
+  $stdout.puts 'Creating Work Types...'
+  work_types = {}
+  Sipity::Models::WorkType.valid_names.each do |work_type_name|
+    work_types[work_type_name] = Sipity::Models::WorkType.find_or_create_by!(name: work_type_name)
+  end
+
+
   $stdout.puts 'Creating ETD Reviewer Role...'
   roles = {}
 
@@ -37,7 +44,7 @@ ActiveRecord::Base.transaction do
   end
 
   $stdout.puts 'Creating ETD State Diagram...'
-  Sipity::Models::Processing::Strategy.find_or_create_by!(name: 'etd') do |etd_strategy|
+  Sipity::Models::Processing::Strategy.find_or_create_by!(proxy_for: work_types.fetch('etd'), name: 'etd processing') do |etd_strategy|
     etd_strategy_roles = {}
 
     [
