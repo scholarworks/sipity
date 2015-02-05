@@ -30,6 +30,8 @@ module Sipity
       def self.all_for_enum_configuration
         NAMED_WORK_TYPES_FOR_ENUM
       end
+
+      has_one :default_processing_strategy, as: :proxy_for, class_name: 'Sipity::Models::Processing::Strategy', dependent: :destroy
     end
   end
 end
