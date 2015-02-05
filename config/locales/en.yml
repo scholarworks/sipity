@@ -70,6 +70,11 @@ en:
     action/create:
       failure: 'There is a problem with your sumbission.'
       success: 'Thank you for your submission!'
+    action/show:
+      label:
+        overview_section: 'Submission Overview'
+        recommended_actions: 'Recommended'
+        todo_section: 'Submission ToDo List'
     action/update:
       failure: 'That update could not be made.'
       success: 'Update successful!'
