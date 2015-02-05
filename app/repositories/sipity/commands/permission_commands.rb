@@ -26,8 +26,6 @@ module Sipity
           end
         end
       end
-      module_function :grant_groups_permission_to_entity_for_acting_as!
-      public :grant_groups_permission_to_entity_for_acting_as!
 
       def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
         # REVIEW: Does the constant even make sense on the data structure? Or
@@ -36,8 +34,6 @@ module Sipity
         actors = [user, group, actor]
         grant_permission_for!(entity: entity, actors: actors, acting_as: acting_as)
       end
-      module_function :grant_creating_user_permission_for!
-      public :grant_creating_user_permission_for!
 
       def grant_permission_for!(entity:, actors:, acting_as:)
         Array.wrap(actors).flatten.compact.each do |an_actor|
