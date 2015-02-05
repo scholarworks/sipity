@@ -17,7 +17,12 @@ module Sipity
 
       def create_work!(attributes = {})
         Models::Work.create!(attributes.slice(:title, :work_publication_strategy, :work_type)) do |work|
-
+          # A bit of a weirdness as I splice in the new behavior
+          strategy = attributes.fetch(:processing_strategy) do
+            Models::WorkType[attributes.fetch(:work_type)].default_processing_strategy
+          end
+          strategy_state = attributes.fetch(:processing_strategy_state) { strategy.initial_strategy_state }
+          Models::Processing::Entity.build(proxy_for: work, strategy_state: strategy_state, strategy: strategy)
         end
       end
 
