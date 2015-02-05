@@ -28,9 +28,8 @@ module Sipity
       context '#find_or_initialize_default_processing_strategy' do
         subject { described_class.new(name: 'etd') }
         it 'will create a processing strategy if none already exist' do
-          expect {
-            subject.find_or_initialize_default_processing_strategy
-          }.to change { subject.default_processing_strategy }.from(nil)
+          expect { subject.find_or_initialize_default_processing_strategy }.
+            to change { subject.default_processing_strategy }.from(nil)
         end
 
         it 'will yield the processing' do

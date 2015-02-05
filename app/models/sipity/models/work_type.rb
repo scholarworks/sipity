@@ -35,10 +35,12 @@ module Sipity
 
       def find_or_initialize_default_processing_strategy(&block)
         if default_processing_strategy
-          block_given? yield(default_processing_strategy)
+          yield(default_processing_strategy) if block_given?
           default_processing_strategy
-        else
+        elsif block_given?
           build_default_processing_strategy(name: "#{name} processing", &block)
+        else
+          build_default_processing_strategy(name: "#{name} processing")
         end
       end
     end
