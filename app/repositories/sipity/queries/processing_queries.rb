@@ -115,11 +115,11 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
       def scope_permitted_entity_strategy_state_actions(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyStateAction
+        strategy_state_actions = Models::Processing::StrategyStateAction
         permissions = Models::Processing::StrategyStateActionPermission
         role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
-        actions.where(
-          actions.arel_table[:id].in(
+        strategy_state_actions.where(
+          strategy_state_actions.arel_table[:id].in(
             permissions.arel_table.project(
               permissions.arel_table[:strategy_state_action_id]
             ).where(
@@ -310,17 +310,13 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
-      def scope_available_and_permitted_actions(user:, entity:)
+      # @return ActiveRecord::Relation<Models::Processing::StrategyRoleAction>
+      def scope_permitted_strategy_state_actions_available_for_current_state(user:, entity:)
         _user = user
         _entity = convert_to_processing_entity(entity)
-        actions = Models::Processing::StrategyStateAction
+        strategy_actions_scope = scope_strategy_state_actions_available_for_current_state(entity: entity)
+        strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
 
-        # Find all actions available to the given user
-        # @see #scope_permitted_entity_strategy_state_actions_for_current_state
-        # Intersect with all actions currently available for the given entity.
-
-        actions.where('1 = 0')
       end
     end
   end
