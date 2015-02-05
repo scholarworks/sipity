@@ -41,8 +41,9 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
       def scope_processing_strategy_roles_for_user_and_entity(user:, entity:)
         entity = convert_to_processing_entity(entity)
-        strategy_scope = scope_processing_strategy_roles_for(user: user, strategy: entity.strategy)
-        entity_specific_scope = scope_entity_specific_processing_strategy_roles(user: user, entity: entity)
+        strategy_scope = scope_processing_strategy_roles_for_user_and_strategy(user: user, strategy: entity.strategy)
+
+        entity_specific_scope = scope_processing_strategy_roles_for_user_and_entity_specific(user: user, entity: entity)
         Models::Processing::StrategyRole.where(
           strategy_scope.arel.constraints.reduce.or(entity_specific_scope.arel.constraints.reduce)
         )
@@ -55,7 +56,7 @@ module Sipity
       # @param user [User]
       # @param entity [Processing::Strategy]
       # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
-      def scope_processing_strategy_roles_for(user:, strategy:)
+      def scope_processing_strategy_roles_for_user_and_strategy(user:, strategy:)
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
@@ -83,7 +84,7 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
-      def scope_entity_specific_processing_strategy_roles(user:, entity:)
+      def scope_processing_strategy_roles_for_user_and_entity_specific(user:, entity:)
         entity = convert_to_processing_entity(entity)
         actor_scope = scope_processing_actors_for(user: user)
         specific_resp_table = Models::Processing::EntitySpecificResponsibility.arel_table

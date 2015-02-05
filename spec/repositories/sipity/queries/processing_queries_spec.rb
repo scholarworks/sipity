@@ -68,8 +68,8 @@ module Sipity
         end
       end
 
-      context '#scope_processing_strategy_roles_for' do
-        subject { test_repository.scope_processing_strategy_roles_for(user: user, strategy: strategy) }
+      context '#scope_processing_strategy_roles_for_user_and_strategy' do
+        subject { test_repository.scope_processing_strategy_roles_for_user_and_strategy(user: user, strategy: strategy) }
         it "will include the associated strategy roles for the given user" do
           user_processing_actor
           user_strategy_responsibility
@@ -80,8 +80,8 @@ module Sipity
         end
       end
 
-      context '#scope_entity_specific_processing_strategy_roles' do
-        subject { test_repository.scope_entity_specific_processing_strategy_roles(user: user, entity: entity) }
+      context '#scope_processing_strategy_roles_for_user_and_entity_specific' do
+        subject { test_repository.scope_processing_strategy_roles_for_user_and_entity_specific(user: user, entity: entity) }
         it "will include the associated strategy roles for the given user" do
           user_processing_actor
           entity_specific_responsibility
