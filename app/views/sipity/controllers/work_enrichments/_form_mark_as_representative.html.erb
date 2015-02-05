@@ -1,0 +1,4 @@
+<!-- TODO: Internationalize the enrichment option -->
+<%= field_set_tag do %>
+  <%= f.input :mark_as_representative, as: :select, collection: model.attachments_from_work, default:  model.representative %>
+<% end %>
