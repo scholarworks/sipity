@@ -13,7 +13,6 @@ module Sipity
     include Commands::WorkCommands
     include Commands::DoiCommands
     include Commands::EventLogCommands
-    include Commands::AccountPlaceholderCommands
     include Commands::NotificationCommands
     include Commands::AdditionalAttributeCommands
     include Commands::PermissionCommands

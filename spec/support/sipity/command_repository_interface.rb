@@ -65,10 +65,6 @@ module Sipity
     def submit_assign_a_doi_form(form, requested_by:)
     end
 
-    # @see ./app/repositories/sipity/commands/account_placeholder_commands.rb
-    def submit_create_orcid_account_placeholder_form(form, requested_by:)
-    end
-
     # @see ./app/repositories/sipity/commands/doi_commands.rb
     def submit_doi_creation_request_job!(work:)
     end
