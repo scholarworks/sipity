@@ -216,6 +216,32 @@ module Sipity
         end
       end
 
+      context '#scope_strategy_state_actions_available_for_current_state' do
+        subject { test_repository.scope_strategy_state_actions_available_for_current_state(entity: entity) }
+        let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_completed_prereq') }
+        let(:other_guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'without_completed_prereq') }
+        it "will include permitted strategy_state_actions" do
+          action.save unless action.persisted?
+          [action, guarded_action, other_guarded_action].each do |the_action|
+            Models::Processing::StrategyStateAction.create!(
+              strategy_action_id: the_action.id, originating_strategy_state_id: entity.strategy_state_id
+            )
+          end
+          Models::Processing::StrategyActionPrerequisite.create!(
+            guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+          )
+          Models::Processing::EntityActionRegister.create!(entity_id: entity.id, strategy_action_id: action.id)
+
+          Models::Processing::StrategyActionPrerequisite.create!(
+            guarded_strategy_action_id: other_guarded_action.id, prerequisite_strategy_action_id: guarded_action.id
+          )
+          expect(subject).to eq([action, guarded_action])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_available_and_permitted_actions' do
         subject { test_repository.scope_available_and_permitted_actions(entity: entity, user: user) }
         let(:guarded_action) { Models::Processing::StrategyAction.create!(strategy_id: strategy.id, name: 'with_prereq') }
