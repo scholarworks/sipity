@@ -59,14 +59,19 @@ module Sipity
       self.conversion_target = 'PermanentURI'
     end
 
-    # Unable to convert the given object into a permanent URI
+    # Unable to convert the given object into an entity type
     class EntityTypeConversionError < ConversionError
       self.conversion_target = 'EntityType'
     end
 
-    # Unable to convert the given object into a permanent URI
+    # Unable to convert the given object into a processing entity
     class ProcessingEntityConversionError < ConversionError
       self.conversion_target = 'Processing::Entity'
+    end
+
+    # Unable to convert the given object into a processing actor
+    class ProcessingActorConversionError < ConversionError
+      self.conversion_target = 'Processing::Actor'
     end
 
     # As you are looking up something by name, within a given container.
