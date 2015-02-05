@@ -36,6 +36,15 @@ module Sipity
         end
       end
 
+      context '#create_work!' do
+        let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'etd' } }
+        it 'will create a work object' do
+          expect do
+            test_repository.create_work!(attributes)
+          end.to change { Models::Work.count }.by(1)
+        end
+      end
+
       context '#pid_minter' do
         subject { test_repository.pid_minter }
         it { should respond_to(:call) }

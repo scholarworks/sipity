@@ -15,6 +15,12 @@ module Sipity
         end
       end
 
+      def create_work!(attributes = {})
+        Models::Work.create!(attributes.slice(:title, :work_publication_strategy, :work_type)) do |work|
+
+        end
+      end
+
       def update_processing_state!(entity:, to:)
         # REVIEW: Should this be re-finding the work? Is it cheating to re-use
         #   the given work? Is it unsafe as far as state is concerned?
