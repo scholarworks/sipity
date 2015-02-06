@@ -27,6 +27,14 @@ module Sipity
         has_many :requires_these_strategy_actions,
           through: :requiring_strategy_action_prerequisites,
           class_name: 'Sipity::Models::Processing::StrategyAction'
+
+        enum(
+          action_type: {
+            'task' => 'task',
+            'resourceful' => 'resourceful',
+            'state_advancement' => 'state_advancement'
+          }
+        )
       end
     end
   end
