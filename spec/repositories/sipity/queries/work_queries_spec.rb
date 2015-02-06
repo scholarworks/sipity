@@ -8,6 +8,11 @@ module Sipity
       end
 
       context '#find_works_for' do
+        before do
+          # TODO: Remove this once the deprecation for granting permission is done
+          allow(Services::GrantProcessingPermission).to receive(:call)
+        end
+
         # REVIEW: Crossing a boundary for this test; Is that adequate?
         let(:user_one) { User.new(id: 1, username: 'user_one') }
         let(:user_two) { User.new(id: 2, username: 'user_two') }

@@ -3,6 +3,10 @@ require 'rails_helper'
 module Sipity
   module Commands
     RSpec.describe WorkCommands, type: :command_with_related_query do
+      before do
+        # TODO: Remove this once the deprecation for granting permission is done
+        allow(Services::GrantProcessingPermission).to receive(:call)
+      end
 
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }

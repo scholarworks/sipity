@@ -4,6 +4,10 @@ module Sipity
   module Commands
     RSpec.describe PermissionCommands, type: :isolated_repository_module do
       subject { test_repository }
+      before do
+        # TODO: Remove this once the deprecation for granting permission is done
+        allow(Services::GrantProcessingPermission).to receive(:call)
+      end
 
       context '#grant_groups_permission_to_entity_for_acting_as!' do
         let(:entity) { Models::Work.new(id: 1) }
