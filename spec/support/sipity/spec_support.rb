@@ -2,9 +2,9 @@ module Sipity
   module SpecSupport
     module_function
 
-    def load_database_seeds!
+    def load_database_seeds!(seeds_path: 'db/seeds.rb')
       toggle_stdout do
-        load Rails.root.join('db/seeds.rb').to_s
+        load Rails.root.join(seeds_path).to_s
       end
     end
 

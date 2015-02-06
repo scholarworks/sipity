@@ -2,17 +2,16 @@ require 'rails_helper'
 
 feature "Trigger Work State Change", :devise do
   include Warden::Test::Helpers
+  before do
+    Sipity::SpecSupport.load_database_seeds!(seeds_path: 'spec/fixtures/seeds/trigger_work_state_change.rb')
+    Warden.test_mode!
+  end
+
   let(:user) { Sipity::Factories.create_user }
 
   context 'with required TODO Items' do
     before do
       allow(Sipity::Services::Notifier).to receive(:deliver)
-      Sipity::Models::WorkTypeTodoListConfig.create!(
-        work_type: 'etd',
-        work_processing_state: 'new',
-        enrichment_type: 'describe',
-        enrichment_group: 'required'
-      )
     end
     scenario 'User will not see option to advance state if todo items are not done' do
       login_as(user, scope: :user)
