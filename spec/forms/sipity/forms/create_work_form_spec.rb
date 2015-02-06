@@ -65,17 +65,6 @@ module Sipity
             expect(subject.errors[:work_publication_strategy]).to be_present
           end
         end
-        context '#publication_date' do
-          it 'must be present when it was :already_published' do
-            subject.work_publication_strategy = 'already_published'
-            subject.valid?
-            expect(subject.errors[:publication_date]).to be_present
-          end
-          it 'need not be present otherwise' do
-            subject.valid?
-            expect(subject.errors[:publication_date]).to_not be_present
-          end
-        end
       end
 
       context '#submit' do
