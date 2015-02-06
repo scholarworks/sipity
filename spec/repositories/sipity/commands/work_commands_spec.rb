@@ -51,8 +51,8 @@ module Sipity
         end
       end
 
-      context '#pid_minter' do
-        subject { test_repository.pid_minter }
+      context '#default_pid_minter' do
+        subject { test_repository.default_pid_minter }
         it { should respond_to(:call) }
         its(:call) { should be_a(String) }
       end
@@ -91,7 +91,7 @@ module Sipity
         let(:pid_minter) { -> { 'abc123' } }
         it 'will increment the number of attachments in the system' do
           expect { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }.
-            to change { Models::Attachment.count }.by(1)
+            to change { Models::Attachment.where(pid: 'abc123').count }.by(1)
         end
       end
     end
