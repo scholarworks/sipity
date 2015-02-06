@@ -110,6 +110,10 @@ module Sipity
     class StateMachineNotFoundError < ConceptNotFoundError
     end
 
+    # Unable to find the correct processing strategy role
+    class ValidProcessingStrategyRoleNotFoundError < RuntimeError
+    end
+
     # Exposing a custom AuthenticationFailureError
     class AuthenticationFailureError < RuntimeError
       def initialize(context)
