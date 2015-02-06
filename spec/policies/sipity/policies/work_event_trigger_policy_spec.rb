@@ -16,6 +16,12 @@ module Sipity
       let(:form) { double('Form', work: work, event_name: event_name, state_diagram: state_diagram) }
       subject { described_class.new(user, form, repository: repository) }
 
+      context 'defaults' do
+        subject { described_class.new(user, form) }
+        its(:repository) { should respond_to :are_all_of_the_required_todo_items_done_for_work? }
+        its(:repository) { should respond_to :can_the_user_act_on_the_entity? }
+      end
+
       context 'initialization' do
         it 'fails if the form does not have a work' do
           form = double
