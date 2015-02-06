@@ -28,14 +28,10 @@ module Sipity
       def processing_state=(object)
         @processing_state = begin
           case object
-          when Models::Processing::StrategyState
-            object
-          when String, Symbol
-            Models::Processing::StrategyState.find_or_create_by!(
-              strategy_id: strategy.id, name: object
-            )
+          when Models::Processing::StrategyState then object
+          when String, Symbol then Models::Processing::StrategyState.find_or_create_by!(strategy_id: strategy.id, name: object)
           else
-            fail ProcessingStrategyStateConversionError, { strategy_id: strategy_id, name: object }.inspect
+            fail Exceptions::ProcessingStrategyStateConversionError, { strategy_id: strategy.id, name: object }.inspect
           end
         end
       end

@@ -8,6 +8,13 @@ module Sipity
 
       subject { described_class.new(entity: entity, processing_state: processing_state) }
 
+      context 'with an invalid processing state' do
+        let(:processing_state) { double }
+        it 'will raise an error' do
+          expect { subject.call }.to raise_error Exceptions::ProcessingStrategyStateConversionError
+        end
+      end
+
       context 'with a processing state string' do
         let(:processing_state) { 'submit_for_review' }
         it 'will change the processing state' do
