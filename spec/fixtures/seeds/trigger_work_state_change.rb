@@ -29,6 +29,37 @@ work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_s
   ].each do |role_name|
     etd_strategy_roles[role_name] = etd_strategy.strategy_roles.find_or_initialize_by(role: roles.fetch(role_name))
   end
-end.save!
+  etd_states = {}
+  [
+    'new',
+    'under_advisor_review',
+  ].each do |state_name|
+    etd_states[state_name] = etd_strategy.strategy_states.find_or_initialize_by(name: state_name)
+  end
 
+  etd_actions = {}
+  [
+    ['show', nil],
+    ['describe', nil],
+    ['submit_for_review', 'under_advisor_review'],
+  ].each do |action_name, strategy_state_name|
+    resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
+    etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(name: action_name, resulting_strategy_state: resulting_state)
+  end
+
+  [
+    ['new', 'submit_for_review', ['creating_user']],
+    ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+    ['new', 'describe', ['creating_user', 'etd_reviewer']],
+    ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+  ].each do |originating_state_name, action_name, role_names|
+    action = etd_actions.fetch(action_name)
+    originating_state = etd_states.fetch(originating_state_name)
+    event = action.strategy_state_actions.find_or_initialize_by(originating_strategy_state: originating_state)
+
+    Array.wrap(role_names).each do |role_name|
+      etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
+    end
+  end
+end.save!
 count = Sipity::Models::Processing::StrategyRole.count

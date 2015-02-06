@@ -8,6 +8,9 @@ module Sipity
       context '#mark_work_todo_item_as_done' do
         let(:existing_enrichment_type) { 'describe' }
         let(:done_state) { Models::TodoItemState::ENRICHMENT_STATE_DONE }
+        before do
+          expect(Services::RegisterActionTakenOnEntity).to receive(:call)
+        end
         it "will find an existing todo item then transition its state to 'done'" do
           todo_item = test_repository.send(
             :create_named_entity_todo_item_for_current_state,
