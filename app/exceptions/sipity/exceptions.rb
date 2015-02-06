@@ -69,19 +69,29 @@ module Sipity
       self.conversion_target = 'Models::Role'
     end
 
+    # Processing Conversion Errors; These may often mean a database entry is
+    # missing.
+    class ProcessingConversionError < ConversionError
+    end
+
     # Unable to convert the given object into a processing entity
-    class ProcessingEntityConversionError < ConversionError
+    class ProcessingEntityConversionError < ProcessingConversionError
       self.conversion_target = 'Models::Processing::Entity'
     end
 
     # Unable to convert the given object into a processing actor
-    class ProcessingActorConversionError < ConversionError
+    class ProcessingActorConversionError < ProcessingConversionError
       self.conversion_target = 'Models::Processing::Actor'
     end
 
     # Unable to convert the given object into a processing strategy state
-    class ProcessingStrategyStateConversionError < ConversionError
+    class ProcessingStrategyStateConversionError < ProcessingConversionError
       self.conversion_target = 'Models::Processing::StrategyState'
+    end
+
+    # Unable to convert the given object into a processing strategy action
+    class ProcessingStrategyActionConversionError < ProcessingConversionError
+      self.conversion_target = 'Models::Processing::StrategyAction'
     end
 
     # As you are looking up something by name, within a given container.
