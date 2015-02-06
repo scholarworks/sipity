@@ -15,6 +15,13 @@ module Sipity
       subject { described_class.new(entity: entity, role: role, actor: actor) }
       its(:strategy) { should eq entity.strategy }
 
+      context '.call' do
+        it 'will instantiate then call the instance' do
+          expect(described_class).to receive(:new).and_return(double(call: true))
+          described_class.call(entity: entity, role: role, actor: actor)
+        end
+      end
+
       context '#call' do
         let(:fake_relation) { double(first!: strategy_role) }
         before do

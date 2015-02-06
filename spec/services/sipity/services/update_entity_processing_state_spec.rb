@@ -8,6 +8,13 @@ module Sipity
 
       subject { described_class.new(entity: entity, processing_state: processing_state) }
 
+      context '.call' do
+        it 'will instantiate then call the instance' do
+          expect(described_class).to receive(:new).and_return(double(call: true))
+          described_class.call(entity: entity, processing_state: 'submit_for_review')
+        end
+      end
+
       context 'with an invalid processing state' do
         let(:processing_state) { double }
         it 'will raise an error' do

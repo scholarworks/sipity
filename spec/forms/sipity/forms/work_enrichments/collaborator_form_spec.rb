@@ -11,6 +11,7 @@ module Sipity
 
         it { should respond_to :work }
         its(:enrichment_type) { should eq('collaborator') }
+        its(:collaborators) { should_not be_empty }
 
         it 'will require a work' do
           subject = described_class.new(work: nil)

@@ -20,6 +20,12 @@ module Sipity
         end
       end
 
+      context '.valid_names' do
+        it 'will be an Array' do
+          expect(described_class.valid_names).to be_a(Array)
+        end
+      end
+
       it 'has one :default_processing_strategy' do
         expect(described_class.reflect_on_association(:default_processing_strategy)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
