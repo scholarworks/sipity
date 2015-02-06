@@ -1,8 +1,34 @@
-<h2>Describe your work</h2>
-<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
-  <%= f.error_notification %>
-  <%= field_set_tag do %>
-    <%= f.input :abstract, as: :text %>
-    <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.call_to_action") %>
+<%= content_tag :p, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.description_html") %>
+
+<div class="panel-tiles">
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'panel panel-primary with-footer' }
+  ) do |f| %>
+    <legend class="panel-heading">
+      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.panels.abstract.title_html"), class: 'panel-title' %>
+    </legend>
+
+    <fieldset class="panel-body">
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.panels.abstract.hint"), class: 'panel-hint' %>
+      <%= f.error_notification %>
+
+      <%= f.input :abstract, as: :text, input_html: { class: 'form-control', rows: 5 } %>
+
+    </fieldset>
+
+    <%= model.work.with_action_pane('new_citation', 'panel-footer') do %>
+      <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
+    <% end %>
   <% end %>
+
+</div>
+
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.cancel"), work_path(model.work), class: 'btn btn-default' %>
 <% end %>

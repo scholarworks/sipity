@@ -1,0 +1,8 @@
+.attribute-listing {
+  .predicate:after {
+    content:':'
+  }
+  .value {
+    padding-left:1em;
+  }
+}

@@ -27,11 +27,23 @@ module Sipity
         end
 
         def human_name
-          I18n.translate("name", scope: translation_scope, title: work.title)
+          I18n.translate('name', scope: translation_scope, title: work.title)
+        end
+
+        def human_action_label
+          I18n.translate('action_label', scope: translation_scope, title: work.title).html_safe
         end
 
         def human_attribute_name(name)
           self.class.human_attribute_name(name)
+        end
+
+        def done?
+          state =~ /already_assigned$/
+        end
+
+        def pending?
+          state =~ /is_pending$/
         end
 
         private

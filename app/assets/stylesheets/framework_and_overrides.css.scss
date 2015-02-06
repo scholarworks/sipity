@@ -82,3 +82,13 @@ section {
 .panel-primary .panel-title b {
   color:#FFEC87;
 }
+
+.page-title {
+  small.work-type {
+    display:block;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    font-size:50%;
+    padding-top:.5em;
+  }
+}
