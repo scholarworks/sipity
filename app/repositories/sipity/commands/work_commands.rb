@@ -37,9 +37,10 @@ module Sipity
       deprecate :update_deprecated_processing_state!
       private :update_deprecated_processing_state!
 
-      # TODO: Create a PidMinter service
-      # REVIEW: Is this the correct location to put this behavior?
-      def attach_file_to(work:, file:, user: user, pid_minter: pid_minter)
+      def attach_file_to(work:, file:, user:, pid_minter: default_pid_minter)
+        # I know I want the user, but I'm not certain what we are doing with it
+        # just yet.
+        _user = user
         pid = pid_minter.call
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
@@ -56,7 +57,7 @@ module Sipity
       #
       # @note This is not a PID as per Fedora 3, but is something random,
       #   unique, and stringy. Which for these purposes is adequate.
-      def pid_minter
+      def default_pid_minter
         -> { Digest::UUID.uuid_v4 }
       end
     end
