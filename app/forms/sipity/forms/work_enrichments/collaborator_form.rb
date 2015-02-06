@@ -9,8 +9,8 @@ module Sipity
         end
         attr_reader :collaborators_attributes
 
-        # When the form is being rendered, the attributes drive on this object
-        # Thus
+        # When the form is being rendered, the fields_for :collaborators drive
+        # on this method, as such this is a read only method.
         def collaborators
           @collaborators || collaborators_from_work
         end
@@ -20,7 +20,12 @@ module Sipity
         # Mirroring the expected behavior/implementation of the
         # :accepts_nested_attributes_for Rails method and its sibling :fields_for
         #
-        # TODO: make sure we don't keep making new items
+        # When the form is submitted, this is what will be written.
+        #
+        # Keep in mind, when the form is rendered, we will be driving from the
+        # #collaborators method. So if that has 2 collaborators, the form will
+        # render with those two collaborators and be submitted with that
+        # information.
         def collaborators_attributes=(inputs)
           return inputs unless inputs.present?
           @collaborators = []
