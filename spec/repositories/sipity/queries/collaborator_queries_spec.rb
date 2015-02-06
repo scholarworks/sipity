@@ -7,6 +7,13 @@ module Sipity
       let(:work_two) { Models::Work.new(id: '456') }
       subject { test_repository }
 
+      context '#find_or_initialize_collaborators' do
+        subject { test_repository.find_or_initialize_collaborators_by(work: work, id: '12') }
+        it 'will initialize a collaborator based on the work id' do
+          expect(subject.work_id).to eq(work.id)
+        end
+      end
+
       context '.work_collaborators_for' do
         it 'returns the collaborators for the given work and role' do
           Models::Collaborator.create!(work: work, role: 'author', name: 'jeremy')

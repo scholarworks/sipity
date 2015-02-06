@@ -48,6 +48,7 @@ module Sipity
             end
 
             it 'will create a collaborator' do
+              expect(Queries::CollaboratorQueries).to receive(:find_or_initialize_collaborators_by).and_call_original
               expect(repository).to receive(:assign_collaborators_to).and_call_original
               subject.submit(repository: repository, requested_by: user)
             end
