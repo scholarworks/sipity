@@ -58,7 +58,7 @@ module Sipity
       # @note This is not a PID as per Fedora 3, but is something random,
       #   unique, and stringy. Which for these purposes is adequate.
       def default_pid_minter
-        -> { Digest::UUID.uuid_v4 }
+        -> { SecureRandom.urlsafe_base64(nil, true) }
       end
     end
   end
