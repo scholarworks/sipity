@@ -107,6 +107,19 @@ module Sipity
             to change { Models::Attachment.count }.from(1).to(0)
         end
       end
+
+      context '#mark_as_representative' do
+        let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
+        let(:file_name) { "hello-world.txt" }
+        let(:user) { User.new(id: 1234) }
+        let(:work) { Models::Work.create! }
+        let(:pid_minter) { -> { 'abc123' } }
+        before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
+        it 'will decrease the number of attachments in the system' do
+          expect { test_repository.mark_as_representative(file_name: file_name, user: user) }.
+            to change { Models::Attachment.where(mark_as_representative: true).count }.by(1)
+        end
+      end
     end
   end
 end
