@@ -6,6 +6,12 @@ module Sipity
       self.table_name = 'sipity_attachments'
       self.primary_key = :pid
 
+      alias_attribute :name, :file_name
+
+      def self.build_default
+        new
+      end
+
       belongs_to :work
       dragonfly_accessor :file
     end

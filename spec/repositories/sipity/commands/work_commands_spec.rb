@@ -51,8 +51,8 @@ module Sipity
         end
       end
 
-      context '#pid_minter' do
-        subject { test_repository.pid_minter }
+      context '#default_pid_minter' do
+        subject { test_repository.default_pid_minter }
         it { should respond_to(:call) }
         its(:call) { should be_a(String) }
       end
@@ -121,7 +121,7 @@ module Sipity
         end
         it 'will not mark the given attachments as representative in the system' do
           expect { test_repository.mark_as_representative(pid: 'bogus', user: user) }.
-              not_to change { Models::Attachment.where(mark_as_representative: true).count }
+            not_to change { Models::Attachment.where(mark_as_representative: true).count }
         end
       end
     end

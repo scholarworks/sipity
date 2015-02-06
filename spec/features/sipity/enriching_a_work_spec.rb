@@ -111,26 +111,6 @@ feature 'Enriching a Work', :devise do
 
   scenario 'User can remove files' do
     attach_file_work
-
-    on('work_page') do |the_page|
-      the_page.click_todo_item('todo>required>attach')
-    end
-
-    on('attach_page') do |the_page|
-      expect(the_page.attached_file_name).to eq('enriching_a_work_spec.rb')
-      the_page.select_check_box(:remove_files, with: 'enriching_a_work_spec.rb')
-      the_page.attach_file(File.join(Rails.root, 'spec/fixtures/attachments/hello-world.txt'))
-      the_page.submit_button.click
-    end
-
-    on('work_page') do |the_page|
-      the_page.click_todo_item('todo>required>attach')
-    end
-    on('attach_page') do |the_page|
-      expect(the_page.attached_file_name).not_to eq('enriching_a_work_spec.rb')
-      expect(the_page.attached_file_name).to eq('hello-world.txt')
-    end
-
   end
 
   scenario 'User can add collaborators' do

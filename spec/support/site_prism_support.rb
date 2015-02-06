@@ -140,17 +140,12 @@ module SitePrism
         super("#{PARAM_NAME_CONTAINER}[files][]", path, options)
       end
 
-      def select_check_box(predicate, with: nil)
-        all("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}][]']").each do |input|
-          if input.value == with
-            input.set(true)
-            break
-          end
-        end
+      def check(with, options = {})
+        super(with, options)
       end
 
       def attached_file_name
-        attachment.value
+        attachment.text
       end
     end
 

@@ -5,10 +5,12 @@
   <%= field_set_tag do %>
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
   <% end %>
-  <% if model.attachments.any? %>
-    <%= render 'form_mark_as_representative', { f: f, model: model } %>
-    <%= field_set_tag do %>
-      <%= render 'form_for_list_attachment', { f: f, model: model } %>
+
+  <%= field_set_tag do %>
+    <%= f.fields_for model.existing_attachments do |attachment_form| %>
+      <%= attachment_form.input :name%>
+      <%= attachment_form.input :mark_as_representative, as: :radio_buttons %>
+      <%= attachment_form.input :_destroy, boolean: true %>
     <% end %>
   <% end %>
   <%= f.submit %>

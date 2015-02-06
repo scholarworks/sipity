@@ -4,9 +4,11 @@ module Sipity
   module Decorators
     RSpec.describe AttachmentDecorator do
       let(:attachment) { Models::Attachment.new(pid: 'abc123', file_name: "my file") }
-      subject { AttachmentDecorator.new(attachment) }
+      let(:repository) { double('Repository') }
+      subject { AttachmentDecorator.new(attachment, repository: repository) }
+
       it 'will have a #to_s equal its #name' do
-        expect(subject.to_s).to eq(attachment.file_name)
+        expect(subject.to_s).to eq(attachment.name)
       end
 
       it 'will have a #human_attribute_name' do
