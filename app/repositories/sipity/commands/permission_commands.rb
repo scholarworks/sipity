@@ -44,10 +44,8 @@ module Sipity
       module_function :grant_permission_for!
       public :grant_permission_for!
 
-      def grant_processing_permission_for!(_options = {})
-        # processing_actor = Conversions::ConvertToProcessingActor.call(actor)
-        # entity = Conversions::ConvertToProcessingEntity.call(entity)
-        # role = Conversions::ConvertToRole.call(role)
+      def grant_processing_permission_for!(entity:, actor:, role:)
+        Services::GrantProcessingPermission.call(entity: entity, actor: actor, role: role)
       end
       module_function :grant_processing_permission_for!
       public :grant_processing_permission_for!

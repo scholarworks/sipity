@@ -50,7 +50,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/permission_commands.rb
-    def grant_processing_permission_for!(_options = {})
+    def grant_processing_permission_for!(entity:, actor:, role:)
     end
 
     # @see ./app/repositories/sipity/commands/transient_answer_commands.rb

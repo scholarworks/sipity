@@ -44,7 +44,7 @@ ActiveRecord::Base.transaction do
   end
 
   $stdout.puts 'Creating ETD State Diagram...'
-  work_types.fetch('etd').default_processing_strategy do |etd_strategy|
+  work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_strategy|
     etd_strategy_roles = {}
 
     [
@@ -73,7 +73,7 @@ ActiveRecord::Base.transaction do
       ['show', nil],
       ['edit', nil],
       ['destroy', nil],
-      ['submit_for_advisor_signoff', 'under_advisor_review'],
+      ['submit_for_review', 'under_advisor_review'],
       ['advisor_signs_off', 'under_grad_school_review'],
       ['advisor_requests_changes', 'advisor_changes_requested'],
       ['request_revisions', 'under_advisor_review'],
@@ -86,7 +86,7 @@ ActiveRecord::Base.transaction do
     end
 
     [
-      ['new', 'submit_for_advisor_signoff', ['creating_user']],
+      ['new', 'submit_for_review', ['creating_user']],
       ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['new', 'edit', ['creating_user', 'etd_reviewer']],
       ['new', 'destroy', ['creating_user', 'etd_reviewer']],
@@ -95,11 +95,11 @@ ActiveRecord::Base.transaction do
       ['under_advisor_review', 'destroy', ['etd_reviewer']],
       ['under_advisor_review', 'advisor_signs_off', ['etd_reviewer', 'advisor']],
       ['under_advisor_review', 'advisor_requests_changes', ['etd_reviewer', 'advisor']],
-      ['advisor_changes_requested', 'submit_for_advisor_signoff', ['creating_user']],
+      ['advisor_changes_requested', 'submit_for_review', ['creating_user']],
       ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['advisor_changes_requested', 'edit', ['creating_user', 'etd_reviewer']],
       ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],
-      ['under_grad_school_review', 'request_revisisions', ['etd_reviewer']],
+      ['under_grad_school_review', 'request_revisions', ['etd_reviewer']],
       ['under_grad_school_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['under_grad_school_review', 'edit', ['etd_reviewer']],
       ['under_grad_school_review', 'destroy', ['etd_reviewer']],
@@ -115,5 +115,5 @@ ActiveRecord::Base.transaction do
         etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
       end
     end
-  end
+  end.save!
 end
