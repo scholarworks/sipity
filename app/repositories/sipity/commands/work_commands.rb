@@ -45,14 +45,12 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
 
-      def remove_files_from(file_name:, user: user)
-        # TODO: convert file name pid
-        Models::Attachment.where(file_name: file_name).destroy_all
+      def remove_files_from(pid:, user: user)
+        Models::Attachment.where(pid: pid).destroy_all
       end
 
-      def mark_as_representative(file_name:, user: user)
-        # TODO: convert file name pid
-        attachment = Models::Attachment.where(file_name: file_name).first
+      def mark_as_representative(pid:, user: user)
+        attachment = Models::Attachment.find_by(pid: pid)
         return true unless attachment.present?
         attachment.mark_as_representative = true
         attachment.save!

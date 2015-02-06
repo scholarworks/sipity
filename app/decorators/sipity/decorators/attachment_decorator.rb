@@ -8,13 +8,12 @@ module Sipity
 
       delegate_all
 
+      alias_method :name, :file_name
+
       def human_attribute_name(name)
         object.class.human_attribute_name(name)
       end
 
-      def name
-        file_name
-      end
 
       def to_s
         name

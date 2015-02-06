@@ -51,8 +51,8 @@ module Sipity
         end
       end
 
-      context '#default_pid_minter' do
-        subject { test_repository.default_pid_minter }
+      context '#pid_minter' do
+        subject { test_repository.pid_minter }
         it { should respond_to(:call) }
         its(:call) { should be_a(String) }
       end
@@ -103,7 +103,7 @@ module Sipity
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
         it 'will decrease the number of attachments in the system' do
-          expect { test_repository.remove_files_from(file_name: file_name, user: user) }.
+          expect { test_repository.remove_files_from(pid: pid_minter.call, user: user) }.
             to change { Models::Attachment.count }.from(1).to(0)
         end
       end
@@ -115,9 +115,13 @@ module Sipity
         let(:work) { Models::Work.create! }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
-        it 'will decrease the number of attachments in the system' do
-          expect { test_repository.mark_as_representative(file_name: file_name, user: user) }.
+        it 'will mark the given attachments as representative in the system' do
+          expect { test_repository.mark_as_representative(pid: pid_minter.call, user: user) }.
             to change { Models::Attachment.where(mark_as_representative: true).count }.by(1)
+        end
+        it 'will not mark the given attachments as representative in the system' do
+          expect { test_repository.mark_as_representative(pid: 'bogus', user: user) }.
+              not_to change { Models::Attachment.where(mark_as_representative: true).count }
         end
       end
     end

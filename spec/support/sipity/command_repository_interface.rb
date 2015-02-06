@@ -66,7 +66,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def mark_as_representative(file_name:, user: user)
+    def mark_as_representative(pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
@@ -74,7 +74,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def remove_files_from(file_name:, user: user)
+    def remove_files_from(pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb

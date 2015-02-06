@@ -27,8 +27,7 @@ module Sipity
         end
 
         def attachments(decorator: Decorators::AttachmentDecorator)
-          Queries::AttachmentQueries.work_attachments(work: work).
-            map { |obj| decorator.decorate(obj) }
+          repository.work_attachments(work: work).map { |obj| decorator.decorate(obj) }
         end
 
         private
