@@ -83,8 +83,9 @@ module Sipity
         it 'will return true there are no required todo items for the given state' do
           state_without_required_todo_items = '__very_much_invalid__'
           expect(
-            test_repository.
-            deprecated_are_all_of_the_required_todo_items_done_for_work?(work: work, work_processing_state: state_without_required_todo_items)
+            test_repository.deprecated_are_all_of_the_required_todo_items_done_for_work?(
+              work: work, work_processing_state: state_without_required_todo_items
+            )
           ).to eq(true)
         end
 
