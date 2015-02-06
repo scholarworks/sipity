@@ -1,0 +1,28 @@
+require 'spec_helper'
+
+module Sipity
+  module Services
+    RSpec.describe UpdateEntityProcessingState do
+      let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
+      let(:strategy) { Models::Processing::Strategy.new(id: 2) }
+
+      subject { described_class.new(entity: entity, processing_state: processing_state) }
+
+      context 'with a processing state string' do
+        let(:processing_state) { 'submit_for_review' }
+        it 'will change the processing state' do
+          expect(entity).to receive(:update!).with(strategy_state: kind_of(Models::Processing::StrategyState))
+          subject.call
+        end
+      end
+
+      context 'with a processing state object' do
+        let(:processing_state) { Models::Processing::StrategyState.new(id: 2, strategy_id: strategy.id, name: 'submit_for_review') }
+        it 'will change the processing state' do
+          expect(entity).to receive(:update!).with(strategy_state: kind_of(Models::Processing::StrategyState))
+          subject.call
+        end
+      end
+    end
+  end
+end

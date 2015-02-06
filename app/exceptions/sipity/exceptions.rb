@@ -79,6 +79,11 @@ module Sipity
       self.conversion_target = 'Models::Processing::Actor'
     end
 
+    # Unable to convert the given object into a processing strategy state
+    class ProcessingStrategyStateConversionError < ConversionError
+      self.conversion_target = 'Models::Processing::StrategyState'
+    end
+
     # As you are looking up something by name, within a given container.
     class ConceptNotFoundError < RuntimeError
       def initialize(name:, container:)
