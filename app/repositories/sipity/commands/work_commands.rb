@@ -27,10 +27,15 @@ module Sipity
       end
 
       def update_processing_state!(entity:, to:)
-        # REVIEW: Should this be re-finding the work? Is it cheating to re-use
-        #   the given work? Is it unsafe as far as state is concerned?
+        update_deprecated_processing_state!(entity: entity, to: to)
+        Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to)
+      end
+
+      def update_deprecated_processing_state!(entity:, to:)
         entity.update(processing_state: to)
       end
+      deprecate :update_deprecated_processing_state!
+      private :update_deprecated_processing_state!
 
       # TODO: Create a PidMinter service
       # REVIEW: Is this the correct location to put this behavior?
