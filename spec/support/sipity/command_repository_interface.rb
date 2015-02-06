@@ -29,6 +29,10 @@ module Sipity
     def create_work_attribute_values!(work:, key:, values:)
     end
 
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def deprecated_mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def destroy_work_attribute_values!(work:, key:, values:)
     end
