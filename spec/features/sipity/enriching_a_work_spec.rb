@@ -25,7 +25,7 @@ feature 'Enriching a Work', :devise do
     visit '/dashboard'
   end
 
-  scenario 'User can create a Work' do
+  xscenario 'User can create a Work' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
