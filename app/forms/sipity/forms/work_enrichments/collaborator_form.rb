@@ -48,7 +48,7 @@ module Sipity
 
         def build_collaborator_from_input(collection, attributes)
           return if !attributes[:name].present? && !attributes[:id].present?
-          collaborator = work.collaborators.find_or_initialize_by(id: attributes[:id])
+          collaborator = Queries::CollaboratorQueries.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
           collaborator.attributes = extract_collaborator_attributes(attributes)
           collection << collaborator
         end
