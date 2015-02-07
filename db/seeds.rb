@@ -75,7 +75,7 @@ ActiveRecord::Base.transaction do
       ['destroy', nil, 'resourceful'],
       ['describe', nil, 'task'],
       ['attach', nil, 'task'],
-      ['collaborators', nil, 'resourceful'],
+      ['collaborators', nil, 'task'],
       ['submit_for_review', 'under_advisor_review', 'state_advancement'],
       ['advisor_signs_off', 'under_grad_school_review', 'state_advancement'],
       ['advisor_requests_changes', 'advisor_changes_requested', 'state_advancement'],
@@ -89,6 +89,17 @@ ActiveRecord::Base.transaction do
         name: action_name, resulting_strategy_state: resulting_state, action_type: action_type
       )
     end
+
+    {
+      'submit_for_review' => ['describe', 'attach', 'collaborators']
+    }.each do |guarded_action_name, prereq_action_names|
+      guarded_action = etd_actions.fetch(guarded_action_name)
+      Array.wrap(prereq_action_names).each do |prereq_action_name|
+        prereq_action = etd_actions.fetch(prereq_action_name)
+        guarded_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action: prereq_action)
+      end
+    end
+
 
     [
       ['new', 'submit_for_review', ['creating_user']],

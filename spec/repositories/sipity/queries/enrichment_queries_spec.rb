@@ -60,10 +60,10 @@ module Sipity
         end
       end
 
-      context '#todo_list_for_current_processing_state_of_work' do
+      context '#deprecated_todo_list_for_current_processing_state_of_work' do
         before { todo_list_configurator.call }
 
-        subject { test_repository.todo_list_for_current_processing_state_of_work(work: work) }
+        subject { test_repository.deprecated_todo_list_for_current_processing_state_of_work(work: work) }
 
         it 'will have elements in the "required" set' do
           expect(subject.sets.keys.sort).to eq(['required', 'optional'].sort)
