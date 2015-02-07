@@ -74,7 +74,7 @@ module Sipity
 
       context '#scope_processing_actors_for' do
         subject { test_repository.scope_processing_actors_for(user: user) }
-        it 'will return an array of both user ' do
+        it 'will return an array of both user and group' do
           user_processing_actor
           group_processing_actor
           Models::GroupMembership.create(user_id: user.id, group_id: group.id)
