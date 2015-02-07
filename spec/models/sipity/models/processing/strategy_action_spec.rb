@@ -23,6 +23,11 @@ module Sipity
           it 'will set the action type if none is specified' do
             expect(subject.action_type).to be_present
           end
+
+          it 'will set the action type if none is specified' do
+            subject = described_class.new(resulting_strategy_state_id: 1)
+            expect(subject.action_type).to eq(described_class::STATE_ADVANCING_ACTION)
+          end
         end
       end
     end

@@ -74,7 +74,11 @@ module Sipity
           # TODO: Splice these into a single query; Right now preserving outward behavior
           actions_that_are_prerequisites = scope_strategy_actions_that_are_prerequisites(entity: work).pluck(:id)
           completed_actions = scope_statetegy_actions_that_have_occurred(entity: work).pluck(:id)
-          scope_strategy_actions_for_current_state(entity: work).where(action_type: 'enrichment_action').each do |action|
+          scope_strategy_actions_for_current_state(entity: work).where(
+            action_type: Models::Processing::StrategyAction::ENRICHMENT_ACTION
+          ).each do |action|
+            # TODO: Work on the proper data structure for an entity action. It
+            # will be related to the StrategyAction, but has concerns such as the following:
             list.add_to(
               set: actions_that_are_prerequisites.include?(action.id) ? 'required' : 'optional',
               name: action.name,
