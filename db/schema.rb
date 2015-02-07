@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150206173110) do
+ActiveRecord::Schema.define(version: 20150207132512) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -232,14 +232,14 @@ ActiveRecord::Schema.define(version: 20150206173110) do
   add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
-    t.integer  "strategy_id",                                  null: false
+    t.integer  "strategy_id",                                 null: false
     t.integer  "resulting_strategy_state_id"
-    t.string   "name",                                         null: false
+    t.string   "name",                                        null: false
     t.string   "form_class_name"
     t.boolean  "completion_required",         default: false
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.string   "action_type",                 default: "task", null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.string   "action_type",                                 null: false
   end
 
   add_index "sipity_processing_strategy_actions", ["action_type"], name: "index_sipity_processing_strategy_actions_on_action_type"

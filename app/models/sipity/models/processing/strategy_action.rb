@@ -30,11 +30,30 @@ module Sipity
 
         enum(
           action_type: {
-            'task' => 'task',
-            'resourceful' => 'resourceful',
-            'state_advancement' => 'state_advancement'
+            'enrichment_action' => 'enrichment_action',
+            'resourceful_action' => 'resourceful_action',
+            'state_advancing_action' => 'state_advancing_action'
           }
         )
+
+        after_initialize :set_action_type, if: :new_record?
+
+        RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy).freeze
+
+        private
+
+        def set_action_type
+          return true if action_type.present?
+          if resulting_strategy_state_id.present?
+            self.action_type = 'state_advancing_action'
+          elsif resulting_strategy_state.present?
+            self.action_type = 'state_advancing_action'
+          elsif RESOURCEFUL_ACTION_NAMES.include?(name)
+            self.action_type = 'resourceful_action'
+          else
+            self.action_type = 'enrichment_action'
+          end
+        end
       end
     end
   end

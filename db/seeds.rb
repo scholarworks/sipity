@@ -70,19 +70,19 @@ ActiveRecord::Base.transaction do
 
     etd_actions = {}
     [
-      ['show', nil, 'resourceful'],
-      ['edit', nil, 'resourceful'],
-      ['destroy', nil, 'resourceful'],
-      ['describe', nil, 'task'],
-      ['attach', nil, 'task'],
-      ['collaborators', nil, 'task'],
-      ['submit_for_review', 'under_advisor_review', 'state_advancement'],
-      ['advisor_signs_off', 'under_grad_school_review', 'state_advancement'],
-      ['advisor_requests_changes', 'advisor_changes_requested', 'state_advancement'],
-      ['request_revisions', 'under_advisor_review', 'state_advancement'],
-      ['approve_for_ingest', 'ready_for_ingest', 'state_advancement'],
-      ['ingest', 'ingesting', 'state_advancement'],
-      ['ingest_completed', 'done', 'state_advancement']
+      ['show', nil],
+      ['edit', nil],
+      ['destroy', nil],
+      ['describe', nil],
+      ['attach', nil],
+      ['collaborators', nil],
+      ['submit_for_review', 'under_advisor_review'],
+      ['advisor_signs_off', 'under_grad_school_review'],
+      ['advisor_requests_changes', 'advisor_changes_requested'],
+      ['request_revisions', 'under_advisor_review'],
+      ['approve_for_ingest', 'ready_for_ingest'],
+      ['ingest', 'ingesting'],
+      ['ingest_completed', 'done']
     ].each do |action_name, strategy_state_name, action_type|
       resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
       etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(

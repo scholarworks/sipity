@@ -18,6 +18,12 @@ module Sipity
         it 'will raise an ArgumentError if you provide an invalid action_type' do
           expect { subject.action_type = '__incorrect_type__' }.to raise_error(ArgumentError)
         end
+
+        context 'set action type' do
+          it 'will set the action type if none is specified' do
+            expect(subject.action_type).to be_present
+          end
+        end
       end
     end
   end
