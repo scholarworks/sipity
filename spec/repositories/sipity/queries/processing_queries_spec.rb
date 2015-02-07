@@ -85,6 +85,21 @@ module Sipity
         end
       end
 
+      context '#scope_strategy_actions_that_are_prerequisites' do
+        subject { test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity) }
+        let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'guarded_action') }
+
+        it 'will return an array of actions' do
+          Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
+            guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+          )
+          expect(subject).to eq([action])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_processing_strategy_roles_for_user_and_strategy' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_strategy(user: user, strategy: strategy) }
         it "will include the associated strategy roles for the given user" do
