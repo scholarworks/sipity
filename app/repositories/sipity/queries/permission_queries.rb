@@ -2,6 +2,8 @@ module Sipity
   module Queries
     # Queries
     module PermissionQueries
+      include ProcessingQueries
+
       ACTING_AS_TO_GROUP_NAME = {
         'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging'
       }.freeze
@@ -26,6 +28,10 @@ module Sipity
       end
 
       def available_event_triggers_for(user:, entity:)
+        scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).pluck(:name)
+      end
+
+      def deprecated_available_event_triggers_for(user:, entity:)
         acting_as = user_can_act_as_the_following_on_entity(user: user, entity: entity)
         diagram = StateMachines.state_diagram_for(work_type: entity.work_type)
         diagram.available_events_for_when_acting_as(current_state: entity.processing_state, acting_as: acting_as)
