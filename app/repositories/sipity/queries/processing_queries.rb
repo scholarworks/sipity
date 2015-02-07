@@ -31,7 +31,7 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_permitted_strategy_state_actions_available_for_current_state(user:, entity:)
+      def scope_permitted_strategy_actions_available_for_current_state(user:, entity:)
         strategy_actions_scope = scope_strategy_state_actions_available_for_current_state(entity: entity)
         strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
         strategy_actions_scope.where(

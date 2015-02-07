@@ -39,12 +39,14 @@ work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_s
 
   etd_actions = {}
   [
-    ['show', nil],
-    ['describe', nil],
-    ['submit_for_review', 'under_advisor_review'],
-  ].each do |action_name, strategy_state_name|
+    ['show', nil, 'resourceful'],
+    ['describe', nil, 'task'],
+    ['submit_for_review', 'under_advisor_review', 'state_advancement'],
+  ].each do |action_name, strategy_state_name, action_type|
     resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
-    etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(name: action_name, resulting_strategy_state: resulting_state)
+    etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(
+      name: action_name, resulting_strategy_state: resulting_state, action_type: action_type
+    )
   end
 
   [
