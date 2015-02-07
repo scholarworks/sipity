@@ -28,13 +28,36 @@ module Sipity
           through: :requiring_strategy_action_prerequisites,
           class_name: 'Sipity::Models::Processing::StrategyAction'
 
+        ENRICHMENT_ACTION = 'enrichment_action'.freeze
+        RESOURCEFUL_ACTION = 'resourceful_action'.freeze
+        STATE_ADVANCING_ACTION = 'state_advancing_action'.freeze
+
         enum(
           action_type: {
-            'task' => 'task',
-            'resourceful' => 'resourceful',
-            'state_advancement' => 'state_advancement'
+            ENRICHMENT_ACTION => ENRICHMENT_ACTION,
+            RESOURCEFUL_ACTION => RESOURCEFUL_ACTION,
+            STATE_ADVANCING_ACTION => STATE_ADVANCING_ACTION
           }
         )
+
+        after_initialize :set_action_type, if: :new_record?
+
+        RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy).freeze
+
+        private
+
+        def set_action_type
+          return true if action_type.present?
+          if resulting_strategy_state_id.present?
+            self.action_type = STATE_ADVANCING_ACTION
+          elsif resulting_strategy_state.present?
+            self.action_type = STATE_ADVANCING_ACTION
+          elsif RESOURCEFUL_ACTION_NAMES.include?(name)
+            self.action_type = RESOURCEFUL_ACTION
+          else
+            self.action_type = ENRICHMENT_ACTION
+          end
+        end
       end
     end
   end
