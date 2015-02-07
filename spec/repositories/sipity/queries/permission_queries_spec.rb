@@ -69,11 +69,11 @@ module Sipity
           Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
         end
 
-        context '#available_event_triggers_for' do
+        context '#deprecated_available_event_triggers_for' do
           it 'will return an array of strings' do
             # TODO: This is a test coupled to the behavior of an existing state diagram.
             expect(test_repository).to receive(:user_can_act_as_the_following_on_entity).and_return(['creating_user'])
-            actual = test_repository.available_event_triggers_for(user: user, entity: entity)
+            actual = test_repository.deprecated_available_event_triggers_for(user: user, entity: entity)
             expect(actual).to eq(["update", "show", "delete", "submit_for_review"])
           end
         end
