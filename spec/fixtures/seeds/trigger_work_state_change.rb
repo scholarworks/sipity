@@ -48,6 +48,16 @@ work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_s
   end
 
   [
+    ['submit_for_review', ['describe']]
+  ].each do |guarded_action_name, prereq_action_names|
+    guarded_action = etd_actions.fetch(guarded_action_name)
+    Array.wrap(prereq_action_names).each do |prereq_action_name|
+      prereq_action = etd_actions.fetch(prereq_action_name)
+      guarded_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action: prereq_action)
+    end
+  end
+
+  [
     ['new', 'submit_for_review', ['creating_user']],
     ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
     ['new', 'describe', ['creating_user', 'etd_reviewer']],
@@ -62,4 +72,3 @@ work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_s
     end
   end
 end.save!
-count = Sipity::Models::Processing::StrategyRole.count
