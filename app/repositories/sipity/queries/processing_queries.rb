@@ -256,6 +256,27 @@ module Sipity
         )
       end
 
+      # @api public
+      #
+      # For the given :entity return an ActiveRecord::Relation that when
+      # resolved will be only the strategy actions that:
+      #
+      # * Are prerequisites for one or more other actions
+      # * Are actions associated with the entity's processing strategy
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_that_are_prerequisites(entity:)
+        entity = convert_to_processing_entity(entity)
+        actions = Models::Processing::StrategyAction
+        prerequisite_actions = Models::Processing::StrategyActionPrerequisite.arel_table
+        actions.where(
+          actions.arel_table[:id].in(
+            prerequisite_actions.project(prerequisite_actions[:prerequisite_strategy_action_id])
+          ).and(actions.arel_table[:strategy_id].eq(entity.strategy_id))
+        )
+      end
+
       # @api private
       #
       # For the given :entity, return an ActiveRecord::Relation, that if
