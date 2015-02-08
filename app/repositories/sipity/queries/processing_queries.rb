@@ -86,7 +86,7 @@ module Sipity
       # * Users that are indirectly associated with the given entity by group
       #   and role.
       #
-      # @param user [Sipity::Models::Role]
+      # @param role [Sipity::Models::Role]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return ActiveRecord::Relation<Models::Processing::Actor>
       def scope_users_for_entity_and_roles(entity:, roles:)
