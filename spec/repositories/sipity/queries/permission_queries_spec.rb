@@ -32,7 +32,7 @@ module Sipity
         end
       end
 
-      context '#emails_for_associated_users' do
+      context '#deprecated_emails_for_associated_users' do
         let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:acting_as) { 'arbitrary' }
@@ -44,7 +44,7 @@ module Sipity
         it 'will return emails from users directly associated with the entity' do
           # See tests for #scope_users_by_entity_and_acting_as; I'm just making sure the pluck works
           expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
-          results = test_repository.emails_for_associated_users(acting_as: acting_as, entity: entity)
+          results = test_repository.deprecated_emails_for_associated_users(acting_as: acting_as, entity: entity)
           expect(results.sort).to eq(['associated@hotmail.com'])
         end
       end

@@ -85,8 +85,8 @@ module Sipity
         end
       end
 
-      context '#scope_users_for_entity_and_role' do
-        subject { test_repository.scope_users_for_entity_and_role(entity: entity, roles: role) }
+      context '#scope_users_for_entity_and_roles' do
+        subject { test_repository.scope_users_for_entity_and_roles(entity: entity, roles: role) }
         it "will resolve to an array of users" do
           user = User.create!(username: 'user')
           group_user = User.create!(username: 'group')

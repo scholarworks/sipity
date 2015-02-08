@@ -20,6 +20,8 @@ module Sipity
     module ProcessingQueries
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToPolymorphicType
+      include Conversions::ConvertToRole
+      include Conversions::ConvertToProcessingActor
       # @api public
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
@@ -137,6 +139,8 @@ module Sipity
           or(user_table[:id].in(sub_query_for_user_via_group))
         )
       end
+      module_function :scope_users_for_entity_and_roles
+      public :scope_users_for_entity_and_roles
 
       # @api public
       #
@@ -153,7 +157,7 @@ module Sipity
         actor_table = Models::Processing::Actor.arel_table
         memb_table = Models::GroupMembership.arel_table
 
-        actor_ids = actors.map(&:id)
+        actor_ids = actors.map { |actor| convert_to_processing_actor(actor).id }
 
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
         user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
