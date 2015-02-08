@@ -81,6 +81,49 @@ module Sipity
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
+      # * Processing Entities with the same processing strategy
+      #
+      # @param user [User]
+      # @param strategy [Sipity::Models::Processing::Strategy]
+      # @param roles [Array<Sipity::Models::Role>]
+      #
+      # @return ActiveRecord::Relation<Models::Processing::Entity>
+      def scope_entities_for_user_strategy_and_roles(user:, strategy:, roles:)
+        role_ids = Array.wrap(roles).map { |role| convert_to_role(role).id }
+        # IT NEEDS TO DO THE FOLLOWING:
+        #
+        # ```SQL
+        # SELECT * FROM entities
+        # WHERE (
+        #   strategy_id IN (
+        #     SELECT strategy_id FROM strategy_roles
+        #     INNER JOIN strategy_responsibilities ON strategy_roles.id = strategy_responsibilities.strategy_role_id
+        #     INNER JOIN actors ON actors.id = strategy_responsibilities.actor_id
+        #     WHERE(
+        #       strategy_id = <GIVEN_STRATEGY_ID>
+        #       AND role_id IN (<GIVEN_ROLE_IDS>)
+        #       AND actors.id BLAH BLAH BLAH
+        #     )
+        #   )
+        # ) OR (
+        #   id IN (
+        #     SELECT entity_id FROM entity_specific_responsibilities
+        #     INNER JOIN strategy_roles ON strategy_roles.id = entity_specific_responsibilities.strategy_role_id
+        #     INNER JOIN actors ON actors.id = entity_specific_responsibilities.actor_id
+        #     WHERE(
+        #       strategy_id = <GIVEN_STRATEGY_ID>
+        #       AND role_id IN (<GIVEN_ROLE_IDS>)
+        #       AND actors.id BLAH BLAH BLAH
+        #     )
+        #   )
+        # )
+        #```
+      end
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
       # * Users that are directly associated with the given entity through on or
       #   more of the given roles
       # * Users that are indirectly associated with the given entity by group
