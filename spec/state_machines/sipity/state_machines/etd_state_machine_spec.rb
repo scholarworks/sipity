@@ -10,7 +10,7 @@ module Sipity
         double(
           'Repository',
           update_processing_state!: true, log_event!: true, submit_etd_student_submission_trigger!: true,
-          grant_groups_permission_to_entity_for_acting_as!: true, send_notification_for_entity_trigger: true, submit_ingest_etd: true
+          send_notification_for_entity_trigger: true, submit_ingest_etd: true
         )
       end
       subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -26,7 +26,6 @@ module Sipity
         its(:repository) { should respond_to :log_event! }
         its(:repository) { should respond_to :update_processing_state! }
         its(:repository) { should respond_to :submit_etd_student_submission_trigger! }
-        its(:repository) { should respond_to :grant_groups_permission_to_entity_for_acting_as! }
         its(:repository) { should respond_to :send_notification_for_entity_trigger }
         its(:repository) { should respond_to :submit_ingest_etd }
       end
@@ -166,10 +165,6 @@ module Sipity
             expect(repository).to have_received(:send_notification_for_entity_trigger).
               with(notification: "confirmation_of_entity_submitted_for_review", entity: entity, acting_as: 'creating_user')
           end
-          it 'will add permission entries for the etd reviewers for the given ETD' do
-            expect(repository).to have_received(:grant_groups_permission_to_entity_for_acting_as!).
-              with(entity: entity, acting_as: 'etd_reviewer')
-          end
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_state_machine/#{event}")
@@ -257,10 +252,6 @@ module Sipity
                 acting_as: ['creating_user', 'advisor', 'etd_reviewer'], additional_emails: options.fetch(:additional_emails)
               )
             )
-          end
-          it 'will add permission entries for the catalog reviewers of the given ETD' do
-            expect(repository).to have_received(:grant_groups_permission_to_entity_for_acting_as!).
-              with(entity: entity, acting_as: 'cataloger')
           end
           it 'will send an email notification to the catalogers saying the ETD is ready for cataloging' do
             expect(repository).to have_received(:send_notification_for_entity_trigger).

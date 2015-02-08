@@ -50,10 +50,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/permission_commands.rb
-    def grant_groups_permission_to_entity_for_acting_as!(entity:, acting_as:)
-    end
-
-    # @see ./app/repositories/sipity/commands/permission_commands.rb
     def grant_permission_for!(entity:, actors:, acting_as:)
     end
 
