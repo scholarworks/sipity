@@ -20,56 +20,6 @@ module Sipity
         scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).pluck(:name)
       end
 
-      # Responsible for returning a User scope:
-      # That will include all users
-      # That have one or more acting_as
-      # In which the user has a direction relation to the entity
-      # Or in which a relation to the entity can be inferred by group membership
-      #
-      # If no acting_as are given, no entities will be returned.
-      #
-      # @param acting_as [Array<String>]
-      # @param entity [ActiveRecord::Base]
-      #
-      # @return ActiveRecord::Relation
-      #
-      # @note Welcome to the land of AREL.
-      # @see https://github.com/rails/arel AREL - A Relational Algebra
-      def scope_users_by_entity_and_acting_as(acting_as:, entity:)
-        user_table = User.arel_table
-        perm_table = Models::Permission.arel_table
-        memb_table = Models::GroupMembership.arel_table
-        entity_id = entity.id
-
-        entity_polymorphic_type = Conversions::ConvertToPolymorphicType.call(entity)
-        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
-        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
-
-        subquery_user_relation_entity = perm_table.project(perm_table[:actor_id]).where(
-          perm_table[:actor_type].eq(user_polymorphic_type).
-          and(perm_table[:acting_as].in(acting_as)).
-          and(perm_table[:entity_type].eq(entity_polymorphic_type)).
-          and(perm_table[:entity_id].eq(entity_id))
-        )
-
-        subquery_user_relation_to_entity_by_group_membership = memb_table.project(memb_table[:user_id]).where(
-          memb_table[:user_id].in(
-            perm_table.project(perm_table[:actor_id]).where(
-              perm_table[:actor_type].eq(group_polymorphic_type).
-              and(perm_table[:acting_as].in(acting_as)).
-              and(perm_table[:entity_type].eq(entity_polymorphic_type)).
-              and(perm_table[:entity_id].eq(entity_id))
-            )
-          )
-        )
-        User.where(
-          user_table[:id].in(subquery_user_relation_to_entity_by_group_membership).
-          or(user_table[:id].in(subquery_user_relation_entity))
-        )
-      end
-      module_function :scope_users_by_entity_and_acting_as
-      public :scope_users_by_entity_and_acting_as
-
       # Responsible for returning a scope for the entity type:
       # That match the given :entity_type
       # And for which the given :user has at least one of the given :acting_as.

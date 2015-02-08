@@ -25,29 +25,6 @@ module Sipity
         end
       end
 
-      context '#scope_users_by_entity_and_acting_as' do
-        let(:entity) { Models::Work.create! }
-        let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
-        let(:associated_by_group_user) { Sipity::Factories.create_user(email: 'group_associated@hotmail.com') }
-        let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
-        let(:user_with_wrong_acting_as) { Sipity::Factories.create_user(email: 'wrong_acting_as@hotmail.com') }
-        let(:associated_group) { Models::Group.create!(name: 'associated') }
-        let(:acting_as) { 'arbitrary' }
-        let(:wrong_acting_as) { 'wrong_acting_as' }
-
-        before do
-          Models::GroupMembership.create!(group: associated_group, user: associated_by_group_user)
-          Models::Permission.create!(actor: user_with_wrong_acting_as, acting_as: wrong_acting_as, entity: entity)
-          Models::Permission.create!(actor: associated_group, acting_as: acting_as, entity: entity)
-          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
-        end
-
-        it 'will return the users' do
-          results = test_repository.scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity)
-          expect(results.sort).to eq([associated_user, associated_by_group_user].sort)
-        end
-      end
-
       context '#scope_entities_for_entity_type_and_user_acting_as' do
         let(:user) { User.new(id: 1234) }
         let(:group) { Models::Group.new(id: 5678) }
