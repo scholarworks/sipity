@@ -32,13 +32,13 @@ module Sipity
       end
 
       def deprecated_available_event_triggers_for(user:, entity:)
-        acting_as = user_can_act_as_the_following_on_entity(user: user, entity: entity)
+        acting_as = deprecated_user_can_act_as_the_following_on_entity(user: user, entity: entity)
         diagram = StateMachines.state_diagram_for(work_type: entity.work_type)
         diagram.available_events_for_when_acting_as(current_state: entity.processing_state, acting_as: acting_as)
       end
 
       # @return Array<String> of acting_as
-      def user_can_act_as_the_following_on_entity(user:, entity:)
+      def deprecated_user_can_act_as_the_following_on_entity(user:, entity:)
         scope_acting_as_by_entity_and_user(user: user, entity: entity).pluck(:acting_as)
       end
 

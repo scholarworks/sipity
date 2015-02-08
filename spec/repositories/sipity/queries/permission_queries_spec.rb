@@ -65,16 +65,16 @@ module Sipity
         context '#deprecated_available_event_triggers_for' do
           it 'will return an array of strings' do
             # TODO: This is a test coupled to the behavior of an existing state diagram.
-            expect(test_repository).to receive(:user_can_act_as_the_following_on_entity).and_return(['creating_user'])
+            expect(test_repository).to receive(:deprecated_user_can_act_as_the_following_on_entity).and_return(['creating_user'])
             actual = test_repository.deprecated_available_event_triggers_for(user: user, entity: entity)
             expect(actual).to eq(["update", "show", "delete", "submit_for_review"])
           end
         end
 
-        context '#user_can_act_as_the_following_on_entity' do
+        context '#deprecated_user_can_act_as_the_following_on_entity' do
           it 'will return an array of strings' do
             direct_user_permission.save!
-            results = test_repository.user_can_act_as_the_following_on_entity(user: user, entity: entity)
+            results = test_repository.deprecated_user_can_act_as_the_following_on_entity(user: user, entity: entity)
             expect(results).to eq([direct_user_permission.acting_as])
           end
         end
