@@ -11,35 +11,13 @@ module Sipity
       module_function :emails_for_associated_users
       public :emails_for_associated_users
 
-      def deprecated_emails_for_associated_users(acting_as:, entity:)
-        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
-      end
-      module_function :deprecated_emails_for_associated_users
-      public :deprecated_emails_for_associated_users
-
       def can_the_user_act_on_the_entity?(user:, acting_as:, entity:)
         scope_users_for_entity_and_roles(entity: entity, roles: acting_as).
           where(id: user.id).any?
       end
 
-      def deprecate_can_the_user_act_on_the_entity?(user:, acting_as:, entity:)
-        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).
-          where(User.arel_table[:id].eq(user.id)).count > 0
-      end
-
       def available_event_triggers_for(user:, entity:)
         scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).pluck(:name)
-      end
-
-      def deprecated_available_event_triggers_for(user:, entity:)
-        acting_as = deprecated_user_can_act_as_the_following_on_entity(user: user, entity: entity)
-        diagram = StateMachines.state_diagram_for(work_type: entity.work_type)
-        diagram.available_events_for_when_acting_as(current_state: entity.processing_state, acting_as: acting_as)
-      end
-
-      # @return Array<String> of acting_as
-      def deprecated_user_can_act_as_the_following_on_entity(user:, entity:)
-        scope_acting_as_by_entity_and_user(user: user, entity: entity).pluck(:acting_as)
       end
 
       # Given a user and entity, return all of the permissions by:

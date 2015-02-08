@@ -4,44 +4,6 @@ module Sipity
   module Queries
     # Queries
     RSpec.describe PermissionQueries, type: :isolated_repository_module do
-      context '#deprecate_can_the_user_act_on_the_entity?' do
-        let(:entity) { Models::Work.create! }
-        let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
-        let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
-        let(:acting_as) { 'arbitrary' }
-
-        before do
-          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
-          expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
-        end
-        it 'will return true if there is a match on the user, acting_as, and entity' do
-          expect(test_repository.deprecate_can_the_user_act_on_the_entity?(user: associated_user, acting_as: acting_as, entity: entity)).
-            to eq(true)
-        end
-        it 'will return false if there is NOT a match on the user, acting_as, and entity' do
-          expect(
-            test_repository.deprecate_can_the_user_act_on_the_entity?(user: not_associated_user, acting_as: acting_as, entity: entity)
-          ).to eq(false)
-        end
-      end
-
-      context '#deprecated_emails_for_associated_users' do
-        let(:entity) { Models::Work.create! }
-        let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
-        let(:acting_as) { 'arbitrary' }
-
-        before do
-          Models::Permission.create!(actor: associated_user, acting_as: acting_as, entity: entity)
-        end
-
-        it 'will return emails from users directly associated with the entity' do
-          # See tests for #scope_users_by_entity_and_acting_as; I'm just making sure the pluck works
-          expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
-          results = test_repository.deprecated_emails_for_associated_users(acting_as: acting_as, entity: entity)
-          expect(results.sort).to eq(['associated@hotmail.com'])
-        end
-      end
-
       context 'querying for augmented permission records' do
         let(:entity) { Models::Work.new(id: 1, work_type: 'etd', processing_state: 'new') }
         let(:user) { User.new(id: 2) }
@@ -60,23 +22,6 @@ module Sipity
         end
         before do
           Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
-        end
-
-        context '#deprecated_available_event_triggers_for' do
-          it 'will return an array of strings' do
-            # TODO: This is a test coupled to the behavior of an existing state diagram.
-            expect(test_repository).to receive(:deprecated_user_can_act_as_the_following_on_entity).and_return(['creating_user'])
-            actual = test_repository.deprecated_available_event_triggers_for(user: user, entity: entity)
-            expect(actual).to eq(["update", "show", "delete", "submit_for_review"])
-          end
-        end
-
-        context '#deprecated_user_can_act_as_the_following_on_entity' do
-          it 'will return an array of strings' do
-            direct_user_permission.save!
-            results = test_repository.deprecated_user_can_act_as_the_following_on_entity(user: user, entity: entity)
-            expect(results).to eq([direct_user_permission.acting_as])
-          end
         end
 
         context '#scope_acting_as_by_entity_and_user' do
