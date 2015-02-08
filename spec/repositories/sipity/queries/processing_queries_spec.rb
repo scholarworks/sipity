@@ -88,10 +88,35 @@ module Sipity
       context '#scope_users_for_entity_and_role' do
         subject { test_repository.scope_users_for_entity_and_role(entity: entity, roles: role) }
         it "will resolve to an array of users" do
-          other_user = User.create!(username: 'another')
+          user = User.create!(username: 'user')
+          group_user = User.create!(username: 'group')
+          other_user = User.create!(username: 'other')
+          group = Models::Group.find_or_create_by!(name: 'group')
+          group_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: group)
+          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
+          Models::GroupMembership.create!(user: group_user, group: group)
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
+            strategy_role: strategy_role, actor: group_actor, entity: entity
+          )
+          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
+
+          expect(subject).to eq([user, group_user])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_users_from_actors' do
+        subject { test_repository.scope_users_from_actors(actors: [group_processing_actor, user_processing_actor]) }
+        it "will resolve to an array of users" do
+          group_user = User.create!(username: 'another')
+          skip_this_user = User.create!(username: 'skip')
+          Models::GroupMembership.create(user: group_user, group: group)
           user_processing_actor
-          user_strategy_responsibility
-          expect(subject).to eq([user])
+          group_processing_actor
+          user_processing_actor
+          expect(subject).to eq([user, group_user])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
