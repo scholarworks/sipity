@@ -23,32 +23,6 @@ module Sipity
         before do
           Models::GroupMembership.create!(group_id: group.id, user_id: user.id)
         end
-
-        context '#scope_acting_as_by_entity_and_user' do
-          context 'for direct user permission' do
-            it 'will return an Active Record relationship' do
-              direct_user_permission.save!
-              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-              expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as].sort)
-            end
-          end
-
-          context 'for both direct and indirect user permission' do
-            it 'will return an Active Record relationship' do
-              direct_user_permission.save!
-              indirect_user_permission.save!
-              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-              expect(results.pluck(:acting_as).sort).to eq([direct_user_permission.acting_as, indirect_user_permission.acting_as].sort)
-            end
-          end
-          context 'for indirect user permission via group' do
-            it 'will return an Active Record relationship' do
-              indirect_user_permission.save!
-              results = test_repository.scope_acting_as_by_entity_and_user(user: user, entity: entity)
-              expect(results.pluck(:acting_as).sort).to eq([indirect_user_permission.acting_as].sort)
-            end
-          end
-        end
       end
 
       context '#scope_users_by_entity_and_acting_as' do

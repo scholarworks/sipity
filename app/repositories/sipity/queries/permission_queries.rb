@@ -20,47 +20,6 @@ module Sipity
         scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).pluck(:name)
       end
 
-      # Given a user and entity, return all of the permissions by:
-      #
-      # * Direct user association
-      # * Indirect user association via group membership
-      #
-      # @param user [User]
-      # @param entity [ActiveRecord::Base]
-      #
-      # @return ActiveRecord::Relation
-      #
-      # @note Welcome to the land of AREL.
-      def scope_acting_as_by_entity_and_user(user:, entity:)
-        perm_table = Models::Permission.arel_table
-        memb_table = Models::GroupMembership.arel_table
-        user_id = user.id
-        entity_id = entity.id
-        entity_polymorphic_type = Conversions::ConvertToPolymorphicType.call(entity)
-        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
-        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(user)
-
-        group_ids_for_user_subquery = memb_table.project(memb_table[:group_id]).where(
-          memb_table[:user_id].eq(user_id)
-        )
-
-        Models::Permission.distinct.where(
-          perm_table[:entity_id].eq(entity_id).
-          and(perm_table[:entity_type].eq(entity_polymorphic_type))
-        ).where(
-          (
-            perm_table[:actor_type].eq(user_polymorphic_type).
-            and(perm_table[:actor_id].eq(user_id))
-          ).
-          or(
-            perm_table[:actor_type].eq(group_polymorphic_type).
-            and(perm_table[:actor_id].in(group_ids_for_user_subquery))
-          )
-        )
-      end
-      module_function :scope_acting_as_by_entity_and_user
-      public :scope_acting_as_by_entity_and_user
-
       # Responsible for returning a User scope:
       # That will include all users
       # That have one or more acting_as
