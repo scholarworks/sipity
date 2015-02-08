@@ -88,7 +88,7 @@ module Sipity
       #
       # @param role [Sipity::Models::Role]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::Actor>
+      # @return ActiveRecord::Relation<User>
       def scope_users_for_entity_and_roles(entity:, roles:)
         role_ids = Array.wrap(roles).map { |role| Conversions::ConvertToRole.call(role).id }
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
