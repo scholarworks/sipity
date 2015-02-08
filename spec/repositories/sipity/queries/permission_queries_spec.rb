@@ -12,7 +12,7 @@ module Sipity
         Then { group_names == ['graduate_school'] }
       end
 
-      context '#can_the_user_act_on_the_entity?' do
+      context '#deprecate_can_the_user_act_on_the_entity?' do
         let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }
         let(:not_associated_user) { Sipity::Factories.create_user(email: 'not_associated@hotmail.com') }
@@ -23,12 +23,13 @@ module Sipity
           expect(test_repository).to receive(:scope_users_by_entity_and_acting_as).and_call_original
         end
         it 'will return true if there is a match on the user, acting_as, and entity' do
-          expect(test_repository.can_the_user_act_on_the_entity?(user: associated_user, acting_as: acting_as, entity: entity)).
+          expect(test_repository.deprecate_can_the_user_act_on_the_entity?(user: associated_user, acting_as: acting_as, entity: entity)).
             to eq(true)
         end
         it 'will return false if there is NOT a match on the user, acting_as, and entity' do
-          expect(test_repository.can_the_user_act_on_the_entity?(user: not_associated_user, acting_as: acting_as, entity: entity)).
-            to eq(false)
+          expect(
+            test_repository.deprecate_can_the_user_act_on_the_entity?(user: not_associated_user, acting_as: acting_as, entity: entity)
+          ).to eq(false)
         end
       end
 
