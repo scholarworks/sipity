@@ -77,6 +77,45 @@ module Sipity
 
       # @api public
       #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Users that are directly proxied by one or more of the actors
+      # * Users that are indirectly, by way of a group, proxy by one or more of
+      #   the actors.
+      #
+      # @param Actors [Sipity::Models::Processing::ActorRole]
+      # @return ActiveRecord::Relation<User>
+      def scope_users_from_actors(actors:)
+        user_table = User.arel_table
+        actor_table = Models::Processing::Actor.arel_table
+        memb_table = Models::GroupMembership.arel_table
+
+        actor_ids = actors.map(&:id)
+
+        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
+        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+
+        sub_query_for_user = actor_table.project(actor_table[:proxy_for_id]).where(
+          actor_table[:proxy_for_type].eq(user_polymorphic_type).
+          and(actor_table[:id].in(actor_ids))
+        )
+
+        sub_query_for_user_via_group = memb_table.project(memb_table[:user_id]).where(
+          memb_table[:user_id].in(
+            actor_table.project(actor_table[:proxy_for_id]).where(
+              actor_table[:proxy_for_type].eq(group_polymorphic_type).
+              and(actor_table[:id].in(actor_ids))
+            )
+          )
+        )
+        User.where(
+          user_table[:id].in(sub_query_for_user).
+          or(user_table[:id].in(sub_query_for_user_via_group))
+        )
+      end
+
+      # @api public
+      #
       # For the given :user and :entity, return an ActiveRecord::Relation that,
       # if resolved, will be all of the assocated strategy roles for both the
       # strategy responsibilities and the entity specific responsibilities.

@@ -85,6 +85,19 @@ module Sipity
         end
       end
 
+      context '#scope_users_for_entity_and_role' do
+        subject { test_repository.scope_users_for_entity_and_role(entity: entity, roles: role) }
+        it "will resolve to an array of users" do
+          other_user = User.create!(username: 'another')
+          user_processing_actor
+          user_strategy_responsibility
+          expect(subject).to eq([user])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_strategy_actions_that_are_prerequisites' do
         subject { test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity) }
         let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'guarded_action') }
