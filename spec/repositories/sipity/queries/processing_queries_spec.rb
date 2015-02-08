@@ -90,7 +90,7 @@ module Sipity
         it "will resolve to an array of users" do
           user = User.create!(username: 'user')
           group_user = User.create!(username: 'group')
-          other_user = User.create!(username: 'other')
+          _other_user = User.create!(username: 'other')
           group = Models::Group.find_or_create_by!(name: 'group')
           group_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: group)
           user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
@@ -111,7 +111,7 @@ module Sipity
         subject { test_repository.scope_users_from_actors(actors: [group_processing_actor, user_processing_actor]) }
         it "will resolve to an array of users" do
           group_user = User.create!(username: 'another')
-          skip_this_user = User.create!(username: 'skip')
+          _skip_this_user = User.create!(username: 'skip')
           Models::GroupMembership.create(user: group_user, group: group)
           user_processing_actor
           group_processing_actor
