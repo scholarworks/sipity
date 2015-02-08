@@ -60,10 +60,11 @@ module Sipity
     RSpec.describe WorkPolicy::Scope do
       let(:user) { User.new(id: 1234) }
       let(:entity) { Models::Work.new(id: 5678) }
+      let(:repository) { QueryRepository.new }
       context '.resolve' do
         it 'will use the scope_entities_for_entity_type_and_user_acting_as' do
-          allow(Queries::PermissionQueries).to receive(:scope_entities_for_entity_type_and_user_acting_as)
-          described_class.resolve(user: user)
+          expect(repository).to receive(:scope_entities_for_entity_type_and_user_acting_as)
+          described_class.resolve(user: user, repository: repository)
         end
       end
     end

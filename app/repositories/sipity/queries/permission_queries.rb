@@ -62,8 +62,6 @@ module Sipity
           or(entity_type.arel_table[:id].in(subquery_entity_relation_to_user_by_group_membership))
         )
       end
-      module_function :scope_entities_for_entity_type_and_user_acting_as
-      public :scope_entities_for_entity_type_and_user_acting_as
     end
   end
 end

@@ -60,21 +60,26 @@ module Sipity
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Work, acting_as: [Models::Permission::CREATING_USER])
-          new(user, scope, acting_as: acting_as).resolve
+        def self.resolve(user:, scope: Models::Work, acting_as: [Models::Permission::CREATING_USER], repository: nil)
+          new(user, scope, acting_as: acting_as, repository: repository).resolve
         end
-        def initialize(user, scope = Models::Work, acting_as: [Models::Permission::CREATING_USER])
+        def initialize(user, scope = Models::Work, acting_as: [Models::Permission::CREATING_USER], repository: nil)
           @user = user
           @scope = scope
           @acting_as = acting_as
+          @repository = repository || default_repository
         end
-        attr_reader :user, :scope, :acting_as
-        private :user, :scope, :acting_as
+        attr_reader :user, :scope, :acting_as, :repository
+        private :user, :scope, :acting_as, :repository
 
         def resolve
-          Queries::PermissionQueries.scope_entities_for_entity_type_and_user_acting_as(
-            user: user, entity_type: scope, acting_as: acting_as
-          )
+          repository.scope_entities_for_entity_type_and_user_acting_as(user: user, entity_type: scope, acting_as: acting_as)
+        end
+
+        private
+
+        def default_repository
+          QueryRepository.new
         end
       end
     end
