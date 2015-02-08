@@ -4,14 +4,6 @@ module Sipity
   module Queries
     # Queries
     RSpec.describe PermissionQueries, type: :isolated_repository_module do
-
-      context '#group_names_for_entity_and_acting_as' do
-        Given(:acting_as) { 'etd_reviewer' }
-        Given(:entity) { double('Entity') }
-        When(:group_names) { test_repository.group_names_for_entity_and_acting_as(entity: entity, acting_as: acting_as) }
-        Then { group_names == ['graduate_school'] }
-      end
-
       context '#deprecate_can_the_user_act_on_the_entity?' do
         let(:entity) { Models::Work.create! }
         let(:associated_user) { Sipity::Factories.create_user(email: 'associated@hotmail.com') }

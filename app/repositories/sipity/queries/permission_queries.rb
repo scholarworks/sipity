@@ -3,18 +3,6 @@ module Sipity
     # Queries
     module PermissionQueries
       include ProcessingQueries
-
-      ACTING_AS_TO_GROUP_NAME = {
-        'etd_reviewer' => 'graduate_school', 'cataloger' => 'library_cataloging'
-      }.freeze
-
-      def group_names_for_entity_and_acting_as(options = {})
-        acting_as = options.fetch(:acting_as)
-        Array.wrap(ACTING_AS_TO_GROUP_NAME.fetch(acting_as))
-      end
-      module_function :group_names_for_entity_and_acting_as
-      public :group_names_for_entity_and_acting_as
-
       def emails_for_associated_users(acting_as:, entity:)
         # TODO: Remove the singleton query method behavior. Its ridiculous! It
         #   infects everything. This is a major code stink.
