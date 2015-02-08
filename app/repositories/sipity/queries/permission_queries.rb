@@ -16,10 +16,18 @@ module Sipity
       public :group_names_for_entity_and_acting_as
 
       def emails_for_associated_users(acting_as:, entity:)
-        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
+        # TODO: Remove the singleton query method behavior. Its ridiculous! It
+        #   infects everything. This is a major code stink.
+        Queries::ProcessingQueries.scope_users_for_entity_and_roles(entity: entity, roles: acting_as).pluck(:email)
       end
       module_function :emails_for_associated_users
       public :emails_for_associated_users
+
+      def deprecated_emails_for_associated_users(acting_as:, entity:)
+        scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).pluck(:email)
+      end
+      module_function :deprecated_emails_for_associated_users
+      public :deprecated_emails_for_associated_users
 
       def can_the_user_act_on_the_entity?(user:, acting_as:, entity:)
         scope_users_by_entity_and_acting_as(acting_as: acting_as, entity: entity).

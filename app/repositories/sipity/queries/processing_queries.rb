@@ -20,6 +20,8 @@ module Sipity
     module ProcessingQueries
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToPolymorphicType
+      include Conversions::ConvertToRole
+      include Conversions::ConvertToProcessingActor
       # @api public
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
@@ -73,6 +75,108 @@ module Sipity
         # Because AND takes precedence over OR, this query works.
         # WHERE (a AND b OR c AND d) == WHERE (a AND b) OR (c AND d)
         Models::Processing::Actor.where(user_constraints.or(group_constraints))
+      end
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Users that are directly associated with the given entity through on or
+      #   more of the given roles
+      # * Users that are indirectly associated with the given entity by group
+      #   and role.
+      #
+      # @param user [Sipity::Models::Role]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::Actor>
+      def scope_users_for_entity_and_roles(entity:, roles:)
+        role_ids = Array.wrap(roles).map { |role| Conversions::ConvertToRole.call(role).id }
+        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
+        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+        user_table = User.arel_table
+        actor_table = Models::Processing::Actor.arel_table
+        memb_table = Models::GroupMembership.arel_table
+
+        strategy_role_id_subquery = strategy_roles.project(strategy_roles[:id]).where(
+          strategy_roles[:role_id].in(role_ids)
+        )
+
+        strategy_actor_id_subquery = strategy_responsibilities.project(strategy_responsibilities[:actor_id]).where(
+          strategy_responsibilities[:strategy_role_id].in(strategy_role_id_subquery)
+        )
+
+        entity_actor_id_subquery = entity_responsibilities.project(entity_responsibilities[:actor_id]).where(
+          entity_responsibilities[:strategy_role_id].in(strategy_role_id_subquery).
+          and(entity_responsibilities[:entity_id].eq(entity.id))
+        )
+
+        sub_query_for_user = actor_table.project(actor_table[:proxy_for_id]).where(
+          actor_table[:id].in(strategy_actor_id_subquery).
+          or(actor_table[:id].in(entity_actor_id_subquery))
+        ).where(
+          actor_table[:proxy_for_type].eq(user_polymorphic_type)
+        )
+
+        sub_query_for_user_via_group = memb_table.project(memb_table[:user_id]).where(
+          memb_table[:group_id].in(
+            actor_table.project(actor_table[:proxy_for_id]).where(
+              actor_table[:id].in(strategy_actor_id_subquery).
+              or(actor_table[:id].in(entity_actor_id_subquery))
+            ).where(
+              actor_table[:proxy_for_type].eq(group_polymorphic_type)
+            )
+          )
+        )
+
+        User.where(
+          user_table[:id].in(sub_query_for_user).
+          or(user_table[:id].in(sub_query_for_user_via_group))
+        )
+      end
+      module_function :scope_users_for_entity_and_roles
+      public :scope_users_for_entity_and_roles
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Users that are directly proxied by one or more of the actors
+      # * Users that are indirectly, by way of a group, proxy by one or more of
+      #   the actors.
+      #
+      # @param Actors [Sipity::Models::Processing::ActorRole]
+      # @return ActiveRecord::Relation<User>
+      def scope_users_from_actors(actors:)
+        user_table = User.arel_table
+        actor_table = Models::Processing::Actor.arel_table
+        memb_table = Models::GroupMembership.arel_table
+
+        actor_ids = actors.map { |actor| convert_to_processing_actor(actor).id }
+
+        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
+        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+
+        sub_query_for_user = actor_table.project(actor_table[:proxy_for_id]).where(
+          actor_table[:proxy_for_type].eq(user_polymorphic_type).
+          and(actor_table[:id].in(actor_ids))
+        )
+
+        sub_query_for_user_via_group = memb_table.project(memb_table[:user_id]).where(
+          memb_table[:user_id].in(
+            actor_table.project(actor_table[:proxy_for_id]).where(
+              actor_table[:proxy_for_type].eq(group_polymorphic_type).
+              and(actor_table[:id].in(actor_ids))
+            )
+          )
+        )
+        User.where(
+          user_table[:id].in(sub_query_for_user).
+          or(user_table[:id].in(sub_query_for_user_via_group))
+        )
       end
 
       # @api public
