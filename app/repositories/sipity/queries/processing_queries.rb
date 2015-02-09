@@ -81,7 +81,12 @@ module Sipity
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
-      # * Processing Entities with the same processing strategy
+      # * Processing Entities with the given processing strategy
+      # * Processing Entities that the user has one or more roles associated
+      #   with, either:
+      #   * Directly via the StrategyResponsibility (and Processing::Actor)
+      #   * Indirectly via the EntitySpecificResponsibility (and
+      #     Processing::Actor)
       #
       # @param user [User]
       # @param strategy [Sipity::Models::Processing::Strategy]
@@ -90,34 +95,46 @@ module Sipity
       # @return ActiveRecord::Relation<Models::Processing::Entity>
       def scope_entities_for_user_strategy_and_roles(user:, strategy:, roles:)
         role_ids = Array.wrap(roles).map { |role| convert_to_role(role).id }
-        # IT NEEDS TO DO THE FOLLOWING:
-        #
-        # ```SQL
-        # SELECT * FROM entities
-        # WHERE (
-        #   strategy_id IN (
-        #     SELECT strategy_id FROM strategy_roles
-        #     INNER JOIN strategy_responsibilities ON strategy_roles.id = strategy_responsibilities.strategy_role_id
-        #     INNER JOIN actors ON actors.id = strategy_responsibilities.actor_id
-        #     WHERE(
-        #       strategy_id = <GIVEN_STRATEGY_ID>
-        #       AND role_id IN (<GIVEN_ROLE_IDS>)
-        #       AND actors.id BLAH BLAH BLAH
-        #     )
-        #   )
-        # ) OR (
-        #   id IN (
-        #     SELECT entity_id FROM entity_specific_responsibilities
-        #     INNER JOIN strategy_roles ON strategy_roles.id = entity_specific_responsibilities.strategy_role_id
-        #     INNER JOIN actors ON actors.id = entity_specific_responsibilities.actor_id
-        #     WHERE(
-        #       strategy_id = <GIVEN_STRATEGY_ID>
-        #       AND role_id IN (<GIVEN_ROLE_IDS>)
-        #       AND actors.id BLAH BLAH BLAH
-        #     )
-        #   )
-        # )
-        #```
+
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        entities = Models::Processing::Entity.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+
+        # Generate the list of actors associated with the user; I want to use it
+        # later.
+        user_actor_scope = scope_processing_actors_for(user: user)
+        user_actor_contraints = user_actor_scope.arel_table.project(
+          user_actor_scope.arel_table[:id]
+        ).where(user_actor_scope.arel.constraints)
+
+        strategy_subquery = entities[:strategy_id].in(
+          strategy_roles.project(strategy_roles[:strategy_id]).join(
+            strategy_responsibilities
+          ).on(strategy_roles[:id].eq(strategy_responsibilities[:strategy_role_id])).
+          where(
+            strategy_roles[:strategy_id].eq(strategy.id).and(
+              strategy_roles[:role_id].in(role_ids).and(
+                strategy_responsibilities[:actor_id].in(user_actor_contraints)
+              )
+            )
+          )
+        )
+
+        entity_specific_subquery = entities[:id].in(
+          entity_responsibilities.project(entity_responsibilities[:entity_id]).join(
+            strategy_roles
+          ).on(strategy_roles[:id].eq(entity_responsibilities[:strategy_role_id])).
+          where(
+            strategy_roles[:strategy_id].eq(strategy.id).and(
+              strategy_roles[:role_id].in(role_ids).and(
+                entity_responsibilities[:actor_id].in(user_actor_contraints)
+              )
+            )
+          )
+        )
+
+        Models::Processing::Entity.where(strategy_subquery.or(entity_specific_subquery))
       end
 
       # @api public

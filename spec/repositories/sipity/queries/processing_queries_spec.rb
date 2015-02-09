@@ -89,14 +89,22 @@ module Sipity
         let(:user) { User.create!(username: 'user') }
         subject { test_repository.scope_entities_for_user_strategy_and_roles(user: user, strategy: entity.strategy, roles: role) }
         it "will resolve to an array of entities" do
-          Models::Processing::Entity.create!(proxy_for_id: 2, proxy_for_type: 'AnEntity', strategy: strategy, strategy_state: originating_state)
-          Models::Processing::Entity.create!(proxy_for_id: 3, proxy_for_type: 'AnEntity', strategy_id: 8675309, strategy_state: originating_state)
+          entity
+          other_entity = Models::Processing::Entity.create!(
+            proxy_for_id: 2, proxy_for_type: 'AnEntity', strategy: strategy, strategy_state: originating_state
+          )
+          Models::Processing::Entity.create!(
+            proxy_for_id: 3, proxy_for_type: 'AnEntity', strategy_id: 8_675_309, strategy_state: originating_state
+          )
           user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor, entity: entity)
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
+            strategy_role: strategy_role, actor: user_actor, entity: entity
+          )
           Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
 
-          expect(subject).to eq([entity])
+          expect(subject).to eq([entity, other_entity])
         end
+        xit 'bombard this with more scenarios'
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
