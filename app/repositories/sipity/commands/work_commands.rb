@@ -49,11 +49,11 @@ module Sipity
         Models::Attachment.where(pid: pid).destroy_all
       end
 
-      def mark_as_representative(pid:, user: user)
+      def mark_as_representative(work: work, pid:, user: user)
         attachment = Models::Attachment.find_by(pid: pid)
         return true unless attachment.present?
-        attachment.mark_as_representative = true
-        attachment.save!
+        Models::Attachment.where(work_id: work.id).update_all(is_representative_file: false)
+        attachment.update(is_representative_file: true)
       end
 
       def create_sipity_user_from(netid:)

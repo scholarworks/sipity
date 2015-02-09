@@ -6,11 +6,14 @@
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
   <% end %>
 
-  <%= field_set_tag do %>
-    <%= f.fields_for model.existing_attachments do |attachment_form| %>
-      <%= attachment_form.input :name%>
-      <%= attachment_form.input :mark_as_representative, as: :radio_buttons %>
-      <%= attachment_form.input :_destroy, boolean: true %>
+  <% if model.attachments.any? %>
+    <%= field_set_tag do %>
+      <%= f.input :mark_as_representative, as: :radio_buttons, collection: model.attachments, checked: model.representative %>
+    <% end %>
+    <%= field_set_tag do %>
+      <%= f.fields_for :attachments_attributes do |attachment_form| %>
+        <%# attachment_form.input :name %>
+      <% end %>
     <% end %>
   <% end %>
   <%= f.submit %>

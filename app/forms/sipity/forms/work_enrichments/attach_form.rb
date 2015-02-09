@@ -6,7 +6,6 @@ module Sipity
         def initialize(attributes = {})
           super
           @files = attributes[:files]
-          @remove_files = attributes[:remove_files]
           @mark_as_representative = attributes[:mark_as_representative]
           @attachments_attributes = attributes[:attachments_attributes]
         end
@@ -15,25 +14,24 @@ module Sipity
         #   uploaded.
         validates :files, presence: true
         attr_accessor :files
-        attr_accessor :remove_files
         attr_accessor :mark_as_representative
         attr_reader :attachments_attributes
 
         def attachments_attributes(inputs)
           return inputs unless inputs.present?
-          @existing_attachments = []
+          @attachments = []
           inputs.each do |_, attributes|
-            build_attachment_from_input(@existing_attachments, attributes)
+            build_attachment_from_input(@attachments, attributes)
           end
           @attachments_attributes = inputs
         end
 
         def representative
-          work.attachments.map { |r| [r.name, r.pid] }
+          Queries::AttachmentQueries.work_representative(work: work)
         end
 
-        def existing_attachments
-          @existing_attachments || attachments_from_work
+        def attachments
+          @attachments || attachments_from_work
         end
 
         private
@@ -57,16 +55,13 @@ module Sipity
             Array.wrap(files).compact.each do |file|
               repository.attach_file_to(work: work, file: file, user: requested_by)
             end
-            Array.wrap(remove_files).compact.each do |pid|
-              repository.remove_files_from(pid: pid, user: requested_by)
-            end
-            repository.mark_as_representative(pid: mark_as_representative, user: requested_by)
+            repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
           end
         end
 
         def attachments_from_work
           return [] unless work
-          work.attachments.present? ? work.attachments : [Models::Attachment.build_default]
+          work.attachments
         end
       end
     end
