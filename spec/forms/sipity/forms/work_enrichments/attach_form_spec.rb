@@ -58,11 +58,6 @@ module Sipity
               subject.submit(repository: repository, requested_by: user)
             end
 
-            it 'will remove files from work' do
-              expect(repository).to receive(:remove_files_from).and_call_original
-              subject.submit(repository: repository, requested_by: user)
-            end
-
             it "will transition the work's corresponding enrichment todo item to :done" do
               expect(repository).to receive(:mark_work_todo_item_as_done).and_call_original
               subject.submit(repository: repository, requested_by: user)
