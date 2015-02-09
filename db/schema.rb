@@ -75,7 +75,7 @@ ActiveRecord::Schema.define(version: 20150207132512) do
     t.string   "file_name",                              null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
-    t.boolean  "mark_as_representative", default: false
+    t.boolean  "is_representative_file", default: false
   end
 
   add_index "sipity_attachments", ["pid"], name: "index_sipity_attachments_on_pid", unique: true
