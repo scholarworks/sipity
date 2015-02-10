@@ -69,15 +69,14 @@ module Sipity
         def initialize(user, scope, options = {})
           @user = user
           @scope = scope
-          @acting_as = options.fetch(:acting_as) { [Models::Permission::CREATING_USER] }
           @repository = options.fetch(:repository) { default_repository }
         end
 
-        attr_reader :user, :scope, :acting_as, :repository
-        private :user, :scope, :acting_as, :repository
+        attr_reader :user, :scope, :repository
+        private :user, :scope, :repository
 
         def resolve(options = {})
-          resolved_scope = repository.scope_proxied_objects_from_processing_entities(user: user, proxy_for_type: scope, roles: acting_as)
+          resolved_scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: scope)
           processing_state = options.fetch(:processing_state, nil)
           if processing_state.present?
             resolved_scope.where(processing_state: processing_state)

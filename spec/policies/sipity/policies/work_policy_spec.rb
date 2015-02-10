@@ -62,13 +62,13 @@ module Sipity
       let(:entity) { Models::Work.new(id: 5678) }
       let(:repository) { QueryRepository.new }
       context '.resolve' do
-        it 'will use the #scope_proxied_objects_from_processing_entities' do
-          expect(repository).to receive(:scope_proxied_objects_from_processing_entities).and_call_original
+        it 'will use the #scope_proxied_objects_for_the_user_and_proxy_for_type' do
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).and_call_original
           described_class.resolve(user: user, repository: repository)
         end
 
         it 'will handle a processing_state' do
-          expect(repository).to receive(:scope_proxied_objects_from_processing_entities).and_call_original
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).and_call_original
           described_class.resolve(user: user, repository: repository, processing_state: 'new')
         end
       end
