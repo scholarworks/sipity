@@ -67,6 +67,11 @@ module Sipity
               expect(repository).to receive(:log_event!).and_call_original
               subject.submit(repository: repository, requested_by: user)
             end
+
+            it 'will mark a file as representative' do
+              expect(repository).to receive(:mark_as_representative).and_call_original
+              subject.submit(repository: repository, requested_by: user)
+            end
           end
         end
       end

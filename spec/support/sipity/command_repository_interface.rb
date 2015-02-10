@@ -66,7 +66,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def mark_as_representative(work: work, pid:, user: user)
+    def mark_as_representative(work:, pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
