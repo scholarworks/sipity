@@ -4,7 +4,9 @@ module Sipity
   module Models
     module Processing
       RSpec.describe EntityActionRegister, type: :model do
-        pending "add some examples to (or delete) #{__FILE__}"
+        subject { described_class }
+        its(:column_names) { should include("strategy_action_id") }
+        its(:column_names) { should include("entity_id") }
       end
     end
   end

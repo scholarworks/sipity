@@ -11,10 +11,6 @@ module Sipity
         end
       end
 
-      context '#assign_a_pid' do
-        it 'will assign a unique permanent persisted identifier for the work'
-      end
-
       context '#find_work' do
         it 'raises an exception if nothing is found' do
           expect { test_repository.find_work('8675309') }.to raise_error

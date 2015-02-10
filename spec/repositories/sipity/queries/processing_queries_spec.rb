@@ -104,7 +104,6 @@ module Sipity
 
           expect(subject).to eq([entity, other_entity])
         end
-        xit 'bombard this with more scenarios'
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
@@ -222,7 +221,6 @@ module Sipity
 
           expect(subject).to eq([entity, other_entity])
         end
-        xit 'bombard this with more scenarios'
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
