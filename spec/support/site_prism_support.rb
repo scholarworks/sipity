@@ -90,11 +90,11 @@ module SitePrism
       end
 
       def click_recommendation(recommendation)
-        find(".recommendation .value .recommendation-#{recommendation.downcase}").click
+        take_action_on(find_named_object("recommendation>#{recommendation.downcase}"))
       end
 
       def click_edit
-        take_action_on(find_named_object('event_trigger>update'))
+        take_action_on(find_named_object('event_trigger>edit'))
       end
 
       def click_todo_item(name)
