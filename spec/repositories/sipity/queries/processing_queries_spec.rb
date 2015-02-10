@@ -110,6 +110,25 @@ module Sipity
         end
       end
 
+      context '#scope_proxied_objects_from_processing_entities' do
+        let(:user) { User.create!(username: 'user') }
+        subject do
+          test_repository.scope_proxied_objects_from_processing_entities(
+            user: user, proxy_for_type: Sipity::Models::Work, roles: role
+          )
+        end
+        it "will resolve to an array of entities" do
+          work = Models::Work.create!
+          Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
+          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
+          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
+          expect(subject).to eq([work])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_entities_for_user_and_proxy_for_type_and_roles' do
         let(:user) { User.create!(username: 'user') }
         subject do
