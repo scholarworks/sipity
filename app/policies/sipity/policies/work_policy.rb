@@ -60,20 +60,30 @@ module Sipity
       # @see [Pundit gem scopes](https://github.com/elabs/pundit#scopes) for
       #   more information regarding the Scope interface.
       class Scope
-        def self.resolve(user:, scope: Models::Work, acting_as: [Models::Permission::CREATING_USER], repository: nil)
-          new(user, scope, acting_as: acting_as, repository: repository).resolve
+        def self.resolve(options = {})
+          user = options.fetch(:user)
+          scope = options.fetch(:scope) { Models::Work }
+          new(user, scope, options.slice(:acting_as, :repository)).resolve(options)
         end
-        def initialize(user, scope = Models::Work, acting_as: [Models::Permission::CREATING_USER], repository: nil)
+
+        def initialize(user, scope, options = {})
           @user = user
           @scope = scope
-          @acting_as = acting_as
-          @repository = repository || default_repository
+          @acting_as = options.fetch(:acting_as) { [Models::Permission::CREATING_USER] }
+          @repository = options.fetch(:repository) { default_repository }
         end
+
         attr_reader :user, :scope, :acting_as, :repository
         private :user, :scope, :acting_as, :repository
 
-        def resolve
-          repository.deprecated_scope_entities_for_entity_type_and_user_acting_as(user: user, entity_type: scope, acting_as: acting_as)
+        def resolve(options = {})
+          resolved_scope = repository.scope_proxied_objects_from_processing_entities(user: user, proxy_for_type: scope, roles: acting_as)
+          processing_state = options.fetch(:processing_state, nil)
+          if processing_state.present?
+            resolved_scope.where(processing_state: processing_state)
+          else
+            resolved_scope
+          end
         end
 
         private
