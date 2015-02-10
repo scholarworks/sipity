@@ -73,7 +73,7 @@ module Sipity
         private :user, :scope, :acting_as, :repository
 
         def resolve
-          repository.scope_entities_for_entity_type_and_user_acting_as(user: user, entity_type: scope, acting_as: acting_as)
+          repository.deprecated_scope_entities_for_entity_type_and_user_acting_as(user: user, entity_type: scope, acting_as: acting_as)
         end
 
         private

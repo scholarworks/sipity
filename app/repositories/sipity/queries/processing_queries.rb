@@ -141,6 +141,66 @@ module Sipity
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
+      # * Processing Entities that are proxies for the given proxy_for_type
+      # * Processing Entities that the user has one or more roles associated
+      #   with, either:
+      #   * Directly via the StrategyResponsibility (and Processing::Actor)
+      #   * Indirectly via the EntitySpecificResponsibility (and
+      #     Processing::Actor)
+      #
+      # @param user [User]
+      # @param proxy_for_type something that can be converted to a polymorphic
+      #   type.
+      # @param roles [Array<Sipity::Models::Role>]
+      #
+      # @return ActiveRecord::Relation<Models::Processing::Entity>
+      def scope_entities_for_user_and_proxy_for_type_and_roles(user:, proxy_for_type:, roles:)
+        role_ids = Array.wrap(roles).map { |role| convert_to_role(role).id }
+        entity_type = convert_to_polymorphic_type(proxy_for_type)
+
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        entities = Models::Processing::Entity.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+
+        # Generate the list of actors associated with the user; I want to use it
+        # later.
+        user_actor_scope = scope_processing_actors_for(user: user)
+        user_actor_contraints = user_actor_scope.arel_table.project(
+          user_actor_scope.arel_table[:id]
+        ).where(user_actor_scope.arel.constraints)
+
+        strategy_subquery = entities[:strategy_id].in(
+          strategy_roles.project(strategy_roles[:strategy_id]).join(
+            strategy_responsibilities
+          ).on(strategy_roles[:id].eq(strategy_responsibilities[:strategy_role_id])).
+          where(
+            strategy_roles[:role_id].in(role_ids).and(
+              strategy_responsibilities[:actor_id].in(user_actor_contraints)
+            )
+          )
+        )
+
+        entity_specific_subquery = entities[:id].in(
+          entity_responsibilities.project(entity_responsibilities[:entity_id]).join(
+            strategy_roles
+          ).on(strategy_roles[:id].eq(entity_responsibilities[:strategy_role_id])).
+          where(
+            strategy_roles[:role_id].in(role_ids).and(
+              entity_responsibilities[:actor_id].in(user_actor_contraints)
+            )
+          )
+        )
+
+        Models::Processing::Entity.
+          where(proxy_for_type: entity_type).
+          where(strategy_subquery.or(entity_specific_subquery))
+      end
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
       # * Users that are directly associated with the given entity through on or
       #   more of the given roles
       # * Users that are indirectly associated with the given entity by group
