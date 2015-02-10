@@ -326,7 +326,7 @@ module Sipity
 
         Models::Processing::Entity.
           where(proxy_for_type: entity_type).
-          where(strategy_subquery.or(entity_specific_subquery)).tap { |obj| puts obj.to_sql }
+          where(strategy_subquery.or(entity_specific_subquery))
       end
 
       # @api public
