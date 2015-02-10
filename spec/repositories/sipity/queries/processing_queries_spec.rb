@@ -110,6 +110,74 @@ module Sipity
         end
       end
 
+      context '#scope_processing_entities_for_the_user_and_proxy_for_type' do
+        before do
+          Sipity::SpecSupport.load_database_seeds!(
+            seeds_path: 'spec/fixtures/seeds/scope_processing_entities_for_the_user_and_proxy_for_type.rb'
+          )
+        end
+        subject do
+          test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
+        end
+        let(:user) { User.create!(username: 'user') }
+        let(:advisor) { User.create!(username: 'advisor') }
+        let(:no_access) { User.create!(username: 'no_access') }
+        let(:commands) { CommandRepository.new }
+
+        it "will resolve to an array of entities" do
+          work_one = commands.create_work!(title: 'Book', work_type: 'etd', work_publication_strategy: 'will_not_publish')
+          work_two = commands.create_work!(title: 'Book', work_type: 'etd', work_publication_strategy: 'will_not_publish')
+
+          commands.grant_creating_user_permission_for!(entity: work_one, user: user)
+          commands.grant_creating_user_permission_for!(entity: work_two, user: user)
+
+          commands.grant_processing_permission_for!(entity: work_one, actor: advisor, role: 'advisor')
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
+          ).to eq([work_one, work_two])
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: advisor, proxy_for_type: Sipity::Models::Work)
+          ).to eq([work_one])
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: no_access, proxy_for_type: Sipity::Models::Work)
+          ).to eq([])
+        end
+
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_proxied_objects_for_the_user_and_proxy_for_type' do
+        before do
+          Sipity::SpecSupport.load_database_seeds!(seeds_path: 'spec/fixtures/seeds/trigger_work_state_change.rb')
+        end
+        let(:strategy) { Models::Processing::Strategy.first! }
+        let(:originating_state) { Models::Processing::StrategyState.first! }
+        let(:user) { User.create!(username: 'user') }
+        subject do
+          test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
+        end
+
+        it "will resolve to an array of entities" do
+          work = Models::Work.create!
+          entity = Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
+          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
+            strategy_role: strategy_role, actor: user_actor, entity: entity
+          )
+          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
+
+          expect(subject).to eq([work])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#scope_proxied_objects_from_processing_entities' do
         let(:user) { User.create!(username: 'user') }
         subject do

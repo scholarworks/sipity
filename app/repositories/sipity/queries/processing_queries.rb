@@ -79,6 +79,112 @@ module Sipity
 
       # @api public
       #
+      # This method crosses the boundary out of the processing subsystem to
+      # return an ActiveRecord::Relation scope of the objects that are proxied
+      # by the processing system. The returned scope will returng objects that
+      # meet the following criteria:
+      #
+      # * Processing Entities of the given proxy_for_type
+      # * Processing Entities in a state in which I have access to based on:
+      #   - The entity specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #   - The strategy specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #
+      # @param user [User]
+      # @param proxy_for_type something that can be converted to a polymorphic
+      #   type.
+      #
+      # @return ActiveRecord::Relation<proxy_for_types>
+      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:)
+        proxy_for_type = convert_to_polymorphic_type(proxy_for_type)
+        processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(user: user, proxy_for_type: proxy_for_type)
+
+        proxy_for_type.where(
+          proxy_for_type.arel_table[proxy_for_type.primary_key].in(
+            processing_entities_scope.arel_table.project(:proxy_for_id).where(
+              processing_entities_scope.arel.constraints.reduce
+            )
+          )
+        )
+      end
+
+      # @api private
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Processing Entities of the given proxy_for_type
+      # * Processing Entities in a state in which I have access to based on:
+      #   - The entity specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #   - The strategy specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #
+      # In other words, for the given user and the given proxy for type (i.e.
+      # Models::Work), fetch all of the processing entities that I can, in some
+      # way, access based on the processing state.
+      #
+      # @param user [User]
+      # @param proxy_for_type something that can be converted to a polymorphic
+      #   type.
+      #
+      # @return ActiveRecord::Relation<Models::Processing::Entity>
+      def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:)
+        proxy_for_type = convert_to_polymorphic_type(proxy_for_type)
+
+        entities = Models::Processing::Entity.arel_table
+        strategy_state_actions = Models::Processing::StrategyStateAction.arel_table
+        strategy_states = Models::Processing::StrategyState.arel_table
+        strategy_state_action_permissions = Models::Processing::StrategyStateActionPermission.arel_table
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+
+        user_actor_scope = scope_processing_actors_for(user: user)
+        user_actor_contraints = user_actor_scope.arel_table.project(
+          user_actor_scope.arel_table[:id]
+        ).where(user_actor_scope.arel.constraints)
+
+        available_strategy_state_subqueries = strategy_state_actions.project(
+          strategy_state_actions[:originating_strategy_state_id]
+        ).join(strategy_state_action_permissions).on(
+          strategy_state_action_permissions[:strategy_state_action_id].eq(strategy_state_actions[:id])
+        ).join(strategy_states).on(
+          strategy_states[:id].eq(strategy_state_actions[:originating_strategy_state_id])
+        ).join(strategy_roles).on(
+          strategy_roles[:id].eq(strategy_state_action_permissions[:strategy_role_id])
+        ).where(
+          strategy_state_action_permissions[:strategy_role_id].in(
+            strategy_responsibilities.project(
+              strategy_responsibilities[:strategy_role_id]
+            ).where(
+              strategy_responsibilities[:actor_id].in(user_actor_contraints)
+            )
+          )
+        )
+
+        availble_entity_specific_subqueries = entity_responsibilities.project(
+          entity_responsibilities[:entity_id]
+        ).join(strategy_state_action_permissions).on(
+          strategy_state_action_permissions[:strategy_role_id].eq(entity_responsibilities[:strategy_role_id])
+        ).where(
+          strategy_state_action_permissions[:strategy_role_id].in(
+            entity_responsibilities.project(
+              entity_responsibilities[:strategy_role_id]
+            ).where(entity_responsibilities[:actor_id].in(user_actor_contraints))
+          )
+        )
+
+        Models::Processing::Entity.where(proxy_for_type: proxy_for_type).where(
+          entities[:strategy_state_id].in(available_strategy_state_subqueries).or(
+            entities[:id].in(availble_entity_specific_subqueries)
+          )
+        )
+      end
+      private :scope_processing_entities_for_the_user_and_proxy_for_type
+
+      # @api private
+      #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
       # * Processing Entities with the given processing strategy
