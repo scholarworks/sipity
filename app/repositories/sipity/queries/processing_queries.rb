@@ -109,7 +109,7 @@ module Sipity
         )
       end
 
-      # @api public
+      # @api private
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
@@ -160,19 +160,28 @@ module Sipity
             ).where(
               strategy_responsibilities[:actor_id].in(user_actor_contraints)
             )
-          ).or(
-            strategy_state_action_permissions[:strategy_role_id].in(
-              entity_responsibilities.project(
-                entity_responsibilities[:strategy_role_id]
-              ).where(entity_responsibilities[:actor_id].in(user_actor_contraints))
-            )
+          )
+        )
+
+        availble_entity_specific_subqueries = entity_responsibilities.project(
+          entity_responsibilities[:entity_id]
+        ).join(strategy_state_action_permissions).on(
+          strategy_state_action_permissions[:strategy_role_id].eq(entity_responsibilities[:strategy_role_id])
+        ).where(
+          strategy_state_action_permissions[:strategy_role_id].in(
+            entity_responsibilities.project(
+              entity_responsibilities[:strategy_role_id]
+            ).where(entity_responsibilities[:actor_id].in(user_actor_contraints))
           )
         )
 
         Models::Processing::Entity.where(proxy_for_type: proxy_for_type).where(
-          entities[:strategy_state_id].in(available_strategy_state_subqueries)
+          entities[:strategy_state_id].in(available_strategy_state_subqueries).or(
+            entities[:id].in(availble_entity_specific_subqueries)
+          )
         )
       end
+      private :scope_processing_entities_for_the_user_and_proxy_for_type
 
       # @api private
       #
