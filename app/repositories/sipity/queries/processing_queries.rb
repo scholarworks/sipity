@@ -79,6 +79,38 @@ module Sipity
 
       # @api public
       #
+      # This method crosses the boundary out of the processing subsystem to
+      # return an ActiveRecord::Relation scope of the objects that are proxied
+      # by the processing system. The returned scope will returng objects that
+      # meet the following criteria:
+      #
+      # * Processing Entities of the given proxy_for_type
+      # * Processing Entities in a state in which I have access to based on:
+      #   - The entity specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #   - The strategy specific responsibility
+      #     - For which I've been assigned either as a group member or a user
+      #
+      # @param user [User]
+      # @param proxy_for_type something that can be converted to a polymorphic
+      #   type.
+      #
+      # @return ActiveRecord::Relation<proxy_for_types>
+      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:)
+        proxy_for_type = convert_to_polymorphic_type(proxy_for_type)
+        processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(user: user, proxy_for_type: proxy_for_type)
+
+        proxy_for_type.where(
+          proxy_for_type.arel_table[proxy_for_type.primary_key].in(
+            processing_entities_scope.arel_table.project(:proxy_for_id).where(
+              processing_entities_scope.arel.constraints.reduce
+            )
+          )
+        )
+      end
+
+      # @api public
+      #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
       # * Processing Entities of the given proxy_for_type
