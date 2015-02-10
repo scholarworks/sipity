@@ -10,12 +10,12 @@ module Sipity
         Models::Attachment.find_or_initialize_by(work_id: work.id, pid: pid, &block)
       end
 
-      def work_representative(work:)
-        Models::Attachment.where(work_id: work.id, is_representative_file: true).pluck(:pid)
+      def representative_attachment_for(work:)
+        Models::Attachment.where(work_id: work.id, is_representative_file: true)
       end
 
-      module_function :work_representative
-      public :work_representative
+      module_function :representative_attachment_for
+      public :representative_attachment_for
     end
   end
 end

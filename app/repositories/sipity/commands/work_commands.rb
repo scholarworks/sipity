@@ -49,10 +49,10 @@ module Sipity
         Models::Attachment.where(pid: pid).destroy_all
       end
 
-      def mark_as_representative(work: work, pid:, user: user)
+      def mark_as_representative(work:, pid:, user: user)
         attachment = Models::Attachment.find_by(pid: pid)
         return true unless attachment.present?
-        Models::Attachment.where(work_id: work.id).update_all(is_representative_file: false)
+        Models::Attachment.where(work_id: work.id, is_representative_file: true).update_all(is_representative_file: false)
         attachment.update(is_representative_file: true)
       end
 

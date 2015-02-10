@@ -26,8 +26,8 @@ module Sipity
           @attachments_attributes = inputs
         end
 
-        def representative
-          Queries::AttachmentQueries.work_representative(work: work)
+        def representative_attachment_id
+          Queries::AttachmentQueries.representative_attachment_for(work: work).pluck(:pid)
         end
 
         def attachments
