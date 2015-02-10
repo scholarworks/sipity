@@ -15,8 +15,8 @@ module Sipity
         attr_accessor :files
         attr_accessor :mark_as_representative
 
-        def representative_attachment_id
-          Queries::AttachmentQueries.representative_attachment_for(work: work).pluck(:pid)
+        def representative_attachment
+          Queries::AttachmentQueries.representative_attachment_for(work: work)
         end
 
         def attachments
