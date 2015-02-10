@@ -8,13 +8,7 @@ module Sipity
       end
 
       def find_works_for(user:, processing_state: nil)
-        # REVIEW: Is this bleeding into the authorization layer?
-        scope = Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work)
-        if processing_state.present?
-          scope.where(processing_state: processing_state)
-        else
-          scope
-        end
+        Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work, processing_state: processing_state)
       end
 
       def build_create_work_form(attributes: {})
