@@ -62,8 +62,8 @@ module Sipity
       let(:entity) { Models::Work.new(id: 5678) }
       let(:repository) { QueryRepository.new }
       context '.resolve' do
-        it 'will use the scope_entities_for_entity_type_and_user_acting_as' do
-          expect(repository).to receive(:scope_entities_for_entity_type_and_user_acting_as)
+        it 'will use the deprecated_scope_entities_for_entity_type_and_user_acting_as' do
+          expect(repository).to receive(:deprecated_scope_entities_for_entity_type_and_user_acting_as)
           described_class.resolve(user: user, repository: repository)
         end
       end
