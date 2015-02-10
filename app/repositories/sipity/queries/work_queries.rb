@@ -7,13 +7,6 @@ module Sipity
         Models::Work.find(work_id)
       end
 
-      # @todo Is this the right place for this? Should there a permanency layer?
-      #   That is to say something responsible for resolving records and
-      #   providing redirection.
-      def permanent_uri_for_work_id(work_id)
-        URI.parse("http://change.me/show/#{work_id}")
-      end
-
       def find_works_for(user:, processing_state: nil)
         # REVIEW: Is this bleeding into the authorization layer?
         scope = Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work)

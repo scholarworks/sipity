@@ -3,10 +3,6 @@ require 'rails_helper'
 module Sipity
   module Queries
     RSpec.describe WorkQueries, type: :isolated_repository_module do
-      it 'will have a permanent URL for a given work' do
-        expect(test_repository.permanent_uri_for_work_id(123)).to be_a(URI)
-      end
-
       context '#find_works_for' do
         before do
           # TODO: Remove this once the deprecation for granting permission is done
