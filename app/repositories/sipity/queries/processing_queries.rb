@@ -520,7 +520,7 @@ module Sipity
       # * All actions that have prerequisites and all of those prerequisites are complete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
       def scope_strategy_state_actions_available_for_current_state(entity:)
         entity = convert_to_processing_entity(entity)
         strategy_actions_without_prerequisites = scope_strategy_actions_without_prerequisites(entity: entity)
