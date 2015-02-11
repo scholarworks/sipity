@@ -7,6 +7,7 @@ module Sipity
       end
       delegate_all
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
+      decorates_association :attachments, with: Decorators::AttachmentDecorator
 
       def with_form_panel(name, theme = :default, &block)
         # TODO: Translate name following active record internationalization

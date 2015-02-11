@@ -4,6 +4,17 @@
   <%= f.error_notification %>
   <%= field_set_tag do %>
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
-    <%= f.submit %>
   <% end %>
+
+  <% if model.attachments.any? %>
+    <%= field_set_tag do %>
+      <%= f.input :mark_as_representative, as: :radio_buttons, collection: model.attachments, checked: model.representative_attachment %>
+    <% end %>
+    <%= field_set_tag do %>
+      <%= f.fields_for :attachments_attributes do |attachment_form| %>
+        <%# attachment_form.input :name %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= f.submit %>
 <% end %>

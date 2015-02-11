@@ -19,6 +19,20 @@ feature 'Enriching a Work', :devise do
     end
   end
 
+  def attach_file_work
+    login_as(user, scope: :user)
+    create_a_work(work_type: 'etd')
+
+    on('work_page') do |the_page|
+      the_page.click_todo_item('todo>required>attach')
+    end
+
+    on('attach_page') do |the_page|
+      the_page.attach_file(__FILE__)
+      the_page.submit_button.click
+    end
+  end
+
   scenario 'User creates a work then sees it on their dashboard' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
@@ -90,9 +104,13 @@ feature 'Enriching a Work', :devise do
     end
 
     on('attach_page') do |the_page|
-      expect(the_page).to be_all_there
+      expect(the_page).to have_input_file
       the_page.attach_file(__FILE__)
     end
+  end
+
+  scenario 'User can remove files' do
+    attach_file_work
   end
 
   scenario 'User can add collaborators' do

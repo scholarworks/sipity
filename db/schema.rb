@@ -68,13 +68,14 @@ ActiveRecord::Schema.define(version: 20150207132512) do
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id"
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
-    t.integer  "work_id",        null: false
-    t.string   "pid",            null: false
-    t.string   "predicate_name", null: false
-    t.string   "file_uid",       null: false
-    t.string   "file_name",      null: false
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.integer  "work_id",                                null: false
+    t.string   "pid",                                    null: false
+    t.string   "predicate_name",                         null: false
+    t.string   "file_uid",                               null: false
+    t.string   "file_name",                              null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "is_representative_file", default: false
   end
 
   add_index "sipity_attachments", ["pid"], name: "index_sipity_attachments_on_pid", unique: true

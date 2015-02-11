@@ -133,8 +133,9 @@ module SitePrism
       PARAM_NAME_CONTAINER = 'work'.freeze
       element :form, "form[method='post']"
       element :input_file, "form [name='#{PARAM_NAME_CONTAINER}[files][]'][multiple='multiple']"
+      element :submit_button, "form [name='commit'][type='submit']"
+
       def attach_file(path, options = {})
-        # NOTE: I believe this will work, however I am not certain
         super("#{PARAM_NAME_CONTAINER}[files][]", path, options)
       end
     end

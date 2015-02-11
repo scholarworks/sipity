@@ -65,8 +65,16 @@ module Sipity
     def log_event!(entity:, user:, event_name:)
     end
 
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def mark_as_representative(work:, pid:, user: user)
+    end
+
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def remove_files_from(pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb

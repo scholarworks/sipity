@@ -45,6 +45,17 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
 
+      def remove_files_from(pid:, user: user)
+        Models::Attachment.where(pid: pid).destroy_all
+      end
+
+      def mark_as_representative(work:, pid:, user: user)
+        attachment = Models::Attachment.find_by(pid: pid)
+        return true unless attachment.present?
+        Models::Attachment.where(work_id: work.id, is_representative_file: true).update_all(is_representative_file: false)
+        attachment.update(is_representative_file: true)
+      end
+
       def create_sipity_user_from(netid:)
         return false unless netid.present?
         # This assumes a valid NetID.

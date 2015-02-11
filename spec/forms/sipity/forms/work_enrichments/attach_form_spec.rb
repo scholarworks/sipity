@@ -10,6 +10,8 @@ module Sipity
         its(:policy_enforcer) { should be_present }
         its(:enrichment_type) { should eq('attach') }
 
+        it { should respond_to :attachments }
+
         context 'validations' do
           it 'will require a work' do
             subject = described_class.new(work: nil)
@@ -20,6 +22,19 @@ module Sipity
             subject = described_class.new(files: [], work: work)
             subject.valid?
             expect(subject.errors[:files]).to_not be_empty
+          end
+
+          let(:representative_for_attachment) { [double('Attachment')] }
+          it 'will have #representative_for_attachment_id' do
+            allow(Queries::AttachmentQueries).to receive(:representative_attachment_for).
+              with(work: work).and_return(representative_for_attachment)
+            subject.representative_attachment
+          end
+
+          let(:attachment) { [double('Attachment')] }
+          it 'will have #attachments' do
+            allow(work).to receive(:attachments).and_return(attachment)
+            expect(subject.attachments).to_not be_empty
           end
         end
 
@@ -40,8 +55,9 @@ module Sipity
           end
 
           context 'with valid data' do
-            subject { described_class.new(work: work, files: [file]) }
+            subject { described_class.new(work: work, files: [file], remove_files: [remove_file])  }
             let(:file) { double('A File') }
+            let(:remove_file) { double('File to delete') }
 
             before do
               expect(subject).to receive(:valid?).and_return(true)
@@ -64,6 +80,11 @@ module Sipity
 
             it 'will record the event' do
               expect(repository).to receive(:log_event!).and_call_original
+              subject.submit(repository: repository, requested_by: user)
+            end
+
+            it 'will mark a file as representative' do
+              expect(repository).to receive(:mark_as_representative).and_call_original
               subject.submit(repository: repository, requested_by: user)
             end
           end
