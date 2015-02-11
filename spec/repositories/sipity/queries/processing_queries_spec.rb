@@ -85,30 +85,6 @@ module Sipity
         end
       end
 
-      context '#scope_entities_for_user_strategy_and_roles' do
-        let(:user) { User.create!(username: 'user') }
-        subject { test_repository.scope_entities_for_user_strategy_and_roles(user: user, strategy: entity.strategy, roles: role) }
-        it "will resolve to an array of entities" do
-          entity
-          other_entity = Models::Processing::Entity.create!(
-            proxy_for_id: 2, proxy_for_type: 'AnEntity', strategy: strategy, strategy_state: originating_state
-          )
-          Models::Processing::Entity.create!(
-            proxy_for_id: 3, proxy_for_type: 'AnEntity', strategy_id: 8_675_309, strategy_state: originating_state
-          )
-          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: user_actor, entity: entity
-          )
-          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
-
-          expect(subject).to eq([entity, other_entity])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
-      end
-
       context '#scope_processing_entities_for_the_user_and_proxy_for_type' do
         before do
           Sipity::SpecSupport.load_database_seeds!(
@@ -171,55 +147,6 @@ module Sipity
           Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
 
           expect(subject).to eq([work])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
-      end
-
-      context '#scope_proxied_objects_from_processing_entities' do
-        let(:user) { User.create!(username: 'user') }
-        subject do
-          test_repository.scope_proxied_objects_from_processing_entities(
-            user: user, proxy_for_type: Sipity::Models::Work, roles: role
-          )
-        end
-        it "will resolve to an array of entities" do
-          work = Models::Work.create!
-          Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
-          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
-          expect(subject).to eq([work])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
-      end
-
-      context '#scope_entities_for_user_and_proxy_for_type_and_roles' do
-        let(:user) { User.create!(username: 'user') }
-        subject do
-          test_repository.scope_entities_for_user_and_proxy_for_type_and_roles(
-            user: user, proxy_for_type: Sipity::Models::Work, roles: role
-          )
-        end
-        it "will resolve to an array of entities" do
-          entity = Models::Processing::Entity.find_or_create_by!(
-            proxy_for_id: 1, proxy_for_type: 'Sipity::Models::Work', strategy: strategy, strategy_state: originating_state
-          )
-          other_entity = Models::Processing::Entity.create!(
-            proxy_for_id: 2, proxy_for_type: 'Sipity::Models::Work', strategy: strategy, strategy_state: originating_state
-          )
-          Models::Processing::Entity.create!(
-            proxy_for_id: 3, proxy_for_type: 'User', strategy: strategy, strategy_state: originating_state
-          )
-          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: user_actor, entity: entity
-          )
-          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
-
-          expect(subject).to eq([entity, other_entity])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
