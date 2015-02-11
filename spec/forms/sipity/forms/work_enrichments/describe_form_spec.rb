@@ -25,6 +25,16 @@ module Sipity
           expect(subject.errors[:work]).to_not be_empty
         end
 
+        context '#abstract' do
+          let(:abstract) { ['Hello Dolly'] }
+          subject { described_class.new(work: work, abstract: abstract) }
+          it 'will return the abstract of the work' do
+            expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
+              with(work: work, key: 'abstract').and_return(abstract)
+            expect(subject.abstract_from_work).to eq 'Hello Dolly'
+          end
+        end
+
         context '#submit' do
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }
