@@ -25,8 +25,8 @@ module Sipity
         { action_name: 'edit', expected_builder: Actions::ResourcefulAction },
         { action_name: 'update', expected_builder: Actions::ResourcefulAction },
         { action_name: 'destroy', expected_builder: Actions::ResourcefulAction },
-        { action_name: 'anything_else', expected_builder: Actions::ProcessingStateChangingAction },
-        { action_name: nil, expected_builder: Actions::ProcessingStateChangingAction }
+        { action_name: 'anything_else', expected_builder: Actions::StateAdvancingAction },
+        { action_name: nil, expected_builder: Actions::StateAdvancingAction }
       ].each_with_index do |example, index|
         context '#builder_for_action_name' do
           it "will return a #{example[:expected_builder]} for action #{example[:action_name]} (Scenario ##{index}" do

@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     module Actions
-      RSpec.describe ProcessingStateChangingAction do
+      RSpec.describe StateAdvancingAction do
         let(:name) { 'hello_world' }
         let(:entity) { double('Entity', to_param: '12') }
         let(:todo_is_done?) { nil }

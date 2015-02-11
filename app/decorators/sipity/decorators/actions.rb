@@ -23,7 +23,7 @@ module Sipity
         if RESOURCEFUL_ACTION_NAMES.include?(action_name.to_s)
           ResourcefulAction
         else
-          ProcessingStateChangingAction
+          StateAdvancingAction
         end
       end
 

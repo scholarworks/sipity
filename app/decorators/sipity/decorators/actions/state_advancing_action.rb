@@ -2,7 +2,7 @@ module Sipity
   module Decorators
     module Actions
       # This action is one that can change the process
-      class ProcessingStateChangingAction
+      class StateAdvancingAction
         def initialize(options = {})
           @name = options.fetch(:name)
           @entity = options.fetch(:entity)
