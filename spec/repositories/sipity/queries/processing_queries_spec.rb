@@ -230,13 +230,13 @@ module Sipity
         end
       end
 
-      context '#scope_permitted_entity_strategy_state_actions' do
-        subject { test_repository.scope_permitted_entity_strategy_state_actions(user: user, entity: entity) }
+      context '#scope_permitted_entity_strategy_actions_for_current_state' do
+        subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
         it "will include permitted strategy_state_actions" do
           user_processing_actor
           entity_specific_responsibility
           action_permission
-          expect(subject).to eq([action_permission.strategy_state_action])
+          expect(subject).to eq([action_permission.strategy_state_action.strategy_action])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
