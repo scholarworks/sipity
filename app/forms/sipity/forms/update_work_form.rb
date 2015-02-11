@@ -29,6 +29,11 @@ module Sipity
         work
       end
 
+      def enrichment_type
+        # TODO: This is magic; Working at removing the needs of enrichment_type
+        'update'
+      end
+
       validates :title, presence: true
       validates :work, presence: true
 

@@ -11,6 +11,7 @@ module Sipity
       it { should respond_to :citation= }
       it { should respond_to :type }
       it { should respond_to :type= }
+      its(:enrichment_type) { should be_a(String) }
 
       it 'will require a citation' do
         subject.valid?

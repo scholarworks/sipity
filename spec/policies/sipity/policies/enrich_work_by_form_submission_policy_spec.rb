@@ -5,7 +5,7 @@ module Sipity
     RSpec.describe EnrichWorkByFormSubmissionPolicy do
       let(:user) { User.new(id: '1') }
       let(:work) { Models::Work.new(id: '2') }
-      let(:entity) { double(work: work) }
+      let(:entity) { double(work: work, enrichment_type: 'attach') }
       let(:work_policy) { double('Work Policy') }
       subject { EnrichWorkByFormSubmissionPolicy.new(user, entity, work_policy: work_policy) }
 

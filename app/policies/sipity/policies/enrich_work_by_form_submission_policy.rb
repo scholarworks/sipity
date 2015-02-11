@@ -22,10 +22,10 @@ module Sipity
       private
 
       def entity=(object)
-        if object.respond_to?(:work) && object.work.present?
+        if object.respond_to?(:work) && object.work.present? && object.respond_to?(:enrichment_type) && object.enrichment_type.present?
           super(object)
         else
-          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #work."
+          fail Exceptions::PolicyEntityExpectationError, "Expected #{object} to have a #work and #enrichment_type."
         end
       end
 
