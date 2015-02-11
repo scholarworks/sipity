@@ -295,8 +295,8 @@ module Sipity
         end
       end
 
-      context '#scope_strategy_state_actions_available_for_current_state' do
-        subject { test_repository.scope_strategy_state_actions_available_for_current_state(entity: entity) }
+      context '#scope_strategy_actions_available_for_current_state' do
+        subject { test_repository.scope_strategy_actions_available_for_current_state(entity: entity) }
         let(:guarded_action) do
           Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
         end
