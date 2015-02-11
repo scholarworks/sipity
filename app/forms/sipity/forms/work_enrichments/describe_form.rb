@@ -5,12 +5,16 @@ module Sipity
       class DescribeForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @abstract = attributes[:abstract]
+          @abstract = attributes[:abstract] || abstract_from_work
         end
 
         attr_accessor :abstract
 
         validates :abstract, presence: true
+
+        def abstract_from_work
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'abstract').first
+        end
 
         private
 
