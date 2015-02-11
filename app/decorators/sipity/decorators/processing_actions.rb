@@ -2,13 +2,14 @@ module Sipity
   module Decorators
     # For the given :user and :entity what are the available actions?
     class ProcessingActions
-      def initialize(user:, entity:, repository: default_repository)
+      def initialize(user:, entity:, repository: default_repository, action_builder: default_action_builder)
         @user = user
         @entity = entity
         @repository = repository
+        @action_builder = action_builder
       end
-      attr_reader :user, :entity, :repository
-      private :repository
+      attr_reader :user, :entity, :repository, :action_builder
+      private :repository, :action_builder
 
       def enrichment_actions
         fetch(Models::Processing::StrategyAction::ENRICHMENT_ACTION)
@@ -33,11 +34,24 @@ module Sipity
       end
 
       def processing_actions
-        repository.scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity)
+        action_ids_that_are_prerequisites = repository.scope_strategy_actions_that_are_prerequisites(entity: entity).pluck(:id)
+        completed_action_ids = repository.scope_statetegy_actions_that_have_occurred(entity: entity).pluck(:id)
+        repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity).map do |action|
+          action_builder.call(
+            action: action,
+            entity: entity,
+            is_completed: completed_action_ids.include?(action.id),
+            is_a_prerequisite: action_ids_that_are_prerequisites.include?(action.id)
+          )
+        end
       end
 
       def default_repository
         QueryRepository.new
+      end
+
+      def default_action_builder
+        ActionDecorator.method(:build)
       end
     end
   end
