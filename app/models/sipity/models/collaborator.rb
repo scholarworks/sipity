@@ -27,6 +27,7 @@ module Sipity
       #   I would prefer forms to represent business logic/validations.
       validates :name, presence: true
       validate :validate_required_information_if_responsible_for_review
+      validates :netid, net_id: true
 
       def validate_required_information_if_responsible_for_review
         return true unless responsible_for_review?

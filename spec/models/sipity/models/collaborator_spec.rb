@@ -43,6 +43,7 @@ module Sipity
           it 'will not have errors on netid and email one (or both) are given' do
             subject.responsible_for_review = true
             subject.email = 'hello@test.com'
+            subject.netid = 'netid'
             expect(subject.valid?).to be_truthy
           end
         end
