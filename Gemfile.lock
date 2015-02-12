@@ -220,6 +220,7 @@ GEM
     multi_json (1.10.1)
     mysql2 (0.3.17)
     nenv (0.1.1)
+    net-ldap (0.11)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
@@ -452,6 +453,7 @@ DEPENDENCIES
   letter_opener
   micromachine!
   mysql2
+  net-ldap
   pry-byebug
   pry-rails
   pry-rescue
