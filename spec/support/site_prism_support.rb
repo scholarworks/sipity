@@ -23,12 +23,33 @@ module SitePrism
 
       def find_named_object(name, itemprop: 'potentialAction')
         object_name_node = find("[itemprop='#{itemprop}'] [itemprop='name'][content='#{name.downcase}']")
-        # Because Capybara does not support an ancestors find method, I need to
-        # dive into the native object (i.e. a Nokogiri node). The end goal is to
-        # find the named object element and thus be able to retrieve any of the
-        # underlying attributes.
-        parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
-        find(parent_ng_node.css_path)
+        # Because Capybara does not support an ancestors/parents find method, I
+        # need to dive into the native object.
+
+        case object_name_node.native
+        when Nokogiri::XML::Element
+          # Because Capybara does not support an ancestors find method, I need
+          # to dive into the native object (i.e. a Nokogiri node). The end goal
+          # is to find the named object element and thus be able to retrieve any
+          # of the underlying attributes.
+          parent_ng_node = object_name_node.native.ancestors('[itemscope]').first
+          find(parent_ng_node.css_path)
+        when Capybara::Poltergeist::Node
+          # This is a Poltergeist node. The end goal is to find the named object
+          # element and thus be able to retrieve any of the underlying
+          # attributes.
+          parent_native_node = object_name_node.native.parents.find('[itemscope]').first
+          # Smooshing this back into a Capybara::Node, because we have a
+          # Poltergeist node.
+          Capybara::Node::Element.new(
+            object_name_node.session,
+            parent_native_node,
+            parent_native_node.parents.first,
+            self
+          )
+        else
+          fail "Unexpected #native value for #{object_name_node}"
+        end
       end
     end
 

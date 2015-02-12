@@ -38,6 +38,7 @@ MethodLength:
     - 'app/repositories/sipity/queries/enrichment_queries.rb'
     - 'app/repositories/sipity/queries/processing_queries.rb'
     - 'app/state_machines/sipity/state_machines/state_diagram.rb'
+    - 'spec/support/site_prism_support.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
@@ -198,6 +199,7 @@ Metrics/PerceivedComplexity:
      - app/conversions/**/*.rb
      - app/state_machines/sipity/state_machines/state_diagram.rb
      - app/repositories/sipity/queries/processing_queries.rb
+     - spec/support/site_prism_support.rb
 
 Metrics/AbcSize:
   Enabled: true
