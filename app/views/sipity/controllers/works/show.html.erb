@@ -36,7 +36,7 @@
                   <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
                 </li>
               <% end %>
-            <ul>
+            </ul>
           </div>
         <% end %>
       </div>
@@ -80,11 +80,11 @@
       <div class="panel-body">
         <dl class="work attribute-listing">
           <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-          <dd class="value title"><%= model.title %></dt>
+          <dd class="value title"><%= model.title %></dd>
           <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
-          <dd class="value work-type"><%= model.work_type %></dt>
+          <dd class="value work-type"><%= model.work_type %></dd>
           <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
+          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dd>
           <% if model.collaborators.any? %>
             <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
             <dd class="value collaborators">
