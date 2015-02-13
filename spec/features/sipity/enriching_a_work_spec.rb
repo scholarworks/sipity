@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Enriching a Work', :devise do
+feature 'Enriching a Work', :devise, :feature do
   include Warden::Test::Helpers
   before do
     Sipity::SpecSupport.load_database_seeds!

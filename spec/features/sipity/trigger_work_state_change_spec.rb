@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature "Trigger Work State Change", :devise do
+feature "Trigger Work State Change", :devise, :feature do
   include Warden::Test::Helpers
   before do
     Sipity::SpecSupport.load_database_seeds!(seeds_path: 'spec/fixtures/seeds/trigger_work_state_change.rb')
