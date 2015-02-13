@@ -26,7 +26,7 @@
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     <% end %>
                   </span>
-                  <meta itemprop="name" content="todo><%= set %>><%= action.name %>">
+                  <meta itemprop="name" content="todo/<%= set %>/<%= action.name %>">
                   <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
                     <% button_class = is_done ? 'btn-default' : 'btn-primary' %>
                     <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
@@ -36,7 +36,7 @@
                   <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
                 </li>
               <% end %>
-            <ul>
+            </ul>
           </div>
         <% end %>
       </div>
@@ -47,7 +47,7 @@
           <% %w(doi citation).each do |recommendation_name| %>
             <% model.with_recommendation(recommendation_name) do |recommendation| %>
               <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item">
-                <meta itemprop="name" content="recommendation><%= recommendation_name %>">
+                <meta itemprop="name" content="recommendation/<%= recommendation_name %>">
                 <span class="icon-wrapper-24">
                   <% if recommendation.done? %>
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
@@ -80,11 +80,11 @@
       <div class="panel-body">
         <dl class="work attribute-listing">
           <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-          <dd class="value title"><%= model.title %></dt>
+          <dd class="value title"><%= model.title %></dd>
           <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
-          <dd class="value work-type"><%= model.work_type %></dt>
+          <dd class="value work-type"><%= model.work_type %></dd>
           <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dt>
+          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dd>
           <% if model.collaborators.any? %>
             <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
             <dd class="value collaborators">
@@ -118,7 +118,7 @@
   <div class="row work-actions">
     <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
     <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
-      <meta itemprop="name" content="work>processing_state" />
+      <meta itemprop="name" content="work/processing_state" />
       <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
       the underlying tests will need to change to find[:content] instead of
       find.text %>
@@ -129,7 +129,7 @@
       <ul class="action-listing">
         <% model.available_linked_actions(user: current_user, action_name: action_name).each do |action| %>
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
-            <meta itemprop="name" content="event_trigger><%= action.name %>">
+            <meta itemprop="name" content="event_trigger/<%= action.name %>">
             <% if action.available? %>
               <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
                 <a itemprop="url" href="<%= action.path %>">
