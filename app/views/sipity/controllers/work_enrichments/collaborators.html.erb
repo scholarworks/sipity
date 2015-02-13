@@ -10,6 +10,6 @@
       <%= collaborator_form.input :email, as: :email %>
       <%= collaborator_form.input :responsible_for_review, as: :select %>
     <% end %>
-    <%= f.submit nil, name: "form>#{model.enrichment_type}>submit" %>
+    <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
   <% end %>
 <% end %>

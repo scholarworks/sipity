@@ -29,12 +29,12 @@ feature "Trigger Work State Change", :devise do
       on('work_page') do |the_page|
         expect(the_page.processing_state).to eq('new')
         # Because there are no required steps; I can continue
-        expect { the_page.find_named_object('event_trigger>submit_for_review').find('[itemprop="url"]') }.
+        expect { the_page.find_named_object('event_trigger/submit_for_review').find('[itemprop="url"]') }.
           to raise_error(Capybara::ElementNotFound)
       end
 
       on('work_page') do |the_page|
-        the_page.click_todo_item('todo>required>describe')
+        the_page.click_todo_item('todo/required/describe')
       end
 
       on('describe_page') do |the_page|
@@ -46,17 +46,17 @@ feature "Trigger Work State Change", :devise do
       on('work_page') do |the_page|
         expect(the_page.processing_state).to eq('new')
         # Because there are no required steps; I can continue
-        the_page.take_named_action('event_trigger>submit_for_review')
+        the_page.take_named_action('event_trigger/submit_for_review')
       end
 
       on('event_trigger_page') do |the_page|
-        the_page.take_named_action('confirm>event_trigger>submit_for_review')
+        the_page.take_named_action('confirm/event_trigger/submit_for_review')
       end
 
       on('work_page') do |the_page|
         # The state was advanced
         expect(the_page.processing_state).to eq('under_review')
-        expect { the_page.find_named_object('event_trigger>submit_for_review') }.
+        expect { the_page.find_named_object('event_trigger/submit_for_review') }.
           to raise_error(Capybara::ElementNotFound)
       end
     end

@@ -90,11 +90,11 @@ module SitePrism
       end
 
       def click_recommendation(recommendation)
-        take_action_on(find_named_object("recommendation>#{recommendation.downcase}"))
+        take_action_on(find_named_object("recommendation/#{recommendation.downcase}"))
       end
 
       def click_edit
-        take_action_on(find_named_object('event_trigger>edit'))
+        take_action_on(find_named_object('event_trigger/edit'))
       end
 
       def click_todo_item(name)
@@ -106,7 +106,7 @@ module SitePrism
       end
 
       def processing_state
-        find_named_object('work>processing_state', itemprop: 'hasPart').find("[itemprop='description']").text
+        find_named_object('work/processing_state', itemprop: 'hasPart').find("[itemprop='description']").text
       end
     end
 
@@ -117,7 +117,7 @@ module SitePrism
     class DescribePage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
       element :input_abstract, "form [name='#{PARAM_NAME_CONTAINER}[abstract]']"
-      element :submit_button, "form [name='form>describe>submit'][type='submit']"
+      element :submit_button, "form [name='form/describe/submit'][type='submit']"
 
       def fill_in(predicate, with: nil)
         find("form [name='#{PARAM_NAME_CONTAINER}[#{predicate}]']").set(with)
@@ -126,7 +126,7 @@ module SitePrism
 
     class CollaboratorsPage < SitePrism::Page
       PARAM_NAME_CONTAINER = 'work'.freeze
-      element :submit_button, "form [name='form>collaborators>submit'][type='submit']"
+      element :submit_button, "form [name='form/collaborators/submit'][type='submit']"
     end
 
     class AttachPage < SitePrism::Page
