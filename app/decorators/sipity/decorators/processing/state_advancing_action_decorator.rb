@@ -1,8 +1,8 @@
 module Sipity
   module Decorators
     module Processing
+      # An action that will advance the state of a given entity.
       class StateAdvancingActionDecorator < BaseDecorator
-
         def initialize(options = {})
           super
           @repository = options.fetch(:repository) { default_repository }
@@ -32,7 +32,6 @@ module Sipity
             ACTION_UNAVAILABLE
           end
         end
-
       end
     end
   end

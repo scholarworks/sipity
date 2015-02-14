@@ -35,17 +35,21 @@ module Sipity
       end
 
       def processing_actions
-        action_ids_that_are_prerequisites = repository.scope_strategy_actions_that_are_prerequisites(entity: entity).pluck(:id)
-        completed_action_ids = repository.scope_statetegy_actions_that_have_occurred(entity: entity).pluck(:id)
         repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity).map do |action|
           action_builder.call(
-            action: action,
-            user: user,
-            entity: entity,
+            action: action, user: user, entity: entity,
             is_completed: completed_action_ids.include?(action.id),
             is_a_prerequisite: action_ids_that_are_prerequisites.include?(action.id)
           )
         end
+      end
+
+      def action_ids_that_are_prerequisites
+        @action_ids_that_are_prerequisites ||= repository.scope_strategy_actions_that_are_prerequisites(entity: entity).pluck(:id)
+      end
+
+      def completed_action_ids
+        @completed_action_ids ||= repository.scope_statetegy_actions_that_have_occurred(entity: entity).pluck(:id)
       end
 
       def default_repository

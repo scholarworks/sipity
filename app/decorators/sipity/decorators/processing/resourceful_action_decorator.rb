@@ -2,6 +2,8 @@ require_relative '../actions'
 module Sipity
   module Decorators
     module Processing
+      # An action that maps to the default Resourceful actions of a Rails model.
+      # Its an overloaded word.
       class ResourcefulActionDecorator < BaseDecorator
         def path
           case name.to_s

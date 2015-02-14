@@ -1,6 +1,8 @@
 module Sipity
   module Decorators
     module Processing
+      # Responsible for helping with the rendering of an action, and its
+      # relative availability.
       class BaseDecorator
         ACTION_AVAILABLE = 'available'
         ACTION_UNAVAILABLE = 'unavailable'
