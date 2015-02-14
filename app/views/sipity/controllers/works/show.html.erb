@@ -76,6 +76,26 @@
     <article class="panel panel-default work-description">
       <div class="panel-heading">
         <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
+        <ul class="action-listing">
+          <%# TODO: Skip the current action if it has the same name %>
+          <% model.resourceful_actions(user: current_user).each do |action| %>
+            <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+              <meta itemprop="name" content="event_trigger/<%= action.name %>">
+              <% if action.available? %>
+                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                  <a itemprop="url" href="<%= action.path %>">
+                    <span itemprop="name" class="btn btn-default"><%= action.name %></span>
+                  </a>
+                </div>
+              <% else %>
+                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                  <span itemprop="name" class="btn btn-default disabled"><%= action.name %></span>
+                </div>
+              <% end %>
+              <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
+            </li>
+          <% end %>
+        </ul>
       </div>
       <div class="panel-body">
         <dl class="work attribute-listing">
@@ -127,7 +147,7 @@
         <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
       </p>
       <ul class="action-listing">
-        <% model.available_linked_actions(user: current_user, action_name: action_name).each do |action| %>
+        <% model.state_advancing_actions(user: current_user).each do |action| %>
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
             <meta itemprop="name" content="event_trigger/<%= action.name %>">
             <% if action.available? %>

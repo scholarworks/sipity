@@ -49,7 +49,19 @@ module Sipity
         end
       end
 
+      def state_advancing_actions(user:)
+        processing_actions(user: user).state_advancing_actions
+      end
+
+      def resourceful_actions(user:)
+        processing_actions(user: user).resourceful_actions
+      end
+
       private
+
+      def processing_actions(user:)
+        @processing_actions ||= ProcessingActions.new(user: user, entity: self)
+      end
 
       def recommendation_for(name)
         Recommendations.const_get("#{name.classify}Recommendation").new(work: self)

@@ -30,7 +30,8 @@ module Sipity
           mem[action.action_type] ||= []
           mem[action.action_type] << action
           mem
-        end.fetch(key, [])
+        end
+        @data_store.fetch(key, [])
       end
 
       def processing_actions
@@ -39,6 +40,7 @@ module Sipity
         repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity).map do |action|
           action_builder.call(
             action: action,
+            user: user,
             entity: entity,
             is_completed: completed_action_ids.include?(action.id),
             is_a_prerequisite: action_ids_that_are_prerequisites.include?(action.id)

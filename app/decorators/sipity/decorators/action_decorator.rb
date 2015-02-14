@@ -3,7 +3,7 @@ module Sipity
     module ActionDecorator
       module_function
       def build(options = {})
-        aciton = options.fetch(:action)
+        action = options.fetch(:action)
         decorator_class = "Sipity::Decorators::Processing::#{action.action_type.classify}Decorator".constantize
         decorator_class.new(options)
       end
