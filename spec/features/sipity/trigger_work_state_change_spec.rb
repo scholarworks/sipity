@@ -34,7 +34,7 @@ feature "Trigger Work State Change", :devise, :feature do
       end
 
       on('work_page') do |the_page|
-        the_page.click_todo_item('todo/required/describe')
+        the_page.click_todo_item('enrichment/required/describe')
       end
 
       on('describe_page') do |the_page|

@@ -1,4 +1,3 @@
-require_relative '../actions'
 module Sipity
   module Decorators
     module Processing

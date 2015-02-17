@@ -57,6 +57,19 @@ module Sipity
         processing_actions(user: user).resourceful_actions
       end
 
+      def enrichment_actions(user:)
+        processing_actions(user: user).enrichment_actions.each_with_object({}) do |action, mem|
+          mem['required'] ||= []
+          mem['optional'] ||= []
+          if action.is_a_prerequisite?
+            mem['required'] << action
+          else
+            mem['optional'] << action
+          end
+          mem
+        end
+      end
+
       private
 
       def processing_actions(user:)

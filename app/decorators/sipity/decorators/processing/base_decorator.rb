@@ -15,6 +15,7 @@ module Sipity
         attr_reader :action, :entity
 
         delegate :name, :action_type, to: :action
+        alias_method :label, :name
 
         # This action, if it is rendered, is always available.
         def availability_state
