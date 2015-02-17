@@ -23,13 +23,6 @@ module Sipity
         ).empty?
       end
 
-      def deprecated_are_all_of_the_required_todo_items_done_for_work?(work:, work_processing_state: work.processing_state)
-        # TODO: MAGIC STRINGS HERE!
-        find_current_todo_item_states_for(
-          entity: work, work_processing_state: work_processing_state, enrichment_group: 'required'
-        ).all? { |config_for_item_state| config_for_item_state.enrichment_state == 'done' }
-      end
-
       # Find all of the Possible Todo List Items for the given Entity
       # For each of the Possible Todo List Items, if there is a enrichment_state
       #   for that Entity's Todo Item, report that; Otherwise it is NULL.
@@ -66,23 +59,6 @@ module Sipity
       end
       module_function :find_current_todo_item_states_for
       public :find_current_todo_item_states_for
-
-      def deprecated_todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
-        # TODO: Can I tease apart the collaborator? I'd like to send a builder object
-        # as a parameter. It would ease the entaglement that is happening here.
-        Decorators::TodoList.new(entity: work) do |list|
-          find_current_todo_item_states_for(entity: work, work_processing_state: processing_state).each do |todo_item|
-            # TODO: LOW PRIORITY: The todo_item is a composite todo item based on the above query.
-            list.add_to(
-              set: todo_item.enrichment_group,
-              name: todo_item.enrichment_type,
-              state: todo_item.enrichment_state || Models::TodoItemState::ENRICHMENT_STATE_INCOMPLETE
-            )
-          end
-        end
-      end
-      module_function :deprecated_todo_list_for_current_processing_state_of_work
-      public :deprecated_todo_list_for_current_processing_state_of_work
     end
   end
 end
