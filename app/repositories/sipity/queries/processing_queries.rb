@@ -50,28 +50,6 @@ module Sipity
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
       # * Actions that are permitted to the current user
-      #
-      # @param user [User]
-      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
-      def scope_permitted_entity_strategy_actions(user:, entity:)
-        strategy_actions = Models::Processing::StrategyAction
-        strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
-
-        strategy_actions.where(
-          strategy_actions.arel_table[:id].in(
-            strategy_state_actions_scope.arel_table.project(
-              strategy_state_actions_scope.arel_table[:strategy_action_id]
-            ).where(strategy_state_actions_scope.constraints.reduce)
-          )
-        )
-      end
-
-      # @api public
-      #
-      # An ActiveRecord::Relation scope that meets the following criteria:
-      #
-      # * Actions that are permitted to the current user
       # * Actions that are available for the entity's current state.
       #
       # @param user [User]
