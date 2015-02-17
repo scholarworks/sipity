@@ -53,7 +53,6 @@ group :development do
   gem 'terminal-notifier'
   gem 'terminal-notifier-guard', '~> 1.6.4'
   gem 'pry-rails'
-  gem 'pry-rescue'
   gem 'pry-byebug'
   gem 'letter_opener'
 end
@@ -65,11 +64,15 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rspec-its'
   gem 'coveralls', require: false
+  gem 'pry-rescue', require: false
+  gem 'pry-stack_explorer', require: false
 end
 
 group :test do
   gem 'rspec-given'
   gem 'capybara'
+  gem "capybara-accessible", require: false
+  gem "poltergeist"
   gem 'database_cleaner'
   gem 'launchy'
   gem 'site_prism'
