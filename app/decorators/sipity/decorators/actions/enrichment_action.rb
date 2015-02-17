@@ -24,10 +24,6 @@ module Sipity
           true
         end
 
-        def path
-          view_context.enrich_work_path(entity, name)
-        end
-
         attr_reader :view_context
         private :view_context
 
