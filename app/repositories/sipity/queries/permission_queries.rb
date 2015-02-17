@@ -15,10 +15,6 @@ module Sipity
         scope_users_for_entity_and_roles(entity: entity, roles: acting_as).
           where(id: user.id).any?
       end
-
-      def available_event_triggers_for(user:, entity:)
-        scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).pluck(:name)
-      end
     end
   end
 end
