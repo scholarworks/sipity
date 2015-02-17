@@ -10,39 +10,6 @@ module Sipity
         expect(subject.to_s).to eq(work.title)
       end
 
-      context '#each_todo_item_set' do
-        # TODO: Because I'm now driving from a persistence layer; This will require
-        # reworking.
-        xit 'will be an enumerable' do
-          expect { |b| subject.each_todo_item_set(&b) }.to yield_with_args('required', Set)
-        end
-      end
-
-      context '#available_linked_actions' do
-        context 'for a null user' do
-          it 'will be an empty array' do
-            expect(subject.available_linked_actions(user: nil, action_name: 'show')).to be_empty
-          end
-        end
-        context 'for a current_user' do
-          let(:user) { double('User') }
-          it 'will return an enumerable in which all elements responds to render' do
-            action_set_builder = double('Action Set Builder', call: :action_set_builder_called)
-            expect(repository).to receive(:available_event_triggers_for).and_return(['show', 'submit_for_review'])
-            expect(subject.available_linked_actions(user: user, action_name: 'show', action_set_builder: action_set_builder)).
-              to eq(action_set_builder.call)
-          end
-        end
-      end
-
-      context '#each_todo_item_set' do
-        it 'will yield todo list name and items' do
-          expect(repository).to receive(:todo_list_for_current_processing_state_of_work).
-            and_return(double(sets: { key: ['value'], empty: [] }))
-          expect { |b| subject.each_todo_item_set(&b) }.to yield_with_args(:key, ['value'])
-        end
-      end
-
       context '#with_form_panel' do
         it 'wrap the results of the block inside a panel' do
           rendered = subject.with_form_panel('attributes') { 'hello' }
@@ -76,11 +43,9 @@ module Sipity
         expect(subject.human_attribute_name(:title)).to eq('Title')
       end
 
-      context '.with_recommendation' do
-        it 'will yield a recommendation object based on input' do
-          expect { |b| subject.with_recommendation('doi', &b) }.to yield_with_args(Recommendations::DoiRecommendation)
-        end
-      end
+      xit '#state_advancing_actions is missing'
+      xit '#resourceful_actions is missing'
+      xit '#enrichment_actions is missing'
     end
   end
 end

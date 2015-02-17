@@ -67,29 +67,6 @@ module Sipity
       module_function :find_current_todo_item_states_for
       public :find_current_todo_item_states_for
 
-      def todo_list_for_current_processing_state_of_work(work:)
-        # TODO: Can I tease apart the collaborator? I'd like to send a builder object
-        # as a parameter. It would ease the entaglement that is happening here.
-        Decorators::TodoList.new(entity: work) do |list|
-          # TODO: Splice these into a single query; Right now preserving outward behavior
-          actions_that_are_prerequisites = scope_strategy_actions_that_are_prerequisites(entity: work).pluck(:id)
-          completed_actions = scope_statetegy_actions_that_have_occurred(entity: work).pluck(:id)
-          scope_strategy_actions_for_current_state(entity: work).where(
-            action_type: Models::Processing::StrategyAction::ENRICHMENT_ACTION
-          ).each do |action|
-            # TODO: Work on the proper data structure for an entity action. It
-            # will be related to the StrategyAction, but has concerns such as the following:
-            list.add_to(
-              set: actions_that_are_prerequisites.include?(action.id) ? 'required' : 'optional',
-              name: action.name,
-              state: completed_actions.include?(action.id) ? 'done' : Models::TodoItemState::ENRICHMENT_STATE_INCOMPLETE
-            )
-          end
-        end
-      end
-      module_function :todo_list_for_current_processing_state_of_work
-      public :todo_list_for_current_processing_state_of_work
-
       def deprecated_todo_list_for_current_processing_state_of_work(work:, processing_state: work.processing_state)
         # TODO: Can I tease apart the collaborator? I'd like to send a builder object
         # as a parameter. It would ease the entaglement that is happening here.
