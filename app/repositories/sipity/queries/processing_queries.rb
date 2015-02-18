@@ -18,9 +18,19 @@ module Sipity
     #   public methods because they have been tested in isolation and are used
     #   to help compose the `@api public` methods.
     module ProcessingQueries
-
+      # @api public
+      #
+      # Is the user authorized to take the processing action on the given
+      # entity?
+      #
+      # @param user [User]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @param action an object that can be converted into a Sipity::Models::Processing::StrategyAction#name
+      # @return Boolean
       def authorized_for_processing?(user:, entity:, action:)
-
+        action_name = Conversions::ConvertToProcessingActionName.call(action)
+        scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).
+          where(Models::Processing::StrategyAction.arel_table[:name].eq(action_name)).count > 0
       end
 
       # @api public
