@@ -325,6 +325,13 @@ module Sipity
         end
       end
 
+      context '#authorized_for_processing?' do
+        it 'will return a boolean based on underlying interactions' do
+          expect(test_repository).to receive(:scope_permitted_strategy_actions_available_for_current_state).and_call_original
+          expect(test_repository.authorized_for_processing?(user: user, entity: entity, action: :show)).to eq(false)
+        end
+      end
+
       context '#scope_permitted_strategy_actions_available_for_current_state' do
         subject { test_repository.scope_permitted_strategy_actions_available_for_current_state(entity: entity, user: user) }
         let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: 'with_prereq') }

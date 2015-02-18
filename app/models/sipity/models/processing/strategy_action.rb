@@ -44,6 +44,11 @@ module Sipity
 
         RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy).freeze
 
+        include Conversions::ConvertToProcessingActionName
+        def name=(value)
+          super(convert_to_processing_action_name(value))
+        end
+
         private
 
         def set_action_type
