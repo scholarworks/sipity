@@ -7,7 +7,7 @@ module Sipity
       def assign_collaborators_to(work:, collaborators:)
         Array.wrap(collaborators).each do |collaborator|
           collaborator.work_id = work.id
-          collaborators.save!
+          collaborator.save!
           next unless collaborator.responsible_for_review?
           create_sipity_user_from(netid: collaborator.netid) do |user|
             PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Permission::ADVISOR)
