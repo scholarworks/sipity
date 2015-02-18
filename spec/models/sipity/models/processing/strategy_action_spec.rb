@@ -19,6 +19,12 @@ module Sipity
           expect { subject.action_type = '__incorrect_type__' }.to raise_error(ArgumentError)
         end
 
+        context '#name' do
+          it 'will convert the action name on write' do
+            expect(described_class.new(name: :create?).name).to eq('new')
+          end
+        end
+
         context 'set action type' do
           it 'will set the action type if none is specified' do
             expect(subject.action_type).to be_present
