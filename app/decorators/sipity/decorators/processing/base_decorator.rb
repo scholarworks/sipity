@@ -19,7 +19,7 @@ module Sipity
 
         # This action, if it is rendered, is always available.
         def availability_state
-          'available'
+          ACTION_AVAILABLE
         end
 
         def available?
