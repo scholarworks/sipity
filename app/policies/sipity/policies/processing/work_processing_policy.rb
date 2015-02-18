@@ -29,6 +29,7 @@ module Sipity
 
         private
 
+        # Means of preserving interface defined by Sipity::Policies::WorkPolicy
         def method_missing(method_name, *)
           authorize?(method_name)
         end
