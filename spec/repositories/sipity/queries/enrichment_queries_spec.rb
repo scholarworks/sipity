@@ -45,20 +45,6 @@ module Sipity
           it { should respond_to :valid? }
         end
       end
-
-      context "#find_current_todo_item_states_for" do
-        before { todo_list_configurator.call }
-        let(:work1) { Models::Work.new(id: 1, processing_state: 'new', work_type: 'etd') }
-        let(:work2) { Models::Work.new(id: 2, processing_state: 'new', work_type: 'etd') }
-        it "will build a todo list from all the config items with the work's todo item's enrichment_state" do
-          persist_todo_item_state.call(work: work1, enrichment_state: 'done', enrichment_type: 'mogrify')
-          persist_todo_item_state.call(work: work1, enrichment_state: 'done', enrichment_type: 'attach')
-          persist_todo_item_state.call(work: work2, enrichment_state: 'done', enrichment_type: 'describe')
-          # Can't use size because the finder does not quite work as a scope
-          expect(test_repository.find_current_todo_item_states_for(entity: work1).size).
-            to eq(3)
-        end
-      end
     end
   end
 end

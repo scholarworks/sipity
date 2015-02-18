@@ -22,43 +22,6 @@ module Sipity
           scope_strategy_actions_without_prerequisites(entity: work).pluck(:id)
         ).empty?
       end
-
-      # Find all of the Possible Todo List Items for the given Entity
-      # For each of the Possible Todo List Items, if there is a enrichment_state
-      #   for that Entity's Todo Item, report that; Otherwise it is NULL.
-      #
-      # See http://www.slideshare.net/camerondutro/advanced-arel-when-activerecord-just-isnt-enough
-      #   Slide #150
-      def find_current_todo_item_states_for(options = {})
-        entity = options.fetch(:entity)
-        work_type = options.fetch(:work_type) { entity.work_type }
-        enrichment_group = options.fetch(:enrichment_group) { nil }
-        work_processing_state = options.fetch(:work_processing_state) { entity.processing_state }
-        states = Models::TodoItemState.arel_table
-        configs = Models::WorkTypeTodoListConfig.arel_table
-        entity_id = entity.id
-        entity_type = Conversions::ConvertToPolymorphicType.call(entity)
-
-        state_configs = configs.join(states, Arel::Nodes::OuterJoin).on(
-          states[:enrichment_type].eq(configs[:enrichment_type]).
-          and(states[:entity_processing_state].eq(configs[:work_processing_state])).
-          and(states[:entity_id].eq(entity_id)).
-          and(states[:entity_type].eq(entity_type))
-        ).join_sources
-
-        base_where_clause = configs[:work_processing_state].eq(work_processing_state).and(configs[:work_type].eq(work_type))
-
-        if enrichment_group
-          base_where_clause = base_where_clause.and(configs[:enrichment_group].eq(enrichment_group))
-        end
-
-        Models::WorkTypeTodoListConfig.
-          select(configs[:enrichment_group], configs[:enrichment_type], states[:enrichment_state], configs[:work_processing_state]).
-          where(base_where_clause).
-          joins(state_configs)
-      end
-      module_function :find_current_todo_item_states_for
-      public :find_current_todo_item_states_for
     end
   end
 end
