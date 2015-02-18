@@ -21,6 +21,7 @@ module Sipity
       its(:identifier_key) { should be_a(String) }
       its(:assign_a_doi_form) { should be_a AssignADoiForm }
       its(:request_a_doi_form) { should be_a RequestADoiForm }
+      its(:enrichment_type) { should be_a String }
     end
   end
 end

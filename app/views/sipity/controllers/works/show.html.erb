@@ -13,23 +13,21 @@
       <%= content_tag :h2, t('sipity/works.action/show.label.todo_section'), class: 'task-heading' %>
 
       <div class="todo">
-        <% model.each_todo_item_set do |set, actions| %>
+        <% model.enrichment_actions(user: current_user).each do |set, actions| %>
         <%# TODO: the set should be an object not a string; That object should have I18n %>
           <div class="item-set">
             <h3 class="set-title"><%= set.titleize %></h3>
             <ul class="item-list">
               <% actions.each do |action| %>
-                <% is_done = (action.state == 'done') %>
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
                   <span class="icon-wrapper-24">
-                    <% if is_done %>
+                    <% if action.is_complete? %>
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     <% end %>
                   </span>
-                  <meta itemprop="name" content="todo/<%= set %>/<%= action.name %>">
+                  <meta itemprop="name" content="enrichment/<%= set %>/<%= action.name %>">
                   <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                    <% button_class = is_done ? 'btn-default' : 'btn-primary' %>
-                    <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                    <a itemprop="url" href="<%= action.path %>" class="btn <%= action.button_class %>">
                       <span itemprop="name"><%= action.label %></span>
                     </a>
                   </span>
@@ -40,35 +38,6 @@
           </div>
         <% end %>
       </div>
-
-      <div class="recommendations item-set">
-        <%= content_tag :h3, t('sipity/works.action/show.label.recommended_actions'), class: 'set-title' %>
-        <ul class="item-list">
-          <% %w(doi citation).each do |recommendation_name| %>
-            <% model.with_recommendation(recommendation_name) do |recommendation| %>
-              <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item">
-                <meta itemprop="name" content="recommendation/<%= recommendation_name %>">
-                <span class="icon-wrapper-24">
-                  <% if recommendation.done? %>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                  <% end %>
-                </span>
-                <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                  <% button_class = recommendation.done? ? 'btn-default' : 'btn-info' %>
-                  <a itemprop="url" href="<%= recommendation.path_to_recommendation %>" class="btn <%= button_class %>">
-                    <span itemprop="name"><%= recommendation.human_action_label %></span>
-                  </a>
-                </span>
-                <% if recommendation.pending? %>
-                  <span class="status" itemprop="actionStatus">
-                    <%= recommendation.human_state %>
-                  </span>
-                <% end %>
-              </li>
-            <% end %>
-          <% end %>
-        </ul>
-      </div>
     </aside>
 
 
@@ -76,6 +45,26 @@
     <article class="panel panel-default work-description">
       <div class="panel-heading">
         <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
+        <ul class="action-listing">
+          <%# TODO: Skip the current action if it has the same name %>
+          <% model.resourceful_actions(user: current_user).each do |action| %>
+            <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+              <meta itemprop="name" content="event_trigger/<%= action.name %>">
+              <% if action.available? %>
+                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                  <a itemprop="url" href="<%= action.path %>">
+                    <span itemprop="name" class="btn btn-default"><%= action.name %></span>
+                  </a>
+                </div>
+              <% else %>
+                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                  <span itemprop="name" class="btn btn-default disabled"><%= action.name %></span>
+                </div>
+              <% end %>
+              <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
+            </li>
+          <% end %>
+        </ul>
       </div>
       <div class="panel-body">
         <dl class="work attribute-listing">
@@ -127,7 +116,7 @@
         <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
       </p>
       <ul class="action-listing">
-        <% model.available_linked_actions(user: current_user, action_name: action_name).each do |action| %>
+        <% model.state_advancing_actions(user: current_user).each do |action| %>
           <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
             <meta itemprop="name" content="event_trigger/<%= action.name %>">
             <% if action.available? %>

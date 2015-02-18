@@ -28,13 +28,13 @@ feature "Trigger Work State Change", :devise, :feature do
 
       on('work_page') do |the_page|
         expect(the_page.processing_state).to eq('new')
-        # Because there are no required steps; I can continue
+        # Because there are required steps; I cannot continue
         expect { the_page.find_named_object('event_trigger/submit_for_review').find('[itemprop="url"]') }.
           to raise_error(Capybara::ElementNotFound)
       end
 
       on('work_page') do |the_page|
-        the_page.click_todo_item('todo/required/describe')
+        the_page.click_todo_item('enrichment/required/describe')
       end
 
       on('describe_page') do |the_page|

@@ -8,8 +8,10 @@ module Sipity
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)
         self.identifier = attributes.fetch(:identifier, nil)
+        @enrichment_type = attributes.fetch(:enrichment_type, default_enrichment_type)
       end
 
+      attr_reader :enrichment_type
       attr_accessor :work, :identifier
       private(:work=) # Adding parenthesis because Beautify ruby was going crazy
 
@@ -30,6 +32,12 @@ module Sipity
       # this method. But for now it is here based on a view implementation.
       def request_a_doi_form
         RequestADoiForm.new(work: work)
+      end
+
+      private
+
+      def default_enrichment_type
+        'assign_a_doi'
       end
     end
   end

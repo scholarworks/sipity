@@ -97,19 +97,21 @@ en:
       label: "Further <b>describe</b> your %{entity_type}"
     collaborators:
       label: "Itentify your <b>collaborators</b> on this %{entity_type}"
+    doi:
+      label: 'Assign a <b>DOI</b>'
+    citation:
+      label: 'Create a <b>citation</b>'
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
       doi_not_assigned: 'DOI Not Yet Assigned'
       doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
     name: 'DOI'
-    action_label: 'Assign a <b>DOI</b>'
   sipity/decorators/recommendations/citation_recommendation:
     state:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
-    action_label: 'Create a <b>citation</b>'
   simple_form:
     labels:
       doi:

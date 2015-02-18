@@ -120,7 +120,7 @@ module SitePrism
       end
 
       def click_recommendation(recommendation)
-        take_action_on(find_named_object("recommendation/#{recommendation.downcase}"))
+        take_action_on(find_named_object("enrichment/optional/#{recommendation.downcase}"))
       end
 
       def click_edit

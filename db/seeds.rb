@@ -76,6 +76,8 @@ ActiveRecord::Base.transaction do
       ['describe', nil],
       ['attach', nil],
       ['collaborators', nil],
+      ['doi', nil],
+      ['citation', nil],
       ['submit_for_review', 'under_advisor_review'],
       ['advisor_signs_off', 'under_grad_school_review'],
       ['advisor_requests_changes', 'advisor_changes_requested'],
@@ -83,10 +85,10 @@ ActiveRecord::Base.transaction do
       ['approve_for_ingest', 'ready_for_ingest'],
       ['ingest', 'ingesting'],
       ['ingest_completed', 'done']
-    ].each do |action_name, strategy_state_name, action_type|
+    ].each do |action_name, strategy_state_name|
       resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
       etd_actions[action_name] = etd_strategy.strategy_actions.find_or_initialize_by(
-        name: action_name, resulting_strategy_state: resulting_state, action_type: action_type
+        name: action_name, resulting_strategy_state: resulting_state
       )
     end
 
@@ -109,29 +111,36 @@ ActiveRecord::Base.transaction do
       ['new', 'attach', ['creating_user', 'etd_reviewer']],
       ['new', 'collaborators', ['creating_user', 'etd_reviewer']],
       ['new', 'destroy', ['creating_user', 'etd_reviewer']],
+      ['new', 'doi', ['creating_user', 'etd_reviewer']],
+      ['new', 'citation', ['creating_user', 'etd_reviewer']],
       ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-      ['under_advisor_review', 'edit', ['etd_reviewer']],
+      ['under_advisor_review', 'doi', ['etd_reviewer']],
+      ['under_advisor_review', 'citation', ['etd_reviewer']],
       ['under_advisor_review', 'destroy', ['etd_reviewer']],
       ['under_advisor_review', 'advisor_signs_off', ['etd_reviewer', 'advisor']],
       ['under_advisor_review', 'advisor_requests_changes', ['etd_reviewer', 'advisor']],
-      ['advisor_changes_requested', 'submit_for_review', ['creating_user']],
+      ['advisor_changes_requested', 'doi', ['etd_reviewer', 'creating_user']],
+      ['advisor_changes_requested', 'citation', ['creating_user']],
       ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['advisor_changes_requested', 'edit', ['creating_user', 'etd_reviewer']],
       ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],
+      ['under_grad_school_review', 'doi', ['etd_reviewer']],
+      ['under_grad_school_review', 'citation', ['etd_reviewer']],
       ['under_grad_school_review', 'request_revisions', ['etd_reviewer']],
       ['under_grad_school_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-      ['under_grad_school_review', 'edit', ['etd_reviewer']],
-      ['under_grad_school_review', 'destroy', ['etd_reviewer']],
+      ['under_grad_school_review', ['edit', 'destroy'], ['etd_reviewer']],
       ['ready_for_ingest', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['ingesting', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['done', 'show', ['creating_user', 'advisor', 'etd_reviewer']]
-    ].each do |originating_state_name, action_name, role_names|
-      action = etd_actions.fetch(action_name)
-      originating_state = etd_states.fetch(originating_state_name)
-      event = action.strategy_state_actions.find_or_initialize_by(originating_strategy_state: originating_state)
+    ].each do |originating_state_name, action_names, role_names|
+      Array.wrap(action_names).each do |action_name|
+        action = etd_actions.fetch(action_name)
+        originating_state = etd_states.fetch(originating_state_name)
+        event = action.strategy_state_actions.find_or_initialize_by(originating_strategy_state: originating_state)
 
-      Array.wrap(role_names).each do |role_name|
-        etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
+        Array.wrap(role_names).each do |role_name|
+          etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
+        end
       end
     end
   end.save!

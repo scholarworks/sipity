@@ -23,10 +23,6 @@ module Sipity
         title
       end
 
-      def with_recommendation(recommendation_name)
-        yield(recommendation_for(recommendation_name))
-      end
-
       def human_attribute_name(name)
         object.class.human_attribute_name(name)
       end
@@ -35,24 +31,31 @@ module Sipity
         repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      def available_linked_actions(user:, action_name:, action_set_builder: ActionSet.method(:new))
-        return [] unless user.present?
-        event_names = repository.available_event_triggers_for(user: user, entity: self)
-        action_set_builder.call(repository: repository, event_names: event_names, entity: self, current_action: action_name)
+      def state_advancing_actions(user:)
+        processing_actions(user: user).state_advancing_actions
       end
 
-      def each_todo_item_set
-        # TODO: There is a violation of demeter, in part because I don't have the concept
-        # of a todo_list set.
-        repository.todo_list_for_current_processing_state_of_work(work: self).sets.each do |name, items|
-          yield(name, items) if items.present?
+      def resourceful_actions(user:)
+        processing_actions(user: user).resourceful_actions
+      end
+
+      def enrichment_actions(user:)
+        processing_actions(user: user).enrichment_actions.each_with_object({}) do |action, mem|
+          mem['required'] ||= []
+          mem['optional'] ||= []
+          if action.is_a_prerequisite?
+            mem['required'] << action
+          else
+            mem['optional'] << action
+          end
+          mem
         end
       end
 
       private
 
-      def recommendation_for(name)
-        Recommendations.const_get("#{name.classify}Recommendation").new(work: self)
+      def processing_actions(user:)
+        @processing_actions ||= ProcessingActions.new(user: user, entity: self)
       end
     end
   end

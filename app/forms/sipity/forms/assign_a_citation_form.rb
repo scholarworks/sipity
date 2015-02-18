@@ -11,6 +11,10 @@ module Sipity
       attr_accessor :type, :citation
       attr_reader :work
 
+      def enrichment_type
+        'assign_a_citation'
+      end
+
       validates :work, presence: true
       validates :citation, presence: true
       validates :type, presence: true

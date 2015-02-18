@@ -24,7 +24,7 @@ feature 'Enriching a Work', :devise, :feature do
     create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
-      the_page.click_todo_item('todo/required/attach')
+      the_page.click_todo_item('enrichment/required/attach')
     end
 
     on('attach_page') do |the_page|
@@ -81,7 +81,7 @@ feature 'Enriching a Work', :devise, :feature do
     create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
-      the_page.click_todo_item('todo/required/describe')
+      the_page.click_todo_item('enrichment/required/describe')
     end
 
     on('describe_page') do |the_page|
@@ -91,7 +91,7 @@ feature 'Enriching a Work', :devise, :feature do
     end
 
     on('work_page') do |the_page|
-      expect(the_page.todo_item_named_status_for('todo/required/describe')).to eq('done')
+      expect(the_page.todo_item_named_status_for('enrichment/required/describe')).to eq('done')
     end
   end
 
@@ -100,7 +100,7 @@ feature 'Enriching a Work', :devise, :feature do
     create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
-      the_page.click_todo_item('todo/required/attach')
+      the_page.click_todo_item('enrichment/required/attach')
     end
 
     on('attach_page') do |the_page|
@@ -118,7 +118,7 @@ feature 'Enriching a Work', :devise, :feature do
     create_a_work(work_type: 'etd')
 
     on('work_page') do |the_page|
-      the_page.click_todo_item('todo/required/collaborators')
+      the_page.click_todo_item('enrichment/required/collaborators')
     end
 
     on('collaborators_page') do |the_page|
