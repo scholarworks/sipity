@@ -12,7 +12,17 @@ ul.item-list {
 }
 
 .todo-item {
+  border-bottom:1px solid #efefef;
   margin-bottom:.5em;
+  padding-right:50px;
+  position:relative;
+  line-height:3;
+}
+
+.todo-item-trigger {
+  position:absolute;
+  top:3px;
+  right:0;
 }
 
 .set-title {
@@ -28,8 +38,17 @@ ul.item-list {
   width:24px;
 }
 
+.icon-wrapper-24 .circle {
+  bottom:-4px;
+  position:absolute;
+  border:1px solid #efefef;
+  height:20px;
+  width:20px;
+  border-radius:10px;
+}
+
 .icon-wrapper-24 svg {
-  bottom:-8px;
+  bottom:-4px;
   position:absolute;
 }
 
