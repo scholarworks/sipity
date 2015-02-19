@@ -5,7 +5,6 @@ module Sipity
       class Edit < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
-        self.action_name = :submit?
 
         def run(work_id:, enrichment_type:)
           work = repository.find_work(work_id)
@@ -13,7 +12,7 @@ module Sipity
           #   necessary for the rendered views. So be mindful of that.
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_enrichment_form(work: decorated_work, enrichment_type: enrichment_type)
-          authorization_layer.enforce!(action_name => form) do
+          authorization_layer.enforce!(enrichment_type => form) do
             callback(:success, form)
           end
         end
@@ -23,7 +22,6 @@ module Sipity
       class Update < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
-        self.action_name = :submit?
 
         def run(work_id:, enrichment_type:, attributes:)
           work = repository.find_work(work_id)
@@ -31,7 +29,7 @@ module Sipity
           #   necessary for the rendered views. So be mindful of that.
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_enrichment_form(attributes.merge(work: decorated_work, enrichment_type: enrichment_type))
-          authorization_layer.enforce!(action_name => form) do
+          authorization_layer.enforce!(enrichment_type => form) do
             if form.submit(repository: repository, requested_by: current_user)
               callback(:success, work)
             else
