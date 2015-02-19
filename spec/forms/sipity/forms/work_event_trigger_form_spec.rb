@@ -12,8 +12,6 @@ module Sipity
       context 'with defaults' do
         subject { described_class.new(work: work, event_name: 'submit_for_review') }
         its(:event_receiver) { should respond_to :trigger! }
-        its(:state_diagram) { should respond_to :event_trigger_availability }
-        its(:state_diagram) { should respond_to :available_event_triggers }
       end
 
       it { should respond_to :to_processing_entity }
