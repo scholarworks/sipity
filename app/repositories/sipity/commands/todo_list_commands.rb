@@ -19,37 +19,8 @@ module Sipity
       #   I don't want to throw an exception assuming the above list is true.
       #   And I don't want to ignore the work they've done; because they may
       #   need to go back and amend that work.
-      def mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
-        deprecated_mark_work_todo_item_as_done(work: work, enrichment_type: enrichment_type, processing_state: processing_state)
+      def mark_work_todo_item_as_done(work:, enrichment_type:)
         Services::RegisterActionTakenOnEntity.call(entity: work, action: enrichment_type)
-      end
-
-      private
-
-      def deprecated_mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
-        done_enrichment_state = Models::TodoItemState::ENRICHMENT_STATE_DONE
-        item = Models::TodoItemState.where(entity: work, enrichment_type: enrichment_type, entity_processing_state: processing_state).first
-        if item
-          item.update(enrichment_state: done_enrichment_state)
-        else
-          create_named_entity_todo_item_for_current_state(
-            entity: work, entity_processing_state: processing_state,
-            enrichment_type: enrichment_type, enrichment_state: done_enrichment_state
-          )
-        end
-      end
-      deprecate :deprecated_mark_work_todo_item_as_done
-
-      def create_named_entity_todo_item_for_current_state(entity:, entity_processing_state:, enrichment_type:, enrichment_state: nil)
-        entity_id = entity.id
-        entity_type = Conversions::ConvertToPolymorphicType.call(entity)
-        Models::TodoItemState.create!(
-          entity_id: entity_id,
-          entity_type: entity_type,
-          entity_processing_state: entity_processing_state,
-          enrichment_type: enrichment_type,
-          enrichment_state: enrichment_state
-        )
       end
     end
   end
