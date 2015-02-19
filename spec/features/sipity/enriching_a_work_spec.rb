@@ -66,7 +66,7 @@ feature 'Enriching a Work', :devise, :feature do
 
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['New Value'])
-      the_page.click_recommendation('Citation')
+      the_page.click_recommendation('assign_a_citation')
     end
 
     on('new_citation_page') do |the_page|
