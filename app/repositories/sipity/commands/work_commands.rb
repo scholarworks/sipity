@@ -27,15 +27,8 @@ module Sipity
       end
 
       def update_processing_state!(entity:, to:)
-        update_deprecated_processing_state!(entity: entity, to: to)
         Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to)
       end
-
-      def update_deprecated_processing_state!(entity:, to:)
-        entity.update(processing_state: to)
-      end
-      deprecate :update_deprecated_processing_state!
-      private :update_deprecated_processing_state!
 
       def attach_file_to(work:, file:, user:, pid_minter: default_pid_minter)
         # I know I want the user, but I'm not certain what we are doing with it

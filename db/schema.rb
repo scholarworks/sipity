@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150207132512) do
+ActiveRecord::Schema.define(version: 20150219175241) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -352,11 +352,9 @@ ActiveRecord::Schema.define(version: 20150207132512) do
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "processing_state",          limit: 64, default: "new", null: false
-    t.string   "work_type",                                            null: false
+    t.string   "work_type",                 null: false
   end
 
-  add_index "sipity_works", ["processing_state"], name: "index_sipity_works_on_processing_state"
   add_index "sipity_works", ["work_type"], name: "index_sipity_works_on_work_type"
 
   create_table "users", force: :cascade do |t|
