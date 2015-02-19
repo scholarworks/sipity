@@ -25,11 +25,6 @@ module Sipity
 
       delegate :to_processing_entity, to: :work
 
-      def state_diagram
-        event_receiver.state_diagram_for(work_type: work.work_type)
-      end
-      deprecate state_diagram: "Will be removed once processing changes are completed"
-
       private
 
       def save(repository:, requested_by:)

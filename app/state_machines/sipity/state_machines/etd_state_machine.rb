@@ -34,10 +34,6 @@ module Sipity
       attr_reader :entity, :state_machine, :user, :repository
       private :entity, :state_machine, :user, :repository
 
-      def authorized_acting_as_for_action(action_to_authorize)
-        state_diagram.event_trigger_availability(current_state: entity.processing_state, event_name: action_to_authorize).acting_as
-      end
-
       def trigger!(event, options = {})
         state_machine.trigger!(event)
         after_trigger_successful!(event, options)
