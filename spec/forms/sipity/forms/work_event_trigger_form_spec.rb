@@ -16,6 +16,8 @@ module Sipity
         its(:state_diagram) { should respond_to :available_event_triggers }
       end
 
+      it { should respond_to :to_processing_entity }
+
       context 'validations' do
         it 'will require a work' do
           subject = described_class.new(work: nil)
