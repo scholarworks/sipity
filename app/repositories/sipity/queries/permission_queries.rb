@@ -9,11 +9,6 @@ module Sipity
       end
       module_function :emails_for_associated_users
       public :emails_for_associated_users
-
-      def can_the_user_act_on_the_entity?(user:, acting_as:, entity:)
-        Queries::ProcessingQueries.scope_users_for_entity_and_roles(entity: entity, roles: acting_as).
-          where(id: user.id).any?
-      end
     end
   end
 end

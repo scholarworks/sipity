@@ -23,6 +23,10 @@ module Sipity
       it { should respond_to :repository }
       it { should respond_to :current_user }
 
+      it 'will have an #action_name' do
+        expect(subject.action_name).to eq('base_runner')
+      end
+
       context 'authentication layer coordination' do
         context 'with the :default authentication layer' do
           it 'will delegate authentication to the given context (because Devise)' do

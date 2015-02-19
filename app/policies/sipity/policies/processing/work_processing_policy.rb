@@ -12,6 +12,19 @@ module Sipity
       # @note This class implements method_missing in an attempt to splice in
       #   this policy into Sipity's interactions.
       class WorkProcessingPolicy
+        # Exposed as a convenience method and the public interface into the Policy
+        # subsystem.
+        #
+        # @param user [User]
+        # @param entity [#persisted?]
+        # @param action_to_authorize [#to_s] the name of an action to take
+        #
+        # @return [Boolean] If the user can take the action, then return true.
+        #   otherwise return false.
+        def self.call(user:, entity:, action_to_authorize:)
+          new(user, entity).authorize?(action_to_authorize)
+        end
+
         def initialize(user, work, repository: default_repository)
           @user = user
           @work = work

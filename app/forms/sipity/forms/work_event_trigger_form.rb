@@ -5,7 +5,7 @@ module Sipity
       # TODO: I do not believe that this is the correct policy. We need a policy
       #   that will verify the state of the work and whether the event trigger
       #   can happen.
-      self.policy_enforcer = Policies::WorkEventTriggerPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
@@ -23,10 +23,12 @@ module Sipity
         save(repository: repository, requested_by: requested_by)
       end
 
+      delegate :to_processing_entity, to: :work
+
       def state_diagram
         event_receiver.state_diagram_for(work_type: work.work_type)
       end
-      deprecate :state_diagram
+      deprecate state_diagram: "Will be removed once processing changes are completed"
 
       private
 

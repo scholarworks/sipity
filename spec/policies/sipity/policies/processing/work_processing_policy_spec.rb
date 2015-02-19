@@ -19,6 +19,11 @@ module Sipity
           expect(subject.authorize?(:show)).to be_truthy
         end
 
+        it 'exposes .call as a convenience method' do
+          expect_any_instance_of(described_class).to receive(:authorize?).with(:show)
+          described_class.call(user: user, entity: work, action_to_authorize: :show)
+        end
+
         context 'default configuration' do
           subject { described_class.new(user, work) }
           its(:repository) { should respond_to(:authorized_for_processing?) }

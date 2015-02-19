@@ -7,7 +7,7 @@ module Sipity
       let(:event_receiver) { StateMachines::Interface }
       subject { described_class.new(work: work, event_name: 'submit_for_review', event_receiver: event_receiver) }
 
-      its(:policy_enforcer) { should eq(Policies::WorkEventTriggerPolicy) }
+      its(:policy_enforcer) { should eq(Policies::Processing::WorkProcessingPolicy) }
 
       context 'with defaults' do
         subject { described_class.new(work: work, event_name: 'submit_for_review') }
@@ -15,6 +15,8 @@ module Sipity
         its(:state_diagram) { should respond_to :event_trigger_availability }
         its(:state_diagram) { should respond_to :available_event_triggers }
       end
+
+      it { should respond_to :to_processing_entity }
 
       context 'validations' do
         it 'will require a work' do

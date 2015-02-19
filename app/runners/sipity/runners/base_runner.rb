@@ -19,6 +19,7 @@ module Sipity
     class BaseRunner < Hesburgh::Lib::Runner
       class_attribute :authentication_layer, instance_accessor: false
       class_attribute :authorization_layer, instance_accessor: false
+      class_attribute :action_name, instance_accessor: false
 
       # Because yardoc's scope imperative does not appear to work, I'm pushing the
       # comments into the class definition
@@ -30,9 +31,14 @@ module Sipity
         # @!attribute [rw] authentication_layer
         #   @return [#call(context)]
         #   @see Sipity::BaseRunner#authentication_layer=
+        #
+        # @!attribute [rw] action_name
+        #   @return [String]
+        #   @see Sipity::BaseRunner#action_name
       end
       self.authorization_layer = :none
       self.authentication_layer = :none
+      self.action_name = nil
 
       # @param context [#current_user, #repository] The containing context in
       #   which the runner is acting. This is likely an ApplicationController.
@@ -65,6 +71,10 @@ module Sipity
       # @see NamedCallback
       def run(*)
         fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
+      end
+
+      def action_name
+        self.class.action_name || self.class.to_s.demodulize.underscore
       end
 
       private
