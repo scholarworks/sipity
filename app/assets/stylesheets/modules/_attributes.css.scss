@@ -1,4 +1,6 @@
 .attribute-listing {
+  margin-bottom:0;
+
   .predicate:after {
     content:':'
   }
@@ -24,4 +26,21 @@
       width:75%;
     }
   }
+}
+
+.collaborator {
+  margin-bottom:0;
+}
+
+.collaborators-list {
+  list-style-type:none;
+  margin:0;
+  padding:0;
+  float:left;
+  width:100%;
+}
+
+.collaborators-list-item {
+  float:left;
+  width:100%;
 }
