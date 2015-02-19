@@ -7,6 +7,9 @@ module Sipity
       subject { described_class.new(work: work) }
 
       its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+      its(:to_key) { should be_empty }
+      its(:to_param) { should be_nil }
+      its(:persisted?) { should eq(false) }
 
       it { should respond_to :to_processing_entity }
 
