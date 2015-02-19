@@ -5,10 +5,11 @@ module Sipity
       class Show < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
+        self.action_name = :show?
 
         def run(work_id:)
           work = repository.find_work(work_id)
-          authorization_layer.enforce!(show?: work) do
+          authorization_layer.enforce!(action_name => work) do
             if repository.citation_already_assigned?(work)
               callback(:citation_assigned, work)
             else
@@ -22,12 +23,13 @@ module Sipity
       class New < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
+        self.action_name = :submit?
 
         def run(work_id:)
           work = repository.find_work(work_id)
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_assign_a_citation_form(work: decorated_work)
-          authorization_layer.enforce!(submit?: form) do
+          authorization_layer.enforce!(action_name => form) do
             if repository.citation_already_assigned?(work)
               callback(:citation_assigned, work)
             else
@@ -41,12 +43,13 @@ module Sipity
       class Create < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
+        self.action_name = :submit?
 
         def run(work_id:, attributes: {})
           work = repository.find_work(work_id)
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_assign_a_citation_form(attributes.merge(work: decorated_work))
-          authorization_layer.enforce!(submit?: form) do
+          authorization_layer.enforce!(action_name => form) do
             if form.submit(repository: repository, requested_by: current_user)
               callback(:success, work)
             else
