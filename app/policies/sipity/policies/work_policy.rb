@@ -8,24 +8,11 @@ module Sipity
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     class WorkPolicy < BasePolicy
-      def initialize(user, work, permission_query_service: nil)
+      def initialize(user, work)
         super(user, work)
-        @permission_query_service = permission_query_service || default_permission_query_service
       end
-      attr_reader :permission_query_service, :original_entity
-      private :permission_query_service, :original_entity
-
-      define_action_to_authorize :show? do
-        return false unless user.present?
-        return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
-      end
-
-      define_action_to_authorize :update? do
-        return false unless user.present?
-        return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
-      end
+      attr_reader :original_entity
+      private :original_entity
 
       define_action_to_authorize :create? do
         return false unless user.present?
@@ -33,20 +20,10 @@ module Sipity
         true
       end
 
-      define_action_to_authorize :destroy? do
-        return false unless user.present?
-        return false unless entity.persisted?
-        permission_query_service.call(user: user, entity: entity, acting_as: [Models::Permission::CREATING_USER])
-      end
-
       private
 
-      # TODO: Work with underlying Scoping query
-      def default_permission_query_service
-        lambda do |options|
-          Models::Permission.
-            where(actor: options.fetch(:user), entity: options.fetch(:entity), acting_as: options.fetch(:acting_as)).any?
-        end
+      def method_missing(method_name, *)
+        Processing::WorkProcessingPolicy.call(user: user, entity: entity, action_to_authorize: method_name)
       end
 
       # Responsible for building a scoped query to find a collection of

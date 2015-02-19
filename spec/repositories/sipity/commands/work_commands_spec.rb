@@ -31,10 +31,8 @@ module Sipity
           it 'will create a collaborator, user, and permission' do
             expect do
               expect do
-                expect do
-                  test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
-                end.to change(Models::Collaborator, :count).by(1)
-              end.to change(Models::Permission, :count).by(1)
+                test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+              end.to change(Models::Collaborator, :count).by(1)
             end.to change(User, :count).by(1)
           end
         end
