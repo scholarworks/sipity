@@ -19,7 +19,7 @@ module Sipity
       #   I don't want to throw an exception assuming the above list is true.
       #   And I don't want to ignore the work they've done; because they may
       #   need to go back and amend that work.
-      def mark_work_todo_item_as_done(work:, enrichment_type:)
+      def register_action_taken_on_entity(work:, enrichment_type:)
         Services::RegisterActionTakenOnEntity.call(entity: work, action: enrichment_type)
       end
     end

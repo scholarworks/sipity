@@ -58,7 +58,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def mark_work_todo_item_as_done(work:, enrichment_type:)
+    def register_action_taken_on_entity(work:, enrichment_type:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb

@@ -47,7 +47,7 @@ module Sipity
           end
 
           it "will transition the work's corresponding enrichment todo item to :done" do
-            expect(repository).to receive(:mark_work_todo_item_as_done).and_call_original
+            expect(repository).to receive(:register_action_taken_on_entity).and_call_original
             subject.submit(repository: repository, requested_by: user)
           end
 

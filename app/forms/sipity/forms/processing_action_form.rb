@@ -39,7 +39,7 @@ module Sipity
 
       def save(repository:, requested_by:)
         yield if block_given?
-        repository.mark_work_todo_item_as_done(work: work, enrichment_type: enrichment_type)
+        repository.register_action_taken_on_entity(work: work, enrichment_type: enrichment_type)
         repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         work
       end
