@@ -3,9 +3,6 @@ module Sipity
     # The generalized work enrichment form. It is unlikely that you will be able
     # to use this directly.
     class WorkEnrichmentForm < BaseForm
-      # TODO: I do not believe that this is the correct policy. We need a policy
-      #   that will verify the state of the work and whether the enrichment can
-      #   happen.
       self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
