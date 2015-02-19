@@ -24,7 +24,13 @@ module Sipity
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       deprecate
 
-      has_one :processing_entity, as: :proxy_for, dependent: :destroy, class_name: 'Sipity::Models::Processing::Entity'
+      has_one(
+        :processing_entity,
+        -> { includes :strategy_state },
+        as: :proxy_for,
+        dependent: :destroy,
+        class_name: 'Sipity::Models::Processing::Entity'
+      )
 
       def to_processing_entity
         # This is a bit of a short cut, perhaps I should check if its persisted?
