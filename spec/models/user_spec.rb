@@ -10,9 +10,4 @@ describe User do
     expect(@user.email).to match 'user@example.com'
   end
 
-  it 'has many :permissions' do
-    expect(described_class.reflect_on_association(:permissions)).
-      to be_a(ActiveRecord::Reflection::AssociationReflection)
-  end
-
 end

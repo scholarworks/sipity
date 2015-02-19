@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219175241) do
+ActiveRecord::Schema.define(version: 20150219203525) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -146,25 +146,6 @@ ActiveRecord::Schema.define(version: 20150219175241) do
   end
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true
-
-  create_table "sipity_permissions", id: false, force: :cascade do |t|
-    t.integer  "actor_id",               null: false
-    t.string   "actor_type",  limit: 64, null: false
-    t.string   "acting_as",   limit: 32, null: false
-    t.integer  "entity_id",              null: false
-    t.string   "entity_type", limit: 64, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_permissions", ["acting_as"], name: "index_sipity_permissions_on_acting_as"
-  add_index "sipity_permissions", ["actor_id", "actor_type", "acting_as"], name: "sipity_permissions_actor_acting_as"
-  add_index "sipity_permissions", ["actor_id", "actor_type", "entity_id", "entity_type"], name: "sipity_permissions_actor_subject"
-  add_index "sipity_permissions", ["actor_id"], name: "index_sipity_permissions_on_actor_id"
-  add_index "sipity_permissions", ["actor_type"], name: "index_sipity_permissions_on_actor_type"
-  add_index "sipity_permissions", ["entity_id", "entity_type", "acting_as"], name: "sipity_permissions_entity_acting_as"
-  add_index "sipity_permissions", ["entity_id"], name: "index_sipity_permissions_on_entity_id"
-  add_index "sipity_permissions", ["entity_type"], name: "index_sipity_permissions_on_entity_type"
 
   create_table "sipity_processing_actors", force: :cascade do |t|
     t.integer  "proxy_for_id",   null: false
