@@ -5,7 +5,7 @@ module Sipity
       # TODO: I do not believe that this is the correct policy. We need a policy
       #   that will verify the state of the work and whether the event trigger
       #   can happen.
-      self.policy_enforcer = Policies::WorkEventTriggerPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)

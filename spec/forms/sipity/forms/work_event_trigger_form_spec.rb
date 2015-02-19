@@ -7,7 +7,7 @@ module Sipity
       let(:event_receiver) { StateMachines::Interface }
       subject { described_class.new(work: work, event_name: 'submit_for_review', event_receiver: event_receiver) }
 
-      its(:policy_enforcer) { should eq(Policies::WorkEventTriggerPolicy) }
+      its(:policy_enforcer) { should eq(Policies::Processing::WorkProcessingPolicy) }
 
       context 'with defaults' do
         subject { described_class.new(work: work, event_name: 'submit_for_review') }
