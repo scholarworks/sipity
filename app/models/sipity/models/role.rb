@@ -10,13 +10,17 @@ module Sipity
         dependent: :destroy,
         class_name: 'Sipity::Models::Processing::StrategyRole'
 
+      CREATING_USER = 'creating_user'.freeze
+      ADVISOR = 'advisor'.freeze
+      ETD_REVIEWER = 'etd_reviewer'.freeze
+
       # As I don't have a means for assigning roles for a given processing type
       # I need a controlled vocabulary for roles.
       enum(
         name: {
-          'creating_user' => 'creating_user',
-          'etd_reviewer' => 'etd_reviewer',
-          'advisor' => 'advisor'
+          CREATING_USER => CREATING_USER,
+          ETD_REVIEWER => ETD_REVIEWER,
+          ADVISOR => ADVISOR
         }
       )
 

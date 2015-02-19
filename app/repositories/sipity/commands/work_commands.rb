@@ -10,7 +10,7 @@ module Sipity
           collaborator.save!
           next unless collaborator.responsible_for_review?
           create_sipity_user_from(netid: collaborator.netid) do |user|
-            PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Permission::ADVISOR)
+            PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
           end
         end
       end
