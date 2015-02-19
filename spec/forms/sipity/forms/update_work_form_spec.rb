@@ -14,6 +14,7 @@ module Sipity
       its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
       its(:to_model) { should eq(work) }
       its(:enrichment_type) { should be_a(String) }
+      it { should respond_to :to_processing_entity }
 
       it 'will have a model_name that is the same as the Models::Work.model_name' do
         expect(described_class.model_name).to eq(Models::Work.model_name)

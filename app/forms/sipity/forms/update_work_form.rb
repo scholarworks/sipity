@@ -23,7 +23,7 @@ module Sipity
       end
 
       attr_reader :work
-      delegate :to_key, :to_param, :persisted?, to: :work
+      delegate :to_key, :to_param, :persisted?, :to_processing_entity, to: :work
 
       def to_model
         work
