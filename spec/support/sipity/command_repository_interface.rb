@@ -82,10 +82,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def update_deprecated_processing_state!(entity:, to:)
-    end
-
-    # @see ./app/repositories/sipity/commands/work_commands.rb
     def update_processing_state!(entity:, to:)
     end
 
