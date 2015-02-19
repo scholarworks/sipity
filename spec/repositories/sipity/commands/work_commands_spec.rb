@@ -75,10 +75,9 @@ module Sipity
 
       context '#update_processing_state!' do
         let(:work) { Models::Work.create! }
-        it 'will update the underlying state of the object' do
+        it 'will update update the entity processing state' do
           expect(Services::UpdateEntityProcessingState).to receive(:call)
-          expect { test_repository.update_processing_state!(entity: work, to: 'hello') }.
-            to change { work.processing_state }.to('hello')
+          test_repository.update_processing_state!(entity: work, to: 'hello')
         end
       end
 

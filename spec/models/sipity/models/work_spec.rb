@@ -7,7 +7,6 @@ module Sipity
 
       context 'database columns' do
         subject { Work }
-        its(:column_names) { should include('processing_state') }
         its(:column_names) { should include('work_type') }
         its(:column_names) { should include('work_publication_strategy') }
         its(:column_names) { should include('title') }
