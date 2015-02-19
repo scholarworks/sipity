@@ -5,8 +5,8 @@ module Sipity
     # Queries
     module EventTriggerQueries
       def build_event_trigger_form(attributes = {})
-        event_name = attributes.fetch(:event_name)
-        builder = Forms::WorkEventTriggers.find_event_trigger_form_builder(event_name: event_name)
+        processing_action_name = attributes.fetch(:processing_action_name)
+        builder = Forms::WorkEventTriggers.find_event_trigger_form_builder(processing_action_name: processing_action_name)
         builder.new(attributes)
       end
     end

@@ -32,15 +32,27 @@ describe 'work flow routing spec' do
   end
 
   context 'event trigger routes' do
-    let(:event_name) { 'do_it' }
-    it 'will route GET /works/:work_id/trigger/:event_name' do
-      expect(get: "/works/#{work_id}/trigger/#{event_name}").
-        to route_to(controller: 'sipity/controllers/work_event_triggers', action: 'new', work_id: work_id, event_name: event_name)
+    let(:processing_action_name) { 'do_it' }
+    it 'will route GET /works/:work_id/trigger/:processing_action_name' do
+      expect(get: "/works/#{work_id}/trigger/#{processing_action_name}").to(
+        route_to(
+          controller: 'sipity/controllers/work_event_triggers',
+          action: 'new',
+          work_id: work_id,
+          processing_action_name: processing_action_name
+        )
+      )
     end
 
-    it 'will route POST /works/:work_id/trigger/:event_name' do
-      expect(post: "/works/#{work_id}/trigger/#{event_name}").
-        to route_to(controller: 'sipity/controllers/work_event_triggers', action: 'create', work_id: work_id, event_name: event_name)
+    it 'will route POST /works/:work_id/trigger/:processing_action_name' do
+      expect(post: "/works/#{work_id}/trigger/#{processing_action_name}").to(
+        route_to(
+          controller: 'sipity/controllers/work_event_triggers',
+          action: 'create',
+          work_id: work_id,
+          processing_action_name: processing_action_name
+        )
+      )
     end
   end
 end
