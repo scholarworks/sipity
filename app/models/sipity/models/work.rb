@@ -32,6 +32,10 @@ module Sipity
         class_name: 'Sipity::Models::Processing::Entity'
       )
 
+      def processing_state
+        processing_entity.present? ? processing_entity.processing_state : super
+      end
+
       def to_processing_entity
         # This is a bit of a short cut, perhaps I should check if its persisted?
         # But I'll settle for this right now.

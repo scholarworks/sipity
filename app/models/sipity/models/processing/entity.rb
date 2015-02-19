@@ -16,6 +16,10 @@ module Sipity
 
         has_many :entity_action_registers, dependent: :destroy
         has_many :entity_specific_responsibilities, dependent: :destroy
+
+        delegate :name, to: :strategy_state, prefix: :strategy_state
+        # TODO: This is a concession for the existing application
+        alias_method :processing_state, :strategy_state_name
       end
     end
   end
