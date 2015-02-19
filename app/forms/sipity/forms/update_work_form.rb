@@ -10,7 +10,7 @@ module Sipity
     # @see Sipity::Forms::UpdateWorkForm#method_missing
     # @see Sipity::Forms::UpdateWorkForm#respond_to_missing?
     class UpdateWorkForm < BaseForm
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def self.model_name
         Models::Work.model_name
@@ -23,7 +23,7 @@ module Sipity
       end
 
       attr_reader :work
-      delegate :to_key, :to_param, :persisted?, to: :work
+      delegate :to_key, :to_param, :persisted?, :to_processing_entity, to: :work
 
       def to_model
         work

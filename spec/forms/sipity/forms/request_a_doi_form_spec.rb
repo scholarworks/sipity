@@ -6,6 +6,9 @@ module Sipity
       let(:work) { double('Work') }
       subject { described_class.new(work: work) }
 
+      it { should respond_to :to_processing_entity }
+      its(:enrichment_type) { should be_a(String) }
+
       it 'requires a work' do
         subject = described_class.new(work: nil)
         subject.valid?

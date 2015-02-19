@@ -26,14 +26,16 @@ module Sipity
       end
 
       def processing_state=(object)
-        @processing_state = begin
-          case object
-          when Models::Processing::StrategyState then object
-          when String, Symbol then Models::Processing::StrategyState.find_or_create_by!(strategy_id: strategy.id, name: object)
-          else
-            fail Exceptions::ProcessingStrategyStateConversionError, { strategy_id: strategy.id, name: object }.inspect
-          end
+        @processing_state = convert_to_processing_state(object)
+      end
+
+      def convert_to_processing_state(object)
+        return object if object.is_a?(Models::Processing::StrategyState)
+        if object.is_a?(String) || object.is_a?(Symbol)
+          state = Models::Processing::StrategyState.where(strategy_id: strategy.id, name: object).first
+          return state if state.present?
         end
+        fail Exceptions::ProcessingStrategyStateConversionError, { strategy_id: strategy.id, name: object }.inspect
       end
     end
   end

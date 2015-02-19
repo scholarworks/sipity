@@ -6,8 +6,10 @@ module Sipity
       let(:work) { Models::Work.new(id: '1234') }
       subject { described_class.new(work: work) }
 
-      its(:policy_enforcer) { should eq(Policies::EnrichWorkByFormSubmissionPolicy) }
+      its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
       its(:enrichment_type) { should eq('work_enrichment') }
+
+      it { should respond_to :to_processing_entity }
 
       context 'validations' do
         it 'will require a work' do

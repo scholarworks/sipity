@@ -51,8 +51,8 @@ module Sipity
           end
         end
 
-        context 'for :under_review' do
-          let(:initial_processing_state) { 'under_review' }
+        context 'for :under_advisor_review' do
+          let(:initial_processing_state) { 'under_advisor_review' }
           it 'will allow :update? for [:etd_reviewer]' do
             expect(subject.authorized_acting_as_for_action(:update?)).to eq(['etd_reviewer'])
           end
@@ -169,9 +169,9 @@ module Sipity
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "etd_state_machine/#{event}")
           end
-          it 'will update the ETDs processing_state to :under_review'  do
+          it 'will update the ETDs processing_state to :under_advisor_review'  do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, to: "under_review")
+              with(entity: entity, to: "under_advisor_review")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -179,7 +179,7 @@ module Sipity
         end
 
         context ':request_revisions is triggered' do
-          let(:initial_processing_state) { 'under_review' }
+          let(:initial_processing_state) { 'under_advisor_review' }
           let(:event) { :request_revisions }
           let(:options) { { comments: 'Hello World' } }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
@@ -197,7 +197,7 @@ module Sipity
           end
           it 'will update the ETDs processing_state to :revisions_needed' do
             expect(repository).to have_received(:update_processing_state!).
-              with(entity: entity, to: "under_review")
+              with(entity: entity, to: "under_advisor_review")
           end
           it 'will NOT trigger another state change' do
             expect(repository).to_not have_received(:submit_etd_student_submission_trigger!)
@@ -205,7 +205,7 @@ module Sipity
         end
 
         context ':approve_for_ingest is triggered' do
-          let(:initial_processing_state) { 'under_review' }
+          let(:initial_processing_state) { 'under_advisor_review' }
           let(:event) { :approve_for_ingest }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).

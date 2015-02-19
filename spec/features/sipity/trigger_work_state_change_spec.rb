@@ -55,7 +55,7 @@ feature "Trigger Work State Change", :devise, :feature do
 
       on('work_page') do |the_page|
         # The state was advanced
-        expect(the_page.processing_state).to eq('under_review')
+        expect(the_page.processing_state).to eq('under_advisor_review')
         expect { the_page.find_named_object('event_trigger/submit_for_review') }.
           to raise_error(Capybara::ElementNotFound)
       end

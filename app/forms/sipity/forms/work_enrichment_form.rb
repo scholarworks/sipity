@@ -6,7 +6,7 @@ module Sipity
       # TODO: I do not believe that this is the correct policy. We need a policy
       #   that will verify the state of the work and whether the enrichment can
       #   happen.
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
@@ -14,6 +14,7 @@ module Sipity
       end
 
       attr_reader :work, :enrichment_type
+      delegate :to_processing_entity, to: :work
 
       validates :work, presence: true
 

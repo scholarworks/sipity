@@ -8,7 +8,7 @@ module Sipity
         subject { described_class.new(work: work) }
 
         its(:enrichment_type) { should eq('describe') }
-        its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
+        its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
 
         it { should respond_to :work }
         it { should respond_to :abstract }

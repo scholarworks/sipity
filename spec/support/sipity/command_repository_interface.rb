@@ -13,10 +13,6 @@ module Sipity
     def attach_file_to(work:, file:, user:, pid_minter: default_pid_minter)
     end
 
-    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def create_named_entity_todo_item_for_current_state(entity:, entity_processing_state:, enrichment_type:, enrichment_state: nil)
-    end
-
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def create_sipity_user_from(netid:)
     end
@@ -33,20 +29,12 @@ module Sipity
     def default_pid_minter
     end
 
-    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def deprecated_mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
-    end
-
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def destroy_work_attribute_values!(work:, key:, values:)
     end
 
     # @see ./app/repositories/sipity/commands/permission_commands.rb
     def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
-    end
-
-    # @see ./app/repositories/sipity/commands/permission_commands.rb
-    def grant_deprecated_permission_for!(entity:, actor:, acting_as:)
     end
 
     # @see ./app/repositories/sipity/commands/permission_commands.rb
@@ -70,7 +58,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def mark_work_todo_item_as_done(work:, enrichment_type:, processing_state: work.processing_state)
+    def mark_work_todo_item_as_done(work:, enrichment_type:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb

@@ -12,6 +12,7 @@ module Sipity
       it { should respond_to :type }
       it { should respond_to :type= }
       its(:enrichment_type) { should be_a(String) }
+      it { should respond_to(:to_processing_entity) }
 
       it 'will require a citation' do
         subject.valid?

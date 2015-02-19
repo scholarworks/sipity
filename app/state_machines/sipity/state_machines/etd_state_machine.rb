@@ -14,7 +14,7 @@ module Sipity
           update?: ['creating_user', 'advisor'], show?: ['creating_user', 'advisor'],
           delete?: ['creating_user'], submit_for_review?: ['creating_user']
         },
-        'under_review' => {
+        'under_advisor_review' => {
           update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
           request_revisions?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
         },
@@ -93,9 +93,9 @@ module Sipity
 
       def build_state_machine
         state_machine = MicroMachine.new(entity.processing_state)
-        state_machine.when(:submit_for_review, 'new' => 'under_review')
-        state_machine.when(:request_revisions, 'under_review' => 'under_review')
-        state_machine.when(:approve_for_ingest, 'under_review' => 'ready_for_ingest')
+        state_machine.when(:submit_for_review, 'new' => 'under_advisor_review')
+        state_machine.when(:request_revisions, 'under_advisor_review' => 'under_advisor_review')
+        state_machine.when(:approve_for_ingest, 'under_advisor_review' => 'ready_for_ingest')
         state_machine.when(:ingest, 'ready_for_ingest' => 'ingesting')
         state_machine.when(:ingest_completed, 'ingesting' => 'ready_for_cataloging')
         state_machine.when(:finish_cataloging, 'ready_for_cataloging' => 'cataloged')

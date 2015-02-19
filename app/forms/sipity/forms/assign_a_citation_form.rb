@@ -2,7 +2,7 @@ module Sipity
   module Forms
     # Responsible for capturing and validating information for citation creation.
     class AssignACitationForm < BaseForm
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
@@ -18,6 +18,8 @@ module Sipity
       validates :work, presence: true
       validates :citation, presence: true
       validates :type, presence: true
+
+      delegate :to_processing_entity, to: :work
 
       def submit(repository:, requested_by:)
         super() do |_f|

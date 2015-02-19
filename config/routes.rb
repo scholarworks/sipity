@@ -21,6 +21,11 @@ Rails.application.routes.draw do
       get 'works/:work_id/:enrichment_type', to: 'work_enrichments#edit', as: 'enrich_work', constraints: enrichment_constraint
       post 'works/:work_id/:enrichment_type', to: 'work_enrichments#update', constraints: enrichment_constraint
 
+      # HACK: This is a shim to account for the policy behavior. I can look
+      #   towards future normalization.
+      get 'works/:work_id/assign_a_doi', to: 'dois#show'
+      get 'works/:work_id/assign_a_citation', to: 'citations#show'
+
       get 'works/:id/trigger/update', to: 'works#edit'
       get 'works/:id/trigger/show', to: 'works#show'
 
