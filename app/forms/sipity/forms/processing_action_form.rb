@@ -27,6 +27,7 @@ module Sipity
 
       attr_reader :work
       delegate :to_processing_entity, to: :work
+      alias_method :entity, :work
 
       validates :work, presence: true
 
@@ -46,6 +47,10 @@ module Sipity
 
       def event_name
         File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
+      end
+
+      def enrichment_type
+        fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
     end
   end
