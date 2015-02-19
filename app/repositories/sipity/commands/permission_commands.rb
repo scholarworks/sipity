@@ -14,7 +14,7 @@ module Sipity
       def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
         # REVIEW: Does the constant even make sense on the data structure? Or
         #   is it more relevant here?
-        acting_as = Models::Permission::CREATING_USER
+        acting_as = Models::Role::CREATING_USER
         actors = [user, group, actor]
         grant_permission_for!(entity: entity, actors: actors, acting_as: acting_as)
       end
