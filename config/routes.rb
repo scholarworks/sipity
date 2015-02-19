@@ -30,8 +30,8 @@ Rails.application.routes.draw do
       get 'works/:id/trigger/show', to: 'works#show'
 
       # # Are there constraints?
-      get 'works/:work_id/trigger/:event_name', to: 'work_event_triggers#new', as: 'event_trigger_for_work'
-      post 'works/:work_id/trigger/:event_name', to: 'work_event_triggers#create'
+      get 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#new', as: 'event_trigger_for_work'
+      post 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#create'
     end
   end
 

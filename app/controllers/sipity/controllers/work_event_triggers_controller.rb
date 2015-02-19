@@ -8,13 +8,13 @@ module Sipity
       self.runner_container = Runners::WorkEventTriggerRunners
 
       def new
-        _status, @model = run(work_id: work_id, event_name: event_name)
+        _status, @model = run(work_id: work_id, processing_action_name: processing_action_name)
         respond_with(@model)
       end
 
       def create
-        run(work_id: work_id, event_name: event_name) do |on|
-          on.success { |work| redirect_to work_path(work), notice: message_for("#{event_name}_triggered", title: work.title) }
+        run(work_id: work_id, processing_action_name: processing_action_name) do |on|
+          on.success { |work| redirect_to work_path(work), notice: message_for("#{processing_action_name}_triggered", title: work.title) }
           on.failure do |model|
             @model = model
             render action: 'new'
@@ -32,8 +32,8 @@ module Sipity
         params.require(:work_id)
       end
 
-      def event_name
-        params.require(:event_name)
+      def processing_action_name
+        params.require(:processing_action_name)
       end
     end
   end

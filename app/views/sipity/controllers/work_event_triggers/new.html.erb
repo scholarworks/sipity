@@ -1,8 +1,8 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
   <div itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-    <link itemprop="url" href="<%= event_trigger_for_work_path(model.work, model.event_name) %>">
+    <link itemprop="url" href="<%= event_trigger_for_work_path(model.work, model.processing_action_name) %>">
     <meta itemprop="name" content="confirm/event_trigger/submit_for_review">
-    <%= form_tag(event_trigger_for_work_path(model.work, model.event_name), method: :post, itemscope: true, itemprop: 'target', itemtype: "http://schema.org/EntryPoint") do %>
+    <%= form_tag(event_trigger_for_work_path(model.work, model.processing_action_name), method: :post, itemscope: true, itemprop: 'target', itemtype: "http://schema.org/EntryPoint") do %>
       <%= submit_tag("Submit", itemprop: 'name', autofocus: true) %>
     <% end %>
   </div>

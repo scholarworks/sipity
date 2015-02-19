@@ -8,7 +8,7 @@ module Sipity
       RSpec.describe New do
         let(:work) { double('Work', id: '1234') }
         let(:form) { double('Form') }
-        let(:event_name) { 'fandango' }
+        let(:processing_action_name) { 'fandango' }
         let(:context) { TestRunnerContext.new(find_work: work, build_event_trigger_form: form) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
@@ -25,7 +25,7 @@ module Sipity
         end
 
         it 'issues the :success callback' do
-          response = subject.run(work_id: work.id, event_name: event_name)
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name)
           expect(context.handler).to have_received(:invoked).with("SUCCESS", form)
           expect(response).to eq([:success, form])
         end
@@ -34,7 +34,7 @@ module Sipity
       RSpec.describe Create do
         let(:work) { double('Work', id: '1234') }
         let(:form) { double('Form') }
-        let(:event_name) { 'fandango' }
+        let(:processing_action_name) { 'fandango' }
         let(:context) do
           TestRunnerContext.new(find_work: work, build_event_trigger_form: form)
         end
@@ -58,7 +58,7 @@ module Sipity
             expect(form).to receive(:submit).
               with(repository: context.repository, requested_by: context.current_user).
               and_return(false)
-            response = subject.run(work_id: work.id, event_name: 'event_name')
+            response = subject.run(work_id: work.id, processing_action_name: 'processing_action_name')
             expect(context.handler).to have_received(:invoked).with("FAILURE", form)
             expect(response).to eq([:failure, form])
           end
@@ -69,7 +69,7 @@ module Sipity
             expect(form).to receive(:submit).
               with(repository: context.repository, requested_by: context.current_user).
               and_return(true)
-            response = subject.run(work_id: work.id, event_name: 'event_name')
+            response = subject.run(work_id: work.id, processing_action_name: 'processing_action_name')
             expect(context.handler).to have_received(:invoked).with("SUCCESS", work)
             expect(response).to eq([:success, work])
           end

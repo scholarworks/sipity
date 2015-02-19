@@ -10,13 +10,13 @@ module Sipity
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
         @event_receiver = attributes.fetch(:event_receiver) { default_event_receiver }
-        @event_name = attributes.fetch(:event_name) { 'default' }
+        @processing_action_name = attributes.fetch(:processing_action_name) { 'default' }
       end
 
-      attr_reader :work, :event_name, :event_receiver
+      attr_reader :work, :processing_action_name, :event_receiver
 
       validates :work, presence: true
-      validates :event_name, presence: true
+      validates :processing_action_name, presence: true
 
       def submit(repository:, requested_by:)
         return false unless valid?
@@ -29,7 +29,7 @@ module Sipity
 
       def save(repository:, requested_by:)
         yield if block_given?
-        event_receiver.trigger!(repository: repository, user: requested_by, entity: work, event_name: event_name)
+        event_receiver.trigger!(repository: repository, user: requested_by, entity: work, event_name: processing_action_name)
         work
       end
 
