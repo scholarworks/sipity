@@ -98,3 +98,9 @@ section {
 main > section:first-child {
   margin-top:0;
 }
+
+// Removing the need for containing row and full-width column classes
+.navbar > .container {
+  padding-left:30px;
+  padding-right:30px;
+}
