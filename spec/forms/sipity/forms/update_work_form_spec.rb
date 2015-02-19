@@ -11,7 +11,7 @@ module Sipity
         )
       end
 
-      its(:policy_enforcer) { should eq Policies::EnrichWorkByFormSubmissionPolicy }
+      its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
       its(:to_model) { should eq(work) }
       its(:enrichment_type) { should be_a(String) }
       it { should respond_to :to_processing_entity }

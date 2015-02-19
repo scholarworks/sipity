@@ -10,7 +10,7 @@ module Sipity
     # @see Sipity::Forms::UpdateWorkForm#method_missing
     # @see Sipity::Forms::UpdateWorkForm#respond_to_missing?
     class UpdateWorkForm < BaseForm
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def self.model_name
         Models::Work.model_name

@@ -34,7 +34,7 @@ module Sipity
         attr_reader :user, :work
 
         def authorize?(action)
-          repository.authorized_for_processing?(user: user, entity: work, action: action)
+          repository.authorized_for_processing?(user: user, entity: work, action: normalize_action_name(action))
         end
 
         attr_reader :repository
@@ -45,6 +45,13 @@ module Sipity
         # Means of preserving interface defined by Sipity::Policies::WorkPolicy
         def method_missing(method_name, *)
           authorize?(method_name)
+        end
+
+        def normalize_action_name(action)
+          # HACK: This is a shim because many of the forms are asking permission
+          #   on the :submit?
+          return work.enrichment_type if action == :submit?
+          action
         end
 
         def default_repository
