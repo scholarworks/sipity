@@ -18,10 +18,8 @@ module Sipity
           it 'will create a collaborator but not a user nor permission' do
             expect do
               expect do
-                expect do
-                  test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
-                end.to change(Models::Collaborator, :count).by(1)
-              end.to_not change(Models::Permission, :count)
+                test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+              end.to change(Models::Collaborator, :count).by(1)
             end.to_not change(User, :count)
           end
         end
