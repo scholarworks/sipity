@@ -80,7 +80,10 @@ en:
       success: 'Update successful!'
     processing_state:
       new:
-        label: "You must complete the required todo items before you can submit your work for review."
+        can_advance: "You may submit your work for review when ready."
+        cannot_advance: "You must complete the required todo items before you can submit your work for review."
+      under_review:
+        cannot_advance: "Your submission is under review. You will be notified when it is approved or if any changes are requested by the reviewer."
   sipity/decorators/entitiy_enrichments:
     describe:
       call_to_action: 'Finish describting your work'
