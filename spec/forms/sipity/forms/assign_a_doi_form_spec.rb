@@ -18,6 +18,7 @@ module Sipity
         expect(subject.errors[:identifier]).to_not be_empty
       end
 
+      it { should respond_to :to_processing_entity }
       its(:identifier_key) { should be_a(String) }
       its(:assign_a_doi_form) { should be_a AssignADoiForm }
       its(:request_a_doi_form) { should be_a RequestADoiForm }

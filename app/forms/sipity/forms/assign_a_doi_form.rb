@@ -3,7 +3,7 @@ module Sipity
     # Responsible for capturing and validating the assignment of a DOI that
     # already exists but has not yet been assigned to the SIP
     class AssignADoiForm < BaseForm
-      self.policy_enforcer = Policies::EnrichWorkByFormSubmissionPolicy
+      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)
@@ -17,6 +17,8 @@ module Sipity
 
       validates :work, presence: true
       validates :identifier, presence: true
+
+      delegate :to_processing_entity, to: :work
 
       # TODO: Get this out of here. There is an object that is a better owner of
       # this method. But for now it is here based on a view implementation.

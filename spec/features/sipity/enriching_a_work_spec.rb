@@ -46,7 +46,7 @@ feature 'Enriching a Work', :devise, :feature do
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['do_not_know'])
-      the_page.click_recommendation('DOI')
+      the_page.click_recommendation('assign_a_doi')
     end
 
     on('assign_doi_page') do |the_page|
