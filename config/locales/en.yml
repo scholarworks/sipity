@@ -79,8 +79,11 @@ en:
       failure: 'That update could not be made.'
       success: 'Update successful!'
     processing_state:
-      label:
-        new: "You must complete the required todo items before you can submit your work for review."
+      new:
+        can_advance: "You may submit your work for review when ready."
+        cannot_advance: "You must complete the required todo items before you can submit your work for review."
+      under_review:
+        cannot_advance: "Your submission is under review. You will be notified when it is approved or if any changes are requested by the reviewer."
   sipity/decorators/entitiy_enrichments:
     describe:
       call_to_action: 'Finish describting your work'
@@ -101,6 +104,16 @@ en:
       label: 'Assign a <b>DOI</b>'
     citation:
       label: 'Create a <b>citation</b>'
+  sipity/decorators/resourceful_actions:
+    show:
+      label: 'Show'
+    edit:
+      label: 'Edit'
+    destroy:
+      label: 'Delete'
+  sipity/decorators/state_advancing_actions:
+    submit_for_review:
+      label: 'Submit for Review'
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'

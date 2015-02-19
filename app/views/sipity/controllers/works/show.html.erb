@@ -1,7 +1,7 @@
 <section itemscope itemtype="http://schema.org/CreativeWork" class="container">
   <div class="row">
-    <div class="page-header">
-      <h1 itemprop="name" class="page-title work-title"><%= model.title %>
+    <div class="col-xs-12">
+      <h1 itemprop="name" class="page-header work-title"><%= model.title %>
         <small class="work-type"><%= model.work_type %></small>
       </h1>
     </div>
@@ -20,121 +20,147 @@
             <ul class="item-list">
               <% actions.each do |action| %>
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
-                  <span class="icon-wrapper-24">
+                  <meta itemprop="name" content="enrichment/<%= set %>/<%= action.name %>" />
+                  <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                    <span class="circle">
+                    </span>
                     <% if action.is_complete? %>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="complete-icon"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
                     <% end %>
-                  </span>
-                  <meta itemprop="name" content="enrichment/<%= set %>/<%= action.name %>">
-                  <span itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                    <a itemprop="url" href="<%= action.path %>" class="btn <%= action.button_class %>">
-                      <span itemprop="name"><%= action.label %></span>
-                    </a>
-                  </span>
-                  <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+                    <span itemprop="name" class="item-name"><%= action.label %></span>
+                    <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+                    <a itemprop="url" href="<%= action.path %>" class="todo-item-trigger btn <%= action.button_class %>">Go</a>
+                  </div>
                 </li>
               <% end %>
             </ul>
           </div>
         <% end %>
       </div>
+
+      <div class="work-actions">
+        <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
+        <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
+          <meta itemprop="name" content="work/processing_state" />
+          <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
+          the underlying tests will need to change to find[:content] instead of
+          find.text %>
+          <%
+            state_advancing_actions = model.state_advancing_actions(user: current_user)
+            has_available_actions = state_advancing_actions.select {|action| action.available?}.present?
+
+            if has_available_actions
+              state_advancing_alert_class = 'alert-success'
+              state_advancing_i18n_token = 'can_advance'
+            else
+              state_advancing_alert_class = 'alert-info'
+              state_advancing_i18n_token = 'cannot_advance'
+            end
+          %>
+          <div class="alert <%= state_advancing_alert_class %>">
+            <%= t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+            <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
+          </div>
+          <ul class="action-listing">
+            <% state_advancing_actions.each do |action| %>
+              <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+                <meta itemprop="name" content="event_trigger/<%= action.name %>" />
+                <% if action.available? %>
+                  <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                    <meta itemprop="name" content="<%= action.name %>" />
+                    <a itemprop="url" href="<%= action.path %>" class="btn btn-primary %>">
+                      <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
+                    </a>
+                  </div>
+                <% else %>
+                  <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                    <meta itemprop="name" content="<%= action.name %>" />
+                    <span class="btn btn-default disabled">
+                      <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
+                    </span>
+                  </div>
+                <% end %>
+                <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
     </aside>
 
-
-  <div class="col-sm-6">
-    <article class="panel panel-default work-description">
-      <div class="panel-heading">
-        <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
-        <ul class="action-listing">
-          <%# TODO: Skip the current action if it has the same name %>
-          <% model.resourceful_actions(user: current_user).each do |action| %>
-            <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
-              <meta itemprop="name" content="event_trigger/<%= action.name %>">
-              <% if action.available? %>
-                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                  <a itemprop="url" href="<%= action.path %>">
-                    <span itemprop="name" class="btn btn-default"><%= action.name %></span>
-                  </a>
-                </div>
-              <% else %>
-                <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                  <span itemprop="name" class="btn btn-default disabled"><%= action.name %></span>
-                </div>
-              <% end %>
-              <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
-            </li>
-          <% end %>
-        </ul>
-      </div>
-      <div class="panel-body">
-        <dl class="work attribute-listing">
-          <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-          <dd class="value title"><%= model.title %></dd>
-          <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
-          <dd class="value work-type"><%= model.work_type %></dd>
-          <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
-          <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dd>
-          <% if model.collaborators.any? %>
-            <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
-            <dd class="value collaborators">
-              <ul class="collaborators-list">
-                <% model.collaborators.each do |collaborator| %>
-                  <li class="collaborators-list-item">
-                    <dl class="collaborator">
-                      <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
-                      <dd class="value name"><%= collaborator.name %></dd>
-                      <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
-                      <dd class="value role"><%= collaborator.role %></dd>
-                    </dl>
-                  </li>
-                <% end %>
-              </ul>
-            </dd>
-          <% end %>
-          <% if model.additional_attributes.any? %>
-            <% model.additional_attributes.each do |attribute| %>
-              <dt class="predicate"><%= attribute.key %></dt>
-              <dd class="value"><%= attribute.value %></dd>
+    <div class="col-sm-6">
+      <article class="panel panel-default work-description">
+        <div class="panel-heading">
+          <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
+        </div>
+        <div class="panel-body">
+          <dl class="work attribute-listing">
+            <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
+            <dd class="value title"><%= model.title %></dd>
+            <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
+            <dd class="value work-type"><%= model.work_type %></dd>
+            <dt class="predicate work_publication_strategy"><%= model.human_attribute_name(:work_publication_strategy) %></dt>
+            <dd class="value work_publication_strategy"><%= model.work_publication_strategy %></dd>
+            <% if model.collaborators.any? %>
+              <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
+              <dd class="value collaborators">
+                <ul class="collaborators-list">
+                  <% model.collaborators.each do |collaborator| %>
+                    <li class="collaborators-list-item">
+                      <dl class="collaborator">
+                        <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
+                        <dd class="value name"><%= collaborator.name %></dd>
+                        <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
+                        <dd class="value role"><%= collaborator.role %></dd>
+                      </dl>
+                    </li>
+                  <% end %>
+                </ul>
+              </dd>
             <% end %>
-          <% end %>
-        </dl>
-      </div>
-    </article>
-  </div>
+            <% if model.additional_attributes.any? %>
+              <% model.additional_attributes.each do |attribute| %>
+                <dt class="predicate"><%= attribute.key %></dt>
+                <dd class="value"><%= attribute.value %></dd>
+              <% end %>
+            <% end %>
+          </dl>
+        </div>
+        <%# NOTE: Delete is not presently visible because it is defaulting to the "show" action %>
+        <% resourceful_actions = model.resourceful_actions(user: current_user) %>
+        <% available_resourceful_actions = resourceful_actions.reject{ |action| current_page?(:action => action.name) } %>
+        <% if available_resourceful_actions.present? %>
+          <div class="panel-footer">
+            <ul class="action-listing">
+              <% available_resourceful_actions.each do |action| %>
+                <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+                  <meta itemprop="name" content="event_trigger/<%= action.name %>" />
+                  <% if action.available? %>
+                    <% action_is_dangerous = ( action.name == 'destroy' ) %>
+                    <% button_class = action_is_dangerous ? 'btn-danger' : 'btn-primary' %>
+                    <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                      <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                        <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
+                        <meta itemprop="name" content="<%= action.name %>" />
+                      </a>
+                    </div>
+                  <% else %>
+                    <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+                      <meta itemprop="name" content="<%= action.name %>" />
+                      <span class="btn btn-default disabled">
+                        <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
+                      </span>
+                    </div>
+                  <% end %>
+                  <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+      </article>
+    </div>
 
   </div><!-- /row -->
-
-  <div class="row work-actions">
-    <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
-    <div itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
-      <meta itemprop="name" content="work/processing_state" />
-      <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
-      the underlying tests will need to change to find[:content] instead of
-      find.text %>
-      <p>
-        <%= t("sipity/works.processing_state.label.#{model.processing_state}") %>
-        <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
-      </p>
-      <ul class="action-listing">
-        <% model.state_advancing_actions(user: current_user).each do |action| %>
-          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
-            <meta itemprop="name" content="event_trigger/<%= action.name %>">
-            <% if action.available? %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                <a itemprop="url" href="<%= action.path %>">
-                  <span itemprop="name" class="btn btn-default"><%= action.name %></span>
-                </a>
-              </div>
-            <% else %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                <span itemprop="name" class="btn btn-default disabled"><%= action.name %></span>
-              </div>
-            <% end %>
-            <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div>
 
 </section>

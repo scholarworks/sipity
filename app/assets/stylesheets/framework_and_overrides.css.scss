@@ -83,7 +83,9 @@ section {
   color:#FFEC87;
 }
 
-.page-title {
+.page-header {
+  margin:30px 0;
+
   small.work-type {
     display:block;
     letter-spacing:.15em;
@@ -91,4 +93,14 @@ section {
     font-size:50%;
     padding-top:.5em;
   }
+}
+
+main > section:first-child {
+  margin-top:0;
+}
+
+// Removing the need for containing row and full-width column classes
+.navbar > .container {
+  padding-left:30px;
+  padding-right:30px;
 }
