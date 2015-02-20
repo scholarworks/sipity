@@ -1,12 +1,7 @@
 module Sipity
   module Services
+    # This is what happens when the advisor signs off on a given form.
     class AdvisorSignsOff
-      # REVIEW: Is this the correct way to be thinking about this? I have a
-      #   query that is crossing the boundaries of two systems. But for now
-      #   RED->GREEN->REFACTOR
-      include Queries::CollaboratorQueries
-      include Queries::ProcessingQueries
-
       def initialize(form:, requested_by:, repository:)
         @form = form
         @repository = repository
@@ -16,7 +11,7 @@ module Sipity
       attr_reader :form, :repository, :requested_by
 
       def call
-        if is_last_advisor_to_signoff?
+        if last_advisor_to_signoff?
           handle_last_advisor_signoff
         else
           handle_more_advisors_require_signoff
@@ -24,6 +19,7 @@ module Sipity
       end
 
       private
+
       def handle_last_advisor_signoff
         repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
         repository.send_notification_for_entity_trigger(
@@ -40,10 +36,16 @@ module Sipity
         )
       end
 
-      private
+      def last_advisor_to_signoff?
+        (collaborating_reviewer_usernames - usernames_for_those_that_have_acted).empty?
+      end
 
-      def is_last_advisor_to_signoff?
-        fail NotImplementedError, "Expected #{self.class} to define ##{__method__}"
+      def usernames_for_those_that_have_acted
+        repository.users_that_have_taken_the_action_on_the_entity(entity: form, action: form.action).pluck(:username)
+      end
+
+      def collaborating_reviewer_usernames
+        repository.work_collaborating_users_responsible_for_review(work: form.work).pluck(:username)
       end
     end
   end

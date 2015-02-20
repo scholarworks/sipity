@@ -8,7 +8,7 @@ module Sipity
       subject { described_class.new(form: form, repository: repository, requested_by: requested_by) }
 
       context 'when there are other advisors that have not yet signed-off' do
-        before { expect(subject).to receive(:is_last_advisor_to_signoff?).and_return(false) }
+        before { expect(subject).to receive(:last_advisor_to_signoff?).and_return(false) }
         it 'will NOT change the processing state' do
           expect(repository).to_not receive(:update_processing_state!)
           subject.call
@@ -21,7 +21,7 @@ module Sipity
       end
 
       context 'when this is the last advisor to signoff' do
-        before { expect(subject).to receive(:is_last_advisor_to_signoff?).and_return(true) }
+        before { expect(subject).to receive(:last_advisor_to_signoff?).and_return(true) }
         it 'will change the processing state' do
           expect(repository).to receive(:update_processing_state!).and_call_original
           subject.call
@@ -32,6 +32,28 @@ module Sipity
           expect(repository).to receive(:send_notification_for_entity_trigger).
             with(notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user')
           subject.call
+        end
+      end
+
+      # Even though this is a private method I want to verify my personal logic.
+      context '#last_advisor_to_signoff?' do
+        [
+          { collaborating_reviewer_usernames: ['bob'], usernames_for_those_that_have_acted: ['alice'], expected: false },
+          { collaborating_reviewer_usernames: ['alice'], usernames_for_those_that_have_acted: ['alice'], expected: true },
+          { collaborating_reviewer_usernames: ['alice', 'bob'], usernames_for_those_that_have_acted: ['alice'], expected: false },
+          { collaborating_reviewer_usernames: ['alice', 'bob'], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: true },
+          { collaborating_reviewer_usernames: ['carol', 'bob'], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: false },
+          { collaborating_reviewer_usernames: [], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: true },
+          { collaborating_reviewer_usernames: [], usernames_for_those_that_have_acted: [], expected: true },
+          { collaborating_reviewer_usernames: ['bob'], usernames_for_those_that_have_acted: [], expected: false }
+        ].each_with_index do |example, index|
+          it "will handle #{example.inspect} (Scenario ##{index})" do
+            expect(subject).to receive(:collaborating_reviewer_usernames).
+              and_return(example.fetch(:collaborating_reviewer_usernames))
+            expect(subject).to receive(:usernames_for_those_that_have_acted).
+              and_return(example.fetch(:usernames_for_those_that_have_acted))
+            expect(subject.send(:last_advisor_to_signoff?)).to eq(example.fetch(:expected))
+          end
         end
       end
     end
