@@ -203,6 +203,7 @@ Metrics/PerceivedComplexity:
 
 Metrics/AbcSize:
   Enabled: true
+  Max: 16
   Exclude:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
