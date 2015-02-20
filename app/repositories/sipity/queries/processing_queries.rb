@@ -64,6 +64,7 @@ module Sipity
         user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Sipity::Models::Group)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
+        action = Conversions::ConvertToProcessingAction.call(action, scope: entity)
 
         action_registers_subquery_builder = lambda do |poly_type|
           actors.project(actors[:proxy_for_id]).where(
