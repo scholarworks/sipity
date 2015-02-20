@@ -125,6 +125,15 @@ en:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
+  sipity/forms:
+    error_messages:
+      inclusion: 'Please select an option from the above list.'
+    create_work_form:
+      error_messages:
+        access_rights_answer: 'You must select an option.'
+        title: 'You must provide a title.'
+        work_publication_strategy: 'Please declare your intent to publish this work.'
+        work_type: 'Please select a work type.'
   simple_form:
     labels:
       doi:
