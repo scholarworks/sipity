@@ -34,20 +34,9 @@ module Sipity
         end
         alias_method :default_processing_action_name, :enrichment_type
 
+        include Conversions::ConvertToProcessingAction
         def action=(value)
-          @action = convert_to_processing_action(value)
-        end
-
-        # HACK: In a perfect world I would not need to convert the action;
-        # However to comply with the previous interface, this needs to be done.work_event_triggers_spec.rb
-        def convert_to_processing_action(object)
-          if object.is_a?(Models::Processing::StrategyAction)
-            return object if object.strategy_id == strategy_id
-          else
-            strategy_action = Models::Processing::StrategyAction.find_by(strategy_id: strategy_id, name: object.to_s)
-            return strategy_action if strategy_action.present?
-          end
-          fail Exceptions::ProcessingStrategyActionConversionError, { strategy_id: strategy_id, name: object }.inspect
+          @action = convert_to_processing_action(value, scope: to_processing_entity)
         end
       end
     end

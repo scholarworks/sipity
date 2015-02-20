@@ -15,8 +15,6 @@ module Sipity
       end
       attr_reader :entity, :action, :requesting_actor
 
-      delegate :strategy, to: :entity
-
       def call
         # TODO: Tease apart the requested_by and on_behalf_of
         Models::Processing::EntityActionRegister.create!(
@@ -33,22 +31,13 @@ module Sipity
         @entity = convert_to_processing_entity(entity_like_object)
       end
 
+      include Conversions::ConvertToProcessingAction
       def action=(object)
-        @action = convert_to_processing_action(strategy, object)
+        @action = convert_to_processing_action(object, scope: entity)
       end
 
       def requesting_actor=(actor_like_object)
         @requesting_actor = convert_to_processing_actor(actor_like_object)
-      end
-
-      def convert_to_processing_action(strategy, object)
-        if object.is_a?(Models::Processing::StrategyAction)
-          return object if object.strategy_id == strategy.id
-        else
-          strategy_action = Models::Processing::StrategyAction.where(strategy_id: strategy.id, name: object.to_s).first
-          return strategy_action if strategy_action.present?
-        end
-        fail Exceptions::ProcessingStrategyActionConversionError, { strategy_id: strategy.id, name: object }.inspect
       end
     end
   end
