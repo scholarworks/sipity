@@ -22,6 +22,10 @@ module Sipity
       end
       module_function :work_collaborator_names_for
       public :work_collaborator_names_for
+
+      def work_collaborators_responsible_for_review(work:)
+        Models::Collaborator.includes(:work).where(work: work, responsible_for_review: true)
+      end
     end
   end
 end
