@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe WorkEnrichmentForm do
+    RSpec.describe ProcessingActionForm do
       let(:work) { Models::Work.new(id: '1234') }
       subject { described_class.new(work: work) }
 
@@ -11,7 +11,20 @@ module Sipity
       its(:to_param) { should be_nil }
       its(:persisted?) { should eq(false) }
 
-      it { should respond_to :to_processing_entity }
+      context 'the processing entity vs. "entity" differentiation' do
+        let(:strategy) { Models::Processing::Strategy.new(id: 1) }
+        let(:processing_entity) { Models::Processing::Entity.new(strategy_id: strategy.id, strategy: strategy) }
+        before do
+          allow(work).to receive(:to_processing_entity).and_return(processing_entity)
+        end
+        its(:to_processing_entity) { should eq(processing_entity) }
+        its(:strategy) { should eq(processing_entity.strategy) }
+        its(:strategy_id) { should eq(processing_entity.strategy_id) }
+      end
+
+      it 'will require subclasses to implement their :enrichment_type' do
+        expect { subject.enrichment_type }.to raise_error(NotImplementedError)
+      end
 
       context 'validations' do
         it 'will require a work' do
@@ -42,6 +55,7 @@ module Sipity
 
           before do
             expect(subject).to receive(:valid?).and_return(true)
+            expect(subject).to receive(:enrichment_type).and_return('__not_implemented__')
           end
 
           it 'will return the work' do

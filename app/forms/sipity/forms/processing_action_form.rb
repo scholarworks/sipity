@@ -27,13 +27,17 @@ module Sipity
 
       attr_reader :work
       delegate :to_processing_entity, to: :work
-      alias_method :entity, :work
+      delegate :strategy_id, :strategy, to: :to_processing_entity
 
       validates :work, presence: true
 
       def submit(repository:, requested_by:)
         return false unless valid?
         save(repository: repository, requested_by: requested_by)
+      end
+
+      def enrichment_type
+        fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
 
       private
@@ -47,10 +51,6 @@ module Sipity
 
       def event_name
         File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
-      end
-
-      def enrichment_type
-        fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
     end
   end
