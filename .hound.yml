@@ -207,10 +207,7 @@ Metrics/AbcSize:
   Exclude:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
-     - app/repositories/sipity/queries/permission_queries.rb
-     - app/repositories/sipity/queries/notification_queries.rb
-     - app/repositories/sipity/queries/enrichment_queries.rb
-     - app/repositories/sipity/queries/processing_queries.rb
+     - app/repositories/sipity/queries/*.rb
      - 'app/state_machines/sipity/state_machines/state_diagram.rb'
 
 DefWithParentheses:
