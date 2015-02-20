@@ -47,6 +47,51 @@ module Sipity
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
+      # * Any user that has taken the action (or someone has taken it on their
+      #   behalf)
+      # * Any user that is part of a group that has taken the action (you know,
+      #   because maybe we'll allow groups to take the action)
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
+      #   given the entity
+      # @return ActiveRecord::Relation<User>
+      def users_that_have_taken_the_action_on_the_entity(entity:, action:)
+        users = User.arel_table
+        actors = Models::Processing::Actor.arel_table
+        group_memberships = Models::GroupMembership.arel_table
+        action_registers = Models::Processing::EntityActionRegister.arel_table
+        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Sipity::Models::Group)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+
+        action_registers_subquery_builder = lambda do |poly_type|
+          actors.project(actors[:proxy_for_id]).where(
+            actors[:proxy_for_type].eq(poly_type)
+          ).join(action_registers).on(
+            action_registers[:on_behalf_of_actor_id].eq(actors[:proxy_for_id])
+          ).where(
+            action_registers[:strategy_action_id].eq(action.id).
+            and(action_registers[:entity_id].eq(entity.id))
+          )
+        end
+
+        User.where(
+          users[:id].in(action_registers_subquery_builder.call(user_polymorphic_type)
+          ).or(
+            users[:id].in(
+              group_memberships.project(group_memberships[:user_id]).where(
+                group_memberships[:group_id].in(action_registers_subquery_builder.call(group_polymorphic_type))
+              )
+            )
+          )
+        )
+      end
+
+      # @api public
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
       # * Any unguarded actions
       # * Any guarded action that has had all of its prerequisites completed
       # * Only actions permitted to the user

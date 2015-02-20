@@ -324,6 +324,25 @@ module Sipity
         end
       end
 
+      context '#users_that_have_taken_the_action_on_the_entity' do
+        subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
+        it "will include permitted strategy_state_actions" do
+          user = User.create!(username: 'user')
+          other_user = User.create!(username: 'another_user')
+          groupy = User.create!(username: 'groupy')
+          Models::GroupMembership.create(user_id: groupy.id, group_id: group.id)
+          Conversions::ConvertToProcessingActor.call(user)
+          Conversions::ConvertToProcessingActor.call(other_user)
+          Conversions::ConvertToProcessingActor.call(group)
+          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
+          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
+          expect(subject).to eq([user, groupy])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
       context '#authorized_for_processing?' do
         it 'will return a boolean based on underlying interactions' do
           expect(test_repository).to receive(:scope_permitted_strategy_actions_available_for_current_state).and_call_original

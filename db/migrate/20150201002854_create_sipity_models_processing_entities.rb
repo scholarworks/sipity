@@ -4,7 +4,7 @@ class CreateSipityModelsProcessingEntities < ActiveRecord::Migration
       t.integer :proxy_for_id, null: false
       t.string :proxy_for_type, null: false
       t.integer :strategy_id, null: false
-      t.string :strategy_state_id, null: false
+      t.integer :strategy_state_id, null: false
 
       t.timestamps null: false
     end
