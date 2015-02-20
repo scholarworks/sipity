@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150219203525) do
+ActiveRecord::Schema.define(version: 20150220152602) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -171,12 +171,16 @@ ActiveRecord::Schema.define(version: 20150219203525) do
   add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id"
 
   create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
-    t.integer  "strategy_action_id", null: false
-    t.integer  "entity_id",          null: false
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.integer  "strategy_action_id",    null: false
+    t.integer  "entity_id",             null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.integer  "requested_by_actor_id", null: false
+    t.integer  "on_behalf_of_actor_id", null: false
   end
 
+  add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "on_behalf_of_actor_id"], name: "sipity_processing_entity_action_registers_on_behalf"
+  add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "requested_by_actor_id"], name: "sipity_processing_entity_action_registers_requested"
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate"
 
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|

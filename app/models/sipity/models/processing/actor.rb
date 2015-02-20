@@ -16,6 +16,18 @@ module Sipity
         belongs_to :proxy_for, polymorphic: true
         has_many :strategy_responsibilities, dependent: :destroy
         has_many :entity_specific_responsibilities, dependent: :destroy
+        has_many(
+          :actions_that_were_requested_by_me,
+          dependent: :destroy,
+          foreign_key: 'requested_by_actor_id',
+          class_name: "Sipity::Models::Processing::EntityActionRegister"
+        )
+        has_many(
+          :actions_that_an_actor_took_on_my_behalf,
+          dependent: :destroy,
+          foreign_key: 'on_behalf_of_actor_id',
+          class_name: "Sipity::Models::Processing::EntityActionRegister"
+        )
       end
     end
   end

@@ -11,6 +11,8 @@ module Sipity
 
         belongs_to :entity
         belongs_to :strategy_action
+        belongs_to :requested_by_actor, class_name: 'Sipity::Models::Processing::Actor'
+        belongs_to :on_behalf_of_actor, class_name: 'Sipity::Models::Processing::Actor'
       end
     end
   end
