@@ -1,7 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.3.5'
-set :default_environment, {
-  'PATH' => "/opt/ruby/current/bin:$PATH"
+set :default_env, {
+  path: "/opt/ruby/current/bin:$PATH"
 }
 set :bundle_roles, [:app, :work]
 set :bundle_flags, "--deployment --path=vendor/bundle"
@@ -21,28 +21,33 @@ set :secret_repo_name, Proc.new{
   when 'production' then 'secret_prod'
   end
 }
-SSHKit.config.command_map[:bundle] = '/opt/ruby/current/bin/bundle'
-SSHKit.config.command_map[:rake] = "#{fetch(:bundle)} exec rake"
+
 namespace :deploy do
 
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
       # Your restart mechanism here, for example:
-       execute "touch #{release_path}/tmp/restart.txt"
+      execute "touch #{release_path}/tmp/restart.txt"
     end
   end
 
   task :db_create do
     on roles(:app) do
-      execute :rake, 'db:create'
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:create"
+        end
+      end
     end
   end
 
   task :db_migrate do
     on roles(:app) do
       within release_path do
-        execute "export PATH=/opt/ruby/current/bin:$PATH && cd #{release_path} && bundle exec rake RAILS_ENV=#{fetch(:rails_env)} db:migrate"
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:migrate"
+        end
       end
     end
   end
@@ -50,7 +55,20 @@ namespace :deploy do
   task :precompile_assets do
     on roles(:app) do
       within release_path do
-        execute "export PATH=/opt/ruby/current/bin:$PATH && cd #{release_path} && /opt/ruby/current/bin/bundle exec rake RAILS_ENV=#{fetch(:rails_env)} assets:precompile"
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "assets:precompile"
+        end
+      end
+    end
+  end
+
+  desc 'Seed the database'
+  task :db_seed do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:seed"
+        end
       end
     end
   end
