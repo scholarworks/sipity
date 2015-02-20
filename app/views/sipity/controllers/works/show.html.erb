@@ -15,26 +15,28 @@
       <div class="todo">
         <% model.enrichment_actions(user: current_user).each do |set, actions| %>
         <%# TODO: the set should be an object not a string; That object should have I18n %>
-          <div class="item-set">
-            <h3 class="set-title"><%= set.titleize %></h3>
-            <ul class="item-list">
-              <% actions.each do |action| %>
-                <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
-                  <meta itemprop="name" content="enrichment/<%= set %>/<%= action.name %>" />
-                  <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-                    <span class="circle">
-                    </span>
-                    <% if action.is_complete? %>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="complete-icon"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                    <% end %>
-                    <span itemprop="name" class="item-name"><%= action.label %></span>
-                    <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
-                    <a itemprop="url" href="<%= action.path %>" class="todo-item-trigger btn <%= action.button_class %>">Go</a>
-                  </div>
-                </li>
-              <% end %>
-            </ul>
-          </div>
+          <% if actions.present? %>
+            <div class="item-set">
+              <h3 class="set-title"><%= set.titleize %></h3>
+              <ul class="item-list">
+                <% actions.each do |action| %>
+                  <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item <%= action.state %>">
+                    <meta itemprop="name" content="enrichment/<%= set %>/<%= action.name %>" />
+                    <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+                      <span class="circle">
+                      </span>
+                      <% if action.is_complete? %>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="complete-icon"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                      <% end %>
+                      <span itemprop="name" class="item-name"><%= action.label %></span>
+                      <span class="visuallyhidden">is <span itemprop="actionStatus"><%= action.state %></span></span>
+                      <a itemprop="url" href="<%= action.path %>" class="todo-item-trigger btn <%= action.button_class %>">Go</a>
+                    </div>
+                  </li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
         <% end %>
       </div>
 
