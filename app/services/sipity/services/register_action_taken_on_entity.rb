@@ -3,20 +3,28 @@ module Sipity
     # Service object that handles the business logic of granting permission.
     class RegisterActionTakenOnEntity
       include Conversions::ConvertToProcessingEntity
-      def self.call(entity:, action:)
-        new(entity: entity, action: action).call
+      include Conversions::ConvertToProcessingActor
+      def self.call(entity:, action:, requested_by:)
+        new(entity: entity, action: action, requested_by: requested_by).call
       end
 
-      def initialize(entity:, action:)
+      def initialize(entity:, action:, requested_by:)
         self.entity = entity
         self.action = action
+        self.requesting_actor = requested_by
       end
-      attr_reader :entity, :action
+      attr_reader :entity, :action, :requesting_actor
 
       delegate :strategy, to: :entity
 
       def call
-        Models::Processing::EntityActionRegister.create!(strategy_action_id: action.id, entity_id: entity.id)
+        # TODO: Tease apart the requested_by and on_behalf_of
+        Models::Processing::EntityActionRegister.create!(
+          strategy_action_id: action.id,
+          entity_id: entity.id,
+          requested_by_actor_id: requesting_actor.id,
+          on_behalf_of_actor_id: requesting_actor.id
+        )
       end
 
       private
@@ -27,6 +35,10 @@ module Sipity
 
       def action=(object)
         @action = convert_to_processing_action(strategy, object)
+      end
+
+      def requesting_actor=(actor_like_object)
+        @requesting_actor = convert_to_processing_actor(actor_like_object)
       end
 
       def convert_to_processing_action(strategy, object)
