@@ -13,7 +13,17 @@ en:
     options:
       defaults:
         work_publication_strategy:
-          will_not_publish: 'I Refuse to Publish This!'
+          will_not_publish_html: 'I have <i>no plans to publish</i> this work in the future.'
+          already_published: 'I have already published this work.'
+          going_to_publish_html: 'I <i>am planning on publishing</i> this work in the future.'
+          do_not_know: 'I don’t know.'
+        work_type:
+          etd: 'ETD'
+        access_rights_answer:
+          open_access: 'Open Access: freely viewable to the world'
+          restricted_access: 'Restrict access to specific groups or people'
+          private_access: 'Only viewable to myself and content reviewers'
+          access_changes_over_time: 'It will change over time e.g. Private now and Open Access in 3 years.'
     # Labels and hints examples
     # labels:
     #   defaults:
