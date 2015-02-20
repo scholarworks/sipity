@@ -108,7 +108,7 @@ en:
     collaborators:
       label: "Itentify your <b>collaborators</b> on this %{entity_type}"
     assign_a_doi:
-      label: 'Assign a <b>DOI</b>'
+      label: 'Assign a <b><abbr title="Digital Object Identifier">DOI</abbr></b>'
     assign_a_citation:
       label: 'Create a <b>citation</b>'
   sipity/decorators/resourceful_actions:
