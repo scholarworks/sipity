@@ -14,6 +14,20 @@ module Sipity
         end
       end
 
+      context '#work_collaborating_users_responsible_for_review' do
+        subject { test_repository.work_collaborating_users_responsible_for_review(work: work) }
+        it { should be_a(ActiveRecord::Relation) }
+        # A bit of a sanity check that I have a User relationship
+        it { expect(subject.arel_table.table_name).to eq('users') }
+      end
+
+      context '#work_collaborators_responsible_for_review' do
+        subject { test_repository.work_collaborators_responsible_for_review(work: work) }
+        it { should be_a(ActiveRecord::Relation) }
+        # A bit of a sanity check that my primary table is sipity_collaborators
+        it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }
+      end
+
       context '.work_collaborators_for' do
         it 'returns the collaborators for the given work and role' do
           Models::Collaborator.create!(work: work, role: 'author', name: 'jeremy')

@@ -22,6 +22,23 @@ module Sipity
       end
       module_function :work_collaborator_names_for
       public :work_collaborator_names_for
+
+      def work_collaborators_responsible_for_review(work:)
+        Models::Collaborator.includes(:work).where(work: work, responsible_for_review: true)
+      end
+
+      def work_collaborating_users_responsible_for_review(work:)
+        collaborators_scope = work_collaborators_responsible_for_review(work: work)
+        User.where(
+          User.arel_table[:username].in(
+            collaborators_scope.arel_table.project(
+              collaborators_scope.arel_table[:netid]
+            ).where(
+              collaborators_scope.constraints.reduce.and(collaborators_scope.arel_table[:netid].not_eq(nil))
+            )
+          )
+        )
+      end
     end
   end
 end
