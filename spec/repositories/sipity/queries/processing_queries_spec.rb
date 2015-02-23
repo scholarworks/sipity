@@ -324,6 +324,12 @@ module Sipity
         end
       end
 
+      context '#usernames_of_those_that_have_taken_the_action_on_the_entity' do
+        subject { test_repository.usernames_of_those_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
+        it "will be an enumerable" do
+          expect(subject).to be_a(Enumerable)
+        end
+      end
       context '#users_that_have_taken_the_action_on_the_entity' do
         subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
         it "will include permitted strategy_state_actions" do

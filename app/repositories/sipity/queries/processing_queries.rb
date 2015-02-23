@@ -45,6 +45,15 @@ module Sipity
 
       # @api public
       #
+      # @see #users_that_have_taken_the_action_on_the_entity
+      #
+      # @return Array of usernames
+      def usernames_of_those_that_have_taken_the_action_on_the_entity(entity:, action:)
+        users_that_have_taken_the_action_on_the_entity(entity: entity, action: action).pluck(:username)
+      end
+
+      # @api public
+      #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
       # * Any user that has taken the action (or someone has taken it on their
