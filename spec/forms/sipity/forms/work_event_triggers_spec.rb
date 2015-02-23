@@ -6,6 +6,7 @@ module Sipity
       context '#find_event_trigger_form_builder' do
         [
           ['submit_for_review', Etd::SubmitForReviewForm],
+          ['advisor_signoff', Etd::AdvisorSignoffForm],
           ['something_else', WorkEventTriggerForm]
         ].each_with_index do |(processing_action_name, form_class), index|
           it "will return #{form_class} for processing_action_name: #{processing_action_name} (Scenario ##{index}" do
