@@ -245,13 +245,9 @@ module Sipity
 
       context '#scope_strategy_actions_with_completed_prerequisites' do
         subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity) }
-        let(:guarded_action) do
-          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
-        end
-        let(:other_guarded_action) do
-          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
-        end
         it "will include permitted strategy_state_actions" do
+          other_guarded_action = Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
+          guarded_action = Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
           action.save unless action.persisted?
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
