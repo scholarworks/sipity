@@ -35,7 +35,6 @@ Rails.application.routes.draw do
     end
   end
 
-  mount Upmin::Engine => '/admin'
   root to: 'visitors#index'
   devise_for :users
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
