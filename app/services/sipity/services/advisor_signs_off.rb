@@ -2,7 +2,11 @@ module Sipity
   module Services
     # This is what happens when the advisor signs off on a given form.
     class AdvisorSignsOff
-      def initialize(form:, requested_by:, repository:)
+      def self.call(*args)
+        new(*args).call
+      end
+
+      def initialize(form:, requested_by:, repository: default_repository)
         @form = form
         @repository = repository
         @requested_by = requested_by
@@ -19,6 +23,10 @@ module Sipity
       end
 
       private
+
+      def default_repository
+        CommandRepository.new
+      end
 
       def handle_last_advisor_signoff
         repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
@@ -41,11 +49,11 @@ module Sipity
       end
 
       def usernames_for_those_that_have_acted
-        repository.users_that_have_taken_the_action_on_the_entity(entity: form, action: form.action).pluck(:username)
+        repository.usernames_of_those_that_have_taken_the_action_on_the_entity(entity: form, action: form.action)
       end
 
       def collaborating_reviewer_usernames
-        repository.work_collaborating_users_responsible_for_review(work: form.work).pluck(:username)
+        repository.usernames_of_those_that_are_collaborating_and_responsible_for_review(work: form.work)
       end
     end
   end

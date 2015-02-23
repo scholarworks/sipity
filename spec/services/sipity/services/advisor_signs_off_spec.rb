@@ -7,6 +7,14 @@ module Sipity
 
       subject { described_class.new(form: form, repository: repository, requested_by: requested_by) }
 
+      context '.call' do
+        it 'is a wrapper' do
+          expect_any_instance_of(described_class).to receive(:initialize)
+          expect_any_instance_of(described_class).to receive(:call)
+          described_class.call(form: form, repository: repository, requested_by: requested_by)
+        end
+      end
+
       context 'when there are other advisors that have not yet signed-off' do
         before { expect(subject).to receive(:last_advisor_to_signoff?).and_return(false) }
         it 'will NOT change the processing state' do
@@ -54,6 +62,20 @@ module Sipity
               and_return(example.fetch(:usernames_for_those_that_have_acted))
             expect(subject.send(:last_advisor_to_signoff?)).to eq(example.fetch(:expected))
           end
+        end
+      end
+
+      context 'default repository' do
+        let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'submit_for_review', work: double) }
+        subject { described_class.new(form: form, requested_by: requested_by) }
+        it 'exposes #usernames_of_those_that_have_taken_the_action_on_the_entity' do
+          expect(subject.send(:repository)).to receive(:usernames_of_those_that_have_taken_the_action_on_the_entity)
+          subject.send(:usernames_for_those_that_have_acted)
+        end
+
+        it 'exposes #usernames_of_those_that_are_collaborating_and_responsible_for_review' do
+          expect(subject.send(:repository)).to receive(:usernames_of_those_that_are_collaborating_and_responsible_for_review)
+          subject.send(:collaborating_reviewer_usernames)
         end
       end
     end
