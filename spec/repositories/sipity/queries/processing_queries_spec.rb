@@ -263,6 +263,25 @@ module Sipity
         end
       end
 
+      context '#scope_strategy_actions_with_incomplete_prerequisites' do
+        subject { test_repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity) }
+        context 'with some but not all of the prerequisites completed' do
+          before do
+            Sipity::SpecSupport.load_database_seeds!(
+              seeds_path: 'spec/fixtures/seeds/scope_strategy_actions_with_incomplete_prerequisites.rb'
+            )
+          end
+          let(:entity) { Sipity::Models::Processing::Entity.first! }
+          let(:incomplete_action) { Sipity::Models::Processing::StrategyAction.find_by(name: 'submit_for_review', strategy_id: entity.strategy_id) }
+          it 'will return only the actions with all prerequisites completed' do
+            expect(subject).to eq([incomplete_action])
+          end
+          it "will be a chainable scope" do
+            expect(subject).to be_a(ActiveRecord::Relation)
+          end
+        end
+      end
+
       context '#scope_strategy_actions_without_prerequisites' do
         subject { test_repository.scope_strategy_actions_without_prerequisites(entity: entity) }
         let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_prereq') }

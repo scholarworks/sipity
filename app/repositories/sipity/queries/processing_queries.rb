@@ -34,16 +34,6 @@ module Sipity
       end
 
       # @api public
-      def are_all_of_the_required_todo_items_done_for_work?(work:)
-        # TODO: Convert this into a single query instead of three queries.
-        (
-          scope_strategy_actions_for_current_state(entity: work).pluck(:id) -
-          scope_strategy_actions_with_completed_prerequisites(entity: work).pluck(:id) -
-          scope_strategy_actions_without_prerequisites(entity: work).pluck(:id)
-        ).empty?
-      end
-
-      # @api public
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
@@ -475,6 +465,35 @@ module Sipity
         actions.where(
           actions.arel_table[:strategy_id].eq(entity.strategy_id).
           and(actions.arel_table[:id].in(completed_guarded_actions_subquery))
+        )
+      end
+
+      # @api private
+      #
+      # For the given :entity return an ActiveRecord::Relation that when
+      # resolved will be only the strategy actions that:
+      #
+      # * Has at least one prerequisite
+      # * And at least one of those prerequisites is incomplete
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      def scope_strategy_actions_with_incomplete_prerequisites(entity:)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        actions = Models::Processing::StrategyAction
+        prerequisites = Models::Processing::StrategyActionPrerequisite.arel_table
+        registers = Models::Processing::EntityActionRegister.arel_table
+
+        incomplete_prerequisites_subquery = prerequisites.project(prerequisites[:guarded_strategy_action_id]).join(registers,Arel::Nodes::OuterJoin).on(
+          registers[:entity_id].eq(entity.id).and(
+            registers[:strategy_action_id].eq(prerequisites[:prerequisite_strategy_action_id])
+          )
+        ).where(registers[:strategy_action_id].eq(nil))
+
+        actions.where(
+          actions.arel_table[:strategy_id].eq(entity.strategy_id).and(
+            actions.arel_table[:id].in(incomplete_prerequisites_subquery)
+          )
         )
       end
 
