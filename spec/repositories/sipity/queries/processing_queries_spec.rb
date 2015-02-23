@@ -246,7 +246,9 @@ module Sipity
       context '#scope_strategy_actions_with_completed_prerequisites' do
         subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity) }
         it "will include permitted strategy_state_actions" do
-          other_guarded_action = Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
+          other_guarded_action = Models::Processing::StrategyAction.find_or_create_by!(
+            strategy_id: strategy.id, name: 'without_completed_prereq'
+          )
           guarded_action = Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
           action.save unless action.persisted?
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
@@ -272,7 +274,9 @@ module Sipity
             )
           end
           let(:entity) { Sipity::Models::Processing::Entity.first! }
-          let(:incomplete_action) { Sipity::Models::Processing::StrategyAction.find_by(name: 'submit_for_review', strategy_id: entity.strategy_id) }
+          let(:incomplete_action) do
+            Sipity::Models::Processing::StrategyAction.find_by(name: 'submit_for_review', strategy_id: entity.strategy_id)
+          end
           it 'will return only the actions with all prerequisites completed' do
             expect(subject).to eq([incomplete_action])
           end

@@ -484,7 +484,9 @@ module Sipity
         prerequisites = Models::Processing::StrategyActionPrerequisite.arel_table
         registers = Models::Processing::EntityActionRegister.arel_table
 
-        incomplete_prerequisites_subquery = prerequisites.project(prerequisites[:guarded_strategy_action_id]).join(registers,Arel::Nodes::OuterJoin).on(
+        incomplete_prerequisites_subquery = prerequisites.project(prerequisites[:guarded_strategy_action_id]).join(
+          registers, Arel::Nodes::OuterJoin
+        ).on(
           registers[:entity_id].eq(entity.id).and(
             registers[:strategy_action_id].eq(prerequisites[:prerequisite_strategy_action_id])
           )
