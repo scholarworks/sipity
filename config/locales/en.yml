@@ -27,6 +27,8 @@ en:
       sipity/models/work:
         access_rights_answer: 'Access rights'
         work_publication_strategy: 'Publication intent'
+        publicationDate: 'Publication Date'
+        citationType: 'Citation Style'
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Sipty'
