@@ -9,6 +9,7 @@ module Sipity
         # However, to get things moving this will be an adequate short-cut
         case options.fetch(:processing_action_name)
         when 'submit_for_review' then Etd::SubmitForReviewForm
+        when 'advisor_signoff' then Etd::AdvisorSignoffForm
         else
           WorkEventTriggerForm
         end

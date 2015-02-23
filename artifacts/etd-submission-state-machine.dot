@@ -23,7 +23,7 @@ digraph "G" {
             label="Events"
             node[shape="record" shape=record penwidth=1]
             submit_for_advisor_signoff[label="{ Event: submit_for_advisor_signoff | Available To: Student | Send email to Grad School, Student, Advisor | Grant advisor, etd_reviewers Permission | State: :under_advisor_review }"]
-            advisor_signs_off[label="{ Event: advisor_signs_off | Available To: Advisor, Grad School |Send email to Grad School, Student Advisor | State: :under_grad_school_review }"]
+            advisor_signoff[label="{ Event: advisor_signoff | Available To: Advisor, Grad School |Send email to Grad School, Student Advisor | State: :under_grad_school_review }"]
             advisor_requests_changes[label="{ Event: advisor_requests_changes | Available To: Advisor, Grad School | Send email to Grad School, Student Advisor | State: :advisor_changes_requested }"]
             student_submits_advisor_requested_changes[label="{ Event: student_submits_advisor_requested_changes | Available To: Student | Send email to Grad School, Student, Student Advisor | State: :under_advisor_review }"]
             request_revisions[label="{ Event: request_revisions | Available To: Grad School | Send email to student with comments | State: :under_grad_school_review }"]
@@ -34,7 +34,7 @@ digraph "G" {
 
         # State -> Event -> State graph
         new -> submit_for_advisor_signoff -> under_advisor_review
-        under_advisor_review -> advisor_signs_off -> under_grad_school_review
+        under_advisor_review -> advisor_signoff -> under_grad_school_review
         under_advisor_review -> advisor_requests_changes -> advisor_changes_requested
         advisor_changes_requested -> student_submits_advisor_requested_changes -> under_advisor_review
         under_grad_school_review -> request_revisions -> under_grad_school_review
