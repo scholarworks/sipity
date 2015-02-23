@@ -56,6 +56,7 @@ group :development do
   gem 'pry-rails'
   gem 'pry-byebug'
   gem 'letter_opener'
+  gem 'seed_dump'
 end
 
 group :development, :test do

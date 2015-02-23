@@ -357,6 +357,9 @@ GEM
       sass (~> 3.2.2)
       sprockets (~> 2.8, < 3.0)
       sprockets-rails (~> 2.0)
+    seed_dump (3.2.1)
+      activerecord (~> 4)
+      activesupport (~> 4)
     selenium-webdriver (2.44.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
@@ -492,6 +495,7 @@ DEPENDENCIES
   rspec-rails
   rubocop
   sass-rails (~> 4.0.3)
+  seed_dump
   selenium-webdriver
   simple_form
   simplecov
