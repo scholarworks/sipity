@@ -3,13 +3,14 @@ module Sipity
     module Etd
       # Responsible for submitting the associated entity to the advisor
       # for signoff.
-      class SubmitForReviewForm < ProcessingActionForm
+      class AdvisorSignoffForm < ProcessingActionForm
         def initialize(attributes = {})
           super
           self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }
+          @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
         end
 
-        attr_reader :action
+        attr_reader :action, :signoff_service
 
         def processing_action_name
           action.name
@@ -17,15 +18,14 @@ module Sipity
 
         private
 
+        private :signoff_service
+        def default_signoff_service
+          Services::AdvisorSignsOff
+        end
+
         def save(repository:, requested_by:)
           super do
-            repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
-            repository.send_notification_for_entity_trigger(
-              notification: "confirmation_of_entity_submitted_for_review", entity: work, acting_as: 'creating_user'
-            )
-            repository.send_notification_for_entity_trigger(
-              notification: "entity_ready_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
-            )
+            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
           end
         end
 

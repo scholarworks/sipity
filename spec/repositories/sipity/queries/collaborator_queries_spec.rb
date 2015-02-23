@@ -14,6 +14,11 @@ module Sipity
         end
       end
 
+      context '#usernames_of_those_that_are_collaborating_and_responsible_for_review' do
+        subject { test_repository.usernames_of_those_that_are_collaborating_and_responsible_for_review(work: work) }
+        it { should be_a(Enumerable) }
+      end
+
       context '#work_collaborating_users_responsible_for_review' do
         subject { test_repository.work_collaborating_users_responsible_for_review(work: work) }
         it { should be_a(ActiveRecord::Relation) }

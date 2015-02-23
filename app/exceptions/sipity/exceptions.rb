@@ -89,6 +89,11 @@ module Sipity
       self.conversion_target = 'Models::Processing::StrategyState'
     end
 
+    # Unable to convert the given object into a processing strategy id
+    class ProcessingStrategyIdConversionError < ProcessingConversionError
+      self.conversion_target = 'Models::Processing::Strategy#id'
+    end
+
     # Unable to convert the given object into a processing strategy action
     class ProcessingStrategyActionConversionError < ProcessingConversionError
       self.conversion_target = 'Models::Processing::StrategyAction'

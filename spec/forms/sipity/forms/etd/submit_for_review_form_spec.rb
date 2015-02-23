@@ -16,22 +16,6 @@ module Sipity
             subject = described_class.new(work: work, processing_action_name: action)
             expect(subject.action).to eq(action)
           end
-
-          it 'will attempt to find the action based on name and strategy' do
-            expect(Models::Processing::StrategyAction).to receive(:find_by).
-              with(name: 'submit_for_review', strategy_id: processing_entity.strategy_id).
-              and_return(action)
-            subject = described_class.new(work: work, processing_action_name: 'submit_for_review')
-            expect(subject.action).to eq(action)
-          end
-
-          it 'will choke if the name is not found' do
-            expect(Models::Processing::StrategyAction).to receive(:find_by).
-              with(name: 'submit_for_review', strategy_id: processing_entity.strategy_id).
-              and_return(nil)
-            expect { described_class.new(work: work, processing_action_name: 'submit_for_review') }.
-              to raise_error(Exceptions::ProcessingStrategyActionConversionError)
-          end
         end
 
         it 'will log the event' do
