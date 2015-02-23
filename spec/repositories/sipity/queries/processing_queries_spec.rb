@@ -245,13 +245,11 @@ module Sipity
 
       context '#scope_strategy_actions_with_completed_prerequisites' do
         subject { test_repository.scope_strategy_actions_with_completed_prerequisites(entity: entity) }
-        let(:guarded_action) do
-          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
-        end
-        let(:other_guarded_action) do
-          Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'without_completed_prereq')
-        end
         it "will include permitted strategy_state_actions" do
+          other_guarded_action = Models::Processing::StrategyAction.find_or_create_by!(
+            strategy_id: strategy.id, name: 'without_completed_prereq'
+          )
+          guarded_action = Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'with_completed_prereq')
           action.save unless action.persisted?
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
@@ -264,6 +262,27 @@ module Sipity
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#scope_strategy_actions_with_incomplete_prerequisites' do
+        subject { test_repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity) }
+        context 'with some but not all of the prerequisites completed' do
+          before do
+            Sipity::SpecSupport.load_database_seeds!(
+              seeds_path: 'spec/fixtures/seeds/scope_strategy_actions_with_incomplete_prerequisites.rb'
+            )
+          end
+          let(:entity) { Sipity::Models::Processing::Entity.first! }
+          let(:incomplete_action) do
+            Sipity::Models::Processing::StrategyAction.find_by(name: 'submit_for_review', strategy_id: entity.strategy_id)
+          end
+          it 'will return only the actions with all prerequisites completed' do
+            expect(subject).to eq([incomplete_action])
+          end
+          it "will be a chainable scope" do
+            expect(subject).to be_a(ActiveRecord::Relation)
+          end
         end
       end
 

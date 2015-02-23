@@ -26,10 +26,10 @@ module Sipity
         end
 
         def query_for_availability_state
-          if repository.are_all_of_the_required_todo_items_done_for_work?(work: entity)
-            ACTION_AVAILABLE
-          else
+          if repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity).include?(action)
             ACTION_UNAVAILABLE
+          else
+            ACTION_AVAILABLE
           end
         end
       end
