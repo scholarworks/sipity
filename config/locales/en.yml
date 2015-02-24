@@ -111,11 +111,13 @@ en:
       attach: 'Attach files'
       defense_date: 'Defense date'
       describe: 'Finish describing your work'
+      collaborators: 'Advisory committee'
     cancel: 'Return without saving'
     description:
       attach: ''
       defense_date: ''
       describe: ''
+      collaborators: ''
     panels:
       abstract:
         title_html: 'Please provide an <b>abstract</b> of your work'
