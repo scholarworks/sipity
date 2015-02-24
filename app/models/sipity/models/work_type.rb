@@ -9,7 +9,7 @@ module Sipity
       self.table_name = 'sipity_work_types'
 
       NAMED_WORK_TYPES_FOR_ENUM = {
-        'etd' => 'etd'
+        'doctoral_dissertation' => 'doctoral_dissertation'
       }.freeze
 
       # As I don't have a means for assigning roles for a given processing type

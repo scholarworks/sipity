@@ -21,7 +21,7 @@ feature "Trigger Work State Change", :devise, :feature do
       on('new_work_page') do |the_page|
         expect(the_page).to be_all_there
         the_page.fill_in(:title, with: 'Hello World')
-        the_page.select('etd', from: :work_type)
+        the_page.select('doctoral_dissertation', from: :work_type)
         the_page.choose(:work_publication_strategy, with: 'do_not_know')
         the_page.submit_button.click
       end

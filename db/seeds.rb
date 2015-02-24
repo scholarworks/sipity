@@ -13,9 +13,9 @@ ActiveRecord::Base.transaction do
   $stdout.puts 'Configuring Work Type Todo List...'
 
   [
-    ['etd', 'new', 'describe', 'required'],
-    ['etd', 'new', 'attach', 'required'],
-    ['etd', 'new', 'collaborators', 'required']
+    ['doctoral_dissertation', 'new', 'describe', 'required'],
+    ['doctoral_dissertation', 'new', 'attach', 'required'],
+    ['doctoral_dissertation', 'new', 'collaborators', 'required']
   ].each do |work_type, processing_state, enrichment_type, enrichment_group|
     Sipity::Models::WorkTypeTodoListConfig.find_or_create_by!(
       work_type: work_type,
@@ -44,7 +44,7 @@ ActiveRecord::Base.transaction do
   end
 
   $stdout.puts 'Creating ETD State Diagram...'
-  work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_strategy|
+  work_types.fetch('doctoral_dissertation').find_or_initialize_default_processing_strategy do |etd_strategy|
     etd_strategy_roles = {}
 
     [

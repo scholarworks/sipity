@@ -100,8 +100,8 @@ module Sipity
         let(:commands) { CommandRepository.new }
 
         it "will resolve to an array of entities" do
-          work_one = commands.create_work!(title: 'Book', work_type: 'etd', work_publication_strategy: 'will_not_publish')
-          work_two = commands.create_work!(title: 'Book', work_type: 'etd', work_publication_strategy: 'will_not_publish')
+          work_one = commands.create_work!(title: 'Book', work_type: 'doctoral_dissertation', work_publication_strategy: 'will_not_publish')
+          work_two = commands.create_work!(title: 'Book', work_type: 'doctoral_dissertation', work_publication_strategy: 'will_not_publish')
 
           commands.grant_creating_user_permission_for!(entity: work_one, user: user)
           commands.grant_creating_user_permission_for!(entity: work_two, user: user)

@@ -5,7 +5,7 @@ module Sipity
     # Queries
     RSpec.describe PermissionQueries, type: :isolated_repository_module do
       context 'querying for augmented permission records' do
-        let(:entity) { Models::Work.new(id: 1, work_type: 'etd', processing_state: 'new') }
+        let(:entity) { Models::Work.new(id: 1, work_type: 'doctoral_dissertation', processing_state: 'new') }
         let(:user) { User.new(id: 2) }
         let(:group) { Models::Group.new(id: 3) }
         let(:direct_user_permission) do

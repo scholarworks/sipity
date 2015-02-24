@@ -13,7 +13,7 @@ feature 'Enriching a Work', :devise, :feature do
     on('new_work_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.fill_in(:title, with: options.fetch(:title, 'Hello World'))
-      the_page.select(options.fetch(:work_type, 'etd'), from: :work_type)
+      the_page.select(options.fetch(:work_type, 'doctoral_dissertation'), from: :work_type)
       the_page.choose(:work_publication_strategy, with: options.fetch(:work_publication_strategy, 'do_not_know'))
       the_page.submit_button.click
     end
@@ -21,7 +21,7 @@ feature 'Enriching a Work', :devise, :feature do
 
   def attach_file_work
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd')
+    create_a_work(work_type: 'doctoral_dissertation')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/attach')
@@ -35,13 +35,13 @@ feature 'Enriching a Work', :devise, :feature do
 
   scenario 'User creates a work then sees it on their dashboard' do
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
+    create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
     visit '/dashboard'
   end
 
   scenario 'User can create a Work' do
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd', title: 'Hello World', work_publication_strategy: 'do_not_know')
+    create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['Hello World'])
@@ -78,7 +78,7 @@ feature 'Enriching a Work', :devise, :feature do
 
   scenario 'User can describe additional data' do
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd')
+    create_a_work(work_type: 'doctoral_dissertation')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/describe')
@@ -97,7 +97,7 @@ feature 'Enriching a Work', :devise, :feature do
 
   scenario 'User can attach files' do
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd')
+    create_a_work(work_type: 'doctoral_dissertation')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/attach')
@@ -115,7 +115,7 @@ feature 'Enriching a Work', :devise, :feature do
 
   scenario 'User can add collaborators' do
     login_as(user, scope: :user)
-    create_a_work(work_type: 'etd')
+    create_a_work(work_type: 'doctoral_dissertation')
 
     on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/collaborators')
