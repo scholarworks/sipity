@@ -23,6 +23,10 @@ en:
   activerecord:
     models:
       sipity/work: Deposit
+    attributes:
+      sipity/models/work:
+        access_rights_answer: 'Access rights'
+        work_publication_strategy: 'Publication intent'
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Sipty'
