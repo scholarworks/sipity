@@ -27,11 +27,11 @@ module Sipity
 
         context '#abstract' do
           let(:abstract) { ['Hello Dolly'] }
-          subject { described_class.new(work: work, abstract: abstract) }
+          subject { described_class.new(work: work) }
           it 'will return the abstract of the work' do
             expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
               with(work: work, key: 'abstract').and_return(abstract)
-            expect(subject.abstract_from_work).to eq 'Hello Dolly'
+            expect(subject.abstract).to eq 'Hello Dolly'
           end
         end
 

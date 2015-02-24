@@ -12,16 +12,16 @@ module Sipity
 
         validates :abstract, presence: true
 
-        def abstract_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'abstract').first
-        end
-
         private
 
         def save(repository:, requested_by:)
           super do
             repository.update_work_attribute_values!(work: work, key: 'abstract', values: abstract)
           end
+        end
+
+        def abstract_from_work
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'abstract').first
         end
       end
     end
