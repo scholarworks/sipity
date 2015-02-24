@@ -48,6 +48,7 @@
           the underlying tests will need to change to find[:content] instead of
           find.text %>
           <%
+            # REVIEW: It appears as though we need an ActionSet container decorator.
             state_advancing_actions = model.state_advancing_actions(user: current_user)
             has_available_actions = state_advancing_actions.select {|action| action.available?}.present?
 
