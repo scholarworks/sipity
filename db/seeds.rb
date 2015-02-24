@@ -76,6 +76,7 @@ ActiveRecord::Base.transaction do
       ['describe', nil],
       ['attach', nil],
       ['collaborators', nil],
+      ['defense_date', nil],
       ['assign_a_doi', nil],
       ['assign_a_citation', nil],
       ['submit_for_review', 'under_advisor_review'],
@@ -93,7 +94,7 @@ ActiveRecord::Base.transaction do
     end
 
     {
-      'submit_for_review' => ['describe', 'attach', 'collaborators']
+      'submit_for_review' => ['describe', 'attach', 'collaborators', 'defense_date']
     }.each do |guarded_action_name, prereq_action_names|
       guarded_action = etd_actions.fetch(guarded_action_name)
       Array.wrap(prereq_action_names).each do |prereq_action_name|
@@ -111,6 +112,7 @@ ActiveRecord::Base.transaction do
       ['new', 'attach', ['creating_user', 'etd_reviewer']],
       ['new', 'collaborators', ['creating_user', 'etd_reviewer']],
       ['new', 'destroy', ['creating_user', 'etd_reviewer']],
+      ['new', 'defense_date', ['creating_user']],
       ['new', 'assign_a_doi', ['creating_user', 'etd_reviewer']],
       ['new', 'assign_a_citation', ['creating_user', 'etd_reviewer']],
       ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
@@ -121,6 +123,7 @@ ActiveRecord::Base.transaction do
       ['under_advisor_review', 'advisor_requests_changes', ['etd_reviewer', 'advisor']],
       ['advisor_changes_requested', 'assign_a_doi', ['etd_reviewer', 'creating_user']],
       ['advisor_changes_requested', 'assign_a_citation', ['creating_user']],
+      ['advisor_changes_requested', 'defense_date', ['creating_user']],
       ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
       ['advisor_changes_requested', 'edit', ['creating_user', 'etd_reviewer']],
       ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],

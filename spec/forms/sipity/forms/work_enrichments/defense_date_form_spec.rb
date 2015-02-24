@@ -3,35 +3,29 @@ require 'spec_helper'
 module Sipity
   module Forms
     module WorkEnrichments
-      RSpec.describe DescribeForm do
+      RSpec.describe DefenseDateForm do
         let(:work) { Models::Work.new(id: '1234') }
+        let(:defense_date) { Date.today }
         subject { described_class.new(work: work) }
 
-        its(:enrichment_type) { should eq('describe') }
+        its(:enrichment_type) { should eq('defense_date') }
         its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
 
         it { should respond_to :work }
-        it { should respond_to :abstract }
-        it { should respond_to :abstract= }
+        it { should respond_to :defense_date }
+        it { should respond_to :defense_date= }
 
-        it 'will require a abstract' do
+        it 'will require a defense_date' do
           subject.valid?
-          expect(subject.errors[:abstract]).to be_present
+          expect(subject.errors[:defense_date]).to be_present
         end
 
-        it 'will require a work' do
-          subject = described_class.new(work: nil)
-          subject.valid?
-          expect(subject.errors[:work]).to_not be_empty
-        end
-
-        context '#abstract' do
-          let(:abstract) { ['Hello Dolly'] }
+        context '#defense_date' do
           subject { described_class.new(work: work) }
-          it 'will return the abstract of the work' do
+          it 'will return the defense_date of the work' do
             expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
-              with(work: work, key: 'abstract').and_return(abstract)
-            expect(subject.abstract).to eq 'Hello Dolly'
+              with(work: work, key: 'defense_date').and_return([defense_date])
+            expect(subject.defense_date).to eq defense_date
           end
         end
 
@@ -45,14 +39,10 @@ module Sipity
             it 'will return false if not valid' do
               expect(subject.submit(repository: repository, requested_by: user))
             end
-            it 'will not create create any additional attributes entries' do
-              expect { subject.submit(repository: repository, requested_by: user) }.
-                to_not change { Models::AdditionalAttribute.count }
-            end
           end
 
           context 'with valid data' do
-            subject { described_class.new(work: work, abstract: 'Hello Dolly') }
+            subject { described_class.new(work: work, defense_date: '2014-10-02') }
             before do
               expect(subject).to receive(:valid?).and_return(true)
             end
