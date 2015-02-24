@@ -5,8 +5,8 @@ module Sipity
     RSpec.describe WorkType, type: :model do
       context '.[]' do
         it 'will have an ETD' do
-          described_class.create!(name: 'etd')
-          expect(described_class['etd']).to be_a(WorkType)
+          described_class.create!(name: 'doctoral_dissertation')
+          expect(described_class['doctoral_dissertation']).to be_a(WorkType)
         end
 
         it 'will raise an exception if the WorkType is invalid' do
@@ -32,7 +32,7 @@ module Sipity
       end
 
       context '#find_or_initialize_default_processing_strategy' do
-        subject { described_class.new(name: 'etd') }
+        subject { described_class.new(name: 'doctoral_dissertation') }
         it 'will create a processing strategy if none already exist' do
           expect { subject.find_or_initialize_default_processing_strategy }.
             to change { subject.default_processing_strategy }.from(nil)

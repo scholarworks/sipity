@@ -7,7 +7,7 @@ module Sipity
     # REVIEW: How is this different from crafting a handful of runners? Perhaps
     #   These should be codified as runners? Is there a symmetry of moving these
     #   to runners? Is symmetry worth pursuing?
-    class EtdStateMachine
+    class DoctoralDissertationStateMachine
       class_attribute :state_diagram, instance_writer: false
       self.state_diagram = StateDiagram.new(
         'new' => {

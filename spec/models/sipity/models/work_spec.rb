@@ -34,8 +34,8 @@ module Sipity
           expect { subject.work_type = '__incorrect_work_type__' }.to raise_error(ArgumentError)
         end
 
-        it 'accepts "etd" as an acceptable work_type' do
-          expect { subject.work_type = 'etd' }.to_not raise_error
+        it 'accepts "doctoral_dissertation" as an acceptable work_type' do
+          expect { subject.work_type = 'doctoral_dissertation' }.to_not raise_error
         end
 
         it 'will not accept "ETD" as it is case sensitive' do

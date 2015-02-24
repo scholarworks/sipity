@@ -13,7 +13,7 @@ module Sipity
       let(:an_action) { double(action_type: Models::Processing::StrategyAction::ENRICHMENT_ACTION) }
 
       let!(:entity) do
-        work = repository.create_work!(title: 'Book', work_type: 'etd', work_publication_strategy: 'will_not_publish')
+        work = repository.create_work!(title: 'Book', work_type: 'doctoral_dissertation', work_publication_strategy: 'will_not_publish')
         repository.grant_creating_user_permission_for!(entity: work, user: user)
         work
       end

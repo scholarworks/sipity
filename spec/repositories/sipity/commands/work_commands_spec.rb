@@ -37,7 +37,7 @@ module Sipity
       end
 
       context '#create_work!' do
-        let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'etd' } }
+        let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'doctoral_dissertation' } }
         it 'will create a work object' do
           expect do
             expect do

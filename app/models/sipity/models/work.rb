@@ -73,7 +73,7 @@ module Sipity
       def set_default_work_type
         # HACK: Given that we are first working on the ETD submission, this
         # is an acceptable hack. However, as we move forward, it may not be.
-        self.work_type ||= 'etd'
+        self.work_type ||= 'doctoral_dissertation'
       end
     end
   end

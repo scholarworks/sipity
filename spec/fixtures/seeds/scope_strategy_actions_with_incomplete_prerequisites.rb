@@ -154,13 +154,13 @@ Sipity::Models::TransientAnswer.create!([
   {entity_id: 1, entity_type: "Sipity::Models::Work", question_code: "access_rights", answer_code: "private_access"}
 ])
 Sipity::Models::Work.create!([
-  {work_publication_strategy: "will_not_publish", title: "Hello", work_type: "etd"}
+  {work_publication_strategy: "will_not_publish", title: "Hello", work_type: "doctoral_dissertation"}
 ])
 Sipity::Models::WorkType.create!([
-  {name: "etd", description: nil}
+  {name: "doctoral_dissertation", description: nil}
 ])
 Sipity::Models::WorkTypeTodoListConfig.create!([
-  {work_type: "etd", work_processing_state: "new", enrichment_type: "describe", enrichment_group: "required"},
-  {work_type: "etd", work_processing_state: "new", enrichment_type: "attach", enrichment_group: "required"},
-  {work_type: "etd", work_processing_state: "new", enrichment_type: "collaborators", enrichment_group: "required"}
+  {work_type: "doctoral_dissertation", work_processing_state: "new", enrichment_type: "describe", enrichment_group: "required"},
+  {work_type: "doctoral_dissertation", work_processing_state: "new", enrichment_type: "attach", enrichment_group: "required"},
+  {work_type: "doctoral_dissertation", work_processing_state: "new", enrichment_type: "collaborators", enrichment_group: "required"}
 ])

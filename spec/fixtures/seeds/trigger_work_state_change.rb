@@ -1,5 +1,5 @@
 Sipity::Models::WorkTypeTodoListConfig.create!(
-  work_type: 'etd',
+  work_type: 'doctoral_dissertation',
   work_processing_state: 'new',
   enrichment_type: 'describe',
   enrichment_group: 'required'
@@ -19,7 +19,7 @@ roles = {}
   roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
 end
 
-work_types.fetch('etd').find_or_initialize_default_processing_strategy do |etd_strategy|
+work_types.fetch('doctoral_dissertation').find_or_initialize_default_processing_strategy do |etd_strategy|
   etd_strategy_roles = {}
 
   [
