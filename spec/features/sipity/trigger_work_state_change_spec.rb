@@ -45,6 +45,8 @@ feature "Trigger Work State Change", :devise, :feature do
 
       on('work_page') do |the_page|
         expect(the_page.processing_state).to eq('new')
+        # I expect this named object to be there
+        expect { the_page.find_named_object('enrichment/optional/assign_a_doi') }.to_not raise_error
         # Because there are no required steps; I can continue
         the_page.take_named_action('event_trigger/submit_for_review')
       end
@@ -54,6 +56,8 @@ feature "Trigger Work State Change", :devise, :feature do
       end
 
       on('work_page') do |the_page|
+        # An action once available is no longer available
+        expect { the_page.find_named_object('enrichment/optional/assign_a_doi') }.to raise_error(Capybara::ElementNotFound)
         # The state was advanced
         expect(the_page.processing_state).to eq('under_advisor_review')
         expect { the_page.find_named_object('event_trigger/submit_for_review') }.

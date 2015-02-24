@@ -41,6 +41,7 @@ work_types.fetch('doctoral_dissertation').find_or_initialize_default_processing_
   [
     ['show', nil],
     ['describe', nil],
+    ['assign_a_doi', nil],
     ['submit_for_review', 'under_advisor_review'],
   ].each do |action_name, strategy_state_name, action_type|
     resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
@@ -63,7 +64,9 @@ work_types.fetch('doctoral_dissertation').find_or_initialize_default_processing_
     ['new', 'submit_for_review', ['creating_user']],
     ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
     ['new', 'describe', ['creating_user', 'etd_reviewer']],
+    ['new', 'assign_a_doi', ['creating_user', 'etd_reviewer']],
     ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+    ['under_advisor_review', 'assign_a_doi', ['etd_reviewer']],
   ].each do |originating_state_name, action_name, role_names|
     action = etd_actions.fetch(action_name)
     originating_state = etd_states.fetch(originating_state_name)
