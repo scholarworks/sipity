@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-12">
       <h1 itemprop="name" class="page-header work-title"><%= model.title %>
-        <small class="work-type"><%= model.work_type %></small>
+        <%= content_tag :small, t("simple_form.options.defaults.work_type.#{model.work_type}"), class: 'work-type' %>
       </h1>
     </div>
   </div>
