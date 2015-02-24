@@ -465,10 +465,20 @@ module Sipity
         )
       end
 
+      # @api private
+      #
       # For the given :user and :entity, return an ActiveRecord::Relation,
       # that if resolved, will be collection of
       # Sipity::Models::Processing::StrategyStateAction object to which the user has
       # permission to do something.
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * The actions are available for the given entity's current state
+      # * The actions are available for the given user based on their role.
+      #   Either:
+      #   - Directly via an actor associated with a user
+      #   - Indirectly via an actor associated with a group
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
@@ -478,14 +488,17 @@ module Sipity
         strategy_state_actions = Models::Processing::StrategyStateAction
         permissions = Models::Processing::StrategyStateActionPermission
         role_scope = scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity)
+
         strategy_state_actions.where(
-          strategy_state_actions.arel_table[:id].in(
-            permissions.arel_table.project(
-              permissions.arel_table[:strategy_state_action_id]
-            ).where(
-              permissions.arel_table[:strategy_role_id].in(
-                role_scope.arel_table.project(role_scope.arel_table[:id]).where(
-                  role_scope.arel.constraints.reduce
+          strategy_state_actions.arel_table[:originating_strategy_state_id].eq(entity.strategy_state_id).and(
+            strategy_state_actions.arel_table[:id].in(
+              permissions.arel_table.project(
+                permissions.arel_table[:strategy_state_action_id]
+              ).where(
+                permissions.arel_table[:strategy_role_id].in(
+                  role_scope.arel_table.project(role_scope.arel_table[:id]).where(
+                    role_scope.arel.constraints.reduce
+                  )
                 )
               )
             )
