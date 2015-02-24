@@ -20,6 +20,11 @@ module Sipity
           expect(subject.errors[:defense_date]).to be_present
         end
 
+        it 'will handle Rails defense_date that was input via Rails HTML multi-field date input' do
+          form = described_class.new(work: work, 'defense_date(1i)' => "2014", 'defense_date(2i)' => "10", 'defense_date(3i)' => "1")
+          expect(form.defense_date.month).to eq(10)
+        end
+
         context '#defense_date' do
           subject { described_class.new(work: work) }
           it 'will return the defense_date of the work' do
