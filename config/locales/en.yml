@@ -26,9 +26,15 @@ en:
     attributes:
       sipity/models/work:
         access_rights_answer: 'Access rights'
-        work_publication_strategy: 'Publication intent'
-        publicationDate: 'Publication Date'
         citationType: 'Citation Style'
+        collaborators: 'Advisory committee'
+        publicationDate: 'Publication Date'
+        work_publication_strategy: 'Publication intent'
+      sipity/models/collaborator:
+        contact_information: 'Contact Information'
+        email: 'Email'
+        netid: 'NetID'
+        responsible_for_review: 'Review Sign Off'
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Sipty'
@@ -120,13 +126,16 @@ en:
       defense_date:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
+      collaborators:
+        title_html: 'Please identify the memembers of you <b>advisory committee</b>'
+        hint: 'You must have at least one person review your submission.'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<b>Attach</b> files to this %{entity_type}"
     describe:
       label: "Further <b>describe</b> your %{entity_type}"
     collaborators:
-      label: "Identify your <b>collaborators</b> on this %{entity_type}"
+      label: "Identify <b>who is involved</b> with this %{entity_type}"
     assign_a_doi:
       label: 'Assign a <b><abbr title="Digital Object Identifier">DOI</abbr></b>'
     assign_a_citation:

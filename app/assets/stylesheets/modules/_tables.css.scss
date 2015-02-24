@@ -1,0 +1,23 @@
+.table td > .controls {
+  display:inline;
+}
+
+.table .with-columns > div:first-child {
+  padding-left:0;
+}
+
+// WARN: Content-specifc styles
+.table .with-columns {
+  .col-xs-2 {
+    width:7em;
+  }
+  .choice {
+    line-height: 34px;
+    width:auto;
+    padding:0;
+  }
+  .col-xs-3 {
+    width:10em;
+  }
+}
+

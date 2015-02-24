@@ -13,10 +13,11 @@ form.panel {
   }
 
   legend.panel-heading + .panel-body {
-    margin-top:37px; // Assumes a 16px font size (like .panel-title h3)
+    margin-top:40px; // Assumes a 16px font size (like .panel-title h3)
   }
 
   .panel-body {
+    overflow:auto;
     width:100%;
   }
 

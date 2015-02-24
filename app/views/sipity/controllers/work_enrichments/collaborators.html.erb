@@ -1,16 +1,102 @@
-<!-- TODO: Internationalize the enrichment option -->
-<h2>Tell us about your advisors</h2>
-<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
-  <%= f.error_notification %>
-  <%= f.error :base, class: "base-errors", error_method: :to_sentence, error_tag: :div %>
-  <%= field_set_tag do %>
-    <%= f.fields_for :collaborators do |collaborator_form| %>
-      <%= collaborator_form.input :name %>
-      <%= collaborator_form.input :role, as: :select, collection: collaborator_form.object.possible_roles %>
-      <%= collaborator_form.input :netid %>
-      <%= collaborator_form.input :email, as: :email %>
-      <%= collaborator_form.input :responsible_for_review, as: :select %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<%# TODO: Move this somewhere else (obviously) %>
+<% model.work.collaborators << Sipity::Models::Collaborator.new(work_id: model.work.id) %>
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'panel panel-primary with-footer' }
+  ) do |f| %>
+    <legend class="panel-heading">
+      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.collaborators.title_html"), class: 'panel-title' %>
+    </legend>
+
+    <fieldset class="panel-body">
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
+      <%= f.error_notification %>
+
+      <table class="table">
+        <tr>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.name') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.role') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.responsible_for_review') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.contact_information') %>
+        </tr>
+        <%= f.fields_for :collaborators do |collaborator_form| %>
+          <tr>
+            <td>
+              <%= collaborator_form.input :name,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td>
+              <%= collaborator_form.input :role,
+                as: :select,
+                collection: collaborator_form.object.possible_roles,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td>
+              <%= collaborator_form.input :responsible_for_review,
+                as: :select,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td class="js-hidden with-columns">
+              <div class="col-xs-2">
+                <%= collaborator_form.input :netid,
+                  label: false,
+                  wrapper: false,
+                  input_html: {
+                    class: 'form-control',
+                    placeholder: t('activerecord.attributes.sipity/models/collaborator.netid')
+                  }
+                %>
+              </div>
+              <div class="col-xs-1 choice">
+                <strong>OR</strong>
+              </div>
+              <div class="col-xs-3">
+                <%= collaborator_form.input :email,
+                  as: :email,
+                  label: false,
+                  wrapper: false,
+                  input_html: {
+                    class: 'form-control',
+                    placeholder: t('activerecord.attributes.sipity/models/collaborator.email')
+                  }
+                %>
+              </div>
+            <td>
+          </tr>
+        <% end %>
+      </table>
+
+    </fieldset>
+
+    <%= model.work.with_action_pane('new_citation', 'panel-footer') do %>
+      <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
     <% end %>
-    <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
   <% end %>
+
+
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 <% end %>
