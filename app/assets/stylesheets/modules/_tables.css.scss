@@ -6,17 +6,39 @@
   padding-left:0;
 }
 
-// WARN: Content-specifc styles
+// WARN: Content-specifc styles for collaborator view
+.table.collaborators {
+  min-width:710px;
+}
+
 .table .with-columns {
-  .col-xs-2 {
-    width:7em;
+  .controls,
+  .form-control {
+    display:inline-block;
+    width:auto;
+    float:left;
   }
   .choice {
     line-height: 34px;
     width:auto;
-    padding:0;
+    padding:0 20px 0 0;
+  }
+  .scope {
+    float:left;
+    line-height: 34px;
+    padding-right:6px;
+  }
+  .col-xs-2 {
+    width:9.5em;
+  }
+  .col-xs-2 .form-control {
+    width:6em;
   }
   .col-xs-3 {
+    width:17em;
+    padding-left:0;
+  }
+  .col-xs-3 .form-control {
     width:10em;
   }
 }
