@@ -231,12 +231,17 @@ module Sipity
       end
 
       context '#scope_permitted_entity_strategy_actions_for_current_state' do
+        before do
+          Sipity::SpecSupport.load_database_seeds!(
+            seeds_path: 'spec/fixtures/seeds/rendering_correct_actions_based_on_user_entity_state.rb'
+          )
+        end
+        let(:user) { User.first! }
+        let(:entity) { Sipity::Models::Processing::Entity.first! }
+
         subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
-        it "will include permitted strategy_state_actions" do
-          user_processing_actor
-          entity_specific_responsibility
-          action_permission
-          expect(subject).to eq([action_permission.strategy_state_action.strategy_action])
+        it "will return the correct actions based on user and entity state" do
+          expect(subject.pluck(:name)).to eq(['show'])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
