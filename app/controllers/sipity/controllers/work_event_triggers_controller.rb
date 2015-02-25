@@ -8,12 +8,12 @@ module Sipity
       self.runner_container = Runners::WorkEventTriggerRunners
 
       def new
-        _status, @model = run(work_id: work_id, processing_action_name: processing_action_name)
+        _status, @model = run(new_params)
         respond_with(@model)
       end
 
       def create
-        run(work_id: work_id, processing_action_name: processing_action_name) do |on|
+        run(create_params) do |on|
           on.success { |work| redirect_to work_path(work), notice: message_for("#{processing_action_name}_triggered", title: work.title) }
           on.failure do |model|
             @model = model
@@ -27,6 +27,11 @@ module Sipity
       helper_method :model
 
       private
+
+      def create_params
+        (params[:work] || {}).merge(work_id: work_id, processing_action_name: processing_action_name).with_indifferent_access
+      end
+      alias_method :new_params, :create_params
 
       def work_id
         params.require(:work_id)
