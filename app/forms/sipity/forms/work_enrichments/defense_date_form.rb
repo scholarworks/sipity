@@ -8,7 +8,7 @@ module Sipity
           self.defense_date = parse_input_defense_date(attributes)
         end
 
-        attr_accessor :defense_date
+        attr_reader :defense_date
         validates :defense_date, presence: true
 
         private
