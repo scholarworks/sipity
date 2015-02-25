@@ -13,7 +13,6 @@ module Sipity
 
         it { should respond_to :work }
         it { should respond_to :defense_date }
-        it { should respond_to :defense_date= }
 
         it 'will require a defense_date' do
           subject.valid?
@@ -26,11 +25,17 @@ module Sipity
         end
 
         context '#defense_date' do
-          subject { described_class.new(work: work) }
-          it 'will return the defense_date of the work' do
-            expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
-              with(work: work, key: 'defense_date').and_return([defense_date])
-            expect(subject.defense_date).to eq defense_date
+          context 'with data from the database' do
+            subject { described_class.new(work: work) }
+            it 'will return the defense_date of the work' do
+              expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
+                with(work: work, key: 'defense_date').and_return([defense_date])
+              expect(subject.defense_date).to eq defense_date
+            end
+          end
+          context 'when initial date is given is bogus' do
+            subject { described_class.new(work: work, defense_date: '2014-02-31') }
+            its(:defense_date) { should_not be_present }
           end
         end
 
