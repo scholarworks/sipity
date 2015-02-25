@@ -2,6 +2,20 @@ module Sipity
   # Taking a que from Avdi Grimm's "Confident Ruby", the Conversion module
   # is responsible for coercing the inputs to another format.
   #
+  # ## Why Conversions?
+  #
+  # Sipity is comprised of several sub-systems. The Processing subsystem is
+  # something that I envision extracting at a future date. However, the forms
+  # and data capture servcies need to interact with those subsystems in a
+  # predictable way.
+  #
+  # So, in order to ease moving across various boundaries, I'm opting to use
+  # conversion modules. These modules expose the means of transforming (or
+  # denying the transformation) an object into another type. In other words they
+  # document how one object can map to another object.
+  #
+  # ## About Conversion Module Implementation
+  #
   # Any Conversion module should be call-able and include-able. These two
   # patterns are provided as a matter of convenience.
   #
