@@ -66,9 +66,10 @@
             </td>
             <td class="js-hidden contact-information form-inline">
               <span class="form-group">
-                <span class="netid scope">
-                  ND:
-                </span>
+                <%= content_tag :span,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.institution_label'),
+                  class: 'netid scope'
+                %>
                 <%= collaborator_form.input :netid,
                   label: false,
                   wrapper: false,
@@ -79,12 +80,15 @@
                 %>
               </span>
               <span class="choice">
-                <strong>OR</strong>
+                <%= content_tag :strong,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.choice')
+                %>
               </span>
               <span class="form-group">
-                <span class="email scope">
-                  Non-ND:
-                </span>
+                <%= content_tag :span,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.email_contact_group_label'),
+                  class: 'email scope'
+                %>
                 <%= collaborator_form.input :email,
                   as: :email,
                   label: false,

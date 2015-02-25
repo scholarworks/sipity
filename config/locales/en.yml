@@ -129,6 +129,9 @@ en:
       collaborators:
         title_html: 'Please identify the memembers of you <b>advisory committee</b>'
         hint: 'You must have at least one person review your submission.'
+        institution_label: 'ND:'
+        choice: 'OR'
+        email_contact_group_label: 'Non-ND:'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<b>Attach</b> files to this %{entity_type}"
