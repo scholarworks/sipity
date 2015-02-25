@@ -1,9 +1,34 @@
-<!-- TODO: Internationalize the enrichment option -->
-<h2>Tell us about your advisors</h2>
-<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
-  <%= f.error_notification %>
-  <%= field_set_tag do %>
-    <%= f.input :defense_date, as: :date %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<div class="panel-tiles">
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'panel panel-primary with-footer' }
+  ) do |f| %>
+  <legend class="panel-heading">
+    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.defense_date.title_html"), class: 'panel-title' %>
+  </legend>
+
+  <fieldset class="panel-body">
+    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.defense_date.hint_html"), class: 'panel-hint' %>
+    <%= f.error_notification %>
+
+    <%= f.input :defense_date, as: :date, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
+  </fieldset>
+
+  <%= model.work.with_action_pane('new_defense_date', 'panel-footer') do %>
     <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
   <% end %>
+<% end %>
+
+</div>
+
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 <% end %>
