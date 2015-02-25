@@ -7,6 +7,7 @@ module Sipity
         [
           ['submit_for_review', Etd::SubmitForReviewForm],
           ['advisor_signoff', Etd::AdvisorSignoffForm],
+          ['advisor_requests_changes', Etd::AdvisorRequestsChangesForm],
           ['something_else', WorkEventTriggerForm]
         ].each_with_index do |(processing_action_name, form_class), index|
           it "will return #{form_class} for processing_action_name: #{processing_action_name} (Scenario ##{index}" do
