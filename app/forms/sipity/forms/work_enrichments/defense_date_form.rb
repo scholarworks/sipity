@@ -33,6 +33,7 @@ module Sipity
           if attributes.key?(:defense_date)
             attributes.fetch(:defense_date)
           elsif attributes.key?("defense_date(1i)") && attributes.key?("defense_date(2i)") && attributes.key?("defense_date(3i)")
+            # WARN: This assumes a valid date is selected. It throws an ArgmentError when 2015-02-31 is passed via the form.
             Date.new(attributes["defense_date(1i)"].to_i, attributes["defense_date(2i)"].to_i, attributes["defense_date(3i)"].to_i)
           else
             defense_date_from_work
