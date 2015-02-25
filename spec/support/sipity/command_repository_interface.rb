@@ -58,6 +58,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def record_processing_comment(entity:, commenter:, action:, comment:)
+    end
+
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def register_action_taken_on_entity(work:, enrichment_type:, requested_by:)
     end
 

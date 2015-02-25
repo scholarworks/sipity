@@ -13,6 +13,20 @@ module Sipity
           test_repository.register_action_taken_on_entity(work: work, enrichment_type: existing_enrichment_type, requested_by: user)
         end
       end
+
+      context '#record_processing_comment' do
+        let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy_state_id: state.id, strategy_state: state) }
+        let(:actor) { Models::Processing::Actor.new(id: 2) }
+        let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id) }
+        let(:strategy) { Models::Processing::Strategy.new(id: 4) }
+        let(:state) { Models::Processing::StrategyState.new(id: 5) }
+        let(:comment) { 'Hello World' }
+        it "will create a Models::Processing::Comment" do
+          expect(
+            test_repository.record_processing_comment(entity: entity, commenter: actor, action: action, comment: comment)
+          ).to be_a(Models::Processing::Comment)
+        end
+      end
     end
   end
 end
