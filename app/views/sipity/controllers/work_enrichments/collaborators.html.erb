@@ -7,10 +7,12 @@
   # TODO: Move this somewhere else (obviously)
   # TODO: Strip out 'empty' collaborators on submit
 
-  model.work.collaborators << Sipity::Models::Collaborator.new(work_id: model.work.id)
+  if model.work.collaborators.present?
+    model.work.collaborators << Sipity::Models::Collaborator.new(work_id: model.work.id)
+  end
 %>
 
-  <%= simple_form_for(
+<%= simple_form_for(
     model,
     url: enrich_work_path(model.work, model.enrichment_type),
     method: :post,
