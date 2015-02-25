@@ -17,6 +17,13 @@ module Sipity
           action.name
         end
 
+        # @param f SimpleFormBuilder
+        #
+        # @return String
+        def render(f:)
+          f.input(:comment, as: :text, autofocus: true)
+        end
+
         private
 
         def save(repository:, requested_by:)
