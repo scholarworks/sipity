@@ -6,7 +6,7 @@
   padding-left:0;
 }
 
-// WARN: Content-specifc styles for collaborator view
+// NOTE: Content-specifc styles for collaborator view
 .table.collaborators {
   min-width:710px;
 }
@@ -15,10 +15,11 @@
   .controls,
   .form-control {
     display:inline-block;
-    width:auto;
     float:left;
+    width:auto;
   }
   .choice {
+    float:left;
     line-height:34px;
     padding:0 10px;
   }
@@ -26,6 +27,10 @@
     float:left;
     line-height: 34px;
     padding-right:6px;
+  }
+  .form-group {
+    float:left;
+    white-space:nowrap;
   }
 }
 
