@@ -88,10 +88,11 @@ section {
 
   small.work-type {
     display:block;
-    letter-spacing:.15em;
-    text-transform:uppercase;
     font-size:50%;
+    font-variant:small-caps;
+    letter-spacing:.09em;
     padding-top:.5em;
+    text-transform:lowercase;
   }
 }
 

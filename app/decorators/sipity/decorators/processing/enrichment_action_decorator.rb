@@ -21,7 +21,7 @@ module Sipity
 
         def label
           i18n_options = { scope: "sipity/decorators/entitiy_enrichment_actions.#{name}" }
-          i18n_options[:entity_type] = entity.respond_to?(:work_type) ? entity.work_type : 'item'
+          i18n_options[:entity_type] = entity.respond_to?(:work_type) ? entity.work_type.humanize.downcase : 'item'
           I18n.t(:label, i18n_options).html_safe
         end
 
