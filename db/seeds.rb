@@ -9,22 +9,6 @@
 # See http://railsapps.github.io/rails-environment-variables.html
 
 ActiveRecord::Base.transaction do
-
-  $stdout.puts 'Configuring Work Type Todo List...'
-
-  [
-    ['doctoral_dissertation', 'new', 'describe', 'required'],
-    ['doctoral_dissertation', 'new', 'attach', 'required'],
-    ['doctoral_dissertation', 'new', 'collaborators', 'required']
-  ].each do |work_type, processing_state, enrichment_type, enrichment_group|
-    Sipity::Models::WorkTypeTodoListConfig.find_or_create_by!(
-      work_type: work_type,
-      work_processing_state: processing_state,
-      enrichment_type: enrichment_type,
-      enrichment_group: enrichment_group
-    )
-  end
-
   $stdout.puts 'Creating Work Types...'
   work_types = {}
   Sipity::Models::WorkType.valid_names.each do |work_type_name|

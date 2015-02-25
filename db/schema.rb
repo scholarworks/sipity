@@ -271,19 +271,6 @@ ActiveRecord::Schema.define(version: 20150225132618) do
 
   add_index "sipity_roles", ["name"], name: "index_sipity_roles_on_name", unique: true
 
-  create_table "sipity_todo_item_states", force: :cascade do |t|
-    t.integer  "entity_id",               null: false
-    t.string   "entity_type",             null: false
-    t.string   "entity_processing_state", null: false
-    t.string   "enrichment_type",         null: false
-    t.string   "enrichment_state",        null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-  end
-
-  add_index "sipity_todo_item_states", ["entity_id", "entity_type", "entity_processing_state", "enrichment_type"], name: "sipity_todo_item_states_key", unique: true
-  add_index "sipity_todo_item_states", ["entity_id", "entity_type"], name: "index_sipity_todo_item_states_on_entity_id_and_entity_type"
-
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.integer  "entity_id",     null: false
     t.string   "entity_type",   null: false
@@ -295,18 +282,6 @@ ActiveRecord::Schema.define(version: 20150225132618) do
 
   add_index "sipity_transient_answers", ["entity_id", "entity_type", "question_code"], name: "sipity_transient_entity_answers", unique: true
   add_index "sipity_transient_answers", ["entity_id", "entity_type"], name: "index_sipity_transient_answers_on_entity_id_and_entity_type"
-
-  create_table "sipity_work_type_todo_list_configs", force: :cascade do |t|
-    t.string   "work_type",             null: false
-    t.string   "work_processing_state", null: false
-    t.string   "enrichment_type",       null: false
-    t.string   "enrichment_group",      null: false
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-  end
-
-  add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_group"], name: "sipity_work_type_todo_list_config_completion_index"
-  add_index "sipity_work_type_todo_list_configs", ["work_type", "work_processing_state", "enrichment_type"], name: "sipity_work_type_todo_list_config_composite_index", unique: true
 
   create_table "sipity_work_types", force: :cascade do |t|
     t.string   "name",        null: false
