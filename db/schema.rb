@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150220152602) do
+ActiveRecord::Schema.define(version: 20150225132618) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -40,21 +40,6 @@ ActiveRecord::Schema.define(version: 20150220152602) do
   add_index "sipity_account_placeholders", ["identifier"], name: "index_sipity_account_placeholders_on_identifier"
   add_index "sipity_account_placeholders", ["name"], name: "index_sipity_account_placeholders_on_name"
   add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state"
-
-  create_table "sipity_actor_for_permission_assignments", force: :cascade do |t|
-    t.integer  "actor_id",   null: false
-    t.string   "actor_type", null: false
-    t.string   "acting_as",  null: false
-    t.string   "work_type",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "sipity_actor_for_permission_assignments", ["acting_as", "work_type"], name: "sipity_actor_for_permission_assignments_by_acting_as_work_type"
-  add_index "sipity_actor_for_permission_assignments", ["acting_as"], name: "index_sipity_actor_for_permission_assignments_on_acting_as"
-  add_index "sipity_actor_for_permission_assignments", ["actor_id", "actor_type", "acting_as", "work_type"], name: "sipity_actor_for_permission_assignments_composite", unique: true
-  add_index "sipity_actor_for_permission_assignments", ["actor_id"], name: "index_sipity_actor_for_permission_assignments_on_actor_id"
-  add_index "sipity_actor_for_permission_assignments", ["actor_type"], name: "index_sipity_actor_for_permission_assignments_on_actor_type"
 
   create_table "sipity_additional_attributes", force: :cascade do |t|
     t.integer  "work_id",    null: false
