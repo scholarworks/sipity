@@ -1,35 +1,36 @@
-<div>
-  <%= form_tag(dashboard_path, method: 'get') do %>
-    <fieldset>
-      <%# This is the very specific case, to get things working. %>
-      <%= select_tag(
-            :processing_state,
-            options_from_collection_for_select(
-              ::Sipity::StateMachines::DoctoralDissertationStateMachine.state_diagram.states, :to_s, :to_s, params[:processing_state]
-            ),
-            include_blank: true
-      ) %>
-      <%= submit_tag("Filter") %>
-    </fieldset>
-  <% end %>
-</div>
+<div class="row">
+  <div class="col-xs-12">
+    <%= form_tag(dashboard_path, method: 'get', class: 'form-inline') do %>
+      <fieldset class="form-group">
+        <%# This is the very specific case, to get things working. %>
+        <%= select_tag(
+              :processing_state,
+              options_from_collection_for_select(
+                ::Sipity::StateMachines::DoctoralDissertationStateMachine.state_diagram.states, :to_s, :humanize, params[:processing_state]
+              ),
+              include_blank: true,
+              class: 'form-control'
+        ) %>
+      </fieldset>
+      <%= submit_tag("Filter", class: 'btn btn-default') %>
+    <% end %>
 
-<div>
-  <table>
-    <thead>
-      <tr>
-        <th>Work</th>
-        <th>Type</th>
-        <th>Processing State</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% view.each do |work| %>
+    <table class="table">
+      <thead>
         <tr>
-          <td><%= link_to(work.title, work_path(work)) %></td>
-          <td><%= work.work_type %></td>
-          <td><%= work.processing_state %></td>
+          <th>Title</th>
+          <th>Type</th>
+          <th>Processing State</th>
         </tr>
-      <% end %>
-  </table>
+      </thead>
+      <tbody>
+        <% view.each do |work| %>
+          <tr>
+            <td><%= link_to(work.title, work_path(work)) %></td>
+            <td><%= work.work_type.humanize %></td>
+            <td><%= work.processing_state.humanize %></td>
+          </tr>
+        <% end %>
+    </table>
+  </div>
 </div>
