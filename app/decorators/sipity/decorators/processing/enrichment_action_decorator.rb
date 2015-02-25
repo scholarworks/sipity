@@ -21,7 +21,9 @@ module Sipity
 
         def label
           i18n_options = { scope: "sipity/decorators/entitiy_enrichment_actions.#{name}" }
-          i18n_options[:entity_type] = entity.respond_to?(:work_type) ? entity.work_type.humanize.downcase : 'item'
+
+          i18n_options[:entity_type] = I18n.t("simple_form.options.defaults.work_type.#{entity.work_type}").downcase
+
           I18n.t(:label, i18n_options).html_safe
         end
 
@@ -39,6 +41,14 @@ module Sipity
 
         def view_context
           Draper::ViewContext.current
+        end
+
+        def entity=(value)
+          if value.respond_to?(:work_type) && value.work_type.present?
+            super
+          else
+            fail Exceptions::RuntimeError, "Expected #{value} to implement #work_type"
+          end
         end
       end
     end

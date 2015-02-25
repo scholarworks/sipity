@@ -8,11 +8,12 @@ module Sipity
         ACTION_UNAVAILABLE = 'unavailable'
 
         def initialize(options = {})
-          @action = options.fetch(:action)
-          @entity = options.fetch(:entity)
+          self.action = options.fetch(:action)
+          self.entity = options.fetch(:entity)
         end
 
-        attr_reader :action, :entity
+        attr_accessor :entity, :action
+        private :entity=, :action=
 
         delegate :name, :action_type, to: :action
         alias_method :label, :name
