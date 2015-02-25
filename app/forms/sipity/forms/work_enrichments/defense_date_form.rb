@@ -5,7 +5,7 @@ module Sipity
       class DefenseDateForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @defense_date = parse_input_defense_date(attributes)
+          self.defense_date = parse_input_defense_date(attributes)
         end
 
         attr_accessor :defense_date
@@ -20,7 +20,7 @@ module Sipity
         end
 
         def defense_date_from_work
-          return [] unless work
+          return nil unless work
           # REVIEW: I really need to derive this information from the repository.
           # It is something that should be injected on form build.
           Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'defense_date').first
@@ -33,11 +33,25 @@ module Sipity
           if attributes.key?(:defense_date)
             attributes.fetch(:defense_date)
           elsif attributes.key?("defense_date(1i)") && attributes.key?("defense_date(2i)") && attributes.key?("defense_date(3i)")
-            # WARN: This assumes a valid date is selected. It throws an ArgmentError when 2015-02-31 is passed via the form.
-            Date.new(attributes["defense_date(1i)"].to_i, attributes["defense_date(2i)"].to_i, attributes["defense_date(3i)"].to_i)
+            [attributes["defense_date(1i)"].to_i.to_s, attributes["defense_date(2i)"].to_i.to_s, attributes["defense_date(3i)"].to_i.to_s].join('-')
           else
             defense_date_from_work
           end
+        end
+
+        def defense_date=(value)
+          @defense_date = convert_to_date(value)
+        end
+
+        def convert_to_date(value)
+          case value
+          when Date, DateTime then value
+          when NilClass then value
+          else
+            Date.parse(value)
+          end
+        rescue TypeError, ArgumentError
+          nil
         end
       end
     end
