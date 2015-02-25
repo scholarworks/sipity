@@ -1,10 +1,3 @@
-Sipity::Models::WorkTypeTodoListConfig.create!(
-  work_type: 'doctoral_dissertation',
-  work_processing_state: 'new',
-  enrichment_type: 'describe',
-  enrichment_group: 'required'
-)
-
 work_types = {}
 Sipity::Models::WorkType.valid_names.each do |work_type_name|
   work_types[work_type_name] = Sipity::Models::WorkType.find_or_create_by!(name: work_type_name)

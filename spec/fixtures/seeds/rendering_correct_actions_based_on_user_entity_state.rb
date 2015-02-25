@@ -83,6 +83,3 @@ Sipity::Models::WorkType.create!([
   {name: "doctoral_dissertation", description: nil},
   {name: "master_thesis", description: nil}
 ])
-Sipity::Models::WorkTypeTodoListConfig.create!([
-  {work_type: "doctoral_dissertation", work_processing_state: "new", enrichment_type: "describe", enrichment_group: "required"}
-])
