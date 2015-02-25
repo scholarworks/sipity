@@ -6,6 +6,18 @@
   padding-left:0;
 }
 
+.no-js .row-controls {
+  display:none;
+}
+
+.table.expandible .row-controls {
+  border-top:none;
+}
+
+.table.expandible tr:last-child .row-controls .btn {
+  display:none;
+}
+
 // NOTE: Content-specifc styles for collaborator view
 .table.collaborators {
   min-width:710px;
@@ -33,4 +45,3 @@
     white-space:nowrap;
   }
 }
-

@@ -27,8 +27,9 @@
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
       <%= f.error_notification %>
 
-      <table class="table collaborators">
+      <table class="table expandible collaborators">
         <tr>
+          <th class="row-controls"></th>
           <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.name') %>
           <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.role') %>
           <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.responsible_for_review') %>
@@ -36,6 +37,9 @@
         </tr>
         <%= f.fields_for :collaborators do |collaborator_form| %>
           <tr>
+            <td class="row-controls">
+              <a href="javascript:void(0)" class="btn btn-danger">Remove</a>
+            </td>
             <td>
               <%= collaborator_form.input :name,
                 label: false,
