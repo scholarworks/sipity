@@ -10,6 +10,8 @@ module Sipity
       its(:to_key) { should be_empty }
       its(:to_param) { should be_nil }
       its(:persisted?) { should eq(false) }
+      its(:to_model) { should eq(work) }
+      its(:render) { should be_nil }
 
       context 'the processing entity vs. "entity" differentiation' do
         let(:strategy) { Models::Processing::Strategy.new(id: 1) }

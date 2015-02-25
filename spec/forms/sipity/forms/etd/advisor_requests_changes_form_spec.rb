@@ -13,6 +13,14 @@ module Sipity
 
         its(:processing_action_name) { should eq(action.name) }
 
+        context '#render' do
+          let(:f) { double }
+          it 'will return an input text area' do
+            expect(f).to receive(:input).with(:comment, as: :text, autofocus: true)
+            subject.render(f: f)
+          end
+        end
+
         context 'processing_action_name to action conversion' do
           it 'will use the given action if the strategy matches' do
             subject = described_class.new(work: work, processing_action_name: action)

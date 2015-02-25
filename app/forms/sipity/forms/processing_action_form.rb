@@ -19,6 +19,9 @@ module Sipity
         to_param.nil? ? false : true
       end
 
+      def render(*)
+      end
+
       self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
@@ -28,6 +31,7 @@ module Sipity
       attr_reader :work
       delegate :to_processing_entity, to: :work
       delegate :strategy_id, :strategy, to: :to_processing_entity
+      alias_method :to_model, :work
 
       validates :work, presence: true
 

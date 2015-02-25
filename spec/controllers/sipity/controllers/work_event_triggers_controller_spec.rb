@@ -4,6 +4,7 @@ require 'hesburgh/lib/mock_runner'
 module Sipity
   module Controllers
     RSpec.describe WorkEventTriggersController, type: :controller do
+      let(:attributes) { { 'hello' => 'world' } }
       let(:work) { double('Work', persisted?: true, title: 'Hello World') }
       let(:processing_action_name) { 'submit_for_review' }
       context 'GET #new' do
@@ -11,13 +12,13 @@ module Sipity
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
             yields: yielded_object, callback_name: callback_name, context: controller,
-            run_with: { processing_action_name: processing_action_name, work_id: work.to_param }
+            run_with: attributes.merge(processing_action_name: processing_action_name, work_id: work.to_param).with_indifferent_access
           )
         end
         let(:yielded_object) { work }
         let(:callback_name) { :success }
         it 'will render the new page' do
-          get 'new', work_id: work.to_param, processing_action_name: processing_action_name
+          get 'new', work_id: work.to_param, processing_action_name: processing_action_name, work: attributes
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('new')
         end
@@ -29,7 +30,7 @@ module Sipity
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
             yields: yielded_object, callback_name: callback_name, context: controller,
-            run_with: { processing_action_name: processing_action_name, work_id: work.to_param }
+            run_with: attributes.merge(processing_action_name: processing_action_name, work_id: work.to_param).with_indifferent_access
           )
         end
         before { controller.runner = runner }
@@ -37,7 +38,7 @@ module Sipity
           let(:callback_name) { :success }
           let(:yielded_object) { work }
           it 'will redirect to the work' do
-            post 'create', work_id: work.to_param, processing_action_name: processing_action_name
+            post 'create', work_id: work.to_param, processing_action_name: processing_action_name, work: attributes
             expect(flash[:notice]).to_not be_empty
             expect(assigns(:model)).to be_nil
             expect(response).to redirect_to work_path(work.to_param)
@@ -48,7 +49,7 @@ module Sipity
           let(:callback_name) { :failure }
           let(:yielded_object) { form }
           it 'will render the work again' do
-            post 'create', work_id: work.to_param, processing_action_name: processing_action_name
+            post 'create', work_id: work.to_param, processing_action_name: processing_action_name, work: attributes
             expect(assigns(:model)).to be_present
             expect(response).to render_template('new')
           end
