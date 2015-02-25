@@ -11,7 +11,7 @@
   min-width:710px;
 }
 
-.table .with-columns {
+.table.collaborators .contact-information {
   .controls,
   .form-control {
     display:inline-block;
@@ -19,27 +19,13 @@
     float:left;
   }
   .choice {
-    line-height: 34px;
-    width:auto;
-    padding:0 20px 0 0;
+    line-height:34px;
+    padding:0 10px;
   }
   .scope {
     float:left;
     line-height: 34px;
     padding-right:6px;
-  }
-  .col-xs-2 {
-    width:9.5em;
-  }
-  .col-xs-2 .form-control {
-    width:6em;
-  }
-  .col-xs-3 {
-    width:17em;
-    padding-left:0;
-  }
-  .col-xs-3 .form-control {
-    width:10em;
   }
 }
 

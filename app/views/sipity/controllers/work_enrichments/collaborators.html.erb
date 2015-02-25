@@ -64,8 +64,8 @@
                 }
               %>
             </td>
-            <td class="js-hidden with-columns">
-              <div class="col-xs-2">
+            <td class="js-hidden contact-information form-inline">
+              <span class="form-group">
                 <span class="netid scope">
                   ND:
                 </span>
@@ -77,11 +77,11 @@
                     placeholder: t('activerecord.attributes.sipity/models/collaborator.netid')
                   }
                 %>
-              </div>
-              <div class="col-xs-1 choice">
+              </span>
+              <span class="choice">
                 <strong>OR</strong>
-              </div>
-              <div class="col-xs-3">
+              </span>
+              <span class="form-group">
                 <span class="email scope">
                   Non-ND:
                 </span>
@@ -94,7 +94,7 @@
                     placeholder: t('activerecord.attributes.sipity/models/collaborator.email')
                   }
                 %>
-              </div>
+              </span>
             <td>
           </tr>
         <% end %>
