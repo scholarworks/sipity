@@ -19,6 +19,18 @@ module Sipity
           expect(subject.errors[:work]).to_not be_empty
         end
 
+        context 'responsibility for review' do
+          subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+          let(:collaborators_attributes) do
+            { __sequence: { name: "Jeremy", role: "author", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+          end
+
+          it 'will validate that at least one collaborator must be responsible for review' do
+            expect(subject).to_not be_valid
+            expect(subject.errors[:base]).to_not be_empty
+          end
+        end
+
         context '#submit' do
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { User.new(id: '1') }
@@ -44,7 +56,7 @@ module Sipity
           context 'with valid data' do
             subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
             let(:collaborators_attributes) do
-              { __sequence: { name: "Jeremy", role: "author", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+              { __sequence: { name: "Jeremy", role: "author", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11 } }
             end
 
             it 'will create a collaborator' do

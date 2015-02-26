@@ -16,6 +16,7 @@ module Sipity
         end
 
         validate :each_collaborator_must_be_valid
+        validate :at_least_one_collaborator_must_be_responsible_for_review
 
         # Mirroring the expected behavior/implementation of the
         # :accepts_nested_attributes_for Rails method and its sibling :fields_for
@@ -48,7 +49,7 @@ module Sipity
 
         def each_collaborator_must_be_valid
           return true if collaborators.all?(&:valid?)
-          errors.add(:collaborators_attributes, 'are incomplete')
+          errors.add(:collaborators_attributes, :are_incomplete)
         end
 
         def build_collaborator_from_input(collection, attributes)
@@ -63,6 +64,10 @@ module Sipity
           # Because Rails strong parameters may or may not be in play.
           permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
           permitted_attributes
+        end
+
+        def at_least_one_collaborator_must_be_responsible_for_review
+          errors.add(:base, :at_least_one_collaborator_must_be_responsible_for_review) if collaborators.none?(&:responsible_for_review?)
         end
       end
     end
