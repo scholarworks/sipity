@@ -2,6 +2,7 @@
 <h2>Tell us about your advisors</h2>
 <%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
   <%= f.error_notification %>
+  <%= f.error :base, class: "base-errors", error_method: :to_sentence, error_tag: :div %>
   <%= field_set_tag do %>
     <%= f.fields_for :collaborators do |collaborator_form| %>
       <%= collaborator_form.input :name %>
