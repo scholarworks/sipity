@@ -91,6 +91,15 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+      context '#grad_school_requests_change' do
+        let(:entity) { Models::Work.new }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.grad_school_requests_change(entity: entity, to: to).deliver_now
+
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
     end
   end
 end

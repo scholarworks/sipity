@@ -35,6 +35,11 @@ module Sipity
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end
+
+      def grad_school_requests_change(entity:, to:, cc: [], bcc: [])
+        @entity = entity
+        mail(to: to, cc: cc, bcc: bcc)
+      end
     end
   end
 end
