@@ -71,8 +71,7 @@ module Sipity
       end
 
       def possible_access_right_answers
-        # TODO: This is a rather invasive question
-        Models::TransientAnswer::ANSWERS.fetch(Models::TransientAnswer::ACCESS_RIGHTS_QUESTION)
+        Models::TransientAnswer.access_rights_questions
       end
 
       def default_access_rights_answer

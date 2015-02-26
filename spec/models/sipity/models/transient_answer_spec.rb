@@ -9,6 +9,8 @@ module Sipity
         its(:column_names) { should include('entity_type') }
         its(:column_names) { should include('question_code') }
         its(:column_names) { should include('answer_code') }
+
+        its(:access_rights_questions) { should be_a(Array) }
       end
 
       context 'transient question answers for' do

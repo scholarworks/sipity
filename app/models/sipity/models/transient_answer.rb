@@ -39,6 +39,10 @@ module Sipity
         ].freeze
       }.freeze
 
+      def self.access_rights_questions
+        ANSWERS.fetch(ACCESS_RIGHTS_QUESTION)
+      end
+
       # TODO: Should there be validation concerning the question and answer?
 
       belongs_to :entity, polymorphic: true
