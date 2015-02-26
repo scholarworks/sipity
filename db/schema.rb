@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150226134513) do
+ActiveRecord::Schema.define(version: 20150226160732) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",              null: false
@@ -275,6 +275,7 @@ ActiveRecord::Schema.define(version: 20150226134513) do
     t.datetime "updated_at",  null: false
   end
 
+  add_index "sipity_processing_strategy_states", ["name"], name: "index_sipity_processing_strategy_states_on_name"
   add_index "sipity_processing_strategy_states", ["strategy_id", "name"], name: "sipity_processing_type_state_aggregate", unique: true
 
   create_table "sipity_roles", force: :cascade do |t|
