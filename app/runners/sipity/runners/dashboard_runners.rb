@@ -8,8 +8,8 @@ module Sipity
         self.authorization_layer = :none
 
         def run(processing_state: nil)
-          works = repository.find_works_for(user: current_user, processing_state: processing_state)
-          callback(:success, works)
+          dashboard_view = repository.build_dashboard_view(user: current_user, filter: { processing_state: processing_state })
+          callback(:success, dashboard_view)
         end
       end
     end
