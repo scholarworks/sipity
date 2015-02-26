@@ -20,6 +20,7 @@ module Sipity
 
         its(:work) { should eq work }
         its(:processing_action_name) { should eq action.name }
+        it { should respond_to(:resulting_strategy_state) }
 
         context 'when not valid, #submit' do
           before do

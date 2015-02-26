@@ -30,7 +30,7 @@ module Sipity
                 inclusion: { in: :possible_work_publication_strategies, message: I18n.t('sipity/forms.error_messages.inclusion') }
       validates :work_type,
                 presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.work_type') },
-                inclusion: { in: :possible_work_types, message: I18n.t('sipity/forms.error_messages.inclusion')  }
+                inclusion: { in: :possible_work_types, message: I18n.t('sipity/forms.error_messages.inclusion') }
       validates :access_rights_answer,
                 presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.access_rights_answer') },
                 inclusion: { in: :possible_access_right_answers, message: I18n.t('sipity/forms.error_messages.inclusion') }

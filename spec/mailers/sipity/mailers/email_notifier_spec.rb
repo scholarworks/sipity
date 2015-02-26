@@ -109,6 +109,24 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+      context '#all_advisors_have_signed_off' do
+        let(:entity) { Models::Work.new }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.all_advisors_have_signed_off(entity: entity, to: to).deliver_now
+
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
+      context '#advisor_signoff_but_still_more_to_go' do
+        let(:entity) { Models::Work.new }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.advisor_signoff_but_still_more_to_go(entity: entity, to: to).deliver_now
+
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
     end
   end
 end

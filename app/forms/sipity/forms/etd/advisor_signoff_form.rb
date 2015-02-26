@@ -16,6 +16,8 @@ module Sipity
           action.name
         end
 
+        delegate :resulting_strategy_state, to: :action
+
         private
 
         private :signoff_service
