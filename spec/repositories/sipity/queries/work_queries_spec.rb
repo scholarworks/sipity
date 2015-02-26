@@ -31,7 +31,6 @@ module Sipity
         let(:user) { double }
         let(:filter) { double }
         subject { test_repository.build_dashboard_view(user: user, filter: filter) }
-        it { should respond_to :each }
         it { should respond_to :filterable_processing_states }
         it { should respond_to :search_path }
       end
