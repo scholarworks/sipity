@@ -11,7 +11,7 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def request_revisions_from_creator(entity:, to:, cc: [], bcc: [])
+      def request_revision_from_creator(entity:, to:, cc: [], bcc: [])
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end

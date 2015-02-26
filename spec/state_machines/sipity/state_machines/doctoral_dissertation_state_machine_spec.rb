@@ -60,15 +60,15 @@ module Sipity
           end
         end
 
-        context ':request_revisions is triggered' do
+        context ':request_revision is triggered' do
           let(:initial_processing_state) { 'under_advisor_review' }
-          let(:event) { :request_revisions }
+          let(:event) { :request_revision }
           let(:options) { { comments: 'Hello World' } }
           subject { described_class.new(entity: entity, user: user, repository: repository) }
           it 'will send an email notification to the student with a URL to edit the item and reviewer provided comments' do
             expect(repository).to(
               have_received(:send_notification_for_entity_trigger).with(
-                notification: "request_revisions_from_creator", entity: entity, acting_as: 'creating_user',
+                notification: "request_revision_from_creator", entity: entity, acting_as: 'creating_user',
                 comments: options.fetch(:comments)
               )
             )

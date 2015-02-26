@@ -19,11 +19,11 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#request_revisions_from_creator' do
+      context '#request_revision_from_creator' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.request_revisions_from_creator(entity: entity, to: to).deliver_now
+          described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
@@ -46,11 +46,11 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#request_revisions_from_creator' do
+      context '#request_revision_from_creator' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.request_revisions_from_creator(entity: entity, to: to).deliver_now
+          described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end

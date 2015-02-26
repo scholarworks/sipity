@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Etd
-      RSpec.describe AdvisorRequestsChangesForm do
+      RSpec.describe AdvisorRequestsChangeForm do
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }

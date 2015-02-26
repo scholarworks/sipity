@@ -33,7 +33,7 @@ Sipity::Models::Processing::StrategyAction.create!([
   {strategy_id: 1, resulting_strategy_state_id: 2, name: "submit_for_review", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
   {strategy_id: 1, resulting_strategy_state_id: 4, name: "advisor_signs_off", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
   {strategy_id: 1, resulting_strategy_state_id: 3, name: "advisor_requests_changes", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 2, name: "request_revisions", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 2, name: "request_revision", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
   {strategy_id: 1, resulting_strategy_state_id: 5, name: "approve_for_ingest", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
   {strategy_id: 1, resulting_strategy_state_id: 6, name: "ingest", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
   {strategy_id: 1, resulting_strategy_state_id: 7, name: "ingest_completed", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"}
