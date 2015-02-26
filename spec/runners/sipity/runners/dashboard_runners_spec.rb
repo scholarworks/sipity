@@ -7,7 +7,7 @@ module Sipity
       include RunnersSupport
       RSpec.describe Index do
         let(:user) { User.new }
-        let(:context) { TestRunnerContext.new(current_user: user, find_works_for: true) }
+        let(:context) { TestRunnerContext.new(current_user: user, build_dashboard_view: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.success { |a| context.handler.invoked("SUCCESS", a) }
@@ -24,7 +24,8 @@ module Sipity
 
         it 'issues the :success callback' do
           view_object = double
-          expect(context.repository).to receive(:find_works_for).with(user: user, processing_state: :hello_dolly).and_return(view_object)
+          expect(context.repository).to receive(:build_dashboard_view).with(user: user, filter: { processing_state: :hello_dolly }).
+            and_return(view_object)
           response = subject.run(processing_state: :hello_dolly)
           expect(context.handler).to have_received(:invoked).with("SUCCESS", view_object)
           expect(response).to eq([:success, view_object])

@@ -113,6 +113,18 @@ module Sipity
           ).to eq([work_one, work_two])
 
           expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'new' }
+            )
+          ).to eq([work_one, work_two])
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'hello' }
+            )
+          ).to eq([])
+
+          expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: advisor, proxy_for_type: Sipity::Models::Work)
           ).to eq([work_one])
 

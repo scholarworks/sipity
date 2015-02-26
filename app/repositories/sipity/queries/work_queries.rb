@@ -7,6 +7,10 @@ module Sipity
         Models::Work.find(work_id)
       end
 
+      def build_dashboard_view(user:, filter: {})
+        Decorators::DashboardView.new(repository: self, user: user, filter: filter)
+      end
+
       def find_works_for(user:, processing_state: nil)
         Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work, processing_state: processing_state)
       end

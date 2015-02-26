@@ -53,13 +53,10 @@ module Sipity
         private :user, :scope, :repository
 
         def resolve(options = {})
-          resolved_scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: scope)
-          processing_state = options.fetch(:processing_state, nil)
-          if processing_state.present?
-            resolved_scope.where(processing_state: processing_state)
-          else
-            resolved_scope
-          end
+          repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+            user: user,
+            proxy_for_type: scope, filter: { processing_state: options[:processing_state] }
+          )
         end
 
         private

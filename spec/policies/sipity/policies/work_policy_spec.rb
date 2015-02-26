@@ -37,8 +37,7 @@ module Sipity
         end
 
         it 'will handle a processing_state' do
-          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).and_call_original
-          described_class.resolve(user: user, repository: repository, processing_state: 'new')
+          described_class.resolve(user: user, repository: repository, processing_state: 'new').first
         end
       end
     end
