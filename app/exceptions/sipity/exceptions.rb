@@ -135,6 +135,10 @@ module Sipity
     class StateMachineNotFoundError < ConceptNotFoundError
     end
 
+    # A EventTriggerForm was not found.
+    class EventTriggerFormNotFoundError < ConceptNotFoundError
+    end
+
     # Unable to find the correct processing strategy role
     class ValidProcessingStrategyRoleNotFoundError < RuntimeError
     end
