@@ -141,9 +141,8 @@
             <% end %>
           </dl>
         </div>
-        <%# NOTE: Delete is not presently visible because it is defaulting to the "show" action %>
         <% resourceful_actions = model.resourceful_actions(user: current_user) %>
-        <% available_resourceful_actions = resourceful_actions.reject{ |action| current_page?(:action => action.name) } %>
+        <% available_resourceful_actions = resourceful_actions.reject{ |action| controller_name == 'works' && action_name == action.name } %>
         <% if available_resourceful_actions.present? %>
           <div class="panel-footer">
             <ul class="action-listing">
@@ -151,10 +150,8 @@
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
                   <meta itemprop="name" content="event_trigger/<%= action.name %>" />
                   <% if action.available? %>
-                    <% action_is_dangerous = ( action.name == 'destroy' ) %>
-                    <% button_class = action_is_dangerous ? 'btn-danger' : 'btn-primary' %>
                     <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                      <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                      <a itemprop="url" href="<%= action.path %>" class="btn <%= action.button_class %>">
                         <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
                         <meta itemprop="name" content="<%= action.name %>" />
                       </a>
