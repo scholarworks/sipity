@@ -99,17 +99,22 @@ en:
     action/create:
       submit_for_review_triggered: 'Thank you for submitting your work for review. We will send you email notifications as review process progresses.'
   sipity/decorators/entitiy_enrichments:
+    call_to_action:
+      attach: 'Attach files'
+      defense_date: 'Defense date'
+      describe: 'Finish describing your work'
     cancel: 'Return without saving'
-    describe:
-      call_to_action: 'Finish describing your work'
-      description_html: ''
-      panels:
-        abstract:
-          title_html: 'Please provide an <b>abstract</b> of your work'
-          hint: 'Please keep your abstract to around 300 words.'
     description:
+      attach: ''
       defense_date: ''
+      describe: ''
     panels:
+      abstract:
+        title_html: 'Please provide an <b>abstract</b> of your work'
+        hint: 'Please keep your abstract to around 300 words.'
+      attach:
+        title_html: 'Please <b>attach</b> the pertinent files'
+        hint: 'If you have more than one file please select one to be the representative.'
       defense_date:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
