@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Etd
-      RSpec.describe ApproveForIngestForm do
+      RSpec.describe GradSchoolSignoffForm do
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
@@ -37,7 +37,7 @@ module Sipity
 
         it 'will send notifications to the creating user, etd reviewer, and advisor' do
           expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_approve_for_ingest', entity: work, acting_as: ['creating_user', 'etd_reviewer', 'advisor'])
+            with(notification: 'confirmation_of_grad_school_signoff', entity: work, acting_as: ['creating_user', 'etd_reviewer', 'advisor'])
           subject.submit(repository: repository, requested_by: user)
         end
       end

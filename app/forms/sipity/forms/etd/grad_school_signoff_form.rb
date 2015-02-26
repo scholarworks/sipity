@@ -2,7 +2,7 @@ module Sipity
   module Forms
     module Etd
       # Responsible for submitting the final Grad School approval.
-      class ApproveForIngestForm < ProcessingActionForm
+      class GradSchoolSignoffForm < ProcessingActionForm
         def initialize(attributes = {})
           super
           self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }
@@ -20,7 +20,7 @@ module Sipity
           super do
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
             repository.send_notification_for_entity_trigger(
-              notification: "confirmation_of_approve_for_ingest", entity: work, acting_as: ['creating_user', 'etd_reviewer', 'advisor']
+              notification: "confirmation_of_grad_school_signoff", entity: work, acting_as: ['creating_user', 'etd_reviewer', 'advisor']
             )
           end
         end

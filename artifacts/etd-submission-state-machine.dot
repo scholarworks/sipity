@@ -27,7 +27,7 @@ digraph "G" {
             advisor_requests_changes[label="{ Event: advisor_requests_changes | Available To: Advisor, Grad School | Send email to Grad School, Student Advisor | State: :advisor_changes_requested }"]
             student_submits_advisor_requested_changes[label="{ Event: student_submits_advisor_requested_changes | Available To: Student | Send email to Grad School, Student, Student Advisor | State: :under_advisor_review }"]
             request_revision[label="{ Event: request_revision | Available To: Grad School | Send email to student with comments | State: :under_grad_school_review }"]
-            approve_for_ingest[label="{ Event: approve_for_ingest | Available To: Grad School | Trigger :ingest event | State: :ready_for_ingest }"]
+            grad_school_signoff[label="{ Event: grad_school_signoff | Available To: Grad School | Trigger :ingest event | State: :ready_for_ingest }"]
             ingest[label="{ Event: ingest | Submit ETD for ingest | Available To: Ingester | State: :ingesting }"]
             ingest_completed[label="{ Event: ingest_completed | Available To: Ingester | Send email to Catalogers | Send email to Submitter, Grad School, Advisor | State: :done }"]
         }
@@ -38,7 +38,7 @@ digraph "G" {
         under_advisor_review -> advisor_requests_changes -> advisor_changes_requested
         advisor_changes_requested -> student_submits_advisor_requested_changes -> under_advisor_review
         under_grad_school_review -> request_revision -> under_grad_school_review
-        under_grad_school_review -> approve_for_ingest -> ready_for_ingest
+        under_grad_school_review -> grad_school_signoff -> ready_for_ingest
         ready_for_ingest -> ingest -> ingesting
         ingesting -> ingest_completed -> done
     }
