@@ -8,9 +8,11 @@ module Sipity
         # TODO: We are storing the form to use in the action; Leverage that.
         # However, to get things moving this will be an adequate short-cut
         processing_action_name = options.fetch(:processing_action_name)
-        "Sipity::Forms::Etd::#{processing_action_name.classify}Form".constantize
+        form_name_by_convention = "#{processing_action_name.classify}Form"
+        container = "Sipity::Forms::Etd"
+        "#{container}::#{form_name_by_convention}".constantize
       rescue NameError
-        WorkEventTriggerForm
+        raise Exceptions::EventTriggerFormNotFoundError, name: form_name_by_convention, container: container
       end
     end
   end
