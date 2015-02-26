@@ -69,7 +69,7 @@ module Sipity
           actors.project(actors[:proxy_for_id]).where(
             actors[:proxy_for_type].eq(poly_type)
           ).join(action_registers).on(
-            action_registers[:on_behalf_of_actor_id].eq(actors[:proxy_for_id])
+            action_registers[:on_behalf_of_actor_id].eq(actors[:id])
           ).where(
             action_registers[:strategy_action_id].eq(action.id).
             and(action_registers[:entity_id].eq(entity.id))
