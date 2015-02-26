@@ -16,7 +16,7 @@ module Sipity
         },
         'under_advisor_review' => {
           update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
-          request_revisions?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
+          request_revision?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
         },
         'ready_for_ingest' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
         'ingesting' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
@@ -57,10 +57,10 @@ module Sipity
         )
       end
 
-      def after_trigger_request_revisions(options)
+      def after_trigger_request_revision(options)
         comments = options.fetch(:comments)
         repository.send_notification_for_entity_trigger(
-          notification: "request_revisions_from_creator", entity: entity, acting_as: 'creating_user', comments: comments
+          notification: "request_revision_from_creator", entity: entity, acting_as: 'creating_user', comments: comments
         )
       end
 
@@ -90,7 +90,7 @@ module Sipity
       def build_state_machine
         state_machine = MicroMachine.new(entity.processing_state)
         state_machine.when(:submit_for_review, 'new' => 'under_advisor_review')
-        state_machine.when(:request_revisions, 'under_advisor_review' => 'under_advisor_review')
+        state_machine.when(:request_revision, 'under_advisor_review' => 'under_advisor_review')
         state_machine.when(:approve_for_ingest, 'under_advisor_review' => 'ready_for_ingest')
         state_machine.when(:ingest, 'ready_for_ingest' => 'ingesting')
         state_machine.when(:ingest_completed, 'ingesting' => 'ready_for_cataloging')
