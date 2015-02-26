@@ -7,9 +7,11 @@ module Sipity
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
-        let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id) }
+        let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: "hello") }
         let(:user) { User.new(id: 1) }
         subject { described_class.new(work: work, processing_action_name: action) }
+
+        its(:processing_action_name) { should eq(action.name) }
 
         context 'processing_action_name to action conversion' do
           it 'will use the given action if the strategy matches' do
