@@ -15,3 +15,21 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+
+(function($) {
+  var adjustRequiredAttachements = function(){
+    var attachementControl = $('#work_files');
+    if ( attachementControl.size() > 0 ){
+      attachementControl
+        .removeClass('required')
+        .removeAttr('required');
+    };
+  };
+
+  var ready = function(){
+    adjustRequiredAttachements();
+  };
+
+  $(document).ready(ready);
+  $(document).on('page:load', ready);
+}(jQuery));
