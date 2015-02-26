@@ -27,6 +27,15 @@ module Sipity
         end
       end
 
+      context '#build_dashboard_view' do
+        let(:user) { double }
+        let(:filter) { double }
+        subject { test_repository.build_dashboard_view(user: user, filter: filter) }
+        it { should respond_to :each }
+        it { should respond_to :filterable_processing_states }
+        it { should respond_to :search_path }
+      end
+
       context '#build_update_work_form' do
         let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
         it 'will raise an exception if the work is not persisted' do
