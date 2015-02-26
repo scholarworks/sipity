@@ -45,6 +45,16 @@ module Sipity
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end
+
+      def all_advisors_have_signed_off(entity:, to:, cc: [], bcc: [])
+        @entity = entity
+        mail(to: to, cc: cc, bcc: bcc)
+      end
+
+      def advisor_signoff_but_still_more_to_go(entity:, to:, cc: [], bcc: [])
+        @entity = entity
+        mail(to: to, cc: cc, bcc: bcc)
+      end
     end
   end
 end
