@@ -16,6 +16,9 @@ ActiveRecord::Base.transaction do
   end
 
 
+  graduate_school_group = Sipity::Models::Group.find_or_create_by!(name: 'Graduate School Reviewers')
+  graduate_school_actor = Sipity::Conversions::ConvertToProcessingActor.call(graduate_school_group)
+
   $stdout.puts 'Creating ETD Reviewer Role...'
   roles = {}
 
@@ -26,6 +29,7 @@ ActiveRecord::Base.transaction do
   ].each do |role_name|
     roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
   end
+
 
   $stdout.puts 'Creating ETD State Diagram...'
   ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
@@ -39,6 +43,8 @@ ActiveRecord::Base.transaction do
       ].each do |role_name|
         etd_strategy_roles[role_name] = etd_strategy.strategy_roles.find_or_initialize_by(role: roles.fetch(role_name))
       end
+
+      etd_strategy_roles.fetch('etd_reviewer').strategy_responsibilities.find_or_initialize_by(actor: graduate_school_actor)
 
       etd_states = {}
       [
