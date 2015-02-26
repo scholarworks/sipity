@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Etd
-      RSpec.describe AdvisorRequestsChangeForm do
+      RSpec.describe GradSchoolRequestsChangeForm do
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
@@ -50,7 +50,7 @@ module Sipity
 
           it 'will send creating user a note that the advisor has requested changes' do
             expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'advisor_requests_change', entity: work, acting_as: ['creating_user']).
+              with(notification: 'grad_school_requests_change', entity: work, acting_as: ['creating_user']).
               and_call_original
             subject.submit(repository: repository, requested_by: user)
           end

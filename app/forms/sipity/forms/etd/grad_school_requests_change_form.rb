@@ -1,9 +1,9 @@
 module Sipity
   module Forms
     module Etd
-      # Responsible for capturing advisor comments and forwarding them on to
-      # the student.
-      class AdvisorRequestsChangeForm < ProcessingActionForm
+      # Responsible for capturing comments and forwarding them on to the
+      # student.
+      class GradSchoolRequestsChangeForm < ProcessingActionForm
         def initialize(attributes = {})
           super
           @comment = attributes[:comment]
@@ -30,7 +30,7 @@ module Sipity
           super do
             repository.record_processing_comment(entity: work, commenter: requested_by, comment: comment, action: action)
             repository.send_notification_for_entity_trigger(
-              notification: 'advisor_requests_change',
+              notification: 'grad_school_requests_change',
               entity: work,
               acting_as: ['creating_user']
             )
