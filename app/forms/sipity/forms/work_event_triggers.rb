@@ -10,7 +10,7 @@ module Sipity
         case options.fetch(:processing_action_name)
         when 'submit_for_review' then Etd::SubmitForReviewForm
         when 'advisor_signoff' then Etd::AdvisorSignoffForm
-        when 'advisor_requests_changes' then Etd::AdvisorRequestsChangesForm
+        when 'advisor_requests_changes' then Etd::AdvisorRequestsChangeForm
         else
           WorkEventTriggerForm
         end
