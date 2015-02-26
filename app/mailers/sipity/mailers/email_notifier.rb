@@ -40,6 +40,11 @@ module Sipity
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end
+
+      def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
+        @entity = entity
+        mail(to: to, cc: cc, bcc: bcc)
+      end
     end
   end
 end

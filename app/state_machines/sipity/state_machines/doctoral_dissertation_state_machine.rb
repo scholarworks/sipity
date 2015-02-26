@@ -16,7 +16,7 @@ module Sipity
         },
         'under_advisor_review' => {
           update?: ['etd_reviewer'], show?: ['creating_user', 'advisor', 'etd_reviewer'],
-          request_revision?: ['etd_reviewer'], approve_for_ingest?: ['etd_reviewer']
+          request_revision?: ['etd_reviewer'], grad_school_signoff?: ['etd_reviewer']
         },
         'ready_for_ingest' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
         'ingesting' => { show?: ['creating_user', 'advisor', 'etd_reviewer'] },
@@ -64,7 +64,7 @@ module Sipity
         )
       end
 
-      def after_trigger_approve_for_ingest(_options)
+      def after_trigger_grad_school_signoff(_options)
         repository.submit_etd_student_submission_trigger!(entity: entity, trigger: :ingest, user: user)
       end
 
@@ -91,7 +91,7 @@ module Sipity
         state_machine = MicroMachine.new(entity.processing_state)
         state_machine.when(:submit_for_review, 'new' => 'under_advisor_review')
         state_machine.when(:request_revision, 'under_advisor_review' => 'under_advisor_review')
-        state_machine.when(:approve_for_ingest, 'under_advisor_review' => 'ready_for_ingest')
+        state_machine.when(:grad_school_signoff, 'under_advisor_review' => 'ready_for_ingest')
         state_machine.when(:ingest, 'ready_for_ingest' => 'ingesting')
         state_machine.when(:ingest_completed, 'ingesting' => 'ready_for_cataloging')
         state_machine.when(:finish_cataloging, 'ready_for_cataloging' => 'cataloged')

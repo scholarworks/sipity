@@ -86,9 +86,9 @@ module Sipity
           end
         end
 
-        context ':approve_for_ingest is triggered' do
+        context ':grad_school_signoff is triggered' do
           let(:initial_processing_state) { 'under_advisor_review' }
-          let(:event) { :approve_for_ingest }
+          let(:event) { :grad_school_signoff }
           it 'will record the event for auditing purposes' do
             expect(repository).to have_received(:log_event!).
               with(entity: entity, user: user, event_name: "doctoral_dissertation_state_machine/#{event}")
