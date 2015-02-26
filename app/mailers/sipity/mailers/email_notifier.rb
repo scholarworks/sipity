@@ -31,7 +31,7 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def advisor_has_requested_changes(entity:, to:, cc: [], bcc: [])
+      def advisor_requests_change(entity:, to:, cc: [], bcc: [])
         @entity = entity
         mail(to: to, cc: cc, bcc: bcc)
       end

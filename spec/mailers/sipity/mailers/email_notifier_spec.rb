@@ -82,11 +82,11 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#advisor_has_requested_changes' do
+      context '#advisor_requests_change' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.advisor_has_requested_changes(entity: entity, to: to).deliver_now
+          described_class.advisor_requests_change(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end

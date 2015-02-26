@@ -30,7 +30,7 @@ module Sipity
           super do
             repository.record_processing_comment(entity: work, commenter: requested_by, comment: comment, action: action)
             repository.send_notification_for_entity_trigger(
-              notification: 'advisor_has_requested_changes',
+              notification: 'advisor_requests_change',
               entity: work,
               acting_as: ['creating_user']
             )
