@@ -100,6 +100,15 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+      context '#confirmation_of_approve_for_ingest' do
+        let(:entity) { Models::Work.new }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.confirmation_of_approve_for_ingest(entity: entity, to: to).deliver_now
+
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
     end
   end
 end
