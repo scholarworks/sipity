@@ -8,17 +8,23 @@ module Sipity
         let(:entity) { Models::Work.new(id: ENTITY_ID) }
 
         [
-          { name: 'show', expected_path: "/works/#{ENTITY_ID}" },
-          { name: 'new', expected_path: "/works/new" },
-          { name: 'create', expected_path: "/works/new" },
-          { name: 'edit', expected_path: "/works/#{ENTITY_ID}/edit" },
-          { name: 'update', expected_path: "/works/#{ENTITY_ID}/edit" },
-          { name: 'destroy', expected_path: "/works/#{ENTITY_ID}" }
+          { name: 'show', expected_path: "/works/#{ENTITY_ID}", button_class: 'btn-primary' },
+          { name: 'new', expected_path: "/works/new", button_class: 'btn-primary' },
+          { name: 'create', expected_path: "/works/new", button_class: 'btn-primary' },
+          { name: 'edit', expected_path: "/works/#{ENTITY_ID}/edit", button_class: 'btn-primary' },
+          { name: 'update', expected_path: "/works/#{ENTITY_ID}/edit", button_class: 'btn-primary' },
+          { name: 'destroy', expected_path: "/works/#{ENTITY_ID}", button_class: 'btn-danger' }
         ].each_with_index do |example, index|
           it "will have a path #{example[:expected_path].inspect} for action name #{example[:name].inspect} (Scenario ##{index})" do
             action = double(name: example.fetch(:name))
             subject = described_class.new(action: action, entity: entity)
             expect(subject.path).to eq(example.fetch(:expected_path))
+          end
+
+          it "will have a button_class #{example[:button_class].inspect} for action name #{example[:name].inspect} (Scenario ##{index})" do
+            action = double(name: example.fetch(:name))
+            subject = described_class.new(action: action, entity: entity)
+            expect(subject.button_class).to eq(example.fetch(:button_class))
           end
         end
       end

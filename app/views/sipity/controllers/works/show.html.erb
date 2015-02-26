@@ -151,10 +151,8 @@
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
                   <meta itemprop="name" content="event_trigger/<%= action.name %>" />
                   <% if action.available? %>
-                    <% action_is_dangerous = ( action.name == 'destroy' ) %>
-                    <% button_class = action_is_dangerous ? 'btn-danger' : 'btn-primary' %>
                     <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                      <a itemprop="url" href="<%= action.path %>" class="btn <%= button_class %>">
+                      <a itemprop="url" href="<%= action.path %>" class="btn <%= action.button_class %>">
                         <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
                         <meta itemprop="name" content="<%= action.name %>" />
                       </a>

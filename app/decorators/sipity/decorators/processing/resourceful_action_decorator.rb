@@ -14,6 +14,16 @@ module Sipity
             view_context.new_work_path
           end
         end
+
+        def button_class
+          dangerous? ? 'btn-danger' : 'btn-primary'
+        end
+
+        private
+
+        def dangerous?
+          name.to_s == 'destroy'
+        end
       end
     end
   end
