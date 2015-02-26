@@ -1,6 +1,6 @@
 class CreateSipityModelsGroupMemberships < ActiveRecord::Migration
   def change
-    create_table :sipity_group_memberships, id: false do |t|
+    create_table :sipity_group_memberships do |t|
       t.integer :user_id
       t.integer :group_id
       t.string :membership_role

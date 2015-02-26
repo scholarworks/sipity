@@ -111,7 +111,7 @@ ActiveRecord::Schema.define(version: 20150226160732) do
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name"
   add_index "sipity_event_logs", ["user_id"], name: "index_sipity_event_logs_on_user_id"
 
-  create_table "sipity_group_memberships", id: false, force: :cascade do |t|
+  create_table "sipity_group_memberships", force: :cascade do |t|
     t.integer  "user_id",         null: false
     t.integer  "group_id",        null: false
     t.string   "membership_role", null: false
