@@ -27,11 +27,6 @@ module Sipity
         repository.find_works_for(user: user, processing_state: processing_state)
       end
 
-      def each
-        works.each { |work| yield(work) }
-      end
-      deprecate :each
-
       def processing_state
         filter[:processing_state]
       end
