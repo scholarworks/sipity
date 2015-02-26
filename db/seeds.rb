@@ -67,7 +67,7 @@ ActiveRecord::Base.transaction do
         ['submit_for_review', 'under_advisor_review'],
         ['advisor_signoff', 'under_grad_school_review'],
         ['advisor_requests_change', 'advisor_changes_requested'],
-        ['request_revision', 'under_advisor_review'],
+        ['request_revision', 'under_grad_school_review'],
         ['approve_for_ingest', 'ready_for_ingest'],
         ['ingest', 'ingesting'],
         ['ingest_completed', 'done']
@@ -122,6 +122,7 @@ ActiveRecord::Base.transaction do
         ['under_grad_school_review', 'assign_a_citation', ['etd_reviewer']],
         ['under_grad_school_review', 'request_revision', ['etd_reviewer']],
         ['under_grad_school_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+        ['under_grad_school_review', 'approve_for_ingest', ['etd_reviewer']],
         ['under_grad_school_review', ['edit', 'destroy'], ['etd_reviewer']],
         ['ready_for_ingest', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
         ['ingesting', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
