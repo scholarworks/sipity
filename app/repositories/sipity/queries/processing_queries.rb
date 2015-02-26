@@ -192,14 +192,19 @@ module Sipity
       #   - The strategy specific responsibility
       #     - For which I've been assigned either as a group member or a user
       #
-      # @param user [User]
+      # @param [User] user
       # @param proxy_for_type something that can be converted to a polymorphic
       #   type.
+      # @param [Hash] filter
+      # @option filter [String] :processing_state - Limit the returned objects
+      #   to those objects that are in the named :processing_state
       #
       # @return ActiveRecord::Relation<proxy_for_types>
-      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:)
+      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
-        processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(user: user, proxy_for_type: proxy_for_type)
+        processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(
+          user: user, proxy_for_type: proxy_for_type, filter: filter
+        )
 
         proxy_for_type.where(
           proxy_for_type.arel_table[proxy_for_type.primary_key].in(
@@ -225,12 +230,16 @@ module Sipity
       # Models::Work), fetch all of the processing entities that I can, in some
       # way, access based on the processing state.
       #
-      # @param user [User]
+      # @param [User] user
       # @param proxy_for_type something that can be converted to a polymorphic
       #   type.
+      # @param [Hash] filter
+      # @option filter [String] :processing_state - Limit the returned objects
+      #   to those objects that are in the named :processing_state
+      #
       #
       # @return ActiveRecord::Relation<Models::Processing::Entity>
-      def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:)
+      def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
 
         entities = Models::Processing::Entity.arel_table
@@ -276,9 +285,19 @@ module Sipity
           )
         )
 
-        Models::Processing::Entity.where(proxy_for_type: proxy_for_type).where(
+        unfiltered_scope = Models::Processing::Entity.where(proxy_for_type: proxy_for_type).where(
           entities[:strategy_state_id].in(available_strategy_state_subqueries).or(
             entities[:id].in(availble_entity_specific_subqueries)
+          )
+        )
+        processing_state = filter[:processing_state]
+        return unfiltered_scope unless processing_state.present?
+
+        unfiltered_scope.where(
+          entities[:strategy_state_id].in(
+            strategy_states.project(strategy_states[:id]).where(
+              strategy_states[:name].eq(processing_state)
+            )
           )
         )
       end
