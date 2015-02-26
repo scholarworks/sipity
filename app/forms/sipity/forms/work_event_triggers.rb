@@ -7,13 +7,10 @@ module Sipity
       def find_event_trigger_form_builder(options = {})
         # TODO: We are storing the form to use in the action; Leverage that.
         # However, to get things moving this will be an adequate short-cut
-        case options.fetch(:processing_action_name)
-        when 'submit_for_review' then Etd::SubmitForReviewForm
-        when 'advisor_signoff' then Etd::AdvisorSignoffForm
-        when 'advisor_requests_changes' then Etd::AdvisorRequestsChangeForm
-        else
-          WorkEventTriggerForm
-        end
+        processing_action_name = options.fetch(:processing_action_name)
+        "Sipity::Forms::Etd::#{processing_action_name.classify}Form".constantize
+      rescue NameError
+        WorkEventTriggerForm
       end
     end
   end
