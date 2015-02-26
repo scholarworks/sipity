@@ -22,7 +22,7 @@
         </tr>
       </thead>
       <tbody>
-        <% view.each do |work| %>
+        <% view.works.each do |work| %>
           <tr>
             <td><%= link_to(work.title, work_path(work)) %></td>
             <td><%= work.work_type.humanize %></td>
