@@ -7,6 +7,11 @@ module Sipity
         ENTITY_ID = '1234'
         let(:entity) { Models::Work.new(id: ENTITY_ID) }
 
+        it 'will not initialize with an invalid action name' do
+          action = double(name: 'bob')
+          expect { described_class.new(action: action, entity: entity) }.to raise_error(Exceptions::UnprocessableResourcefulActionNameError)
+        end
+
         [
           { name: 'show', expected_path: "/works/#{ENTITY_ID}", button_class: 'btn-primary' },
           { name: 'new', expected_path: "/works/new", button_class: 'btn-primary' },
