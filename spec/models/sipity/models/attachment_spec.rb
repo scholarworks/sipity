@@ -22,6 +22,11 @@ module Sipity
           expect(subject.file.data).to eq(File.read(__FILE__))
         end
 
+        it 'has a thumbnail_url' do
+          subject.file = File.new(__FILE__)
+          expect(subject.thumbnail_url).to match(/\/#{File.basename(__FILE__)}/)
+        end
+
         it 'has an file_name via the dragonfly gem' do
           subject.file = File.new(__FILE__)
           expect(subject.file_name).to eq(File.basename(__FILE__))
