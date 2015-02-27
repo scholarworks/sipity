@@ -27,12 +27,7 @@ module Sipity
         class_name: 'Sipity::Models::Processing::Entity'
       )
 
-      def processing_state
-        processing_entity.present? ? processing_entity.processing_state : @processing_state
-      end
-
-      attr_writer :processing_state
-      deprecate :processing_state=
+      delegate :processing_state, to: :processing_entity, allow_nil: true
 
       def to_processing_entity
         # This is a bit of a short cut, perhaps I should check if its persisted?
