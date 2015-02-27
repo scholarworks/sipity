@@ -108,8 +108,8 @@ module Sipity
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
         it 'will decrease the number of attachments in the system' do
-          expect { test_repository.remove_files_from(pid: pid_minter.call, user: user) }.
-            to change { Models::Attachment.count }.from(1).to(0)
+          expect { test_repository.remove_files_from(pids: pid_minter.call, work: work, user: user) }.
+            to change { Models::Attachment.count }.by(-1)
         end
       end
 
