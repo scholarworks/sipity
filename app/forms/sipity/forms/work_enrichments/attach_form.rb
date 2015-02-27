@@ -54,6 +54,7 @@ module Sipity
           attr_reader :attachment
           private :attachment
         end
+        private_constant :AttachmentFormElement
       end
     end
   end
