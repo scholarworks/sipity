@@ -1,30 +1,6 @@
 module Sipity
   module Forms
     module WorkEnrichments
-      # Responsible for exposing a means of displaying and marking the object
-      # for deletion.
-      class AttachmentFormElement
-        THUMBNAIL_SIZE = '64x64#'
-        def initialize(object)
-          @object = object
-        end
-
-        def thumbnail_url(size = THUMBNAIL_SIZE)
-          thumbnail(size).url
-        end
-
-        delegate :id, :name, :persisted?, to: :object
-        attr_accessor :delete
-
-        private
-
-        attr_reader :object
-        private :object
-
-        def thumbnail(size = THUMBNAIL_SIZE)
-          object.file.thumb(size, format: 'png', frame: 0)
-        end
-      end
       # Exposes a means for attaching files to the associated work.
       class AttachForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
@@ -66,6 +42,19 @@ module Sipity
           # treated as a single model instead of as an enumeration of items.
           work.attachments.map { |attachment| AttachmentFormElement.new(attachment) }
         end
+
+        # Responsible for exposing a means of displaying and marking the object
+        # for deletion.
+        class AttachmentFormElement
+          def initialize(attachment)
+            @attachment = attachment
+          end
+          delegate :id, :name, :thumbnail_url, :persisted?, to: :attachment
+          attr_accessor :delete
+          attr_reader :attachment
+          private :attachment
+        end
+        private_constant :AttachmentFormElement
       end
     end
   end

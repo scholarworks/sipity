@@ -12,6 +12,11 @@ module Sipity
 
       belongs_to :work
       dragonfly_accessor :file
+
+      THUMBNAIL_SIZE = '64x64#'.freeze
+      def thumbnail_url(size = THUMBNAIL_SIZE)
+        file.thumb(size).url
+      end
     end
   end
 end
