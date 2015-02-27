@@ -1,22 +1,48 @@
-<!-- TODO: Internationalize the enrichment option -->
-<h2>Describe your work</h2>
-<%= simple_form_for(model, url: enrich_work_path(model.work, model.enrichment_type), method: :post, as: :work) do |f| %>
-  <%= f.error_notification %>
-  <%= field_set_tag do %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<%= simple_form_for(
+  model,
+  url: enrich_work_path(model.work, model.enrichment_type),
+  method: :post,
+  as: :work,
+  html: { class: 'panel panel-primary with-footer attachements-form' }
+) do |f| %>
+  <legend class="panel-heading">
+    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.attach.title_html"), class: 'panel-title' %>
+  </legend>
+
+  <fieldset class="panel-body">
+    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.attach.hint"), class: 'panel-hint' %>
+    <%= f.error_notification %>
+
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
-  <% end %>
 
   <% if model.attachments.any? %>
-    <%= field_set_tag do %>
-      <%= f.input :mark_as_representative, as: :radio_buttons, collection: model.attachments, checked: model.representative_attachment %>
-    <% end %>
-    <%= field_set_tag do %>
+    <ol class="attachment-listing">
       <%= f.fields_for :attachments do |attachment_form| %>
-        <%= attachment_form.input :name %>
-        <%= attachment_form.input :delete, as: :boolean %>
-        <%= image_tag attachment_form.object.thumbnail_url %>
+        <li class="attachement form-inline">
+          <figure class="thumbnail-wrapper">
+            <%= image_tag attachment_form.object.thumbnail_url, class: 'img-thumbnail' %>
+          </figure>
+          <%= attachment_form.input :name, input_html: { class: 'form-control' } %>
+          <%= attachment_form.input :delete, as: :boolean, wrapper_html: { class: 'checkbox' } %>
+        </li>
       <% end %>
-    <% end %>
+    </ol>
+
+    <%= f.input :mark_as_representative, collection: model.attachments, label_method: :name, value_method: :id, input_html: { class: 'form-control' } %>
+
   <% end %>
-  <%= f.submit %>
+
+  </fieldset>
+
+  <%= model.work.with_action_pane('new_citation', 'panel-footer') do %>
+    <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+  <% end %>
+<% end %>
+
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 <% end %>

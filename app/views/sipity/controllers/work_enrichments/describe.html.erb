@@ -1,5 +1,6 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.call_to_action") %>
-<%= content_tag :p, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.description_html") %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
 
 <div class="panel-tiles">
 
@@ -11,11 +12,11 @@
     html: { class: 'panel panel-primary with-footer' }
   ) do |f| %>
     <legend class="panel-heading">
-      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.panels.abstract.title_html"), class: 'panel-title' %>
+      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.abstract.title_html"), class: 'panel-title' %>
     </legend>
 
     <fieldset class="panel-body">
-      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.panels.abstract.hint"), class: 'panel-hint' %>
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.abstract.hint"), class: 'panel-hint' %>
       <%= f.error_notification %>
 
       <%= f.input :abstract, as: :text, input_html: { class: 'form-control', rows: 5 } %>
