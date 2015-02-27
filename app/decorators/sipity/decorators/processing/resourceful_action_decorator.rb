@@ -34,13 +34,18 @@ module Sipity
 
         def entry_point_attributes
           attributes = { itemprop: 'url', class: "btn #{button_class}" }
-          attributes[:method] = :delete if name == DESTROY_ACTION_NAME
+          if name == DESTROY_ACTION_NAME
+            attributes[:data] = { confirm: I18n.t('sipity/decorators/resourceful_actions.confirm.destroy') }
+            attributes[:method] = :delete
+            attributes[:rel] = 'nofollow'
+          end
           attributes
         end
 
         def entry_point_text
-          view_context.t("sipity/works.resourceful_actions.label.#{ name }") +
-            %(<meta itemprop="name" content="#{name}" />).html_safe
+          text = view_context.t("sipity/decorators/resourceful_actions.label.#{ name }")
+          text <<  %(<meta itemprop="name" content="#{name}" />)
+          text.html_safe
         end
 
         def dangerous?
