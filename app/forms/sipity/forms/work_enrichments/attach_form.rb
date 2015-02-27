@@ -43,10 +43,12 @@ module Sipity
           @ids_for_deletion || []
         end
 
+        include Conversions::ConvertToBoolean
+
         def collect_files_for_deletion(value)
           @ids_for_deletion = []
           value.each do |_key, attributes|
-            next unless attributes['delete'] == '1' # Magic string; Craft a Boolean conversion
+            next unless convert_to_boolean(attributes['delete'])
             @ids_for_deletion << attributes.fetch('id')
           end
         end
