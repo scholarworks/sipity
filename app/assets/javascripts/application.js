@@ -11,8 +11,28 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery-ui-widget
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
 //= stub modernizr
+
+(function($) {
+  var adjustRequiredAttachements = function(){
+    var attachementControl = $('#work_files');
+    if ( attachementControl.size() > 0 ){
+      attachementControl
+        .removeClass('required')
+        .removeAttr('required');
+    };
+  };
+
+  var ready = function(){
+    $('.table.collaborators').manage_sections();
+    adjustRequiredAttachements();
+  };
+
+  $(document).ready(ready);
+  $(document).on('page:load', ready);
+}(jQuery));

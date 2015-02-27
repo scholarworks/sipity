@@ -36,11 +36,10 @@
           <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.contact_information') %>
         </tr>
         <%= f.fields_for :collaborators do |collaborator_form| %>
-          <tr>
+          <tr class='repeat'>
             <td class="row-controls">
-              <a href="javascript:void(0)" class="btn btn-danger">Remove</a>
             </td>
-            <td>
+            <td class="name">
               <%= collaborator_form.input :name,
                 label: false,
                 wrapper: false,
@@ -49,7 +48,7 @@
                 }
               %>
             </td>
-            <td>
+            <td class="role">
               <%= collaborator_form.input :role,
                 as: :select,
                 collection: collaborator_form.object.possible_roles,
@@ -60,7 +59,7 @@
                 }
               %>
             </td>
-            <td>
+            <td class="review">
               <%= collaborator_form.input :responsible_for_review,
                 as: :select,
                 label: false,
@@ -109,7 +108,6 @@
           </tr>
         <% end %>
       </table>
-
     </fieldset>
 
     <%= model.work.with_action_pane('new_citation', 'panel-footer') do %>
