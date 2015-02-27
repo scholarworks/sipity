@@ -8,11 +8,12 @@ module Sipity
         self.work = attributes.fetch(:work)
         @publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
         @enrichment_type = attributes.fetch(:enrichment_type, default_enrichment_type)
+        @repository = attributes.fetch(:repository) { default_repository }
       end
 
       attr_accessor :publisher, :publication_date, :work
-      attr_reader :enrichment_type
-      private(:work=) # Adding parenthesis because Beautify ruby was going crazy
+      attr_reader :enrichment_type, :repository
+      private :work=, :repository
 
       delegate :title, to: :work
 
@@ -23,14 +24,17 @@ module Sipity
       delegate :to_processing_entity, to: :work
 
       def authors(decorator: Decorators::CollaboratorDecorator)
-        Queries::CollaboratorQueries.work_collaborators_for(work: work, role: 'author').
-          map { |obj| decorator.decorate(obj) }
+        repository.work_collaborators_for(work: work, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
       private
 
       def default_enrichment_type
         'assign_a_doi'
+      end
+
+      def default_repository
+        CommandRepository.new
       end
     end
   end

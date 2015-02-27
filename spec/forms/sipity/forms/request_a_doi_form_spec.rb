@@ -4,7 +4,8 @@ module Sipity
   module Forms
     RSpec.describe RequestADoiForm do
       let(:work) { double('Work') }
-      subject { described_class.new(work: work) }
+      let(:repository) { CommandRepositoryInterface.new }
+      subject { described_class.new(work: work, repository: repository) }
 
       it { should respond_to :to_processing_entity }
       its(:enrichment_type) { should be_a(String) }
@@ -27,7 +28,7 @@ module Sipity
 
       let(:authors) { [double('Author')] }
       it 'will have #authors' do
-        allow(Queries::CollaboratorQueries).to receive(:work_collaborators_for).
+        allow(repository).to receive(:work_collaborators_for).
           with(work: work, role: 'author').and_return(authors)
         allow(Decorators::CollaboratorDecorator).to receive(:decorate).with(authors[0])
         subject.authors
