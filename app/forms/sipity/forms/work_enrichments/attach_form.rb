@@ -48,24 +48,24 @@ module Sipity
       # for deletion.
       class AttachmentFormElement
         THUMBNAIL_SIZE = '64x64#'
-        def initialize(object)
-          @object = object
+        def initialize(attachment)
+          @attachment = attachment
         end
 
         def thumbnail_url(size = THUMBNAIL_SIZE)
           thumbnail(size).url
         end
 
-        delegate :id, :name, :persisted?, to: :object
+        delegate :id, :name, :persisted?, to: :attachment
         attr_accessor :delete
 
         private
 
-        attr_reader :object
-        private :object
+        attr_reader :attachment
+        private :attachment
 
         def thumbnail(size = THUMBNAIL_SIZE)
-          object.file.thumb(size, format: 'png', frame: 0)
+          attachment.file.thumb(size, format: 'png', frame: 0)
         end
       end
     end
