@@ -8,6 +8,16 @@ module Sipity
         allow(Services::GrantProcessingPermission).to receive(:call)
       end
 
+      context '#destroy_a_work' do
+        let(:work) { Models::Work.new }
+        it 'will destroy the work in question' do
+          work.save! # so it is persisted
+          expect { test_repository.destroy_a_work(work: work) }.
+            to change { Models::Work.count }.by(-1)
+          expect { work.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do

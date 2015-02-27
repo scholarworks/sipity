@@ -26,6 +26,12 @@ module Sipity
         end
       end
 
+      # This may look ridiculous, but I'd like to isolate the destruction so
+      # that I can associate any other actions with it (i.e. logging, emails, etc.)
+      def destroy_a_work(work:)
+        work.destroy
+      end
+
       def update_processing_state!(entity:, to:)
         Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to)
       end
