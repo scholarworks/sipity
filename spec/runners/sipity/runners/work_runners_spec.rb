@@ -129,7 +129,7 @@ module Sipity
         end
 
         it 'issues the :success callback' do
-          expect(work).to receive(:destroy)
+          expect(context.repository).to receive(:destroy_a_work).with(work: work)
           response = subject.run(work_id: 1234)
           expect(handler).to have_received(:invoked).with("SUCCESS", work)
           expect(response).to eq([:success, work])

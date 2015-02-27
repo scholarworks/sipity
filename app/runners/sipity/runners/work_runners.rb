@@ -58,8 +58,7 @@ module Sipity
         def run(work_id:)
           work = repository.find_work(work_id)
           authorization_layer.enforce!(action_name => work) do
-            # REVIEW: Do we want to do anything else?
-            work.destroy
+            repository.destroy_a_work(work: work)
             callback(:success, work)
           end
         end
