@@ -29,6 +29,10 @@ module Sipity
     def default_pid_minter
     end
 
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def destroy_a_work(work:)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def destroy_work_attribute_values!(work:, key:, values:)
     end
