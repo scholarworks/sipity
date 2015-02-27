@@ -127,12 +127,12 @@ en:
     defense_date:
       label: "Record the <b>defense date</b> for your %{entity_type}"
   sipity/decorators/resourceful_actions:
-    show:
-      label: 'Show'
-    edit:
-      label: 'Edit'
-    destroy:
-      label: 'Delete'
+    label:
+      show: 'Show'
+      edit: 'Edit'
+      destroy: 'Delete'
+    confirm:
+      destroy: 'Are you sure you want to delete this submission? This action cannot be undone. You will have to start the process over from the beginning.'
   sipity/decorators/state_advancing_actions:
     submit_for_review:
       label: 'Submit for Review'
