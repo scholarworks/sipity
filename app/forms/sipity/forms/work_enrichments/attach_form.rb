@@ -42,30 +42,17 @@ module Sipity
           # treated as a single model instead of as an enumeration of items.
           work.attachments.map { |attachment| AttachmentFormElement.new(attachment) }
         end
-      end
 
-      # Responsible for exposing a means of displaying and marking the object
-      # for deletion.
-      class AttachmentFormElement
-        THUMBNAIL_SIZE = '64x64#'
-        def initialize(attachment)
-          @attachment = attachment
-        end
-
-        def thumbnail_url(size = THUMBNAIL_SIZE)
-          thumbnail(size).url
-        end
-
-        delegate :id, :name, :persisted?, to: :attachment
-        attr_accessor :delete
-
-        private
-
-        attr_reader :attachment
-        private :attachment
-
-        def thumbnail(size = THUMBNAIL_SIZE)
-          attachment.file.thumb(size, format: 'png', frame: 0)
+        # Responsible for exposing a means of displaying and marking the object
+        # for deletion.
+        class AttachmentFormElement
+          def initialize(attachment)
+            @attachment = attachment
+          end
+          delegate :id, :name, :thumbnail_url, :persisted?, to: :attachment
+          attr_accessor :delete
+          attr_reader :attachment
+          private :attachment
         end
       end
     end
