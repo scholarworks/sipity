@@ -3,7 +3,7 @@ require 'rails_helper'
 module Sipity
   module Queries
     RSpec.describe EnrichmentQueries, type: :isolated_repository_module do
-      let(:work) { Models::Work.new(id: 123, processing_state: 'new') }
+      let(:work) { Models::Work.new(id: 123) }
 
       context '#build_enrichment_form' do
         let(:valid_enrichment_type) { 'attach' }

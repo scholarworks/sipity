@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Commands
     RSpec.describe TodoListCommands, type: :isolated_repository_module do
-      let(:work) { Models::Work.new(id: 1, work_type: 'doctoral_dissertation', processing_state: 'new') }
+      let(:work) { Models::Work.new(id: 1, work_type: 'doctoral_dissertation') }
       let(:user) { double }
 
       context '#register_action_taken_on_entity' do

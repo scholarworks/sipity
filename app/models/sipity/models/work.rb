@@ -5,20 +5,13 @@ module Sipity
     class Work < ActiveRecord::Base
       self.table_name = 'sipity_works'
 
-      # @!attribute [rw] :processing_state The processing state of the work.
-      #   @return [String]
-      alias_attribute :processing_status, :processing_state
-
       has_many :collaborators, foreign_key: :work_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy
       has_many :attachments, foreign_key: :work_id, dependent: :destroy
       has_one :doi_creation_request, foreign_key: :work_id, dependent: :destroy
       has_many :access_rights, as: :entity, dependent: :destroy
-
       has_many :transient_answers, as: :entity, dependent: :destroy
-
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
-
       has_one(
         :processing_entity,
         -> { includes :strategy_state },
@@ -27,12 +20,10 @@ module Sipity
         class_name: 'Sipity::Models::Processing::Entity'
       )
 
-      def processing_state
-        processing_entity.present? ? processing_entity.processing_state : @processing_state
-      end
-
-      attr_writer :processing_state
-      deprecate :processing_state=
+      # @!attribute [rw] :processing_state The processing state of the work.
+      #   @return [String]
+      delegate :processing_state, to: :processing_entity, allow_nil: true
+      alias_attribute :processing_status, :processing_state
 
       def to_processing_entity
         # This is a bit of a short cut, perhaps I should check if its persisted?
