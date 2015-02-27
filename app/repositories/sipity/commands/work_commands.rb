@@ -44,8 +44,9 @@ module Sipity
         Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
       end
 
-      def remove_files_from(pid:, user: user)
-        Models::Attachment.where(pid: pid).destroy_all
+      def remove_files_from(work:, user:, pids:)
+        _user = user # Don't need it yet, but it makes sense to capture this
+        Models::Attachment.where(work: work, pid: Array.wrap(pids)).destroy_all
       end
 
       def mark_as_representative(work:, pid:, user: user)

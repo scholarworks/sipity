@@ -33,6 +33,28 @@ module Sipity
           end
         end
 
+        context 'assigning attachments attributes' do
+          let(:user) { double('User') }
+          let(:repository) { CommandRepositoryInterface.new }
+          let(:attachments_attributes) do
+            {
+              "0" => { "name" => "code4lib.pdf", "delete" => "1", "id" => "i8tnddObffbIfNgylX7zSA==" },
+              "1" => { "name" => "hotel.pdf", "delete" => "0", "id" => "y5Fm8YK9-ekjEwUMKeeutw==" },
+              "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
+            }
+          end
+          subject { described_class.new(work: work, repository: repository, attachments_attributes: attachments_attributes) }
+
+          before do
+            allow(subject).to receive(:valid?).and_return(true)
+          end
+
+          it 'will delete any attachments marked for deletion' do
+            expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
+            subject.submit(repository: repository, requested_by: user)
+          end
+        end
+
         context '#submit' do
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }
