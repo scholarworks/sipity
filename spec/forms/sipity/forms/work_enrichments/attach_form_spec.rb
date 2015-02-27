@@ -22,7 +22,7 @@ module Sipity
 
           let(:representative_for_attachment) { [double('Attachment')] }
           it 'will have #representative_for_attachment_id' do
-            allow(Queries::AttachmentQueries).to receive(:representative_attachment_for).
+            allow(repository).to receive(:representative_attachment_for).
               with(work: work).and_return(representative_for_attachment)
             subject.representative_attachment
           end
