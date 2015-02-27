@@ -27,7 +27,7 @@ module Sipity
           work = repository.find_work(attributes.fetch(:work_id))
           form = repository.build_event_trigger_form(attributes.merge(work: work))
           authorization_layer.enforce!(processing_action_name => form) do
-            if form.submit(repository: repository, requested_by: current_user)
+            if form.submit(requested_by: current_user)
               callback(:success, work)
             else
               callback(:failure, form)

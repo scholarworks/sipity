@@ -16,20 +16,23 @@ namespace :sipity do
     MethodDefinition = Struct.new(:name, :definition, :source_filename)
     method_definitions = []
 
-    dirname = File.expand_path('../../../app/repositories/sipity/commands/**/*.rb', __FILE__)
-
-    # Gather all of the command methods
-    Dir.glob(dirname).each do |filename|
-      File.read(filename).each_line do |line|
-        if line =~ /^ *def ([\w]*)[^\w].*$/
-          method_name = $1
-          # This is a potentially big problem that I want to address.
-          if method_definitions.detect { |m| m.name == method_name }
-            $stderr.puts "Duplicate method_name encountered. \"#{method_name}\" has been defined in multiple files."
-            exit(1)
-          else
-            filename.sub!(/^.*\/app\//, './app/')
-            method_definitions << MethodDefinition.new(method_name, line.strip, filename)
+    [
+      File.expand_path('../../../app/repositories/sipity/commands/**/*.rb', __FILE__),
+      File.expand_path('../../../app/repositories/sipity/queries/**/*.rb', __FILE__)
+    ].each do |dirname|
+      # Gather all of the command methods
+      Dir.glob(dirname).each do |filename|
+        File.read(filename).each_line do |line|
+          if line =~ /^ *def ([\w]*)[^\w].*$/
+            method_name = $1
+            # This is a potentially big problem that I want to address.
+            if method_definitions.detect { |m| m.name == method_name }
+              $stderr.puts "Duplicate method_name encountered. \"#{method_name}\" has been defined in multiple files."
+              exit(1)
+            else
+              filename.sub!(/^.*\/app\//, './app/')
+              method_definitions << MethodDefinition.new(method_name, line.strip, filename)
+            end
           end
         end
       end

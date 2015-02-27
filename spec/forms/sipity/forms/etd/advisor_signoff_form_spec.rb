@@ -10,7 +10,9 @@ module Sipity
         let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'hello') }
         let(:user) { User.new(id: 1) }
         let(:signoff_service) { double('Signoff Service', call: true) }
-        subject { described_class.new(work: work, processing_action_name: action, signoff_service: signoff_service) }
+        subject do
+          described_class.new(work: work, processing_action_name: action, signoff_service: signoff_service, repository: repository)
+        end
 
         context 'the default signoff service' do
           it 'will respond to :call' do
@@ -28,7 +30,7 @@ module Sipity
             expect(signoff_service).to_not receive(:call)
           end
           it 'will return the false' do
-            expect(subject.submit(repository: repository, requested_by: user)).to eq(false)
+            expect(subject.submit(requested_by: user)).to eq(false)
           end
         end
 
@@ -38,22 +40,22 @@ module Sipity
           end
 
           it 'will return the given work' do
-            expect(subject.submit(repository: repository, requested_by: user)).to eq(work)
+            expect(subject.submit(requested_by: user)).to eq(work)
           end
 
           it 'will log the event' do
             expect(repository).to receive(:log_event!).and_call_original
-            subject.submit(repository: repository, requested_by: user)
+            subject.submit(requested_by: user)
           end
 
           it 'will register that the given action was taken on the entity' do
             expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-            subject.submit(repository: repository, requested_by: user)
+            subject.submit(requested_by: user)
           end
 
           it 'will call the AdvisorSignsOff service' do
             expect(signoff_service).to receive(:call)
-            subject.submit(repository: repository, requested_by: user)
+            subject.submit(requested_by: user)
           end
         end
       end

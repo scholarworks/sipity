@@ -25,7 +25,7 @@ module Sipity
           Services::AdvisorSignsOff
         end
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super do
             signoff_service.call(form: self, requested_by: requested_by, repository: repository)
           end

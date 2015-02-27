@@ -5,7 +5,11 @@ module Sipity
     module WorkEnrichments
       RSpec.describe CollaboratorForm do
         let(:work) { Models::Work.new(id: '1234') }
-        subject { described_class.new(work: work) }
+        let(:repository) { CommandRepositoryInterface.new }
+        subject { described_class.new(work: work, repository: repository) }
+        before do
+          allow(repository).to receive(:find_or_initialize_collaborators_by).and_return(Models::Collaborator.new)
+        end
 
         its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
 
@@ -14,13 +18,13 @@ module Sipity
         its(:collaborators) { should_not be_empty }
 
         it 'will require a work' do
-          subject = described_class.new(work: nil)
+          subject = described_class.new(work: nil, repository: repository)
           subject.valid?
           expect(subject.errors[:work]).to_not be_empty
         end
 
         context 'responsibility for review' do
-          subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+          subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
           let(:collaborators_attributes) do
             { __sequence: { name: "Jeremy", role: "author", netid: "", email: "", responsible_for_review: "false", id: 11 } }
           end
@@ -32,7 +36,6 @@ module Sipity
         end
 
         context '#submit' do
-          let(:repository) { CommandRepositoryInterface.new }
           let(:user) { User.new(id: '1') }
           context 'with invalid data' do
             before do
@@ -40,12 +43,12 @@ module Sipity
             end
 
             it 'will return false if not valid' do
-              expect(subject.submit(repository: repository, requested_by: user))
+              expect(subject.submit(requested_by: user))
             end
           end
 
           context 'with nested validation' do
-            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
             let(:collaborators_attributes) do
               # Because the role is empty!----------V
               { __sequence: { name: "Jeremy", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
@@ -54,15 +57,14 @@ module Sipity
           end
 
           context 'with valid data' do
-            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes) }
+            subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
             let(:collaborators_attributes) do
               { __sequence: { name: "Jeremy", role: "author", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11 } }
             end
 
             it 'will create a collaborator' do
-              expect(Queries::CollaboratorQueries).to receive(:find_or_initialize_collaborators_by).and_call_original
               expect(repository).to receive(:assign_collaborators_to).and_call_original
-              subject.submit(repository: repository, requested_by: user)
+              subject.submit(requested_by: user)
             end
           end
         end

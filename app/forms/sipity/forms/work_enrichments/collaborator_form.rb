@@ -38,7 +38,7 @@ module Sipity
 
         private
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super { repository.assign_collaborators_to(work: work, collaborators: collaborators) }
         end
 
@@ -54,7 +54,7 @@ module Sipity
 
         def build_collaborator_from_input(collection, attributes)
           return if !attributes[:name].present? && !attributes[:id].present?
-          collaborator = Queries::CollaboratorQueries.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
+          collaborator = repository.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
           collaborator.attributes = extract_collaborator_attributes(attributes)
           collection << collaborator
         end
