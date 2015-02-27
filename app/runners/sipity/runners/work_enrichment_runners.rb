@@ -30,7 +30,7 @@ module Sipity
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_enrichment_form(attributes.merge(work: decorated_work, enrichment_type: enrichment_type))
           authorization_layer.enforce!(enrichment_type => form) do
-            if form.submit(repository: repository, requested_by: current_user)
+            if form.submit(requested_by: current_user)
               callback(:success, work)
             else
               callback(:failure, form)

@@ -119,7 +119,7 @@ module Sipity
         context 'when the form submission fails' do
           it 'issues the :failure callback' do
             expect(form).to receive(:submit).
-              with(repository: context.repository, requested_by: context.current_user).
+              with(requested_by: context.current_user).
               and_return(false)
             response = subject.run(work_id: work_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("FAILURE", form)
@@ -130,7 +130,7 @@ module Sipity
         context 'when the form submission succeeds' do
           it 'issues the :success callback' do
             expect(form).to receive(:submit).
-              with(repository: context.repository, requested_by: context.current_user).
+              with(requested_by: context.current_user).
               and_return(true)
             response = subject.run(work_id: work_id, attributes: attributes)
             expect(handler).to have_received(:invoked).with("SUCCESS", work)

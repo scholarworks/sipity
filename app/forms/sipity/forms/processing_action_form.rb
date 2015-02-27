@@ -26,18 +26,20 @@ module Sipity
 
       def initialize(attributes = {})
         @work = attributes.fetch(:work)
+        @repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_reader :work
+      attr_reader :work, :repository
       delegate :to_processing_entity, to: :work
       delegate :strategy_id, :strategy, to: :to_processing_entity
       alias_method :to_model, :work
+      private :repository
 
       validates :work, presence: true
 
-      def submit(repository:, requested_by:)
+      def submit(requested_by:)
         return false unless valid?
-        save(repository: repository, requested_by: requested_by)
+        save(requested_by: requested_by)
       end
 
       def enrichment_type
@@ -46,7 +48,7 @@ module Sipity
 
       private
 
-      def save(repository:, requested_by:)
+      def save(requested_by:)
         repository.register_action_taken_on_entity(work: work, enrichment_type: enrichment_type, requested_by: requested_by)
         repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         yield if block_given?
@@ -55,6 +57,10 @@ module Sipity
 
       def event_name
         File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
+      end
+
+      def default_repository
+        CommandRepository.new
       end
     end
   end

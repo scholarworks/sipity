@@ -50,7 +50,7 @@ module Sipity
           decorated_work = Decorators::WorkDecorator.decorate(work)
           form = repository.build_assign_a_citation_form(attributes.merge(work: decorated_work))
           authorization_layer.enforce!(action_name => form) do
-            if form.submit(repository: repository, requested_by: current_user)
+            if form.submit(requested_by: current_user)
               callback(:success, work)
             else
               callback(:failure, form)

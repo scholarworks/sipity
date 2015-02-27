@@ -14,7 +14,7 @@ module Sipity
 
         private
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super do
             repository.update_work_attribute_values!(work: work, key: 'abstract', values: abstract)
           end

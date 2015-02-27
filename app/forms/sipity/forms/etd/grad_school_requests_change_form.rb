@@ -26,7 +26,7 @@ module Sipity
 
         private
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super do
             repository.record_processing_comment(entity: work, commenter: requested_by, comment: comment, action: action)
             repository.send_notification_for_entity_trigger(

@@ -17,7 +17,7 @@ module Sipity
 
         private
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super do
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
             repository.send_notification_for_entity_trigger(

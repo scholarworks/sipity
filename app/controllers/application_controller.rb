@@ -13,9 +13,9 @@ class ApplicationController < ActionController::Base
   # It is the repository that indicates what the application can and is doing.
   def repository
     if request.get?
-      @repository = Sipity::QueryRepository.new
+      Sipity::QueryRepository.new
     else
-      @repository = Sipity::CommandRepository.new
+      Sipity::CommandRepository.new
     end
   end
   helper_method :repository

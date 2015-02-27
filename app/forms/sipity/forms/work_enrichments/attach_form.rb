@@ -29,7 +29,7 @@ module Sipity
 
         private
 
-        def save(repository:, requested_by:)
+        def save(requested_by:)
           super do
             Array.wrap(files).compact.each do |file|
               repository.attach_file_to(work: work, file: file, user: requested_by)
