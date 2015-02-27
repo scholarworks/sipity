@@ -82,6 +82,8 @@ en:
     action/update:
       failure: 'That update could not be made.'
       success: 'Update successful!'
+    action/destroy:
+      success: '"%{title}" has been deleted.'
     processing_state:
       new:
         can_advance: "You may submit your work for review when ready."
