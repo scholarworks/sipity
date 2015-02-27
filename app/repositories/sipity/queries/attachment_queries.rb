@@ -13,9 +13,6 @@ module Sipity
       def representative_attachment_for(work:)
         Models::Attachment.where(work_id: work.id, is_representative_file: true)
       end
-
-      module_function :representative_attachment_for
-      public :representative_attachment_for
     end
   end
 end

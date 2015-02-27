@@ -14,7 +14,7 @@ module Sipity
         attr_accessor :mark_as_representative
 
         def representative_attachment
-          Queries::AttachmentQueries.representative_attachment_for(work: work)
+          repository.representative_attachment_for(work: work)
         end
 
         def attachments
