@@ -74,14 +74,6 @@ module Sipity
           end
         end
       end
-
-      context '#update_work_with_doi_predicate!' do
-        let(:work) { Models::Work.new(id: 1) }
-        let(:value) { 'doi:oh-my' }
-        it 'will update the underlying doi predicates' do
-          test_repository.update_work_with_doi_predicate!(work: work, values: value)
-        end
-      end
     end
   end
 end

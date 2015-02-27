@@ -46,7 +46,9 @@ module Sipity
       end
 
       def handle_remote_response!(response)
-        repository.update_work_with_doi_predicate!(work: work, values: response.id)
+        repository.update_work_attribute_values!(
+          work: work, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: response.id
+        )
         repository.update_work_doi_creation_request_state!(work: work, state: :request_completed)
       end
 

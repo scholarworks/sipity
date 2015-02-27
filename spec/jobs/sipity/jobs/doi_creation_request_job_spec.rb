@@ -37,7 +37,7 @@ module Sipity
         subject { described_class.new(work.id) }
         its(:minter) { should respond_to :call }
         its(:repository) { should respond_to :update_work_doi_creation_request_state! }
-        its(:repository) { should respond_to :update_work_with_doi_predicate! }
+        its(:repository) { should respond_to :update_work_attribute_values! }
         its(:repository) { should respond_to :gather_doi_creation_request_metadata }
         its(:repository) { should respond_to :find_doi_creation_request }
         its(:repository) { should respond_to :find_work }

@@ -30,12 +30,6 @@ module Sipity
         doi_creation_request.update(attributes)
       end
 
-      def update_work_with_doi_predicate!(work:, values:)
-        AdditionalAttributeCommands.update_work_attribute_values!(
-          work: work, key: Models::AdditionalAttribute::DOI_PREDICATE_NAME, values: values
-        )
-      end
-
       private
 
       def submit_doi_creation_request_job!(work:)
