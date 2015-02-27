@@ -20,7 +20,7 @@ module Sipity
     end
 
     RSpec.describe UnprocessableResourcefulActionNameError do
-      subject { described_class.new('hello') }
+      subject { described_class.new(container: 'Container', object: 'hello') }
       its(:message) { should be_a(String) }
     end
 

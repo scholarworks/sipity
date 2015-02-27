@@ -7,6 +7,11 @@ module Sipity
         ENTITY_ID = '1234'
         let(:entity) { Models::Work.new(id: ENTITY_ID) }
 
+        it 'will not initialize with an invalid action name' do
+          action = double(name: 'bob')
+          expect { described_class.new(action: action, entity: entity) }.to raise_error(Exceptions::UnprocessableResourcefulActionNameError)
+        end
+
         [
           { name: 'show', expected_path: "/works/#{ENTITY_ID}", button_class: 'btn-primary' },
           { name: 'new', expected_path: "/works/new", button_class: 'btn-primary' },
@@ -25,6 +30,23 @@ module Sipity
             action = double(name: example.fetch(:name))
             subject = described_class.new(action: action, entity: entity)
             expect(subject.button_class).to eq(example.fetch(:button_class))
+          end
+
+        end
+
+        it 'will render an entry point with data-method="delete" for :destroy action' do
+          action = double(name: 'destroy')
+          subject = described_class.new(action: action, entity: entity)
+          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+            with_tag("a[data-method='delete'][href='#{subject.path}']")
+          end
+        end
+
+        it 'will render an entry point with data-method="delete" for :destroy action' do
+          action = double(name: 'edit')
+          subject = described_class.new(action: action, entity: entity)
+          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+            with_tag("a[href='#{subject.path}']")
           end
         end
       end

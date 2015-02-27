@@ -22,8 +22,8 @@ module Sipity
 
     # This is not a defined resourceful action
     class UnprocessableResourcefulActionNameError < RuntimeError
-      def initialize(name)
-        super("Received unexpected action name (#{name})")
+      def initialize(container:, object:)
+        super("Expected #{object} to have a #name that is within #{container}")
       end
     end
 
