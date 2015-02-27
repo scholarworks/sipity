@@ -37,6 +37,12 @@ module Sipity
         respond_with(@model)
       end
 
+      def destroy
+        status, model = run(work_id: work_id)
+        flash[:notice] = message_for(status, title: model.title)
+        redirect_to dashboard_path
+      end
+
       attr_reader :model
       protected :model
       helper_method :model

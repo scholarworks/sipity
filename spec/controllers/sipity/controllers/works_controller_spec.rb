@@ -82,6 +82,7 @@ module Sipity
           expect(response).to redirect_to("/works/#{work.to_param}")
         end
       end
+
       context 'GET #show' do
         before { controller.runner = runner }
         let(:runner) do
@@ -96,6 +97,22 @@ module Sipity
           get 'show', id: work.to_param
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('show')
+        end
+      end
+
+      context 'DELETE #destroy' do
+        before { controller.runner = runner }
+        let(:runner) do
+          Hesburgh::Lib::MockRunner.new(
+            yields: yields, callback_name: callback_name, run_with: { work_id: work.to_param }, context: controller
+          )
+        end
+
+        let(:yields) { work }
+        let(:callback_name) { :success }
+        it 'will redirect to the dashboard' do
+          delete 'destroy', id: work.to_param
+          expect(response).to redirect_to(dashboard_path)
         end
       end
 
