@@ -5,6 +5,8 @@ module Sipity
     module WorkCommands
       # Responsible for assigning collaborators to a work.
       def assign_collaborators_to(work:, collaborators:)
+        # TODO: Encapsulate this is a Service Object as there is enough logic
+        # to warrant this behavior.
         Array.wrap(collaborators).each do |collaborator|
           collaborator.work_id = work.id
           collaborator.save!
@@ -16,6 +18,8 @@ module Sipity
       end
 
       def create_work!(attributes = {})
+        # TODO: Encapsulate this into a Service Object as there is logic spilling
+        #   around.
         Models::Work.create!(attributes.slice(:title, :work_publication_strategy, :work_type)) do |work|
           named_work_type = attributes.fetch(:work_type)
           work_type = Models::WorkType.find_or_create_by!(name: named_work_type)
