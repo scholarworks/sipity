@@ -9,7 +9,7 @@ module Sipity
       end
 
       def build_assign_a_citation_form(attributes = {})
-        Forms::AssignACitationForm.new(attributes)
+        Forms::AssignACitationForm.new(attributes.merge(repository: self))
       end
     end
   end
