@@ -18,11 +18,6 @@ module Sipity
             subject.valid?
             expect(subject.errors[:work]).to_not be_empty
           end
-          it 'will require at least one file' do
-            subject = described_class.new(files: [], work: work)
-            subject.valid?
-            expect(subject.errors[:files]).to_not be_empty
-          end
 
           let(:representative_for_attachment) { [double('Attachment')] }
           it 'will have #representative_for_attachment_id' do
