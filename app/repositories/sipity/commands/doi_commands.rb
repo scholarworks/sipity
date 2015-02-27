@@ -3,6 +3,9 @@ module Sipity
   module Commands
     # Commands
     module DoiCommands
+      # TODO: Rework these forms to be more inline with the forms that call the
+      #   underlying repository methods. In doing so, I can avoid the issue of
+      #   calling some of the module_functions
       def submit_assign_a_doi_form(form, requested_by:)
         form.submit do |f|
           EventLogCommands.log_event!(entity: f.work, user: requested_by, event_name: __method__)
@@ -12,6 +15,9 @@ module Sipity
         end
       end
 
+      # TODO: Rework these forms to be more inline with the forms that call the
+      #   underlying repository methods. In doing so, I can avoid the issue of
+      #   calling some of the module_functions
       def submit_request_a_doi_form(form, requested_by:)
         form.submit do |f|
           AdditionalAttributeCommands.update_work_attribute_values!(
