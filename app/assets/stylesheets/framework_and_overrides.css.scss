@@ -105,3 +105,17 @@ main > section:first-child {
   padding-left:30px;
   padding-right:30px;
 }
+
+// Aligning SimpleForm behavior with Bootstrap's expectations
+.form-inline .control-group,
+.form-inline .controls {
+  display:inline-block;
+}
+
+.form-inline .control-group {
+  padding-left:1em;
+}
+
+.form-inline .controls {
+  padding-left:.5em;
+}

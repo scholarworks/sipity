@@ -20,16 +20,21 @@
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
 
   <% if model.attachments.any? %>
-    <%= field_set_tag do %>
-      <%= f.input :mark_as_representative, as: :radio_buttons, collection: model.attachments, checked: model.representative_attachment %>
-    <% end %>
-    <%= field_set_tag do %>
+    <ol class="attachment-listing">
       <%= f.fields_for :attachments do |attachment_form| %>
-        <%= attachment_form.input :name %>
-        <%= attachment_form.input :delete, as: :boolean %>
-        <%= image_tag attachment_form.object.thumbnail_url %>
+        <li class="attachement form-inline">
+          <figure class="thumbnail-wrapper">
+            <%= image_tag attachment_form.object.thumbnail_url, class: 'img-thumbnail' %>
+          </figure>
+          <%= attachment_form.input :name, input_html: { class: 'form-control' } %>
+          <%= attachment_form.input :delete, as: :boolean, wrapper_html: { class: 'checkbox' } %>
+        </li>
       <% end %>
-    <% end %>
+    </ol>
+
+    <%= f.input :mark_as_representative, collection: model.attachments, label_method: :name, value_method: :id, input_html: { class: 'form-control' } %>
+
+  <% end %>
 
   </fieldset>
 
