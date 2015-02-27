@@ -15,14 +15,9 @@ module Sipity
       has_one :doi_creation_request, foreign_key: :work_id, dependent: :destroy
       has_many :access_rights, as: :entity, dependent: :destroy
 
-      has_many :todo_item_states, as: :entity, dependent: :destroy
-      deprecate :todo_item_states
-
       has_many :transient_answers, as: :entity, dependent: :destroy
-      deprecate :transient_answers
 
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
-      deprecate
 
       has_one(
         :processing_entity,
