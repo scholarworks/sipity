@@ -31,6 +31,23 @@ module Sipity
             subject = described_class.new(action: action, entity: entity)
             expect(subject.button_class).to eq(example.fetch(:button_class))
           end
+
+        end
+
+        it 'will render an entry point with data-method="delete" for :destroy action' do
+          action = double(name: 'destroy')
+          subject = described_class.new(action: action, entity: entity)
+          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+            with_tag("a[data-method='delete'][href='#{subject.path}']")
+          end
+        end
+
+        it 'will render an entry point with data-method="delete" for :destroy action' do
+          action = double(name: 'edit')
+          subject = described_class.new(action: action, entity: entity)
+          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+            with_tag("a[href='#{subject.path}']")
+          end
         end
       end
     end

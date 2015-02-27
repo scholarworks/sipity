@@ -18,11 +18,30 @@ module Sipity
           end
         end
 
+        alias_method :entry_point_path, :path
+
         def button_class
           dangerous? ? 'btn-danger' : 'btn-primary'
         end
 
+        def render_entry_point
+          view_context.content_tag('div', itemprop: 'target', itemscope: true, itemtype: "http://schema.org/EntryPoint", class: "action") do
+            view_context.link_to(entry_point_text, entry_point_path, entry_point_attributes)
+          end
+        end
+
         private
+
+        def entry_point_attributes
+          attributes = { itemprop: 'url', class: "btn #{button_class}" }
+          attributes[:method] = :delete if name == DESTROY_ACTION_NAME
+          attributes
+        end
+
+        def entry_point_text
+          view_context.t("sipity/works.resourceful_actions.label.#{ name }") +
+            %(<meta itemprop="name" content="#{name}" />).html_safe
+        end
 
         def dangerous?
           name.to_s == DESTROY_ACTION_NAME
@@ -32,7 +51,7 @@ module Sipity
           if action.respond_to?(:name) && VALID_ACTION_NAMES.include?(action.name)
             super(action)
           else
-            fail Exceptions::UnprocessableResourcefulActionNameError, container: action
+            fail Exceptions::UnprocessableResourcefulActionNameError, object: action, container: VALID_ACTION_NAMES
           end
         end
       end
