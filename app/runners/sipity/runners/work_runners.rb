@@ -49,6 +49,22 @@ module Sipity
         end
       end
 
+      # Responsible for finding and destroying the given work.
+      class Destroy < BaseRunner
+        self.authentication_layer = :default
+        self.authorization_layer = :default
+        self.action_name = :destroy?
+
+        def run(work_id:)
+          work = repository.find_work(work_id)
+          authorization_layer.enforce!(action_name => work) do
+            # REVIEW: Do we want to do anything else?
+            work.destroy
+            callback(:success, work)
+          end
+        end
+      end
+
       # Responsible for providing an index of Works
       class Index < BaseRunner
         self.authentication_layer = :default
