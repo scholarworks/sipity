@@ -22,8 +22,6 @@ module Sipity
         end
         transient_answer
       end
-      module_function :handle_transient_access_rights_answer
-      public :handle_transient_access_rights_answer
     end
   end
 end
