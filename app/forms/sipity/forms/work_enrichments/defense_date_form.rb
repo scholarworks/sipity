@@ -3,9 +3,10 @@ module Sipity
     module WorkEnrichments
       # Exposes a means defining the thesis defense date todo item.
       class DefenseDateForm < Forms::WorkEnrichmentForm
+        include Conversions::ExtractInputDateFromInput
         def initialize(attributes = {})
           super
-          self.defense_date = parse_input_defense_date(attributes)
+          self.defense_date = extract_input_date_from_input(:defense_date, attributes) { defense_date_from_work }
         end
 
         attr_reader :defense_date
@@ -22,19 +23,6 @@ module Sipity
         def defense_date_from_work
           return nil unless work
           Array.wrap(repository.work_attribute_values_for(work: work, key: 'defense_date')).first
-        end
-
-        def parse_input_defense_date(attributes = {})
-          # Because Rails date input builder generates 3 inpute fields for a date (year, month, day).
-          # This is here to capture that specific implementation. Note, it will be something that will
-          # require a general conversion.
-          if attributes.key?(:defense_date)
-            attributes.fetch(:defense_date)
-          elsif attributes.key?("defense_date(1i)") && attributes.key?("defense_date(2i)") && attributes.key?("defense_date(3i)")
-            "#{attributes['defense_date(1i)'].to_i}-#{attributes['defense_date(2i)'].to_i}-#{attributes['defense_date(3i)'].to_i}"
-          else
-            defense_date_from_work
-          end
         end
 
         def defense_date=(value)
