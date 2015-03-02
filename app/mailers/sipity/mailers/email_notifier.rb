@@ -59,7 +59,7 @@ module Sipity
       private
 
       def convert_entity_into_decorator(entity)
-        Sipity::Decorators::EmailNotificationDecorator.new(entity)
+        Decorators::EmailNotificationDecorator.new(entity)
       end
     end
   end
