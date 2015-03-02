@@ -273,10 +273,6 @@ module Sipity
     def update_work_publication_date!(work:, publication_date:)
     end
 
-    # @see ./app/repositories/sipity/commands/doi_commands.rb
-    def update_work_with_doi_predicate!(work:, values:)
-    end
-
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
     def usernames_of_those_that_are_collaborating_and_responsible_for_review(work:)
     end
