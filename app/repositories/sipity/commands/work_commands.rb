@@ -55,6 +55,14 @@ module Sipity
         Models::Attachment.where(work: work, pid: Array.wrap(pids)).destroy_all
       end
 
+      def amend_files_metadata(work:, user:, metadata: {})
+        _work, _user, _files = work, user, metadata
+        metadata.each do |pid, data|
+          Models::Attachment.where(work: work).find(pid).
+            update_attributes!(data.with_indifferent_access.slice(:name))
+        end
+      end
+
       def mark_as_representative(work:, pid:, user: user)
         attachment = Models::Attachment.find_by(pid: pid)
         return true unless attachment.present?

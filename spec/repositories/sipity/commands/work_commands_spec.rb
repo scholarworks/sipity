@@ -113,6 +113,19 @@ module Sipity
         end
       end
 
+      context '#amend_files_metadata' do
+        let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
+        let(:file_name) { "hello-world.txt" }
+        let(:user) { User.new(id: 1234) }
+        let(:work) { Models::Work.create! }
+        let(:pid_minter) { -> { 'abc123' } }
+        before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
+        it 'will change the file name' do
+          test_repository.amend_files_metadata(work: work, user: user, metadata: { 'abc123' => { 'name' => 'Howdy' } })
+          expect(Models::Attachment.find('abc123').name).to eq('Howdy')
+        end
+      end
+
       context '#mark_as_representative' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
