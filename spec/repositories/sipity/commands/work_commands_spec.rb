@@ -89,13 +89,13 @@ module Sipity
         end
       end
 
-      context '#attach_file_to' do
+      context '#attach_files_to' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:user) { User.new(id: 1234) }
         let(:work) { Models::Work.create! }
         let(:pid_minter) { -> { 'abc123' } }
         it 'will increment the number of attachments in the system' do
-          expect { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }.
+          expect { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }.
             to change { Models::Attachment.where(pid: 'abc123').count }.by(1)
         end
       end
@@ -106,7 +106,7 @@ module Sipity
         let(:user) { User.new(id: 1234) }
         let(:work) { Models::Work.create! }
         let(:pid_minter) { -> { 'abc123' } }
-        before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
+        before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will decrease the number of attachments in the system' do
           expect { test_repository.remove_files_from(pids: pid_minter.call, work: work, user: user) }.
             to change { Models::Attachment.count }.by(-1)
@@ -119,7 +119,7 @@ module Sipity
         let(:user) { User.new(id: 1234) }
         let(:work) { Models::Work.create! }
         let(:pid_minter) { -> { 'abc123' } }
-        before { test_repository.attach_file_to(work: work, file: file, user: user, pid_minter: pid_minter) }
+        before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will mark the given attachments as representative in the system' do
           expect { test_repository.mark_as_representative(work: work, pid: pid_minter.call, user: user) }.
             to change { Models::Attachment.where(is_representative_file: true).count }.by(1)

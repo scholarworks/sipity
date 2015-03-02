@@ -31,9 +31,7 @@ module Sipity
 
         def save(requested_by:)
           super do
-            Array.wrap(files).compact.each do |file|
-              repository.attach_file_to(work: work, file: file, user: requested_by)
-            end
+            repository.attach_files_to(work: work, files: files, user: requested_by)
             repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
             repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
           end
