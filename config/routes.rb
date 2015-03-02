@@ -32,6 +32,10 @@ Rails.application.routes.draw do
       # # Are there constraints?
       get 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#new', as: 'event_trigger_for_work'
       post 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#create'
+
+      #Account profile Managament
+      get 'account/edit', to: 'account_profiles#edit'
+      post 'account', to: 'account_profiles#update'
     end
   end
 

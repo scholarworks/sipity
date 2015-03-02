@@ -21,6 +21,10 @@ module Sipity
     def authorized_for_processing?(user:, entity:, action:)
     end
 
+    # @see ./app/repositories/sipity/queries/account_profile_queries.rb
+    def build_account_profile_form(attributes:)
+    end
+
     # @see ./app/repositories/sipity/queries/citation_queries.rb
     def build_assign_a_citation_form(attributes = {})
     end
