@@ -23,6 +23,7 @@ module Sipity
     include Commands::PermissionCommands
     include Commands::TransientAnswerCommands
     include Commands::TodoListCommands
+    include Commands::AccountProfileCommands
 
     def submit_etd_student_submission_trigger!
       fail NotImplementedError, "I want to expose this method, but I have layers of modules to consider"

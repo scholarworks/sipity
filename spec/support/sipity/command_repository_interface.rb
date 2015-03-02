@@ -265,6 +265,10 @@ module Sipity
     def update_processing_state!(entity:, to:)
     end
 
+    # @see ./app/repositories/sipity/commands/account_profile_commands.rb
+    def update_user_preferred_name(user:, preferred_name:)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def update_work_attribute_values!(work:, key:, values:)
     end
