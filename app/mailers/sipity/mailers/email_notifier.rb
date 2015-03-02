@@ -31,9 +31,10 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def advisor_requests_change(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
+      def advisor_requests_change(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::Email::AdvisorRequestsChangeDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc))
       end
 
       def grad_school_requests_change(entity:, to:, cc: [], bcc: [])
