@@ -83,10 +83,12 @@ module Sipity
         end
       end
       context '#advisor_requests_change' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { double('Hello') }
+        let(:decorated) { double(name_of_commentor: 'A name', comment: "A comment", document_type: "A document_type") }
+        let(:decorator) { double(new: decorated) }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.advisor_requests_change(entity: entity, to: to).deliver_now
+          described_class.advisor_requests_change(entity: entity, to: to, decorator: decorator).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
