@@ -28,8 +28,17 @@
     };
   };
 
+  var adjustRequiredCollaborators = function(){
+    var collaboratorControl = $('.repeat');
+    if ( collaboratorControl.size() > 0 ){
+      collaboratorControl.last().children('td.name').first().children('div').children('input').first().removeClass('required').removeAttr('required');
+      collaboratorControl.last().children('td.role').first().children('div').children('select').first().removeClass('required').removeAttr('required');
+    };
+  };
+
   var ready = function(){
     $('.table.collaborators').manage_sections();
+    adjustRequiredCollaborators();
     adjustRequiredAttachements();
   };
 
