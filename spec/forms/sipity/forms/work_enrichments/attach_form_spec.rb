@@ -53,6 +53,17 @@ module Sipity
             expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
             subject.submit(requested_by: user)
           end
+
+          it 'will amend any attachment metadata' do
+            expect(repository).to receive(:amend_files_metadata).
+              with(
+                work: work, user: user, metadata: {
+                  "y5Fm8YK9-ekjEwUMKeeutw==" => { "name" => "hotel.pdf" },
+                  "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }
+                }
+              )
+            subject.submit(requested_by: user)
+          end
         end
 
         context '#submit' do
@@ -85,7 +96,7 @@ module Sipity
             end
 
             it 'will attach each file' do
-              expect(repository).to receive(:attach_file_to).and_call_original
+              expect(repository).to receive(:attach_files_to).and_call_original
               subject.submit(requested_by: user)
             end
 

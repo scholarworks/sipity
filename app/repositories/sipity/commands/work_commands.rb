@@ -40,17 +40,27 @@ module Sipity
         Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to)
       end
 
-      def attach_file_to(work:, file:, user:, pid_minter: default_pid_minter)
+      def attach_files_to(work:, files:, user:, pid_minter: default_pid_minter)
         # I know I want the user, but I'm not certain what we are doing with it
         # just yet.
         _user = user
-        pid = pid_minter.call
-        Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
+        Array.wrap(files).each do |file|
+          pid = pid_minter.call
+          Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
+        end
       end
 
       def remove_files_from(work:, user:, pids:)
         _user = user # Don't need it yet, but it makes sense to capture this
         Models::Attachment.where(work: work, pid: Array.wrap(pids)).destroy_all
+      end
+
+      def amend_files_metadata(work:, user:, metadata: {})
+        _work, _user, _files = work, user, metadata
+        metadata.each do |pid, data|
+          Models::Attachment.where(work: work).find(pid).
+            update_attributes!(data.with_indifferent_access.slice(:name))
+        end
       end
 
       def mark_as_representative(work:, pid:, user: user)

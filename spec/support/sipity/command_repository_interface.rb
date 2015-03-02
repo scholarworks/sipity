@@ -6,11 +6,15 @@
 module Sipity
   class CommandRepositoryInterface
     # @see ./app/repositories/sipity/commands/work_commands.rb
+    def amend_files_metadata(work:, user:, metadata: {})
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
     def assign_collaborators_to(work:, collaborators:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def attach_file_to(work:, file:, user:, pid_minter: default_pid_minter)
+    def attach_files_to(work:, files:, user:, pid_minter: default_pid_minter)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

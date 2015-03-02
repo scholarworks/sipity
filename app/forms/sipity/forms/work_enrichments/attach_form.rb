@@ -24,19 +24,24 @@ module Sipity
         # Exposed so that field_for will work
         def attachments_attributes=(value)
           @attachments_attributes = value
-          collect_files_for_deletion(value)
+          collect_files_for_deletion_and_update(value)
         end
 
         private
 
         def save(requested_by:)
           super do
-            Array.wrap(files).compact.each do |file|
-              repository.attach_file_to(work: work, file: file, user: requested_by)
-            end
+            # TODO: Validate that the attachment you are deleting is not also
+            # the representative image.
+            repository.attach_files_to(work: work, files: files, user: requested_by)
             repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
             repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
+            repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
           end
+        end
+
+        def attachments_metadata
+          @attachments_metadata || {}
         end
 
         def ids_for_deletion
@@ -45,11 +50,15 @@ module Sipity
 
         include Conversions::ConvertToBoolean
 
-        def collect_files_for_deletion(value)
+        def collect_files_for_deletion_and_update(value)
           @ids_for_deletion = []
+          @attachments_metadata = {}
           value.each do |_key, attributes|
-            next unless convert_to_boolean(attributes['delete'])
-            @ids_for_deletion << attributes.fetch('id')
+            if convert_to_boolean(attributes['delete'])
+              @ids_for_deletion << attributes.fetch('id')
+            else
+              @attachments_metadata[attributes.fetch('id')] = attributes.slice('name')
+            end
           end
         end
 
