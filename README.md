@@ -48,6 +48,7 @@ app
 |-- controllers
 |-- conversions
 |-- decorators
+|-- exceptions
 |-- forms
 |-- jobs
 |-- helpers
@@ -57,7 +58,7 @@ app
 |-- repositories
 |-- runners
 |-- services
-|-- state_machines
+|-- validators
 |-- views
 ```
 
@@ -181,9 +182,9 @@ may not be a direct interaction with the repository.
 
 Find out more about [Sipity's Services](https://github.com/ndlib/sipity/blob/master/app/services/sipity/services.rb)
 
-### StateMachines
+### Validators
 
-Responsible for the enforcement of proper state transitions on objects.
+Because we have a need for custom validation.
 
 ### Models
 

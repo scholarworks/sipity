@@ -57,3 +57,24 @@ and I can take a look at it.
 When submitting a pull request, make sure to submit a useful description of what you are doing.
 If your pull request contains multiple commits, consider using `./script/build-multi-commit-message`.
 It will generate rudimentary markdown from all of the commit messages.
+
+# The Layers
+
+There are lots of layers in Sipity.
+They are there for a reason.
+One reason, is to **reduce the need to persist data** as part of tests.
+
+If you find yourself persisting an object as part of your test, ask is there another way?
+
+Consider the `Sipity::QueryRepositoryInterface` and `Sipity::CommandRepositoryInterface` and using those for mocks.
+They are designed to implement each of the methods and have the correct method signature.
+
+**Why the fuss about hitting the database?**
+
+> There are a number of advantages to writing unit tests that never touch the database.
+> The biggest is probably speed of execution - unit tests must be fast for test-driven development to be practical.
+> Another is separation of concerns: unit tests should be exercising only the business logic contained in your models, not ActiveRecord.
+>
+> From [nulldb gem](https://github.com/nulldb/nulldb)
+
+So before you persist an object as part of setting up your fixtures, consider if there is a different way.
