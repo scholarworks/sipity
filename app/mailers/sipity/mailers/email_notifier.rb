@@ -6,9 +6,10 @@ module Sipity
       default from: 'curate@nd.edu', return_path: 'no-reply@nd.edu'
       layout 'mailer'
 
-      def confirmation_of_entity_submitted_for_review(entity:, to:, cc: [], bcc: [])
+      def confirmation_of_entity_submitted_for_review(options = {})
+        entity = options.fetch(:entity)
         @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
+        mail(options.slice(:to, :cc, :bcc))
       end
 
       def request_revision_from_creator(entity:, to:, cc: [], bcc: [])

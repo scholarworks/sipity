@@ -1,7 +1,7 @@
 <p>Congratulations! Your <%= @entity.document_type %> has been approved by the Graduate School, and will now be added to the Hesburgh Library ETD collection.</p>
 <p>Access URLS:</p>
 <ul>
-  <li>The access type you have initially chosen is: <%= @entity.access_right %></li>
+  <li>The access type you have initially chosen is: <%= @entity.access_rights %></li>
   <% if  @entity.will_be_released_to_the_public? %>
     <li>This record will be released to the public: <%= @entity.release_date %></li>
   <% end %>
