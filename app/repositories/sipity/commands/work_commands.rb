@@ -11,7 +11,7 @@ module Sipity
           collaborator.work_id = work.id
           collaborator.save!
           next unless collaborator.responsible_for_review?
-          create_sipity_user_from(netid: collaborator.netid) do |user|
+          create_sipity_user_from(netid: collaborator.netid, email: collaborator.email) do |user|
             PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
           end
         end
@@ -70,13 +70,20 @@ module Sipity
         attachment.update(is_representative_file: true)
       end
 
-      def create_sipity_user_from(netid:)
+      def create_sipity_user_from(netid:, email: nil)
         return false unless netid.present?
         # This assumes a valid NetID.
-        user = User.find_or_create_by!(username: netid)
+        user = User.find_or_create_by!(username: netid) do |u|
+          u.email = email || default_email_for_netid(netid)
+        end
         yield(user) if block_given?
         user
       end
+
+      def default_email_for_netid(netid)
+        "#{netid}@nd.edu"
+      end
+      private :default_email_for_netid
 
       # @return [#call] A call-able object that when called will return a String
       #
