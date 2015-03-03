@@ -15,18 +15,36 @@ module Sipity
         end
       end
 
-      context '.work_attachments' do
+      context '#work_attachments' do
         it 'returns the attachments for the given work and role' do
           Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment', file: file)
           expect(subject.work_attachments(work: work).count).to eq(1)
         end
       end
 
-      context '.representative_attachment_for' do
+      context '#accessible_objects' do
+        it 'returns the attachments for the given work and role' do
+          attachment = Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment', file: file)
+          expect(subject.accessible_objects(work: work)).to eq([work, attachment])
+        end
+      end
+
+      context '#representative_attachment_for' do
         it 'returns attachment marked as representative for work' do
           Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment',
                                      file: file, is_representative_file: true)
           expect(subject.representative_attachment_for(work: work).count).to eq(1)
+        end
+      end
+
+      context '#access_rights_for_accessible_objects' do
+        let(:attachment) { Models::Attachment.new(id: 'abc') }
+        it 'returns an enumerable of AccessRight objects' do
+          allow(test_repository).to receive(:accessible_objects).and_return([work, attachment])
+          access_rights = test_repository.access_rights_for_accessible_objects_of(work: work)
+          expect(access_rights.size).to eq(2)
+          expect(access_rights[0]).to be_a(Models::AccessRightFacade)
+          expect(access_rights[1]).to be_a(Models::AccessRightFacade)
         end
       end
     end

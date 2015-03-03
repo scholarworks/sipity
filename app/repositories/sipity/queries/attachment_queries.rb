@@ -2,8 +2,16 @@ module Sipity
   module Queries
     # Queries
     module AttachmentQueries
-      def work_attachments(options = {})
-        Models::Attachment.includes(:work).where(options.slice(:work))
+      def work_attachments(work:)
+        Models::Attachment.includes(:work).where(work_id: work)
+      end
+
+      def accessible_objects(work:)
+        [work] + work_attachments(work: work)
+      end
+
+      def access_rights_for_accessible_objects_of(work:)
+        accessible_objects(work: work).map { |object| Models::AccessRightFacade.new(object) }
       end
 
       def find_or_initialize_attachments_by(work:, pid:)

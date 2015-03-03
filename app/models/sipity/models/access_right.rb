@@ -10,25 +10,35 @@ module Sipity
     # It is envisioned that the AccessRights will be contiguous non-overlapping
     # date ranges.
     class AccessRight < ActiveRecord::Base
-      # @attr_accessor [Date] enforcement_start_date the first day in which the
-      #   given access_right enforcement is in effect
-      # @attr_accessor [Date] enforcement_end_date the last day in which the
-      #   given access_right enforcement is in effect
+      # @attr_accessor [Date] transition_date the date in which a transition
+      #   would occur
       self.table_name = 'sipity_access_rights'
 
       OPEN_ACCESS = 'open_access'.freeze
-      RESTRICTED_ACSESS = 'restricted_access'.freeze
+      RESTRICTED_ACCESS = 'restricted_access'.freeze
       PRIVATE_ACCESS = 'private_access'.freeze
+      EMBARGO_THEN_OPEN_ACCESS = 'embargo_then_open_access'.freeze
 
       enum(
         acccess_right_code: {
           OPEN_ACCESS => OPEN_ACCESS,
-          RESTRICTED_ACSESS => RESTRICTED_ACSESS,
-          PRIVATE_ACCESS => PRIVATE_ACCESS
+          RESTRICTED_ACCESS => RESTRICTED_ACCESS,
+          PRIVATE_ACCESS => PRIVATE_ACCESS,
+          EMBARGO_THEN_OPEN_ACCESS => EMBARGO_THEN_OPEN_ACCESS
         }
       )
 
       belongs_to :entity, polymorphic: true
+
+      alias_attribute :release_date, :transition_date
+
+      # What do I mean by this? I mean that these are the most basic codes that
+      # we are capturing and persisting. There are others (e.g.
+      # EMBARGO_THEN_OPEN_ACCESS) that require additional logic to define how
+      # the corresponding data is persisted.
+      def self.primative_acccess_right_codes
+        acccess_right_codes.keys
+      end
     end
   end
 end

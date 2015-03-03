@@ -5,8 +5,20 @@
 ################################################################################
 module Sipity
   class CommandRepositoryInterface
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def access_rights_for_accessible_objects_of(work:)
+    end
+
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def accessible_objects(work:)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def amend_files_metadata(work:, user:, metadata: {})
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def apply_access_policies_to(work:, user:, access_policies:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -302,7 +314,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def work_attachments(options = {})
+    def work_attachments(work:)
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb

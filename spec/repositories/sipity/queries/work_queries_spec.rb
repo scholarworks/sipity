@@ -24,7 +24,7 @@ module Sipity
       context '#work_access_right_codes' do
         let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
         it 'will expose access_right_code of the underlying work' do
-          Models::AccessRight.create!(entity: work, access_right_code: 'private_access', enforcement_start_date: Date.today)
+          Models::AccessRight.create!(entity: work, access_right_code: 'private_access')
           expect(test_repository.work_access_right_codes(work: work)).to eq(['private_access'])
         end
       end

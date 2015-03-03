@@ -35,7 +35,7 @@ module Sipity
 
       context 'with "open_access" rights' do
         Given(:answer) { 'open_access' }
-        When(:rights) { Models::AccessRight.create(entity: entity, access_right_code: answer, enforcement_start_date: Date.today) }
+        When(:rights) { Models::AccessRight.create(entity: entity, access_right_code: answer) }
         Then { subject.access_rights.should eq(answer.titleize) }
       end
 

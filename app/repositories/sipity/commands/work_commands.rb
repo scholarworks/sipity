@@ -85,6 +85,10 @@ module Sipity
       def default_pid_minter
         -> { SecureRandom.urlsafe_base64(nil, true) }
       end
+
+      def apply_access_policies_to(work:, user:, access_policies:)
+        Services::ApplyAccessPoliciesTo.call(work: work, user: user, access_policies: access_policies)
+      end
     end
   end
 end
