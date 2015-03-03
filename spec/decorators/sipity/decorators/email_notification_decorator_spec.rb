@@ -3,9 +3,10 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe EmailNotificationDecorator do
+      let(:repository) { QueryRepositoryInterface.new }
       let(:entity) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation') }
 
-      subject { described_class.new(entity) }
+      subject { described_class.new(entity, repository: repository) }
 
       it { should respond_to(:netid) }
       it { should respond_to(:creator) }
@@ -34,8 +35,10 @@ module Sipity
       end
 
       context 'with "open_access" rights' do
+        before do
+          allow(repository).to receive(:work_access_right_codes).and_return(answer)
+        end
         Given(:answer) { 'open_access' }
-        When(:rights) { Models::AccessRight.create(entity: entity, access_right_code: answer) }
         Then { subject.access_rights.should eq(answer.titleize) }
       end
 

@@ -61,7 +61,7 @@ module Sipity
       end
 
       def access_rights
-        repository.work_access_right_codes(work: entity).map(&:titleize).join(',')
+        Array.wrap(repository.work_access_right_codes(work: entity)).map(&:titleize).to_sentence
       end
 
       def will_be_released_to_the_public?
