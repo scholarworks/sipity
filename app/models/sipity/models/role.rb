@@ -3,6 +3,14 @@ module Sipity
     # A named concept that represents a set of responsibilities/verbs.
     # Often confused for a Group. Group represents people.
     # Roles represent what can/is done by anything/anyone having the given role.
+    #
+    # @note Should this be in the Processing submodule? Perhaps. This model
+    #   representes the "roles" that users of the system can have. It is not
+    #   the "role" that they had in relation to the scholarly work that is
+    #   being deposited (i.e. co-author on a paper).
+    #
+    # @see Sipity::Models::Collaborators
+    # @see Sipity::Models::Processing::Actor
     class Role < ActiveRecord::Base
       self.table_name = 'sipity_roles'
 

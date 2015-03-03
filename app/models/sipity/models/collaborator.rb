@@ -1,8 +1,14 @@
 require 'sipity/models'
 module Sipity
   module Models
-    # A collaborator (as per metadata not improving on the SIP) for the underlying
-    # work's SIP.
+    # A collaborator for the given work. These are the named people that
+    # collaborated on the creation of the scholarly work (i.e. they helped write
+    # the paper). It is not the people that collaborated on the processing of
+    # the work (i.e. they signed off on the metadata for accurancy or
+    # completeness).
+    #
+    # @see Sipity::Models::Processing::Actor
+    # @see Sipity::Models::Role
     class Collaborator < ActiveRecord::Base
       AUTHOR_ROLE = DEFAULT_ROLE = 'author'.freeze
       ADVISOR_ROLE = 'advisor'.freeze
