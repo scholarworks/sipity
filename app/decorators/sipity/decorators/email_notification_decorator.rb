@@ -4,14 +4,16 @@ module Sipity
     class EmailNotificationDecorator < ApplicationDecorator
       # TODO
       # Add implementations to the methods
-
       def self.object_class
-        Sipity::Models::Work
+        Models::Work
       end
+
+      alias_method :entity, :object
+
       delegate_all
 
       def document_type
-        work_type.humanize
+        entity.work_type.humanize
       end
 
       def director
@@ -36,7 +38,8 @@ module Sipity
         []
       end
 
-      def url
+      def work_show_path
+        view_context.work_path(entity.id)
       end
 
       def curate_link
@@ -57,15 +60,17 @@ module Sipity
       def release_date
       end
 
-      def access_right
-        access_right_code.sub('_', " ").split.map(&:capitalize).join(' ') if access_right_code
-      end
-
-      def access_right_code
-        access_rights.first.access_right_code if access_rights.any?
+      def access_rights
+        repository.work_access_right_codes(work: entity).map(&:titleize).join(',')
       end
 
       def will_be_released_to_the_public?
+      end
+
+      private
+
+      def view_context
+        Draper::ViewContext.current
       end
     end
   end

@@ -15,6 +15,10 @@ module Sipity
         Policies::WorkPolicy::Scope.resolve(user: user, scope: Models::Work, processing_state: processing_state)
       end
 
+      def work_access_right_codes(work:)
+        work.access_rights.pluck(:access_right_code)
+      end
+
       def build_create_work_form(attributes: {})
         Forms::CreateWorkForm.new(attributes)
       end

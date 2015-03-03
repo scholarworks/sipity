@@ -297,6 +297,10 @@ module Sipity
     def users_that_have_taken_the_action_on_the_entity(entity:, action:)
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def work_access_right_codes(work:)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def work_attachments(options = {})
     end

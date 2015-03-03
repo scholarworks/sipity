@@ -21,6 +21,14 @@ module Sipity
         end
       end
 
+      context '#work_access_right_codes' do
+        let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
+        it 'will expose access_right_code of the underlying work' do
+          Models::AccessRight.create!(entity: work, access_right_code: 'private_access', enforcement_start_date: Date.today)
+          expect(test_repository.work_access_right_codes(work: work)).to eq(['private_access'])
+        end
+      end
+
       context '#build_create_work_form' do
         it 'will build an object that can be submitted' do
           expect(test_repository.build_create_work_form).to respond_to(:submit)
