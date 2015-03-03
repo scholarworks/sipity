@@ -52,11 +52,11 @@
         $('.add', $activeFieldControls).remove();
         $('.remove', $activeFieldControls).remove();
         $activeFieldControls.prepend($removeControl);
-        $newChild1 = $newField.children('td.name').first().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_name').attr('name', 'work[collaborators_attributes][' + num + '][name][]');
-        $newChild2 = $newField.children('td.role').last().children('div').children('select').attr('id', 'work_collaborators_attributes_'+num+'_role').attr('name', 'work[collaborators_attributes][' + num + '][role][]');
-        $newChild3 = $newField.children('td.review').last().children('div').children('select').attr('id', 'work_collaborators_attributes_'+num+'_responsible_for_review').attr('name', 'work[collaborators_attributes][' + num + '][responsible_for_review][]');
-        $newChild4 = $newField.children('td.contact-information').first().children('span').first().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_netid').attr('name', 'work[collaborators_attributes][' + num + '][netid][]');
-        $newChild5 = $newField.children('td.contact-information').first().children('span').last().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_email').attr('name', 'work[collaborators_attributes][' + num + '][email][]');
+        $newChild1 = $newField.children('td.name').first().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_name').attr('name', 'work[collaborators_attributes][' + num + '][name]');
+        $newChild2 = $newField.children('td.role').last().children('div').children('select').attr('id', 'work_collaborators_attributes_'+num+'_role').attr('name', 'work[collaborators_attributes][' + num + '][role]');
+        $newChild3 = $newField.children('td.review').last().children('div').children('select').attr('id', 'work_collaborators_attributes_'+num+'_responsible_for_review').attr('name', 'work[collaborators_attributes][' + num + '][responsible_for_review]');
+        $newChild4 = $newField.children('td.contact-information').first().children('span').first().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_netid').attr('name', 'work[collaborators_attributes][' + num + '][netid]');
+        $newChild5 = $newField.children('td.contact-information').first().children('span').last().children('div').children('input').attr('id', 'work_collaborators__attributes_'+num+'_email').attr('name', 'work[collaborators_attributes][' + num + '][email]');
         $newChild1.val('');
         $newChild2.val('');
         $newChild3.children("option[value='No']").attr("selected","selected");
