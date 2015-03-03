@@ -67,6 +67,7 @@ module Sipity
         it 'will create a user from the given netid if one does not exist' do
           expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
             to change { User.count }.by(1)
+          expect(User.last.email).to be_present
         end
         it 'will skip user creation of the netID exists' do
           test_repository.create_sipity_user_from(netid: 'helloworld')

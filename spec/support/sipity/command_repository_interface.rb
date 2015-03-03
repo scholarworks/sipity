@@ -78,7 +78,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def create_sipity_user_from(netid:)
+    def create_sipity_user_from(netid:, email: nil)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -87,6 +87,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def create_work_attribute_values!(work:, key:, values:)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def default_email_for_netid(netid)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
