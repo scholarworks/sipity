@@ -30,11 +30,11 @@
       <table class="table expandible collaborators">
         <thead>
           <tr>
-            <th class="row-controls"></th>
             <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.name') %>
             <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.role') %>
             <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.responsible_for_review') %>
             <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.contact_information') %>
+            <th class="row-controls"></th>
           </tr>
         </thead>
         <tfoot>
@@ -44,8 +44,6 @@
         <tbody>
           <%= f.fields_for :collaborators do |collaborator_form| %>
             <tr class='repeat'>
-              <td class="row-controls">
-              </td>
               <td class="name">
                 <%= collaborator_form.input :name,
                   label: false,
@@ -111,7 +109,9 @@
                     }
                   %>
                 </span>
-              <td>
+              </td>
+              <td class="row-controls">
+              </td>
             </tr>
           <% end %>
         </tbody>
