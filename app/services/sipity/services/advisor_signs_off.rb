@@ -49,10 +49,12 @@ module Sipity
       end
 
       def usernames_for_those_that_have_acted
+        # TODO: Drive on actors instead. Are all of the actors represented?
         repository.usernames_of_those_that_have_taken_the_action_on_the_entity(entity: form, action: form.action)
       end
 
       def collaborating_reviewer_usernames
+        # TODO: Drive on actors instead. Are all of the actors represented?
         repository.usernames_of_those_that_are_collaborating_and_responsible_for_review(work: form.work)
       end
     end
