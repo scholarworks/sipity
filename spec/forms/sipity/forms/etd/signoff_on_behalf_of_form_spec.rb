@@ -32,6 +32,18 @@ module Sipity
           end
         end
 
+        context '#render' do
+          let(:collaborator) { Models::Collaborator.new(name: 'Hello World', id: 1) }
+          before do
+            allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([collaborator])
+          end
+          it 'will expose select box' do
+            form_object = double('Form Object')
+            expect(form_object).to receive(:input).with(:on_behalf_of_collaborator, collection: [collaborator], value_method: :id).and_return("<input />")
+            expect(subject.render(f: form_object)).to eq("<input />")
+          end
+        end
+
         context 'valid submission' do
           let(:user) { double('User') }
           let(:signoff_service) { double('Signoff Service') }

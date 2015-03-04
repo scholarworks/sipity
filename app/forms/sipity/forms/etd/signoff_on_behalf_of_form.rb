@@ -19,6 +19,10 @@ module Sipity
           repository.collaborators_that_can_advance_the_current_state_of(work: work)
         end
 
+        def render(f:)
+          f.input(:on_behalf_of_collaborator, collection: valid_on_behalf_of_collaborators, value_method: :id)
+        end
+
         private
 
         def save(requested_by:)
