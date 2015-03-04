@@ -2,8 +2,6 @@ module Sipity
   module Forms
     # Responsible for capturing and validating information for citation creation.
     class AssignACitationForm < WorkEnrichmentForm
-      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
-
       def initialize(attributes = {})
         super
         @type, @citation = attributes.values_at(:type, :citation)
@@ -24,10 +22,6 @@ module Sipity
             work: work, key: Models::AdditionalAttribute::CITATION_TYPE_PREDICATE_NAME, values: type
           )
         end
-      end
-
-      def default_repository
-        CommandRepository.new
       end
     end
   end
