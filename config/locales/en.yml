@@ -20,6 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activemodel:
+    attributes:
+      sipity/forms/state_advancing_action:
+        agree_to_terms_of_deposit: 'I agree to the terms of deposit'
   activerecord:
     models:
       sipity/work: Deposit

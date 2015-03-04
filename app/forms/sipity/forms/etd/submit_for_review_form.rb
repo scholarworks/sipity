@@ -13,8 +13,14 @@ module Sipity
         validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
         def render(f:)
-          view_context.content_tag('div', submission_terms) +
-            f.input(:agree_to_terms_of_deposit, as: :boolean)
+          view_context.content_tag('legend', submission_terms) +
+            f.input(
+              :agree_to_terms_of_deposit,
+              as: :boolean,
+              inline_label: I18n.t('activemodel.attributes.sipity/forms/state_advancing_action.agree_to_terms_of_deposit'),
+              label: false,
+              wrapper_class: 'checkbox'
+            )
         end
 
         def submission_terms
