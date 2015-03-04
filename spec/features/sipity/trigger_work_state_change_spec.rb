@@ -52,6 +52,7 @@ feature "Trigger Work State Change", :devise, :feature do
       end
 
       on('event_trigger_page') do |the_page|
+        the_page.check('work[agree_to_terms_of_deposit]')
         the_page.take_named_action('confirm/event_trigger/submit_for_review')
       end
 
