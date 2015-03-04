@@ -33,6 +33,13 @@ module Sipity
         it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }
       end
 
+      context '#collaborators_that_can_advance_the_current_state_of' do
+        subject { test_repository.collaborators_that_can_advance_the_current_state_of(work: work) }
+        it { should be_a(ActiveRecord::Relation) }
+        # A bit of a sanity check that my primary table is sipity_collaborators
+        it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }
+      end
+
       context '.work_collaborators_for' do
         it 'returns the collaborators for the given work and role' do
           Models::Collaborator.create!(work: work, role: 'author', name: 'jeremy')

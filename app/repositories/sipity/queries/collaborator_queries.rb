@@ -10,6 +10,8 @@ module Sipity
       end
 
       def collaborators_that_can_advance_the_current_state_of(work:)
+        # TODO: This is a short-circuit time saver; It is a misnomer in its behavior
+        work_collaborators_for(work: work)
       end
 
       def work_collaborators_for(options = {})
