@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303172902) do
+ActiveRecord::Schema.define(version: 20150304150208) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.integer  "entity_id",         null: false
@@ -283,6 +283,16 @@ ActiveRecord::Schema.define(version: 20150303172902) do
   end
 
   add_index "sipity_roles", ["name"], name: "index_sipity_roles_on_name", unique: true
+
+  create_table "sipity_simple_controlled_vocabularies", force: :cascade do |t|
+    t.string   "predicate_name",  null: false
+    t.string   "predicate_value", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "predicate_value"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true
+  add_index "sipity_simple_controlled_vocabularies", ["predicate_name"], name: "index_sipity_simple_controlled_vocabularies_on_predicate_name"
 
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.integer  "entity_id",     null: false
