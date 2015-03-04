@@ -4,16 +4,17 @@ module Sipity
     class RegisterActionTakenOnEntity
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToProcessingActor
-      def self.call(entity:, action:, requested_by:)
-        new(entity: entity, action: action, requested_by: requested_by).call
+      def self.call(entity:, action:, requested_by:, on_behalf_of: requested_by)
+        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).call
       end
 
-      def initialize(entity:, action:, requested_by:)
+      def initialize(entity:, action:, requested_by:, on_behalf_of: requested_by)
         self.entity = entity
         self.action = action
         self.requesting_actor = requested_by
+        self.on_behalf_of_actor = on_behalf_of
       end
-      attr_reader :entity, :action, :requesting_actor
+      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor
 
       def call
         # TODO: Tease apart the requested_by and on_behalf_of
@@ -21,7 +22,7 @@ module Sipity
           strategy_action_id: action.id,
           entity_id: entity.id,
           requested_by_actor_id: requesting_actor.id,
-          on_behalf_of_actor_id: requesting_actor.id
+          on_behalf_of_actor_id: on_behalf_of_actor.id
         )
       end
 
@@ -38,6 +39,10 @@ module Sipity
 
       def requesting_actor=(actor_like_object)
         @requesting_actor = convert_to_processing_actor(actor_like_object)
+      end
+
+      def on_behalf_of_actor=(actor_like_object)
+        @on_behalf_of_actor = convert_to_processing_actor(actor_like_object)
       end
     end
   end
