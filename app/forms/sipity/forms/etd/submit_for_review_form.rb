@@ -3,16 +3,9 @@ module Sipity
     module Etd
       # Responsible for submitting the associated entity to the advisor
       # for signoff.
-      class SubmitForReviewForm < ProcessingActionForm
+      class SubmitForReviewForm < Forms::StateAdvancingAction
         def initialize(attributes = {})
           super
-          self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }
-        end
-
-        attr_reader :action
-
-        def processing_action_name
-          action.name
         end
 
         private
@@ -27,16 +20,6 @@ module Sipity
               notification: "entity_ready_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
             )
           end
-        end
-
-        def enrichment_type
-          self.class.to_s.demodulize.underscore.sub(/_form\Z/i, '')
-        end
-        alias_method :default_processing_action_name, :enrichment_type
-
-        include Conversions::ConvertToProcessingAction
-        def action=(value)
-          @action = convert_to_processing_action(value, scope: to_processing_entity)
         end
       end
     end
