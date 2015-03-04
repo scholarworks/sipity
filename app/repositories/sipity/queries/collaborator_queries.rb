@@ -46,6 +46,29 @@ module Sipity
           )
         )
       end
+
+
+      # @api public
+      #
+      # @param work Sipity::Models::Work
+      #
+      # @return ActiveRecord::Relation<Sipity::Models::Processing::Actor>
+      #
+      # @note Should I account for groups being assigned? I hope not.
+      def actors_that_are_collaborating_on_and_responsible_for_review_of(work:)
+        actors = Models::Processing::Actor.arel_table
+        users_scope = work_collaborating_users_responsible_for_review(work: work)
+        collaborators_scope = work_collaborators_responsible_for_review(work: work)
+        Models::Processing::Actor.where(
+          actors[:proxy_for_id].in(
+            users_scope.arel_table.project(users_scope.arel_table[:id])
+          ).and(actors[:proxy_for_type].eq(users_scope.klass)).or(
+            actors[:proxy_for_id].in(
+              collaborators_scope.arel_table.project(collaborators_scope.arel_table[:id])
+            ).and(actors[:proxy_for_type].eq(collaborators_scope.klass))
+          )
+        )
+      end
     end
   end
 end
