@@ -3,7 +3,7 @@ module Sipity
     module Etd
       # Responsible for exposing ability for someone to signoff on the work
       # on behalf of someone else.
-      class SignoffOnBehalfOfForm < Forms::WorkEnrichmentForm
+      class SignoffOnBehalfOfForm < Forms::StateAdvancingAction
         def initialize(attributes = {})
           super
           @on_behalf_of_collaborator = attributes[:on_behalf_of_collaborator]

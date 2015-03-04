@@ -4,9 +4,11 @@ module Sipity
   module Forms
     module Etd
       RSpec.describe SignoffOnBehalfOfForm do
-        let(:work) { Models::Work.new(id: '1234') }
+        let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
+        let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
-        subject { described_class.new(work: work, repository: repository) }
+        let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id) }
+        subject { described_class.new(work: work, repository: repository, processing_action_name: action) }
 
         its(:enrichment_type) { should eq('signoff_on_behalf_of') }
         its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
@@ -22,7 +24,9 @@ module Sipity
             expect(subject.errors[:on_behalf_of_collaborator]).to be_present
           end
           it 'will require that someone amongst the collaborators is specified' do
-            subject = described_class.new(work: work, repository: repository, on_behalf_of_collaborator: '__no_one__')
+            subject = described_class.new(
+              work: work, repository: repository, on_behalf_of_collaborator: '__no_one__', processing_action_name: action
+            )
             subject.valid?
             expect(subject.errors[:on_behalf_of_collaborator]).to be_present
           end
@@ -33,7 +37,8 @@ module Sipity
           let(:signoff_service) { double('Signoff Service') }
           subject do
             described_class.new(
-              work: work, repository: repository, on_behalf_of_collaborator: 'someone_valid', signoff_service: signoff_service
+              work: work, processing_action_name: action, repository: repository, on_behalf_of_collaborator: 'someone_valid',
+              signoff_service: signoff_service
             )
           end
           before { allow(subject).to receive(:valid?).and_return(true) }
