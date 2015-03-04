@@ -13,6 +13,8 @@ module Sipity
         end
 
         it { should respond_to :accessible_objects_attributes= }
+        it { should respond_to :copyright }
+        it { should respond_to :copyright= }
 
         it 'will expose accessible_objects' do
           expect(subject.accessible_objects.size).to eq(2)
@@ -32,12 +34,13 @@ module Sipity
         end
 
         context '#submit' do
+          let(:rights) { 'All rights reserved' }
           it 'will capture accessible_objects_attributes' do
             attributes = {
               "0" => { "id" => work.to_param, "access_right_code" => 'open_access', "release_date" => "" },
               "1" => { "id" => attachment.to_param, "access_right_code" => 'embargo_then_open_access', "release_date" => "2032-12-01" }
             }
-            subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: attributes)
+            subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights)
             expect(repository).to receive(:apply_access_policies_to).with(
               work: work, user: user, access_policies:
               [

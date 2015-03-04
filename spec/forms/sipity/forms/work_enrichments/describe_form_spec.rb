@@ -14,6 +14,10 @@ module Sipity
         it { should respond_to :work }
         it { should respond_to :abstract }
         it { should respond_to :abstract= }
+        it { should respond_to :discipline }
+        it { should respond_to :discipline= }
+        it { should respond_to :alternate_title }
+        it { should respond_to :alternate_title= }
 
         it 'will require a abstract' do
           subject.valid?
@@ -28,12 +32,24 @@ module Sipity
 
         context '#abstract' do
           let(:abstract) { ['Hello Dolly'] }
+          let(:discipline) { ['Computer Science'] }
           subject { described_class.new(work: work) }
           it 'will return the abstract of the work' do
             expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
+              with(work: work, key: 'alternate_title').and_return("")
+            expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
               with(work: work, key: 'abstract').and_return(abstract)
+            expect(Queries::AdditionalAttributeQueries).to receive(:work_attribute_values_for).
+              with(work: work, key: 'discipline').and_return(discipline)
             expect(subject.abstract).to eq 'Hello Dolly'
+            expect(subject.discipline).to eq 'Computer Science'
+            expect(subject.alternate_title).to eq ''
           end
+        end
+
+        it 'will require a discipline' do
+          subject.valid?
+          expect(subject.errors[:discipline]).to be_present
         end
 
         context '#submit' do
@@ -68,7 +84,7 @@ module Sipity
             end
 
             it 'will add additional attributes entries' do
-              expect(repository).to receive(:update_work_attribute_values!).and_call_original
+              expect(repository).to receive(:update_work_attribute_values!).exactly(3).and_call_original
               subject.submit(requested_by: user)
             end
 
