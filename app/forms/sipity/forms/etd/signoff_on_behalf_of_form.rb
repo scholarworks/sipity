@@ -1,7 +1,8 @@
 module Sipity
   module Forms
     module Etd
-      # Responsible for exposing approval on behalf of.
+      # Responsible for exposing ability for someone to signoff on the work
+      # on behalf of someone else.
       class SignoffOnBehalfOfForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
@@ -9,9 +10,18 @@ module Sipity
           @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
         end
         attr_reader :on_behalf_of_collaborator
+        attr_reader :signoff_service
+        private :signoff_service
+
         validates :on_behalf_of_collaborator, presence: true, inclusion: { in: :valid_on_behalf_of_collaborators }
 
         private
+
+        def save(requested_by:)
+          super do
+            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
+          end
+        end
 
         def valid_on_behalf_of_collaborators
           ['bob']

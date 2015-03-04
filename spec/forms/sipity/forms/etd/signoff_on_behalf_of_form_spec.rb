@@ -26,12 +26,19 @@ module Sipity
         end
 
         context 'valid submission' do
-          subject { described_class.new(work: work, repository: repository, on_behalf_of_collaborator: 'someone_valid') }
+          let(:user) { double('User') }
+          let(:signoff_service) { double('Signoff Service') }
+          subject do
+            described_class.new(
+              work: work, repository: repository, on_behalf_of_collaborator: 'someone_valid', signoff_service: signoff_service
+            )
+          end
           before { allow(subject).to receive(:valid?).and_return(true) }
 
-          it 'will mark the current user as having approved on behalf of the collaborator'
-
-          it 'will send an email to the on_behalf_of and the graduate student'
+          it 'will call the signoff_service (because the logic is complicated)' do
+            expect(signoff_service).to receive(:call).with(form: subject, requested_by: user, repository: repository)
+            subject.submit(requested_by: user)
+          end
         end
       end
     end
