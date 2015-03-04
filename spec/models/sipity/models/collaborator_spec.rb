@@ -11,6 +11,11 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
+      it 'belongs to :user' do
+        expect(described_class.reflect_on_association(:user)).
+          to be_a(ActiveRecord::Reflection::AssociationReflection)
+      end
+
       context '.roles' do
         it 'is a Hash of keys that equal their values' do
           expect(Collaborator.roles.keys).
