@@ -6,9 +6,26 @@ module Sipity
       class SubmitForReviewForm < Forms::StateAdvancingAction
         def initialize(attributes = {})
           super
+          self.agree_to_terms_of_deposit = attributes[:agree_to_terms_of_deposit]
+        end
+
+        attr_reader :agree_to_terms_of_deposit
+        validates :agree_to_terms_of_deposit, acceptance: { accept: true }
+
+        def render(f:)
+          view_context.content_tag('div', submission_terms) +
+            f.input(:agree_to_terms_of_deposit, as: :boolean)
+        end
+
+        def submission_terms
+          view_context.t('submission_terms', scope: 'sipity/forms.etd/submit_for_review_form').html_safe
         end
 
         private
+
+        def view_context
+          Draper::ViewContext.current
+        end
 
         def save(requested_by:)
           super do
@@ -20,6 +37,11 @@ module Sipity
               notification: "entity_ready_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
             )
           end
+        end
+
+        include Conversions::ConvertToBoolean
+        def agree_to_terms_of_deposit=(value)
+          @agree_to_terms_of_deposit = convert_to_boolean(value)
         end
       end
     end
