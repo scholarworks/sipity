@@ -24,7 +24,7 @@ module Sipity
         end
 
         def valid_on_behalf_of_collaborators
-          ['bob']
+          repository.collaborators_that_can_advance_the_current_state_of(work: work)
         end
 
         def default_signoff_service

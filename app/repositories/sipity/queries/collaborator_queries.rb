@@ -9,6 +9,9 @@ module Sipity
         Models::Collaborator.find_or_initialize_by(work_id: work.id, id: id, &block)
       end
 
+      def collaborators_that_can_advance_the_current_state_of(work:)
+      end
+
       def work_collaborators_for(options = {})
         Models::Collaborator.includes(:work).where(options.slice(:work, :role))
       end

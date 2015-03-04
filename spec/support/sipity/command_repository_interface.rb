@@ -77,6 +77,10 @@ module Sipity
     def citation_already_assigned?(work)
     end
 
+    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
+    def collaborators_that_can_advance_the_current_state_of(work:)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def create_sipity_user_from(netid:, email: nil)
     end

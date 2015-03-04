@@ -14,6 +14,9 @@ module Sipity
         it { should respond_to :work }
 
         context 'validation' do
+          before do
+            allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return(['someone'])
+          end
           it 'will require that someone be specified for approval' do
             subject.valid?
             expect(subject.errors[:on_behalf_of_collaborator]).to be_present
