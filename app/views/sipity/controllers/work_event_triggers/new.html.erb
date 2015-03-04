@@ -1,7 +1,7 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
   <div itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
     <link itemprop="url" href="<%= event_trigger_for_work_path(model.work, model.processing_action_name) %>">
-    <meta itemprop="name" content="confirm/event_trigger/submit_for_review">
+    <meta itemprop="name" content="confirm/event_trigger/<%= model.processing_action_name %>">
     <div itemscope itemprop="target" itemtype="http://schema.org/EntryPoint">
       <%= simple_form_for(model, url: event_trigger_for_work_path(model.work, model.processing_action_name), method: :post) do |f| %>
         <%= f.error_notification %>
