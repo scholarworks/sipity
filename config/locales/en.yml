@@ -26,9 +26,9 @@ en:
     attributes:
       sipity/models/work:
         access_rights_answer: 'Access rights'
-        citationType: 'Citation Style'
-        collaborators: 'Advisory committee'
-        publicationDate: 'Publication Date'
+        citationType: 'Citation style'
+        collaborators: 'People involved'
+        publicationDate: 'Publication date'
         work_publication_strategy: 'Publication intent'
       sipity/models/collaborator:
         contact_information: 'Contact Information'
@@ -111,7 +111,7 @@ en:
       attach: 'Attach files'
       defense_date: 'Defense date'
       describe: 'Finish describing your work'
-      collaborators: 'Advisory committee'
+      collaborators: 'People Involved'
     cancel: 'Return without saving'
     description:
       attach: ''
@@ -129,7 +129,7 @@ en:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
       collaborators:
-        title_html: 'Please identify the memembers of you <b>advisory committee</b>'
+        title_html: 'Please identify the <b>authors</b> and the memembers of the <b>advisory committee</b>'
         hint: 'You must have at least one person review your submission.'
         institution_label: 'ND:'
         choice: 'OR'
