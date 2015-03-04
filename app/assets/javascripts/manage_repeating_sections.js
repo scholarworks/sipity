@@ -17,9 +17,10 @@
       this.remover = $("<button class=\"btn btn-danger remove\"><i class=\"icon-white icon-minus\"></i><span>Remove</span></button>");
       this.tableControls = $('.table-controls', this.element);
       this.cannotAddNotification = $('<div class="alert alert-warning warning">You cannot add multiple empty entries.</div>');
+      this.fieldIndex = $('.repeat', this.element).length;
 
       $('.repeat:not(:last-child) .row-controls', this.element).append(this.remover);
-      $('.repeat:last', this.element).append(this.adder);
+      $('.table-controls', this.element).append(this.adder);
 
       this._on( this.element, {
         "click .remove": "remove_from_list",
@@ -35,17 +36,15 @@
 
     add_to_section_list: function( event ) {
       event.preventDefault();
-      console.log('add_to_section_list');
 
-      var $activeField = $(event.target).parents('.repeat'),
+      var $activeField = $('.repeat:last', this.element), // Assume we are always working with the bottom-most row
           $activeFieldControls = $activeField.children('.row-controls'),
           $lastNameField = $activeField.children('td.name').first().children('div').children('input'),
           $newField = $activeField.clone(),
           $listing = $activeField.parent(),
           $removeControl = this.remover.clone(),
           $warning = this.tableControls.children('.warning'),
-          warningCount = $warning.length,
-          rowNumber = $('.repeat').length; // TODO: this is too simplistic to keep track of an ID
+          warningCount = $warning.length
 
       if ($lastNameField.val() === '') {
         if (warningCount === 0) {
@@ -53,6 +52,10 @@
         }
       } else {
         $warning.remove();
+
+        this.fieldIndex += 1;
+        var rowNumber = this.fieldIndex;
+
         $('.add', $activeFieldControls).remove();
         $('.remove', $activeFieldControls).remove();
         $activeFieldControls.prepend($removeControl);
@@ -112,6 +115,10 @@
 
     remove_from_list: function( event ) {
       event.preventDefault();
+
+      this.tableControls
+        .children('.warning')
+        .remove();
 
       $(event.target)
         .parents('.repeat')
