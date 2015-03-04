@@ -32,7 +32,7 @@ module Sipity
       end
 
       context 'submit' do
-        subject { described_class.new(work: work, type: 'ala', citation: citation) }
+        subject { described_class.new(work: work, type: 'ala', citation: citation, repository: repository) }
         context 'on invalid data' do
           let(:citation) { '' }
           let(:user) { double }
@@ -44,7 +44,9 @@ module Sipity
         context 'on valid data' do
           let(:citation) { 'citation:abc' }
           let(:user) { User.new(id: '123') }
-          it 'will assign the Citation to the work and create an event' do
+          it 'will assign the the work and create an event' do
+            expect(repository).to receive(:log_event!).and_call_original
+            expect(repository).to receive(:update_work_attribute_values!).twice.and_call_original
             response = subject.submit(requested_by: user)
             expect(response).to eq(work)
           end
