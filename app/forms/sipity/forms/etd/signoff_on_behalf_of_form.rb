@@ -15,16 +15,16 @@ module Sipity
 
         validates :on_behalf_of_collaborator, presence: true, inclusion: { in: :valid_on_behalf_of_collaborators }
 
+        def valid_on_behalf_of_collaborators
+          repository.collaborators_that_can_advance_the_current_state_of(work: work)
+        end
+
         private
 
         def save(requested_by:)
           super do
             signoff_service.call(form: self, requested_by: requested_by, repository: repository)
           end
-        end
-
-        def valid_on_behalf_of_collaborators
-          repository.collaborators_that_can_advance_the_current_state_of(work: work)
         end
 
         def default_signoff_service
