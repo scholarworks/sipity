@@ -12,9 +12,21 @@ module Sipity
           collaborator.save!
           next unless collaborator.responsible_for_review?
           create_sipity_user_from(netid: collaborator.netid, email: collaborator.email) do |user|
+            change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user)
             PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
           end
         end
+      end
+
+      # In an effort to preserve processing actors, I want to expose a mechanism
+      # for transfering processing actors to another proxy.
+      #
+      # This method arises as we consider the scenario in which someone approves
+      # on behalf of a non-User collaborator (i.e. someone that has an email
+      # address). Then the collaborator is changed such that a user is created.
+      def change_processing_actor_proxy(from_proxy:, to_proxy:)
+        processing_actor = Conversions::ConvertToProcessingActor.call(from_proxy)
+        processing_actor.update(proxy_for: to_proxy)
       end
 
       def create_work!(attributes = {})

@@ -18,6 +18,17 @@ module Sipity
         end
       end
 
+      context '#change_processing_actor_proxy' do
+        let(:user) { User.create!(username: 'hello') }
+        let(:collaborator) { Models::Collaborator.create!(name: 'bob', role: 'author', work_id: 1) }
+        let(:current_actor) { collaborator.to_processing_actor }
+        it 'will transfer ownership from the given proxy to another' do
+          expect {
+            test_repository.change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user)
+          }.to change { current_actor.reload.proxy_for }.from(collaborator).to(user)
+        end
+      end
+
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do
