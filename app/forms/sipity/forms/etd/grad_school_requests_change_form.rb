@@ -3,19 +3,14 @@ module Sipity
     module Etd
       # Responsible for capturing comments and forwarding them on to the
       # student.
-      class GradSchoolRequestsChangeForm < ProcessingActionForm
+      class GradSchoolRequestsChangeForm < Forms::StateAdvancingAction
         def initialize(attributes = {})
           super
           @comment = attributes[:comment]
-          self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }
         end
 
-        attr_reader :action, :comment
+        attr_reader :comment
         validates :comment, presence: true
-
-        def processing_action_name
-          action.name
-        end
 
         # @param f SimpleFormBuilder
         #
@@ -36,16 +31,6 @@ module Sipity
             )
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end
-        end
-
-        def enrichment_type
-          self.class.to_s.demodulize.underscore.sub(/_form\Z/i, '')
-        end
-        alias_method :default_processing_action_name, :enrichment_type
-
-        include Conversions::ConvertToProcessingAction
-        def action=(value)
-          @action = convert_to_processing_action(value, scope: to_processing_entity)
         end
       end
     end
