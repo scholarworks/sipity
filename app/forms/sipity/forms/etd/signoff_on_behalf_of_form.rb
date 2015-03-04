@@ -32,7 +32,7 @@ module Sipity
         end
 
         def default_signoff_service
-          ->(*args) { }
+          Services::UserSignsOffOnBehalfOfCollaborator
         end
       end
     end
