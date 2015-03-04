@@ -14,7 +14,7 @@ module Sipity
       # given :entity as part of a given :action.
       #
       # @param entity <can be converted to a Processing::Entity>
-      # @param commentor <can be converted to a Processing::Actor>
+      # @param commenter <can be converted to a Processing::Actor>
       # @param action <can be converted to a Processing::StrategyAction>
       # @param comment <String>
       #
