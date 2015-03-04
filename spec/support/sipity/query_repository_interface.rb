@@ -62,7 +62,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def collaborators_that_can_advance_the_current_state_of(work:)
+    def collaborators_that_can_advance_the_current_state_of(work:, id: nil)
     end
 
     # @see ./app/repositories/sipity/queries/doi_queries.rb

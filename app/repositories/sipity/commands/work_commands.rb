@@ -25,8 +25,8 @@ module Sipity
       # on behalf of a non-User collaborator (i.e. someone that has an email
       # address). Then the collaborator is changed such that a user is created.
       def change_processing_actor_proxy(from_proxy:, to_proxy:)
-        processing_actor = Conversions::ConvertToProcessingActor.call(from_proxy)
-        processing_actor.update(proxy_for: to_proxy)
+        return unless from_proxy.respond_to?(:processing_actor) && from_proxy.processing_actor.present?
+        from_proxy.processing_actor.update(proxy_for: to_proxy)
       end
 
       def create_work!(attributes = {})

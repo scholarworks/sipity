@@ -67,6 +67,11 @@ module Sipity
           expect(convert_to_processing_actor(object)).to eq(object)
         end
 
+        it 'will return the object if it responds to #to_processing_actor' do
+          object = double(to_processing_actor: :actor)
+          expect(convert_to_processing_actor(object)).to eq(:actor)
+        end
+
         it 'will raise an exception if it is unhandled' do
           object = double
           expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)

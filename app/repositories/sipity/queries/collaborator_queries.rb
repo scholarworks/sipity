@@ -9,13 +9,12 @@ module Sipity
         Models::Collaborator.find_or_initialize_by(work_id: work.id, id: id, &block)
       end
 
-      def collaborators_that_can_advance_the_current_state_of(work:)
-        # TODO: This is a short-circuit time saver; It is a misnomer in its behavior
-        work_collaborators_for(work: work)
+      def collaborators_that_can_advance_the_current_state_of(work:, id: nil)
+        work_collaborators_for(work: work, id: id, responsible_for_review: true)
       end
 
       def work_collaborators_for(options = {})
-        Models::Collaborator.includes(:work).where(options.slice(:work, :role))
+        Models::Collaborator.includes(:work).where(options.slice(:work, :role, :id, :responsible_for_review).compact)
       end
 
       def work_collaborator_names_for(options = {})
@@ -23,7 +22,7 @@ module Sipity
       end
 
       def work_collaborators_responsible_for_review(work:)
-        Models::Collaborator.includes(:work).where(work: work, responsible_for_review: true)
+        work_collaborators_for(work: work, responsible_for_review: true)
       end
 
       # @api public

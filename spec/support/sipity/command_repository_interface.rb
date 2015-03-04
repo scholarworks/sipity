@@ -73,12 +73,16 @@ module Sipity
     def build_update_work_form(work:, attributes: {})
     end
 
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def change_processing_actor_proxy(from_proxy:, to_proxy:)
+    end
+
     # @see ./app/repositories/sipity/queries/citation_queries.rb
     def citation_already_assigned?(work)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def collaborators_that_can_advance_the_current_state_of(work:)
+    def collaborators_that_can_advance_the_current_state_of(work:, id: nil)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
