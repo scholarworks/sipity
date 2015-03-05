@@ -3,19 +3,18 @@ module Sipity
   module Services
     # This class querries LDAP to get user information
     class LdapClient
-      attr_reader :net_id, :connection
+      attr_reader :connection
 
       LDAP_TIME_OUT = 15
 
       # The ldap_options is a hash containing
       # :host, :port, :encryption and :base
-      def initialize(net_id, ldap_options)
-        @net_id = net_id
+      def initialize(ldap_options)
         @connection = Net::LDAP.new(ldap_options)
       end
 
-      def netid_valid?
-        ldap_lookup ? true : false
+      def valid_netid?(netid)
+        ldap_entry_for(netid: netid).present?
       end
 
       # Custom error class
@@ -27,10 +26,10 @@ module Sipity
 
       private
 
-      def ldap_lookup
+      def ldap_entry_for(netid:)
         results = connection.search(
                       attributes: ['uid', 'mail', 'displayName'],
-                      filter: Net::LDAP::Filter.eq('uid', net_id),
+                      filter: Net::LDAP::Filter.eq('uid', netid),
                       return_result: true
         )
         return nil if results.blank?
