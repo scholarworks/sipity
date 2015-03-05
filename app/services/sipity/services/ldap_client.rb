@@ -33,14 +33,14 @@ module Sipity
                       filter: Net::LDAP::Filter.eq('uid', net_id),
                       return_result: true
         )
-
         return nil if results.blank?
         results.first
       end
 
       def ldap_query
         Timeout.timeout(LDAP_TIME_OUT) do
-          if !(result = ldap_lookup).blank?
+          result = ldap_lookup
+          if result.present?
             return result
           else
             fail UserNotFoundError, "User: #{net_id} is not found."
