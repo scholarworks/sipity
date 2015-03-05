@@ -51,7 +51,9 @@ module Sipity
 
         def collaborators_from_work
           return [] unless work
-          work.collaborators.present? ? work.collaborators : [Models::Collaborator.build_default]
+          # Manually building an empty collaborator to allow adding more once
+          # one is already created:
+          work.collaborators + [Models::Collaborator.build_default]
         end
 
         def each_collaborator_must_be_valid
