@@ -360,12 +360,6 @@ module Sipity
         end
       end
 
-      context '#usernames_of_those_that_have_taken_the_action_on_the_entity' do
-        subject { test_repository.usernames_of_those_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
-        it "will be an enumerable" do
-          expect(subject).to be_a(Enumerable)
-        end
-      end
       context '#users_that_have_taken_the_action_on_the_entity' do
         subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
         it "will include permitted strategy_state_actions" do
@@ -379,6 +373,47 @@ module Sipity
           Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
           Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
           expect(subject).to eq([user, groupy])
+        end
+        it "will be a chainable scope" do
+          expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context '#collaborators_that_have_taken_the_action_on_the_entity' do
+        subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
+        it "will include permitted strategy_state_actions" do
+          user = User.create!(username: 'user')
+          non_acting_user = User.create!(username: 'non_acting_user')
+          other_user = User.create!(username: 'another_user')
+          groupy = User.create!(username: 'groupy')
+          user_acting_collaborator = Models::Collaborator.create!(
+            name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+          )
+          acting_via_email_collaborator = Models::Collaborator.create!(
+            name: 'acting_via_email', email: 'another@gmail.com', responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+          )
+          group_collaborator = Models::Collaborator.create!(
+            name: 'groupy', netid: groupy.username, responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+          )
+
+          Models::GroupMembership.create(user_id: groupy.id, group_id: group.id)
+
+          [
+            user, non_acting_user, other_user, groupy, user_acting_collaborator, acting_via_email_collaborator
+          ].each do |proxy_for_actor|
+            Conversions::ConvertToProcessingActor.call(proxy_for_actor)
+          end
+
+          Models::Collaborator.create!(
+            name: 'non_acting', email: 'non_acting@gmail.com', responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+          )
+          Models::Collaborator.create!(name: 'non_reviewing', role: 'author', work_id: entity.proxy_for_id)
+          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
+          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
+          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: acting_via_email_collaborator)
+          expect(subject.pluck(:name)).to eq(
+            [user_acting_collaborator.name, acting_via_email_collaborator.name, group_collaborator.name]
+          )
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)

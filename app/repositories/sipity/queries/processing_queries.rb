@@ -35,15 +35,6 @@ module Sipity
 
       # @api public
       #
-      # @see #users_that_have_taken_the_action_on_the_entity
-      #
-      # @return Array of usernames
-      def usernames_of_those_that_have_taken_the_action_on_the_entity(entity:, action:)
-        users_that_have_taken_the_action_on_the_entity(entity: entity, action: action).pluck(:username)
-      end
-
-      # @api public
-      #
       # An ActiveRecord::Relation scope that meets the following criteria:
       #
       # * Any user that has taken the action (or someone has taken it on their
@@ -84,6 +75,51 @@ module Sipity
                 group_memberships[:group_id].in(action_registers_subquery_builder.call(group_polymorphic_type))
               )
             )
+          )
+        )
+      end
+
+      # @api public
+      #
+      # Given the :entity and :action generate a ActiveRecord::Relation that
+      # meets the following criteria:
+      #
+      # * A user has taken the action
+      # * Someone has taken an action on behalf of a collaborator
+      # * Somehow a group has taken an action so return all users
+      #
+      # @note This stretches out of the processing subsystem and out into the
+      #   modeling; It highlights that the domain model has two concepts that
+      #   are not properly being teased apart.
+      #
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
+      #   given the entity
+      # @return ActiveRecord::Relation<User>
+      def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        collaborators = Models::Collaborator.arel_table
+        actors = Models::Processing::Actor.arel_table
+        users = User.arel_table
+        users_scope = users_that_have_taken_the_action_on_the_entity(entity: entity, action: action)
+
+        Models::Collaborator.where(
+          collaborators[:netid].in(
+            users.project(
+              users[:username]
+            ).where(
+              users_scope.constraints.reduce.and(collaborators[:netid].not_eq(nil))
+            )
+          ).or(
+            collaborators[:id].in(
+              actors.project(actors[:proxy_for_id]).where(
+                actors[:proxy_for_type].eq(Models::Collaborator)
+              )
+            )
+          )
+        ).where(
+          collaborators[:work_id].eq(entity.proxy_for_id).and(
+            collaborators[:responsible_for_review].eq(true)
           )
         )
       end

@@ -45,20 +45,20 @@ module Sipity
       # Even though this is a private method I want to verify my personal logic.
       context '#last_advisor_to_signoff?' do
         [
-          { collaborating_reviewer_usernames: ['bob'], usernames_for_those_that_have_acted: ['alice'], expected: false },
-          { collaborating_reviewer_usernames: ['alice'], usernames_for_those_that_have_acted: ['alice'], expected: true },
-          { collaborating_reviewer_usernames: ['alice', 'bob'], usernames_for_those_that_have_acted: ['alice'], expected: false },
-          { collaborating_reviewer_usernames: ['alice', 'bob'], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: true },
-          { collaborating_reviewer_usernames: ['carol', 'bob'], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: false },
-          { collaborating_reviewer_usernames: [], usernames_for_those_that_have_acted: ['alice', 'bob'], expected: true },
-          { collaborating_reviewer_usernames: [], usernames_for_those_that_have_acted: [], expected: true },
-          { collaborating_reviewer_usernames: ['bob'], usernames_for_those_that_have_acted: [], expected: false }
+          { reviewers: ['bob'], already_reviewed: ['alice'], expected: false },
+          { reviewers: ['alice'], already_reviewed: ['alice'], expected: true },
+          { reviewers: ['alice', 'bob'], already_reviewed: ['alice'], expected: false },
+          { reviewers: ['alice', 'bob'], already_reviewed: ['alice', 'bob'], expected: true },
+          { reviewers: ['carol', 'bob'], already_reviewed: ['alice', 'bob'], expected: false },
+          { reviewers: [], already_reviewed: ['alice', 'bob'], expected: true },
+          { reviewers: [], already_reviewed: [], expected: true },
+          { reviewers: ['bob'], already_reviewed: [], expected: false }
         ].each_with_index do |example, index|
           it "will handle #{example.inspect} (Scenario ##{index})" do
-            expect(subject).to receive(:collaborating_reviewer_usernames).
-              and_return(example.fetch(:collaborating_reviewer_usernames))
-            expect(subject).to receive(:usernames_for_those_that_have_acted).
-              and_return(example.fetch(:usernames_for_those_that_have_acted))
+            expect(subject).to receive(:work_collaborators_responsible_for_review).
+              and_return(example.fetch(:reviewers))
+            expect(subject).to receive(:collaborators_that_have_taken_the_action_on_the_entity).
+              and_return(example.fetch(:already_reviewed))
             expect(subject.send(:last_advisor_to_signoff?)).to eq(example.fetch(:expected))
           end
         end
@@ -67,14 +67,14 @@ module Sipity
       context 'default repository' do
         let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'submit_for_review', work: double) }
         subject { described_class.new(form: form, requested_by: requested_by) }
-        it 'exposes #usernames_of_those_that_have_taken_the_action_on_the_entity' do
-          expect(subject.send(:repository)).to receive(:usernames_of_those_that_have_taken_the_action_on_the_entity)
-          subject.send(:usernames_for_those_that_have_acted)
+        it 'exposes #collaborators_that_have_taken_the_action_on_the_entity' do
+          expect(subject.send(:repository)).to receive(:collaborators_that_have_taken_the_action_on_the_entity)
+          subject.send(:collaborators_that_have_taken_the_action_on_the_entity)
         end
 
-        it 'exposes #usernames_of_those_that_are_collaborating_and_responsible_for_review' do
-          expect(subject.send(:repository)).to receive(:usernames_of_those_that_are_collaborating_and_responsible_for_review)
-          subject.send(:collaborating_reviewer_usernames)
+        it 'exposes #work_collaborators_responsible_for_review' do
+          expect(subject.send(:repository)).to receive(:work_collaborators_responsible_for_review)
+          subject.send(:work_collaborators_responsible_for_review)
         end
       end
     end
