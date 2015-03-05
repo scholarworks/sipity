@@ -13,25 +13,28 @@ module Sipity
         validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
         def render(f:)
-          markup = view_context.content_tag('legend', submission_terms)
-          markup << view_context.content_tag(
-            'article',
-            I18n.t('sipity/terms.terms_of_deposit_html').html_safe,
-            class: 'terms-of-deposit legally-binding-text'
-          )
-          markup <<  f.input(
-            :agree_to_terms_of_deposit,
-            as: :boolean,
-            inline_label: I18n.t('activemodel.attributes.sipity/forms/state_advancing_action.agree_to_terms_of_deposit'),
-            input_html: { required: 'required' }, # There is no way to add boolean attributes to simle_form fields. This will have to do.
-            label: false,
-            wrapper_class: 'checkbox'
-          )
-          markup.html_safe
+          markup = view_context.content_tag('legend', deposit_terms_heading)
+          markup << view_context.content_tag('article', deposit_terms, class: 'legally-binding-text')
+          markup << f.input(:agree_to_terms_of_deposit,
+                            as: :boolean,
+                            inline_label:
+                            deposit_agreement,
+                            input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
+                            label: false,
+                            wrapper_class: 'checkbox'
+                           ).html_safe
         end
 
-        def submission_terms
-          view_context.t('submission_terms', scope: 'sipity/forms.etd/submit_for_review_form').html_safe
+        def deposit_terms_heading
+          view_context.t('terms_of_deposit', scope: 'sipity/legal.deposit').html_safe
+        end
+
+        def deposit_terms
+          view_context.t('statement_of_terms', scope: 'sipity/legal.deposit').html_safe
+        end
+
+        def deposit_agreement
+          view_context.t('agree_to_terms', scope: 'sipity/legal.deposit').html_safe
         end
 
         private

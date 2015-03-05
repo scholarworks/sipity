@@ -27,12 +27,14 @@ module Sipity
         context '#render' do
           it 'will render HTML safe submission terms and confirmation' do
             form_object = double('Form Object')
-            expect(form_object).to receive(:input).with(:agree_to_terms_of_deposit, as: :boolean).and_return("<input />")
+            expect(form_object).to receive(:input).with(:agree_to_terms_of_deposit, hash_including(as: :boolean)).and_return("<input />")
             expect(subject.render(f: form_object)).to be_html_safe
           end
         end
 
-        its(:submission_terms) { should be_html_safe }
+        its(:deposit_terms_heading) { should be_html_safe }
+        its(:deposit_terms) { should be_html_safe }
+        its(:deposit_agreement) { should be_html_safe }
 
         context 'with valid data' do
           subject do
