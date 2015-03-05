@@ -56,11 +56,6 @@ module Sipity
           work.collaborators + [Models::Collaborator.build_default]
         end
 
-        def each_collaborator_must_be_valid
-          return true if collaborators.all?(&:valid?)
-          errors.add(:collaborators_attributes, :are_incomplete)
-        end
-
         def build_collaborator_from_input(collection, attributes)
           return if !attributes[:name].present? && !attributes[:id].present?
           collaborator = repository.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
@@ -75,8 +70,14 @@ module Sipity
           permitted_attributes
         end
 
+        def each_collaborator_from_input_must_be_valid
+          return true if Array.wrap(collaborators_from_input).all?(&:valid?)
+          errors.add(:collaborators_attributes, :are_incomplete)
+        end
+
         def at_least_one_collaborator_must_be_responsible_for_review
-          errors.add(:base, :at_least_one_collaborator_must_be_responsible_for_review) if collaborators.none?(&:responsible_for_review?)
+          return true unless Array.wrap(collaborators_from_input).none?(&:responsible_for_review?)
+          errors.add(:base, :at_least_one_collaborator_must_be_responsible_for_review)
         end
       end
     end
