@@ -51,4 +51,9 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # Because you really don't want to be making this request all that often.
+  unless ENV['WITH_PRODUCTION_SERVICES']
+    config.default_netid_remote_validator = ->(_a_netid) { true }
+  end
 end
