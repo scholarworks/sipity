@@ -14,20 +14,15 @@ module Sipity
         end
       end
 
-      context '#usernames_of_those_that_are_collaborating_and_responsible_for_review' do
-        subject { test_repository.usernames_of_those_that_are_collaborating_and_responsible_for_review(work: work) }
-        it { should be_a(Enumerable) }
-      end
-
-      context '#work_collaborating_users_responsible_for_review' do
-        subject { test_repository.work_collaborating_users_responsible_for_review(work: work) }
-        it { should be_a(ActiveRecord::Relation) }
-        # A bit of a sanity check that I have a User relationship
-        it { expect(subject.arel_table.table_name).to eq('users') }
-      end
-
       context '#work_collaborators_responsible_for_review' do
         subject { test_repository.work_collaborators_responsible_for_review(work: work) }
+        it { should be_a(ActiveRecord::Relation) }
+        # A bit of a sanity check that my primary table is sipity_collaborators
+        it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }
+      end
+
+      context '#collaborators_that_can_advance_the_current_state_of' do
+        subject { test_repository.collaborators_that_can_advance_the_current_state_of(work: work) }
         it { should be_a(ActiveRecord::Relation) }
         # A bit of a sanity check that my primary table is sipity_collaborators
         it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }

@@ -11,10 +11,37 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
+      it 'belongs to :user' do
+        expect(described_class.reflect_on_association(:user)).
+          to be_a(ActiveRecord::Reflection::AssociationReflection)
+      end
+
       context '.roles' do
         it 'is a Hash of keys that equal their values' do
           expect(Collaborator.roles.keys).
             to eq(Collaborator.roles.values)
+        end
+      end
+
+      context '#to_processing_actor' do
+        subject { described_class.new(id: 1) }
+        let(:processing_actor) { double('Actor') }
+        let(:user) { double('User') }
+        it 'will retrieve processing actor of the user if one is present' do
+          allow(subject).to receive(:user).and_return(user)
+          expect(subject).to receive(:convert_to_processing_actor).and_return(processing_actor)
+          expect(subject.to_processing_actor).to eq(processing_actor)
+        end
+        it 'will fall back on the existing processing actor if a user is not present' do
+          expect(subject).to receive(:processing_actor).and_return(processing_actor)
+          expect(subject).to receive(:user).and_return(nil)
+          expect(subject.to_processing_actor).to eq(processing_actor)
+        end
+        it 'will fall back on the collaborator if no processing actor nor user is present' do
+          allow(subject).to receive(:processing_actor).and_return(nil)
+          allow(subject).to receive(:user).and_return(nil)
+          expect(subject).to receive(:create_processing_actor!)
+          subject.to_processing_actor
         end
       end
 

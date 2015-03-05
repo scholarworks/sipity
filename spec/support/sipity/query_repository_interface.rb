@@ -61,6 +61,14 @@ module Sipity
     def citation_already_assigned?(work)
     end
 
+    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
+    def collaborators_that_can_advance_the_current_state_of(work:, id: nil)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    end
+
     # @see ./app/repositories/sipity/queries/doi_queries.rb
     def doi_already_assigned?(work)
     end
@@ -185,14 +193,6 @@ module Sipity
     def sequence_of_events_for(options = {})
     end
 
-    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def usernames_of_those_that_are_collaborating_and_responsible_for_review(work:)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def usernames_of_those_that_have_taken_the_action_on_the_entity(entity:, action:)
-    end
-
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def users_that_have_taken_the_action_on_the_entity(entity:, action:)
     end
@@ -215,10 +215,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
     def work_attribute_values_for(work:, key:)
-    end
-
-    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def work_collaborating_users_responsible_for_review(work:)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

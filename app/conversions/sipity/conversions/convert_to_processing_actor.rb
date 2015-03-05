@@ -8,6 +8,7 @@ module Sipity
 
       def convert_to_processing_actor(input)
         return input if input.is_a?(Models::Processing::Actor)
+        return input.to_processing_actor if input.respond_to?(:to_processing_actor)
         case input
         when User, Models::Group then
           # I'm opting to use input.id.present? instead of persisted? as I'm

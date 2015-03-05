@@ -19,6 +19,17 @@ module Sipity
       end
 
       belongs_to :work, foreign_key: 'work_id'
+      belongs_to :user, primary_key: 'username', foreign_key: 'netid'
+      has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
+
+      include Conversions::ConvertToProcessingActor
+      def to_processing_actor
+        if user.present?
+          convert_to_processing_actor(user)
+        else
+          processing_actor || create_processing_actor!
+        end
+      end
 
       self.table_name = 'sipity_collaborators'
 

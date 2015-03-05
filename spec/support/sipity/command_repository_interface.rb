@@ -73,8 +73,20 @@ module Sipity
     def build_update_work_form(work:, attributes: {})
     end
 
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def change_processing_actor_proxy(from_proxy:, to_proxy:)
+    end
+
     # @see ./app/repositories/sipity/queries/citation_queries.rb
     def citation_already_assigned?(work)
+    end
+
+    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
+    def collaborators_that_can_advance_the_current_state_of(work:, id: nil)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -178,7 +190,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def register_action_taken_on_entity(work:, enrichment_type:, requested_by:)
+    def register_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -301,14 +313,6 @@ module Sipity
     def update_work_publication_date!(work:, publication_date:)
     end
 
-    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def usernames_of_those_that_are_collaborating_and_responsible_for_review(work:)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def usernames_of_those_that_have_taken_the_action_on_the_entity(entity:, action:)
-    end
-
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def users_that_have_taken_the_action_on_the_entity(entity:, action:)
     end
@@ -331,10 +335,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
     def work_attribute_values_for(work:, key:)
-    end
-
-    # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def work_collaborating_users_responsible_for_review(work:)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

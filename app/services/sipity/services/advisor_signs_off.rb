@@ -45,15 +45,15 @@ module Sipity
       end
 
       def last_advisor_to_signoff?
-        (collaborating_reviewer_usernames - usernames_for_those_that_have_acted).empty?
+        (work_collaborators_responsible_for_review - collaborators_that_have_taken_the_action_on_the_entity).empty?
       end
 
-      def usernames_for_those_that_have_acted
-        repository.usernames_of_those_that_have_taken_the_action_on_the_entity(entity: form, action: form.action)
+      def work_collaborators_responsible_for_review
+        repository.work_collaborators_responsible_for_review(work: form.work)
       end
 
-      def collaborating_reviewer_usernames
-        repository.usernames_of_those_that_are_collaborating_and_responsible_for_review(work: form.work)
+      def collaborators_that_have_taken_the_action_on_the_entity
+        repository.collaborators_that_have_taken_the_action_on_the_entity(entity: form.work, action: form.action)
       end
     end
   end
