@@ -7,6 +7,7 @@ module Sipity
         def initialize(attributes = {})
           super
           self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
+          @copyright = attributes.fetch(:copyright) { copyright_from_work }
         end
 
         # Because I am using `#fields_for` for rendering
@@ -14,9 +15,11 @@ module Sipity
           @accessible_objects_attributes = parse_accessible_objects_attributes(values)
         end
         attr_reader :accessible_objects_attributes
+        attr_accessor :copyright
 
         validate :each_accessible_objects_attributes_are_valid
         validate :at_lease_one_accessible_objects_attributes_entry
+        validates :copyright, presence: true
 
         def accessible_objects
           if @accessible_objects_attributes.present?
@@ -41,7 +44,12 @@ module Sipity
         def save(requested_by:)
           super do
             repository.apply_access_policies_to(work: work, user: requested_by, access_policies: access_objects_attributes_for_persistence)
+            repository.update_work_attribute_values!(work: work, key: 'copyright', values: copyright)
           end
+        end
+
+        def copyright_from_work
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'copyright').first
         end
 
         def access_objects_attributes_for_persistence
