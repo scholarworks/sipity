@@ -16,6 +16,7 @@
     <fieldset class="panel-body">
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
       <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
 
       <table class="table expandible collaborators">
         <thead>
