@@ -40,5 +40,5 @@
 </div>
 
 <%= model.work.with_action_pane('actions') do %>
-  <%= link_to t("sipity/decorators/entitiy_enrichments.#{model.enrichment_type}.cancel"), work_path(model.work), class: 'btn btn-default' %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 <% end %>

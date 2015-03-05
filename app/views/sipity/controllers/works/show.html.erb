@@ -135,7 +135,7 @@
             <% end %>
             <% if model.additional_attributes.any? %>
               <% model.additional_attributes.each do |attribute| %>
-                <dt class="predicate"><%= attribute.key %></dt>
+                <dt class="predicate"><%= model.human_attribute_name(attribute.key) %></dt>
                 <dd class="value"><%= attribute.value %></dd>
               <% end %>
             <% end %>

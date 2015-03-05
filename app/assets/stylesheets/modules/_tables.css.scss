@@ -1,0 +1,64 @@
+.table td > .controls {
+  display:inline;
+}
+
+.table .with-columns > div:first-child {
+  padding-left:0;
+}
+
+.no-js .row-controls {
+  display:none;
+}
+
+.js .row-controls {
+  width:6em;
+  vertical-align:middle;
+}
+
+.no-js .table.expandible .row-controls {
+  border-top:none;
+}
+
+.table.expandible tr:last-child .row-controls .btn {
+  display:none;
+}
+
+// NOTE: Content-specifc styles for collaborator view
+.table.collaborators {
+  min-width:710px;
+}
+
+.table.collaborators .contact-information {
+  .controls,
+  .form-control {
+    display:inline-block;
+    float:left;
+    width:auto;
+  }
+  .choice {
+    float:left;
+    line-height:34px;
+    padding:0 10px;
+  }
+  .scope {
+    float:left;
+    line-height: 34px;
+    padding-right:6px;
+  }
+  .form-group {
+    float:left;
+    line-height:34px;
+    padding:0 10px;
+    white-space:nowrap;
+    width:auto;
+  }
+  .scope {
+    float:left;
+    line-height: 34px;
+    padding-right:6px;
+  }
+  .form-group {
+    float:left;
+    white-space:nowrap;
+  }
+}
