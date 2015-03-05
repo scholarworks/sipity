@@ -2,16 +2,6 @@
 <% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
 <%= content_tag( :p, description) if description.present? %>
 
-<%
-  # Manually building an empty collaborator to allow adding more once one is already created:
-  # TODO: Move this somewhere else (obviously)
-  # TODO: Strip out 'empty' collaborators on submit
-
-  if model.work.collaborators.present?
-    model.work.collaborators << Sipity::Models::Collaborator.new(work_id: model.work.id)
-  end
-%>
-
 <%= simple_form_for(
     model,
     url: enrich_work_path(model.work, model.enrichment_type),
@@ -26,6 +16,7 @@
     <fieldset class="panel-body">
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
       <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
 
       <table class="table expandible collaborators">
         <thead>

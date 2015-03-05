@@ -20,7 +20,7 @@ module Sipity
 
       belongs_to :work, foreign_key: 'work_id'
       belongs_to :user, primary_key: 'username', foreign_key: 'netid'
-      has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
+      has_one :processing_actor, dependent: :destroy, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
 
       include Conversions::ConvertToProcessingActor
       def to_processing_actor

@@ -28,6 +28,19 @@ module Sipity
         end
       end
 
+      context '#manage_collaborators_for' do
+        let(:work) { Models::Work.new(id: 123) }
+        let(:collaborator) do
+          Models::Collaborator.new(work_id: work.id, responsible_for_review: true, name: 'Jeremy', role: 'advisor', netid: 'somebody')
+        end
+        it 'will destroy collaborators not passed in' do
+          collaborator.save!
+          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [])
+          expect { test_repository.manage_collaborators_for(work: work, collaborators: []) }.
+            to change { Models::Collaborator.count }.by(-1)
+        end
+      end
+
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do

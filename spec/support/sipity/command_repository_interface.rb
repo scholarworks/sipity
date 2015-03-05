@@ -182,6 +182,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
+    def manage_collaborators_for(work:, collaborators:)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
     def mark_as_representative(work:, pid:, user: user)
     end
 
