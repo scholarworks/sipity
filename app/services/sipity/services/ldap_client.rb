@@ -3,6 +3,15 @@ module Sipity
   module Services
     # This class querries LDAP to get user information
     class LdapClient
+      def self.valid_netid?(netid)
+        configuration = {
+          host: Figaro.env.ldap_host,
+          port: Figaro.env.ldap_port,
+          encryption: Figaro.env.ldap_encryption.to_sym
+        }
+        new(configuration).valid_netid?(netid)
+      end
+
       attr_reader :connection
 
       # The ldap_options is a hash containing

@@ -5,8 +5,14 @@ module Sipity
       let(:ldap_options) do
         { host: 'directory.example.com', port: '636', encryption: :simple_tls }
       end
+      context '.valid_netid?' do
+        it 'is exposed as a convenience method' do
+          expect_any_instance_of(Net::LDAP).to receive(:search).and_return(true)
+          expect(described_class.valid_netid?('someone')).to eq(true)
+        end
+      end
       context "#netid_valid?" do
-        subject { LdapClient.new(ldap_options) }
+        subject { described_class.new(ldap_options) }
         let(:netid) { 'a possible netid' }
         context 'with a valid netid' do
           it "will return true for a valid netid" do
