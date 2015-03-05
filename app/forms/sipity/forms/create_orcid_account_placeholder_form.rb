@@ -7,7 +7,7 @@ module Sipity
       def initialize(attributes = {})
         @identifier, @name = attributes.values_at(:identifier, :name)
       end
-      attr_accessor :identifier, :name
+      attr_reader :identifier, :name
 
       validates :identifier, presence: true, format: { with: ORCID_IDENTIFIER_REGEXP }
       validates :name, presence: true

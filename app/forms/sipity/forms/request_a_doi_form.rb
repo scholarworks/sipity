@@ -11,8 +11,8 @@ module Sipity
         @repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_accessor :publisher, :publication_date, :work
-      attr_reader :enrichment_type, :repository
+      attr_accessor :work
+      attr_reader :enrichment_type, :repository, :publisher, :publication_date
       private :work=, :repository
 
       delegate :title, to: :work

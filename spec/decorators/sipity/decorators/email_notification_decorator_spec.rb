@@ -39,7 +39,7 @@ module Sipity
           allow(repository).to receive(:work_access_right_codes).and_return(answer)
         end
         Given(:answer) { 'open_access' }
-        Then { subject.access_rights.should eq(answer.titleize) }
+        Then { subject.access_rights == answer.titleize }
       end
 
     end

@@ -7,12 +7,12 @@ module Sipity
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)
-        self.identifier = attributes.fetch(:identifier, nil)
+        @identifier = attributes.fetch(:identifier, nil)
         @enrichment_type = attributes.fetch(:enrichment_type, default_enrichment_type)
       end
 
-      attr_reader :enrichment_type
-      attr_accessor :work, :identifier
+      attr_reader :enrichment_type, :identifier
+      attr_accessor :work
       private(:work=) # Adding parenthesis because Beautify ruby was going crazy
 
       validates :work, presence: true

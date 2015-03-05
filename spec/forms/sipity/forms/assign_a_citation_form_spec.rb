@@ -9,9 +9,7 @@ module Sipity
 
       it { should respond_to :work }
       it { should respond_to :citation }
-      it { should respond_to :citation= }
       it { should respond_to :type }
-      it { should respond_to :type= }
       its(:enrichment_type) { should be_a(String) }
       it { should respond_to(:to_processing_entity) }
 

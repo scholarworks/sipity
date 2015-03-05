@@ -17,11 +17,11 @@ module Sipity
         @access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
       end
 
-      attr_accessor :title
-      attr_accessor :work_publication_strategy
-      attr_accessor :publication_date
-      attr_accessor :work_type
-      attr_accessor :access_rights_answer
+      attr_reader :title
+      attr_reader :work_publication_strategy
+      attr_reader :publication_date
+      attr_reader :work_type
+      attr_reader :access_rights_answer
 
       validates :title,
                 presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.title') }

@@ -30,6 +30,8 @@ module Sipity
       end
 
       context 'validations for' do
+        let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
+        subject { described_class.new(attributes) }
         context '#title' do
           it 'must be present' do
             subject.valid?
@@ -38,12 +40,11 @@ module Sipity
         end
         context '#access_rights_answer' do
           it 'must be present' do
-            subject.access_rights_answer = nil
             subject.valid?
             expect(subject.errors[:access_rights_answer]).to be_present
           end
           it 'must be in the given list' do
-            subject.access_rights_answer = '__not_found__'
+            subject = described_class.new(access_rights_answer: '__not_found__')
             subject.valid?
             expect(subject.errors[:access_rights_answer]).to be_present
           end
@@ -60,7 +61,7 @@ module Sipity
             expect(subject.errors[:work_publication_strategy]).to be_present
           end
           it 'must be from the approved list' do
-            subject.work_publication_strategy = '__missing__'
+            subject = described_class.new(work_publication_strategy: '__not_found__')
             subject.valid?
             expect(subject.errors[:work_publication_strategy]).to be_present
           end
