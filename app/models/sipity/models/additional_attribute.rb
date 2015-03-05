@@ -15,6 +15,10 @@ module Sipity
       DISCIPLINE_PREDICATE_NAME = 'discipline'.freeze
       ALTERNATE_TITLE_PREDICATE_NAME = 'alternate_title'.freeze
       COPYRIGHT_PREDICATE_NAME = 'copyright'.freeze
+      SUBJECT = 'subject'.freeze
+      LANGUAGE = 'language'.freeze
+      TEMPORAL_COVERAGE = 'temporal_coverage'.freeze
+      SPATIAL_COVERAGE = 'spatial_coverage'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -30,7 +34,11 @@ module Sipity
           DEFENSE_DATE_PREDICATE_NAME => DEFENSE_DATE_PREDICATE_NAME,
           DISCIPLINE_PREDICATE_NAME => DISCIPLINE_PREDICATE_NAME,
           ALTERNATE_TITLE_PREDICATE_NAME => ALTERNATE_TITLE_PREDICATE_NAME,
-          COPYRIGHT_PREDICATE_NAME => COPYRIGHT_PREDICATE_NAME
+          COPYRIGHT_PREDICATE_NAME => COPYRIGHT_PREDICATE_NAME,
+          SUBJECT => SUBJECT,
+          LANGUAGE => LANGUAGE,
+          TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
+          SPATIAL_COVERAGE => SPATIAL_COVERAGE
         }
       )
     end
