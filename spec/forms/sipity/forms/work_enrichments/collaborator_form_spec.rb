@@ -35,6 +35,15 @@ module Sipity
           end
         end
 
+        context 'when no collaborator attributes are passed and the form is submitted' do
+          let(:collaborator) { double('Collaborator', valid?: true) }
+          subject { described_class.new(work: work, repository: repository) }
+          it 'will not fall back to the persisted collaborators for validation' do
+            expect(work).to_not receive(:collaborators)
+            expect(subject.valid?).to be_falsey
+          end
+        end
+
         context '#submit' do
           let(:user) { User.new(id: '1') }
           context 'with invalid data' do
@@ -63,7 +72,7 @@ module Sipity
             end
 
             it 'will create a collaborator' do
-              expect(repository).to receive(:assign_collaborators_to).and_call_original
+              expect(repository).to receive(:manage_collaborators_for).and_call_original
               subject.submit(requested_by: user)
             end
           end
