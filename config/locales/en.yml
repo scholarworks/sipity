@@ -129,7 +129,7 @@ en:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
       collaborators:
-        title_html: 'Please identify the <b>authors</b> and the memembers of the <b>advisory committee</b>'
+        title_html: 'Please identify the <b>authors</b> and the members of the <b>advisory committee</b>'
         hint: 'You must have at least one person review your submission.'
         institution_label: 'ND:'
         choice: 'OR'
@@ -179,6 +179,13 @@ en:
         work_type: 'Please select a work type'
     etd/submit_for_review_form:
       terms_of_deposit: '<p>I can deposit these things.</p>'
+  sipity/legal:
+    deposit:
+      terms_of_deposit: 'Terms of Deposit'
+      statement_of_terms: >
+        <p>Lots of legally binding text here</p>
+        <p>Across several paragraphs</p>
+      agree_to_terms: 'I agree to the terms of deposit'
   simple_form:
     labels:
       doi:

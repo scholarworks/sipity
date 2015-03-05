@@ -13,12 +13,28 @@ module Sipity
         validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
         def render(f:)
-          view_context.content_tag('div', submission_terms) +
-            f.input(:agree_to_terms_of_deposit, as: :boolean)
+          markup = view_context.content_tag('legend', deposit_terms_heading)
+          markup << view_context.content_tag('article', deposit_terms, class: 'legally-binding-text')
+          markup << f.input(:agree_to_terms_of_deposit,
+                            as: :boolean,
+                            inline_label:
+                            deposit_agreement,
+                            input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
+                            label: false,
+                            wrapper_class: 'checkbox'
+                           ).html_safe
         end
 
-        def submission_terms
-          view_context.t('submission_terms', scope: 'sipity/forms.etd/submit_for_review_form').html_safe
+        def deposit_terms_heading
+          view_context.t('terms_of_deposit', scope: 'sipity/legal.deposit').html_safe
+        end
+
+        def deposit_terms
+          view_context.t('statement_of_terms', scope: 'sipity/legal.deposit').html_safe
+        end
+
+        def deposit_agreement
+          view_context.t('agree_to_terms', scope: 'sipity/legal.deposit').html_safe
         end
 
         private

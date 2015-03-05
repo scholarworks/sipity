@@ -6,7 +6,7 @@
       <%= simple_form_for(model, url: event_trigger_for_work_path(model.work, model.processing_action_name), method: :post) do |f| %>
         <%= f.error_notification %>
         <%= model.render(f: f) %>
-        <%= submit_tag("Submit", itemprop: 'name', autofocus: true) %>
+        <%= submit_tag("Submit", itemprop: 'name', autofocus: true, class: 'btn btn-primary') %>
       <% end %>
     </div>
   </div>
