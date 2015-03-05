@@ -183,6 +183,10 @@ en:
         work_type: 'Please select a work type'
     etd/submit_for_review_form:
       terms_of_deposit: '<p>I can deposit these things.</p>'
+  sipity/terms:
+    terms_of_deposit_html: >
+      <p>Lots of legally binding text here</p>
+      <p>Accross several paragraphs</p>
   simple_form:
     labels:
       doi:
