@@ -9,7 +9,7 @@ class NetIdValidator < ActiveModel::EachValidator
   private :netid_remote_validator
 
   def default_netid_remote_validator
-    ->(_a_netid) { true }
+    Rails.application.config.default_netid_remote_validator
   end
 
   def validate_each(record, attribute, value)

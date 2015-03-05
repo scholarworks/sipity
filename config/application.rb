@@ -20,7 +20,11 @@ module Sipity
     end
 
     %w(conversions forms jobs policies runners services).each do |concept|
-        config.autoload_paths << Rails.root.join("app/#{concept}")
+      config.autoload_paths << Rails.root.join("app/#{concept}")
+    end
+
+    config.default_netid_remote_validator = lambda do |netid|
+      Sipity::Services::LdapClient.valid_netid?(netid)
     end
 
     # Settings in config/environments/* take precedence over those specified here.

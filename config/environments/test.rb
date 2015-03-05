@@ -48,4 +48,8 @@ Rails.application.configure do
     I18n.backend = I18n::Backend::KeyValue.new({})
     I18n.backend.store_translations(:en, {})
   end
+
+  # I don't want to be hitting LDAP in all cases; This is the default for test
+  # purposes.
+  config.default_netid_remote_validator = ->(_a_netid) { true }
 end
