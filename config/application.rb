@@ -23,6 +23,8 @@ module Sipity
         config.autoload_paths << Rails.root.join("app/#{concept}")
     end
 
+    config.default_netid_remote_validator = ->(_a_netid) { true }
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
