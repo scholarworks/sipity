@@ -1,0 +1,39 @@
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% describe = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, describe) if describe.present? %>
+
+<div class="panel-tiles">
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'panel panel-primary with-footer' }
+  ) do |f| %>
+    <fieldset class="panel-body">
+      <%= f.error_notification %>
+
+      <% 
+        # TODO 
+        # This is just a place holder for subject, language, temporal and spatial coverage
+        # These fields needs to be multi-valued
+      %>
+
+      <%= f.input :subject, input_html: {size: 50}  %>
+      <%= f.input :language, input_html: {size: 50} %>
+      <%= f.input :temporal_coverage, input_html: {size: 50} %>
+      <%= f.input :spatial_coverage, input_html: {size: 50} %>
+
+    </fieldset>
+
+    <%= model.work.with_action_pane('new_citation', 'panel-footer') do %>
+      <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+    <% end %>
+  <% end %>
+
+</div>
+
+<%= model.work.with_action_pane('actions') do %>
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+<% end %>

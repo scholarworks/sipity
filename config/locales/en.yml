@@ -147,6 +147,8 @@ en:
       label: 'Create a <b>citation</b>'
     defense_date:
       label: "Record the <b>defense date</b> for your %{entity_type}"
+    search_terms:
+      label: "Add <b>search terms</b> for your %{entity_type}"
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'
