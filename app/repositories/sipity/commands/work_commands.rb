@@ -3,6 +3,19 @@ module Sipity
   module Commands
     # Commands
     module WorkCommands
+      # Responsible for adding collaborators to the work and removing anyone
+      # else.
+      def manage_collaborators_for(work:, collaborators:)
+        collaborators_table = Models::Collaborator.arel_table
+        Models::Collaborator.where(
+          collaborators_table[:work_id].eq(work.id).and(
+            collaborators_table[:id].not_in(collaborators.flat_map(&:id))
+          )
+        ).destroy_all
+
+        assign_collaborators_to(work: work, collaborators: collaborators)
+      end
+
       # Responsible for assigning collaborators to a work.
       def assign_collaborators_to(work:, collaborators:)
         # TODO: Encapsulate this is a Service Object as there is enough logic
