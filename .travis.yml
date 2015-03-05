@@ -13,3 +13,6 @@ bundler_args: --without development debug doc
 
 before_install:
   - gem install bundler
+addons:
+  code_climate:
+    repo_token: d25517494137c5bf0d9acca7243f70eba7ec0c354940c54eb33ec395b05900de

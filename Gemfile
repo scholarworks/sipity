@@ -64,7 +64,6 @@ group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
   gem 'rspec-its'
-  gem 'coveralls', require: false
   gem 'pry-rescue', require: false
   gem 'pry-stack_explorer', require: false
 end
@@ -77,7 +76,8 @@ group :test do
   gem 'database_cleaner'
   gem 'launchy'
   gem 'site_prism'
-  gem 'simplecov'
+  gem "codeclimate-test-reporter", require: nil
+  gem 'simplecov', require: false
   gem 'rspec-html-matchers', '~>0.6'
   gem 'selenium-webdriver'
 end
