@@ -32,15 +32,15 @@ module Sipity
         end
 
         def language_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'language').first
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'language')
         end
 
         def temporal_coverage_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'temporal_coverage').first
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'temporal_coverage')
         end
 
         def spatial_coverage_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'spatial_coverage').first
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'spatial_coverage')
         end
       end
     end
