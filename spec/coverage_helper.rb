@@ -1,9 +1,14 @@
 if ENV['COV'] || ENV['COVERAGE'] || ENV['TRAVIS']
   if ENV['TRAVIS']
-    require 'coveralls'
     require 'simplecov'
-    SimpleCov.formatter = Coveralls::SimpleCov::Formatter
-    Coveralls.wear!('rails')
+    require "codeclimate-test-reporter"
+    SimpleCov.start do
+      formatter SimpleCov::Formatter::MultiFormatter[
+        SimpleCov::Formatter::HTMLFormatter,
+        CodeClimate::TestReporter::Formatter
+      ]
+      load_profile 'rails'
+    end
   elsif ENV['COV'] || ENV['COVERAGE']
     require 'simplecov'
 
@@ -19,7 +24,9 @@ if ENV['COV'] || ENV['COVERAGE'] || ENV['TRAVIS']
         end
         add_filter 'lib'
       end
-      SimpleCov.start { load_profile "sipity.#{coverage_profile_name}" }
+      SimpleCov.start do
+        load_profile "sipity.#{coverage_profile_name}"
+      end
     else
       SimpleCov.start { load_profile 'rails' }
     end
