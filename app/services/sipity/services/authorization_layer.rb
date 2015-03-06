@@ -4,6 +4,33 @@ module Sipity
     #
     # @see Sipity::Policies
     class AuthorizationLayer
+      # A quick access method for authorizing access to a file. It is a targeted
+      # method that ties directly into serving attachments and the
+      # implementation of attachment delivery.
+      #
+      # @note I am not a fan of methods that representat a negation concept (ie
+      #   #not_found?, #without_children) as I have seen them often lead to
+      #   double negatives.
+      #
+      # @see ./config/initializers/dragonfly.rb for usage
+      #
+      # @see http://markevans.github.io/dragonfly/configuration/
+      #   Dragonfly.app.configure { before_serve } to understand interaction.
+      #
+      # @note This circumvents using repository lookup, and drills down quick
+      #   into ActiveRecord queries.
+      def self.without_authorization_to_attachment(file_uid:, user:)
+        if user.present?
+          # HACK: I'd prefer to use an attachment's policy instead of its related
+          #   work; But, for now this will need to suffice.
+          work = Models::Attachment.includes(:work).where(file_uid: file_uid).first.work
+          return :authorized if Policies.authorized_for?(user: user, entity: work, action_to_authorize: :show?)
+        end
+        # REVIEW: A short-circuit. A general assumption for sipity is that
+        #   attachments are available only to authenticated users.
+        yield
+      end
+
       def initialize(context, collaborators = {})
         @context = context
         @user = context.current_user
