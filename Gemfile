@@ -56,6 +56,9 @@ group :development do
   gem 'pry-byebug'
   gem 'letter_opener'
   gem 'seed_dump'
+  # Paired with Chrome the RailsPanel plugin, you can see request information
+  # https://github.com/dejan/rails_panel
+  gem 'meta_request'
 end
 
 group :development, :test do
