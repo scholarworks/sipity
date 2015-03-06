@@ -29,14 +29,13 @@ module Sipity
           end
 
           context 'with data from the database' do
-            let(:degree_name) { 'test' }
-            subject { described_class.new(work: work, degree: degree_name, repository: repository) }
+            subject { described_class.new(work: work, repository: repository) }
             it 'will return the degree of the work' do
-              allow(subject).to receive(:degree_from_work).and_return(name)
-              expect(subject.degree).to eq degree_name
+              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return(['bogus', 'test'])
+              expect(subject.degree).to eq ['bogus', 'test']
             end
           end
-          context 'when no degree is given' do
+          context 'when no degree is given and none is in the repository' do
             subject { described_class.new(work: work, repository: repository) }
             its(:degree) { should_not be_present }
           end
