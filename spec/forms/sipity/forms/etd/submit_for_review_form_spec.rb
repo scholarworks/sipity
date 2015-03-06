@@ -32,7 +32,7 @@ module Sipity
           end
         end
 
-        its(:deposit_terms_heading) { should be_html_safe }
+        its(:deposit_terms_legend) { should be_html_safe }
         its(:deposit_terms) { should be_html_safe }
         its(:deposit_agreement) { should be_html_safe }
 

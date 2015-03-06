@@ -16,10 +16,12 @@ module Sipity
         context '#render' do
           let(:f) { double }
           it 'will return an input text area' do
-            expect(f).to receive(:input).with(:comment, as: :text, autofocus: true)
+            expect(f).to receive(:input).with(:comment, hash_including(as: :text))
             subject.render(f: f)
           end
         end
+
+        its(:advisor_request_change_legend) { should be_html_safe }
 
         context 'processing_action_name to action conversion' do
           it 'will use the given action if the strategy matches' do
