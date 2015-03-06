@@ -13,7 +13,7 @@ module Sipity
         validates :degree, presence: true
 
         def degree_names
-          repository.get_all_by_predicate_name(predicate: 'degree')
+          repository.get_values_by_predicate_name(name: 'degree')
         end
 
         private

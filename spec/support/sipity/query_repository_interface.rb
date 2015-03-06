@@ -113,6 +113,10 @@ module Sipity
     def gather_doi_creation_request_metadata(work:)
     end
 
+    # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
+    def get_values_by_predicate_name(name:)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def representative_attachment_for(work:)
     end

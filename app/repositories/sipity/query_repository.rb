@@ -17,5 +17,6 @@ module Sipity
     include Queries::EventTriggerQueries
     include Queries::ProcessingQueries
     include Queries::AttachmentQueries
+    include Queries::SimpleControlledVocabularyQueries
   end
 end
