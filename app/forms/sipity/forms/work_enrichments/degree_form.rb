@@ -25,7 +25,7 @@ module Sipity
         end
 
         def degree_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'degree').first
+          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'degree')
         end
       end
     end
