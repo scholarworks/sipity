@@ -27,7 +27,7 @@ module Sipity
         let(:callback_name) { :success }
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
-              yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
+            yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
           )
         end
         let(:attributes) { { 'preferred_name' => 'bogus' } }

@@ -514,7 +514,8 @@ module Sipity
                 actor_scope.arel_table.project(
                   actor_scope.arel_table[:id]
                 ).where(
-                actor_scope.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id)))
+                  actor_scope.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id))
+                )
               )
             )
           )
