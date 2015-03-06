@@ -20,6 +20,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activemodel:
+    attributes:
+      sipity/forms/etd/advisor_requests_change_form:
+        comment: 'What changes need to be made?'
   activerecord:
     models:
       sipity/work: Deposit
@@ -97,7 +101,13 @@ en:
         can_advance: "You may submit your work for review when ready."
         cannot_advance: "You must complete the required todo items before you can submit your work for review."
       under_advisor_review:
-        cannot_advance: "Your advisor has been asked to review your submission. You will be notified when it is approved or if they request any changes."
+        can_advance: "This submission pending approval."
+        cannot_advance: "Your work has been submitted for review. You will be notified when it is approved or if the reviewers request any changes."
+    state_advancing_actions:
+      label:
+        submit_for_review: 'Submit for Review'
+        advisor_signoff: 'I approve'
+        advisor_requests_change: 'Changes are Required'
   sipity/work_enrichments:
     action/update:
       describe_enrichment: 'Thank you for updating your abstract.'
@@ -166,9 +176,6 @@ en:
       destroy: 'Delete'
     confirm:
       destroy: 'Are you sure you want to delete this submission? This action cannot be undone. You will have to start the process over from the beginning.'
-  sipity/decorators/state_advancing_actions:
-    submit_for_review:
-      label: 'Submit for Review'
   sipity/decorators/recommendations/doi_recommendation:
     state:
       doi_already_assigned: 'DOI Already Assigned'
@@ -189,15 +196,20 @@ en:
         title: 'You must provide a title'
         work_publication_strategy: 'Please tell us if you intend to publish this work'
         work_type: 'Please select a work type'
-    etd/submit_for_review_form:
-      terms_of_deposit: '<p>I can deposit these things.</p>'
+    state_advancing_actions:
+      legend:
+        etd/advisor_request_change: 'Changes are Required to Meet My Approval'
+        etd/advisor_signoff: 'Proceed with the Submission'
+        etd/submit_for_review: 'Terms of Deposit'
+      verification:
+        etd/advisor_signoff:
+          i_agree: 'I have reviewed the submission and all aspects of it conform to my expectations.'
   sipity/legal:
     deposit:
-      terms_of_deposit: 'Terms of Deposit'
+      agree_to_terms: 'I agree to the terms of deposit'
       statement_of_terms: >
         <p>Lots of legally binding text here</p>
         <p>Across several paragraphs</p>
-      agree_to_terms: 'I agree to the terms of deposit'
   simple_form:
     labels:
       doi:

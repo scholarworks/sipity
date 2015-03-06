@@ -13,7 +13,7 @@ module Sipity
         validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
         def render(f:)
-          markup = view_context.content_tag('legend', deposit_terms_heading)
+          markup = view_context.content_tag('legend', deposit_terms_legend)
           markup << view_context.content_tag('article', deposit_terms, class: 'legally-binding-text')
           markup << f.input(:agree_to_terms_of_deposit,
                             as: :boolean,
@@ -25,8 +25,8 @@ module Sipity
                            ).html_safe
         end
 
-        def deposit_terms_heading
-          view_context.t('terms_of_deposit', scope: 'sipity/legal.deposit').html_safe
+        def deposit_terms_legend
+          view_context.t('etd/submit_for_review', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
         end
 
         def deposit_terms
