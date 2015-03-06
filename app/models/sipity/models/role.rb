@@ -14,9 +14,11 @@ module Sipity
     class Role < ActiveRecord::Base
       self.table_name = 'sipity_roles'
 
-      has_many :processing_strategy_roles,
+      has_many(
+        :processing_strategy_roles,
         dependent: :destroy,
         class_name: 'Sipity::Models::Processing::StrategyRole'
+      )
 
       CREATING_USER = 'creating_user'.freeze
       ADVISOR = 'advisor'.freeze

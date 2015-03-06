@@ -10,23 +10,31 @@ module Sipity
         has_many :entity_action_registers, dependent: :destroy
 
         has_many :strategy_state_actions, dependent: :destroy
-        has_many :guarding_strategy_action_prerequisites,
+        has_many(
+          :guarding_strategy_action_prerequisites,
           dependent: :destroy,
           foreign_key: :prerequisite_strategy_action_id,
           class_name: 'Sipity::Models::Processing::StrategyActionPrerequisite'
+        )
 
-        has_many :requiring_strategy_action_prerequisites,
+        has_many(
+          :requiring_strategy_action_prerequisites,
           dependent: :destroy,
           foreign_key: :guarded_strategy_action_id,
           class_name: 'Sipity::Models::Processing::StrategyActionPrerequisite'
+        )
 
-        has_many :guards_these_strategy_actions,
+        has_many(
+          :guards_these_strategy_actions,
           through: :guarding_strategy_action_prerequisites,
           class_name: 'Sipity::Models::Processing::StrategyAction'
+        )
 
-        has_many :requires_these_strategy_actions,
+        has_many(
+          :requires_these_strategy_actions,
           through: :requiring_strategy_action_prerequisites,
           class_name: 'Sipity::Models::Processing::StrategyAction'
+        )
 
         ENRICHMENT_ACTION = 'enrichment_action'.freeze
         RESOURCEFUL_ACTION = 'resourceful_action'.freeze

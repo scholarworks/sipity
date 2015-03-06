@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include Hesburgh::Lib::ControllerWithRunner
-  before_filter :filter_notify
+  before_action :filter_notify
 
   # So you can easily invoke the public repository of Sipity.
   # It is the repository that indicates what the application can and is doing.
