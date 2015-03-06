@@ -23,6 +23,11 @@ module Sipity
           expect(subject.errors[:program_name]).to be_present
         end
 
+        it 'will require a program_name' do
+          subject.valid?
+          expect(subject.errors[:program_name]).to be_present
+        end
+
         context '#degree' do
           it 'will have #degree_names' do
             expect(repository).to receive(:get_values_by_predicate_name).with(name: 'degree').and_return(['degree_name', 'bogus'])
