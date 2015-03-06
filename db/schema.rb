@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(version: 20150311145535) do
   create_table "users", force: :cascade do |t|
     t.string   "email"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",       default: 0, null: false
+    t.integer  "sign_in_count",             default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -345,9 +345,11 @@ ActiveRecord::Schema.define(version: 20150311145535) do
     t.datetime "updated_at"
     t.string   "name"
     t.integer  "role"
-    t.string   "username",                        null: false
+    t.string   "username",                                  null: false
+    t.boolean  "agree_to_terms_of_service", default: false
   end
 
+  add_index "users", ["agree_to_terms_of_service"], name: "index_users_on_agree_to_terms_of_service"
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["username"], name: "index_users_on_username", unique: true
 
