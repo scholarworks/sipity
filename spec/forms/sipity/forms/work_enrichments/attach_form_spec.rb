@@ -22,14 +22,14 @@ module Sipity
 
           let(:representative_for_attachment) { [double('Attachment')] }
           it 'will have #representative_for_attachment_id' do
-            allow(repository).to receive(:representative_attachment_for).
+            expect(repository).to receive(:representative_attachment_for).
               with(work: work).and_return(representative_for_attachment)
             subject.representative_attachment
           end
 
           let(:attachment) { [double('Attachment')] }
           it 'will have #attachments' do
-            allow(work).to receive(:attachments).and_return(attachment)
+            expect(work).to receive(:attachments).and_return(attachment)
             expect(subject.attachments).to_not be_empty
           end
         end
