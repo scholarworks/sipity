@@ -57,9 +57,17 @@ module Sipity
             if convert_to_boolean(attributes['delete'])
               @ids_for_deletion << attributes.fetch('id')
             else
-              @attachments_metadata[attributes.fetch('id')] = attributes.slice('name')
+              @attachments_metadata[attributes.fetch('id')] = extract_permitted_attributes(attributes, 'name')
             end
           end
+        end
+
+        # Because strong parameters might be in play, I need to make sure to
+        # permit these, or things fall apart later in the application.
+        def extract_permitted_attributes(attributes, *keys)
+          permitted_attributes = attributes.slice(*keys)
+          permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
+          permitted_attributes
         end
 
         def attachments_from_work
