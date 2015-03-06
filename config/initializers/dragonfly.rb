@@ -22,6 +22,8 @@ Dragonfly.app.configure do
       throw :halt, [401, { 'Content-Type' => 'text/plain' }, ["Unauthorized"]]
     end
   end
+
+  response_header 'Cache-Control', 'private, max-age=10800'
 end
 
 # Logger
