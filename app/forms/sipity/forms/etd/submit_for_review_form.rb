@@ -26,7 +26,7 @@ module Sipity
         end
 
         def deposit_terms_legend
-          view_context.t('terms_of_deposit', scope: 'sipity/legal.deposit.legend').html_safe
+          view_context.t('etd/submit_for_review', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
         end
 
         def deposit_terms

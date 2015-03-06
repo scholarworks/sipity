@@ -189,15 +189,17 @@ en:
     state_advancing_actions:
       legend:
         etd/advisor_request_change: 'Changes are Required to Meet My Approval'
+        etd/advisor_signoff: 'Proceed with the Submission'
+        etd/submit_for_review: 'Terms of Deposit'
+      verification:
         etd/advisor_signoff:
+          i_agree: 'I have reviewed the submission and all aspects of it conform to my expectations.'
   sipity/legal:
     deposit:
-      legend:
-        terms_of_deposit: 'Terms of Deposit'
+      agree_to_terms: 'I agree to the terms of deposit'
       statement_of_terms: >
         <p>Lots of legally binding text here</p>
         <p>Across several paragraphs</p>
-      agree_to_terms: 'I agree to the terms of deposit'
   simple_form:
     labels:
       doi:
