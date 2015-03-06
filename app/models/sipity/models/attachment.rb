@@ -21,6 +21,8 @@ module Sipity
       def thumbnail_url(size = THUMBNAIL_SIZE)
         file.thumb(size).url
       end
+
+      delegate :url, to: :file, prefix: :file, allow_nil: true
     end
   end
 end

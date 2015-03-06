@@ -14,6 +14,31 @@ module Sipity
         expect(authorization_layer.send(:policy_authorizer)).to respond_to(:call)
       end
 
+      context '.without_authorization_to_attachment' do
+        let(:file_uid) { 'abc' }
+        it 'will yield if no user is given' do
+          expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: nil, &b) }.to yield_control
+        end
+        it 'will yield if the user does not have access to the given file_uid' do
+          user = User.new(id: 1)
+          work = Models::Work.new(id: 2)
+          file = Models::Attachment.new(work: work)
+          allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
+          expect(Policies).to receive(:authorized_for?).with(user: user, entity: entity, action_to_authorize: :show?).
+            and_return(false)
+          expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: user, &b) }.to yield_control
+        end
+        it 'will not yield control if the user is authorized to the given file' do
+          user = User.new(id: 1)
+          work = Models::Work.new(id: 2)
+          file = Models::Attachment.new(work: work)
+          allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
+          expect(Policies).to receive(:authorized_for?).with(user: user, entity: entity, action_to_authorize: :show?).
+            and_return(true)
+          expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: user, &b) }.to_not yield_control
+        end
+      end
+
       context '#enforce!' do
         let(:user) { User.new }
 

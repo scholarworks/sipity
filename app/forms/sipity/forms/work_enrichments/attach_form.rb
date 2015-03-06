@@ -75,7 +75,7 @@ module Sipity
           def initialize(attachment)
             @attachment = attachment
           end
-          delegate :id, :name, :thumbnail_url, :persisted?, to: :attachment
+          delegate :id, :name, :thumbnail_url, :persisted?, :file_url, to: :attachment
           attr_accessor :delete
           attr_reader :attachment
           private :attachment

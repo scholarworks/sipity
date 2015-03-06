@@ -6,11 +6,24 @@ Dragonfly.app.configure do
 
   secret Figaro.env.dragonfly_secret
 
-  url_format "/media/:job/:name"
+  url_format "/attachments/:job/:name"
 
-  datastore :file,
-    root_path: Rails.root.join('dragonfly', Rails.env),
-    server_root: Rails.root.join('public')
+  if Rails.env.test?
+    datastore :memory
+  else
+    datastore :file,
+      root_path: Rails.root.join('dragonfly', Rails.env),
+      server_root: Rails.root.join('public')
+  end
+
+  before_serve do |job, env|
+    user = env.fetch('warden').user
+    Sipity::Services::AuthorizationLayer.without_authorization_to_attachment(file_uid: job.uid, user: user) do
+      throw :halt, [401, { 'Content-Type' => 'text/plain' }, ["Unauthorized"]]
+    end
+  end
+
+  response_header 'Cache-Control', 'private, max-age=10800'
 end
 
 # Logger
