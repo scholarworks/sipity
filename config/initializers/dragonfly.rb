@@ -8,9 +8,13 @@ Dragonfly.app.configure do
 
   url_format "/attachments/:job/:name"
 
-  datastore :file,
-    root_path: Rails.root.join('dragonfly', Rails.env),
-    server_root: Rails.root.join('public')
+  if Rails.env.test?
+    datastore :memory
+  else
+    datastore :file,
+      root_path: Rails.root.join('dragonfly', Rails.env),
+      server_root: Rails.root.join('public')
+  end
 
   before_serve do |job, env|
     user = env.fetch('warden').user
