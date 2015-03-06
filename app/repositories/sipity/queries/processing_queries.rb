@@ -193,6 +193,8 @@ module Sipity
       # @param user [User]
       # @return ActiveRecord::Relation<Models::Processing::Actor>
       def scope_processing_actors_for(user:)
+        return Models::Processing::Actor.where('1 = 0') unless user.present?
+
         memb_table = Models::GroupMembership.arel_table
         actor_table = Models::Processing::Actor.arel_table
 
