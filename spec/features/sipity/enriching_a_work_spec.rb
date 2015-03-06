@@ -46,13 +46,6 @@ feature 'Enriching a Work', :devise, :feature do
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['Do Not Know']) # NOTE: weak match on default I18n
-      the_page.click_recommendation('assign_a_doi')
-    end
-
-    on('assign_doi_page') do |the_page|
-      expect(the_page).to be_all_there
-      the_page.fill_in(:identifier, with: 'abc:123')
-      the_page.submit_button.click
     end
 
     on('work_page') do |the_page|
@@ -66,14 +59,8 @@ feature 'Enriching a Work', :devise, :feature do
 
     on('work_page') do |the_page|
       expect(the_page.text_for('title')).to eq(['New Value'])
-      the_page.click_recommendation('assign_a_citation')
     end
 
-    on('new_citation_page') do |the_page|
-      the_page.fill_in(:citation, with: 'This is My Citation')
-      the_page.fill_in(:type, with: 'ALA')
-      the_page.submit_button.click
-    end
   end
 
   scenario 'User can describe additional data' do
