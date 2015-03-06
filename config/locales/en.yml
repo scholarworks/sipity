@@ -134,6 +134,9 @@ en:
         institution_label: 'ND:'
         choice: 'OR'
         email_contact_group_label: 'Non-ND:'
+      degree:
+        title_html: 'Please choose a <b>degree</b> of your work'
+        hint: 'You must have choose a degree for your work'
   sipity/decorators/entitiy_enrichment_actions:
     attach:
       label: "<b>Attach</b> files to this %{entity_type}"
@@ -149,6 +152,8 @@ en:
       label: "Record the <b>defense date</b> for your %{entity_type}"
     search_terms:
       label: "Add <b>search terms</b> for your %{entity_type}"
+    degree:
+      label: "Add <b>degree</b> for your %{entity_type}"
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'

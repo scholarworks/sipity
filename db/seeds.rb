@@ -31,6 +31,47 @@ ActiveRecord::Base.transaction do
   end
 
 
+  $stdout.puts 'Creating degree names...'
+  degree_names = [
+      ['degree', 'Aerospace and Mechanical Engineering', 'AME'],
+      ['degree', 'Anthropology', 'ANTH'],
+      ['degree', 'Applied and Computational Mathematics and Statistics', 'ACMS'],
+      ['degree', 'Art, Art History, and Design', 'ART'],
+      ['degree', 'Bioengineering', 'BIOE'],
+      ['degree', 'Biological Sciences', 'BIOS'],
+      ['degree', 'Chemical and Biomolecular Engineering', 'CBE, CHEG'],
+      ['degree', 'Civil and Environmental Engineering and Earth Sciences', 'Civil Engineering and Geological Sciences, CEEES, CEGS'],
+      ['degree', 'Chemistry', 'CHEM'],
+      ['degree', 'Classics', 'CLAS'],
+      ['degree', 'Computer Science and Engineering', 'CSE'],
+      ['degree', 'Creative Writing', 'CW, ENGL-CW'],
+      ['degree', 'Economics', 'Economics and Econometrics, ECON'],
+      ['degree', 'Early Christian Studies', 'ECS'],
+      ['degree', 'Electrical Engineering', 'EE'],
+      ['degree', 'English', 'ENGL'],
+      ['degree', 'History', 'HIST'],
+      ['degree', 'History and Philosophy of Science', 'HPS'],
+      ['degree', 'Integrated Biomedical Sciences', 'IBMS'],
+      ['degree', 'Peace Studies', 'PEACE, IIPS'],
+      ['degree', 'Law', nil],
+      ['degree', 'Literature', 'PhD in Literature, LIT'],
+      ['degree', 'Mathematics', 'MATH'],
+      ['degree', 'Medieval Studies', 'Medieval Institute, MI, MS'],
+      ['degree', 'Philosophy', 'PHIL'],
+      ['degree', 'Physics', 'PHYS'],
+      ['degree', 'Political Science', 'POLS'],
+      ['degree', 'Psychology', 'PSY'],
+      ['degree', 'Romance Languages and Literatures', 'ROML'],
+      ['degree', 'Sacred Music', 'SACM'],
+      ['degree', 'Sociology', 'SOC'],
+      ['degree', 'Theology', 'THEO']
+  ]
+  degree_names.each do |predicate_name, predicate_value, predicate_value_code|
+    Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
+      predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+  end
+
+
   $stdout.puts 'Creating ETD State Diagram...'
   ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
     work_types.fetch(work_type_name).find_or_initialize_default_processing_strategy do |etd_strategy|
@@ -69,6 +110,7 @@ ActiveRecord::Base.transaction do
         ['attach', nil],
         ['collaborators', nil],
         ['defense_date', nil],
+        ['degree', nil],
         ['access_policy', nil],
         ['assign_a_doi', nil],
         ['assign_a_citation', nil],
@@ -88,7 +130,7 @@ ActiveRecord::Base.transaction do
       end
 
       pre_requisite_states =       {
-        'submit_for_review' => ['describe', 'attach', 'collaborators', 'access_policy']
+        'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
       }
 
       if work_type_name == 'doctoral_dissertation'
@@ -114,6 +156,7 @@ ActiveRecord::Base.transaction do
         ['new', 'collaborators', ['creating_user', 'etd_reviewer']],
         ['new', 'destroy', ['creating_user', 'etd_reviewer']],
         ['new', 'defense_date', ['creating_user']],
+        ['new', 'degree', ['creating_user']],
         ['new', 'access_policy', ['creating_user']],
         ['new', 'assign_a_doi', ['creating_user', 'etd_reviewer']],
         ['new', 'assign_a_citation', ['creating_user', 'etd_reviewer']],
@@ -127,6 +170,7 @@ ActiveRecord::Base.transaction do
         ['advisor_changes_requested', 'assign_a_doi', ['etd_reviewer', 'creating_user']],
         ['advisor_changes_requested', 'assign_a_citation', ['creating_user']],
         ['advisor_changes_requested', 'defense_date', ['creating_user']],
+        ['advisor_changes_requested', 'degree', ['creating_user']],
         ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
         ['advisor_changes_requested', 'edit', ['creating_user', 'etd_reviewer']],
         ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],

@@ -161,6 +161,10 @@ module Sipity
     def gather_doi_creation_request_metadata(work:)
     end
 
+    # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
+    def get_values_by_predicate_name(name:)
+    end
+
     # @see ./app/repositories/sipity/commands/permission_commands.rb
     def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
     end
