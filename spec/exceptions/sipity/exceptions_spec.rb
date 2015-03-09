@@ -3,11 +3,6 @@ require 'sipity/exceptions'
 
 module Sipity
   module Exceptions
-    RSpec.describe StatePolicyQuestionRoleMapError do
-      subject { described_class.new(state: 'hello', context: 'world') }
-      its(:message) { should be_a(String) }
-    end
-
     RSpec.describe ExistingMethodsAlreadyDefined do
       subject { described_class.new('hello', [:ab, :cd]) }
       its(:message) { should be_a(String) }
@@ -22,12 +17,6 @@ module Sipity
     RSpec.describe UnprocessableResourcefulActionNameError do
       subject { described_class.new(container: 'Container', object: 'hello') }
       its(:message) { should be_a(String) }
-    end
-
-    RSpec.describe InvalidStateDiagramRawStructure do
-      subject { described_class.new(structure: 'hello') }
-      its(:message) { should be_a(String) }
-      its(:structure) { should eq('hello') }
     end
 
     RSpec.describe AuthenticationFailureError do
