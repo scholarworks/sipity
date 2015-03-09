@@ -11,7 +11,12 @@
     as: :work,
     html: { class: 'panel panel-primary with-footer' }
   ) do |f| %>
+    <legend class="panel-heading">
+      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{model.enrichment_type}.title_html"), class: 'panel-title' %>
+    </legend>
+
     <fieldset class="panel-body">
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{model.enrichment_type}.hint"), class: 'panel-hint' %>
       <%= f.error_notification %>
 
       <% 
