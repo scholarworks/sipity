@@ -225,8 +225,8 @@ en:
     deposit:
       agree_to_terms: 'I agree to the terms of deposit'
       statement_of_terms: >
-        <p>Lots of legally binding text here</p>
-        <p>Across several paragraphs</p>
+        <p>I hereby certify that, if appropriate, I have obtained and attached hereto a written permission statement from the owner(s) of each third party copyrighted matter to be included in my thesis, dissertation, or project report, allowing distribution as specified below. I certify that the version I submitted is the same as that approved by my advisory committee.</p>
+        <p>I hereby grant to University of Notre Dame or its agents the non-exclusive license to archive and make accessible, under the conditions specified below, my thesis, dissertation, or project report in whole or in part in all forms of media, now or hereafter known. I retain all other ownership rights to the copyright of the thesis, dissertation or project report. I also retain the right to use in future works (such as articles or books) all or part of this thesis, dissertation, or project report.</p>
   simple_form:
     labels:
       doi:
