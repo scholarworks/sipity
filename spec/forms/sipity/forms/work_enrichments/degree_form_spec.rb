@@ -39,12 +39,14 @@ module Sipity
         end
 
         it 'will have #available_degrees' do
-          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'degree').and_return(['degree_name', 'bogus'])
+          expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'degree').
+            and_return(['degree_name', 'bogus'])
           expect(subject.available_degrees).to be_a(Array)
         end
 
         it 'will have #available_program_names' do
-          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'program_name').and_return(['bogus'])
+          expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'program_name').
+            and_return(['bogus'])
           expect(subject.available_program_names).to eq(['bogus'])
         end
 

@@ -114,7 +114,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
-    def get_values_by_predicate_name(name:)
+    def get_controlled_vocabulary_values_for_predicate_name(name:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
