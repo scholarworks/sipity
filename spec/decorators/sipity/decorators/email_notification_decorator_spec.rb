@@ -4,7 +4,8 @@ module Sipity
   module Decorators
     RSpec.describe EmailNotificationDecorator do
       let(:repository) { QueryRepositoryInterface.new }
-      let(:entity) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation', title: 'A title') }
+      let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation', title: 'A title') }
+      let(:entity) { double(work: work) }
 
       subject { described_class.new(entity, repository: repository) }
 
@@ -30,9 +31,14 @@ module Sipity
         expect(EmailNotificationDecorator.object_class).to eq(Models::Work)
       end
 
-      its(:document_type) { should eq(entity.work_type.humanize) }
+      its(:document_type) { should eq(work.work_type.humanize) }
 
-      its(:title) { should eq entity.title }
+      its(:title) { should eq work.title }
+
+      it 'will coerce the input into a work' do
+        decorator = described_class.new(entity, repository: repository)
+        expect(decorator.object).to eq(work)
+      end
 
       it 'will have a #work_show_path' do
         expect(subject.work_show_path).to be_a(String)
