@@ -41,6 +41,20 @@ module Sipity
             expect(response).to redirect_to work_path(work.to_param)
           end
         end
+
+        context 'without attributes' do
+          let(:callback_name) { :success }
+          let(:yielded_object) { work }
+          let(:runner) do
+            Hesburgh::Lib::MockRunner.new(
+              yields: yielded_object, callback_name: callback_name, context: controller,
+              run_with: { enrichment_type: enrichment_type, work_id: work.to_param, attributes: {} }
+            )
+          end
+          it 'will allow work attributes to be skipped' do
+            expect { post 'update', work_id: work.to_param, enrichment_type: enrichment_type }.to_not raise_error
+          end
+        end
         context 'on failure' do
           let(:form) { double('Form') }
           let(:callback_name) { :failure }
