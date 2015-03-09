@@ -9,11 +9,6 @@ module Sipity
     class RuntimeError < ::RuntimeError
     end
 
-    # When something about the entity for a given policy is just not quite
-    # right.
-    class PolicyEntityExpectationError < RuntimeError
-    end
-
     # When passing parameters through the job layer, passing complex objects
     # can cause problems; In that we don't want to pass state across the async
     # boundary.
@@ -24,13 +19,6 @@ module Sipity
     class UnprocessableResourcefulActionNameError < RuntimeError
       def initialize(container:, object:)
         super("Expected #{object} to have a #name that is within #{container}")
-      end
-    end
-
-    # There was a problem referencing the state for a policy lookup.
-    class StatePolicyQuestionRoleMapError < RuntimeError
-      def initialize(state:, context:)
-        super("Could not find #{state} in the corresponding map for #{context}")
       end
     end
 
@@ -136,10 +124,6 @@ module Sipity
     class WorkTypeNotFoundError < ConceptNotFoundError
     end
 
-    # A StateMachine was not found.
-    class StateMachineNotFoundError < ConceptNotFoundError
-    end
-
     # A EventTriggerForm was not found.
     class EventTriggerFormNotFoundError < ConceptNotFoundError
     end
@@ -169,15 +153,6 @@ module Sipity
       def initialize(user:, action_to_authorize:, entity:)
         @user, @action_to_authorize, @entity = user, action_to_authorize, entity
         super("#{user} not allowed to #{action_to_authorize} this #{entity}")
-      end
-    end
-
-    # The proposed state diagram was malformed.
-    class InvalidStateDiagramRawStructure < RuntimeError
-      attr_reader :structure
-      def initialize(structure:)
-        @structure = structure
-        super("#{structure} is not well formed for StateDiagram")
       end
     end
 
