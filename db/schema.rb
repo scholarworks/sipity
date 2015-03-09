@@ -289,7 +289,7 @@ ActiveRecord::Schema.define(version: 20150305170338) do
     t.string   "predicate_value",      null: false
     t.datetime "created_at",           null: false
     t.datetime "updated_at",           null: false
-    t.text     "predicate_value_code"
+    t.string   "predicate_value_code"
   end
 
   add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "predicate_value"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true
