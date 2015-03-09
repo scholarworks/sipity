@@ -65,14 +65,16 @@
               %>
             </td>
           </tr>
-          <tr class="borderless">
-            <%# TODO: styling and position of the place to where it should appear %>
-            <td colspan="5">
-              <%= f.input :copyright, input_html: { class: 'form-control' } %>
-            </td>
-          </tr>
         <% end %>
       </tbody>
+      <tfoot>
+        <tr class="borderless">
+          <%# TODO: styling and position of the place to where it should appear %>
+          <td colspan="5">
+            <%= f.input :copyright, input_html: { class: 'form-control' } %>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </fieldset>
 
