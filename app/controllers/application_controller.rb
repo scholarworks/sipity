@@ -29,10 +29,9 @@ class ApplicationController < ActionController::Base
   # Remove error inserted since we are not showing a page before going to web access, this error message always shows up a page too late.
   # for the moment just remove it always.  If we show a transition page in the future we may want to  display it then.
   def filter_notify
-    return unless flash[:alert].present?
-    flash[:alert] = [flash[:alert]].flatten.reject do |item|
-      item == "You need to sign in or sign up before continuing."
-    end
-    flash[:alert] = nil if flash[:alert].blank?
+    return true unless flash[:alert].present?
+    flash[:alert] = Array.wrap(flash[:alert]).select { |alert| alert != t('devise.failure.unauthenticated') }
+    flash[:alert] = nil unless flash[:alert].present?
+    true
   end
 end
