@@ -10,4 +10,9 @@ describe User do
     expect(@user.email).to match 'user@example.com'
   end
 
+  it 'will allow multiple users to have a "" email' do
+    User.create!(username: 'one', email: '')
+    expect { User.create!(username: 'two', email: '') }.to_not raise_error
+  end
+
 end
