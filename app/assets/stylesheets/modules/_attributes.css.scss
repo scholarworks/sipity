@@ -6,6 +6,18 @@
   }
   .value {
     padding-left:1em;
+
+    ul, ol {
+      margin-bottom:0;
+    }
+
+    ul {
+      padding-left:0;
+    }
+
+    ul > li {
+      list-style-type:none;
+    }
   }
 }
 
