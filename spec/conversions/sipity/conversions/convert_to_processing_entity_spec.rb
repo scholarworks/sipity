@@ -37,6 +37,12 @@ module Sipity
           expect(convert_to_processing_entity(object)).to eq(object)
         end
 
+        it 'will return the object if it is a Processing::Comment' do
+          entity = Models::Processing::Entity.new
+          object = Models::Processing::Comment.new(entity: entity)
+          expect(convert_to_processing_entity(object)).to eq(entity)
+        end
+
         context 'a Models::Work (because it will be processed)' do
           # This is poking knowledge over into the inner workings of Models::Work
           # but is a reasonable place to understand this.

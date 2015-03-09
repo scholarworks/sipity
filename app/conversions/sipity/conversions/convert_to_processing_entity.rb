@@ -9,6 +9,7 @@ module Sipity
       def convert_to_processing_entity(input)
         return input if input.is_a?(Models::Processing::Entity)
         return input.to_processing_entity if input.respond_to?(:to_processing_entity)
+        return convert_to_processing_entity(input.entity) if input.is_a?(Models::Processing::Comment)
         fail Exceptions::ProcessingEntityConversionError, input
       end
 
