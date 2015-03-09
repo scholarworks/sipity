@@ -24,7 +24,8 @@ module Sipity
     end
 
     config.default_netid_remote_validator = lambda do |netid|
-      Sipity::Services::LdapClient.valid_netid?(netid)
+      # Because our LDAP connection does not appear to work
+      true
     end
 
     # Settings in config/environments/* take precedence over those specified here.
