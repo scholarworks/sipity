@@ -5,9 +5,9 @@ module Sipity
     class LdapClient
       def self.valid_netid?(netid)
         configuration = {
-          host: Figaro.env.ldap_host,
-          port: Figaro.env.ldap_port,
-          encryption: Figaro.env.ldap_encryption.to_sym
+          host: Figaro.env.ldap_host!,
+          port: Figaro.env.ldap_port!,
+          encryption: Figaro.env.ldap_encryption!.to_sym
         }
         new(configuration).valid_netid?(netid)
       end
