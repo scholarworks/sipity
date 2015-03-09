@@ -22,6 +22,14 @@ module Sipity
         end
       end
 
+      # Because I am leveraging Warden and Devise to negotiate the difference
+      # between a user that has agreed to terms of service and one that has
+      # not.
+      def current_user
+        super || current_user_for_profile_management
+      end
+      helper_method :current_user
+
       attr_reader :model
       protected :model
       helper_method :model

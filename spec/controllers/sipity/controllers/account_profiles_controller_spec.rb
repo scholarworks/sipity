@@ -5,6 +5,9 @@ module Sipity
   module Controllers
     RSpec.describe AccountProfilesController, type: :controller do
 
+      it 'will have a #current_user' do
+        
+      end
       let(:user) { double('User') }
       context 'GET #edit' do
         before { controller.runner = runner }
