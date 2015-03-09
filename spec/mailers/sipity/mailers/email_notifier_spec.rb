@@ -55,7 +55,6 @@ module Sipity
         let(:decorator) { double(new: decorated) }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          expect(entity).to receive(:work)
           described_class.entity_ready_for_review(entity: entity, to: to, decorator: decorator).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
