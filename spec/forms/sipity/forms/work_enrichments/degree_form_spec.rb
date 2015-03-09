@@ -28,6 +28,16 @@ module Sipity
           expect(subject.errors[:program_name]).to be_present
         end
 
+        it 'will only keep degree entries that are "present?"' do
+          subject = described_class.new(work: work, repository: repository, degree: ['hello', '', nil, 'world'])
+          expect(subject.degree).to eq(['hello', 'world'])
+        end
+
+        it 'will only keep program_names entries that are "present?"' do
+          subject = described_class.new(work: work, repository: repository, program_name: ['hello', '', nil, 'world'])
+          expect(subject.program_name).to eq(['hello', 'world'])
+        end
+
         context '#degree' do
           it 'will have #degree_names' do
             expect(repository).to receive(:get_values_by_predicate_name).with(name: 'degree').and_return(['degree_name', 'bogus'])
