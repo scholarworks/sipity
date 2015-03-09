@@ -123,3 +123,10 @@ main > section:first-child {
 .form-inline .controls {
   padding-left:.5em;
 }
+
+// Typographic enhancements
+abbr[title] {
+  font-variant: small-caps;
+  letter-spacing: .05em;
+  text-transform: lowercase;
+}
