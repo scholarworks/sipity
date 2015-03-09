@@ -20,10 +20,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :repository
 
+  private
+
   def message_for(key, options = {})
     t(key, { scope: "sipity/#{controller_name}.action/#{action_name}" }.merge(options))
   end
-  private :message_for
 
   # Remove error inserted since we are not showing a page before going to web access, this error message always shows up a page too late.
   # for the moment just remove it always.  If we show a transition page in the future we may want to  display it then.
