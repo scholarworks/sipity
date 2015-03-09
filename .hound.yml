@@ -80,7 +80,7 @@ Metrics/AbcSize:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
      - app/repositories/sipity/queries/*.rb
-     - 'app/state_machines/sipity/state_machines/state_diagram.rb'
+     - app/controllers/application_controller.rb
 
 Delegate:
   Description: 'Prefer delegate method for delegations.'

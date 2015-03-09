@@ -34,4 +34,11 @@ RSpec.describe ApplicationController do
       expect(subject.to_s).to eq("Unable to find MyName in MyContainer")
     end
   end
+
+  context '#filter_notify' do
+    it 'will remove the devise messaging for failure.unauthenticated' do
+      subject.flash[:alert] = subject.t('devise.failure.unauthenticated')
+      expect { subject.send(:filter_notify) }.to change { subject.flash[:alert] }.to(nil)
+    end
+  end
 end
