@@ -40,7 +40,7 @@ module Sipity
       end
 
       def update_params
-        params.require(:work)
+        params.fetch(:work) { HashWithIndifferentAccess.new }
       end
     end
   end
