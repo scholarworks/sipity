@@ -23,6 +23,7 @@ module Sipity
         its(:to_processing_entity) { should eq(processing_entity) }
         its(:strategy) { should eq(processing_entity.strategy) }
         its(:strategy_id) { should eq(processing_entity.strategy_id) }
+        its(:work_type) { should eq('doctoral_dissertation') }
       end
 
       it 'will require subclasses to implement their :enrichment_type' do

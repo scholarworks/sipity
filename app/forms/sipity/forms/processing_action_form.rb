@@ -30,7 +30,7 @@ module Sipity
       end
 
       attr_reader :work, :repository
-      delegate :to_processing_entity, to: :work
+      delegate :to_processing_entity, :work_type, to: :work
       delegate :strategy_id, :strategy, to: :to_processing_entity
       alias_method :to_model, :work
       private :repository
