@@ -215,6 +215,7 @@ en:
     state_advancing_actions:
       legend:
         etd/advisor_request_change: 'Changes are Required to Meet My Approval'
+        etd/grad_school_requests_change: 'Changes are Required to Meet the Grad School Approval'
         etd/advisor_signoff: 'Proceed with the Submission'
         etd/submit_for_review: 'Terms of Deposit'
       verification:

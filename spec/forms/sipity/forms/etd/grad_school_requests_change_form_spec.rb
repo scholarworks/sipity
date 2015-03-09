@@ -16,9 +16,10 @@ module Sipity
         context '#render' do
           let(:f) { double }
           it 'will return an input text area' do
-            expect(f).to receive(:input).with(:comment, as: :text, autofocus: true)
+            expect(f).to receive(:input).with(:comment, hash_including(as: :text))
             subject.render(f: f)
           end
+          its(:grad_school_requests_change_legend) { should be_html_safe }
         end
 
         context 'processing_action_name to action conversion' do
