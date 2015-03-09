@@ -44,7 +44,7 @@ module Sipity
         end
 
         it 'will have #available_program_names' do
-          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'program').and_return(['bogus'])
+          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'program_name').and_return(['bogus'])
           expect(subject.available_program_names).to eq(['bogus'])
         end
 

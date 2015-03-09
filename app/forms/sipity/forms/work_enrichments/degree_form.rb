@@ -19,7 +19,7 @@ module Sipity
         end
 
         def available_program_names
-          repository.get_values_by_predicate_name(name: 'program')
+          repository.get_values_by_predicate_name(name: 'program_name')
         end
 
         private
