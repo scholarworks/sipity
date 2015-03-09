@@ -58,6 +58,12 @@ module Sipity
           expect(subject.errors[:name]).to be_present
         end
 
+        it 'will not allow an @nd.edu email address' do
+          subject.email = 'hello@nd.edu'
+          subject.valid?
+          expect(subject.errors[:email]).to be_present
+        end
+
         context 'when responsible for review' do
           it 'will have errors on netid and email if none are given' do
             subject.responsible_for_review = true

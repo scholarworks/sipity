@@ -45,6 +45,7 @@ module Sipity
       validates :name, presence: true
       validate :validate_required_information_if_responsible_for_review
       validates :netid, net_id: true
+      validates :email, format: { without: /@nd\.edu\Z/, message: :disallow_nd_dot_edu_emails }
 
       def validate_required_information_if_responsible_for_review
         return true unless responsible_for_review?

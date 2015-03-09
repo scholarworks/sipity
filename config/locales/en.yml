@@ -232,4 +232,5 @@ en:
         files: 'Select files to upload'
   errors:
     messages:
+      disallow_nd_dot_edu_emails: 'You may not use an @nd.edu email'
       at_least_one_collaborator_must_be_responsible_for_review: 'At least one collaborator must be responsible for review'
