@@ -11,6 +11,17 @@ class User < ActiveRecord::Base
   # record.
   before_save :set_notre_dame_specific_email, if: :new_record?
 
+  # Because of the unique constraint on User#email, when we receive an empty
+  # email for user (e.g. the user form that was filled out had blank spaces for
+  # the given email), blank that out.
+  def email=(value)
+    if value.present?
+      super(value)
+    else
+      super(nil)
+    end
+  end
+
   private
 
   def set_notre_dame_specific_email
