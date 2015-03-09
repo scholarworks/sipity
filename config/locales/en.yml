@@ -131,9 +131,10 @@ en:
     description:
       access_policy: ''
       attach: ''
-      defense_date: ''
-      describe: ''
       collaborators: ''
+      defense_date: ''
+      degree: ''
+      describe: ''
     panels:
       abstract:
         title_html: 'Please provide an <b>abstract</b> of your work'
