@@ -110,9 +110,13 @@ en:
         advisor_requests_change: 'Changes are Required'
   sipity/work_enrichments:
     action/update:
-      describe_enrichment: 'Thank you for updating your abstract.'
+      access_policy_enrichment: 'The access controls and copyright information has been saved.'
       attach_enrichment: 'You have updated the files associated with this work.'
+      collaborators_enrichment: 'Your collaborator and reviewer information has been saved.'
       defense_date_enrichment: 'You have updated your defense date.'
+      degree_enrichment: 'Your degree and program selections have been saved.'
+      describe_enrichment: 'The additional information you provided has been saved.'
+      search_terms_enrichment: 'Your search-related metadata has been saved.'
   sipity/work_event_triggers:
     action/create:
       submit_for_review_triggered: 'Thank you for submitting your work for review. We will send you email notifications as review process progresses.'
@@ -135,7 +139,7 @@ en:
         title_html: 'Please provide an <b>abstract</b> of your work'
         hint: 'Please keep your abstract to around 300 words.'
       access_policy:
-        title_html: 'Please choose the <b>relase options</b> for your work'
+        title_html: 'Please choose the <b>release options</b> for your work'
         hint_html: 'Please choose the <i>access controls</i> and the <i>copyright release</i> for your work'
       attach:
         title_html: 'Please <b>attach</b> the pertinent files'
