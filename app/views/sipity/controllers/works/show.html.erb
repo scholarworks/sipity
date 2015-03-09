@@ -109,9 +109,13 @@
               </dd>
             <% end %>
             <% if model.additional_attributes.any? %>
-              <% model.additional_attributes.each do |attribute| %>
-                <dt class="predicate"><%= model.human_attribute_name(attribute.key) %></dt>
-                <dd class="value"><%= attribute.value %></dd>
+              <% model.additional_attributes.group_by(&:key).each do |key, attributes| %>
+                <dt class="predicate"><%= model.human_attribute_name(key) %></dt>
+                <dd class="value">
+                  <ul>
+                  <% attributes.each do |attribute| next unless attribute.value.present? %><li><%= attribute.value %></li><% end %>
+                  </ul>
+                </dd>
               <% end %>
             <% end %>
           </dl>
