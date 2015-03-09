@@ -23,6 +23,38 @@
   display:none;
 }
 
+.table {
+  .borderless {
+    td {
+      border-top:none;
+    }
+  }
+
+  .form-inline-block {
+    display:inline-block;
+  }
+
+  .radio-inline {
+    line-height:25px;
+  }
+
+  .radio-inline + .control-group > .controls {
+    padding-left:0;
+  }
+
+  .single-option {
+    text-align:center;
+
+    .radio-inline {
+      padding-top:6.4px;
+    }
+
+    label {
+      display:block;
+    }
+  }
+}
+
 // NOTE: Content-specifc styles for collaborator view
 .table.collaborators {
   min-width:710px;

@@ -2,50 +2,74 @@
 <% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
 <%= content_tag( :p, description) if description.present? %>
 
-<div class="panel-tiles">
 
-  <%= simple_form_for(
-    model,
-    url: enrich_work_path(model.work, model.enrichment_type),
-    method: :post,
-    as: :work,
-    html: { class: 'panel panel-primary with-footer' }
-  ) do |f| %>
+<%= simple_form_for(
+  model,
+  url: enrich_work_path(model.work, model.enrichment_type),
+  method: :post,
+  as: :work,
+  html: { class: 'panel panel-primary with-footer' }
+) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.access_policy.title_html"), class: 'panel-title' %>
+    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{ model.enrichment_type }.title_html"), class: 'panel-title' %>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.access_policy.hint_html"), class: 'panel-hint' %>
+    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{ model.enrichment_type }.hint_html"), class: 'panel-hint' %>
     <%= f.error_notification %>
-    <table>
+    <table class="table">
+      <caption></caption>
       <thead>
         <tr>
           <th>&nbsp;</th>
-          <th>Open Access</th>
-          <th>Restricted to Notre Dame</th>
-          <th>Private</th>
+          <th class="single-option">Open Access</th>
+          <th class="single-option">Restricted to Notre Dame</th>
+          <th class="single-option">Private</th>
           <th>Embargo then Open Access</th>
         </tr>
       </thead>
       <tbody>
         <%= f.fields_for :accessible_objects do |field| %>
           <tr>
-            <td><%= field.object %></td>
-            <td><%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::OPEN_ACCESS) %></td>
-            <td><%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::RESTRICTED_ACCESS) %></td>
-            <td><%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::PRIVATE_ACCESS) %></td>
             <td>
-              <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS) %>
-              with released on <%= field.input :release_date, as: :date %>
+              <p><%= field.object %></p>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::OPEN_ACCESS) %>
+                &#8203;
+              </label>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::RESTRICTED_ACCESS) %>
+                &#8203;
+              </label>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::PRIVATE_ACCESS) %>
+                &#8203;
+              </label>
+            </td>
+            <td>
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS) %>
+                released on
+              </label>
+              <%= field.input :release_date,
+                as: :date,
+                input_html: { class: 'form-control' },
+                label: false,
+                wrapper_html: { class: 'form-inline form-inline-block' }
+              %>
             </td>
           </tr>
-          <tr>
-            <%
-              #TODO
-              # styling and position of the place to where it should appear
-            %>
-            <td><%= f.input :copyright %></td>
+          <tr class="borderless">
+            <%# TODO: styling and position of the place to where it should appear %>
+            <td colspan="5">
+              <%= f.input :copyright, input_html: { class: 'form-control' } %>
+            </td>
           </tr>
         <% end %>
       </tbody>
@@ -56,8 +80,6 @@
     <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
   <% end %>
 <% end %>
-
-</div>
 
 <%= model.work.with_action_pane('actions') do %>
   <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>

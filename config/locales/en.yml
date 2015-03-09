@@ -118,12 +118,14 @@ en:
       submit_for_review_triggered: 'Thank you for submitting your work for review. We will send you email notifications as review process progresses.'
   sipity/decorators/entitiy_enrichments:
     call_to_action:
+      access_policy: 'Set access controls'
       attach: 'Attach files'
       defense_date: 'Defense date'
       describe: 'Finish describing your work'
       collaborators: 'People Involved'
     cancel: 'Return without saving'
     description:
+      access_policy: ''
       attach: ''
       defense_date: ''
       describe: ''
@@ -132,6 +134,9 @@ en:
       abstract:
         title_html: 'Please provide an <b>abstract</b> of your work'
         hint: 'Please keep your abstract to around 300 words.'
+      access_policy:
+        title_html: 'Please choose the <b>relase options</b> for your work'
+        hint_html: 'Please choose the <i>access controls</i> and the <i>copyright release</i> for your work'
       attach:
         title_html: 'Please <b>attach</b> the pertinent files'
         hint: 'If you have more than one file please select one as the principle manuscript.'
@@ -151,6 +156,8 @@ en:
         title_html: 'Please choose a <b>program name</b> of your work'
         hint: 'You must have choose a program name for your work'
   sipity/decorators/entitiy_enrichment_actions:
+    access_policy:
+      label: "Set <b>access controls</b> and <b>copyright</b> for this %{entity_type}"
     attach:
       label: "<b>Attach</b> files to this %{entity_type}"
     describe:
