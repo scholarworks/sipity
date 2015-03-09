@@ -19,7 +19,7 @@ module Sipity
 
       def entity_ready_for_review(options = {})
         entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity.work)
+        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
         mail(options.slice(:to, :cc, :bcc))
       end
 
