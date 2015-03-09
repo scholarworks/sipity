@@ -9,15 +9,22 @@ module Sipity
         subject { described_class.new(work: work, repository: repository) }
 
         before do
+          allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
           allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
         end
 
         it { should respond_to :accessible_objects_attributes= }
         it { should respond_to :copyright }
-        it { should respond_to :copyright= }
 
         it 'will expose accessible_objects' do
           expect(subject.accessible_objects.size).to eq(2)
+        end
+
+        it 'will validate that a copyright is given' do
+          expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
+          subject = described_class.new(work: work, repository: repository)
+          subject.valid?
+          expect(subject.errors[:copyright]).to be_present
         end
 
         it 'will validate the presence of accessible_objects_attributes' do

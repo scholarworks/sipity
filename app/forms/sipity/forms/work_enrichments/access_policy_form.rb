@@ -14,8 +14,7 @@ module Sipity
         def accessible_objects_attributes=(values)
           @accessible_objects_attributes = parse_accessible_objects_attributes(values)
         end
-        attr_reader :accessible_objects_attributes
-        attr_accessor :copyright
+        attr_reader :accessible_objects_attributes, :copyright
 
         validate :each_accessible_objects_attributes_are_valid
         validate :at_lease_one_accessible_objects_attributes_entry
@@ -49,7 +48,7 @@ module Sipity
         end
 
         def copyright_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'copyright').first
+          repository.work_attribute_values_for(work: work, key: 'copyright').first
         end
 
         def access_objects_attributes_for_persistence
