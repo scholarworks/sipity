@@ -95,6 +95,10 @@ module Sipity
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
+        it 'should have a valid default decorator' do
+          expect(Decorators::Emails::AdvisorRequestsChangeDecorator).to receive(:new).and_return(decorated)
+          described_class.advisor_requests_change(entity: entity, to: to).deliver_now
+        end
       end
       context '#grad_school_requests_change' do
         let(:entity) { Models::Work.new }

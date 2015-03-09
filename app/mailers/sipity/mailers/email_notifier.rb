@@ -36,7 +36,7 @@ module Sipity
 
       def advisor_requests_change(options = {})
         entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Email::AdvisorRequestsChangeDecorator }.new(entity)
+        @entity = options.fetch(:decorator) { Decorators::Emails::AdvisorRequestsChangeDecorator }.new(entity)
         mail(options.slice(:to, :cc, :bcc))
       end
 
