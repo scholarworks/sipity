@@ -55,7 +55,7 @@ module Sipity
           repository.handle_transient_access_rights_answer(entity: work, answer: f.access_rights_answer)
           repository.update_work_publication_date!(work: work, publication_date: f.publication_date)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-          repository.log_event!(entity: work, user: requested_by, event_name: __method__)
+          repository.log_event!(entity: work, user: requested_by, event_name: event_name)
           work
         end
       end
@@ -76,6 +76,10 @@ module Sipity
 
       def default_access_rights_answer
         Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
+      end
+
+      def event_name
+        File.join(self.class.to_s.demodulize.underscore, 'submit')
       end
     end
   end
