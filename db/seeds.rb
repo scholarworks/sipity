@@ -209,10 +209,13 @@ ActiveRecord::Base.transaction do
         Array.wrap(action_names).each do |action_name|
           action = etd_actions.fetch(action_name)
           originating_state = etd_states.fetch(originating_state_name)
-          event = action.strategy_state_actions.find_or_initialize_by(originating_strategy_state: originating_state)
+          method_name = action.persisted? ? :find_or_create_by! : :find_or_initialize_by
+          event = action.strategy_state_actions.public_send(method_name, originating_strategy_state: originating_state)
 
           Array.wrap(role_names).each do |role_name|
-            etd_strategy_roles.fetch(role_name).strategy_state_action_permissions.find_or_initialize_by(strategy_state_action: event)
+            strategy_role = etd_strategy_roles.fetch(role_name)
+            method_name = strategy_role.persisted? ? :find_or_create_by! : :find_or_initialize_by
+            strategy_role.strategy_state_action_permissions.public_send(method_name, strategy_state_action: event)
           end
         end
       end
