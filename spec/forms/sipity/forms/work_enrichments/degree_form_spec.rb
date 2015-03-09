@@ -38,40 +38,43 @@ module Sipity
           expect(subject.program_name).to eq(['hello', 'world'])
         end
 
-        context '#degree' do
-          it 'will have #degree_names' do
-            expect(repository).to receive(:get_values_by_predicate_name).with(name: 'degree').and_return(['degree_name', 'bogus'])
-            expect(subject.degree_names).to be_a(Array)
-          end
+        it 'will have #available_degrees' do
+          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'degree').and_return(['degree_name', 'bogus'])
+          expect(subject.available_degrees).to be_a(Array)
+        end
 
-          context 'with data from the database' do
-            subject { described_class.new(work: work, degree: ['bogus', 'test'], repository: repository) }
-            it 'will return the degree of the work' do
-              expect(subject.degree).to eq ['bogus', 'test']
-            end
+        it 'will have #available_program_names' do
+          expect(repository).to receive(:get_values_by_predicate_name).with(name: 'program').and_return(['bogus'])
+          expect(subject.available_program_names).to eq(['bogus'])
+        end
+
+        context '#degree' do
+          before do
+            allow(repository).to receive(:work_attribute_values_for)
           end
-          context 'when no degree is given and none is in the repository' do
-            subject { described_class.new(work: work, repository: repository) }
-            its(:degree) { should_not be_present }
+          it 'will be the input via the #form' do
+            subject = described_class.new(work: work, degree: ['bogus', 'test'], repository: repository)
+            expect(subject.degree).to eq ['bogus', 'test']
+          end
+          it 'will fall back on #degree information associated with the work' do
+            expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return('hello')
+            subject = described_class.new(work: work, repository: repository)
+            expect(subject.degree).to eq(['hello'])
           end
         end
 
         context '#program_name' do
-          it 'will have #programs' do
-            expect(repository).to receive(:get_values_by_predicate_name).with(name: 'program').and_return(['bogus'])
-            expect(subject.programs).to be_a(Array)
+          before do
+            allow(repository).to receive(:work_attribute_values_for)
           end
-
-          context 'with data from the database' do
-            subject { described_class.new(work: work, program_name: ['bogus', 'test'], repository: repository) }
-            it 'will return the program of the work' do
-              expect(subject.program_name).to eq ['bogus', 'test']
-            end
+          it 'will be the input via the #form' do
+            subject = described_class.new(work: work, program_name: ['bogus', 'test'], repository: repository)
+            expect(subject.program_name).to eq ['bogus', 'test']
           end
-
-          context 'when no program is given and none is in the repository' do
-            subject { described_class.new(work: work, repository: repository) }
-            its(:program_name) { should_not be_present }
+          it 'will fall back on #program_name information associated with the work' do
+            expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return('hello')
+            subject = described_class.new(work: work, repository: repository)
+            expect(subject.program_name).to eq(['hello'])
           end
         end
 

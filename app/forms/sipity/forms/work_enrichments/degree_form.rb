@@ -14,11 +14,11 @@ module Sipity
         validates :degree, presence: true
         validates :program_name, presence: true
 
-        def degree_names
+        def available_degrees
           repository.get_values_by_predicate_name(name: 'degree')
         end
 
-        def programs
+        def available_program_names
           repository.get_values_by_predicate_name(name: 'program')
         end
 
