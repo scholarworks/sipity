@@ -28,15 +28,15 @@ module Sipity
         end
 
         def abstract_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'abstract').first
+          repository.work_attribute_values_for(work: work, key: 'abstract').first
         end
 
         def discipline_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'discipline').first
+          repository.work_attribute_values_for(work: work, key: 'discipline').first
         end
 
         def alternate_title_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'alternate_title').first
+          repository.work_attribute_values_for(work: work, key: 'alternate_title').first
         end
       end
     end
