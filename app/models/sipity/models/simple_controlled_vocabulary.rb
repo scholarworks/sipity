@@ -12,6 +12,13 @@ module Sipity
     #   any work type; However that is one potentiaul future variance.
     class SimpleControlledVocabulary < ActiveRecord::Base
       self.table_name = 'sipity_simple_controlled_vocabularies'
+
+      enum(
+        predicate_name: {
+          AdditionalAttribute::DEGREE_PREDICATE_NAME => AdditionalAttribute::DEGREE_PREDICATE_NAME,
+          AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME => AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME
+        }
+      )
     end
   end
 end

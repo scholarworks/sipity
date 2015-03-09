@@ -4,7 +4,7 @@ module Sipity
   module Queries
     RSpec.describe SimpleControlledVocabularyQueries, type: :isolated_repository_module do
       context '#get_values_by_predicate_name' do
-        let(:name) { 'A name' }
+        let(:name) { 'program_name' }
         let(:value) { 'A value' }
         before do
           Models::SimpleControlledVocabulary.create!(predicate_name: name,

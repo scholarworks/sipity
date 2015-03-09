@@ -8,6 +8,11 @@ module Sipity
         its(:column_names) { should include('predicate_name') }
         its(:column_names) { should include('predicate_value') }
       end
+
+      subject { described_class.new }
+      it 'will raise an ArgumentError if you provide an invalid predicate_name' do
+        expect { subject.predicate_name = '__incorrect_strategy__' }.to raise_error(ArgumentError)
+      end
     end
   end
 end
