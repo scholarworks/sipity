@@ -5,12 +5,13 @@ module Sipity
       class DescribeForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @abstract = attributes.fetch(:abstract) { abstract_from_work }
-          @discipline = attributes.fetch(:discipline) { discipline_from_work }
-          @alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
+          self.abstract = attributes.fetch(:abstract) { abstract_from_work }
+          self.discipline = attributes.fetch(:discipline) { discipline_from_work }
+          self.alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
         end
 
-        attr_reader :abstract, :discipline, :alternate_title
+        attr_accessor :discipline, :alternate_title, :abstract
+        private :discipline=, :alternate_title=, :abstract=
 
         validates :abstract, presence: true
         validates :discipline, presence: true
