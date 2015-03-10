@@ -17,11 +17,8 @@ module Sipity
 
         it { should respond_to :work }
         it { should respond_to :abstract }
-        it { should respond_to :abstract= }
         it { should respond_to :discipline }
-        it { should respond_to :discipline= }
         it { should respond_to :alternate_title }
-        it { should respond_to :alternate_title= }
 
         it 'will require a abstract' do
           subject.valid?

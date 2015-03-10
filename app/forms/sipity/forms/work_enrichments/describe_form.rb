@@ -10,9 +10,7 @@ module Sipity
           @alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
         end
 
-        attr_accessor :abstract
-        attr_accessor :discipline
-        attr_accessor :alternate_title
+        attr_reader :abstract, :discipline, :alternate_title
 
         validates :abstract, presence: true
         validates :discipline, presence: true
