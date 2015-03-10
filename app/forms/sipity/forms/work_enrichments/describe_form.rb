@@ -5,14 +5,13 @@ module Sipity
       class DescribeForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @abstract = attributes.fetch(:abstract) { abstract_from_work }
-          @discipline = attributes.fetch(:discipline) { discipline_from_work }
-          @alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
+          self.abstract = attributes.fetch(:abstract) { abstract_from_work }
+          self.discipline = attributes.fetch(:discipline) { discipline_from_work }
+          self.alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
         end
 
-        attr_accessor :abstract
-        attr_accessor :discipline
-        attr_accessor :alternate_title
+        attr_accessor :discipline, :alternate_title, :abstract
+        private :discipline=, :alternate_title=, :abstract=
 
         validates :abstract, presence: true
         validates :discipline, presence: true
@@ -28,15 +27,15 @@ module Sipity
         end
 
         def abstract_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'abstract').first
+          repository.work_attribute_values_for(work: work, key: 'abstract').first
         end
 
         def discipline_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'discipline').first
+          repository.work_attribute_values_for(work: work, key: 'discipline').first
         end
 
         def alternate_title_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'alternate_title').first
+          repository.work_attribute_values_for(work: work, key: 'alternate_title').first
         end
       end
     end

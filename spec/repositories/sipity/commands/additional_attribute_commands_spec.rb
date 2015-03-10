@@ -17,6 +17,11 @@ module Sipity
           to change { subject.work_attribute_values_for(work: work, key: key) }.from([]).to(['abc'])
       end
 
+      it 'will not create blank nodes' do
+        expect { subject.update_work_attribute_values!(work: work, key: key, values: '') }.
+          to_not change { subject.work_attribute_values_for(work: work, key: key) }
+      end
+
       it 'will destroy_work_attribute_values a key/value pair if the value exists but is not part of the update' do
         subject.create_work_attribute_values!(work: work, key: key, values: 'abc')
         subject.update_work_attribute_values!(work: work, key: key, values: 'new_value')
