@@ -19,6 +19,19 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+      context '#confirmation_of_entity_created' do
+        let(:entity) { double('Hello') }
+        let(:decorated) do
+          double(title: 'A title', review_link: "link to work show", document_type: "A document_type")
+        end
+        let(:decorator) { double(new: decorated) }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.confirmation_of_entity_created(entity: entity, to: to, decorator: decorator).deliver_now
+
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
       context '#request_revision_from_creator' do
         let(:entity) { Models::Work.new }
         let(:to) { 'test@example.com' }

@@ -12,6 +12,12 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc))
       end
 
+      def confirmation_of_entity_created(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc))
+      end
+
       def request_revision_from_creator(entity:, to:, cc: [], bcc: [])
         @entity = convert_entity_into_decorator(entity)
         mail(to: to, cc: cc, bcc: bcc)
