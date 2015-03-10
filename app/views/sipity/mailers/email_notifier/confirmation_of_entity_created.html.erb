@@ -1,0 +1,14 @@
+Dear author,
+<p>Welcome to the Electronic Thesis and Dissertation (ETD) submission site. You have begun a formal submission for the following document:</p>
+
+<dl>
+  <dd> Title: </dd> <dt>@entity.title</dt>
+  <dd> Submission Type: </dd> <dt>@entity.document_type</dt>
+</dl>
+
+<p>To access your ETD record, please use the following URL:  <%= @entity.review_link %></p>
+
+<p>After you’ve completed the descriptive information and uploaded your file(s), be sure to click the “Submit” button to begin the final review process. Please note: you will be unable to edit the record while it is under review. </p>
+<p>If you have questions about your ETD record or the other submission materials, please contact me or my assistant at <a href="mailto:dteditor@nd.edu">dteditor@nd.edu</a> or 574-631-7545 for assistance.</p>
+
+<%= render partial: 'grad_school_email_signature' %>

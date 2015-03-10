@@ -95,12 +95,27 @@ module Sipity
         context 'with valid data' do
           let(:user) { User.new(id: '123') }
           let(:work) { double }
+          before do
+            expect(subject).to receive(:valid?).and_return(true)
+          end
           it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
-            allow(subject).to receive(:valid?).and_return(true)
             expect(repository).to receive(:create_work!).and_return(work)
             response = subject.submit(repository: repository, requested_by: user)
             expect(response).to eq(work)
+          end
+
+          it 'will log the event' do
+            expect(repository).to receive(:log_event!).and_call_original
+            subject.submit(repository: repository, requested_by: user)
+          end
+
+          it 'will send emails to the creating user' do
+            expect(repository).to receive(:create_work!).and_return(work)
+            expect(repository).to receive(:send_notification_for_entity_trigger).
+              with(notification: 'confirmation_of_entity_created', entity: work, acting_as: 'creating_user').
+              and_call_original
+            subject.submit(repository: repository, requested_by: user)
           end
         end
       end
