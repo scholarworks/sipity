@@ -10,6 +10,7 @@ module Sipity
         has_many :entity_action_registers, dependent: :destroy
 
         has_many :strategy_state_actions, dependent: :destroy
+        has_many :strategy_state_action_permissions, through: :strategy_state_actions
         has_many(
           :guarding_strategy_action_prerequisites,
           dependent: :destroy,
