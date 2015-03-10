@@ -41,7 +41,7 @@ en:
         responsible_for_review: 'Review Sign Off'
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
-    name: 'Sipty'
+    name: 'Siptiy'
     title: 'Repository Deposit Interface'
   helpers:
     submit:
