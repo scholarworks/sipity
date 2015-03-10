@@ -16,12 +16,12 @@ module Sipity
         #
         # @return String
         def render(f:)
-          markup = view_context.content_tag('legend', advisor_request_change_legend)
+          markup = view_context.content_tag('legend', advisor_requests_change_legend)
           markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
         end
 
-        def advisor_request_change_legend
-          view_context.t('etd/advisor_request_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
+        def advisor_requests_change_legend
+          view_context.t('etd/advisor_requests_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
         end
 
         private
