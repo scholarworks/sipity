@@ -2,7 +2,7 @@ class CreateSipityModelsProcessingEntitySpecificResponsibility < ActiveRecord::M
   def change
     create_table :sipity_processing_entity_specific_responsibilities do |t|
       t.integer :strategy_role_id, null: false
-      t.integer :entity_id, null: false
+      t.string :entity_id, limit: 32, null: false
       t.integer :actor_id, null: false
 
       t.timestamps null: false

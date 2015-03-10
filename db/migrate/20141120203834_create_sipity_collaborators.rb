@@ -1,7 +1,7 @@
 class CreateSipityCollaborators < ActiveRecord::Migration
   def change
     create_table :sipity_collaborators do |t|
-      t.integer :work_id
+      t.string :work_id, limit: 32
       t.integer :sequence
       t.string :name
       t.string :role

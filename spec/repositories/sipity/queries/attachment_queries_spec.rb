@@ -11,7 +11,7 @@ module Sipity
       context '#find_or_initialize_attachments' do
         subject { test_repository.find_or_initialize_attachments_by(work: work, pid: '12') }
         it 'will initialize a attachment based on the work id' do
-          expect(subject.work_id).to eq(work.id)
+          expect(subject.work_id).to eq(work.id.to_s)
         end
       end
 

@@ -2,7 +2,7 @@ class CreateSipityEventLogs < ActiveRecord::Migration
   def change
     create_table :sipity_event_logs do |t|
       t.integer :user_id, index: true
-      t.integer :entity_id
+      t.string :entity_id, limit: 32
       t.string :entity_type, limit: 64
       t.string :event_name, index: true
 

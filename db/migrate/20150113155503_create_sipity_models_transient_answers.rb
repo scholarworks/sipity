@@ -1,7 +1,7 @@
 class CreateSipityModelsTransientAnswers < ActiveRecord::Migration
   def change
     create_table :sipity_transient_answers do |t|
-      t.integer :entity_id
+      t.string :entity_id, limit: 32
       t.string :entity_type
       t.string :question_code
       t.string :answer_code
