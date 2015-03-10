@@ -12,6 +12,7 @@ module Sipity
         subject { described_class.new(work: work, processing_action_name: action, repository: repository) }
 
         its(:processing_action_name) { should eq(action.name) }
+        its(:event_name) { should eq('etd/advisor_requests_change_form/submit') }
 
         context '#render' do
           let(:f) { double }
