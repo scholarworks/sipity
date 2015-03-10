@@ -13,15 +13,18 @@
     state_advancing_i18n_token = 'cannot_advance'
   end
 %>
-<section itemscope itemtype="http://schema.org/CreativeWork">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="alert <%= state_advancing_alert_class %> alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+<section itemscope itemtype="http://schema.org/CreativeWork" class="container">
+  <% state_notice = t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+  <% if state_notice.present? %>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert <%= state_advancing_alert_class %> alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <%= t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="row">
     <div class="col-xs-12">
