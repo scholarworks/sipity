@@ -3,16 +3,18 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Etd
-      RSpec.describe AdvisorRequestsChangeForm do
+      RSpec.describe RespondToAdvisorRequestForm do
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
-        let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'hello') }
+        let(:action) do
+          Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'respond_to_advisor_request')
+        end
         let(:user) { User.new(id: 1) }
         subject { described_class.new(work: work, processing_action_name: action, repository: repository) }
 
         its(:processing_action_name) { should eq(action.name) }
-        its(:event_name) { should eq('etd/advisor_requests_change_form/submit') }
+        its(:event_name) { should eq('etd/respond_to_advisor_request_form/submit') }
 
         context '#render' do
           let(:f) { double }
@@ -22,7 +24,7 @@ module Sipity
           end
         end
 
-        its(:advisor_requests_change_legend) { should be_html_safe }
+        its(:input_legend) { should be_html_safe }
 
         context 'processing_action_name to action conversion' do
           it 'will use the given action if the strategy matches' do
@@ -57,7 +59,7 @@ module Sipity
 
           it 'will send creating user a note that the advisor has requested changes' do
             expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'advisor_requests_change', entity: a_processing_comment, acting_as: ['creating_user']).
+              with(notification: 'respond_to_advisor_request', entity: a_processing_comment, acting_as: ['advisor']).
               and_call_original
             subject.submit(requested_by: user)
           end

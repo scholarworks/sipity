@@ -1,9 +1,9 @@
 module Sipity
   module Forms
     module Etd
-      # Responsible for capturing advisor comments and forwarding them on to
-      # the student.
-      class AdvisorRequestsChangeForm < Forms::StateAdvancingAction
+      # Responsible for capturing a student's comment and forwarding them on to
+      # the grad school.
+      class RespondToGradSchoolRequestForm < Forms::StateAdvancingAction
         def initialize(attributes = {})
           super
           @comment = attributes[:comment]
@@ -16,15 +16,15 @@ module Sipity
         #
         # @return String
         def render(f:)
-          markup = view_context.content_tag('legend', advisor_requests_change_legend)
+          markup = view_context.content_tag('legend', input_legend)
           markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
         end
 
-        def advisor_requests_change_legend
-          view_context.t('etd/advisor_requests_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
-        end
-
         private
+
+        def input_legend
+          view_context.t('etd/respond_to_grad_school_request_form', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
+        end
 
         def view_context
           Draper::ViewContext.current
@@ -36,7 +36,7 @@ module Sipity
               entity: work, commenter: requested_by, comment: comment, action: action
             )
             repository.send_notification_for_entity_trigger(
-              notification: 'advisor_requests_change', entity: processing_comment, acting_as: ['creating_user']
+              notification: processing_action_name, entity: processing_comment, acting_as: ['etd_reviewer']
             )
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end
