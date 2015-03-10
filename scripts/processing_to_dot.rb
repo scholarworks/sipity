@@ -1,6 +1,11 @@
 #!/usr/bin/env ruby -wU
 
+require 'erb'
 Sipity::Models::Processing::Strategy.all.each do |strategy|
+  erb_file = File.join(File.dirname(__FILE__), 'processing_to_dot.dot.erb')
+  puts ERB.new(File.read(erb_file)).result(binding).split("\n").each(&:strip).select(&:present?).join("\n")
+  break
+
   # Create a diagraph file with correct header information
   puts "Strategy: #{strategy.name}"
   puts "\tState:"
@@ -22,5 +27,6 @@ Sipity::Models::Processing::Strategy.all.each do |strategy|
   strategy.roles.each do |role|
     puts "\t\t#{role.name}"
   end
+  break
 end
 # ::Kernel.require 'byebug'; ::Kernel.byebug; true;
