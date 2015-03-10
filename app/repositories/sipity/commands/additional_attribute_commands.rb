@@ -23,7 +23,7 @@ module Sipity
 
       def create_work_attribute_values!(work:, key:, values:)
         Array.wrap(values).each do |value|
-          Models::AdditionalAttribute.create!(work: work, key: key, value: value)
+          Models::AdditionalAttribute.create!(work: work, key: key, value: value) if value.present?
         end
       end
       module_function :create_work_attribute_values!
