@@ -68,7 +68,7 @@ module Sipity
         # TODO: Make sure the repository is receiving the messages but don't worry about checking
         #   are changes being made.
         let(:user) { User.new(id: '123') }
-        let(:work) { Models::Work.create(title: 'My Title', work_publication_strategy: 'do_not_know') }
+        let(:work) { Models::Work.create!(id: '1', title: 'My Title', work_publication_strategy: 'do_not_know') }
         let(:repository) { CommandRepository.new }
         let(:form) { repository.build_update_work_form(work: work, attributes: { title: 'My New Title', publisher: 'new publisher' }) }
         context 'with invalid data' do

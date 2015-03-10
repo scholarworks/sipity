@@ -7,13 +7,14 @@ module Sipity
 
       context '.call' do
         it 'will call the underlying conversion method' do
-          expect(described_class.call(1234)).to be_a(String)
+          object = double(work_id: 1234)
+          expect(described_class.call(object)).to be_a(String)
         end
       end
 
       context '.convert_to_permanent_uri' do
         it 'will be private' do
-          object = 1234
+          object = double(work_id: 1234)
           expect { described_class.convert_to_permanent_uri(object) }.
             to raise_error(NoMethodError, /private method `convert_to_permanent_uri'/)
         end
@@ -51,9 +52,9 @@ module Sipity
           expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
         end
 
-        it 'converts a Fixnum object (at least until we change that scheme)' do
+        it 'will not convert a Fixnum object (at least until we change that scheme)' do
           object = 1234
-          expect(convert_to_permanent_uri(object)).to match(/1234\Z/)
+          expect { convert_to_permanent_uri(object) }.to raise_error(Exceptions::PermanentUriConversionError)
         end
 
         it 'will raise an exception if the input is not convertable' do

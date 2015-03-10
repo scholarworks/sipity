@@ -120,11 +120,12 @@ module Sipity
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
           ).to eq([work_one, work_two])
 
+          sorter = ->(a, b) { a.id <=> b.id } # Because IDs may not be sorted
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
               user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'new' }
-            )
-          ).to eq([work_one, work_two])
+            ).sort(&sorter)
+          ).to eq([work_one, work_two].sort(&sorter))
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
@@ -158,7 +159,7 @@ module Sipity
         end
 
         it "will resolve to an array of entities" do
-          work = Models::Work.create!
+          work = Models::Work.create!(id: 1)
           entity = Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
           user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
           Models::Processing::EntitySpecificResponsibility.find_or_create_by!(

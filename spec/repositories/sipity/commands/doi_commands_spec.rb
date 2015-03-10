@@ -64,7 +64,7 @@ module Sipity
         context 'on valid data' do
           let(:publisher) { 'Valid Publisher' }
           it 'will return true having created the DOI request, appended the captured attributes, and loggged the event' do
-            expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(Fixnum))
+            expect(Jobs).to receive(:submit).with('doi_creation_request_job', kind_of(String))
             response = test_repository.submit_request_a_doi_form(form, requested_by: user)
 
             expect(response).to be_truthy

@@ -94,7 +94,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def create_work!(attributes = {})
+    def create_work!(attributes = {}, collaborators = {})
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
