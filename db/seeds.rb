@@ -137,6 +137,7 @@ ActiveRecord::Base.transaction do
         'under_advisor_review',
         'advisor_changes_requested',
         'under_grad_school_review',
+        'grad_school_changes_requested',
         'ready_for_ingest'
       ].each do |state_name|
         etd_states[state_name] = find_or_initialize_or_create!(
@@ -161,7 +162,9 @@ ActiveRecord::Base.transaction do
         ['advisor_signoff', 'under_grad_school_review'],
         ['signoff_on_behalf_of', 'under_grad_school_review'],
         ['advisor_requests_change', 'advisor_changes_requested'],
-        ['grad_school_requests_change', 'under_grad_school_review'],
+        ['respond_to_advisor_request', 'under_advisor_review'],
+        ['respond_to_grad_school_request', 'under_grad_school_review'],
+        ['grad_school_requests_change', 'grad_school_changes_requested'],
         ['grad_school_signoff', 'ready_for_ingest']
       ].each do |action_name, strategy_state_name|
         resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
@@ -194,53 +197,70 @@ ActiveRecord::Base.transaction do
 
 
       [
-        ['new', 'submit_for_review', ['creating_user']],
-        ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-        ['new', 'describe', ['creating_user', 'etd_reviewer']],
-        ['new', 'search_terms', ['creating_user', 'etd_reviewer']],
-        ['new', 'attach', ['creating_user', 'etd_reviewer']],
-        ['new', 'collaborators', ['creating_user', 'etd_reviewer']],
-        ['new', 'destroy', ['creating_user', 'etd_reviewer']],
-        ['new', 'defense_date', ['creating_user']],
-        ['new', 'degree', ['creating_user']],
-        ['new', 'access_policy', ['creating_user']],
-        ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-        ['under_advisor_review', 'destroy', ['etd_reviewer']],
-        ['under_advisor_review', 'advisor_signoff', ['advisor']],
-        ['under_advisor_review', 'signoff_on_behalf_of', ['etd_reviewer']],
-        ['under_advisor_review', 'advisor_requests_change', ['etd_reviewer', 'advisor']],
-        ['advisor_changes_requested', 'submit_for_review', ['creating_user']],
-        ['advisor_changes_requested', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-        ['advisor_changes_requested', 'describe', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'search_terms', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'attach', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'collaborators', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'destroy', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'defense_date', ['creating_user']],
-        ['advisor_changes_requested', 'degree', ['creating_user', 'etd_reviewer']],
-        ['advisor_changes_requested', 'access_policy', ['creating_user', 'etd_reviewer']],
-        ['under_grad_school_review', 'grad_school_requests_change', ['etd_reviewer']],
-        ['under_grad_school_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-        ['under_grad_school_review', 'grad_school_signoff', ['etd_reviewer']],
-        ['under_grad_school_review', ['destroy'], ['etd_reviewer']],
-        ['ready_for_ingest', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-      ].each do |originating_state_name, action_names, role_names|
-        Array.wrap(action_names).each do |action_name|
-          action = etd_actions.fetch(action_name)
-          originating_state = etd_states.fetch(originating_state_name)
-          event = find_or_initialize_or_create!(
-            context: action,
-            receiver: action.strategy_state_actions,
-            originating_strategy_state: originating_state
-          )
-
-          Array.wrap(role_names).each do |role_name|
-            strategy_role = etd_strategy_roles.fetch(role_name)
-            find_or_initialize_or_create!(
-              context: strategy_role,
-              receiver: strategy_role.strategy_state_action_permissions,
-              strategy_state_action: event
+        [
+          ['new'],
+          ['submit_for_review'],
+          ['creating_user']
+        ],[
+          ['advisor_changes_requested'],
+          ['respond_to_advisor_request'],
+          ['creating_user']
+        ],[
+          ['grad_school_changes_requested'],
+          ['respond_to_grad_school_request'],
+          ['creating_user']
+        ],[
+          ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
+          ['show'],
+          ['creating_user', 'advisor', 'etd_reviewer'],
+        ],[
+          ['new', 'advisor_changes_requested'],
+          ['defense_date','degree', 'access_policy', 'describe','search_terms', 'attach', 'collaborators'],
+          ['creating_user', 'etd_reviewer']
+        ],[
+          ['new'],
+          ['destroy'],
+          ['creating_user', 'etd_reviewer']
+        ],[
+          ['under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested'],
+          ['destroy'],
+          ['etd_reviewer']
+        ],[
+          ['under_advisor_review'],
+          ['advisor_signoff'],
+          ['advisor']
+        ],[
+          ['under_advisor_review'],
+          ['signoff_on_behalf_of'],
+          ['etd_reviewer']
+        ],[
+          ['under_advisor_review'],
+          ['advisor_requests_change'],
+          ['etd_reviewer', 'advisor']
+        ],[
+          ['under_grad_school_review'],
+          ['grad_school_requests_change', 'grad_school_signoff'],
+          ['etd_reviewer']
+        ]
+      ].each do |originating_state_names, action_names, role_names|
+        Array.wrap(originating_state_names).each do |originating_state_name|
+          Array.wrap(action_names).each do |action_name|
+            action = etd_actions.fetch(action_name)
+            originating_state = etd_states.fetch(originating_state_name)
+            event = find_or_initialize_or_create!(
+              context: action,
+              receiver: action.strategy_state_actions,
+              originating_strategy_state: originating_state
             )
+
+            Array.wrap(role_names).each do |role_name|
+              strategy_role = etd_strategy_roles.fetch(role_name)
+              find_or_initialize_or_create!(
+                context: strategy_role,
+                receiver: strategy_role.strategy_state_action_permissions,
+                strategy_state_action: event
+              )
+            end
           end
         end
       end
