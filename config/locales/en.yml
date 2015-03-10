@@ -103,6 +103,12 @@ en:
       under_advisor_review:
         can_advance: "This submission pending approval."
         cannot_advance: "Your work has been submitted for review. You will be notified when it is approved or if the reviewers request any changes."
+      advisor_changes_requested:
+        can_advance: '' # Is this message helpful?
+        cannot_advance: 'Please make the requested changes and resubmit your work.'
+      under_grad_school_review:
+        can_advance: '' # Is this message helpful?
+        cannot_advance: 'No changes can be made while it is under review by the graduate school.'
     state_advancing_actions:
       label:
         submit_for_review: 'Submit for Review'
@@ -120,6 +126,8 @@ en:
   sipity/work_event_triggers:
     action/create:
       submit_for_review_triggered: 'Thank you for submitting your work for review. We will send you email notifications as review process progresses.'
+      advisor_requests_change_triggered: 'Your comments have been sent. You will recieve an email when the appropriate changes have been made.'
+      advisor_signoff_triggered: 'Thank you for logging your approval! This manuscript will be now sent to the dissertation and thesis editor for final review.'
   sipity/decorators/entitiy_enrichments:
     call_to_action:
       access_policy: 'Set access controls'
