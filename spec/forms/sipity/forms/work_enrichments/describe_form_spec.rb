@@ -63,7 +63,8 @@ module Sipity
         end
 
         it 'will retrieve the title from the work' do
-          expect(work).to receive(:title).and_return('This is a title')
+          title = 'This is a title'
+          expect(work).to receive(:title).and_return(title)
           subject = described_class.new(work: work, repository: repository)
           expect(subject.title).to eq title
         end
