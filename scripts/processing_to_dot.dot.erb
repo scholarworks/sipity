@@ -1,0 +1,35 @@
+digraph "G" {
+  compound=true;
+  node[color="grey15" margin="0.15, 0.125"];
+
+  subgraph cluster_0 {
+    label="<%= strategy.name %> (<%= Date.today %>)"
+    node[style=filled fillcolor=white color="seashell4"]
+
+    subgraph 0 {
+      label="States";
+      node[shape="record" fillcolor="seashell1" penwidth=5]
+      <% strategy.strategy_states.each do |state| %>
+      state_<%= state.name.underscore %> [label="<%= state.name.titleize %>"]
+      <% end %>
+    }
+
+    subgraph 1 {
+      label="Actions"
+      node[shape="record" shape=record penwidth=1]
+      <% strategy.strategy_actions.where(action_type: 'state_advancing_action').each do |action| %>
+        action_<%= action.name.underscore %> [label="<%= action.name.titleize %>"]
+      <% end %>
+    }
+    <% strategy.strategy_states.each do |state| %>
+      <% state.originating_strategy_state_actions.includes(:strategy_action, :strategy_state_action_permissions).each do |state_action| %>
+        <% if state_action.strategy_action.action_type == 'state_advancing_action' %>
+          state_<%= state.name.underscore %> -> action_<%= state_action.strategy_action.name.underscore %>
+          <% if state_action.strategy_action.resulting_strategy_state.present? %>
+            action_<%= state_action.strategy_action.name.underscore %> -> state_<%= state_action.strategy_action.resulting_strategy_state.name.underscore %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  }
+}

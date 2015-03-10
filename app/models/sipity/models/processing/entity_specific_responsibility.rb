@@ -6,6 +6,7 @@ module Sipity
         self.table_name = 'sipity_processing_entity_specific_responsibilities'
         belongs_to :entity
         belongs_to :strategy_role
+        has_one :role, through: :strategy_role
         belongs_to :actor
       end
     end
