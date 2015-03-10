@@ -9,8 +9,11 @@ feature 'About page', :feature do
   #   When I visit the 'about' page
   #   Then I see "About the Website"
   scenario 'Visit the about page' do
-    visit 'pages/about'
-    expect(page).to have_content 'About the Website'
+    visit 'about'
+
+    # NOTE: Defaulting to I18n keys; it is a weak match
+    expect(page).to have_content 'Title Html'
+    expect(page).to have_content 'Body Html'
   end
 
 end
