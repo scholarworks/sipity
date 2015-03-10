@@ -5,6 +5,7 @@ module Sipity
       class StrategyStateActionPermission < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_state_action_permissions'
         belongs_to :strategy_role
+        has_one :role, through: :strategy_role
         belongs_to :strategy_state_action
       end
     end
