@@ -4,6 +4,7 @@ module Sipity
     # The most basic of information required for generating a valid work.
     class Work < ActiveRecord::Base
       self.table_name = 'sipity_works'
+      self.primary_key = :id
 
       has_many :collaborators, foreign_key: :work_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy

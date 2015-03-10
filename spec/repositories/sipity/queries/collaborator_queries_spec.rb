@@ -10,7 +10,7 @@ module Sipity
       context '#find_or_initialize_collaborators' do
         subject { test_repository.find_or_initialize_collaborators_by(work: work, id: '12') }
         it 'will initialize a collaborator based on the work id' do
-          expect(subject.work_id).to eq(work.id)
+          expect(subject.work_id).to eq(work.id.to_s)
         end
       end
 

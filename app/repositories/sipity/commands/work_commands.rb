@@ -42,10 +42,12 @@ module Sipity
         from_proxy.processing_actor.update(proxy_for: to_proxy)
       end
 
-      def create_work!(attributes = {})
+      def create_work!(attributes = {}, collaborators = {})
         # TODO: Encapsulate this into a Service Object as there is logic spilling
         #   around.
-        Models::Work.create!(attributes.slice(:title, :work_publication_strategy, :work_type)) do |work|
+        work_attributes = attributes.slice(:title, :work_publication_strategy, :work_type)
+        work_attributes[:id] = collaborators.fetch(:pid_minter) { default_pid_minter }.call
+        Models::Work.create!(work_attributes) do |work|
           named_work_type = attributes.fetch(:work_type)
           work_type = Models::WorkType.find_or_create_by!(name: named_work_type)
           # A bit of a weirdness as I splice in the new behavior

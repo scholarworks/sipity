@@ -1,7 +1,7 @@
 class CreateSipityAdditionalAttributes < ActiveRecord::Migration
   def change
     create_table :sipity_additional_attributes do |t|
-      t.integer :work_id, null: false
+      t.string :work_id, limit: 32, null: false
       t.string :key, null: false
       t.string :value
 

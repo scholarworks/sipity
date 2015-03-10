@@ -4,7 +4,7 @@ class CreateSipityPermissions < ActiveRecord::Migration
       t.integer :actor_id, index: true
       t.string :actor_type, index: true, limit: 64
       t.string :acting_as, index: true, limit: 32
-      t.integer :entity_id, index: true
+      t.string :entity_id, limit: 32, index: true
       t.string :entity_type, index: true, limit: 64
 
       t.timestamps

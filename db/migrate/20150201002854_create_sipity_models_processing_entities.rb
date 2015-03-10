@@ -1,7 +1,7 @@
 class CreateSipityModelsProcessingEntities < ActiveRecord::Migration
   def change
     create_table :sipity_processing_entities do |t|
-      t.integer :proxy_for_id, null: false
+      t.string :proxy_for_id, limit: 32, null: false
       t.string :proxy_for_type, null: false
       t.integer :strategy_id, null: false
       t.integer :strategy_state_id, null: false

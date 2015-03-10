@@ -1,7 +1,7 @@
 class CreateSipityModelsTodoItemStates < ActiveRecord::Migration
   def change
     create_table :sipity_todo_item_states do |t|
-      t.integer :entity_id
+      t.string :entity_id, limit: 32
       t.string :entity_type
       t.string :entity_processing_state
       t.string :enrichment_type

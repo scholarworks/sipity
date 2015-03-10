@@ -154,7 +154,7 @@ Sipity::Models::TransientAnswer.create!([
   {entity_id: 1, entity_type: "Sipity::Models::Work", question_code: "access_rights", answer_code: "private_access"}
 ])
 Sipity::Models::Work.create!([
-  {work_publication_strategy: "will_not_publish", title: "Hello", work_type: "doctoral_dissertation"}
+  {id: '1', work_publication_strategy: "will_not_publish", title: "Hello", work_type: "doctoral_dissertation"}
 ])
 Sipity::Models::WorkType.create!([
   {name: "doctoral_dissertation", description: nil}

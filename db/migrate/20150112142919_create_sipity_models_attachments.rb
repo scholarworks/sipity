@@ -1,7 +1,7 @@
 class CreateSipityModelsAttachments < ActiveRecord::Migration
   def change
     create_table :sipity_attachments, id: false do |t|
-      t.integer :work_id
+      t.string :work_id, limit: 32
       t.string :pid
       t.string :predicate_name
       t.string :file_uid

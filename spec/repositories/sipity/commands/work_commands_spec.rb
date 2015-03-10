@@ -9,7 +9,7 @@ module Sipity
       end
 
       context '#destroy_a_work' do
-        let(:work) { Models::Work.new }
+        let(:work) { Models::Work.new(id: '1') }
         it 'will destroy the work in question' do
           work.save! # so it is persisted
           expect { test_repository.destroy_a_work(work: work) }.
@@ -71,10 +71,11 @@ module Sipity
 
       context '#create_work!' do
         let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'doctoral_dissertation' } }
+        let(:pid_minter) { double(call: '1') }
         it 'will create a work object' do
           expect do
             expect do
-              test_repository.create_work!(attributes)
+              test_repository.create_work!(attributes, pid_minter: pid_minter)
             end.to change { Models::Work.count }.by(1)
           end.to change { Models::Processing::Entity.count }.by(1)
         end
@@ -106,7 +107,7 @@ module Sipity
       end
 
       context '#update_processing_state!' do
-        let(:work) { Models::Work.create! }
+        let(:work) { Models::Work.create!(id: '1') }
         it 'will update update the entity processing state' do
           expect(Services::UpdateEntityProcessingState).to receive(:call)
           test_repository.update_processing_state!(entity: work, to: 'hello')
@@ -116,7 +117,7 @@ module Sipity
       context '#attach_files_to' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:user) { User.new(id: 1234) }
-        let(:work) { Models::Work.create! }
+        let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         it 'will increment the number of attachments in the system' do
           expect { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }.
@@ -128,7 +129,7 @@ module Sipity
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
         let(:user) { User.new(id: 1234) }
-        let(:work) { Models::Work.create! }
+        let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will decrease the number of attachments in the system' do
@@ -141,7 +142,7 @@ module Sipity
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
         let(:user) { User.new(id: 1234) }
-        let(:work) { Models::Work.create! }
+        let(:work) { Models::Work.create!(id: 1) }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will change the file name' do
@@ -154,7 +155,7 @@ module Sipity
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
         let(:user) { User.new(id: 1234) }
-        let(:work) { Models::Work.create! }
+        let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will mark the given attachments as representative in the system' do

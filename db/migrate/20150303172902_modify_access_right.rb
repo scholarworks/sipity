@@ -3,7 +3,7 @@ class ModifyAccessRight < ActiveRecord::Migration
     drop_table :sipity_access_rights
 
     create_table :sipity_access_rights do |t|
-      t.integer :entity_id
+      t.string :entity_id, limit: 32
       t.string :entity_type
       t.string :access_right_code
       t.date :transition_date

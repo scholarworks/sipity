@@ -33,7 +33,7 @@ module Sipity
         end
         it 'will collect data from various sources and return a string keyed hash' do
           expect(subject.as_hash).to eq(
-            '_target' => Conversions::ConvertToPermanentUri.call(work.id),
+            '_target' => Conversions::ConvertToPermanentUri.call(work),
             'datacite.title' => work.title,
             'datacite.creator' => creator,
             'datacite.publisher' => publisher,
