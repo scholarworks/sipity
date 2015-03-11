@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     module Emails
-      RSpec.describe AdvisorRequestsChangeDecorator do
+      RSpec.describe ProcessingCommentDecorator do
         let(:user) { User.new(name: 'Hello World') }
         let(:work) { Models::Work.new(work_type: 'doctoral_dissertation') }
         let(:actor) { Models::Processing::Actor.new(proxy_for: user) }

@@ -3,7 +3,7 @@ module Sipity
     module Emails
       # Responsible for exposing methods required for email delivery. Nothing
       # too fancy.
-      class AdvisorRequestsChangeDecorator
+      class ProcessingCommentDecorator
         def initialize(processing_comment)
           @processing_comment = processing_comment
         end
