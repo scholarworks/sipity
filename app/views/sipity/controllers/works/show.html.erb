@@ -13,21 +13,28 @@
     state_advancing_i18n_token = 'cannot_advance'
   end
 %>
-<section itemscope itemtype="http://schema.org/CreativeWork">
-  <div class="row">
-    <div class="col-xs-12">
-      <div class="alert <%= state_advancing_alert_class %> alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <%= t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+<section itemscope itemtype="http://schema.org/CreativeWork" class="container">
+  <% state_notice = t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+  <% if state_notice.present? %>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert <%= state_advancing_alert_class %> alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <%= t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="row">
-    <div class="col-xs-12">
-      <h1 itemprop="name" class="page-header work-title"><%= model.title %>
-        <%= content_tag :small, t("simple_form.options.defaults.work_type.#{model.work_type}"), class: 'work-type' %>
+    <div class="col-xs-12 page-header">
+      <h1 class="work-title">
+        <span itemprop="name"><%= model.title %></span>
       </h1>
+      <p class="work-status">
+        <%= content_tag :span, t("simple_form.options.defaults.work_type.#{model.work_type}"), class: 'work-type' %> &bull;
+        <%= content_tag :span, t("sipity/works.processing_state.label.#{model.processing_state}"), class: 'work-state' %>
+      </p>
     </div>
   </div>
 
