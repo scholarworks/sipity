@@ -6,7 +6,7 @@ module Sipity
       default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 
-      def confirmation_of_entity_submitted_for_review(options = {})
+      def confirmation_of_submit_for_review(options = {})
         entity = options.fetch(:entity)
         @entity = convert_entity_into_decorator(entity)
         mail(options.slice(:to, :cc, :bcc))

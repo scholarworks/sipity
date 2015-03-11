@@ -10,11 +10,11 @@ module Sipity
       after do
         ActionMailer::Base.deliveries.clear
       end
-      context '#confirmation_of_entity_submitted_for_review' do
+      context '#confirmation_of_submit_for_review' do
         let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.confirmation_of_entity_submitted_for_review(entity: entity, to: to).deliver_now
+          described_class.confirmation_of_submit_for_review(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
