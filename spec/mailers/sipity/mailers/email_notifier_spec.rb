@@ -108,28 +108,25 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#advisor_requests_change' do
-        let(:entity) { double('Hello') }
-        let(:decorated) { double(name_of_commentor: 'A name', comment: "A comment", document_type: "A document_type") }
-        let(:decorator) { double(new: decorated) }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.advisor_requests_change(entity: entity, to: to, decorator: decorator).deliver_now
 
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-        it 'should have a valid default decorator' do
-          expect(Decorators::Emails::ProcessingCommentDecorator).to receive(:new).and_return(decorated)
-          described_class.advisor_requests_change(entity: entity, to: to).deliver_now
-        end
-      end
-      context '#grad_school_requests_change' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.grad_school_requests_change(entity: entity, to: to).deliver_now
+      [
+        'grad_school_requests_change',
+        'advisor_requests_change'
+      ].each_with_index do |email_method, index|
+        context "##{email_method} (Scenario #{index})" do
+          let(:entity) { double('Hello') }
+          let(:decorated) { double(name_of_commentor: 'A name', comment: "A comment", document_type: "A document_type") }
+          let(:decorator) { double(new: decorated) }
+          let(:to) { 'test@example.com' }
+          it 'should send an email' do
+            described_class.send(email_method, entity: entity, to: to, decorator: decorator).deliver_now
 
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
+            expect(ActionMailer::Base.deliveries.count).to eq(1)
+          end
+          it 'should have a valid default decorator' do
+            expect(Decorators::Emails::ProcessingCommentDecorator).to receive(:new).and_return(decorated)
+            described_class.send(email_method, entity: entity, to: to).deliver_now
+          end
         end
       end
       context '#confirmation_of_grad_school_signoff' do

@@ -52,9 +52,10 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc))
       end
 
-      def grad_school_requests_change(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
+      def grad_school_requests_change(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc))
       end
 
       def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
