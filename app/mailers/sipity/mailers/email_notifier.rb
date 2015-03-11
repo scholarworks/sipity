@@ -3,7 +3,7 @@ module Sipity
     # This class is responsible for creating/delivering email
     #
     class EmailNotifier < ActionMailer::Base
-      default from: 'curate@nd.edu', return_path: 'no-reply@nd.edu'
+      default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 
       def confirmation_of_entity_submitted_for_review(options = {})
