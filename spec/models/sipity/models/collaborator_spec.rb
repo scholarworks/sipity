@@ -46,7 +46,7 @@ module Sipity
       end
 
       context 'validations' do
-        subject { described_class.new(role: 'author', name: 'Jeremy', responsible_for_review: false) }
+        subject { described_class.new(role: 'Committee Member', name: 'Jeremy', responsible_for_review: false) }
         it 'will require a role' do
           subject.role = nil
           subject.valid?

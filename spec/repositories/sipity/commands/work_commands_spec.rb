@@ -20,7 +20,7 @@ module Sipity
 
       context '#change_processing_actor_proxy' do
         let(:user) { User.create!(username: 'hello') }
-        let(:collaborator) { Models::Collaborator.create!(name: 'bob', role: 'author', work_id: 1) }
+        let(:collaborator) { Models::Collaborator.create!(name: 'bob', role: 'Committee Member', work_id: 1) }
         let(:current_actor) { collaborator.to_processing_actor }
         it 'will transfer ownership from the given proxy to another' do
           expect { test_repository.change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user) }.
@@ -31,7 +31,9 @@ module Sipity
       context '#manage_collaborators_for' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do
-          Models::Collaborator.new(work_id: work.id, responsible_for_review: true, name: 'Jeremy', role: 'advisor', netid: 'somebody')
+          Models::Collaborator.new(
+            work_id: work.id, responsible_for_review: true, name: 'Jeremy', role: 'Research Director', netid: 'somebody'
+          )
         end
         it 'will destroy collaborators not passed in' do
           collaborator.save!
@@ -44,7 +46,9 @@ module Sipity
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do
-          Models::Collaborator.new(responsible_for_review: is_responsible_for_review?, name: 'Jeremy', role: 'advisor', netid: 'somebody')
+          Models::Collaborator.new(
+            responsible_for_review: is_responsible_for_review?, name: 'Jeremy', role: 'Research Director', netid: 'somebody'
+          )
         end
         context 'when a collaborator is responsible_for_review' do
           let(:is_responsible_for_review?) { false }
