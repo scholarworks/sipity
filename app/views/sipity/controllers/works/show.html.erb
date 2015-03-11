@@ -13,7 +13,7 @@
     state_advancing_i18n_token = 'cannot_advance'
   end
 %>
-<section itemscope itemtype="http://schema.org/CreativeWork" class="container">
+<section itemscope itemtype="http://schema.org/CreativeWork">
   <% state_notice = t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
   <% if state_notice.present? %>
     <div class="row">
