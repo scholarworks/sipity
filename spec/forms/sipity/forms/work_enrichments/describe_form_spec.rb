@@ -18,7 +18,6 @@ module Sipity
         it { should respond_to :work }
         it { should respond_to :title }
         it { should respond_to :abstract }
-        it { should respond_to :discipline }
         it { should respond_to :alternate_title }
 
         context 'validations' do
@@ -37,16 +36,10 @@ module Sipity
             subject.valid?
             expect(subject.errors[:work]).to_not be_empty
           end
-
-          it 'will require a discipline' do
-            subject.valid?
-            expect(subject.errors[:discipline]).to be_present
-          end
         end
 
         context 'retrieving values from the repository' do
           let(:abstract) { ['Hello Dolly'] }
-          let(:discipline) { ['Computer Science'] }
           let(:title) { 'My Work title' }
           subject { described_class.new(work: work, repository: repository) }
           it 'will return the abstract of the work' do
@@ -54,10 +47,7 @@ module Sipity
               with(work: work, key: 'alternate_title').and_return("")
             expect(repository).to receive(:work_attribute_values_for).
               with(work: work, key: 'abstract').and_return(abstract)
-            expect(repository).to receive(:work_attribute_values_for).
-              with(work: work, key: 'discipline').and_return(discipline)
             expect(subject.abstract).to eq 'Hello Dolly'
-            expect(subject.discipline).to eq 'Computer Science'
             expect(subject.alternate_title).to eq ''
           end
         end
@@ -106,7 +96,7 @@ module Sipity
             end
 
             it 'will add additional attributes entries' do
-              expect(repository).to receive(:update_work_attribute_values!).exactly(3).and_call_original
+              expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
               subject.submit(requested_by: user)
             end
 

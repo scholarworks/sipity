@@ -60,7 +60,6 @@ feature 'Enriching a Work', :devise, :feature do
     on('describe_page') do |the_page|
       expect(the_page).to be_all_there
       the_page.fill_in(:abstract, with: 'Lorem ipsum')
-      the_page.fill_in(:discipline, with: 'Literature')
       the_page.submit_button.click
     end
 
