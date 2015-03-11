@@ -50,7 +50,7 @@ module Sipity
               notification: "confirmation_of_entity_submitted_for_review", entity: work, acting_as: 'creating_user'
             )
             repository.send_notification_for_entity_trigger(
-              notification: "entity_ready_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
+              notification: "submit_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
             )
           end
         end

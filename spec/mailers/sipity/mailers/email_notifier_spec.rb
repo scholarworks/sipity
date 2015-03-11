@@ -59,7 +59,7 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#entity_ready_for_review' do
+      context '#submit_for_review' do
         let(:entity) { double('Hello') }
         let(:decorated) do
           double(creator_names: 'A name', creator_usernames: 'netid',
@@ -68,7 +68,7 @@ module Sipity
         let(:decorator) { double(new: decorated) }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.entity_ready_for_review(entity: entity, to: to, decorator: decorator).deliver_now
+          described_class.submit_for_review(entity: entity, to: to, decorator: decorator).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
