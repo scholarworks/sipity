@@ -13,7 +13,7 @@ module Sipity
         # When the form is being rendered, the fields_for :collaborators drive
         # on this method, as such this is a read only method.
         def collaborators
-          collaborators_from_input || collaborators_from_work
+          (collaborators_from_input || collaborators_from_work) + an_empty_collaborator_for_form_rendering
         end
 
         validate :each_collaborator_from_input_must_be_valid
@@ -52,14 +52,18 @@ module Sipity
           return [] unless work
           # Manually building an empty collaborator to allow adding more once
           # one is already created:
-          work.collaborators + [Models::Collaborator.build_default]
+          work.collaborators
         end
 
         def build_collaborator_from_input(collection, attributes)
-          return if !attributes[:name].present? && !attributes[:id].present?
+          return if blank_inputs_were_given_for?(attributes)
           collaborator = repository.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
           collaborator.attributes = extract_collaborator_attributes(attributes)
           collection << collaborator
+        end
+
+        def blank_inputs_were_given_for?(attributes)
+          attributes.except(:responsible_for_review).none?(&:present?)
         end
 
         def extract_collaborator_attributes(attributes)
@@ -67,6 +71,10 @@ module Sipity
           # Because Rails strong parameters may or may not be in play.
           permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
           permitted_attributes
+        end
+
+        def an_empty_collaborator_for_form_rendering
+          [Models::Collaborator.build_default]
         end
 
         def each_collaborator_from_input_must_be_valid
