@@ -13,10 +13,35 @@ module Sipity
         end
 
         def document_type
-          entity.proxy_for.work_type
+          work.work_type
         end
 
         delegate :comment, :actor, :entity, to: :@processing_comment
+        delegate :title, to: :work
+        private :actor, :entity
+
+        # Related to building information for https://developers.google.com/gmail/markup/
+        def email_message_action_url
+          view_context.work_url(work)
+        end
+
+        def email_message_action_name
+          "Review comments"
+        end
+
+        def email_message_action_description
+          "Review comments for “#{work.title}”"
+        end
+
+        private
+
+        def work
+          entity.proxy_for
+        end
+
+        def view_context
+          Draper::ViewContext.current
+        end
       end
     end
   end
