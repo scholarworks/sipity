@@ -58,6 +58,10 @@
 // NOTE: Content-specifc styles for collaborator view
 .table.collaborators {
   min-width:710px;
+
+  th:nth-child(3), td:nth-child(3) {
+    width:6em;
+  }
 }
 
 .table.collaborators .contact-information {

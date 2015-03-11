@@ -106,7 +106,7 @@ en:
         can_advance: "You may submit your work for review when ready."
         cannot_advance: "You must complete the required todo items before you can submit your work for review."
       under_advisor_review:
-        can_advance: "This submission pending approval."
+        can_advance: "This submission is waiting for advisor approval."
         cannot_advance: "Your work has been submitted for review. You will be notified when it is approved or if the reviewers request any changes."
       advisor_changes_requested:
         can_advance: '' # Is this message helpful?
@@ -163,7 +163,7 @@ en:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
       collaborators:
-        title_html: 'Please identify the <b>authors</b> and the members of the <b>advisory committee</b>'
+        title_html: 'Please identify the members of the <b>advisory committee</b>'
         hint: 'You must have at least one person review your submission.'
         institution_label: 'ND:'
         choice: 'OR'
