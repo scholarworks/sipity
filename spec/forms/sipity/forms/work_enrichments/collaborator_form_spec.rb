@@ -26,7 +26,7 @@ module Sipity
         context 'responsibility for review' do
           subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
           let(:collaborators_attributes) do
-            { __sequence: { name: "Jeremy", role: "author", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+            { __sequence: { name: "Jeremy", role: "Committee Member", netid: "", email: "", responsible_for_review: "false", id: 11 } }
           end
 
           it 'will validate that at least one collaborator must be responsible for review' do
@@ -68,7 +68,10 @@ module Sipity
           context 'with valid data' do
             subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
             let(:collaborators_attributes) do
-              { __sequence: { name: "Jeremy", role: "author", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11 } }
+              { __sequence: {
+                name: "Jeremy", role: "Research Director", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11
+              }
+              }
             end
 
             it 'will create a collaborator' do

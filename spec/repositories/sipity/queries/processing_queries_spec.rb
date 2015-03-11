@@ -398,13 +398,17 @@ module Sipity
           other_user = User.create!(username: 'another_user')
           groupy = User.create!(username: 'groupy')
           user_acting_collaborator = Models::Collaborator.create!(
-            name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+            name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
           )
           acting_via_email_collaborator = Models::Collaborator.create!(
-            name: 'acting_via_email', email: 'another@gmail.com', responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+            name: 'acting_via_email',
+            email: 'another@gmail.com',
+            responsible_for_review: true,
+            role: 'Committee Member',
+            work_id: entity.proxy_for_id
           )
           group_collaborator = Models::Collaborator.create!(
-            name: 'groupy', netid: groupy.username, responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+            name: 'groupy', netid: groupy.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
           )
 
           Models::GroupMembership.create(user_id: groupy.id, group_id: group.id)
@@ -416,9 +420,13 @@ module Sipity
           end
 
           Models::Collaborator.create!(
-            name: 'non_acting', email: 'non_acting@gmail.com', responsible_for_review: true, role: 'author', work_id: entity.proxy_for_id
+            name: 'non_acting',
+            email: 'non_acting@gmail.com',
+            responsible_for_review: true,
+            role: 'Committee Member',
+            work_id: entity.proxy_for_id
           )
-          Models::Collaborator.create!(name: 'non_reviewing', role: 'author', work_id: entity.proxy_for_id)
+          Models::Collaborator.create!(name: 'non_reviewing', role: 'Committee Member', work_id: entity.proxy_for_id)
           Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
           Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
           Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: acting_via_email_collaborator)

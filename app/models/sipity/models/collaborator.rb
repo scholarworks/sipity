@@ -10,9 +10,8 @@ module Sipity
     # @see Sipity::Models::Processing::Actor
     # @see Sipity::Models::Role
     class Collaborator < ActiveRecord::Base
-      AUTHOR_ROLE = DEFAULT_ROLE = 'author'.freeze
-      ADVISOR_ROLE = 'advisor'.freeze
-      CONTRIBUTOR_ROLE = 'contributor'.freeze
+      RESEARCH_DIRECTOR_ROLE = 'Research Director'.freeze
+      COMMITTEE_MEMBER_ROLE = DEFAULT_ROLE = 'Committee Member'.freeze
 
       def self.build_default
         new(role: DEFAULT_ROLE)
@@ -63,9 +62,8 @@ module Sipity
       enum(
         role:
         {
-          ADVISOR_ROLE => ADVISOR_ROLE,
-          AUTHOR_ROLE => AUTHOR_ROLE,
-          CONTRIBUTOR_ROLE => CONTRIBUTOR_ROLE
+          RESEARCH_DIRECTOR_ROLE => RESEARCH_DIRECTOR_ROLE,
+          COMMITTEE_MEMBER_ROLE => COMMITTEE_MEMBER_ROLE
         }
       )
 

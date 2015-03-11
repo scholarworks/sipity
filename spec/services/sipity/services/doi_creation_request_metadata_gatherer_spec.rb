@@ -23,7 +23,7 @@ module Sipity
         let(:publication_year) { '1970' }
         before do
           # TODO: Remove magic string
-          Models::Collaborator.create!(work_id: work.id, role: Models::Collaborator::AUTHOR_ROLE, name: creator)
+          Models::Collaborator.create!(work_id: work.id, role: Models::Collaborator::COMMITTEE_MEMBER_ROLE, name: creator)
           Models::AdditionalAttribute.create!(
             work_id: work.id, key: Models::AdditionalAttribute::PUBLISHER_PREDICATE_NAME, value: publisher
           )
