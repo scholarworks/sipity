@@ -59,11 +59,12 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+
       context '#submit_for_review' do
         let(:entity) { double('Hello') }
         let(:decorated) do
           double(creator_names: 'A name', creator_usernames: 'netid',
-                 review_link: "link to work show", document_type: "A document_type")
+                 review_link: "link to work show", document_type: "A document_type", email_subject: "This is a subject")
         end
         let(:decorator) { double(new: decorated) }
         let(:to) { 'test@example.com' }

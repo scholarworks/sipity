@@ -4,12 +4,13 @@ module Sipity
       # Responsible for exposing methods required for email delivery. Nothing
       # too fancy.
       class WorkEmailDecorator
-        def initialize(work)
+        def initialize(work, repository: default_repository)
           self.work = work
+          @repository = repository
         end
 
-        attr_reader :work
-        private :work
+        attr_reader :work, :repository
+        private :work, :repository
 
         delegate :title, to: :work
 
@@ -17,13 +18,22 @@ module Sipity
           work.work_type.titleize
         end
 
+        def creator_names
+          creators.map(&:name)
+        end
+
         alias_method :document_type, :work_type
         deprecate :document_type
 
+        # TODO: The methods with `email_message_` prefix are ripe for extraction
+        #   into a composed object. After all they are shared with the
+        #   ProcessingCommentDecorator.
         # Related to building information for https://developers.google.com/gmail/markup/
         def email_message_action_url
           view_context.work_url(work)
         end
+        alias_method :review_link, :email_message_action_url
+        deprecate :review_link
 
         def email_message_action_name
           "Review #{work_type}"
@@ -46,6 +56,14 @@ module Sipity
 
         def view_context
           Draper::ViewContext.current
+        end
+
+        def default_repository
+          QueryRepository.new
+        end
+
+        def creators
+          @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
         end
       end
     end

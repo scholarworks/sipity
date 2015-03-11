@@ -4,8 +4,16 @@ module Sipity
   module Decorators
     module Emails
       RSpec.describe WorkEmailDecorator do
+        let(:creators) { [double(name: 'John'), double(name: 'Ringo')] }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
-        subject { described_class.new(work) }
+        let(:repository) { QueryRepositoryInterface.new }
+
+        subject { described_class.new(work, repository: repository) }
+
+        before do
+          allow(repository).to receive(:scope_users_for_entity_and_roles).
+            with(entity: work, roles: 'creating_user').and_return(creators)
+        end
 
         its(:document_type) { should eq('Doctoral Dissertation') }
         its(:work_type) { should eq('Doctoral Dissertation') }
@@ -14,6 +22,9 @@ module Sipity
         its(:email_message_action_name) { should eq("Review Doctoral Dissertation") }
         its(:email_message_action_url) { should match(/\/#{work.to_param}\Z/) }
         its(:email_subject) { should be_a(String) }
+
+        its(:creator_names) { should eq(['John', 'Ringo']) }
+        its(:review_link) { should eq(subject.email_message_action_url) }
       end
     end
   end

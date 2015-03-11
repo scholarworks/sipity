@@ -25,8 +25,8 @@ module Sipity
 
       def submit_for_review(options = {})
         entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def ready_for_grad_school_review(options = {})
