@@ -49,13 +49,13 @@ module Sipity
       def advisor_requests_change(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def grad_school_requests_change(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])

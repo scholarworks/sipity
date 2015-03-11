@@ -115,7 +115,9 @@ module Sipity
       ].each_with_index do |email_method, index|
         context "##{email_method} (Scenario #{index})" do
           let(:entity) { double('Hello') }
-          let(:decorated) { double(name_of_commentor: 'A name', comment: "A comment", document_type: "A document_type") }
+          let(:decorated) do
+            double(email_subject: 'A subject', name_of_commentor: 'A name', comment: "A comment", document_type: "A document_type")
+          end
           let(:decorator) { double(new: decorated) }
           let(:to) { 'test@example.com' }
           it 'should send an email' do

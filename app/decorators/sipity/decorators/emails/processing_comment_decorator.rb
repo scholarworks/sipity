@@ -33,6 +33,10 @@ module Sipity
           "Review comments for “#{work.title}”"
         end
 
+        def email_subject
+          "#{view_context.t('application.name')}: #{email_message_action_description}"
+        end
+
         private
 
         def work
