@@ -11,8 +11,9 @@ module Sipity
         Models::Work
       end
 
+      include Conversions::ConvertToWork
       def initialize(object, *args)
-        work = convert_decorated_object_to_work(object)
+        work = convert_to_work(object)
         super(work, *args)
       end
 
@@ -85,10 +86,6 @@ module Sipity
 
       def view_context
         Draper::ViewContext.current
-      end
-
-      def convert_decorated_object_to_work(object)
-        object.respond_to?(:work) && object.work.present? ? object.work : work
       end
     end
   end
