@@ -34,7 +34,6 @@ module Sipity
         #   interface for :accepts_nested_attributes_for and :fields_for breaks
         #   down.
         def collaborators_attributes=(inputs)
-          # ::Kernel.require 'byebug'; ::Kernel.byebug; true;
           return inputs unless inputs.present?
           @collaborators_from_input = []
           inputs.each do |_, attributes|
