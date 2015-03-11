@@ -149,30 +149,36 @@ ActiveRecord::Base.transaction do
 
       etd_actions = {}
       [
-        ['show', nil],
-        ['destroy', nil],
-        ['describe', nil],
-        ['search_terms', nil],
-        ['attach', nil],
-        ['collaborators', nil],
-        ['defense_date', nil],
-        ['degree', nil],
-        ['access_policy', nil],
-        ['submit_for_review', 'under_advisor_review'],
-        ['advisor_signoff', 'under_grad_school_review'],
-        ['signoff_on_behalf_of', 'under_grad_school_review'],
-        ['advisor_requests_change', 'advisor_changes_requested'],
-        ['respond_to_advisor_request', 'under_advisor_review'],
-        ['respond_to_grad_school_request', 'under_grad_school_review'],
-        ['grad_school_requests_change', 'grad_school_changes_requested'],
-        ['grad_school_signoff', 'ready_for_ingest']
-      ].each do |action_name, strategy_state_name|
+        ['show', nil, 1],
+        ['destroy', nil, 2],
+        ['describe', nil, 1],
+        ['collaborators', nil, 2],
+        ['attach', nil, 3],
+        ['defense_date', nil, 4],
+        ['search_terms', nil, 5],
+        ['degree', nil, 6],
+        ['access_policy', nil, 7],
+        ['submit_for_review', 'under_advisor_review', 1],
+        ['advisor_signoff', 'under_grad_school_review', 1],
+        ['signoff_on_behalf_of', 'under_grad_school_review', 1],
+        ['advisor_requests_change', 'advisor_changes_requested', 2],
+        ['respond_to_advisor_request', 'under_advisor_review', 1],
+        ['respond_to_grad_school_request', 'under_grad_school_review', 1],
+        ['grad_school_requests_change', 'grad_school_changes_requested', 2],
+        ['grad_school_signoff', 'ready_for_ingest', 1]
+      ].each do |action_name, strategy_state_name, presentation_sequence|
         resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
-        etd_actions[action_name] = find_or_initialize_or_create!(
+        action = find_or_initialize_or_create!(
           context: etd_strategy,
           receiver: etd_strategy.strategy_actions,
           name: action_name, resulting_strategy_state: resulting_state
         )
+        if action.persisted?
+          action.update(presentation_sequence: presentation_sequence)
+        else
+          action.presentation_sequence = presentation_sequence
+        end
+        etd_actions[action_name] = action
       end
 
       pre_requisite_states =       {

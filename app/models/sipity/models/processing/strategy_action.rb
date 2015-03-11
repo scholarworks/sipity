@@ -4,6 +4,7 @@ module Sipity
       # A named thing that "happens" to a processing entity.
       class StrategyAction < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_actions'
+        default_scope { order(:presentation_sequence) }
         belongs_to :strategy
         belongs_to :resulting_strategy_state, class_name: 'StrategyState'
 
