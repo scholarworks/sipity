@@ -33,7 +33,7 @@ module Sipity
         end
       end
       context '#request_revision_from_creator' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
@@ -42,7 +42,7 @@ module Sipity
         end
       end
       context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
@@ -51,7 +51,7 @@ module Sipity
         end
       end
       context '#request_revision_from_creator' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
@@ -73,8 +73,18 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+
+      context '#ready_for_grad_school_review' do
+        let(:entity) { Models::Work.create!(id: '123') }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          entity.create_processing_entity!(strategy_id: '1', strategy_state_id: '1')
+          described_class.ready_for_grad_school_review(entity: entity, to: to).deliver_now
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
       context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
@@ -114,7 +124,7 @@ module Sipity
         end
       end
       context '#grad_school_requests_change' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.grad_school_requests_change(entity: entity, to: to).deliver_now

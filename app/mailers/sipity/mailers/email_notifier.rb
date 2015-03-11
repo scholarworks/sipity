@@ -29,6 +29,12 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc))
       end
 
+      def ready_for_grad_school_review(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc))
+      end
+
       def entity_ready_for_cataloging(entity:, to:, cc: [], bcc: [])
         @entity = convert_entity_into_decorator(entity)
         mail(to: to, cc: cc, bcc: bcc)

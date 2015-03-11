@@ -4,16 +4,26 @@ module Sipity
     class EmailNotificationDecorator < ApplicationDecorator
       # TODO
       # Add implementations to the methods
+      #
+      # TODO: The differences between work and processing entity are getting
+      #   confusing. Need to address that behavior to help provide clarity.
       def self.object_class
         Models::Work
       end
 
-      alias_method :entity, :object
+      include Conversions::ConvertToWork
+      def initialize(object, *args)
+        work = convert_to_work(object)
+        super(work, *args)
+      end
 
+      alias_method :entity, :object
+      deprecate :entity
+      alias_method :work, :object
       delegate_all
 
       def document_type
-        entity.work_type.humanize
+        work.work_type.humanize
       end
 
       def director
@@ -33,7 +43,7 @@ module Sipity
       end
 
       def work_show_path
-        view_context.work_url(entity)
+        view_context.work_url(work)
       end
 
       alias_method :review_link, :work_show_path
@@ -42,7 +52,7 @@ module Sipity
       end
 
       def creators
-        @creators ||= repository.scope_users_for_entity_and_roles(entity: entity, roles: Models::Role::CREATING_USER)
+        @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
       end
 
       def creator_names
@@ -66,7 +76,7 @@ module Sipity
       end
 
       def access_rights
-        Array.wrap(repository.work_access_right_codes(work: entity)).map(&:titleize).to_sentence
+        Array.wrap(repository.work_access_right_codes(work: work)).map(&:titleize).to_sentence
       end
 
       def will_be_released_to_the_public?
