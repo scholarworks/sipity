@@ -21,7 +21,7 @@ end
 if defined?(RSpec)
   namespace :spec do
     desc "Run all specs"
-    RSpec::Core::RakeTask.new(all: 'sipity:rebuild_interfaces') do
+    RSpec::Core::RakeTask.new(all: ['sipity:rebuild_interfaces', 'sipity:verify_i18n']) do
       ENV['COVERAGE'] = 'true'
     end
 
@@ -58,6 +58,7 @@ if defined?(RSpec)
 
   Rake::Task["default"].clear
   task default: ['db:schema:load', 'rubocop', 'spec:all']
+  task spec: ['sipity:rebuild_interfaces']
   task stats: ['sipity:stats_setup']
 end
 
