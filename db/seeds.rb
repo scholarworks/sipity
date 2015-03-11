@@ -171,12 +171,13 @@ ActiveRecord::Base.transaction do
         action = find_or_initialize_or_create!(
           context: etd_strategy,
           receiver: etd_strategy.strategy_actions,
-          name: action_name, resulting_strategy_state: resulting_state
+          name: action_name
         )
         if action.persisted?
-          action.update(presentation_sequence: presentation_sequence)
+          action.update(presentation_sequence: presentation_sequence, resulting_strategy_state: resulting_state)
         else
           action.presentation_sequence = presentation_sequence
+          action.resulting_strategy_state = resulting_state
         end
         etd_actions[action_name] = action
       end
