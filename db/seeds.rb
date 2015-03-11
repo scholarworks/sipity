@@ -173,11 +173,20 @@ ActiveRecord::Base.transaction do
           receiver: etd_strategy.strategy_actions,
           name: action_name
         )
+
+        # Because the objects are being instantiated differently, I need to make
+        # sure to capture the default action_type.
+        action.resulting_strategy_state = resulting_state
         if action.persisted?
-          action.update(presentation_sequence: presentation_sequence, resulting_strategy_state: resulting_state)
+          action.update(
+            presentation_sequence: presentation_sequence, resulting_strategy_state: resulting_state,
+            action_type: action.default_action_type
+          )
         else
           action.presentation_sequence = presentation_sequence
-          action.resulting_strategy_state = resulting_state
+          # Because the objects are being instantiated differently, I need to make
+          # sure to capture the default action_type.
+          action.action_type = action.default_action_type
         end
         etd_actions[action_name] = action
       end

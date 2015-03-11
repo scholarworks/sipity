@@ -25,6 +25,8 @@ module Sipity
           end
         end
 
+        its(:default_action_type) { should be_a(String) }
+
         context 'set action type' do
           it 'will set the action type if none is specified' do
             expect(subject.action_type).to be_present

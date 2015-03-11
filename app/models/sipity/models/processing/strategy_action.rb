@@ -59,19 +59,23 @@ module Sipity
           super(convert_to_processing_action_name(value))
         end
 
+        def default_action_type
+          if resulting_strategy_state_id.present?
+            STATE_ADVANCING_ACTION
+          elsif resulting_strategy_state.present?
+            STATE_ADVANCING_ACTION
+          elsif RESOURCEFUL_ACTION_NAMES.include?(name)
+            RESOURCEFUL_ACTION
+          else
+            ENRICHMENT_ACTION
+          end
+        end
+
         private
 
         def set_action_type
           return true if action_type.present?
-          if resulting_strategy_state_id.present?
-            self.action_type = STATE_ADVANCING_ACTION
-          elsif resulting_strategy_state.present?
-            self.action_type = STATE_ADVANCING_ACTION
-          elsif RESOURCEFUL_ACTION_NAMES.include?(name)
-            self.action_type = RESOURCEFUL_ACTION
-          else
-            self.action_type = ENRICHMENT_ACTION
-          end
+          self.action_type = default_action_type
         end
       end
     end
