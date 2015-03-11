@@ -1,5 +1,13 @@
 namespace :sipity do
 
+  desc 'Verify i18n translation files are valid yaml'
+  task verify_i18n: :environment do
+    @load_errors = []
+    Dir.glob(Rails.root.join('config/locales/**/*.yml').to_s).each do |filename|
+      Psych.load_file(filename)
+    end
+  end
+
   desc 'Create a user based on $USER'
   task environment_bootstrapper: :environment do
     load(Rails.root.join('config/environment_bootstrapper.rb'))
