@@ -5,6 +5,7 @@ module Sipity
     module Emails
       RSpec.describe WorkEmailDecorator do
         let(:creators) { [double(name: 'John'), double(name: 'Ringo')] }
+        let(:accessible_objects) { [double(name: 'Work'), double(name: 'Attachment')] }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
         let(:repository) { QueryRepositoryInterface.new }
 
@@ -13,6 +14,8 @@ module Sipity
         before do
           allow(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
+          allow(repository).to receive(:access_rights_for_accessible_objects_of).
+            with(work: work).and_return(accessible_objects)
         end
 
         its(:document_type) { should eq('Doctoral Dissertation') }
@@ -25,6 +28,8 @@ module Sipity
 
         its(:creator_names) { should eq(['John', 'Ringo']) }
         its(:review_link) { should eq(subject.email_message_action_url) }
+        its(:work_show_path) { should eq(subject.email_message_action_url) }
+        its(:accessible_objects) { should eq(accessible_objects) }
       end
     end
   end

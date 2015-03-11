@@ -22,6 +22,10 @@ module Sipity
           creators.map(&:name)
         end
 
+        def accessible_objects
+          @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: work)
+        end
+
         alias_method :document_type, :work_type
         deprecate :document_type
 
@@ -33,7 +37,9 @@ module Sipity
           view_context.work_url(work)
         end
         alias_method :review_link, :email_message_action_url
+        alias_method :work_show_path, :email_message_action_url
         deprecate :review_link
+        deprecate :work_show_path
 
         def email_message_action_name
           "Review #{work_type}"

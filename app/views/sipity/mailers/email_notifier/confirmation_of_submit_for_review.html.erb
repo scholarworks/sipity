@@ -1,8 +1,24 @@
 <p>Thank you for submitting your <%= @entity.document_type %> to the ETD website.</p>
 
 <ul>
-<li>You may access your submission record at: <%= @entity.work_show_path %></li>
-  <li>The access type you have chosen is: <%= @entity.access_rights %></li>
+  <li>You may access your submission record at: <%= @entity.email_message_action_url %></li>
+  <li>The access type you have chosen is:
+    <ul>
+      <% @entity.accessible_objects.each do |accessible_object| %>
+        <li>
+          <dl>
+            <dt>Title:</dt>
+            <dd><%= accessible_object %></dd>
+            <dt>Access Rights:</dt>
+            <dd><%= accessible_object.access_right_code %></dd>
+            <% if accessible_object.release_date.present? %>
+            <dt>Release Date:</dt>
+            <dd><%= accessible_object.release_date %></dd>
+            <% end %>
+          </dl>
+        </li>
+      <% end %>
+    </ul>
 </ul>
 
 <p>Next, your research director(s) will receive an email notice that your file is ready for final review. Your director(s) may then log in to the ETD site with their NetID and password to review and/or approve your document for formal submission to the Graduate School. If he or she is unable to approve the document electronically, you may instead provide two printed title pages with original signatures to the dissertation and thesis editor in the Graduate School to signify this approval.</p>
@@ -11,3 +27,4 @@
 <p>To complete the submission process, please refer to the Graduate School’s <a href="http://www.google.com/url?q=http%3A%2F%2Fgraduateschool.nd.edu%2Fresources-for-current-students%2Fdt%2Fdt-checklist%2F&sa=D&sntz=1&usg=AFQjCNGvwVT72W1yRY7b1cf01bMby9lmxw">submission checklist</a>. If you have questions about your ETD record or the other submission materials, please contact me or my assistant at <a href="mailto:dteditor@nd.edu" target="_top">dteditor@nd.edu</a> or 574-631-7545 for assistance.</p>
 
 <%= render partial: 'grad_school_email_signature' %>
+<%= render(partial: 'action_in_the_inbox', object: @entity) %>
