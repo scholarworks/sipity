@@ -97,6 +97,12 @@ en:
     action/destroy:
       success: '"%{title}" has been deleted.'
     processing_state:
+      label:
+        new: 'Not Submitted'
+        under_advisor_review: 'Under Advisor Review'
+        advisor_changes_requested: 'Changes Requested'
+        under_grad_school_review: 'Under Graduate School Review'
+        ready_for_ingest: 'Approved for Final Deposit'
       new:
         can_advance: "You may submit your work for review when ready."
         cannot_advance: "You must complete the required todo items before you can submit your work for review."
