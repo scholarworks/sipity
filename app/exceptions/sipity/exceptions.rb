@@ -97,6 +97,11 @@ module Sipity
       self.conversion_target = 'Models::Processing::StrategyAction#name'
     end
 
+    # Unable to convert the given object into a work.
+    class WorkConversionError < ProcessingConversionError
+      self.conversion_target = 'Models::Work'
+    end
+
     # As you are looking up something by name, within a given container.
     class ConceptNotFoundError < RuntimeError
       def initialize(name:, container:)
