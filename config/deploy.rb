@@ -10,7 +10,7 @@ set :bundle_without, %w{development test doc}.join(' ')
 set :application, 'sipity'
 set :scm, :git
 set :repo_url, "https://github.com/ndlib/sipity.git"
-set :branch,    fetch(:branch, fetch(:tag, 'master'))
+set :branch, ENV['BRANCH'] || 'master'
 set :keep_releases, 5
 set :linked_dirs, %w{log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system}
 set :secret_repo_name, Proc.new{
