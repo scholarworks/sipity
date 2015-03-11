@@ -10,10 +10,19 @@ Dragonfly.app.configure do
 
   if Rails.env.test?
     datastore :memory
-  else
+  elsif Rails.env.development? || Rails.env.staging?
     datastore :file,
       root_path: Rails.root.join('dragonfly', Rails.env),
       server_root: Rails.root.join('public')
+  else
+    require 'dragonfly/s3_data_store'
+    datastore :s3,
+      bucket_name: Figaro.env.dragonfly_s3_bucket_name!,
+      access_key_id: Figaro.env.dragonfly_s3_access_key_id!,
+      secret_access_key: Figaro.env.dragonfly_s3_secret_access_key!,
+      root_path: Figaro.env.dragonfly_s3_root_path!,
+      path: Figaro.env.dragonfly_s3_path!,
+      url_host: Figaro.env.dragonfly_s3_url_host!
   end
 
   before_serve do |job, env|

@@ -10,6 +10,11 @@ dragonfly_secret: "e03509c7cbee4f602ba6cf4bb088bda4891efabfffb6f122cc1e20c7e807e
 ldap_host: directory.example.com
 ldap_port: '636'
 ldap_encryption: simple_tls
+dragonfly_s3_bucket_name: 'bucket_name'
+dragonfly_s3_access_key_id: 's3_key'
+dragonfly_s3_root_path: 's3_root_dir'
+dragonfly_s3_secret_access_key: 'secret'
+dragonfly_s3_url_host: 'bucketname.aws.com'
 
 development:
   domain_name: "example.com"
