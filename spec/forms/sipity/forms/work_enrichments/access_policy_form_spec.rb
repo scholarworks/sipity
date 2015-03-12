@@ -6,6 +6,9 @@ module Sipity
         let(:work) { Models::Work.new(id: 1) }
         let(:attachment) { Models::Attachment.new(id: 2) }
         let(:repository) { CommandRepositoryInterface.new }
+        let(:copyrights) do
+          [double(predicate_name: 'name', predicate_value: 'value', predicate_value_code: 'code'), double]
+        end
         subject { described_class.new(work: work, repository: repository) }
 
         before do
@@ -38,6 +41,12 @@ module Sipity
           subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: invalid_attributes)
           subject.valid?
           expect(subject.errors[:accessible_objects_attributes]).to be_present
+        end
+
+        it 'will have #available_copyrights' do
+          expect(repository).to receive(:get_controlled_vocabulary_for_predicate_name).with(name: 'copyright').
+            and_return(copyrights)
+          expect(subject.available_copyrights).to eq(copyrights)
         end
 
         context '#submit' do
