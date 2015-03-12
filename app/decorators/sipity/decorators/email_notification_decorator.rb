@@ -38,10 +38,6 @@ module Sipity
       def permission_for_third_party_materials
       end
 
-      def comments
-        []
-      end
-
       def work_show_path
         view_context.work_url(work)
       end

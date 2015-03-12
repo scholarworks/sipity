@@ -19,7 +19,6 @@ module Sipity
       it { should respond_to(:approved_by_directors) }
       it { should respond_to(:review_link) }
       it { should respond_to(:permission_for_third_party_materials) }
-      it { should respond_to(:comments) }
       it { should respond_to(:curate_link) }
       it { should respond_to(:review_link) }
       it { should respond_to(:degree) }
