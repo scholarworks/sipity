@@ -31,8 +31,8 @@ module Sipity
 
       def advisor_signoff_is_complete(options = {})
         entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def entity_ready_for_cataloging(entity:, to:, cc: [], bcc: [])

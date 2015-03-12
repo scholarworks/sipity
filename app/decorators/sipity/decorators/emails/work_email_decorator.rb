@@ -12,7 +12,7 @@ module Sipity
         attr_reader :work, :repository
         private :work, :repository
 
-        delegate :title, to: :work
+        delegate :title, :collaborators, to: :work
 
         def work_type
           work.work_type.titleize
