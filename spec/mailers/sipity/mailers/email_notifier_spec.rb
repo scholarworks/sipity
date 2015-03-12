@@ -32,17 +32,13 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
+
       context '#submit_for_review' do
-        let(:entity) { double('Hello') }
-        let(:decorated) do
-          double(creator_names: 'A name', creator_usernames: 'netid',
-                 review_link: "link to work show", document_type: "A document_type", email_subject: "This is a subject")
-        end
-        let(:decorator) { double(new: decorated) }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.submit_for_review(entity: entity, to: to, decorator: decorator).deliver_now
-
+          entity.build_processing_entity(strategy_id: '1', strategy_state_id: '1')
+          described_class.submit_for_review(entity: entity, to: to).deliver_now
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
@@ -52,10 +48,10 @@ module Sipity
         'confirmation_of_advisor_signoff_is_complete'
       ].each_with_index do |email_method, index|
         context "##{email_method} (Scenario #{index})" do
-          let(:entity) { Models::Work.create!(id: '123') }
+          let(:entity) { Models::Work.new(id: '123') }
           let(:to) { 'test@example.com' }
           it 'should send an email' do
-            entity.create_processing_entity!(strategy_id: '1', strategy_state_id: '1')
+            entity.build_processing_entity(strategy_id: '1', strategy_state_id: '1')
             described_class.send(email_method, entity: entity, to: to).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)
           end
