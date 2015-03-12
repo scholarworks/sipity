@@ -46,12 +46,6 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def confirmation_of_entity_ingested(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
-      end
-
       def advisor_requests_change(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
