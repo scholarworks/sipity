@@ -62,6 +62,11 @@ module Sipity
       self.conversion_target = 'Date'
     end
 
+    # Unable to convert the given object into a EntityActionRegister
+    class RegisteredActionConversionError < ConversionError
+      self.conversion_target = 'Models::Processing::EntityActionRegister'
+    end
+
     # Processing Conversion Errors; These may often mean a database entry is
     # missing.
     class ProcessingConversionError < ConversionError
