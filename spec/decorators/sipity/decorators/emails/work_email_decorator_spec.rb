@@ -7,6 +7,8 @@ module Sipity
         let(:creators) { [double(name: 'John'), double(name: 'Ringo')] }
         let(:accessible_objects) { [double(name: 'Work'), double(name: 'Attachment')] }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
+        let(:collaborators) { [double, double]}
+        let(:reviewers) { [double, double]}
         let(:repository) { QueryRepositoryInterface.new }
 
         subject { described_class.new(work, repository: repository) }
@@ -16,6 +18,10 @@ module Sipity
             with(entity: work, roles: 'creating_user').and_return(creators)
           allow(repository).to receive(:access_rights_for_accessible_objects_of).
             with(work: work).and_return(accessible_objects)
+          allow(repository).to receive(:work_collaborators_for).
+            with(work: work).and_return(collaborators)
+          allow(repository).to receive(:work_collaborators_responsible_for_review).
+            with(work: work).and_return(reviewers)
         end
 
         its(:document_type) { should eq('Doctoral Dissertation') }
@@ -25,7 +31,8 @@ module Sipity
         its(:email_message_action_name) { should eq("Review Doctoral Dissertation") }
         its(:email_message_action_url) { should match(/\/#{work.to_param}\Z/) }
         its(:email_subject) { should be_a(String) }
-        its(:collaborators) { should respond_to(:each) }
+        its(:collaborators) { should eq(collaborators) }
+        its(:reviewers) { should eq(reviewers) }
 
         its(:creator_names) { should eq(['John', 'Ringo']) }
         its(:review_link) { should eq(subject.email_message_action_url) }

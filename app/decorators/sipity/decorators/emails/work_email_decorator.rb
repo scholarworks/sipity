@@ -12,10 +12,18 @@ module Sipity
         attr_reader :work, :repository
         private :work, :repository
 
-        delegate :title, :collaborators, to: :work
+        delegate :title, to: :work
 
         def work_type
           work.work_type.titleize
+        end
+
+        def collaborators
+          @collaborators ||= repository.work_collaborators_for(work: work)
+        end
+
+        def reviewers
+          @reviewers ||= repository.work_collaborators_responsible_for_review(work: work)
         end
 
         def creator_names
