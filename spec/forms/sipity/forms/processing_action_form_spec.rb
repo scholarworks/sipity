@@ -59,11 +59,12 @@ module Sipity
             expect(subject).to receive(:enrichment_type).and_return('__not_implemented__')
           end
 
-          it 'will set a registered_action variable' do
+          it 'will set the registered_action' do
             the_registered_action = double
             allow(repository).to receive(:register_action_taken_on_entity).and_return(the_registered_action)
             expect { subject.submit(requested_by: user) }.
               to change { subject.registered_action }.from(nil).to(the_registered_action)
+            expect(subject.to_registered_action).to eq(the_registered_action)
           end
 
           it 'will return the work' do

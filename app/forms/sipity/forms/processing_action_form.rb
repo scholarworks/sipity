@@ -47,6 +47,7 @@ module Sipity
       end
 
       attr_reader :registered_action
+      alias_method :to_registered_action, :registered_action
 
       private
 
