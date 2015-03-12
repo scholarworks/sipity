@@ -75,15 +75,21 @@ module Sipity
         end
       end
 
-      context '#advisor_signoff_is_complete' do
-        let(:entity) { Models::Work.create!(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          entity.create_processing_entity!(strategy_id: '1', strategy_state_id: '1')
-          described_class.advisor_signoff_is_complete(entity: entity, to: to).deliver_now
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
+      [
+        'advisor_signoff_is_complete',
+        'confirmation_of_advisor_signoff_is_complete'
+      ].each_with_index do |email_method, index|
+        context "##{email_method} (Scenario #{index})" do
+          let(:entity) { Models::Work.create!(id: '123') }
+          let(:to) { 'test@example.com' }
+          it 'should send an email' do
+            entity.create_processing_entity!(strategy_id: '1', strategy_state_id: '1')
+            described_class.send(email_method, entity: entity, to: to).deliver_now
+            expect(ActionMailer::Base.deliveries.count).to eq(1)
+          end
         end
       end
+
       context '#entity_ready_for_cataloging' do
         let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }

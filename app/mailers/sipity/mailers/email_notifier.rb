@@ -35,6 +35,17 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
+      def confirmation_of_advisor_signoff_is_complete(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      end
+
+      def advisor_signoff_but_still_more_to_go(entity:, to:, cc: [], bcc: [])
+        @entity = convert_entity_into_decorator(entity)
+        mail(to: to, cc: cc, bcc: bcc)
+      end
+
       def entity_ready_for_cataloging(entity:, to:, cc: [], bcc: [])
         @entity = convert_entity_into_decorator(entity)
         mail(to: to, cc: cc, bcc: bcc)
@@ -59,16 +70,6 @@ module Sipity
       end
 
       def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
-      end
-
-      def confirmation_of_advisor_signoff_is_complete(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
-      end
-
-      def advisor_signoff_but_still_more_to_go(entity:, to:, cc: [], bcc: [])
         @entity = convert_entity_into_decorator(entity)
         mail(to: to, cc: cc, bcc: bcc)
       end
