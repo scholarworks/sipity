@@ -14,8 +14,8 @@ module Sipity
 
       def confirmation_of_entity_created(options = {})
         entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def submit_for_review(options = {})

@@ -20,15 +20,11 @@ module Sipity
         end
       end
       context '#confirmation_of_entity_created' do
-        let(:entity) { double('Hello') }
-        let(:decorated) do
-          double(title: 'A title', review_link: "link to work show", document_type: "A document_type")
-        end
-        let(:decorator) { double(new: decorated) }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
-          described_class.confirmation_of_entity_created(entity: entity, to: to, decorator: decorator).deliver_now
-
+          entity.build_processing_entity(strategy_id: '1', strategy_state_id: '1')
+          described_class.confirmation_of_entity_created(entity: entity, to: to).deliver_now
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
