@@ -6,52 +6,45 @@ module Sipity
       default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 
-      def confirmation_of_submit_for_review(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      NOTIFCATION_METHOD_NAMES_FOR_WORK = [
+        :advisor_signoff_is_complete,
+        :confirmation_of_advisor_signoff_is_complete,
+        :confirmation_of_entity_created,
+        :confirmation_of_submit_for_review,
+        :submit_for_review
+      ].freeze
+
+      NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
-      def confirmation_of_entity_created(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc))
+      NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION = [
+        :confirmation_of_advisor_signoff
+      ].freeze
+
+      NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION.each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
-      def submit_for_review(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
+      NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS = [
+        :advisor_requests_change,
+        :grad_school_requests_change
+      ].freeze
 
-      def advisor_signoff_is_complete(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def confirmation_of_advisor_signoff_is_complete(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def confirmation_of_advisor_signoff(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def advisor_requests_change(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def grad_school_requests_change(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
       def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
