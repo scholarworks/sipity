@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def to_s
+    name
+  end
+
   private
 
   def set_notre_dame_specific_email
