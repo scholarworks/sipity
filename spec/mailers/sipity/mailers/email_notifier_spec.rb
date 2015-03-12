@@ -90,9 +90,10 @@ module Sipity
         end
       end
       context '#advisor_signoff_but_still_more_to_go' do
-        let(:entity) { Models::Work.new }
+        let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
+          entity.build_processing_entity(strategy_id: '1', strategy_state_id: '1')
           described_class.advisor_signoff_but_still_more_to_go(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
