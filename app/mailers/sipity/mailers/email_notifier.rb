@@ -6,52 +6,40 @@ module Sipity
       default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 
-      def confirmation_of_submit_for_review(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      [
+        :submit_for_review,
+        :confirmation_of_submit_for_review,
+        :confirmation_of_entity_created,
+        :confirmation_of_entity_created,
+        :advisor_signoff_is_complete,
+        :confirmation_of_advisor_signoff_is_complete
+      ].each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
-      def confirmation_of_entity_created(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      [
+        :confirmation_of_advisor_signoff
+      ].each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
-      def submit_for_review(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def advisor_signoff_is_complete(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def confirmation_of_advisor_signoff_is_complete(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def confirmation_of_advisor_signoff(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def advisor_requests_change(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
-      end
-
-      def grad_school_requests_change(options = {})
-        entity = options.fetch(:entity)
-        @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+      [
+        :advisor_requests_change,
+        :grad_school_requests_change
+      ].each do |method_name|
+        define_method(method_name) do |options = {}|
+          entity = options.fetch(:entity)
+          @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
+          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+        end
       end
 
       def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
