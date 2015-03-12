@@ -11,6 +11,7 @@ module Sipity
         :confirmation_of_advisor_signoff_is_complete,
         :confirmation_of_entity_created,
         :confirmation_of_submit_for_review,
+        :confirmation_of_grad_school_signoff,
         :submit_for_review
       ].freeze
 
@@ -45,17 +46,6 @@ module Sipity
           @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
           mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
         end
-      end
-
-      def confirmation_of_grad_school_signoff(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
-      end
-
-      private
-
-      def convert_entity_into_decorator(entity)
-        Decorators::EmailNotificationDecorator.new(entity)
       end
     end
   end

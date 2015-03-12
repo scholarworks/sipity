@@ -1,0 +1,16 @@
+<ul>
+  <% accessible_objects.each do |accessible_object| %>
+    <li>
+      <dl>
+        <dt>Title:</dt>
+        <dd><%= accessible_object %></dd>
+        <dt>Access Rights:</dt>
+        <dd><%= accessible_object.access_right_code %></dd>
+        <% if accessible_object.release_date.present? %>
+        <dt>Release Date:</dt>
+        <dd><%= accessible_object.release_date %></dd>
+        <% end %>
+      </dl>
+    </li>
+  <% end %>
+</ul>

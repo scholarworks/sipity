@@ -3,22 +3,7 @@
 <ul>
   <li>You may access your submission record at: <%= @entity.email_message_action_url %></li>
   <li>The access type you have chosen is:
-    <ul>
-      <% @entity.accessible_objects.each do |accessible_object| %>
-        <li>
-          <dl>
-            <dt>Title:</dt>
-            <dd><%= accessible_object %></dd>
-            <dt>Access Rights:</dt>
-            <dd><%= accessible_object.access_right_code %></dd>
-            <% if accessible_object.release_date.present? %>
-            <dt>Release Date:</dt>
-            <dd><%= accessible_object.release_date %></dd>
-            <% end %>
-          </dl>
-        </li>
-      <% end %>
-    </ul>
+    <%= render partial: 'accessible_objects', object: @entity.accessible_objects %>
 </ul>
 
 <p>Next, your research director(s) will receive an email notice that your file is ready for final review. Your director(s) may then log in to the ETD site with their NetID and password to review and/or approve your document for formal submission to the Graduate School. If he or she is unable to approve the document electronically, you may instead provide two printed title pages with original signatures to the dissertation and thesis editor in the Graduate School to signify this approval.</p>
