@@ -1,27 +1,40 @@
 module Sipity
   module Services
+    # This class uses noid client to mint a pid
     class NoidMinter
+      def self.call(configuration = {})
+        new(configuration: configuration).call
+      end
+
       def initialize(configuration)
-        configuration = {
-            host: Figaro.env.noid_server!,
-            port: Figaro.env.noid_port!
-        }
-        new(configuration).call
+        @server = configuration.fetch(:server) { default_server }
+        @port = configuration.fetch(:port) { default_port }
+        @pool = configuration.fetch(:pool) { default_pool }
       end
 
-      # The ldap_options is a hash containing
-      # :host, :port, :encryption and :base
-      def initialize(noid_options)
-        @connection = ::NoidsClient::Connection.new(noid_options.fetch[:server])
-                      .get_pool(noid_options.fetch[:pool])
-      end
+      attr_reader :connection
 
-      def template
-        @template ||= connection.template.split("+").first
+      def connection
+        @connection = ::NoidsClient::Connection.new("#{@server}:#{@port}").get_pool(@pool)
       end
 
       # Returns a single NOID
       def call
+        connection.mint.first
+      end
+
+      private
+
+      def default_server
+        Rails.application.secrets.noid_server
+      end
+
+      def default_port
+        Rails.application.secrets.noid_port
+      end
+
+      def default_pool
+        Rails.application.secrets.noid_pool
       end
     end
   end

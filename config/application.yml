@@ -20,8 +20,6 @@ default_email_return_path: 'no-reply@nd.edu'
 
 development:
   domain_name: "example.com"
-  server: "curatepprd.nd.edu"
-  port: 13001
 
 test:
   domain_name: "example.com"
