@@ -34,7 +34,7 @@ module Sipity
           notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer'
         )
         repository.send_notification_for_entity_trigger(
-          notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user'
+          notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user'
         )
       end
 

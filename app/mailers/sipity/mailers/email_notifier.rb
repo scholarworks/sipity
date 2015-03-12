@@ -63,7 +63,7 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def all_advisors_have_signed_off(entity:, to:, cc: [], bcc: [])
+      def confirmation_of_advisor_signoff_is_complete(entity:, to:, cc: [], bcc: [])
         @entity = convert_entity_into_decorator(entity)
         mail(to: to, cc: cc, bcc: bcc)
       end

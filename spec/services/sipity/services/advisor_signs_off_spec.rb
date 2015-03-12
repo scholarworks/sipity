@@ -37,7 +37,7 @@ module Sipity
           expect(repository).to receive(:send_notification_for_entity_trigger).
             with(notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer')
           expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user')
+            with(notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user')
           subject.call
         end
       end

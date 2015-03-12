@@ -25,7 +25,7 @@ module Sipity
         its(:email_message_action_name) { should eq("Review Doctoral Dissertation") }
         its(:email_message_action_url) { should match(/\/#{work.to_param}\Z/) }
         its(:email_subject) { should be_a(String) }
-        its(:collaborators) { should be_a(Enumerable) }
+        its(:collaborators) { should respond_to(:each) }
 
         its(:creator_names) { should eq(['John', 'Ringo']) }
         its(:review_link) { should eq(subject.email_message_action_url) }
