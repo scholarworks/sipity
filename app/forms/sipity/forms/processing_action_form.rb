@@ -46,10 +46,15 @@ module Sipity
         fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
 
+      attr_reader :registered_action
+      alias_method :to_registered_action, :registered_action
+
       private
 
       def save(requested_by:)
-        repository.register_action_taken_on_entity(work: work, enrichment_type: enrichment_type, requested_by: requested_by)
+        @registered_action = repository.register_action_taken_on_entity(
+          work: work, enrichment_type: enrichment_type, requested_by: requested_by
+        )
         repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         yield if block_given?
         work

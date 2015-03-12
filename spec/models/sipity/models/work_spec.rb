@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Models
     RSpec.describe Work, type: :model do
-      subject { Work.new }
+      subject { Work.new(title: 'Hello World') }
 
       context 'database columns' do
         subject { Work }
@@ -11,6 +11,8 @@ module Sipity
         its(:column_names) { should include('work_publication_strategy') }
         its(:column_names) { should include('title') }
       end
+
+      its(:to_s) { should eq(subject.title) }
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do

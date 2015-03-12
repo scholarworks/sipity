@@ -15,11 +15,8 @@ module Sipity
       attr_reader :form, :repository, :requested_by
 
       def call
-        if last_advisor_to_signoff?
-          handle_last_advisor_signoff
-        else
-          handle_more_advisors_require_signoff
-        end
+        send_confirmation_of_advisor_signoff
+        handle_last_advisor_signoff if last_advisor_to_signoff?
       end
 
       private
@@ -28,19 +25,19 @@ module Sipity
         CommandRepository.new
       end
 
-      def handle_last_advisor_signoff
-        repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
+      def send_confirmation_of_advisor_signoff
         repository.send_notification_for_entity_trigger(
-          notification: 'ready_for_grad_school_review', entity: form, acting_as: 'etd_reviewer'
-        )
-        repository.send_notification_for_entity_trigger(
-          notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user'
+          notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user'
         )
       end
 
-      def handle_more_advisors_require_signoff
+      def handle_last_advisor_signoff
+        repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
         repository.send_notification_for_entity_trigger(
-          notification: "advisor_signoff_but_still_more_to_go", entity: form, acting_as: 'creating_user'
+          notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer'
+        )
+        repository.send_notification_for_entity_trigger(
+          notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user'
         )
       end
 

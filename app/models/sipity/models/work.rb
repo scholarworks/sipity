@@ -21,6 +21,10 @@ module Sipity
         class_name: 'Sipity::Models::Processing::Entity'
       )
 
+      def to_s
+        title
+      end
+
       # @!attribute [rw] :processing_state The processing state of the work.
       #   @return [String]
       delegate :processing_state, to: :processing_entity, allow_nil: true

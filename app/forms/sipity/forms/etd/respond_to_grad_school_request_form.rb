@@ -36,7 +36,7 @@ module Sipity
               entity: work, commenter: requested_by, comment: comment, action: action
             )
             repository.send_notification_for_entity_trigger(
-              notification: processing_action_name, entity: processing_comment, acting_as: ['etd_reviewer']
+              notification: 'respond_to_grad_school_request', entity: processing_comment, acting_as: ['etd_reviewer']
             )
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end
