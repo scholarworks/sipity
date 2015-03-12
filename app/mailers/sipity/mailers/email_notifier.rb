@@ -6,14 +6,16 @@ module Sipity
       default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 
-      [
+      NOTIFCATION_METHOD_NAMES_FOR_WORK = [
         :submit_for_review,
         :confirmation_of_submit_for_review,
         :confirmation_of_entity_created,
         :confirmation_of_entity_created,
         :advisor_signoff_is_complete,
         :confirmation_of_advisor_signoff_is_complete
-      ].each do |method_name|
+      ].freeze
+
+      NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |method_name|
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
@@ -21,9 +23,11 @@ module Sipity
         end
       end
 
-      [
+      NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION = [
         :confirmation_of_advisor_signoff
-      ].each do |method_name|
+      ].freeze
+
+      NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION.each do |method_name|
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
@@ -31,10 +35,12 @@ module Sipity
         end
       end
 
-      [
+      NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS = [
         :advisor_requests_change,
         :grad_school_requests_change
-      ].each do |method_name|
+      ].freeze
+
+      NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |method_name|
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
