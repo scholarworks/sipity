@@ -90,3 +90,7 @@ group :production, :pre_production, :staging do
   gem 'mysql2'
   gem 'rack-cache', require: 'rack/cache'
 end
+
+group :production, :pre_production do
+  gem 'dragonfly-s3_data_store'
+end
