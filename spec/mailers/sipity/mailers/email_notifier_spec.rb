@@ -32,25 +32,6 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#request_revision_from_creator' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
-      context '#request_revision_from_creator' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.request_revision_from_creator(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
-
       context '#submit_for_review' do
         let(:entity) { double('Hello') }
         let(:decorated) do

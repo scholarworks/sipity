@@ -18,11 +18,6 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc))
       end
 
-      def request_revision_from_creator(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
-      end
-
       def submit_for_review(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
