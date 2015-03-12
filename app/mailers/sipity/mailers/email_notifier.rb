@@ -36,9 +36,10 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
-      def advisor_signoff_but_still_more_to_go(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
+      def confirmation_of_advisor_signoff(options = {})
+        entity = options.fetch(:entity)
+        @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
+        mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
       def advisor_requests_change(options = {})

@@ -58,6 +58,20 @@ module Sipity
         end
       end
 
+      context '#confirmation_of_advisor_signoff' do
+        # YOWZA! This is a lot of collaborators!
+        let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation') }
+        let(:processing_entity) { work.build_processing_entity(strategy_id: '1', strategy_state_id: '1', proxy_for: work) }
+        let(:user) { User.new( name: 'User') }
+        let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
+        let(:entity) { Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor) }
+        let(:to) { 'test@example.com' }
+        it 'should send an email' do
+          described_class.confirmation_of_advisor_signoff(entity: entity, to: to).deliver_now
+          expect(ActionMailer::Base.deliveries.count).to eq(1)
+        end
+      end
+
       [
         'grad_school_requests_change',
         'advisor_requests_change'
@@ -85,16 +99,6 @@ module Sipity
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           described_class.confirmation_of_grad_school_signoff(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
-      context '#advisor_signoff_but_still_more_to_go' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          entity.build_processing_entity(strategy_id: '1', strategy_state_id: '1')
-          described_class.advisor_signoff_but_still_more_to_go(entity: entity, to: to).deliver_now
 
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end

@@ -1,0 +1,4 @@
+<p>On <%= @entity.action_taken_at %>, <%= @entity.on_behalf_of %> approved <%= link_to "your #{@entity.work_type}", @entity.email_message_action_url %> for submission to the Graduate School.</p>
+
+<%= render partial: 'grad_school_email_signature' %>
+<%= render(partial: 'action_in_the_inbox', object: @entity) %>
