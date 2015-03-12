@@ -7,12 +7,11 @@ module Sipity
       layout 'mailer'
 
       NOTIFCATION_METHOD_NAMES_FOR_WORK = [
-        :submit_for_review,
-        :confirmation_of_submit_for_review,
-        :confirmation_of_entity_created,
-        :confirmation_of_entity_created,
         :advisor_signoff_is_complete,
-        :confirmation_of_advisor_signoff_is_complete
+        :confirmation_of_advisor_signoff_is_complete,
+        :confirmation_of_entity_created,
+        :confirmation_of_submit_for_review,
+        :submit_for_review
       ].freeze
 
       NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |method_name|
