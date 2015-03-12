@@ -75,12 +75,12 @@ module Sipity
         end
       end
 
-      context '#ready_for_grad_school_review' do
+      context '#advisor_signoff_is_complete' do
         let(:entity) { Models::Work.create!(id: '123') }
         let(:to) { 'test@example.com' }
         it 'should send an email' do
           entity.create_processing_entity!(strategy_id: '1', strategy_state_id: '1')
-          described_class.ready_for_grad_school_review(entity: entity, to: to).deliver_now
+          described_class.advisor_signoff_is_complete(entity: entity, to: to).deliver_now
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end

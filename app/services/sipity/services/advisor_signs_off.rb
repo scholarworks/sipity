@@ -31,7 +31,7 @@ module Sipity
       def handle_last_advisor_signoff
         repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
         repository.send_notification_for_entity_trigger(
-          notification: 'ready_for_grad_school_review', entity: form, acting_as: 'etd_reviewer'
+          notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer'
         )
         repository.send_notification_for_entity_trigger(
           notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user'

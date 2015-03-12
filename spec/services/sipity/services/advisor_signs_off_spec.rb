@@ -35,7 +35,7 @@ module Sipity
         end
         it 'will send emails to the etd_reviewers and creating user' do
           expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'ready_for_grad_school_review', entity: form, acting_as: 'etd_reviewer')
+            with(notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer')
           expect(repository).to receive(:send_notification_for_entity_trigger).
             with(notification: 'all_advisors_have_signed_off', entity: form, acting_as: 'creating_user')
           subject.call

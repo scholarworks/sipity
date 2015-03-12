@@ -29,7 +29,7 @@ module Sipity
         mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
       end
 
-      def ready_for_grad_school_review(options = {})
+      def advisor_signoff_is_complete(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)
         mail(options.slice(:to, :cc, :bcc))
