@@ -62,7 +62,7 @@ module Sipity
         # YOWZA! This is a lot of collaborators!
         let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation') }
         let(:processing_entity) { work.build_processing_entity(strategy_id: '1', strategy_state_id: '1', proxy_for: work) }
-        let(:user) { User.new( name: 'User') }
+        let(:user) { User.new(name: 'User') }
         let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
         let(:entity) { Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor) }
         let(:to) { 'test@example.com' }

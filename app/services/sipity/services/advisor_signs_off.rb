@@ -16,9 +16,7 @@ module Sipity
 
       def call
         send_confirmation_of_advisor_signoff
-        if last_advisor_to_signoff?
-          handle_last_advisor_signoff
-        end
+        handle_last_advisor_signoff if last_advisor_to_signoff?
       end
 
       private
