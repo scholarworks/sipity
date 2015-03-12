@@ -7,8 +7,8 @@ module Sipity
         let(:creators) { [double(name: 'John'), double(name: 'Ringo')] }
         let(:accessible_objects) { [double(name: 'Work'), double(name: 'Attachment')] }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
-        let(:collaborators) { [double, double]}
-        let(:reviewers) { [double, double]}
+        let(:collaborators) { [double, double] }
+        let(:reviewers) { [double, double] }
         let(:repository) { QueryRepositoryInterface.new }
 
         subject { described_class.new(work, repository: repository) }
