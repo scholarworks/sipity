@@ -54,7 +54,7 @@ module Sipity
         end
 
         def email_message_action_description
-          "Review #{work_type} “#{work.title}”"
+          "Review #{work_type} “#{title}”"
         end
 
         def email_subject

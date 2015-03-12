@@ -30,7 +30,7 @@ module Sipity
         end
 
         def email_message_action_description
-          "Review comments for “#{work.title}”"
+          "Review comments for “#{title}”"
         end
 
         def email_subject
