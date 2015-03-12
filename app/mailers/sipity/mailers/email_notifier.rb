@@ -46,11 +46,6 @@ module Sipity
         mail(to: to, cc: cc, bcc: bcc)
       end
 
-      def entity_ready_for_cataloging(entity:, to:, cc: [], bcc: [])
-        @entity = convert_entity_into_decorator(entity)
-        mail(to: to, cc: cc, bcc: bcc)
-      end
-
       def confirmation_of_entity_ingested(options = {})
         entity = options.fetch(:entity)
         @entity = options.fetch(:decorator) { Decorators::EmailNotificationDecorator }.new(entity)

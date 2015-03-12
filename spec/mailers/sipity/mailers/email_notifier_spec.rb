@@ -41,15 +41,6 @@ module Sipity
           expect(ActionMailer::Base.deliveries.count).to eq(1)
         end
       end
-      context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
       context '#request_revision_from_creator' do
         let(:entity) { Models::Work.new(id: '123') }
         let(:to) { 'test@example.com' }
@@ -90,15 +81,6 @@ module Sipity
         end
       end
 
-      context '#entity_ready_for_cataloging' do
-        let(:entity) { Models::Work.new(id: '123') }
-        let(:to) { 'test@example.com' }
-        it 'should send an email' do
-          described_class.entity_ready_for_cataloging(entity: entity, to: to).deliver_now
-
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
       context '#confirmation_of_entity_ingested' do
         let(:repository) { QueryRepositoryInterface.new }
         let(:entity) { double('Hello') }
