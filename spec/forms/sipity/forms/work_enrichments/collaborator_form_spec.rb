@@ -58,19 +58,36 @@ module Sipity
 
           context 'with nested validation' do
             subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
-            let(:collaborators_attributes) do
-              # Because the role is empty!----------V
-              { __sequence: { name: "Jeremy", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+            context 'with a missing role' do
+              let(:collaborators_attributes) do
+                { __sequence: { name: "Jeremy", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+              end
+              its(:valid?) { should be_falsey }
+              its(:collaborators) { should_not be_empty }
             end
-            its(:valid?) { should be_falsey }
+            context 'with a missing name' do
+              let(:collaborators_attributes) do
+                { __sequence: { name: "", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+              end
+              its(:valid?) { should be_falsey }
+              its(:collaborators) { should_not be_empty }
+            end
+            context 'with a missing name and id' do
+              let(:collaborators_attributes) do
+                { __sequence: { name: "", role: "", netid: "", email: "", responsible_for_review: "0", id: '' } }
+              end
+              its(:valid?) { should be_falsey }
+              its(:collaborators) { should_not be_empty }
+            end
           end
 
           context 'with valid data' do
             subject { described_class.new(work: work, collaborators_attributes: collaborators_attributes, repository: repository) }
             let(:collaborators_attributes) do
-              { __sequence: {
-                name: "Jeremy", role: "Research Director", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11
-              }
+              {
+                __sequence: {
+                  name: "Jeremy", role: "Research Director", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11
+                }
               }
             end
 
