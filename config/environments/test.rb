@@ -54,4 +54,7 @@ Rails.application.configure do
   # I don't want to be hitting LDAP in all cases; This is the default for test
   # purposes.
   config.default_netid_remote_validator = ->(_a_netid) { true }
+
+  #Use random string for pid rather then using noid service
+  config.default_pid_minter = -> { SecureRandom.urlsafe_base64(nil, true) }
 end

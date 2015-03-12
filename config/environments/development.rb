@@ -55,5 +55,6 @@ Rails.application.configure do
   # Because you really don't want to be making this request all that often.
   unless ENV['WITH_PRODUCTION_SERVICES']
     config.default_netid_remote_validator = ->(_a_netid) { true }
+    config.default_pid_minter = -> { SecureRandom.urlsafe_base64(nil, true) }
   end
 end
