@@ -47,13 +47,6 @@ module Sipity
           end
         end
       end
-
-      context '#confirmation_of_grad_school_signoff' do
-        it 'should send an email' do
-          described_class.confirmation_of_grad_school_signoff(entity: work, to: to).deliver_now
-          expect(ActionMailer::Base.deliveries.count).to eq(1)
-        end
-      end
     end
   end
 end

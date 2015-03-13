@@ -12,7 +12,7 @@ module Sipity
           actor.proxy_for.name
         end
 
-        def document_type
+        def work_type
           work.work_type
         end
 

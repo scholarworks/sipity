@@ -44,10 +44,6 @@ module Sipity
         def email_message_action_url
           view_context.work_url(work)
         end
-        alias_method :review_link, :email_message_action_url
-        alias_method :work_show_path, :email_message_action_url
-        deprecate :review_link
-        deprecate :work_show_path
 
         def email_message_action_name
           "Review #{work_type}"
