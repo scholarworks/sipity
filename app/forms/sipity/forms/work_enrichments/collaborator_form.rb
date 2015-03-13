@@ -8,7 +8,6 @@ module Sipity
           self.collaborators_attributes = attributes[:collaborators_attributes]
         end
         attr_reader :collaborators_attributes, :collaborators_from_input
-        private :collaborators_from_input
 
         # When the form is being rendered, the fields_for :collaborators drive
         # on this method, as such this is a read only method.
@@ -67,7 +66,7 @@ module Sipity
         end
 
         def reject_because_an_empty_row_was_submitted_via_user_input?(attributes)
-          attributes.except(:responsible_for_review, :role).none?(&:present?)
+          attributes.except(:responsible_for_review, :role).values.none?(&:present?)
         end
 
         def extract_collaborator_attributes(attributes)
