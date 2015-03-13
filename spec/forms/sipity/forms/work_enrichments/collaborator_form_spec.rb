@@ -64,6 +64,7 @@ module Sipity
               end
               its(:valid?) { should be_falsey }
               its(:collaborators) { should_not be_empty }
+              its(:collaborators_from_input) { should_not be_empty }
             end
             context 'with a missing name' do
               let(:collaborators_attributes) do
@@ -71,6 +72,7 @@ module Sipity
               end
               its(:valid?) { should be_falsey }
               its(:collaborators) { should_not be_empty }
+              its(:collaborators_from_input) { should_not be_empty }
             end
             context 'with a missing name and id' do
               let(:collaborators_attributes) do
@@ -78,6 +80,7 @@ module Sipity
               end
               its(:valid?) { should be_falsey }
               its(:collaborators) { should_not be_empty }
+              its(:collaborators_from_input) { should be_empty }
             end
           end
 
@@ -93,7 +96,7 @@ module Sipity
 
             it 'will create a collaborator' do
               expect(repository).to receive(:manage_collaborators_for).
-                with(work: work, collaborators: subject.send(:collaborators_from_input)).
+                with(work: work, collaborators: subject.collaborators_from_input).
                 and_call_original
               subject.submit(requested_by: user)
             end
