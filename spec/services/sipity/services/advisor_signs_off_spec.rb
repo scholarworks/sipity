@@ -67,7 +67,7 @@ module Sipity
       end
 
       context 'default repository' do
-        let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'submit_for_review', work: double) }
+        let(:form) { double('Form', resulting_strategy_state: 'chubacabra', registered_action: 'submit_for_review', work: double) }
         subject { described_class.new(form: form, requested_by: requested_by) }
         it 'exposes #collaborators_that_have_taken_the_action_on_the_entity' do
           expect(subject.send(:repository)).to receive(:collaborators_that_have_taken_the_action_on_the_entity)
