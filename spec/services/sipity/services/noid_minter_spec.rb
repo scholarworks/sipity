@@ -4,29 +4,23 @@ module Sipity
     describe NoidMinter do
       include ::Sipity::Services::NoidMinter
       let(:pid) { "pid" }
-      let(:connection) { double }
-      let(:configuration) do
-        { server: 'noid.example.com', port: '13001', pool: "pool_name" }
-      end
+      let(:connection) { double(mint: [pid]) }
 
-      context '.call' do
-        it 'will call the underlying mint_a_pid method' do
-          expect(described_class).to receive(:mint_a_pid).and_return(pid)
-          expect(described_class.call(configuration)).to eq(pid)
-        end
-      end
-
-      context '#mint_a_pid' do
-        it 'will be a private instance method' do
-          expect(self.class.private_instance_methods).to include(:mint_a_pid)
-        end
-
+      context '#call' do
         it 'will mint a pid' do
+          expect(described_class).to receive(:connection).
+            and_return(connection)
+          expect(described_class.call).to eq(pid)
+        end
+      end
+
+      context '#connections' do
+        let(:first_connection) { described_class.connection }
+        it 'verify connections are cached' do
           expect(::NoidsClient::Connection).to receive_message_chain(:new, :get_pool).
             and_return(connection)
-          expect(connection).to receive(:mint).and_return([pid])
-          expect(described_class.call(configuration)).to eq(pid)
-
+          next_connection = described_class.connection
+          expect(first_connection.object_id).to eq(next_connection.object_id)
         end
       end
     end
