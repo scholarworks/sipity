@@ -45,7 +45,11 @@ module Sipity
         private
 
         def save(requested_by:)
-          super { repository.manage_collaborators_for(work: work, collaborators: collaborators) }
+          super do
+            # Don't try to persist the collaborators, as those are for form rendering
+            # instead lets persist the collaborators that were given as user input.
+            repository.manage_collaborators_for(work: work, collaborators: collaborators_from_input)
+          end
         end
 
         def collaborators_from_work
@@ -56,14 +60,14 @@ module Sipity
         end
 
         def build_collaborator_from_input(collection, attributes)
-          return if blank_inputs_were_given_for?(attributes)
+          return if reject_because_an_empty_row_was_submitted_via_user_input?(attributes)
           collaborator = repository.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
           collaborator.attributes = extract_collaborator_attributes(attributes)
           collection << collaborator
         end
 
-        def blank_inputs_were_given_for?(attributes)
-          attributes.except(:responsible_for_review).none?(&:present?)
+        def reject_because_an_empty_row_was_submitted_via_user_input?(attributes)
+          attributes.except(:responsible_for_review, :role).none?(&:present?)
         end
 
         def extract_collaborator_attributes(attributes)
