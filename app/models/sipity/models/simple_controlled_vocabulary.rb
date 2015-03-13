@@ -16,7 +16,8 @@ module Sipity
       enum(
         predicate_name: {
           AdditionalAttribute::DEGREE_PREDICATE_NAME => AdditionalAttribute::DEGREE_PREDICATE_NAME,
-          AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME => AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME
+          AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME => AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME,
+          AdditionalAttribute::COPYRIGHT_PREDICATE_NAME => AdditionalAttribute::COPYRIGHT_PREDICATE_NAME
         }
       )
     end

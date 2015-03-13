@@ -7,14 +7,18 @@ module Sipity
         def initialize(attributes = {})
           super
           self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
-          @copyright = attributes.fetch(:copyright) { copyright_from_work }
+          self.copyright = attributes.fetch(:copyright) { copyright_from_work }
         end
 
         # Because I am using `#fields_for` for rendering
         def accessible_objects_attributes=(values)
           @accessible_objects_attributes = parse_accessible_objects_attributes(values)
         end
-        attr_reader :accessible_objects_attributes, :copyright
+
+        attr_reader :accessible_objects_attributes
+        attr_accessor :copyright
+
+        private :copyright=
 
         validate :each_accessible_objects_attributes_are_valid
         validate :at_lease_one_accessible_objects_attributes_entry
@@ -26,6 +30,10 @@ module Sipity
           else
             @accessible_objects ||= accessible_objects_from_repository
           end
+        end
+
+        def available_copyrights
+          repository.get_controlled_vocabulary_for_predicate_name(name: 'copyright')
         end
 
         private

@@ -38,6 +38,23 @@ ActiveRecord::Base.transaction do
     roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
   end
 
+  $stdout.puts 'Creating copyright names...'
+  content_licenses = [
+      ['copyright', 'Attribution 3.0 United States', 'http://creativecommons.org/licenses/by/3.0/us/'],
+      ['copyright', 'Attribution-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-sa/3.0/us/'],
+      ['copyright', 'Attribution-NonCommercial 3.0 United States', 'http://creativecommons.org/licenses/by-nc/3.0/us/'],
+      ['copyright', 'Attribution-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nd/3.0/us/'],
+      ['copyright', 'Attribution-NonCommercial-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nc-nd/3.0/us/'],
+      ['copyright', 'Attribution-NonCommercial-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-nc-sa/3.0/us/'],
+      ['copyright', 'Public Domain Mark 1.0', 'http://creativecommons.org/publicdomain/mark/1.0/'],
+      ['copyright', 'CC0 1.0 Universal', 'http://creativecommons.org/publicdomain/zero/1.0/'],
+      ['copyright', 'All rights reserved', 'All rights reserved']
+  ]
+  content_licenses.each do |predicate_name, predicate_value, predicate_value_code|
+    Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
+      predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+  end
+
 
   $stdout.puts 'Creating degree names...'
   degree_names =
@@ -105,6 +122,8 @@ ActiveRecord::Base.transaction do
     Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
     predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
   end
+
+
 
   $stdout.puts 'Creating ETD State Diagram...'
   ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
