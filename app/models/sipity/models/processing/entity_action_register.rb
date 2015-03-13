@@ -13,6 +13,9 @@ module Sipity
         belongs_to :strategy_action
         belongs_to :requested_by_actor, class_name: 'Sipity::Models::Processing::Actor'
         belongs_to :on_behalf_of_actor, class_name: 'Sipity::Models::Processing::Actor'
+
+        alias_method :to_processing_action, :strategy_action
+        alias_method :to_processing_entity, :entity
       end
     end
   end

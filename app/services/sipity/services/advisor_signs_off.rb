@@ -50,7 +50,7 @@ module Sipity
       end
 
       def collaborators_that_have_taken_the_action_on_the_entity
-        repository.collaborators_that_have_taken_the_action_on_the_entity(entity: form.work, action: form.action)
+        repository.collaborators_that_have_taken_the_action_on_the_entity(entity: form.work, action: form.registered_action)
       end
     end
   end
