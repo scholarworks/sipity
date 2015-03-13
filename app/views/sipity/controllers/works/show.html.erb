@@ -41,7 +41,7 @@
   <div class="row">
 
     <% if has_available_enrichment_actions  %>
-      <aside class="col-sm-6 work-tasks">
+      <aside class="col-md-6 work-tasks">
         <%= content_tag :h2, t('sipity/works.action/show.label.todo_section'), class: 'task-heading' %>
         <div class="todo">
           <% available_enrichment_actions.each do |set, actions| %>
@@ -73,7 +73,7 @@
       </aside>
     <% end %>
 
-    <div class="col-sm-6">
+    <div class="col-md-6">
       <article class="panel panel-default work-description">
         <div class="panel-heading">
           <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
