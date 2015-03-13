@@ -1,3 +1,6 @@
+require 'rdiscount'
+require 'sanitize'
+
 module Sipity
   module Conversions
     # Exposes a conversion method to take a string or text and convert it to
@@ -23,7 +26,10 @@ module Sipity
       #
       # @return String containing HTML
       def convert_to_rich_text(input)
-        input
+        return if input.nil?
+        markdown = RDiscount.new(input, :autolink, :smart)
+        html = markdown.to_html
+        Sanitize.fragment(html, Sanitize::Config::RELAXED)
       end
 
       module_function :convert_to_rich_text
