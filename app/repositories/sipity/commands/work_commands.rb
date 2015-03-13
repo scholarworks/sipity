@@ -121,7 +121,7 @@ module Sipity
       # @note This is not a PID as per Fedora 3, but is something random,
       #   unique, and stringy. Which for these purposes is adequate.
       def default_pid_minter
-        -> { SecureRandom.urlsafe_base64(nil, true) }
+        Rails.application.config.default_pid_minter
       end
 
       def apply_access_policies_to(work:, user:, access_policies:)
