@@ -13,6 +13,41 @@
     state_advancing_i18n_token = 'cannot_advance'
   end
 %>
+
+<% state_advancing_actions = capture do %>
+  <div class="work-actions" itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
+    <meta itemprop="name" content="work/processing_state" />
+    <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
+    the underlying tests will need to change to find[:content] instead of find.text %>
+
+    <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
+
+    <ul class="action-listing">
+      <% available_state_advancing_actions.each do |action| %>
+        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+          <meta itemprop="name" content="event_trigger/<%= action.name %>" />
+          <% if action.available? %>
+            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+              <meta itemprop="name" content="<%= action.name %>" />
+              <a itemprop="url" href="<%= action.path %>" class="btn btn-primary %>">
+                <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
+              </a>
+            </div>
+          <% else %>
+            <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+              <meta itemprop="name" content="<%= action.name %>" />
+              <span class="btn btn-default disabled">
+                <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
+              </span>
+            </div>
+          <% end %>
+          <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <section itemscope itemtype="http://schema.org/CreativeWork">
   <% state_notice = t("sipity/works.processing_state.#{model.processing_state}.#{state_advancing_i18n_token}") %>
   <% if state_notice.present? %>
@@ -70,10 +105,18 @@
             <% end %>
           <% end %>
         </div>
+        <%= state_advancing_actions %>
       </aside>
     <% end %>
 
-    <div class="col-md-6">
+    <%
+      if has_available_enrichment_actions
+        submission_overview_column_size = 'col-md-6'
+      else
+        submission_overview_column_size = 'col-md-8'
+      end
+    %>
+    <div class="<%= submission_overview_column_size %>">
       <article class="panel panel-default work-description">
         <div class="panel-heading">
           <%= content_tag :h3, t('sipity/works.action/show.label.overview_section'), class: 'panel-title' %>
@@ -156,39 +199,12 @@
 
   </div><!-- /row -->
 
-  <div class="row">
-    <%# REVIEW: Do I want to be passing the current user to this? It seems as though there is a more elegant option. %>
-    <div class="col-xs-12 work-actions" itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
-      <meta itemprop="name" content="work/processing_state" />
-      <%# Opting to not use a meta-tag instead; If this becomes a meta-tag, then
-      the underlying tests will need to change to find[:content] instead of find.text %>
-
-      <span class="visuallyhidden">It is <span itemprop="description"><%= model.processing_state %></span>.</span>
-
-      <ul class="action-listing">
-        <% available_state_advancing_actions.each do |action| %>
-          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
-            <meta itemprop="name" content="event_trigger/<%= action.name %>" />
-            <% if action.available? %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                <meta itemprop="name" content="<%= action.name %>" />
-                <a itemprop="url" href="<%= action.path %>" class="btn btn-primary %>">
-                  <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
-                </a>
-              </div>
-            <% else %>
-              <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                <meta itemprop="name" content="<%= action.name %>" />
-                <span class="btn btn-default disabled">
-                  <%= t("sipity/works.state_advancing_actions.label.#{ action.name }") %>
-                </span>
-              </div>
-            <% end %>
-            <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
-          </li>
-        <% end %>
-      </ul>
-    </div>
-  </div><!-- /row -->
+  <% unless has_available_enrichment_actions %>
+    <div class="row">
+      <div class="col-xs-12">
+        <%= state_advancing_actions %>
+      </div>
+    </div><!-- /row -->
+  <% end %>
 
 </section>
