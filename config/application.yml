@@ -17,6 +17,9 @@ dragonfly_s3_secret_access_key: 'secret'
 dragonfly_s3_url_host: 'bucketname.aws.com'
 default_email_from: 'sipity-development@nd.edu'
 default_email_return_path: 'no-reply@nd.edu'
+noid_server: 'noidserver.com'
+noid_port: '3000'
+noid_pool: 'pool_name'
 
 development:
   domain_name: "example.com"

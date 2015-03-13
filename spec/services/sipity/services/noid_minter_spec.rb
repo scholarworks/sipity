@@ -1,36 +1,32 @@
 require 'spec_helper'
 module Sipity
   module Services
-    RSpec.describe NoidMinter do
+    describe NoidMinter do
+      include ::Sipity::Services::NoidMinter
       let(:pid) { "pid" }
       let(:connection) { double }
       let(:configuration) do
         { server: 'noid.example.com', port: '13001', pool: "pool_name" }
       end
-      subject { described_class.new(configuration) }
 
-      it 'exposes .call as a convenience method' do
-        expect_any_instance_of(described_class).to receive(:call)
-        described_class.call(configuration)
-      end
-
-      context 'connection' do
-        it 'should get a connection from noid server' do
-          allow(::NoidsClient::Connection).to receive_message_chain(:new, :get_pool).
-            and_return(connection)
-          expect(subject.connection).to eq(connection)
+      context '.call' do
+        it 'will call the underlying mint_a_pid method' do
+          expect(described_class).to receive(:mint_a_pid).and_return(pid)
+          expect(described_class.call(configuration)).to eq(pid)
         end
       end
 
-      context "#call" do
-        subject { described_class.new(configuration) }
-        let(:pid) { 'a pid' }
-        context 'with valid options' do
-          it "will return a pid minted by noid server" do
-            expect(subject).to receive(:connection).and_return(connection)
-            expect(connection).to receive(:mint).and_return([pid])
-            expect(subject.call).to eq(pid)
-          end
+      context '#mint_a_pid' do
+        it 'will be a private instance method' do
+          expect(self.class.private_instance_methods).to include(:mint_a_pid)
+        end
+
+        it 'will mint a pid' do
+          expect(::NoidsClient::Connection).to receive_message_chain(:new, :get_pool).
+            and_return(connection)
+          expect(connection).to receive(:mint).and_return([pid])
+          expect(described_class.call(configuration)).to eq(pid)
+
         end
       end
     end

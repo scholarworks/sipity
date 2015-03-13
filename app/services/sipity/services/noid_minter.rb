@@ -1,41 +1,30 @@
 module Sipity
   module Services
-    # This class uses noid client to mint a pid
-    class NoidMinter
+    # This module uses noid client to mint a pid
+    module NoidMinter
       def self.call(configuration = {})
-        new(configuration: configuration).call
+        mint_a_pid(configuration: configuration)
       end
 
-      def initialize(configuration)
-        @server = configuration.fetch(:server) { default_server }
-        @port = configuration.fetch(:port) { default_port }
-        @pool = configuration.fetch(:pool) { default_pool }
-      end
-
-      attr_reader :connection
-
-      def connection
-        @connection = ::NoidsClient::Connection.new("#{@server}:#{@port}").get_pool(@pool)
-      end
-
-      # Returns a single NOID
-      def call
+      def mint_a_pid(configuration)
+        @server = configuration.fetch(:server) { Figaro.env.noid_server! }
+        @port = configuration.fetch(:port) { Figaro.env.noid_port! }
+        @pool = configuration.fetch(:pool) { Figaro.env.noid_pool! }
         connection.mint.first
       end
 
-      private
-
-      def default_server
-        Rails.application.secrets.noid_server
+      def connection
+        return @connection if @connection.present?
+        @connection = ::NoidsClient::Connection.new("#{@server}:#{@port}").get_pool(@pool)
       end
 
-      def default_port
-        Rails.application.secrets.noid_port
-      end
+      module_function :mint_a_pid
+      private_class_method :mint_a_pid
+      private :mint_a_pid
 
-      def default_pool
-        Rails.application.secrets.noid_pool
-      end
+      module_function :connection
+      private_class_method :connection
+      private :connection
     end
   end
 end
