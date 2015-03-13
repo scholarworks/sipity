@@ -92,7 +92,9 @@ module Sipity
             end
 
             it 'will create a collaborator' do
-              expect(repository).to receive(:manage_collaborators_for).and_call_original
+              expect(repository).to receive(:manage_collaborators_for).
+                with(work: work, collaborators: subject.send(:collaborators_from_input)).
+                and_call_original
               subject.submit(requested_by: user)
             end
           end
