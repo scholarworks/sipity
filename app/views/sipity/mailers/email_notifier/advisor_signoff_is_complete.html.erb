@@ -1,4 +1,4 @@
-<p><%= @entity.title %> (<%= @entity.document_type %>) by <%= @entity.creator_names %> is ready for Grad School Review at <%= link_to @entity.review_link, @entity.review_link %></p>
+<p><%= @entity.title %> (<%= @entity.work_type %>) by <%= @entity.creator_names %> is ready for Grad School Review at <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></p>
 <p>
   All advisors have signed off (see the list below).
   <ul>

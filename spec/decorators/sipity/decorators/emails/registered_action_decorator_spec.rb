@@ -29,9 +29,6 @@ module Sipity
         its(:action_taken_at) { should eq registered_action.created_at }
         its(:requested_by) { should eq requesting_user }
         its(:on_behalf_of) { should eq on_behalf_of_user }
-
-        its(:review_link) { should eq(subject.email_message_action_url) }
-        its(:work_show_path) { should eq(subject.email_message_action_url) }
       end
     end
   end

@@ -35,8 +35,6 @@ module Sipity
         its(:reviewers) { should eq(reviewers) }
 
         its(:creator_names) { should eq(['John', 'Ringo']) }
-        its(:review_link) { should eq(subject.email_message_action_url) }
-        its(:work_show_path) { should eq(subject.email_message_action_url) }
         its(:accessible_objects) { should eq(accessible_objects) }
       end
     end
