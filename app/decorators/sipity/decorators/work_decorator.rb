@@ -27,6 +27,11 @@ module Sipity
         object.class.human_attribute_name(name)
       end
 
+      include Conversions::ConvertToRichText
+      def rich_text_value(attribute)
+        Conversions::ConvertToRichText.call(attribute).html_safe
+      end
+
       def authors(decorator: Decorators::CollaboratorDecorator)
         repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
