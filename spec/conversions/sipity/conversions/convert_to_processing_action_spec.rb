@@ -38,6 +38,11 @@ module Sipity
             expect(convert_to_processing_action(action, scope: strategy_id)).to eq(action)
           end
 
+          it 'will return the object if it responds to #to_processing_action' do
+            object = double(to_processing_action: action)
+            expect(convert_to_processing_action(object, scope: strategy_id)).to eq(action)
+          end
+
           it 'will raise an error if it cannot convert the object' do
             object = double
             expect { convert_to_processing_action(object, scope: strategy_id) }.
