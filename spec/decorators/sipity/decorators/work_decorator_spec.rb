@@ -27,6 +27,14 @@ module Sipity
         end
       end
 
+      context '#rich_text_value' do
+        it 'returns the value rendered as HTML' do
+          rendered = subject.rich_text_value("several\n\nparagraphs")
+          expect(rendered).to have_tag('p', count: 2)
+          expect(rendered).to be_html_safe
+        end
+      end
+
       it 'shares .object_class with Models::Work' do
         expect(WorkDecorator.object_class).to eq(Models::Work)
       end

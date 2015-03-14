@@ -7,15 +7,19 @@
   .value {
     padding-left:1em;
 
-    ul, ol {
+    p:last-child {
       margin-bottom:0;
     }
 
-    ul {
+    .occurances {
+      margin-bottom:0;
+    }
+
+    ul.occurances {
       padding-left:0;
     }
 
-    ul > li {
+    .occurances > .occurance {
       list-style-type:none;
     }
   }
