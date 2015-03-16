@@ -14,7 +14,10 @@ module Sipity
 
       def update
         run(attributes: update_params) do |on|
-          on.success { |user| redirect_to dashboard_path, notice: message_for("update_account_profile", title: user) }
+          on.success do |user|
+            redirect_destination = session['user_return_to'] || dashboard_path
+            redirect_to redirect_destination, notice: message_for("update_account_profile", title: user)
+          end
           on.failure do |model|
             @model = model
             render action: 'edit'

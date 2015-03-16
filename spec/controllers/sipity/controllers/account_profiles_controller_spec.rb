@@ -48,10 +48,16 @@ module Sipity
         context 'on success' do
           let(:callback_name) { :success }
           let(:yields) { user }
-          it 'will redirect to the account profile page' do
+          it 'will redirect to the dashboard' do
             post 'update', account: attributes
             expect(flash[:notice]).to_not be_empty
             expect(assigns(:model)).to be_nil
+            expect(response).to redirect_to(dashboard_path)
+          end
+          it 'will redirect to the specified user_return_to if given' do
+            controller.session['user_return_to'] = new_work_path
+            post 'update', account: attributes
+            expect(response).to redirect_to(new_work_path)
           end
         end
         context 'on failure' do
