@@ -7,7 +7,7 @@ module Sipity
         delegate :current_user_for_profile_management, to: :context
         self.authentication_layer = ->(context) { context.authenticate_user_for_profile_management! }
         def run(attributes = {})
-          form = repository.build_account_profile_form(attributes.merge(user: current_user_for_profile_management))
+          form = repository.build_account_profile_form(user: current_user_for_profile_management, **attributes)
           callback(:success, form)
         end
       end
@@ -17,7 +17,7 @@ module Sipity
         delegate :current_user_for_profile_management, to: :context
         self.authentication_layer = ->(context) { context.authenticate_user_for_profile_management! }
         def run(attributes = {})
-          form = repository.build_account_profile_form(attributes.merge(user: current_user_for_profile_management))
+          form = repository.build_account_profile_form(user: current_user_for_profile_management, **attributes)
           if form.submit(requested_by: current_user_for_profile_management)
             callback(:success, current_user_for_profile_management)
           else
