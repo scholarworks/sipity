@@ -8,7 +8,7 @@ module Sipity
         let(:user) { double }
         let(:attributes) { { 'test' => 'test' } }
         it { should respond_to :preferred_name }
-        it { should respond_to :agree_to_terms_of_service }
+        it { should respond_to :agreed_to_terms_of_service }
       end
     end
   end

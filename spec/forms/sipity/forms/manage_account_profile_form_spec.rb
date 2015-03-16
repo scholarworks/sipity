@@ -5,19 +5,19 @@ module Sipity
     RSpec.describe ManageAccountProfileForm  do
       let(:user) { User.new(id: 1) }
       let(:repository) { CommandRepositoryInterface.new }
-      let(:attributes) { { user: user, agree_to_terms_of_service: '1', preferred_name: 'Billy Joe Armstrong', repository: repository } }
+      let(:attributes) { { user: user, agreed_to_terms_of_service: '1', preferred_name: 'Billy Joe Armstrong', repository: repository } }
       subject { described_class.new(attributes) }
 
       context 'validations' do
         context 'with invalid data' do
-          let(:attributes) { { user: user, agree_to_terms_of_service: '0', preferred_name: '' } }
+          let(:attributes) { { user: user, agreed_to_terms_of_service: '0', preferred_name: '' } }
           it 'will require a preferred name' do
             subject.valid?
             expect(subject.errors[:preferred_name]).to_not be_blank
           end
           it 'will require agreement to the application\'s terms of service' do
             subject.valid?
-            expect(subject.errors[:agree_to_terms_of_service]).to_not be_blank
+            expect(subject.errors[:agreed_to_terms_of_service]).to_not be_blank
           end
         end
       end

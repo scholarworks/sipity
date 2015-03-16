@@ -12,7 +12,7 @@ module Devise
       # we are enforcing that users must agree to terms of service.
       def success!(resource)
         session['validated_resource_id'] = resource.id
-        if resource.agree_to_terms_of_service?
+        if resource.agreed_to_terms_of_service?
           super(resource)
         else
           uri = URI.parse(request.url)
