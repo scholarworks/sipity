@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       post 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#create'
 
       #Account profile Managament
-      get 'account', to: 'account_profiles#edit', as: 'account_path'
+      get 'account', to: 'account_profiles#edit', as: 'account'
       post 'account', to: 'account_profiles#update'
     end
   end
