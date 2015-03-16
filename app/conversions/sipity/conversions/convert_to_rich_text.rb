@@ -29,7 +29,7 @@ module Sipity
         return if input.nil?
         markdown = RDiscount.new(input, :autolink, :smart)
         html = markdown.to_html
-        Sanitize.fragment(html, Sanitize::Config::RELAXED)
+        Sanitize.clean(html, Sanitize::Config::RELAXED)
       end
 
       module_function :convert_to_rich_text
