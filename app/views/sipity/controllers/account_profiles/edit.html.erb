@@ -11,7 +11,7 @@
     <%= content_tag :p, t("sipity/decorators/account.panels.information.hint"), class: 'panel-hint' %>
     <%= f.error_notification %>
 
-    <%= f.input :preferred_name, input_html: { class: 'form-control' }  %>
+    <%= f.input :preferred_name, input_html: { class: 'form-control', autofocus: true }  %>
   </fieldset>
 
   <fieldset class="panel-body">
