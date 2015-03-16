@@ -13,7 +13,7 @@
 
 SSHKit.config.command_map[:bundle] = '/opt/ruby/current/bin/bundle'
 SSHKit.config.command_map[:rake] = "#{fetch(:bundle)} exec rake"
-set :branch,    'master'
+set :branch, ENV['BRANCH_NAME'] || 'master'
 set :rails_env, 'staging'
 set :deploy_to, '/home/app/sipity'
 set :user,      'app'

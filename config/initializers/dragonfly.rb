@@ -10,7 +10,7 @@ Dragonfly.app.configure do
 
   if Rails.env.test?
     datastore :memory
-  elsif Rails.env.development? || Rails.env.staging?
+  elsif Rails.env.development?
     datastore :file,
       root_path: Rails.root.join('dragonfly', Rails.env),
       server_root: Rails.root.join('public')
