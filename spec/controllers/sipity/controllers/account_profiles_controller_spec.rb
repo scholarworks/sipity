@@ -30,7 +30,7 @@ module Sipity
         let(:yields) { user }
         let(:callback_name) { :success }
         it 'will render the edit page' do
-          get 'edit', user: attributes
+          get 'edit', account: attributes
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('edit')
         end
@@ -49,7 +49,7 @@ module Sipity
           let(:callback_name) { :success }
           let(:yields) { user }
           it 'will redirect to the account profile page' do
-            post 'update', user: attributes
+            post 'update', account: attributes
             expect(flash[:notice]).to_not be_empty
             expect(assigns(:model)).to be_nil
           end
@@ -59,7 +59,7 @@ module Sipity
           let(:callback_name) { :failure }
           let(:yields) { form }
           it 'will render the work again' do
-            post 'update', user: attributes
+            post 'update', account: attributes
             expect(assigns(:model)).to be_present
             expect(response).to render_template('edit')
           end

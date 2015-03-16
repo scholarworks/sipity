@@ -6,7 +6,7 @@ module Sipity
     # @see User
     class ManageAccountProfileForm < BaseForm
       EVENT_NAME = 'agreed_to_terms_of_service'.freeze
-      def initialize(user:, repository: default_repository, **attributes)
+      def initialize(user:, repository: default_repository, attributes: {})
         self.user = user
         self.preferred_name = attributes[:preferred_name]
         self.agreed_to_terms_of_service = attributes[:agreed_to_terms_of_service]

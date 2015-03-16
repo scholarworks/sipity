@@ -39,11 +39,11 @@ module Sipity
       private
 
       def edit_params
-        params[:user] || {}
+        params[:account] || {}
       end
 
       def update_params
-        params.require(:user)
+        params.require(:account)
       end
     end
   end
