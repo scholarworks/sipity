@@ -24,7 +24,6 @@ module Sipity
             with(work: work).and_return(reviewers)
         end
 
-        its(:document_type) { should eq('Doctoral Dissertation') }
         its(:work_type) { should eq('Doctoral Dissertation') }
         its(:title) { should eq(work.title) }
         its(:email_message_action_description) { should eq("Review Doctoral Dissertation “#{work.title}”") }
