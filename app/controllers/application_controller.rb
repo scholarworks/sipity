@@ -30,7 +30,12 @@ class ApplicationController < ActionController::Base
   # for the moment just remove it always.  If we show a transition page in the future we may want to  display it then.
   def filter_notify
     return true unless flash[:alert].present?
-    flash[:alert] = Array.wrap(flash[:alert]).select { |alert| alert != t('devise.failure.unauthenticated') }
+    flash[:alert] = Array.wrap(flash[:alert]).reject do |alert|
+      [
+        t('devise.failure.unauthenticated'),
+        t('devise.failure.invalid', authentication_keys: Devise.authentication_keys.first)
+      ].include?(alert)
+    end
     flash[:alert] = nil unless flash[:alert].present?
     true
   end
