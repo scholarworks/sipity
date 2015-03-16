@@ -4,7 +4,7 @@ module Devise
   # :nodoc:
   module Strategies
     VALIDATED_RESOURCE_ID_SESSION_KEY = 'validated_resource_id'
-    TERMS_OF_SERVICE_AGREEMENT_PATH = '/account/edit'
+    TERMS_OF_SERVICE_AGREEMENT_PATH = '/account'
     # Authenticate a user but handle the case in which the user has not yet
     # agreed to terms of service.
     #
