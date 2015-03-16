@@ -1,6 +1,7 @@
 require 'devise_cas_authenticatable/strategy'
 
 module Devise
+  # :nodoc:
   module Strategies
     VALIDATED_RESOURCE_ID_SESSION_KEY = 'validated_resource_id'
     TERMS_OF_SERVICE_AGREEMENT_PATH = '/account/edit'

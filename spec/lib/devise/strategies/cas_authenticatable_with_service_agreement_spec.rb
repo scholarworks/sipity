@@ -9,7 +9,7 @@ module Devise
         resource = User.new(id: 123, agreed_to_terms_of_service: true)
         expect { subject.success!(resource) }.
           to change { env['rack.session'] }.
-          from({}).to({ Devise::Strategies::VALIDATED_RESOURCE_ID_SESSION_KEY => resource.id })
+          from({}).to(Devise::Strategies::VALIDATED_RESOURCE_ID_SESSION_KEY => resource.id)
       end
 
       it 'will be successful if the user has agreed_to_terms_of_service' do
@@ -20,7 +20,8 @@ module Devise
 
       it 'will not be successful if the user has not agreed_to_terms_of_service' do
         expect(subject.request).to receive(:url).and_return('http://test.com')
-        expect(subject).to receive(:redirect!).with(File.join("http://test.com", Devise::Strategies::TERMS_OF_SERVICE_AGREEMENT_PATH))
+        expect(subject).to receive(:redirect!).
+          with(File.join("http://test.com", Devise::Strategies::TERMS_OF_SERVICE_AGREEMENT_PATH))
         resource = User.new(id: 123, agreed_to_terms_of_service: false)
         expect { subject.success!(resource) }.
           to_not change { subject.instance_variable_get("@user") }
@@ -56,7 +57,7 @@ module Devise
       end
 
       context 'without a validated session resource id' do
-        let(:env) { { 'rack.session' => { } } }
+        let(:env) { { 'rack.session' => {} } }
         subject { described_class.new(env) }
 
         it 'will not be valid if the session has been set' do
