@@ -16,7 +16,7 @@ module Sipity
         end
 
         it 'will require authentication by default' do
-          expect(described_class.authentication_layer).to eq(:default)
+          expect(described_class.authentication_layer).to respond_to(:call)
         end
 
         it 'issues the :success callback' do
@@ -29,7 +29,7 @@ module Sipity
       RSpec.describe Update do
         let(:form) { double('Form', submit: update_response) }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(current_user: user, build_account_profile_form: form) }
+        let(:context) { TestRunnerContext.new(current_user_for_profile_management: user, build_account_profile_form: form) }
         let(:update_response) { nil }
         let(:handler) { double(invoked: true) }
         let(:attributes) { {} }
@@ -42,7 +42,7 @@ module Sipity
         end
 
         it 'will require authentication by default' do
-          expect(described_class.authentication_layer).to eq(:default)
+          expect(described_class.authentication_layer).to respond_to(:call)
         end
 
         context 'when account profile is updated' do
