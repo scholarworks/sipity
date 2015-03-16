@@ -40,7 +40,8 @@ Rails.application.routes.draw do
   end
 
   root to: 'visitors#index'
-  devise_for :users
+
+  devise_for :users, only: :sessions
   devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
