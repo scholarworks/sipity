@@ -1,0 +1,28 @@
+<%= content_tag :h1, t("sipity/decorators/account.call_to_action") %>
+<% description = t("sipity/decorators/account.description") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<%= simple_form_for(model, url: account_path, as: :account, html: { class: 'panel panel-primary with-footer' }) do |f| %>
+  <legend class="panel-heading">
+    <%= content_tag :h3, t("sipity/decorators/account.panels.information.title_html"), class: 'panel-title' %>
+  </legend>
+
+  <fieldset class="panel-body">
+    <%= content_tag :p, t("sipity/decorators/account.panels.information.hint"), class: 'panel-hint' %>
+    <%= f.error_notification %>
+
+    <%= f.input :preferred_name, input_html: { class: 'form-control' }  %>
+  </fieldset>
+
+  <fieldset class="panel-body">
+    <%= content_tag :p, t("sipity/decorators/account.panels.terms_of_service.hint"), class: 'panel-hint' %>
+    <article 'legally-binding-text'>
+      <%= t('statement_of_terms', scope: 'sipity/legal.service').html_safe %>
+    </article>
+    <%= f.input :agreed_to_terms_of_service, as: :boolean, input_html: { class: 'form-control' }  %>
+  </fieldset>
+
+  <%#= model.work.with_action_pane('new_citation', 'panel-footer') do %>
+    <%= f.submit nil, name: "form/account/submit" %>
+  <%# end %>
+<% end %>
