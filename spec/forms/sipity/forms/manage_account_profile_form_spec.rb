@@ -8,6 +8,8 @@ module Sipity
       let(:attributes) { { agreed_to_terms_of_service: '1', preferred_name: 'Billy Joe Armstrong' } }
       subject { described_class.new(user: user, repository: repository, attributes: attributes) }
 
+      its(:default_repository) { should respond_to(:user_agreed_to_terms_of_service) }
+
       context 'validations' do
         context 'with invalid data' do
           let(:attributes) { { agreed_to_terms_of_service: '0', preferred_name: '' } }
