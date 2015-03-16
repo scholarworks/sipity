@@ -23,6 +23,7 @@ module Sipity
       def submit(requested_by:)
         super() do
           repository.update_user_preferred_name(user: user, preferred_name: preferred_name)
+          repository.user_agreed_to_terms_of_service(user: user)
           repository.log_event!(entity: user, user: requested_by, event_name: EVENT_NAME)
         end
       end

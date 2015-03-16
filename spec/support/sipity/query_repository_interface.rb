@@ -22,7 +22,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
-    def build_account_profile_form(attributes:)
+    def build_account_profile_form(user:, attributes:)
     end
 
     # @see ./app/repositories/sipity/queries/citation_queries.rb
