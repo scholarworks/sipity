@@ -2,6 +2,8 @@ require 'devise_cas_authenticatable/strategy'
 
 module Devise
   module Strategies
+    VALIDATED_RESOURCE_ID_SESSION_KEY = 'validated_resource_id'
+    TERMS_OF_SERVICE_AGREEMENT_PATH = '/account/edit'
     # Authenticate a user but handle the case in which the user has not yet
     # agreed to terms of service.
     #
@@ -11,13 +13,13 @@ module Devise
       # I need to alter the success criteria for CasAuthenticatable; Because
       # we are enforcing that users must agree to terms of service.
       def success!(resource)
-        session['validated_resource_id'] = resource.id
+        session[VALIDATED_RESOURCE_ID_SESSION_KEY] = resource.id
         if resource.agreed_to_terms_of_service?
           super(resource)
         else
           uri = URI.parse(request.url)
           uri.query = nil
-          uri.path = "/account/edit" # TODO: Make this configurable
+          uri.path = TERMS_OF_SERVICE_AGREEMENT_PATH
           redirect!(uri.to_s)
         end
       end
@@ -53,7 +55,7 @@ module Devise
       private
 
       def resource_id_from_session
-        session['validated_resource_id']
+        session[VALIDATED_RESOURCE_ID_SESSION_KEY]
       end
     end
   end
