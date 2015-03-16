@@ -5,6 +5,19 @@ module Sipity
   module Controllers
     RSpec.describe AccountProfilesController, type: :controller do
 
+      context '#current_user' do
+        let(:user) { double }
+        it 'will use the #current_user_for_profile_management if there is no current user' do
+          expect(controller).to receive(:current_user_for_profile_management).and_return(user)
+          expect(controller.current_user).to eq(user)
+        end
+        it 'will use the #current_user before the #current_user_for_profile_management' do
+          controller.instance_variable_set("@current_user", user)
+          expect(controller).to_not receive(:current_user_for_profile_management)
+          expect(controller.current_user).to eq(user)
+        end
+      end
+
       let(:user) { double('User') }
       context 'GET #edit' do
         before { controller.runner = runner }
@@ -17,7 +30,7 @@ module Sipity
         let(:yields) { user }
         let(:callback_name) { :success }
         it 'will render the edit page' do
-          get 'edit', user: attributes
+          get 'edit', account: attributes
           expect(assigns(:model)).to_not be_nil
           expect(response).to render_template('edit')
         end
@@ -35,10 +48,16 @@ module Sipity
         context 'on success' do
           let(:callback_name) { :success }
           let(:yields) { user }
-          it 'will redirect to the account profile page' do
-            post 'update', user: attributes
+          it 'will redirect to the dashboard' do
+            post 'update', account: attributes
             expect(flash[:notice]).to_not be_empty
             expect(assigns(:model)).to be_nil
+            expect(response).to redirect_to(dashboard_path)
+          end
+          it 'will redirect to the specified user_return_to if given' do
+            controller.session['user_return_to'] = new_work_path
+            post 'update', account: attributes
+            expect(response).to redirect_to(new_work_path)
           end
         end
         context 'on failure' do
@@ -46,7 +65,7 @@ module Sipity
           let(:callback_name) { :failure }
           let(:yields) { form }
           it 'will render the work again' do
-            post 'update', user: attributes
+            post 'update', account: attributes
             expect(assigns(:model)).to be_present
             expect(response).to render_template('edit')
           end

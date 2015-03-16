@@ -34,13 +34,15 @@ Rails.application.routes.draw do
       post 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#create'
 
       #Account profile Managament
-      get 'account/edit', to: 'account_profiles#edit'
+      get 'account', to: 'account_profiles#edit', as: 'account'
       post 'account', to: 'account_profiles#update'
     end
   end
 
   root to: 'visitors#index'
-  devise_for :users
+
+  devise_for :users #, only: :sessions
+  devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
 end

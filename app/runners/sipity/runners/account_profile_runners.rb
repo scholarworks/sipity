@@ -4,20 +4,22 @@ module Sipity
     module AccountProfileRunners
       # Responsible for instantiating the account profile for edit
       class Edit < BaseRunner
-        self.authentication_layer = :default
+        delegate :current_user_for_profile_management, to: :context
+        self.authentication_layer = ->(context) { context.authenticate_user_for_profile_management! }
         def run(attributes = {})
-          form = repository.build_account_profile_form(attributes.merge(user: current_user))
+          form = repository.build_account_profile_form(user: current_user_for_profile_management, **attributes)
           callback(:success, form)
         end
       end
 
       # Responsible for updating account profile
       class Update < BaseRunner
-        self.authentication_layer = :default
+        delegate :current_user_for_profile_management, to: :context
+        self.authentication_layer = ->(context) { context.authenticate_user_for_profile_management! }
         def run(attributes = {})
-          form = repository.build_account_profile_form(attributes.merge(user: current_user))
-          if form.submit(requested_by: current_user)
-            callback(:success, current_user)
+          form = repository.build_account_profile_form(user: current_user_for_profile_management, **attributes)
+          if form.submit(requested_by: current_user_for_profile_management)
+            callback(:success, current_user_for_profile_management)
           else
             callback(:failure, form)
           end

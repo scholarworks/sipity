@@ -38,7 +38,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
-    def build_account_profile_form(attributes:)
+    def build_account_profile_form(user:, attributes:)
     end
 
     # @see ./app/repositories/sipity/queries/citation_queries.rb
@@ -335,6 +335,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def update_work_title!(work:, title:)
+    end
+
+    # @see ./app/repositories/sipity/commands/account_profile_commands.rb
+    def user_agreed_to_terms_of_service(user:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
