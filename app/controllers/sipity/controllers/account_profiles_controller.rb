@@ -25,6 +25,8 @@ module Sipity
       # Because I am leveraging Warden and Devise to negotiate the difference
       # between a user that has agreed to terms of service and one that has
       # not.
+      #
+      # @see config/initializers/devise.rb
       def current_user
         super || current_user_for_profile_management
       end
