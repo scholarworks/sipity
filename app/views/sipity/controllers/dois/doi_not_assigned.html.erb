@@ -6,6 +6,6 @@
   <%= render template: 'sipity/controllers/dois/request_a_doi' %>
 </div>
 
-<%= model.work.with_action_pane('actions') do %>
+<div class="<%= dom_class(model, 'actions') %> action-pane">
   <%= link_to t('sipity/dois.action/show.cancel'), work_path(model.work), class: 'btn btn-default' %>
-<% end %>
+</div>

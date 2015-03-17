@@ -14,7 +14,7 @@
       <%= f.input :access_rights_answer, as: :radio_buttons, collection: model.access_rights_answer_for_select %>
     <% end %>
   </div>
-  <%= model.with_action_pane('actions') do %>
+  <div class="<%= dom_class(model, 'actions') %> action-pane">
     <%= f.submit %>
-  <% end %>
+  </div>
 <% end %>

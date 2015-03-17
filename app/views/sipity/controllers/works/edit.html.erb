@@ -8,7 +8,7 @@
       <%= render 'form_for_work_publication_strategy', { f: f } %>
     <% end %>
   </div>
-  <%= model.with_action_pane('actions') do %>
+  <div class="<%= dom_class(model, 'actions') %> action-pane">
     <%= f.submit %>
-  <% end %>
+  </div>
 <% end %>
