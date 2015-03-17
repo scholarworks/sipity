@@ -75,7 +75,7 @@ Rails.application.configure do
     port:                 Figaro.env.smtp_port!,
     domain:               Figaro.env.smtp_domain!,
     user_name:            Figaro.env.smtp_user_name!,
-    password:             Figaro.env.smtp_password!,
+    password:             Figaro.env.smtp_password,
     authentication:       Figaro.env.smtp_authentication_type!,
     enable_starttls_auto: Figaro.env.smtp_enable_starttls_auto!
   }
