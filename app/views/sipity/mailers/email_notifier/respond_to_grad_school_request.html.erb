@@ -1,0 +1,9 @@
+<p>
+  <%= @entity.name_of_commentor %> has responded to a request for changes to <%= link_to @entity.title, @entity.email_message_action_url %>.
+</p>
+
+<p><strong><%= @entity.name_of_commentor %> Comments:</strong></p>
+
+<p><%= @entity.comment %></p>
+
+<%= render(partial: 'action_in_the_inbox', object: @entity) %>

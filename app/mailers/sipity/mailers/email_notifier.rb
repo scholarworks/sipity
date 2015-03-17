@@ -37,7 +37,9 @@ module Sipity
 
       NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS = [
         :advisor_requests_change,
-        :grad_school_requests_change
+        :grad_school_requests_change,
+        :respond_to_advisor_request,
+        :respond_to_grad_school_request
       ].freeze
 
       NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |method_name|
