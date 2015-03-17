@@ -17,7 +17,7 @@ set :branch,    ENV["BRANCH_NAME"] || 'master'
 set :rails_env, 'production'
 set :deploy_to, '/home/app/sipity'
 set :user,      'app'
-set :domain,    fetch(:host, 'deposit.library.nd.edu')
+set :domain,    fetch(:host, 'sipity.library.nd.edu')
 set :bundle_without, %w{development test doc}.join(' ')
 set :shared_directories,  %w(log)
 set :shared_files, %w()
