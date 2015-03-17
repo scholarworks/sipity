@@ -27,17 +27,20 @@ en:
     models:
       sipity/work: Deposit
     attributes:
-      sipity/models/work:
-        access_rights_answer: 'Access rights'
-        citationType: 'Citation style'
-        collaborators: 'People involved'
-        publicationDate: 'Publication date'
-        work_publication_strategy: 'Publication intent'
+      sipity/models/attachment:
+        access_right_code: 'Release'
       sipity/models/collaborator:
         contact_information: 'Contact Information'
         email: 'Email'
         netid: 'NetID'
         responsible_for_review: 'Review Sign Off'
+      sipity/models/work:
+        access_right_code: 'Release'
+        access_rights_answer: 'Access rights'
+        citationType: 'Citation style'
+        collaborators: 'People involved'
+        publicationDate: 'Publication date'
+        work_publication_strategy: 'Publication intent'
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Siptiy'
