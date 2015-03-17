@@ -107,6 +107,21 @@ module Sipity
           expect(subject.errors[:release_date]).to be_present
         end
 
+        it 'will blank out the release date when a release date is given but the access_right_code is "open_access"' do
+          subject = described_class.new(persisted_object, release_date: Date.today, access_right_code: 'open_access')
+          expect(subject.release_date).to_not be_present
+        end
+
+        it 'will not blank out the release date when a release date is given but no access_right_code' do
+          subject = described_class.new(persisted_object, release_date: Date.today)
+          expect(subject.release_date).to be_present
+        end
+
+        it 'will not blank out the release date when a release date is given and access_right code is "embargo_then_open_access"' do
+          subject = described_class.new(persisted_object, release_date: Date.today, access_right_code: 'embargo_then_open_access')
+          expect(subject.release_date).to be_present
+        end
+
         it 'will be invalid if an incorrect access code is given' do
           subject = described_class.new(persisted_object, access_right_code: 'chocolate bunny')
           subject.valid?
