@@ -1,28 +1,47 @@
-<%= content_tag :h1, t("sipity/decorators/account.call_to_action") %>
+<%= content_tag :h1, t("sipity/decorators/account.call_to_action"), class: 'centered with-bottom-padding' %>
 <% description = t("sipity/decorators/account.description") %>
 <%= content_tag( :p, description) if description.present? %>
 
-<%= simple_form_for(model, url: account_path, as: :account, html: { class: 'panel panel-primary with-footer' }) do |f| %>
-  <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/account.panels.information.title_html"), class: 'panel-title' %>
-  </legend>
+<%= simple_form_for(model, url: account_path, as: :account) do |f| %>
+  <%= f.error_notification %>
 
-  <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/account.panels.information.hint"), class: 'panel-hint' %>
-    <%= f.error_notification %>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4">
+      <fieldset class="<%= dom_class(model, 'information') %> panel panel-primary">
+        <legend class="panel-heading">
+          <%= content_tag :h3, t("sipity/decorators/account.panels.information.title_html"), class: 'panel-title' %>
+        </legend>
 
-    <%= f.input :preferred_name, input_html: { class: 'form-control', autofocus: true }  %>
-  </fieldset>
+        <div class="panel-body">
+          <%= content_tag :p, t("sipity/decorators/account.panels.information.hint"), class: 'panel-hint' %>
+          <%= f.input :preferred_name, input_html: { class: 'form-control', autofocus: true }  %>
+        </div>
+      </fieldset>
+    </div>
+  </div>
 
-  <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/account.panels.terms_of_service.hint"), class: 'panel-hint' %>
-    <article 'legally-binding-text'>
-      <%= t('statement_of_terms', scope: 'sipity/legal.service').html_safe %>
-    </article>
-    <%= f.input :agreed_to_terms_of_service, as: :boolean, input_html: { class: 'form-control' }  %>
-  </fieldset>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <fieldset>
+        <%= content_tag :h2, t("sipity/decorators/account.panels.terms_of_service.title_html") %>
+        <article 'legally-binding-text'>
+          <%= t('statement_of_terms', scope: 'sipity/legal.service').html_safe %>
+        </article>
+        <%= f.input(:agreed_to_terms_of_service,
+                      as: :boolean,
+                      inline_label:
+                      t('agree_to_terms', scope: 'sipity/legal.service'),
+                      input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
+                      label: false,
+                      wrapper_class: 'checkbox'
+                  ) %>
+      </fieldset>
+    </div>
+  </div>
 
-  <%#= model.work.with_action_pane('new_citation', 'panel-footer') do %>
-    <%= f.submit nil, name: "form/account/submit" %>
-  <%# end %>
+  <div class="row">
+    <div class="action-pane centered with-top-padding col-xs-12">
+      <%= f.submit nil, name: 'form/account/submit', class: 'btn btn-primary' %>
+    </div>
+  </div>
 <% end %>
