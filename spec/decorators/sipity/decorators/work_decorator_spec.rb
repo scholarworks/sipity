@@ -20,13 +20,6 @@ module Sipity
         end
       end
 
-      context '#with_action_pane' do
-        it 'wrap the results of the block inside an action pane' do
-          rendered = subject.with_action_pane('actions') { 'submit' }
-          expect(rendered).to have_tag('.action-pane', content: 'submit')
-        end
-      end
-
       context '#rich_text_value' do
         it 'returns the value rendered as HTML' do
           rendered = subject.rich_text_value("several\n\nparagraphs")

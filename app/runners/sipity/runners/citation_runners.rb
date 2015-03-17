@@ -27,8 +27,7 @@ module Sipity
 
         def run(work_id:)
           work = repository.find_work(work_id)
-          decorated_work = Decorators::WorkDecorator.decorate(work)
-          form = repository.build_assign_a_citation_form(work: decorated_work)
+          form = repository.build_assign_a_citation_form(work: work)
           authorization_layer.enforce!(action_name => form) do
             if repository.citation_already_assigned?(work)
               callback(:citation_assigned, work)
@@ -47,8 +46,7 @@ module Sipity
 
         def run(work_id:, attributes: {})
           work = repository.find_work(work_id)
-          decorated_work = Decorators::WorkDecorator.decorate(work)
-          form = repository.build_assign_a_citation_form(attributes.merge(work: decorated_work))
+          form = repository.build_assign_a_citation_form(attributes.merge(work: work))
           authorization_layer.enforce!(action_name => form) do
             if form.submit(requested_by: current_user)
               callback(:success, work)

@@ -8,10 +8,7 @@ module Sipity
 
         def run(work_id:, enrichment_type:)
           work = repository.find_work(work_id)
-          # TODO: Remove this behavior; It does not belong here. However it is
-          #   necessary for the rendered views. So be mindful of that.
-          decorated_work = Decorators::WorkDecorator.decorate(work)
-          form = repository.build_enrichment_form(work: decorated_work, enrichment_type: enrichment_type)
+          form = repository.build_enrichment_form(work: work, enrichment_type: enrichment_type)
           authorization_layer.enforce!(enrichment_type => form) do
             callback(:success, form)
           end
@@ -25,10 +22,7 @@ module Sipity
 
         def run(work_id:, enrichment_type:, attributes:)
           work = repository.find_work(work_id)
-          # TODO: Remove this behavior; It does not belong here. However it is
-          #   necessary for the rendered views. So be mindful of that.
-          decorated_work = Decorators::WorkDecorator.decorate(work)
-          form = repository.build_enrichment_form(attributes.merge(work: decorated_work, enrichment_type: enrichment_type))
+          form = repository.build_enrichment_form(attributes.merge(work: work, enrichment_type: enrichment_type))
           authorization_layer.enforce!(enrichment_type => form) do
             if form.submit(requested_by: current_user)
               callback(:success, work)

@@ -80,11 +80,11 @@
     </table>
   </fieldset>
 
-  <%= model.work.with_action_pane('new_defense_date', 'panel-footer') do %>
+  <div class="panel-footer action-pane">
     <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
-  <% end %>
+  </div>
 <% end %>
 
-<%= model.work.with_action_pane('actions') do %>
+<div class="action-pane">
   <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
-<% end %>
+</div>
