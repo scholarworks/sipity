@@ -51,6 +51,12 @@ module Sipity
         expect(subject.human_attribute_name(:title)).to eq('Title')
       end
 
+      it 'will have #accessible_objects' do
+        accessible_objects = [double, double]
+        expect(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return(accessible_objects)
+        expect(subject.accessible_objects).to eq(accessible_objects)
+      end
+
       xit '#state_advancing_actions is missing'
       xit '#resourceful_actions is missing'
       xit '#enrichment_actions is missing'

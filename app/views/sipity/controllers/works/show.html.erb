@@ -144,10 +144,10 @@
             <% if model.collaborators.present? %>
               <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
               <dd class="value collaborators">
-                <ul class="collaborators-list">
+                <ul class="nested-attributes-list">
                   <% model.collaborators.each do |collaborator| %>
-                    <li class="collaborators-list-item">
-                      <dl class="collaborator">
+                    <li class="nested-attribute-list">
+                      <dl class="nested-attribute-definition">
                         <dt class="predicate name"><%= collaborator.human_attribute_name(:name) %></dt>
                         <dd class="value name"><%= collaborator.name %></dd>
                         <dt class="predicate role"><%= collaborator.human_attribute_name(:role) %></dt>
@@ -167,6 +167,27 @@
                   </ul>
                 </dd>
               <% end %>
+            <% end %>
+            <% if model.accessible_objects.any? %>
+              <dt class="predicate accessible-objects"><%= model.human_attribute_name('access_rights') %></dt>
+              <dd class="value accessible-objects">
+                <ul class="nested-attributes-list">
+                  <% model.accessible_objects.each do |accessible_object| %>
+                    <li class="nested-attribute-list">
+                      <dl class="nested-attribute-definition">
+                        <dt class="predicate title"><%= accessible_object.human_attribute_name(:title) %></dt>
+                        <dd class="value title"><%= accessible_object %></dd>
+                        <dt class="predicate access-right"><%= accessible_object.human_attribute_name(:access_right_code) %></dt>
+                        <dd class="value access-right"><%= accessible_object.access_right_code.to_s.titleize %></dd>
+                        <% if accessible_object.release_date.present? %>
+                        <dt class="predicate release-date"><%= accessible_object.human_attribute_name(:release_date) %></dt>
+                        <dd class="value release-date"><%= accessible_object.release_date %></dd>
+                        <% end %>
+                      </dl>
+                    </li>
+                  <% end %>
+                </ul>
+              </dt>
             <% end %>
           </dl>
         </div>

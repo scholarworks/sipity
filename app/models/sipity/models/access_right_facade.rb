@@ -18,6 +18,12 @@ module Sipity
       delegate :access_right_code, :release_date, to: :access_right_object
       alias_method :entity_id, :id
       attr_reader :entity_type
+      attr_reader :accessible_object
+      private :accessible_object
+
+      def human_attribute_name(name)
+        accessible_object.class.human_attribute_name(name)
+      end
 
       private
 
