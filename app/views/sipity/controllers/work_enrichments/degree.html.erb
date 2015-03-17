@@ -22,12 +22,12 @@
         <%= f.input :program_name, collection: model.available_program_names, input_html: { class: 'form-control', multiple: true, selected: model.program_name } %>
     </fieldset>
 
-    <div class="<%= dom_class(model, 'new_degree') %> panel-footer action-pane">
+    <div class="panel-footer action-pane">
       <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
     </div>
   <% end %>
 </div>
 
-<div class="<%= dom_class(model, 'actions') %> action-pane">
+<div class="action-pane">
   <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 </div>

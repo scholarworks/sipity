@@ -26,13 +26,13 @@
 
     </fieldset>
 
-    <div class="<%= dom_class(model, 'new_citation') %> panel-footer action-pane">
+    <div class="panel-footer action-pane">
       <%= f.submit %>
     </div>
   <% end %>
 
 </div>
 
-<div class="<%= dom_class(model, 'actions') %> action-pane">
+<div class="action-pane">
   <%= link_to t('sipity/citations.action/show.cancel'), work_path(model.work), class: 'btn btn-default' %>
 </div>
