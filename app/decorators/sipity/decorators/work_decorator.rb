@@ -27,6 +27,10 @@ module Sipity
         object.class.human_attribute_name(name)
       end
 
+      def accessible_objects
+        @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
+      end
+
       include Conversions::ConvertToRichText
       def rich_text_value(attribute)
         Conversions::ConvertToRichText.call(attribute).html_safe
