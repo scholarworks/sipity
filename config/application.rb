@@ -23,9 +23,8 @@ module Sipity
       config.autoload_paths << Rails.root.join("app/#{concept}")
     end
 
-    config.default_netid_remote_validator = lambda do |netid|
-      # Because our LDAP connection does not appear to work
-      true
+    config.default_netid_remote_validator = lambda do |a_netid|
+      Services::RemoteNetidValidator.valid_netid?(a_netid)
     end
 
     config.default_pid_minter = lambda do

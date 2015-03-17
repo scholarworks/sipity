@@ -7,5 +7,7 @@ Figaro.require_keys(
   'default_email_from',
   'noid_server',
   'noid_port',
-  'noid_pool'
+  'noid_pool',
+  'hesburgh_api_host',
+  'hesburgh_api_auth_token'
 )

@@ -20,6 +20,8 @@ default_email_return_path: 'no-reply@nd.edu'
 noid_server: 'noidserver.com'
 noid_port: '3000'
 noid_pool: 'pool_name'
+hesburgh_api_host: https://api.library.nd.edu/
+hesburgh_api_auth_token: '12345'
 
 development:
   domain_name: "example.com"
