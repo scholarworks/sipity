@@ -127,7 +127,17 @@ module Sipity
 
           include Conversions::ConvertToDate
           def release_date=(value)
-            @release_date = convert_to_date(value) { nil }
+            if keep_user_input_release_date?
+              @release_date = convert_to_date(value) { nil }
+            else
+              @release_date = nil
+            end
+          end
+
+          def keep_user_input_release_date?
+            # We don't want to obliterate their input just because they didn't
+            # give us an access_right_code.
+            access_right_code.blank? || will_be_under_embargo?
           end
 
           def will_be_under_embargo?
