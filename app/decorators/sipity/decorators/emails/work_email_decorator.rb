@@ -34,9 +34,6 @@ module Sipity
           @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: work)
         end
 
-        alias_method :document_type, :work_type
-        deprecate :document_type
-
         # TODO: The methods with `email_message_` prefix are ripe for extraction
         #   into a composed object. After all they are shared with the
         #   ProcessingCommentDecorator.

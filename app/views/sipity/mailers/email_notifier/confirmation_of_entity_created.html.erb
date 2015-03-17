@@ -2,7 +2,7 @@
 
 <dl>
   <dd>Title: </dd> <dt><%= @entity.title %></dt>
-  <dd>Submission Type: </dd> <dt><%= @entity.document_type %></dt>
+  <dd>Submission Type: </dd> <dt><%= @entity.work_type %></dt>
 </dl>
 
 <p>To access your ETD record, please use the following URL: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></p>
