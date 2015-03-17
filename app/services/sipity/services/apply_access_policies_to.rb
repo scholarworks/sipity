@@ -25,10 +25,10 @@ module Sipity
       include Conversions::ConvertToDate
 
       def find_or_create_access_right_from(attributes)
-        Models::AccessRight.find_or_initialize_by(attributes.slice(:entity_id, :entity_type)) do |access_right|
-          access_right.access_right_code = attributes.fetch(:access_right_code)
-          access_right.release_date = convert_to_date(attributes.fetch(:release_date)) { nil }
-        end.save!
+        access_right = Models::AccessRight.find_or_initialize_by(attributes.slice(:entity_id, :entity_type))
+        access_right.access_right_code = attributes.fetch(:access_right_code)
+        access_right.release_date = convert_to_date(attributes.fetch(:release_date)) { nil }
+        access_right.save!
       end
     end
   end
