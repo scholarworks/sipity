@@ -44,7 +44,9 @@ feature 'Enriching a Work', :devise, :feature do
     create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
     on('work_page') do |the_page|
-      expect(the_page.text_for('title')).to eq(['Hello World'])
+      # There are two because it is listed as a top-level attribute and as part
+      # of the access rights.
+      expect(the_page.text_for('title')).to eq(['Hello World', 'Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['Do Not Know']) # NOTE: weak match on default I18n
     end
   end

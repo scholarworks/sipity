@@ -17,6 +17,10 @@ module Sipity
       its(:entity_type) { should eq(Sipity::Models::Work) }
       its(:access_right_code) { should eq(access_right.access_right_code) }
       its(:release_date) { should eq(access_right.release_date) }
+
+      it 'will leverage the access right to translate human_attribute_name' do
+        expect(subject.human_attribute_name(:title)).to eq('Title')
+      end
     end
   end
 end
