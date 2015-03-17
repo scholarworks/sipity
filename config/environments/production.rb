@@ -64,24 +64,21 @@ Rails.application.configure do
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
 
-  # Send deprecation notices to registered listeners.
-  config.active_support.deprecation = :notify
-
-  config.action_mailer.smtp_settings = {
-    address: "smtp.gmail.com",
-    port: 587,
-    domain: Rails.application.secrets.domain_name,
-    authentication: "plain",
-    enable_starttls_auto: true,
-    user_name: Rails.application.secrets.email_provider_username,
-    password: Rails.application.secrets.email_provider_password
-  }
   # ActionMailer Config
-  config.action_mailer.default_url_options = { host:  Rails.application.secrets.domain_name }
-  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.default_url_options = { host:  Figaro.env.domain_name }
+  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.raise_delivery_errors = true
+  # Send email in development mode?
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = false
-
+  config.action_mailer.smtp_settings = {
+    address:              Figaro.env.smtp_host!,
+    port:                 Figaro.env.smtp_port!,
+    domain:               Figaro.env.smtp_domain!,
+    user_name:            Figaro.env.smtp_user_name!,
+    password:             Figaro.env.smtp_password!,
+    authentication:       Figaro.env.smtp_authentication_type!,
+    enable_starttls_auto: Figaro.env.smtp_enable_starttls_auto!
+  }
 
   # Disable automatic flushing of the log to improve performance.
   # config.autoflush_log = false
