@@ -31,9 +31,9 @@ module Sipity
 
       context '#representative_attachment_for' do
         it 'returns attachment marked as representative for work' do
-          Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment',
+          attachment = Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment',
                                      file: file, is_representative_file: true)
-          expect(subject.representative_attachment_for(work: work).count).to eq(1)
+          expect(subject.representative_attachment_for(work: work).count).to eq(attachment)
         end
       end
 
