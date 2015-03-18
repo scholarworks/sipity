@@ -144,14 +144,6 @@
             <dd class="value work_publication_strategy">
               <%= t("simple_form.options.defaults.work_publication_strategy.#{model.work_publication_strategy}") %>
             </dd>
-            <dt class="predicate access_rights"><%= model.human_attribute_name(:access_rights_answer) %></dt>
-            <% if model.access_rights.present? %>
-              <% model.access_rights.each do |rights_statement| %>
-                <dd class="value access_rights">
-                  <%= t("simple_form.options.defaults.access_rights_answer.#{rights_statement.access_right_code}") %>
-                </dd>
-              <% end %>
-            <% end %>
             <% if model.collaborators.present? %>
               <dt class="predicate collaborators"><%= model.human_attribute_name(:collaborators) %></dt>
               <dd class="value collaborators">
@@ -180,7 +172,7 @@
               <% end %>
             <% end %>
             <% if model.accessible_objects.any? %>
-              <dt class="predicate accessible-objects"><%= model.human_attribute_name('access_rights') %></dt>
+              <dt class="predicate accessible-objects"><%= model.human_attribute_name('access_rights').html_safe %></dt>
               <dd class="value accessible-objects">
                 <ul class="nested-attributes-list">
                   <% model.accessible_objects.each do |accessible_object| %>

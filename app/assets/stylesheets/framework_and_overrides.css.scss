@@ -130,12 +130,19 @@ abbr[title] {
   text-transform: lowercase;
 }
 
+// Utility classes
 .centered {
   text-align:center;
 }
+
 .with-bottom-padding {
   padding-bottom:1em;
 }
+
 .with-top-padding {
   padding-top:1em;
+}
+
+.help-icon {
+  color:$brand-primary;
 }

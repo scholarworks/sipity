@@ -41,6 +41,7 @@
     $('.multi_value.control-group').manage_fields();
     adjustRequiredCollaborators();
     adjustRequiredAttachements();
+    $('.help-icon').tooltip();
   };
 
   $(document).ready(ready);

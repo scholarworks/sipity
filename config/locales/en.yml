@@ -35,6 +35,7 @@ en:
         netid: 'NetID'
         responsible_for_review: 'Review Sign Off'
       sipity/models/work:
+        access_rights: 'Access Rights <span class="glyphicon glyphicon-question-sign help-icon" data-toggle="tooltip" data-placement="top" title="Who can see this material after it is deposited?"></span>'
         access_right_code: 'Release'
         access_rights_answer: 'Access rights'
         citationType: 'Citation style'
@@ -169,7 +170,7 @@ en:
         hint: 'Please keep your abstract to around 300 words.'
       access_policy:
         title_html: 'Please choose the <b>release options</b> for your work'
-        hint_html: 'Please choose the <i>access controls</i> and the <i>copyright release</i> for your work'
+        hint_html: 'Please choose the <i>access controls</i> for the record of your work and its attachments. The access controls determine who will be able to see the material when the submission process is complete. The <i>copyright release</i> applies to the work itself as well as the attached files.'
       attach:
         title_html: 'Please <b>attach</b> the pertinent files'
         hint: 'If you have more than one file please select one as the principle manuscript.'
