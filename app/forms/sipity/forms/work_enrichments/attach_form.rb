@@ -75,10 +75,7 @@ module Sipity
         end
 
         def attachments_from_work
-          return [] unless work
-          # I don't want this to be draped because the collection appeared to be
-          # treated as a single model instead of as an enumeration of items.
-          work.attachments.map { |attachment| AttachmentFormElement.new(attachment) }
+          repository.work_attachments(work: work).map { |attachment| AttachmentFormElement.new(attachment) }
         end
 
         # Responsible for exposing a means of displaying and marking the object
