@@ -2,11 +2,38 @@
 
 #*******************************************************************************
 #
+# INTENT
+#
+# This script codifies the "moment" that someone starts "working" on an issue.
+# The goal is leveraging git to capture both the opening and closing moments
+# From those moments we can compute the elapsed time for resolving an issue.
+#
+# The script is "close" to where the developers are working, and is hopefully
+# easier to incorporate with developer workflow. Without using this script, we
+# have less precise "starting moment", if at all.
+#
+# The result is that we can now report two time-based attributes for issues:
+#
+# * Elapsed time: How long an issue took to complete
+# * Estimated effort: How much time we think it will take to complete; This is
+#   not elapsed time but instead an amount of focused time.
+#
+# The conjecture is given those two time-based attributes we can begin
+# improving the interpretation of our Feature estimates.
+#
+# Features will likely be comprised of a collection of issues; The estimate for
+# a feature is much less precise and I believe is equal parts "Estimated Effort"
+# and "Estimated Complexity".
+#
+#*******************************************************************************
+
+#*******************************************************************************
+#
 # CONFIGURATION OPTIONS
 #
 #*******************************************************************************
 
-CONFIG_KEYS = [:REMOTE, :FROM_BRANCH, :REPOSITORY_PATH].freeze
+CONFIG_KEYS = [:REMOTE, :FROM_BRANCH, :REPOSITORY_PATH, :ISSUE_TITLE, :STARTED_ISSUES_FILE].freeze
 
 REPOSITORY_PATH = ENV.fetch('REPOSITORY_PATH') { File.expand_path(File.join(File.dirname(__FILE__), '../')) }
 REMOTE = ENV.fetch('REMOTE', 'origin')

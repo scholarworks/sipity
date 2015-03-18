@@ -4,6 +4,14 @@
 * Run `$ bundle`
 * Run `$ rake bootstrap`
 
+# Starting an Issue
+
+```console
+$ ./scripts/start-issue <the-issue-number>
+```
+
+See [./scripts/start-issue](https://github.com/ndlib/sipity/blob/master/scripts/start-issue) for further details.
+
 # I Don't Know What To Do
 
 If you are just joining the project, or are unclear what to do, how about helping with documentation?
