@@ -282,7 +282,7 @@ module Sipity
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
           )
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
             guarded_strategy_action_id: other_guarded_action.id, prerequisite_strategy_action_id: guarded_action.id
           )
@@ -332,7 +332,7 @@ module Sipity
       context '#scope_statetegy_actions_that_have_occurred' do
         subject { test_repository.scope_statetegy_actions_that_have_occurred(entity: entity) }
         it "will include actions that do not have prerequisites" do
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
           expect(subject).to eq([action])
         end
         it "will be a chainable scope" do
@@ -359,7 +359,7 @@ module Sipity
             guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
           )
 
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
 
           Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
             guarded_strategy_action_id: other_guarded_action.id, prerequisite_strategy_action_id: guarded_action.id
@@ -381,8 +381,8 @@ module Sipity
           Conversions::ConvertToProcessingActor.call(user)
           Conversions::ConvertToProcessingActor.call(other_user)
           Conversions::ConvertToProcessingActor.call(group)
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: group)
           expect(subject).to eq([user, groupy])
         end
         it "will be a chainable scope" do
@@ -429,9 +429,9 @@ module Sipity
           Models::Collaborator.create!(
             name: 'non_reviewing', role: 'Committee Member', responsible_for_review: false, work_id: entity.proxy_for_id
           )
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: user)
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: group)
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action, requested_by: acting_via_email_collaborator)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: group)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: acting_via_email_collaborator)
           expect(subject.pluck(:name)).to eq(
             [
               user_acting_collaborator.name,
@@ -466,7 +466,7 @@ module Sipity
           ) do |current_action|
             current_action.requiring_strategy_action_prerequisites.build(prerequisite_strategy_action: action)
           end
-          Services::RegisterActionTakenOnEntity.call(entity: entity, action: action_with_completed_prerequisites, requested_by: user)
+          Services::ActionTakenOnEntity.register(entity: entity, action: action_with_completed_prerequisites, requested_by: user)
 
           Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: 'with_incomplete_prereqs') do |current_action|
             current_action.requiring_strategy_action_prerequisites.build(

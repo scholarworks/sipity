@@ -313,6 +313,10 @@ module Sipity
     def submit_request_a_doi_form(form, requested_by:)
     end
 
+    # @see ./app/repositories/sipity/commands/todo_list_commands.rb
+    def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def update_processing_state!(entity:, to:)
     end

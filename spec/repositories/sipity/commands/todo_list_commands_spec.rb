@@ -9,8 +9,16 @@ module Sipity
       context '#register_action_taken_on_entity' do
         let(:existing_enrichment_type) { 'describe' }
         it "will call the underlying service object" do
-          expect(Services::RegisterActionTakenOnEntity).to receive(:call)
+          expect(Services::ActionTakenOnEntity).to receive(:register)
           test_repository.register_action_taken_on_entity(work: work, enrichment_type: existing_enrichment_type, requested_by: user)
+        end
+      end
+
+      context '#unregister_action_taken_on_entity' do
+        let(:existing_enrichment_type) { 'describe' }
+        it "will call the underlying service object" do
+          expect(Services::ActionTakenOnEntity).to receive(:unregister)
+          test_repository.unregister_action_taken_on_entity(work: work, enrichment_type: existing_enrichment_type, requested_by: user)
         end
       end
 
