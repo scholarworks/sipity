@@ -58,6 +58,7 @@ module Sipity
           super do
             repository.apply_access_policies_to(work: work, user: requested_by, access_policies: access_objects_attributes_for_persistence)
             repository.update_work_attribute_values!(work: work, key: 'copyright', values: copyright)
+            repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
           end
         end
 

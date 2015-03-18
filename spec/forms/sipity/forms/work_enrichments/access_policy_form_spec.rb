@@ -59,12 +59,31 @@ module Sipity
 
         context '#submit' do
           let(:rights) { 'All rights reserved' }
-          it 'will capture accessible_objects_attributes' do
-            attributes = {
+          let(:attributes) do
+            {
               "0" => { "id" => work.to_param, "access_right_code" => 'open_access', "release_date" => "" },
               "1" => { "id" => attachment.to_param, "access_right_code" => 'embargo_then_open_access', "release_date" => "2032-12-01" }
             }
-            subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights)
+          end
+          subject do
+            described_class.new(
+              work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights,
+              mark_as_representative: attachment.to_param
+            )
+          end
+          before { allow(subject).to receive(:valid?).and_return(true) }
+
+          it 'will mark_as_representative' do
+            expect(repository).to receive(:mark_as_representative).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will update_work_attribute_values!' do
+            expect(repository).to receive(:update_work_attribute_values!).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will capture accessible_objects_attributes' do
             expect(repository).to receive(:apply_access_policies_to).with(
               work: work, user: user, access_policies:
               [
