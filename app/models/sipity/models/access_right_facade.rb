@@ -25,6 +25,14 @@ module Sipity
         accessible_object.class.human_attribute_name(name)
       end
 
+      def access_url
+        if accessible_object.respond_to?(:file_url)
+          accessible_object.file_url
+        else
+          view_context.polymorphic_url(accessible_object)
+        end
+      end
+
       private
 
       include Conversions::ConvertToPolymorphicType
@@ -35,6 +43,10 @@ module Sipity
 
       def access_right_object
         @access_right_object ||= Models::AccessRight.find_or_initialize_by(entity_id: entity_id, entity_type: entity_type)
+      end
+
+      def view_context
+        Draper::ViewContext.current
       end
     end
   end
