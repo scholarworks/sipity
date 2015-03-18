@@ -6,16 +6,12 @@ module Sipity
         def initialize(attributes = {})
           super
           self.files = attributes[:files]
-          self.representative_attachment_id = attributes[:representative_attachment_id]
+          self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
           self.attachments_attributes = attributes.fetch(:attachments_attributes, {})
         end
 
         attr_accessor :files, :representative_attachment_id
         private(:files=, :representative_attachment_id=)
-
-        def representative_attachment
-          repository.representative_attachment_for(work: work)
-        end
 
         def attachments
           @attachments ||= attachments_from_work
@@ -28,6 +24,10 @@ module Sipity
         end
 
         private
+
+        def representative_attachment_id_from_work
+          repository.representative_attachment_for(work: work).to_param
+        end
 
         def save(requested_by:)
           super do

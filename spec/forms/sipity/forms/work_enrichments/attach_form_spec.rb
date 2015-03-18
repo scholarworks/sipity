@@ -26,7 +26,7 @@ module Sipity
           it 'will have #representative_for_attachment_id' do
             expect(repository).to receive(:representative_attachment_for).
               with(work: work).and_return(representative_for_attachment)
-            subject.representative_attachment
+            subject.representative_attachment_id
           end
 
           let(:attachment) { [double('Attachment')] }

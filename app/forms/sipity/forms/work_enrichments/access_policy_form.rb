@@ -8,7 +8,7 @@ module Sipity
           super
           self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
           self.copyright = attributes.fetch(:copyright) { copyright_from_work }
-          self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_from_work }
+          self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
         end
 
         # Because I am using `#fields_for` for rendering
@@ -44,8 +44,8 @@ module Sipity
 
         private
 
-        def representative_attachment_from_work
-          repository.representative_attachment_for(work: work)
+        def representative_attachment_id_from_work
+          repository.representative_attachment_for(work: work).to_param
         end
 
         def each_accessible_objects_attributes_are_valid
