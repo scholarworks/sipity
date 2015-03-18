@@ -21,17 +21,17 @@ module Sipity
         end
       end
 
-      context '.call' do
-        it 'will delegate do the unerlying #initialize then #call' do
+      context '.register' do
+        it 'will delegate do the unerlying #initialize then #register' do
           allow(described_class).to receive(:new).and_call_original
-          described_class.call(entity: entity, requested_by: requested_by, action: action)
+          described_class.register(entity: entity, requested_by: requested_by, action: action)
         end
       end
 
-      context '#call' do
+      context '#register' do
         context 'with a valid action object for the given entity' do
           it 'will increment the registry' do
-            expect { subject.call }.to change { Models::Processing::EntityActionRegister.count }.by(1)
+            expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
           end
         end
       end

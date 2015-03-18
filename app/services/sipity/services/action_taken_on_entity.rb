@@ -4,8 +4,8 @@ module Sipity
     class ActionTakenOnEntity
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToProcessingActor
-      def self.call(entity:, action:, requested_by:, on_behalf_of: requested_by)
-        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).call
+      def self.register(entity:, action:, requested_by:, on_behalf_of: requested_by)
+        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).register
       end
 
       def initialize(entity:, action:, requested_by:, on_behalf_of: requested_by)
@@ -16,7 +16,7 @@ module Sipity
       end
       attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor
 
-      def call
+      def register
         # TODO: Tease apart the requested_by and on_behalf_of
         Models::Processing::EntityActionRegister.create!(
           strategy_action_id: action.id,
