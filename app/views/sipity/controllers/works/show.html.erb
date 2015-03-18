@@ -84,6 +84,10 @@
     </div>
   <% end %>
 
+  <% if model.comments.present? %>
+    <p><%= link_to "Show all comments", work_comments_path(work_id: model.id) %></p>
+  <% end %>
+
   <div class="row">
 
     <% if has_available_enrichment_actions  %>
