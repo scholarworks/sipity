@@ -100,8 +100,13 @@ module Sipity
               subject.submit(requested_by: user)
             end
 
-            it "will transition the work's corresponding enrichment todo item to :done" do
+            it "will register that the action was taken" do
               expect(repository).to receive(:register_action_taken_on_entity).and_call_original
+              subject.submit(requested_by: user)
+            end
+
+            it "will unregister that the 'access_policy' action was taken" do
+              expect(repository).to receive(:unregister_action_taken_on_entity).and_call_original
               subject.submit(requested_by: user)
             end
 

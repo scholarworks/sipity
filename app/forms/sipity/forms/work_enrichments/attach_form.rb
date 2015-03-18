@@ -31,12 +31,16 @@ module Sipity
 
         def save(requested_by:)
           super do
-            # TODO: Validate that the attachment you are deleting is not also
-            # the representative image.
             repository.attach_files_to(work: work, files: files, user: requested_by)
             repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
             repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
             repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
+            # HACK: This is expanding the knowledge of what action is being
+            #   taken. Instead it is something that should be modeled in the
+            #   underlying database. That is to say: When an action fires what
+            #   actions should be registered and what actions should be
+            #   unregistered.
+            repository.unregister_action_taken_on_entity(work: work, enrichment_type: 'access_policy', requested_by: requested_by)
           end
         end
 
