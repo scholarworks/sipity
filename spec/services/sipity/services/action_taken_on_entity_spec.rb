@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Services
-    RSpec.describe RegisterActionTakenOnEntity do
+    RSpec.describe ActionTakenOnEntity do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
       let(:requested_by) { Models::Processing::Actor.new(id: 4) }

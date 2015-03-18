@@ -1,7 +1,7 @@
 module Sipity
   module Services
     # Service object that handles the business logic of granting permission.
-    class RegisterActionTakenOnEntity
+    class ActionTakenOnEntity
       include Conversions::ConvertToProcessingEntity
       include Conversions::ConvertToProcessingActor
       def self.call(entity:, action:, requested_by:, on_behalf_of: requested_by)
