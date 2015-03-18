@@ -25,6 +25,12 @@ module Sipity
           expect(subject.accessible_objects.size).to eq(2)
         end
 
+        it 'will expose available_representative_attachments' do
+          enumerable = [double]
+          expect(repository).to receive(:available_representative_attachments).and_return(enumerable)
+          expect(subject.available_representative_attachments).to eq(enumerable)
+        end
+
         it 'will validate that a copyright is given' do
           expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
           subject = described_class.new(work: work, repository: repository)

@@ -38,6 +38,10 @@ module Sipity
           repository.get_controlled_vocabulary_for_predicate_name(name: 'copyright')
         end
 
+        def available_representative_attachments
+          repository.work_attachments(work: work)
+        end
+
         private
 
         def representative_attachment_from_work
