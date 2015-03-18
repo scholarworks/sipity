@@ -19,7 +19,7 @@ module Sipity
 
         it { should respond_to :accessible_objects_attributes= }
         it { should respond_to :copyright }
-        it { should respond_to :mark_as_representative }
+        it { should respond_to :representative_attachment_id }
 
         it 'will expose accessible_objects' do
           expect(subject.accessible_objects.size).to eq(2)
@@ -45,9 +45,9 @@ module Sipity
         end
 
         it 'will validate the presence of a representative attachment' do
-          subject = described_class.new(work: work, repository: repository, mark_as_representative: '')
+          subject = described_class.new(work: work, repository: repository, representative_attachment_id: '')
           subject.valid?
-          expect(subject.errors[:mark_as_representative]).to be_present
+          expect(subject.errors[:representative_attachment_id]).to be_present
         end
 
         it 'will validate each of the given attributes' do
@@ -74,12 +74,12 @@ module Sipity
           subject do
             described_class.new(
               work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights,
-              mark_as_representative: attachment.to_param
+              representative_attachment_id: attachment.to_param
             )
           end
           before { allow(subject).to receive(:valid?).and_return(true) }
 
-          it 'will mark_as_representative' do
+          it 'will representative_attachment_id' do
             expect(repository).to receive(:set_as_representative_attachment).and_call_original
             subject.submit(requested_by: user)
           end

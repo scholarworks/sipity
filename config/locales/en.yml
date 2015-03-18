@@ -294,7 +294,7 @@ en:
       citation:
         type: 'Citation format'
       work:
-        mark_as_representative: 'Please select which file is your manuscript'
+        representative_attachment_id: 'Please select which file is your manuscript'
         files: 'Select files to upload'
   errors:
     messages:
