@@ -10,6 +10,12 @@ module Sipity
         )
       end
 
+      def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+        Services::ActionTakenOnEntity.unregister(
+          entity: work, action: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of
+        )
+      end
+
       # @api public
       #
       # Responsible for capturing a :comment made by a given :commenter on a
