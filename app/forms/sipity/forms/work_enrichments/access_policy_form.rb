@@ -8,6 +8,7 @@ module Sipity
           super
           self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
           self.copyright = attributes.fetch(:copyright) { copyright_from_work }
+          self.mark_as_representative = attributes.fetch(:mark_as_representative) { representative_attachment_from_work }
         end
 
         # Because I am using `#fields_for` for rendering
@@ -16,13 +17,14 @@ module Sipity
         end
 
         attr_reader :accessible_objects_attributes
-        attr_accessor :copyright
+        attr_accessor :copyright, :mark_as_representative
 
-        private :copyright=
+        private(:copyright=, :mark_as_representative=)
 
         validate :each_accessible_objects_attributes_are_valid
         validate :at_lease_one_accessible_objects_attributes_entry
         validates :copyright, presence: true
+        validates :mark_as_representative, presence: true
 
         def accessible_objects
           if @accessible_objects_attributes.present?
@@ -37,6 +39,10 @@ module Sipity
         end
 
         private
+
+        def representative_attachment_from_work
+          repository.representative_attachment_for(work: work)
+        end
 
         def each_accessible_objects_attributes_are_valid
           return true if accessible_objects_attributes.all?(&:valid?)

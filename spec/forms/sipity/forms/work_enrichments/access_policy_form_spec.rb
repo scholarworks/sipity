@@ -14,10 +14,12 @@ module Sipity
         before do
           allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
           allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
+          allow(repository).to receive(:representative_attachment_for).with(work: work).and_return(attachment)
         end
 
         it { should respond_to :accessible_objects_attributes= }
         it { should respond_to :copyright }
+        it { should respond_to :mark_as_representative }
 
         it 'will expose accessible_objects' do
           expect(subject.accessible_objects.size).to eq(2)
@@ -34,6 +36,12 @@ module Sipity
           subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: {})
           subject.valid?
           expect(subject.errors[:base]).to be_present
+        end
+
+        it 'will validate the presence of a representative attachment' do
+          subject = described_class.new(work: work, repository: repository, mark_as_representative: '')
+          subject.valid?
+          expect(subject.errors[:mark_as_representative]).to be_present
         end
 
         it 'will validate each of the given attributes' do
