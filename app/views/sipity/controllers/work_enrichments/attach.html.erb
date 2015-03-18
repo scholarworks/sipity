@@ -37,7 +37,7 @@
       <% end %>
     </ol>
 
-    <%= f.input :mark_as_representative, collection: model.attachments, label_method: :name, value_method: :id, input_html: { class: 'form-control' } %>
+    <%= f.input :representative_attachment_id, collection: model.attachments, input_html: { class: 'form-control' } %>
 
   <% end %>
 

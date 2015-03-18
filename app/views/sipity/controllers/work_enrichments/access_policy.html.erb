@@ -18,7 +18,7 @@
     <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{ model.enrichment_type }.hint_html"), class: 'panel-hint' %>
     <%= f.error_notification %>
     <table class="table">
-      <caption></caption>
+      <caption><!--TODO? Should we have a caption? --></caption>
       <thead>
         <tr>
           <th>&nbsp;</th>
@@ -67,19 +67,14 @@
           </tr>
         <% end %>
       </tbody>
-      <tfoot>
-        <tr class="borderless">
-          <%# TODO: styling and position of the place to where it should appear %>
-          <td colspan="5">
-            <%= f.input :copyright, collection: model.available_copyrights,
-                label_method: :predicate_value, value_method: :predicate_value_code,
-                include_blank: false, input_html: { class: 'form-control', selected: model.copyright} %>
-          </td>
-        </tr>
-      </tfoot>
     </table>
+    <div>
+      <%= f.input :representative_attachment_id, collection: model.available_representative_attachments, input_html: { class: 'form-control' } %>
+      <%= f.input :copyright, collection: model.available_copyrights,
+            label_method: :predicate_value, value_method: :predicate_value_code,
+            include_blank: false, input_html: { class: 'form-control', selected: model.copyright} %>
+    </div>
   </fieldset>
-
   <div class="panel-footer action-pane">
     <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
   </div>

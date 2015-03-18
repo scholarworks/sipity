@@ -12,6 +12,8 @@ module Sipity
         its(:enrichment_type) { should eq('attach') }
 
         it { should respond_to :attachments }
+        it { should respond_to :representative_attachment_id }
+        it { should respond_to :files }
 
         context 'validations' do
           it 'will require a work' do
@@ -20,16 +22,16 @@ module Sipity
             expect(subject.errors[:work]).to_not be_empty
           end
 
-          let(:representative_for_attachment) { [double('Attachment')] }
           it 'will have #representative_for_attachment_id' do
+            representative_for_attachment = [double('Attachment')]
             expect(repository).to receive(:representative_attachment_for).
               with(work: work).and_return(representative_for_attachment)
-            subject.representative_attachment
+            subject.representative_attachment_id
           end
 
-          let(:attachment) { [double('Attachment')] }
           it 'will have #attachments' do
-            expect(work).to receive(:attachments).and_return(attachment)
+            attachment = [double('Attachment')]
+            expect(repository).to receive(:work_attachments).and_return(attachment)
             expect(subject.attachments).to_not be_empty
           end
         end
@@ -116,7 +118,7 @@ module Sipity
             end
 
             it 'will mark a file as representative' do
-              expect(repository).to receive(:mark_as_representative).and_call_original
+              expect(repository).to receive(:set_as_representative_attachment).and_call_original
               subject.submit(requested_by: user)
             end
           end

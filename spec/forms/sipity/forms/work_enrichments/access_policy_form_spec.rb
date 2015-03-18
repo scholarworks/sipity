@@ -14,13 +14,21 @@ module Sipity
         before do
           allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
           allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
+          allow(repository).to receive(:representative_attachment_for).with(work: work).and_return(attachment)
         end
 
         it { should respond_to :accessible_objects_attributes= }
         it { should respond_to :copyright }
+        it { should respond_to :representative_attachment_id }
 
         it 'will expose accessible_objects' do
           expect(subject.accessible_objects.size).to eq(2)
+        end
+
+        it 'will expose available_representative_attachments' do
+          enumerable = [double]
+          expect(repository).to receive(:work_attachments).and_return(enumerable)
+          expect(subject.available_representative_attachments).to eq(enumerable)
         end
 
         it 'will validate that a copyright is given' do
@@ -34,6 +42,12 @@ module Sipity
           subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: {})
           subject.valid?
           expect(subject.errors[:base]).to be_present
+        end
+
+        it 'will validate the presence of a representative attachment' do
+          subject = described_class.new(work: work, repository: repository, representative_attachment_id: '')
+          subject.valid?
+          expect(subject.errors[:representative_attachment_id]).to be_present
         end
 
         it 'will validate each of the given attributes' do
@@ -51,12 +65,31 @@ module Sipity
 
         context '#submit' do
           let(:rights) { 'All rights reserved' }
-          it 'will capture accessible_objects_attributes' do
-            attributes = {
+          let(:attributes) do
+            {
               "0" => { "id" => work.to_param, "access_right_code" => 'open_access', "release_date" => "" },
               "1" => { "id" => attachment.to_param, "access_right_code" => 'embargo_then_open_access', "release_date" => "2032-12-01" }
             }
-            subject = described_class.new(work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights)
+          end
+          subject do
+            described_class.new(
+              work: work, repository: repository, accessible_objects_attributes: attributes, copyright: rights,
+              representative_attachment_id: attachment.to_param
+            )
+          end
+          before { allow(subject).to receive(:valid?).and_return(true) }
+
+          it 'will representative_attachment_id' do
+            expect(repository).to receive(:set_as_representative_attachment).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will update_work_attribute_values!' do
+            expect(repository).to receive(:update_work_attribute_values!).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will capture accessible_objects_attributes' do
             expect(repository).to receive(:apply_access_policies_to).with(
               work: work, user: user, access_policies:
               [

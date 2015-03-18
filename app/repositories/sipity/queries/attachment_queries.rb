@@ -3,7 +3,7 @@ module Sipity
     # Queries
     module AttachmentQueries
       def work_attachments(work:)
-        Models::Attachment.includes(:work).where(work_id: work)
+        Models::Attachment.includes(:work).where(work_id: work.id)
       end
 
       def accessible_objects(work:)
@@ -19,7 +19,7 @@ module Sipity
       end
 
       def representative_attachment_for(work:)
-        Models::Attachment.where(work_id: work.id, is_representative_file: true)
+        Models::Attachment.where(work_id: work.id, is_representative_file: true).first
       end
     end
   end

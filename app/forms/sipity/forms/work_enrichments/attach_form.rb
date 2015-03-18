@@ -5,17 +5,13 @@ module Sipity
       class AttachForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @files = attributes[:files]
-          @mark_as_representative = attributes[:mark_as_representative]
+          self.files = attributes[:files]
+          self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
           self.attachments_attributes = attributes.fetch(:attachments_attributes, {})
         end
 
-        attr_accessor :files
-        attr_accessor :mark_as_representative
-
-        def representative_attachment
-          repository.representative_attachment_for(work: work)
-        end
+        attr_accessor :files, :representative_attachment_id
+        private(:files=, :representative_attachment_id=)
 
         def attachments
           @attachments ||= attachments_from_work
@@ -29,10 +25,14 @@ module Sipity
 
         private
 
+        def representative_attachment_id_from_work
+          repository.representative_attachment_for(work: work).to_param
+        end
+
         def save(requested_by:)
           super do
             repository.attach_files_to(work: work, files: files, user: requested_by)
-            repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
+            repository.set_as_representative_attachment(work: work, pid: representative_attachment_id, user: requested_by)
             repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
             repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
             # HACK: This is expanding the knowledge of what action is being
@@ -75,10 +75,7 @@ module Sipity
         end
 
         def attachments_from_work
-          return [] unless work
-          # I don't want this to be draped because the collection appeared to be
-          # treated as a single model instead of as an enumeration of items.
-          work.attachments.map { |attachment| AttachmentFormElement.new(attachment) }
+          repository.work_attachments(work: work).map { |attachment| AttachmentFormElement.new(attachment) }
         end
 
         # Responsible for exposing a means of displaying and marking the object
