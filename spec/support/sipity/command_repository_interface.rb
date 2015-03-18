@@ -201,10 +201,6 @@ module Sipity
     def manage_collaborators_for(work:, collaborators:)
     end
 
-    # @see ./app/repositories/sipity/commands/work_commands.rb
-    def set_as_representative_attachment(work:, pid:, user: user)
-    end
-
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
     end
@@ -303,6 +299,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
+    def set_as_representative_attachment(work:, pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/commands/doi_commands.rb

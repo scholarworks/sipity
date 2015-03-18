@@ -27,7 +27,7 @@ module Sipity
 
         it 'will expose available_representative_attachments' do
           enumerable = [double]
-          expect(repository).to receive(:available_representative_attachments).and_return(enumerable)
+          expect(repository).to receive(:work_attachments).and_return(enumerable)
           expect(subject.available_representative_attachments).to eq(enumerable)
         end
 
