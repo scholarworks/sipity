@@ -164,7 +164,7 @@ module Sipity
         end
       end
 
-      context '#mark_as_representative' do
+      context '#set_as_representative_attachment' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
         let(:user) { User.new(id: 1234) }
@@ -172,11 +172,11 @@ module Sipity
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
         it 'will mark the given attachments as representative in the system' do
-          expect { test_repository.mark_as_representative(work: work, pid: pid_minter.call, user: user) }.
+          expect { test_repository.set_as_representative_attachment(work: work, pid: pid_minter.call, user: user) }.
             to change { Models::Attachment.where(is_representative_file: true).count }.by(1)
         end
         it 'will not mark the given attachments as representative in the system' do
-          expect { test_repository.mark_as_representative(work: work, pid: 'bogus', user: user) }.
+          expect { test_repository.set_as_representative_attachment(work: work, pid: 'bogus', user: user) }.
             not_to change { Models::Attachment.where(is_representative_file: true).count }
         end
       end

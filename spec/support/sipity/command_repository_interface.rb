@@ -202,7 +202,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def mark_as_representative(work:, pid:, user: user)
+    def set_as_representative_attachment(work:, pid:, user: user)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

@@ -32,7 +32,7 @@ module Sipity
         def save(requested_by:)
           super do
             repository.attach_files_to(work: work, files: files, user: requested_by)
-            repository.mark_as_representative(work: work, pid: mark_as_representative, user: requested_by)
+            repository.set_as_representative_attachment(work: work, pid: mark_as_representative, user: requested_by)
             repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
             repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
             # HACK: This is expanding the knowledge of what action is being

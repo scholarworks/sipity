@@ -116,7 +116,7 @@ module Sipity
             end
 
             it 'will mark a file as representative' do
-              expect(repository).to receive(:mark_as_representative).and_call_original
+              expect(repository).to receive(:set_as_representative_attachment).and_call_original
               subject.submit(requested_by: user)
             end
           end

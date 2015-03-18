@@ -80,7 +80,7 @@ module Sipity
           before { allow(subject).to receive(:valid?).and_return(true) }
 
           it 'will mark_as_representative' do
-            expect(repository).to receive(:mark_as_representative).and_call_original
+            expect(repository).to receive(:set_as_representative_attachment).and_call_original
             subject.submit(requested_by: user)
           end
 

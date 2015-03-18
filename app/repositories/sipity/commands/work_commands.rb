@@ -94,7 +94,7 @@ module Sipity
         end
       end
 
-      def mark_as_representative(work:, pid:, user: user)
+      def set_as_representative_attachment(work:, pid:, user: user)
         attachment = Models::Attachment.find_by(pid: pid)
         return true unless attachment.present?
         Models::Attachment.where(work_id: work.id, is_representative_file: true).update_all(is_representative_file: false)
