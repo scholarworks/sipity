@@ -8,6 +8,10 @@ module Sipity
         new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).register
       end
 
+      def self.unregister(entity:, action:, requested_by:, on_behalf_of: requested_by)
+        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).unregister
+      end
+
       def initialize(entity:, action:, requested_by:, on_behalf_of: requested_by)
         self.entity = entity
         self.action = action
@@ -24,6 +28,16 @@ module Sipity
           requested_by_actor_id: requesting_actor.id,
           on_behalf_of_actor_id: on_behalf_of_actor.id
         )
+      end
+
+      def unregister
+        # TODO: Tease apart the requested_by and on_behalf_of
+        Models::Processing::EntityActionRegister.where(
+          strategy_action_id: action.id,
+          entity_id: entity.id,
+          requested_by_actor_id: requesting_actor.id,
+          on_behalf_of_actor_id: on_behalf_of_actor.id
+        ).destroy_all
       end
 
       private

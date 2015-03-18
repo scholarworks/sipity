@@ -21,10 +21,16 @@ module Sipity
         end
       end
 
-      context '.register' do
-        it 'will delegate do the unerlying #initialize then #register' do
-          allow(described_class).to receive(:new).and_call_original
-          described_class.register(entity: entity, requested_by: requested_by, action: action)
+      [
+        :register,
+        :unregister
+      ].each do |method_name|
+        context ".#{method_name}" do
+          it "will delegate do the unerlying #initialize then ##{method_name}" do
+            allow(described_class).to receive(:new).and_call_original
+            expect_any_instance_of(described_class).to receive(method_name)
+            described_class.send(method_name, entity: entity, requested_by: requested_by, action: action)
+          end
         end
       end
 
@@ -32,6 +38,23 @@ module Sipity
         context 'with a valid action object for the given entity' do
           it 'will increment the registry' do
             expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
+          end
+        end
+      end
+
+      context '#register' do
+        context 'with a valid action object for the given entity' do
+          it 'will attempt to destroy the entry' do
+            expect { subject.unregister }.to_not change { Models::Processing::EntityActionRegister.count }
+          end
+        end
+      end
+
+      context '#register then #unregister' do
+        context 'with a valid action object for the given entity' do
+          it 'will increment then decrement' do
+            expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
+            expect { subject.unregister }.to change { Models::Processing::EntityActionRegister.count }.by(-1)
           end
         end
       end
