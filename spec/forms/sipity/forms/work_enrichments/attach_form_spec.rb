@@ -12,6 +12,8 @@ module Sipity
         its(:enrichment_type) { should eq('attach') }
 
         it { should respond_to :attachments }
+        it { should respond_to :representative_attachment_id }
+        it { should respond_to :files }
 
         context 'validations' do
           it 'will require a work' do

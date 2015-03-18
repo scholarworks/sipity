@@ -5,13 +5,13 @@ module Sipity
       class AttachForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @files = attributes[:files]
-          @representative_attachment_id = attributes[:representative_attachment_id]
+          self.files = attributes[:files]
+          self.representative_attachment_id = attributes[:representative_attachment_id]
           self.attachments_attributes = attributes.fetch(:attachments_attributes, {})
         end
 
-        attr_accessor :files
-        attr_accessor :representative_attachment_id
+        attr_accessor :files, :representative_attachment_id
+        private(:files=, :representative_attachment_id=)
 
         def representative_attachment
           repository.representative_attachment_for(work: work)
