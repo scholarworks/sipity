@@ -3,7 +3,7 @@ module Sipity
     # Queries
     module AttachmentQueries
       def work_attachments(work:)
-        Models::Attachment.includes(:work).where(work_id: work)
+        Models::Attachment.includes(:work).where(work_id: work.id)
       end
 
       def accessible_objects(work:)
