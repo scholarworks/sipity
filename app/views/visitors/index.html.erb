@@ -1,7 +1,14 @@
-<h3>Welcome</h3>
+<div class="page-header welcome-title">
+  <%= content_tag :h1, t('pages.welcome.title_html') %>
+</div>
+
+<% description = t('pages.welcome.body_html') %>
+<%= content_tag( :article, description, class: 'welcome-text' ) if description.present? %>
+
 <p>
-  <%= link_to 'View Deposited Works', dashboard_path %>
+  <%= link_to t('pages.welcome.works_listing_link'), dashboard_path %>
 </p>
+
 <p>
-  <%= link_to 'Deposit Your Work', start_path, class: 'btn btn-lg btn-primary' %>
+  <%= link_to t('pages.welcome.call_to_action'), start_path, class: 'btn btn-lg btn-primary' %>
 </p>

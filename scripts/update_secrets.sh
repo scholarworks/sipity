@@ -20,6 +20,7 @@ files_to_copy="
     application.yml
     database.yml
     environment_bootstrapper.rb
+    locales/site-specific.yml
     "
 
 for f in $files_to_copy; do
