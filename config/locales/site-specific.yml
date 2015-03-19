@@ -21,6 +21,11 @@ en:
           For technical support call <a href="tel:5746316258">(574) 631-6258</a> or
           email <a href="mailto:curate@nd.edu?subject=Question about deposit.library.nd.edu">curate@nd.edu</a>.
         </p>
+    welcome:
+      title_html: 'Deposit Your Work'
+      call_to_action: 'Get Started'
+      works_listing_link: 'View Deposited Works'
+      body_html: >
   sipity/legal:
     deposit:
       agree_to_terms: 'I agree to the terms of deposit'
