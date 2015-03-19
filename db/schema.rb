@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150311145535) do
+ActiveRecord::Schema.define(version: 20150318193942) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32, null: false
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 20150311145535) do
   end
 
   add_index "sipity_processing_comments", ["actor_id"], name: "index_sipity_processing_comments_on_actor_id"
+  add_index "sipity_processing_comments", ["created_at"], name: "index_sipity_processing_comments_on_created_at"
   add_index "sipity_processing_comments", ["entity_id"], name: "index_sipity_processing_comments_on_entity_id"
   add_index "sipity_processing_comments", ["originating_strategy_action_id"], name: "sipity_processing_comments_action_index"
   add_index "sipity_processing_comments", ["originating_strategy_state_id"], name: "sipity_processing_comments_state_index"

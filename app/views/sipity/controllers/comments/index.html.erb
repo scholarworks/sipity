@@ -1,0 +1,24 @@
+<section itemscope itemtype="http://schema.org/CreativeWork">
+  <% state_notice = t("sipity/works.processing_state.#{@model.processing_state}") %>
+
+  <div class="row">
+    <div class="col-xs-12 work-show page-header">
+      <h1 class="work-title">
+        <span itemprop="name"><%= @model.title %></span>
+      </h1>
+      <p class="work-status">
+        <%= content_tag :span, t("simple_form.options.defaults.work_type.#{@model.work_type}"), class: 'work-type' %> &bull;
+        <%= content_tag :span, t("sipity/works.processing_state.label.#{@model.processing_state}"), class: 'work-state' %>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <% @model.comments.each do |comment| %>
+      <div class="alert alert-warning feedback-notice">
+        <p><strong>Feedback from <%= comment.name_of_commentor %></strong>:</p>
+        <p><%= comment.comment %></p>
+      </div>
+    <% end %>
+  </div>
+  <%= link_to "Back to #{@model.work_type.humanize}", work_path(id: @model.id) %>
+</section>

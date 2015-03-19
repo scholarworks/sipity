@@ -9,6 +9,7 @@ Rails.application.routes.draw do
             post :request_a_doi
           end
         end
+        resources :comments, only: :index
       end
 
       # TODO: There is the concept of valid enrichments; extract those
