@@ -47,18 +47,25 @@ SPEC_OPTS="--format progress" bin/rake spec:travis' > .git/hooks/pre-push ; chmo
 
 If you need to skip the `pre-push` hook, use the `--no-verify` option when you push to a branch.
 
-## Build Requirements/Policies
+## Build Goals
 
 * Our test suite must complete in 30 seconds or less
 * Our code coverage must be 100%
 * Our code must have 100% style guide compliance
   - Or a clear reason for exclusion
+* Our code will have a 3.75 or higher grade on [Code Climate](https://codeclimate.com/github/ndlib/sipity)
 
-A slow test suite is an indicator of an unhealthy test suite; Therefore lets keep it fast.
+A slow test suite is an indicator of an unhealthy test suite;
+Therefore lets keep it under 30 seconds.
 
-Code that is not covered in test means code that we are not "owning" and documenting; Therefore keep test coverage high.
+Code that is not covered in test means code that we are not "owning" and documenting; Therefore lets keep the test coverage at 100%.
 
-Code that does not conform to the style guide can be disorienting; Therefore lets adhear to the style guide.
+Code that does not conform to the style guide can be disorienting; Therefore lets adhear to 100% style guide compliance or articulate why we are violating the styleguide.
+
+### What Happens We Pass the 30 Second Threshold?
+
+Our application is going to continue to grow; And so will the completion time of our tests.
+If we hit the 30 second mark, we'll review what is happening and adjust the goal.
 
 ## But Rubocop is complaining too much...
 
