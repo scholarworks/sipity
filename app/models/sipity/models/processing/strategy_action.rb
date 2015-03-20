@@ -38,6 +38,13 @@ module Sipity
           class_name: 'Sipity::Models::Processing::StrategyAction'
         )
 
+        has_many(
+          :processing_comments,
+          foreign_key: :originating_strategy_action_id,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Processing::Comment'
+        )
+
         ENRICHMENT_ACTION = 'enrichment_action'.freeze
         RESOURCEFUL_ACTION = 'resourceful_action'.freeze
         STATE_ADVANCING_ACTION = 'state_advancing_action'.freeze

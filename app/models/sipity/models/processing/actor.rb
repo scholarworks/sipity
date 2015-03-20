@@ -17,6 +17,12 @@ module Sipity
         has_many :strategy_responsibilities, dependent: :destroy
         has_many :entity_specific_responsibilities, dependent: :destroy
         has_many(
+          :processing_comments,
+          foreign_key: :actor_id,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Processing::Comment'
+        )
+        has_many(
           :actions_that_were_requested_by_me,
           dependent: :destroy,
           foreign_key: 'requested_by_actor_id',

@@ -18,6 +18,12 @@ module Sipity
           class_name: 'StrategyAction',
           foreign_key: :resulting_strategy_state_id
         )
+        has_many(
+          :processing_comments,
+          foreign_key: :originating_strategy_state_id,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Processing::Comment'
+        )
         has_many(:entities) # TODO: should this be destroyed
       end
     end
