@@ -47,6 +47,19 @@ SPEC_OPTS="--format progress" bin/rake spec:travis' > .git/hooks/pre-push ; chmo
 
 If you need to skip the `pre-push` hook, use the `--no-verify` option when you push to a branch.
 
+## Build Requirements/Policies
+
+* Our test suite must complete in 30 seconds or less
+* Our code coverage must be 100%
+* Our code must have 100% style guide compliance
+  - Or a clear reason for exclusion
+
+A slow test suite is an indicator of an unhealthy test suite; Therefore lets keep it fast.
+
+Code that is not covered in test means code that we are not "owning" and documenting; Therefore keep test coverage high.
+
+Code that does not conform to the style guide can be disorienting; Therefore lets adhear to the style guide.
+
 ## But Rubocop is complaining too much...
 
 Either submit a pull request modifying the `.hound.yml` file or submit an issue
