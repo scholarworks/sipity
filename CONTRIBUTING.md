@@ -60,7 +60,7 @@ Therefore lets keep it under 30 seconds.
 
 Code that is not covered in test means code that we are not "owning" and documenting; Therefore lets keep the test coverage at 100%.
 
-Code that does not conform to the style guide can be disorienting; Therefore lets adhear to 100% style guide compliance or articulate why we are violating the styleguide.
+Code that does not conform to the style guide can be disorienting; Therefore lets adhear to 100% style guide compliance or articulate why we are violating the style guide.
 
 ### What Happens We Pass the 30 Second Threshold?
 
