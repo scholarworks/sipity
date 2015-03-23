@@ -13,6 +13,7 @@
     <%= content_tag :p, t('sipity/dois.panels.new_doi.hint'), class: 'panel-hint' %>
 
     <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
 
     <dl>
       <dt>Title</dt>

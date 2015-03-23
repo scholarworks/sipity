@@ -18,6 +18,7 @@
       <%= content_tag :p, t('sipity/citations.panels.new_citation.hint'), class: 'panel-hint' %>
 
       <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
 
       <%# TODO: make a data-driven controlled vocabulary management service  %>
       <%= f.input :type, collection: ['APA', 'MLA', 'AMA', 'Chicago'], input_html: { class: 'form-control' } %>
