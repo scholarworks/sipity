@@ -4,6 +4,7 @@
 
 <%= simple_form_for(model, url: account_path, as: :account) do |f| %>
   <%= f.error_notification %>
+  <%= f.error :base, error_method: :to_sentence %>
 
   <div class="row">
     <div class="col-md-4 col-md-offset-4">
