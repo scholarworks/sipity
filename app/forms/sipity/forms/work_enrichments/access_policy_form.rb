@@ -51,6 +51,7 @@ module Sipity
         def each_accessible_objects_attributes_are_valid
           return true if accessible_objects_attributes.all?(&:valid?)
           errors.add(:accessible_objects_attributes, :invalid)
+          errors.add(:base, :presence_of_access_policies_for_all_objects_required)
         end
 
         def at_lease_one_accessible_objects_attributes_entry
