@@ -6,6 +6,9 @@ $border-radius-small:        0px;
 // Include theme
 @import 'theme/default';
 
+// Theme variables
+$text-highlight-color: #ffec87 !default;
+
 // Include framework
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
@@ -86,7 +89,7 @@ section {
 .btn-primary b,
 .btn-primary strong,
 .panel-primary .panel-title b {
-  color:#FFEC87;
+  color:$text-highlight-color;
 }
 
 .work-show.page-header {
