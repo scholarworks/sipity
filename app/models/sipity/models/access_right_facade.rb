@@ -10,16 +10,17 @@ module Sipity
     class AccessRightFacade
       include ActiveModel::Validations
 
-      def initialize(accessible_object)
+      def initialize(accessible_object, work:)
         self.accessible_object = accessible_object
+        self.work = work
       end
 
       delegate :to_param, :id, :persisted?, :to_s, to: :@accessible_object
       delegate :access_right_code, :release_date, to: :access_right_object
       alias_method :entity_id, :id
       attr_reader :entity_type
-      attr_reader :accessible_object
-      private :accessible_object
+      attr_reader :accessible_object, :work
+      private :accessible_object, :work
 
       def human_attribute_name(name)
         accessible_object.class.human_attribute_name(name)
@@ -41,8 +42,25 @@ module Sipity
         @accessible_object = object
       end
 
+      include Conversions::ConvertToWork
+      def work=(work)
+        @work = convert_to_work(work)
+      end
+
       def access_right_object
-        @access_right_object ||= Models::AccessRight.find_or_initialize_by(entity_id: entity_id, entity_type: entity_type)
+        @access_right_object ||= begin
+          access_right = Models::AccessRight.find_or_initialize_by(entity_id: entity_id, entity_type: entity_type)
+          assign_work_access_right_code_if_none_is_set(access_right)
+          access_right
+        end
+      end
+
+      def assign_work_access_right_code_if_none_is_set(access_right)
+        return true if access_right.access_right_code?
+        work_access_right = Models::AccessRight.find_or_initialize_by(entity_id: work.id, entity_type: convert_to_polymorphic_type(work))
+        access_right.access_right_code = work_access_right.access_right_code
+        access_right.release_date = work_access_right.release_date
+        access_right
       end
 
       def view_context
