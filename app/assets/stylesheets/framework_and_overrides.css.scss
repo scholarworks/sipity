@@ -3,9 +3,12 @@ $border-radius-base:         2px;
 $border-radius-large:        4px;
 $border-radius-small:        0px;
 
+// Include theme
+@import 'theme/default';
+
 // Include framework
-@import "bootstrap-sprockets";
-@import "bootstrap";
+@import 'bootstrap-sprockets';
+@import 'bootstrap';
 
 // Make all images responsive by default
 img {
