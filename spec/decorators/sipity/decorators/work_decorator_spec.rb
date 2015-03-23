@@ -3,11 +3,25 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe WorkDecorator do
-      let(:work) { Models::Work.new(title: 'Hello World', id: 123) }
-      let(:repository) { double('Repository') }
+      let(:work) { Models::Work.new(title: 'Hello World', id: 123, created_at: Time.now) }
+      let(:repository) { QueryRepositoryInterface.new }
       subject { WorkDecorator.new(work, repository: repository) }
       it 'will have a #to_s equal its #title' do
         expect(subject.to_s).to eq(work.title)
+      end
+
+      its(:date_created) { should be_a(String) }
+
+      context '#creators and #creator_names' do
+        let(:creators) { [double(name: 'Hello')] }
+        it 'will retrieve them from the underlying repository' do
+          expect(repository).to receive(:scope_users_for_entity_and_roles).and_return(creators)
+          expect(subject.creators).to eq(creators)
+        end
+        it 'will retrieve them from the underlying repository' do
+          expect(repository).to receive(:scope_users_for_entity_and_roles).and_return(creators)
+          expect(subject.creator_names).to eq(['Hello'])
+        end
       end
 
       context '#with_form_panel' do

@@ -15,6 +15,18 @@ module Sipity
         h.render(layout: 'sipity/form_panel', locals: { name: name, theme: theme, object: self }, &block)
       end
 
+      def date_created
+        object.created_at.strftime('%a, %d %b %Y')
+      end
+
+      def creators
+        @creators ||= repository.scope_users_for_entity_and_roles(entity: object, roles: Models::Role::CREATING_USER)
+      end
+
+      def creator_names
+        creators.map(&:name)
+      end
+
       def to_s
         title
       end

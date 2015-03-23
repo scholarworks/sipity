@@ -18,7 +18,9 @@
         <tr>
           <th>Title</th>
           <th>Type</th>
+          <th>Creator(s)</th>
           <th>Processing State</th>
+          <th>Date Created</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +28,9 @@
           <tr>
             <td><%= link_to(work.title, work_path(work)) %></td>
             <td><%= work.work_type.humanize %></td>
+            <td><%= work.creator_names.to_sentence %></td>
             <td><%= work.processing_state.humanize %></td>
+            <td><%= work.date_created %></td>
           </tr>
         <% end %>
     </table>
