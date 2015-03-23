@@ -17,17 +17,18 @@ echo "=-=-=-=-=-=-=-= git clone $secret_repo"
 git clone "git@git.library.nd.edu:$secret_repo"
 
 files_to_copy="
-    application.yml
-    database.yml
-    environment_bootstrapper.rb
-    locales/site-specific.yml
+    config/application.yml
+    config/database.yml
+    config/environment_bootstrapper.rb
+    config/locales/site-specific.yml
+    app/assets/stylesheets/theme/_default.css.scss
     "
 
 for f in $files_to_copy; do
     echo "=-=-=-=-=-=-=-= copy $f"
     if [ -f $secret_repo/sipity/$f ];
     then
-        cp $secret_repo/sipity/$f config/$f
+        cp $secret_repo/sipity/$f $f
     else
         echo "Fatal Error: File $f does not exist in $secret_repo/sipity"
         exit 1
