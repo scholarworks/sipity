@@ -10,6 +10,8 @@ module Sipity
 
       alias_attribute :name, :file_name
 
+      has_many :access_rights, as: :entity, dependent: :destroy
+
       def to_s
         file_name
       end
