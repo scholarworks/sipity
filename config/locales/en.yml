@@ -48,6 +48,8 @@ en:
       about: 'About'
       sign_in: 'Sign in'
       sign_out: 'Sign out'
+    actions:
+      create_work: 'New Deposit'
   helpers:
     submit:
       account:

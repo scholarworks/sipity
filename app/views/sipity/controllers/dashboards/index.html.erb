@@ -1,5 +1,5 @@
-<div class="row">
-  <div class="col-xs-12">
+<div class="row dashboard-actions">
+  <div class="col-sm-9">
     <%= form_tag(view.search_path, method: 'get', class: 'form-inline') do %>
       <fieldset class="form-group">
         <%# This is the very specific case, to get things working. %>
@@ -12,7 +12,14 @@
       </fieldset>
       <%= submit_tag("Filter", class: 'btn btn-default') %>
     <% end %>
+  </div>
+  <div class="col-sm-3 work-create">
+    <%= link_to t('application.actions.create_work'), start_path, class: 'btn btn-primary' %>
+  </div>
+</div>
 
+<div class="row">
+  <div class="col-xs-12 work-listing">
     <table class="table">
       <thead>
         <tr>
