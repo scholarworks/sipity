@@ -1,7 +1,9 @@
 <%# add navigation links to this file %>
-<li><%= link_to 'About', page_path('about') %></li>
 <% if user_signed_in? %>
-  <li><%= link_to 'Sign out', destroy_user_session_path, :method=>'delete' %></li>
+  <li><%= link_to_unless_current t('application.navigation.dashboard'), dashboard_path %></li>
+  <li><%= link_to_unless_current t('application.navigation.about'), page_path('about') %></li>
+  <li><%= link_to_unless_current t('application.navigation.sign_out'), destroy_user_session_path, :method=>'delete' %></li>
 <% else %>
-  <li><%= link_to 'Sign in', new_user_session_path %></li>
+  <li><%= link_to_unless_current t('application.navigation.about'), page_path('about') %></li>
+  <li><%= link_to_unless_current t('application.navigation.sign_in'), new_user_session_path %></li>
 <% end %>

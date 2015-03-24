@@ -42,6 +42,14 @@ en:
         collaborators: 'People involved'
         publicationDate: 'Publication date'
         work_publication_strategy: 'Publication intent'
+  application:
+    navigation:
+      dashboard: 'Dashboard'
+      about: 'About'
+      sign_in: 'Sign in'
+      sign_out: 'Sign out'
+    actions:
+      create_work: 'New Deposit'
   helpers:
     submit:
       account:
