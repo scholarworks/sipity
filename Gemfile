@@ -85,7 +85,6 @@ group :test do
 end
 
 group :production, :pre_production, :staging do
-  gem 'unicorn'
   gem 'mysql2'
   gem 'rack-cache', require: 'rack/cache'
   gem 'dragonfly-s3_data_store'
