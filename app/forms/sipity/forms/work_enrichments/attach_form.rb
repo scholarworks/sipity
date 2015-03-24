@@ -12,6 +12,7 @@ module Sipity
 
         attr_accessor :files, :representative_attachment_id
         private(:files=, :representative_attachment_id=)
+        validate :at_least_one_file_must_be_attached
 
         def attachments
           @attachments ||= attachments_from_work
@@ -76,6 +77,26 @@ module Sipity
 
         def attachments_from_work
           repository.work_attachments(work: work).map { |attachment| AttachmentFormElement.new(attachment) }
+        end
+
+        def attachments_from_input
+          return if @attachments_attributes.blank?
+          @attachments_attributes.each do |key, val|
+            unless val.key?('delete') && val['delete'] == "1"
+              @attachments_from_input ||= {}
+              @attachments_from_input[key] = val
+            end
+          end
+          @attachments_from_input
+        end
+
+        def attachments_associated_with_the_work?
+          attachments_from_input.present? || files.present?
+        end
+
+        def at_least_one_file_must_be_attached
+          return true unless attachments_associated_with_the_work?
+          errors.add(:base, :at_least_one_attachment_required)
         end
 
         # Responsible for exposing a means of displaying and marking the object
