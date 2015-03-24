@@ -11,10 +11,13 @@ module Sipity
       it 'will have #filterable_processing_states' do
         expect(subject.filterable_processing_states).to be_a(Array)
       end
-      it 'will have #works' do
+      it 'will have decorated #works' do
+        decorator = double
         works = [double, double("Toil and Trouble")]
         expect(repository).to receive(:find_works_for).and_return(works)
-        expect(subject.works).to eq(works)
+        allow(decorator).to receive(:new).with(works[0]).and_return(works[0])
+        allow(decorator).to receive(:new).with(works[1]).and_return(works[1])
+        expect(subject.works(decorator: decorator)).to eq(works)
       end
 
       its(:default_repository) { should respond_to(:find_works_for) }

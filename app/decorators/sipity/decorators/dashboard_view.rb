@@ -23,8 +23,10 @@ module Sipity
         Models::Processing::StrategyState.all.pluck(:name).uniq.sort
       end
 
-      def works
-        repository.find_works_for(user: user, processing_state: processing_state)
+      def works(decorator: WorkDecorator)
+        repository.find_works_for(user: user, processing_state: processing_state).map do |work|
+          decorator.new(work)
+        end
       end
 
       def processing_state
