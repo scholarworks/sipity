@@ -10,10 +10,11 @@ module Sipity
         def initialize(options = {})
           self.action = options.fetch(:action)
           self.entity = options.fetch(:entity)
+          self.user = options.fetch(:user)
         end
 
-        attr_accessor :entity, :action
-        private :entity=, :action=
+        attr_accessor :entity, :action, :user
+        private :entity=, :action=, :user=
 
         delegate :name, :action_type, to: :action
         alias_method :label, :name
