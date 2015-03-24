@@ -5,9 +5,9 @@ module Sipity
     module RemoteNetidValidator
       module_function
 
-      # @param String possible_netid
-      # @return false if the input is not a valid NetID
-      # @return String if the input is a valid NetID
+      # @param [String] possible_netid
+      # @return [false] if the input is not a valid NetID
+      # @return [String] if the input is a valid NetID
       def valid_netid?(possible_netid)
         response = request(possible_netid)
         parse(response)

@@ -10,7 +10,7 @@ module Sipity
       #
       # @param input [Object] something coercable
       #
-      # @return Sipity::Models::EntityActionRegister (or something that follows
+      # @return [Sipity::Models::EntityActionRegister] (or something that follows
       #   to the Liskov Substitution Principle
       #   http://en.wikipedia.org/wiki/Liskov_substitution_principle)
       #
@@ -23,7 +23,7 @@ module Sipity
       #
       # @param input [Object] something coercable
       #
-      # @return Sipity::Models::Work (or something that followsto the Liskov
+      # @return [Sipity::Models::Work] (or something that followsto the Liskov
       #   Substitution Principle
       #   http://en.wikipedia.org/wiki/Liskov_substitution_principle)
       #

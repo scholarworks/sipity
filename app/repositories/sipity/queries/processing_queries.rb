@@ -26,7 +26,7 @@ module Sipity
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @param action an object that can be converted into a Sipity::Models::Processing::StrategyAction#name
-      # @return Boolean
+      # @return [Boolean]
       def authorized_for_processing?(user:, entity:, action:)
         action_name = Conversions::ConvertToProcessingActionName.call(action)
         scope_permitted_strategy_actions_available_for_current_state(user: user, entity: entity).
@@ -45,7 +45,7 @@ module Sipity
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
       #   given the entity
-      # @return ActiveRecord::Relation<User>
+      # @return [ActiveRecord::Relation<User>]
       def users_that_have_taken_the_action_on_the_entity(entity:, action:)
         users = User.arel_table
         group_memberships = Models::GroupMembership.arel_table
@@ -113,7 +113,7 @@ module Sipity
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
       #   given the entity
-      # @return ActiveRecord::Relation<User>
+      # @return [ActiveRecord::Relation<User>]
       def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         collaborators = Models::Collaborator.arel_table
@@ -154,7 +154,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_permitted_strategy_actions_available_for_current_state(user:, entity:)
         strategy_actions_scope = scope_strategy_actions_available_for_current_state(entity: entity)
         strategy_state_actions_scope = scope_permitted_entity_strategy_state_actions(user: user, entity: entity)
@@ -176,7 +176,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
         strategy_actions = Models::Processing::StrategyAction
 
@@ -211,7 +211,7 @@ module Sipity
       #   :user through the user's group membership.
       #
       # @param user [User]
-      # @return ActiveRecord::Relation<Models::Processing::Actor>
+      # @return [ActiveRecord::Relation<Models::Processing::Actor>]
       def scope_processing_actors_for(user:)
         return Models::Processing::Actor.where('1 = 0') unless user.present?
 
@@ -257,7 +257,7 @@ module Sipity
       # @option filter [String] :processing_state - Limit the returned objects
       #   to those objects that are in the named :processing_state
       #
-      # @return ActiveRecord::Relation<proxy_for_types>
+      # @return [ActiveRecord::Relation<proxy_for_types>]
       def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
         processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(
@@ -296,7 +296,7 @@ module Sipity
       #   to those objects that are in the named :processing_state
       #
       #
-      # @return ActiveRecord::Relation<Models::Processing::Entity>
+      # @return [ActiveRecord::Relation<Models::Processing::Entity>]
       def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
 
@@ -370,9 +370,9 @@ module Sipity
       # * Users that are indirectly associated with the given entity by group
       #   and role.
       #
-      # @param role [Sipity::Models::Role]
+      # @param roles [Sipity::Models::Role]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<User>
+      # @return [ActiveRecord::Relation<User>]
       def scope_users_for_entity_and_roles(entity:, roles:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         role_ids = Array.wrap(roles).map { |role| Conversions::ConvertToRole.call(role).id }
@@ -433,8 +433,8 @@ module Sipity
       # * Users that are indirectly, by way of a group, proxy by one or more of
       #   the actors.
       #
-      # @param Actors [Sipity::Models::Processing::ActorRole]
-      # @return ActiveRecord::Relation<User>
+      # @param actors [Sipity::Models::Processing::ActorRole]
+      # @return [ActiveRecord::Relation<User>]
       def scope_users_from_actors(actors:)
         user_table = User.arel_table
         actor_table = Models::Processing::Actor.arel_table
@@ -472,7 +472,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyRole>]
       def scope_processing_strategy_roles_for_user_and_entity(user:, entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         strategy_scope = scope_processing_strategy_roles_for_user_and_strategy(user: user, strategy: entity.strategy)
@@ -490,8 +490,8 @@ module Sipity
       # assigned to directly to the strategy.
       #
       # @param user [User]
-      # @param entity [Processing::Strategy]
-      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
+      # @param strategy [Processing::Strategy]
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyRole>]
       def scope_processing_strategy_roles_for_user_and_strategy(user:, strategy:)
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
@@ -521,7 +521,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyRole>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyRole>]
       def scope_processing_strategy_roles_for_user_and_entity_specific(user:, entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actor_scope = scope_processing_actors_for(user: user)
@@ -561,7 +561,7 @@ module Sipity
       #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyStateAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyStateAction>]
       def scope_permitted_entity_strategy_state_actions(user:, entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         strategy_state_actions = Models::Processing::StrategyStateAction
@@ -595,7 +595,7 @@ module Sipity
       # * And all of those prerequisites have been completed
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_with_completed_prerequisites(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -624,7 +624,7 @@ module Sipity
       # * And at least one of those prerequisites is incomplete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_with_incomplete_prerequisites(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -652,7 +652,7 @@ module Sipity
       # resolved, that is only the strategy actions that have no prerequisites.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_without_prerequisites(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -678,7 +678,7 @@ module Sipity
       # * Are available for the entity's strategy_state
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_for_current_state(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -700,7 +700,7 @@ module Sipity
       # * Are actions associated with the entity's processing strategy
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_that_are_prerequisites(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -718,7 +718,7 @@ module Sipity
       # resolved, that is only the strategy actions that have occurred.
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_statetegy_actions_that_have_occurred(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
@@ -745,7 +745,7 @@ module Sipity
       # * All actions that have prerequisites and all of those prerequisites are complete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
-      # @return ActiveRecord::Relation<Models::Processing::StrategyAction>
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_strategy_actions_available_for_current_state(entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         strategy_actions_without_prerequisites = scope_strategy_actions_without_prerequisites(entity: entity)
