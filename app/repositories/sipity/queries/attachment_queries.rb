@@ -11,7 +11,7 @@ module Sipity
       end
 
       def access_rights_for_accessible_objects_of(work:)
-        accessible_objects(work: work).map { |object| Models::AccessRightFacade.new(object) }
+        accessible_objects(work: work).map { |object| Models::AccessRightFacade.new(object, work: work) }
       end
 
       def find_or_initialize_attachments_by(work:, pid:)

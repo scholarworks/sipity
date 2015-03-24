@@ -3,9 +3,10 @@ require 'spec_helper'
 module Sipity
   module Models
     RSpec.describe AccessRightFacade do
-      let(:object) { Models::Work.new(id: 123) }
+      let(:object) { work }
+      let(:work) { Models::Work.new(id: 123) }
       let(:access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Date.today) }
-      subject { described_class.new(object) }
+      subject { described_class.new(object, work: work) }
 
       before { allow(Models::AccessRight).to receive(:find_or_initialize_by).and_return(access_right) }
 
@@ -23,16 +24,39 @@ module Sipity
         expect(subject.human_attribute_name(:title)).to eq('Title')
       end
 
+      context 'with prepopulation of access right information' do
+        let(:object) { Models::Attachment.new(id: 234) }
+        let(:work_access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Date.today) }
+        let(:access_right) { Models::AccessRight.new }
+        it "will default an accessible object without a code to have the work's access right" do
+          expect(Models::AccessRight).to receive(:find_or_initialize_by).
+            with(hash_including(entity_id: object.id)).and_return(access_right)
+          expect(Models::AccessRight).to receive(:find_or_initialize_by).
+            with(hash_including(entity_id: work.id)).and_return(work_access_right)
+          expect(subject.access_right_code).to eq(work_access_right.access_right_code)
+          expect(subject.release_date).to eq(work_access_right.release_date)
+        end
+
+        it "will use the defined accessible object without a code to have the work's access right" do
+          access_right.access_right_code = 'open_access'
+          expect(Models::AccessRight).to receive(:find_or_initialize_by).
+            with(hash_including(entity_id: object.id)).and_return(access_right)
+          expect(Models::AccessRight).to_not receive(:find_or_initialize_by).with(hash_including(entity_id: work.id))
+          expect(subject.access_right_code).to_not eq(work_access_right.access_right_code)
+          expect(subject.release_date).to_not eq(work_access_right.release_date)
+        end
+      end
+
       context '#access_url' do
         it 'will be a file url if one is given' do
           object = Models::Attachment.new(file: __FILE__)
-          subject = described_class.new(object)
+          subject = described_class.new(object, work: object)
           expect(subject.access_url).to eq(object.file_url)
         end
 
         it 'will be a resolve polymorphic path for a Models::Work' do
           allow(object).to receive(:persisted?).and_return(true)
-          subject = described_class.new(object)
+          subject = described_class.new(object, work: object)
           expect(subject.access_url).to match(%r{^https?://[^/]*/works/#{object.id}$})
         end
       end
