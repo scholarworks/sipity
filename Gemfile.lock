@@ -316,7 +316,6 @@ GEM
     multi_json (1.11.0)
     mysql2 (0.3.18)
     nenv (0.1.1)
-    net-ldap (0.11)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -558,7 +557,6 @@ DEPENDENCIES
   letter_opener
   meta_request
   mysql2
-  net-ldap
   noids_client!
   poltergeist
   pry-byebug
