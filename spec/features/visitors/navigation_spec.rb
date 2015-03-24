@@ -11,7 +11,7 @@ feature 'Navigation links', :devise, :feature do
   scenario 'view navigation links' do
     visit root_path
     expect(page).to have_tag '.home-link'
-    expect(page).to have_content 'Sign in'
+    expect(page).to have_content 'Sign In' # NOTE: weak match to default I18n
   end
 
 end
