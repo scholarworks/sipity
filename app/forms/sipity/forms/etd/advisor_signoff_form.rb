@@ -7,6 +7,7 @@ module Sipity
         def initialize(attributes = {})
           super
           @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
+          self.agree_to_signoff = attributes[:agree_to_signoff]
         end
 
         attr_reader :signoff_service
@@ -25,7 +26,7 @@ module Sipity
                             input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
                             label: false,
                             wrapper_class: 'checkbox'
-                           ).html_safe
+                            ).html_safe
         end
 
         def advisor_signoff_legend
@@ -37,6 +38,11 @@ module Sipity
         end
 
         private
+
+        include Conversions::ConvertToBoolean
+        def agree_to_signoff=(value)
+          @agree_to_signoff = convert_to_boolean(value)
+        end
 
         def view_context
           Draper::ViewContext.current

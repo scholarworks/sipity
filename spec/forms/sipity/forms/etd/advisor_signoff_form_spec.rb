@@ -35,6 +35,14 @@ module Sipity
         its(:advisor_signoff_legend) { should be_html_safe }
         its(:signoff_agreement) { should be_html_safe }
 
+        context 'validation' do
+          it 'will require agreement to the signoff' do
+            subject = described_class.new(work: work, processing_action_name: action, repository: repository)
+            subject.valid?
+            expect(subject.errors[:agree_to_signoff]).to be_present
+          end
+        end
+
         context 'when not valid, #submit' do
           before do
             expect(subject).to receive(:valid?).and_return(false)
