@@ -20,10 +20,8 @@ gem 'draper', '~> 1.4'
 gem 'devise_cas_authenticatable'
 gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
 gem 'ezid-client', github: 'duke-libraries/ezid-client'
-gem 'micromachine', github: 'jeremyf/micromachine' # Ensuring code continues to exist
 gem 'noids_client', git: 'git://github.com/ndlib/noids_client'
 gem 'dragonfly', '~> 1.0.7'
-gem 'net-ldap'
 gem 'execjs'
 
 group :doc do

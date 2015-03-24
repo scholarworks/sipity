@@ -5,12 +5,6 @@ GIT
     ezid-client (0.11.0)
 
 GIT
-  remote: git://github.com/jeremyf/micromachine.git
-  revision: bf4f68d34e5e568d92c0a34257e502a6f2583951
-  specs:
-    micromachine (1.1.0)
-
-GIT
   remote: git://github.com/ndlib/hesburgh-lib.git
   revision: a22bae11b65f1eabbdba3e02fabf1c5cded63ac0
   specs:
@@ -322,7 +316,6 @@ GEM
     multi_json (1.11.0)
     mysql2 (0.3.18)
     nenv (0.1.1)
-    net-ldap (0.11)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.2)
@@ -563,9 +556,7 @@ DEPENDENCIES
   launchy
   letter_opener
   meta_request
-  micromachine!
   mysql2
-  net-ldap
   noids_client!
   poltergeist
   pry-byebug
