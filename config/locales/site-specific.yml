@@ -4,6 +4,7 @@ en:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Siptiy'
     title: 'Repository Deposit Interface'
+    footer: '<p class="centered">Powered by <a href="https://github.com/ndlib/sipity">Sipity</a></p>'
   pages:
     about:
       page_title: 'About'
