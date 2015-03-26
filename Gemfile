@@ -40,7 +40,6 @@ group :development do
   gem 'guard-bundler'
   gem 'guard-rails'
   gem 'guard-rspec'
-  gem 'guard-spring'
   gem 'guard-rubocop'
   gem 'i18n-debug'
   gem 'quiet_assets'
