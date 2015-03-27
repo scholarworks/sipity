@@ -193,8 +193,16 @@ module Sipity
 
           expect(subject).to eq([user, group_user])
         end
+
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
+        end
+      end
+
+      context "#user_emails_for_entity_and_roles" do
+        subject { test_repository.user_emails_for_entity_and_roles(entity: entity, roles: role) }
+        it 'will be an array of emails' do
+          expect(subject).to be_a(Array)
         end
       end
 

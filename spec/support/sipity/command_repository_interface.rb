@@ -129,10 +129,6 @@ module Sipity
     def doi_request_is_pending?(work)
     end
 
-    # @see ./app/repositories/sipity/queries/permission_queries.rb
-    def emails_for_associated_users(acting_as:, entity:)
-    end
-
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def existing_work_attributes_for(work)
     end
@@ -351,6 +347,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/account_profile_commands.rb
     def user_agreed_to_terms_of_service(user:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def user_emails_for_entity_and_roles(entity:, roles:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

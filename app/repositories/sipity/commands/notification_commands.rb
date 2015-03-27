@@ -11,7 +11,7 @@ module Sipity
       def send_notification_for_entity_trigger(notification:, entity:, acting_as:)
         # These instance variables are not needed; But to appeas Rubocop I'm
         # using them.
-        to_emails = Queries::PermissionQueries.emails_for_associated_users(entity: entity, acting_as: acting_as)
+        to_emails = Queries::ProcessingQueries.user_emails_for_entity_and_roles(entity: entity, roles: acting_as)
         # TODO: Will we want to be logging this as an event?
         Services::Notifier.deliver(notification: notification, to: to_emails, entity: entity)
       end

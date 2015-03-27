@@ -494,6 +494,12 @@ module Sipity
       module_function :scope_users_for_entity_and_roles
       public :scope_users_for_entity_and_roles
 
+      def user_emails_for_entity_and_roles(entity:, roles:)
+        scope_users_for_entity_and_roles(entity: entity, roles: roles).pluck(:email)
+      end
+      module_function :user_emails_for_entity_and_roles
+      public :user_emails_for_entity_and_roles
+
       # @api public
       #
       # An ActiveRecord::Relation scope that meets the following criteria:
