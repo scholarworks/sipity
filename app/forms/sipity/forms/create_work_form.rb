@@ -12,13 +12,12 @@ module Sipity
       def initialize(attributes = {})
         @title = attributes[:title]
         @work_publication_strategy = attributes[:work_publication_strategy]
-        @publication_date = attributes[:publication_date]
         @work_type = attributes[:work_type]
         @access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
         self.repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_reader :title, :work_publication_strategy, :publication_date, :work_type, :access_rights_answer
+      attr_reader :title, :work_publication_strategy, :work_type, :access_rights_answer
       attr_accessor :repository
       private(:repository, :repository=)
 
@@ -45,7 +44,6 @@ module Sipity
           # I believe this form has too much knowledge of what is going on;
           # Consider pushing some of the behavior down into the repository.
           repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
-          repository.update_work_publication_date!(work: work, publication_date: publication_date)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
           repository.send_notification_for_entity_trigger(
             notification: "confirmation_of_entity_created", entity: work, acting_as: 'creating_user'

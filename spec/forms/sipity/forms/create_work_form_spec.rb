@@ -76,7 +76,6 @@ module Sipity
           described_class.new(
             title: 'This is my title',
             work_publication_strategy: 'do_not_know',
-            publication_date: '2014-11-12',
             access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE,
             repository: repository
           )
@@ -107,6 +106,11 @@ module Sipity
 
           it 'will log the event' do
             expect(repository).to receive(:log_event!).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will grant creating user permission for' do
+            expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
             subject.submit(requested_by: user)
           end
 
