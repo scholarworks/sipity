@@ -43,7 +43,6 @@ group :development do
   gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'guard-scss-lint'
-  gem 'guard-spring'
   gem 'i18n-debug'
   gem 'letter_opener'
   # Paired with Chrome the RailsPanel plugin, you can see request information

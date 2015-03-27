@@ -272,9 +272,6 @@ GEM
     guard-scss-lint (0.0.1alpha)
       guard (~> 2.0)
       scss-lint (~> 0.30.0)
-    guard-spring (0.0.4)
-      guard
-      spring
     high_voltage (2.2.1)
     hike (1.2.3)
     hitimes (1.2.2)
@@ -557,7 +554,6 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   guard-scss-lint
-  guard-spring
   hesburgh-lib!
   high_voltage
   i18n-debug
