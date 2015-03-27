@@ -44,7 +44,7 @@ guard :rspec, cmd: 'bundle exec bin/rspec' do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$})   { |m| Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance' }
 end
 
-guard :scsslint, all_on_start: true do
+guard :scsslint, all_on_start: false do
   watch(%r{.+\.scss$})
 end
 
