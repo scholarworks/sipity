@@ -41,6 +41,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'guard-scss-lint'
   gem 'i18n-debug'
   gem 'quiet_assets'
   gem 'rails_layout'
@@ -54,6 +55,7 @@ group :development do
   gem 'pry-byebug'
   gem 'letter_opener'
   gem 'seed_dump'
+  gem 'scss-lint'
   # Paired with Chrome the RailsPanel plugin, you can see request information
   # https://github.com/dejan/rails_panel
   gem 'meta_request'

@@ -269,6 +269,9 @@ GEM
     guard-rubocop (1.2.0)
       guard (~> 2.0)
       rubocop (~> 0.20)
+    guard-scss-lint (0.0.1alpha)
+      guard (~> 2.0)
+      scss-lint (~> 0.30.0)
     high_voltage (2.2.1)
     hike (1.2.3)
     hitimes (1.2.2)
@@ -449,6 +452,9 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (~> 1.1)
+    scss-lint (0.30.0)
+      rainbow (~> 2.0)
+      sass (~> 3.4.0)
     seed_dump (3.2.1)
       activerecord (~> 4)
       activesupport (~> 4)
@@ -546,6 +552,7 @@ DEPENDENCIES
   guard-rails
   guard-rspec
   guard-rubocop
+  guard-scss-lint
   hesburgh-lib!
   high_voltage
   i18n-debug
@@ -579,6 +586,7 @@ DEPENDENCIES
   rubocop
   sanitize
   sass-rails
+  scss-lint
   seed_dump
   selenium-webdriver
   simple_form
