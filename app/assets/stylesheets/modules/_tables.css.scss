@@ -12,10 +12,6 @@
 }
 
 .table {
-  &.expandible tr:last-child .row-controls .btn {
-    display: none;
-  }
-
   td > .controls {
     display: inline;
   }
