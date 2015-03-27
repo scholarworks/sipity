@@ -22,17 +22,10 @@ module Sipity
       attr_accessor :repository
       private(:repository, :repository=)
 
-      validates :title,
-                presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.title') }
-      validates :work_publication_strategy,
-                presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.work_publication_strategy') },
-                inclusion: { in: :possible_work_publication_strategies, message: I18n.t('sipity/forms.error_messages.inclusion') }
-      validates :work_type,
-                presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.work_type') },
-                inclusion: { in: :possible_work_types, message: I18n.t('sipity/forms.error_messages.inclusion') }
-      validates :access_rights_answer,
-                presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.access_rights_answer') },
-                inclusion: { in: :possible_access_right_answers, message: I18n.t('sipity/forms.error_messages.inclusion') }
+      validates :title, presence: true
+      validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
+      validates :work_type, presence: true, inclusion: { in: :possible_work_types }
+      validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
 
       def access_rights_answer_for_select
         possible_access_right_answers.map(&:to_sym)

@@ -235,15 +235,23 @@ en:
       citation_already_assigned: 'Citation Already Assigned'
       citation_not_assigned: 'Citation Not Yet Assigned'
     name: 'Citation'
+  activemodel:
+    errors:
+      models:
+        sipity/forms/base_form:
+          attributes:
+            title:
+              blank: 'You must provide a title'
+            work_publication_strategy:
+              blank: 'Please tell us if you intend to publish this work'
+            work_type:
+              inclusion: 'Please select an option from the above list'
+              blank: 'Please select a work type'
+            access_rights_answer:
+              blank: 'Please select an option'
+              inclusion: 'Please select an option from the list'
   sipity/forms:
     error_messages:
-      inclusion: 'Please select an option from the above list'
-    create_work_form:
-      error_messages:
-        access_rights_answer: 'You must select an option'
-        title: 'You must provide a title'
-        work_publication_strategy: 'Please tell us if you intend to publish this work'
-        work_type: 'Please select a work type'
     state_advancing_actions:
       legend:
         etd/advisor_requests_change: 'Changes are Required to Meet My Approval'
