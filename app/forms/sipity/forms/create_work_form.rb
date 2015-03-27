@@ -15,6 +15,7 @@ module Sipity
         @publication_date = attributes[:publication_date]
         @work_type = attributes[:work_type]
         @access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
+        self.repository = attributes.fetch(:repository) { default_repository }
       end
 
       attr_reader :title
@@ -22,6 +23,8 @@ module Sipity
       attr_reader :publication_date
       attr_reader :work_type
       attr_reader :access_rights_answer
+      attr_accessor :repository
+      private :repository, :repository=
 
       validates :title,
                 presence: { message: I18n.t('sipity/forms.create_work_form.error_messages.title') }
@@ -47,7 +50,7 @@ module Sipity
         possible_work_types.map { |elem| elem.first.to_sym }
       end
 
-      def submit(repository:, requested_by:)
+      def submit(requested_by:)
         super() do |f|
           # This method shows an intimate knowledge of the data structure of
           # what goes into a work. It works for now, but is something to consider.
@@ -83,6 +86,10 @@ module Sipity
 
       def event_name
         File.join(self.class.to_s.demodulize.underscore, 'submit')
+      end
+
+      def default_repository
+        CommandRepository.new
       end
     end
   end

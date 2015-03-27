@@ -25,7 +25,7 @@ module Sipity
         def run(attributes:)
           form = repository.build_create_work_form(attributes: attributes)
           authorization_layer.enforce!(action_name => form) do
-            work = form.submit(repository: repository, requested_by: current_user)
+            work = form.submit(requested_by: current_user)
             if work
               callback(:success, work)
             else

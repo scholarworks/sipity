@@ -6,6 +6,7 @@ module Sipity
       subject { described_class.new }
 
       its(:policy_enforcer) { should eq Policies::WorkPolicy }
+      its(:repository) { should respond_to :create_work! }
 
       it 'will have a model name like Work' do
         expect(described_class.model_name).to be_a(ActiveModel::Name)
@@ -73,23 +74,22 @@ module Sipity
         let(:repository) { CommandRepositoryInterface.new }
         subject do
           described_class.new(
-            attributes: {
-              title: 'This is my title',
-              work_publication_strategy: 'do_not_know',
-              publication_date: '2014-11-12',
-              access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
-            }
+            title: 'This is my title',
+            work_publication_strategy: 'do_not_know',
+            publication_date: '2014-11-12',
+            access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE,
+            repository: repository
           )
         end
         context 'with invalid data' do
           it 'will not create a a work' do
             allow(subject).to receive(:valid?).and_return(false)
-            expect { subject.submit(repository: repository, requested_by: user) }.
+            expect { subject.submit(requested_by: user) }.
               to_not change { Models::Work.count }
           end
           it 'will return false' do
             allow(subject).to receive(:valid?).and_return(false)
-            expect(subject.submit(repository: repository, requested_by: user)).to eq(false)
+            expect(subject.submit(requested_by: user)).to eq(false)
           end
         end
         context 'with valid data' do
@@ -101,13 +101,13 @@ module Sipity
           it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
             expect(repository).to receive(:create_work!).and_return(work)
-            response = subject.submit(repository: repository, requested_by: user)
+            response = subject.submit(requested_by: user)
             expect(response).to eq(work)
           end
 
           it 'will log the event' do
             expect(repository).to receive(:log_event!).and_call_original
-            subject.submit(repository: repository, requested_by: user)
+            subject.submit(requested_by: user)
           end
 
           it 'will send emails to the creating user' do
@@ -115,7 +115,7 @@ module Sipity
             expect(repository).to receive(:send_notification_for_entity_trigger).
               with(notification: 'confirmation_of_entity_created', entity: work, acting_as: 'creating_user').
               and_call_original
-            subject.submit(repository: repository, requested_by: user)
+            subject.submit(requested_by: user)
           end
         end
       end
