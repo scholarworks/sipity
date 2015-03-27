@@ -66,7 +66,7 @@ app
 ### Cohesion, Orthogonality, and Decoupling
 
 I am working to keep the various concepts of Sipity loosely coupled.
-I use the various `rake spec:<layer>:coverage` tasks to help me understand how each layer's specs cover that layer's code.
+I use the various `rake spec:coverage:<layer>` tasks to help me understand how each layer's specs cover that layer's code.
 
 My conjecture is that if each layer's specs cover the entire layer:
 
