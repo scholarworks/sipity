@@ -21,6 +21,7 @@ gem 'ezid-client', github: 'duke-libraries/ezid-client'
 gem 'noids_client', git: 'git://github.com/ndlib/noids_client'
 gem 'dragonfly', '~> 1.0.7'
 gem 'execjs'
+gem 'autoprefixer-rails'
 
 group :doc do
   gem 'yard', require: false
