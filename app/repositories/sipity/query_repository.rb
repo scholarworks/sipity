@@ -12,7 +12,6 @@ module Sipity
     include Queries::AccountPlaceholderQueries
     include Queries::AdditionalAttributeQueries
     include Queries::CollaboratorQueries
-    include Queries::PermissionQueries
     include Queries::EnrichmentQueries
     include Queries::EventTriggerQueries
     include Queries::ProcessingQueries
