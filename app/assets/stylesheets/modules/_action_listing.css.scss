@@ -1,18 +1,14 @@
-ol.action-listing,
-ul.action-listing {
-  list-style-type:none;
-}
-
 .action-listing {
-  margin:0;
-  padding:0 0 1em;
+  list-style-type: none;
+  margin: 0;
+  padding: 0 0 1em;
 
   .action-wrapper {
-    display:inline-block;
-    padding-right:.5em;
+    display: inline-block;
+    padding-right: .5em;
   }
 }
 
 .panel-footer .action-listing {
-  padding-bottom:0;
+  padding-bottom: 0;
 }

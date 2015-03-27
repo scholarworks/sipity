@@ -1,100 +1,95 @@
-.table td > .controls {
-  display:inline;
-}
-
-.table .with-columns > div:first-child {
-  padding-left:0;
-}
-
 .no-js .row-controls {
-  display:none;
+  display: none;
 }
 
 .js .row-controls {
-  width:6em;
-  vertical-align:middle;
+  vertical-align: middle;
+  width: 6em;
 }
 
 .no-js .table.expandible .row-controls {
-  border-top:none;
-}
-
-.table.expandible tr:last-child .row-controls .btn {
-  display:none;
+  border-top: 0;
 }
 
 .table {
+  &.expandible tr:last-child .row-controls .btn {
+    display: none;
+  }
+
+  td > .controls {
+    display: inline;
+  }
+
+  .with-columns > div:first-child {
+    padding-left: 0;
+  }
+
   .borderless {
     td {
-      border-top:none;
+      border-top: 0;
     }
   }
 
   .form-inline-block {
-    display:inline-block;
+    display: inline-block;
   }
 
   .radio-inline {
-    line-height:25px;
-  }
+    line-height: 25px;
 
-  .radio-inline + .control-group > .controls {
-    padding-left:0;
+    + .control-group > .controls {
+      padding-left: 0;
+    }
   }
 
   .single-option {
-    text-align:center;
+    text-align: center;
 
     .radio-inline {
-      padding-top:6.4px;
+      padding-top: 6.4px;
     }
 
     label {
-      display:block;
+      display: block;
     }
   }
-}
 
-// NOTE: Content-specifc styles for collaborator view
-.table.collaborators {
-  min-width:710px;
+  // NOTE: Content-specifc styles for collaborator view
+  &.collaborators {
+    min-width: 710px;
 
-  th:nth-child(3), td:nth-child(3) {
-    width:6em;
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 6em;
+    }
   }
-}
 
-.table.collaborators .contact-information {
-  .controls,
-  .form-control {
-    display:inline-block;
-    float:left;
-    width:auto;
-  }
-  .choice {
-    float:left;
-    line-height:34px;
-    padding:0 10px;
-  }
-  .scope {
-    float:left;
-    line-height: 34px;
-    padding-right:6px;
-  }
-  .form-group {
-    float:left;
-    line-height:34px;
-    padding:0 10px;
-    white-space:nowrap;
-    width:auto;
-  }
-  .scope {
-    float:left;
-    line-height: 34px;
-    padding-right:6px;
-  }
-  .form-group {
-    float:left;
-    white-space:nowrap;
+  .contact-information {
+    .controls,
+    .form-control {
+      display: inline-block;
+      float: left;
+      width: auto;
+    }
+
+    .choice {
+      float: left;
+      line-height: 34px;
+      padding: 0 10px;
+    }
+
+    .scope {
+      float: left;
+      line-height: 34px;
+      padding-right: 6px;
+    }
+
+    .form-group {
+      float: left;
+      line-height: 34px;
+      padding: 0 10px;
+      white-space: nowrap;
+      width: auto;
+    }
   }
 }

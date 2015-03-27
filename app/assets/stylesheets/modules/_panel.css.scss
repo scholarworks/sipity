@@ -1,36 +1,37 @@
-@import "bootstrap/variables";
+@import 'bootstrap/variables';
 
 fieldset.panel,
 form.panel {
-  position:relative;
- 
+  position: relative;
+
   &.with-footer {
     padding-bottom: 4em;
   }
 
   legend.panel-heading {
-    position:absolute;
+    position: absolute;
+
+    + .panel-body {
+      margin-top: 40px; // Assumes a 16px font size (like .panel-title h3)
+    }
   }
 
-  legend.panel-heading + .panel-body {
-    margin-top:40px; // Assumes a 16px font size (like .panel-title h3)
-  }
 
   .panel-body {
-    overflow:auto;
-    width:100%;
+    overflow: auto;
+    width: 100%;
   }
 
   // Field validations are automatically placed in span.help-inline
   .help-inline {
-    color:$alert-danger-text;
+    color: $alert-danger-text;
   }
 
   .panel-footer {
-    bottom:0;
-    left:0;
-    position:absolute;
-    width:100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
   }
 }
 
@@ -68,6 +69,6 @@ form.panel {
   }
 
   .panel-tiles .panel:nth-child(odd) {
-    margin-right:2%;
+    margin-right: 2%;
   }
 }
