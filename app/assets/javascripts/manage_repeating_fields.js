@@ -3,6 +3,8 @@
 // These assumptions are reflected in the MultiValueInput class.
 
 (function($){
+  'use strict';
+
   $.widget( "curate.manage_fields", {
     options: {
       change: null,
@@ -45,7 +47,7 @@
         $listing.children('.warning').remove();
         $('.add', $activeFieldControls).remove();
         $activeFieldControls.prepend($removeControl);
-        $newChildren = $newField.children('input');
+        var $newChildren = $newField.children('input');
         $newChildren.
           val('').
           removeProp('required');
