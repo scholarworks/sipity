@@ -95,7 +95,7 @@ module Sipity
         end
 
         def at_least_one_file_must_be_attached
-          return true unless attachments_associated_with_the_work?
+          return true if attachments_associated_with_the_work?
           errors.add(:base, :at_least_one_attachment_required)
         end
 
