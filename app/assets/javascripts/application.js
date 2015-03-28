@@ -19,13 +19,15 @@
 //= stub vendor/modernizr
 
 (function($) {
+  'use strict';
+
   var adjustRequiredAttachements = function(){
     var attachementControl = $('#work_files');
     if ( attachementControl.size() > 0 ){
       attachementControl
         .removeClass('required')
         .removeAttr('required');
-    };
+    }
   };
 
   var adjustRequiredCollaborators = function(){
@@ -33,7 +35,7 @@
     if ( collaboratorControl.size() > 0 ){
       collaboratorControl.last().children('td.name').first().children('div').children('input').first().removeClass('required').removeAttr('required');
       collaboratorControl.last().children('td.role').first().children('div').children('select').first().removeClass('required').removeAttr('required');
-    };
+    }
   };
 
   var ready = function(){
