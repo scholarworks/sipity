@@ -39,6 +39,7 @@ group :development do
   gem 'capistrano-rails-console'
   gem 'capistrano-rvm', '~> 0.1.1'
   gem 'guard-bundler'
+  gem 'guard-jshintrb'
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
