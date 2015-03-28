@@ -16,7 +16,7 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
-//= stub modernizr
+//= stub vendor/modernizr
 
 (function($) {
   var adjustRequiredAttachements = function(){
