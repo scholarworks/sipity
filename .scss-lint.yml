@@ -1,0 +1,5 @@
+linters:
+  PlaceholderInExtend:
+    exclude: app/assets/stylesheets/framework_and_overrides.css.scss
+  ImportantRule:
+    exclude: app/assets/stylesheets/modules/_visibility.css.scss

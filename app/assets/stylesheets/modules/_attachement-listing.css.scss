@@ -1,11 +1,11 @@
 .attachment-listing {
-  list-style-type:none;
-  margin:1em 0;
-  padding:0;
+  list-style-type: none;
+  margin: 1em 0;
+  padding: 0;
 
   .thumbnail-wrapper {
-    display:inline-block;
-    text-align:center;
-    width:74px; // Assumes a 64px thumbnail image
+    display: inline-block;
+    text-align: center;
+    width: 74px; // Assumes a 64px thumbnail image
   }
 }

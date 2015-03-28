@@ -12,6 +12,10 @@ class MultiValueInput < SimpleForm::Inputs::CollectionInput
     list_builder(markup)
   end
 
+  def input_type
+    'multi-value'
+  end
+
   private
 
   def list_builder(markup)

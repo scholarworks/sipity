@@ -38,7 +38,7 @@
 
   var ready = function(){
     $('.table.collaborators').manage_sections();
-    $('.multi_value.control-group').manage_fields();
+    $('.multi-value.control-group').manage_fields();
     adjustRequiredCollaborators();
     adjustRequiredAttachements();
     $('.help-icon').tooltip();

@@ -21,9 +21,9 @@ describe 'MultiValueInput', type: :input do
     end
 
     it 'renders multi-value' do
-      expect(subject).to have_tag('.control-group.foo_bar.multi_value') do
+      expect(subject).to have_tag('.control-group.foo_bar.multi-value') do
         with_tag('.control-label') do
-          with_tag('label.multi_value.required', text: '* Bar', with: { for: 'foo_bar' }) do
+          with_tag('label.multi-value.required', text: '* Bar', with: { for: 'foo_bar' }) do
             with_tag("abbr")
           end
         end
@@ -53,9 +53,9 @@ describe 'MultiValueInput', type: :input do
     end
 
     it 'renders multi-value given a nil object' do
-      expect(subject).to have_tag('.control-group.foo_bar.multi_value') do
+      expect(subject).to have_tag('.control-group.foo_bar.multi-value') do
         with_tag('.control-label') do
-          with_tag('label.multi_value.required', text: '* Bar', with: { for: 'foo_bar' }) do
+          with_tag('label.multi-value.required', text: '* Bar', with: { for: 'foo_bar' }) do
             with_tag("abbr")
           end
         end

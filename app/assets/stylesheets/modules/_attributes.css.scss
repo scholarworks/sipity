@@ -1,70 +1,73 @@
 .attribute-listing {
-  margin-bottom:0;
+  margin-bottom: 0;
 
   .predicate:after {
-    content:':'
+    content: ':';
   }
+
+  .occurances {
+    margin-bottom: 0;
+
+    > .occurance {
+      list-style-type: none;
+    }
+  }
+
   .value {
-    padding-left:1em;
+    padding-left: 1em;
 
     p:last-child {
-      margin-bottom:0;
+      margin-bottom: 0;
     }
 
     .occurances {
-      margin-bottom:0;
+      padding-left: 0;
     }
 
-    ul.occurances {
-      padding-left:0;
-    }
-
-    .occurances > .occurance {
-      list-style-type:none;
-    }
   }
 }
 
-.multi_value .listing {
-  padding:0;
+.multi-value .listing {
+  padding: 0;
 
   li {
-    list-style-type:none;
+    list-style-type: none;
   }
 }
 
 @media only screen and (min-width: 550px) {
   .attribute-listing {
-    width:100%;
-    float:left;
+    float: left;
+    width: 100%;
 
     .predicate {
-      clear:both;
-      float:left;
-      padding-bottom:.3em;
-      width:30%;
+      clear: both;
+      float: left;
+      padding-bottom: .3em;
+      width: 30%;
     }
+
     .value {
-      float:right;
-      padding-bottom:.3em;
-      width:70%;
+      float: right;
+      padding-bottom: .3em;
+      width: 70%;
     }
   }
 }
 
 .nested-attribute-definition {
-  margin-bottom:0;
+  margin-bottom: 0;
 }
 
-.nested-attributes-list,  {
-  list-style-type:none;
-  margin:0;
-  padding:0;
-  float:left;
-  width:100%;
+.nested-attributes-list {
+  float: left;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }
 
 .nested-attribute-item {
-  float:left;
-  width:100%;
+  float: left;
+  width: 100%;
 }
