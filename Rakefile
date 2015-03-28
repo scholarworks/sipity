@@ -5,6 +5,14 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
+require 'jshintrb/jshinttask'
+
+Jshintrb::JshintTask.new :jshint do |t|
+  t.pattern = 'app/assets/**/*.js'
+  t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
+  t.options = JSON.parse(IO.read('.jshintrc'))
+end
+
 begin
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new do |t|
