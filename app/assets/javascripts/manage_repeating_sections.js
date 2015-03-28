@@ -3,6 +3,8 @@
 // These assumptions are reflected in the MultiValueInput class.
 //
 (function($){
+  'use strict';
+
   $.widget( "sipity.manage_sections", {
     options: {
       change: null,
@@ -44,7 +46,7 @@
           $listing = $activeField.parent(),
           $removeControl = this.remover.clone(),
           $warning = this.tableControls.children('.warning'),
-          warningCount = $warning.length
+          warningCount = $warning.length;
 
       if ($lastNameField.val() === '') {
         if (warningCount === 0) {
@@ -60,27 +62,30 @@
         $('.remove', $activeFieldControls).remove();
         $activeFieldControls.prepend($removeControl);
 
-        $newChild1 = $newField.children('td.name')
+        var $nameFieldCell = $newField.children('td.name')
                        .first()
                        .children('div')
                        .children('input')
                        .attr('id', 'work_collaborators__attributes_' + rowNumber + '_name')
                        .attr('name', 'work[collaborators_attributes][' + rowNumber + '][name]');
-        $newChild2 = $newField
+
+        var $roleFieldCell = $newField
                        .children('td.role')
                        .last()
                        .children('div')
                        .children('select')
                        .attr('id', 'work_collaborators_attributes_' + rowNumber + '_role')
                        .attr('name', 'work[collaborators_attributes][' + rowNumber + '][role]');
-        $newChild3 = $newField
+
+        var $revieweOptionCell = $newField
                        .children('td.review')
                        .last()
                        .children('div')
                        .children('select')
                        .attr('id', 'work_collaborators_attributes_' + rowNumber + '_responsible_for_review')
                        .attr('name', 'work[collaborators_attributes][' + rowNumber + '][responsible_for_review]');
-        $newChild4 = $newField
+
+        var $idFieldCell = $newField
                        .children('td.contact-information')
                        .first()
                        .children('span')
@@ -89,7 +94,8 @@
                        .children('input')
                        .attr('id', 'work_collaborators__attributes_' + rowNumber + '_netid')
                        .attr('name', 'work[collaborators_attributes][' + rowNumber + '][netid]');
-        $newChild5 = $newField
+
+        var $emailFieldCell = $newField
                        .children('td.contact-information')
                        .first()
                        .children('span')
@@ -99,16 +105,16 @@
                        .attr('id', 'work_collaborators__attributes_' + rowNumber + '_email')
                        .attr('name', 'work[collaborators_attributes][' + rowNumber + '][email]');
 
-        $newChild1.val('');
-        $newChild2.val('');
-        $newChild3.children("option[value='No']").attr("selected","selected");
-        $newChild4.val('');
-        $newChild5.val('');
+        $nameFieldCell.val('');
+        $roleFieldCell.val('');
+        $revieweOptionCell.children("option[value='No']").attr("selected","selected");
+        $idFieldCell.val('');
+        $emailFieldCell.val('');
 
         $activeField.children('button').remove();
         $listing.append($newField);
         $('.remove', $newField).remove();
-        $newChild1.first().focus();
+        $nameFieldCell.first().focus();
         this._trigger("add");
       }
     },
