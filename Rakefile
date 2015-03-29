@@ -5,13 +5,16 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-require 'jshintrb/jshinttask'
-
-Jshintrb::JshintTask.new :jshint do |t|
-  puts 'Running JSHint...'
-  t.pattern = 'app/assets/**/*.js'
-  t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
-  t.options = JSON.parse(IO.read('.jshintrc'))
+begin
+  require 'jshintrb/jshinttask'
+  Jshintrb::JshintTask.new :jshint do |t|
+    puts 'Running JSHint...'
+    t.pattern = 'app/assets/**/*.js'
+    t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
+    t.options = JSON.parse(IO.read('.jshintrc'))
+  end
+rescue LoadError
+  puts "Unable to load JSHint. Who will enforce your JavaScript styleguide now?"
 end
 
 begin
@@ -20,7 +23,7 @@ begin
     t.options << '--config=./.hound.yml'
   end
 rescue LoadError
-  puts "Unable to load rubocop. Who will enforce your styles now?"
+  puts "Unable to load RuboCop. Who will enforce your Ruby styleguide now?"
 end
 
 types = begin
