@@ -71,6 +71,7 @@ group :development, :test do
   gem 'rspec-its'
   gem 'rspec-rails'
   gem 'rubocop', require: false
+  gem 'jshint', require: false
   gem 'sqlite3'
 end
 
