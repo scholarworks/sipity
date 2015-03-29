@@ -8,6 +8,7 @@ Rails.application.load_tasks
 require 'jshintrb/jshinttask'
 
 Jshintrb::JshintTask.new :jshint do |t|
+  puts 'Running JSHint...'
   t.pattern = 'app/assets/**/*.js'
   t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
   t.options = JSON.parse(IO.read('.jshintrc'))
@@ -51,7 +52,7 @@ if defined?(RSpec)
     end
 
     desc 'Run the Travis CI specs'
-    task travis: [:rubocop] do
+    task travis: [:rubocop, :jshint] do
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task['spec:all'].invoke
     end
@@ -75,7 +76,7 @@ if defined?(RSpec)
   end
 
   Rake::Task["default"].clear
-  task default: ['db:schema:load', 'rubocop', 'spec:all', 'spec:validate_coverage_goals']
+  task default: ['db:schema:load', 'rubocop', 'jshint', 'spec:all', 'spec:validate_coverage_goals']
   task spec: ['sipity:rebuild_interfaces']
   task stats: ['sipity:stats_setup']
 end
