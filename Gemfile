@@ -32,13 +32,14 @@ end
 
 group :development do
   gem 'better_errors'
-  gem 'binding_of_caller', :platforms=>[:mri_21]
+  gem 'binding_of_caller', platforms: [:mri_21]
   gem 'capistrano', '~> 3.1'
   gem 'capistrano-bundler'
   gem 'capistrano-rails'
   gem 'capistrano-rails-console'
   gem 'capistrano-rvm', '~> 0.1.1'
   gem 'guard-bundler'
+  gem 'guard-jshintrb'
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
@@ -52,9 +53,9 @@ group :development do
   gem 'pry-rails'
   gem 'quiet_assets'
   gem 'rails_layout'
-  gem 'rb-fchange', :require=>false
-  gem 'rb-fsevent', :require=>false
-  gem 'rb-inotify', :require=>false
+  gem 'rb-fchange', require: false
+  gem 'rb-fsevent', require: false
+  gem 'rb-inotify', require: false
   gem 'scss-lint'
   gem 'seed_dump'
   gem 'spring'
@@ -70,6 +71,7 @@ group :development, :test do
   gem 'rspec-its'
   gem 'rspec-rails'
   gem 'rubocop', require: false
+  gem 'jshintrb', require: false
   gem 'sqlite3'
 end
 

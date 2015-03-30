@@ -9,6 +9,11 @@ guard :bundler do
   # watch(/^.+\.gemspec/)
 end
 
+guard :jshintrb do
+  watch(%r{^app/assets/javascripts/.+.js})
+  watch(%r{^spec/javascripts/.+.js})
+end
+
 guard 'rails' do
   watch('Gemfile.lock')
   watch(%r{^(config|lib)/.*})
