@@ -42,11 +42,11 @@ For more information see the [terminal-notifier project page](https://github.com
 
 # Verifying the Build
 
-Travis is set to run both Rubocop and the test suite.
-If either task fails, the build will fail.
+Travis builds enforce code style guide compliance in addition to running the test suite.
+If any test or lint check fails the build will fail.
 
-I have configured my git `pre-push` hook to run those tests.
-You can do the same by copying and pasting the text below into your terminal.
+Adding a `pre-push` hook to git will help catch issues _before_ sending the build to CI.
+Install a `pre-push` hook by copying and pasting the following into your terminal:
 
 ```console
 echo '#!/bin/sh
@@ -66,19 +66,24 @@ If you need to skip the `pre-push` hook, use the `--no-verify` option when you p
 A slow test suite is an indicator of an unhealthy test suite;
 Therefore lets keep it under 30 seconds.
 
-Code that is not covered in test means code that we are not "owning" and documenting; Therefore lets keep the test coverage at 100%.
-
-Code that does not conform to the style guide can be disorienting; Therefore lets adhear to 100% style guide compliance or articulate why we are violating the style guide.
+Code that is not covered in test means code that we are not "owning" and documenting.
+Let's keep the test coverage at 100%.
 
 ### What Happens We Pass the 30 Second Threshold?
 
 Our application is going to continue to grow; And so will the completion time of our tests.
 If we hit the 30 second mark, we'll review what is happening and adjust the goal.
 
-## But Rubocop is complaining too much...
+### The linters are complaining too much...
 
-Either submit a pull request modifying the `.hound.yml` file or submit an issue
-and I can take a look at it.
+Programatic style guide enforcement keeps the codebase consistent and gives contributors immediate feedback on whether their code meeds the expectations of this project.
+By pre-screening for formatting and whitespace concerns pull request conversations can focus on _intent_ and _clarity_.
+
+We recognize that there are times when exceptions to the style guides are justified.
+Submit a pull request modifying the pertinent configuration file and we can discuss it.
+* [RuboCop](https://github.com/bbatsov/rubocop) configuration is in `.hound.yml`
+* [SCSS-Lint](https://github.com/causes/scss-lint) configuration is in `.scss-lint.yml`
+* [JSHint](https://github.com/jshint/jshint/) configuration is in `.jshintrc`. Files can be excluded from JSHint checks by adding them to `.jshintignore`
 
 # Submitting a Pull Request
 
