@@ -26,17 +26,20 @@ module Sipity
       private
 
       def fetch(key)
-        @data_store ||= processing_actions.each_with_object({}) do |action, mem|
-          mem[action.action_type] ||= []
-          mem[action.action_type] << action
-          mem
-        end
+        @data_store ||= build_data_store
         @data_store.fetch(key, [])
       end
 
       def processing_actions
-        repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity).each_with_object([]) do |action, mem|
-          with_decorated_action(action) { |decorated| mem << decorated }
+        repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
+      end
+
+      def build_data_store
+        processing_actions.each_with_object({}) do |action, mem|
+          with_decorated_action(action) do |decorated_action|
+            mem[decorated_action.action_type] ||= []
+            mem[decorated_action.action_type] << decorated_action
+          end
           mem
         end
       end
