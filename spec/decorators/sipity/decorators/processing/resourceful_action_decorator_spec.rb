@@ -36,19 +36,21 @@ module Sipity
 
         end
 
-        it 'will render an entry point with data-method="delete" for :destroy action' do
-          action = double(name: 'destroy')
-          subject = described_class.new(action: action, entity: entity, user: user)
-          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
-            with_tag("a[data-method='delete'][href='#{subject.path}']")
+        context '#render_entry_point' do
+          it 'will render an entry point with data-method="delete" for :destroy action' do
+            action = double(name: 'destroy')
+            subject = described_class.new(action: action, entity: entity, user: user)
+            expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+              with_tag("a[data-method='delete'][href='#{subject.path}']")
+            end
           end
-        end
 
-        it 'will render an entry point with data-method="delete" for :destroy action' do
-          action = double(name: 'edit')
-          subject = described_class.new(action: action, entity: entity, user: user)
-          expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
-            with_tag("a[href='#{subject.path}']")
+          it 'will render an entry point link for an available action' do
+            action = double(name: 'edit')
+            subject = described_class.new(action: action, entity: entity, user: user)
+            expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+              with_tag("a[href='#{subject.path}']")
+            end
           end
         end
       end
