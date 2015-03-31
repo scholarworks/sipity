@@ -210,6 +210,18 @@ ActiveRecord::Base.transaction do
         etd_actions[action_name] = action
       end
 
+      [
+        { action: 'advisor_requests_change', analogous_to: 'advisor_signoff' }
+      ].each do |options|
+        action = etd_actions.fetch(options.fetch(:action))
+        analogous_to = etd_actions.fetch(options.fetch(:analogous_to))
+        find_or_initialize_or_create!(
+          context: action,
+          receiver: action.base_element_for_strategy_actions_analogues,
+          analogous_to_strategy_action: analogous_to
+        )
+      end
+
       pre_requisite_states =       {
         'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
       }
