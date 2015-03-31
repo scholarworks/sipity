@@ -23,7 +23,8 @@ Issues have a priority hierarchy:
 3. Issues in a feature [milestone](https://github.com/ndlib/sipity/milestones)
 4. Issues in the backlog
 
-Core contributors should self-assign a prioritized issue before looking at the backlog. If additional clarification is needed for a prioritized issue [as a question](#what-if-i-have-a-question).
+Core contributors should self-assign a prioritized issue before looking at the backlog.
+If additional clarification is needed for a prioritized issue [ask a question](#what-if-i-have-a-question).
 
 ### Creating an Issue
 [Issues for the repo](https://github.com/ndlib/sipity/issues) should have a clear functional scope and desired outcome.
@@ -97,7 +98,7 @@ If you need to skip the `pre-push` hook, use the `--no-verify` option when you p
 A slow test suite is an indicator of an unhealthy test suite;
 Therefore lets keep it under 30 seconds.
 
-Code that is not covered in test means code that we are not ”owning“ and documenting.
+Code that is not covered in test means code that we are not “owning” and documenting.
 Let’s keep the test coverage at 100%.
 
 ### What Happens We Pass the 30 Second Threshold?
