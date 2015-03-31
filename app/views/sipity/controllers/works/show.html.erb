@@ -203,16 +203,7 @@
               <% available_resourceful_actions.each do |action| %>
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
                   <meta itemprop="name" content="event_trigger/<%= action.name %>" />
-                  <% if action.available? %>
-                    <%= action.render_entry_point %>
-                  <% else %>
-                    <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                      <meta itemprop="name" content="<%= action.name %>" />
-                      <span class="btn btn-default disabled">
-                        <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
-                      </span>
-                    </div>
-                  <% end %>
+                  <%= action.render_entry_point %>
                   <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
                 </li>
               <% end %>

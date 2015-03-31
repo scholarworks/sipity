@@ -52,6 +52,16 @@ module Sipity
               with_tag("a[href='#{subject.path}']")
             end
           end
+
+          it 'will not render an entry point link when an action is not avaialble' do
+            action = double(name: 'edit')
+            subject = described_class.new(action: action, entity: entity, user: user)
+            expect(subject).to receive(:available?).and_return(false)
+            expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
+              with_tag("meta[itemprop='name'][content='#{action.name}']")
+              without_tag("a[href='#{subject.path}']")
+            end
+          end
         end
       end
     end

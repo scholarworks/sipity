@@ -22,11 +22,28 @@ module Sipity
 
         def render_entry_point
           view_context.content_tag('div', itemprop: 'target', itemscope: true, itemtype: "http://schema.org/EntryPoint", class: "action") do
-            view_context.link_to(entry_point_text, entry_point_path, entry_point_attributes)
+            if available?
+              render_available_inner_html_entry_point
+            else
+              render_unavailable_inner_html_for_entry_point
+            end
           end
         end
 
         private
+
+        def render_available_inner_html_entry_point
+          view_context.link_to(entry_point_text, entry_point_path, entry_point_attributes)
+        end
+
+        def render_unavailable_inner_html_for_entry_point
+          (
+            view_context.content_tag('meta', '', itemprop: 'name', content: name) +
+            view_context.content_tag('span', class: 'btn btn-default disabled') do
+              view_context.t("sipity/works.resourceful_actions.label.#{ action.name }")
+            end
+          ).html_safe
+        end
 
         def entry_point_attributes
           attributes = { itemprop: 'url', class: "btn #{button_class}" }
