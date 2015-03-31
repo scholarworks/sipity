@@ -12,17 +12,17 @@ $ ./scripts/start-issue <the-issue-number>
 
 See [./scripts/start-issue](https://github.com/ndlib/sipity/blob/master/scripts/start-issue) for further details.
 
-# I Don't Know What To Do
+# I Don’t Know What To Do
 
 If you are just joining the project, or are unclear what to do, how about helping with documentation?
 
 We are leveraging [inch-ci.org](http://inch-ci.org) to show us where we might be able to improve [our documentation](http://inch-ci.org/github/ndlib/sipity).
 
-* Find a line from [Sipity's Inch-CI build](http://inch-ci.org/github/ndlib/sipity)
+* Find a line from [Sipity’s Inch-CI build](http://inch-ci.org/github/ndlib/sipity)
 * Make a new branch
 * Follow the suggestions as you write the inline documentation
 * Run `$ yard` and open the `./doc/index.html` to review your changes
-* Submit a pull request; Don't forget to add a `[skip ci]` line to the git commit message
+* Submit a pull request; Don’t forget to add a `[skip ci]` line to the git commit message
 
 # Run Guard During Development
 
@@ -66,13 +66,13 @@ If you need to skip the `pre-push` hook, use the `--no-verify` option when you p
 A slow test suite is an indicator of an unhealthy test suite;
 Therefore lets keep it under 30 seconds.
 
-Code that is not covered in test means code that we are not "owning" and documenting.
-Let's keep the test coverage at 100%.
+Code that is not covered in test means code that we are not ”owning“ and documenting.
+Let’s keep the test coverage at 100%.
 
 ### What Happens We Pass the 30 Second Threshold?
 
 Our application is going to continue to grow; And so will the completion time of our tests.
-If we hit the 30 second mark, we'll review what is happening and adjust the goal.
+If we hit the 30 second mark, we’ll review what is happening and adjust the goal.
 
 ### The linters are complaining too much...
 
