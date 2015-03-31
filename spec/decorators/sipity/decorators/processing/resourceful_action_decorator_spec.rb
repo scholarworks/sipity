@@ -31,7 +31,7 @@ module Sipity
           it "will have a button_class #{example[:button_class].inspect} for action name #{example[:name].inspect} (Scenario ##{index})" do
             action = double(name: example.fetch(:name))
             subject = described_class.new(action: action, entity: entity, user: user)
-            expect(subject.button_class).to eq(example.fetch(:button_class))
+            expect(subject.send(:button_class)).to eq(example.fetch(:button_class))
           end
 
         end

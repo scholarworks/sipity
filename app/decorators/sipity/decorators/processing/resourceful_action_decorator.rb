@@ -20,10 +20,6 @@ module Sipity
 
         alias_method :entry_point_path, :path
 
-        def button_class
-          dangerous? ? 'btn-danger' : 'btn-primary'
-        end
-
         def render_entry_point
           view_context.content_tag('div', itemprop: 'target', itemscope: true, itemtype: "http://schema.org/EntryPoint", class: "action") do
             view_context.link_to(entry_point_text, entry_point_path, entry_point_attributes)
@@ -46,6 +42,10 @@ module Sipity
           text = view_context.t("sipity/decorators/resourceful_actions.label.#{ name }")
           text <<  %(<meta itemprop="name" content="#{name}" />)
           text.html_safe
+        end
+
+        def button_class
+          dangerous? ? 'btn-danger' : 'btn-primary'
         end
 
         def dangerous?
