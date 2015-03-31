@@ -150,6 +150,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state(user:, entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_processing_actors_for(user:)
     end
 
