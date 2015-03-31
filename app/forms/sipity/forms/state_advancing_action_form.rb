@@ -4,7 +4,7 @@ module Sipity
     # entity.
     #
     # @see Sipity::Models::Processing::StrategyAction
-    class StateAdvancingAction < ProcessingActionForm
+    class StateAdvancingActionForm < ProcessingActionForm
       def initialize(attributes = {})
         super
         self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }

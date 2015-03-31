@@ -3,7 +3,7 @@ module Sipity
     module Etd
       # Responsible for submitting the associated entity to the advisor
       # for signoff.
-      class AdvisorSignoffForm < Forms::StateAdvancingAction
+      class AdvisorSignoffForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
           @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
