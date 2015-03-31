@@ -10,7 +10,8 @@ module Sipity
 
         it 'will not initialize with an invalid action name' do
           action = double(name: 'bob')
-          expect { described_class.new(action: action, entity: entity, user: user) }.to raise_error(Exceptions::UnprocessableResourcefulActionNameError)
+          expect { described_class.new(action: action, entity: entity, user: user) }.
+            to raise_error(Exceptions::UnprocessableResourcefulActionNameError)
         end
 
         [

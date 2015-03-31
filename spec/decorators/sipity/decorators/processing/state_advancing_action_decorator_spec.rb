@@ -6,7 +6,7 @@ module Sipity
       RSpec.describe StateAdvancingActionDecorator do
         let(:entity) { Models::Work.new(id: 1234) }
         let(:user) { double }
-        let(:action) { Models::Processing::StrategyAction.new(name: 'hello')}
+        let(:action) { Models::Processing::StrategyAction.new(name: 'hello') }
         subject { described_class.new(action: action, entity: entity, user: user) }
 
         it "will have a path" do
