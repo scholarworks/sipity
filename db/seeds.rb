@@ -177,14 +177,14 @@ ActiveRecord::Base.transaction do
         { action_name: 'search_terms', seq: 5 },
         { action_name: 'degree', seq: 6 },
         { action_name: 'access_policy', seq: 7 },
-        { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1 },
+        { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
         { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
-        { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1 },
-        { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2 },
-        { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1 },
-        { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review', seq: 1 },
-        { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2 },
-        { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1}
+        { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2, allow_repeat_within_current_state: false },
+        { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
+        { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: false },
+        { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
       ].each do |structure|
         action_name = structure.fetch(:action_name)
         resulting_state = structure[:resulting_state_name] ? etd_states.fetch(structure[:resulting_state_name]) : nil
@@ -200,11 +200,11 @@ ActiveRecord::Base.transaction do
         if action.persisted?
           action.update(
             presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
-            action_type: action.default_action_type, allow_repeat_within_current_state: structure[:allow_repeat_within_current_state]
+            action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
           )
         else
           action.presentation_sequence = structure.fetch(:seq)
-          action.allow_repeat_within_current_state = structure[:allow_repeat_within_current_state]
+          action.allow_repeat_within_current_state = structure.fetch(:allow_repeat_within_current_state, true)
           # Because the objects are being instantiated differently, I need to make
           # sure to capture the default action_type.
           action.action_type = action.default_action_type
