@@ -3,7 +3,7 @@
   available_enrichment_actions = model.enrichment_actions(user: current_user)
   has_available_enrichment_actions = available_enrichment_actions.present?
   available_state_advancing_actions = model.state_advancing_actions(user: current_user)
-  has_available_state_advancing_actions = available_state_advancing_actions.select {|action| action.available?}.present?
+  has_available_state_advancing_actions = available_state_advancing_actions.detect { |action| action.available? }
 
   if has_available_state_advancing_actions
     state_advancing_alert_class = 'alert-success'
