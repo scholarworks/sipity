@@ -206,6 +206,17 @@ ActiveRecord::Schema.define(version: 20150331155606) do
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
   add_index "sipity_processing_strategies", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_strategies_proxy_for", unique: true
 
+  create_table "sipity_processing_strategy_action_analogues", force: :cascade do |t|
+    t.integer  "strategy_action_id",              null: false
+    t.integer  "analogous_to_strategy_action_id", null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "sipity_processing_strategy_action_analogues", ["analogous_to_strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_analogous_stgy"
+  add_index "sipity_processing_strategy_action_analogues", ["strategy_action_id", "analogous_to_strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_aggregate", unique: true
+  add_index "sipity_processing_strategy_action_analogues", ["strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_strategy"
+
   create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_action_id"
     t.integer  "prerequisite_strategy_action_id"
