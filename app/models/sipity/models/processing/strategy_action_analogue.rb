@@ -26,6 +26,8 @@ module Sipity
       #   * permitted_to_repeat_action_withing_a_given_state
       class StrategyActionAnalogue < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_action_analogues'
+        belongs_to :strategy_action
+        belongs_to :analogous_to_strategy_action, class_name: 'Sipity::Models::Processing::StrategyAction'
       end
     end
   end

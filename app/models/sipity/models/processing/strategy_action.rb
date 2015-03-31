@@ -45,6 +45,20 @@ module Sipity
           class_name: 'Sipity::Models::Processing::Comment'
         )
 
+        has_many(
+          :base_element_for_strategy_actions_analogues,
+          foreign_key: :strategy_action_id,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Processing::StrategyActionAnalogue'
+        )
+
+        has_many(
+          :analog_element_for_strategy_actions_analogues,
+          foreign_key: :analogous_to_strategy_action_id,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Processing::StrategyActionAnalogue'
+        )
+
         ENRICHMENT_ACTION = 'enrichment_action'.freeze
         RESOURCEFUL_ACTION = 'resourceful_action'.freeze
         STATE_ADVANCING_ACTION = 'state_advancing_action'.freeze
