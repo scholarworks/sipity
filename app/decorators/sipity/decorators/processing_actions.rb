@@ -45,6 +45,8 @@ module Sipity
       end
 
       def with_decorated_action(action)
+        # TODO: Can the query be built such that is_complete and is_a_prerequisite are
+        # already part of the returned data structure? Yes.
         decorated_action = action_decorator.call(
           action: action, user: user, entity: entity,
           is_complete: completed_action_ids.include?(action.id),
