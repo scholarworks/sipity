@@ -28,6 +28,16 @@ module Sipity
         self.table_name = 'sipity_processing_strategy_action_analogues'
         belongs_to :strategy_action
         belongs_to :analogous_to_strategy_action, class_name: 'Sipity::Models::Processing::StrategyAction'
+
+        validate :strategy_action_and_analog_cannot_be_the_same
+
+        private
+
+        # I'd prefer this to be a database constraint but that does not appear
+        # to be possible.
+        def strategy_action_and_analog_cannot_be_the_same
+          errors.add(:strategy_action_id) if strategy_action == analogous_to_strategy_action
+        end
       end
     end
   end

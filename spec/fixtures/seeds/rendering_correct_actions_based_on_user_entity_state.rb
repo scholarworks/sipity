@@ -25,7 +25,11 @@ Sipity::Models::Processing::StrategyAction.create!([
   {strategy_id: 1, name: "assign_a_doi", action_type: "enrichment_action"},
   {strategy_id: 1, resulting_strategy_state_id: 2, name: "submit_for_review", action_type: "state_advancing_action"},
   {strategy_id: 1, allow_repeat_within_current_state: false, name: "already_taken_on_behalf" },
-  {strategy_id: 1, allow_repeat_within_current_state: false, name: "already_taken_but_by_someone_else" }
+  {strategy_id: 1, allow_repeat_within_current_state: false, name: "already_taken_but_by_someone_else" },
+  {strategy_id: 1, allow_repeat_within_current_state: false, name: "analog_to_submit_for_review" }
+])
+Sipity::Models::Processing::StrategyActionAnalogue.create!([
+  {strategy_action_id: 7, analogous_to_strategy_action_id: 4}
 ])
 Sipity::Models::Processing::StrategyActionPrerequisite.create!([
   {guarded_strategy_action_id: 4, prerequisite_strategy_action_id: 2}
@@ -49,7 +53,9 @@ Sipity::Models::Processing::StrategyStateAction.create!([
   {originating_strategy_state_id: 1, strategy_action_id: 5},
   {originating_strategy_state_id: 2, strategy_action_id: 5},
   {originating_strategy_state_id: 1, strategy_action_id: 6},
-  {originating_strategy_state_id: 2, strategy_action_id: 6}
+  {originating_strategy_state_id: 2, strategy_action_id: 6},
+  {originating_strategy_state_id: 1, strategy_action_id: 7},
+  {originating_strategy_state_id: 2, strategy_action_id: 7}
 ])
 Sipity::Models::Processing::StrategyStateActionPermission.create!([
   {strategy_role_id: 1, strategy_state_action_id: 6},
@@ -69,10 +75,14 @@ Sipity::Models::Processing::StrategyStateActionPermission.create!([
   {strategy_role_id: 2, strategy_state_action_id: 8},
   {strategy_role_id: 2, strategy_state_action_id: 9},
   {strategy_role_id: 2, strategy_state_action_id: 10},
+  {strategy_role_id: 2, strategy_state_action_id: 11},
+  {strategy_role_id: 2, strategy_state_action_id: 12},
   {strategy_role_id: 1, strategy_state_action_id: 7},
   {strategy_role_id: 1, strategy_state_action_id: 8},
   {strategy_role_id: 1, strategy_state_action_id: 9},
-  {strategy_role_id: 1, strategy_state_action_id: 10}
+  {strategy_role_id: 1, strategy_state_action_id: 10},
+  {strategy_role_id: 1, strategy_state_action_id: 11},
+  {strategy_role_id: 1, strategy_state_action_id: 12}
 ])
 Sipity::Models::Role.create!([
   {name: "creating_user", description: nil},

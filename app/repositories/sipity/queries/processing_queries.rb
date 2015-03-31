@@ -208,12 +208,29 @@ module Sipity
           )
         )
 
-        action_scope.where(
+        # TODO: This is presently broken up into two queries. It could be
+        # consolidated into a single query with a left outer join.
+        permitted_ids = action_scope.where(
           action_scope.arel_table[:allow_repeat_within_current_state].eq(true).or(
             action_scope.arel_table[:id].in(
               actions_that_have_not_occurred_for_the_actor
             )
           )
+        ).pluck(:id)
+
+        # I have a list of permitted ids. I need to eliminate from the list any
+        # ids that have analogs not in the list. However I should keep any ids
+        # that can be repeated for a given state.
+        action_scope.klass.where(id: permitted_ids).where(
+          action_scope.arel_table[:id].not_in(
+            analogues.project(
+              analogues[:strategy_action_id]
+            ).where(
+              analogues[:analogous_to_strategy_action_id].not_in(permitted_ids).and(
+                analogues[:analogous_to_strategy_action_id].not_eq(analogues[:strategy_action_id])
+              )
+            )
+          ).or(action_scope.arel_table[:allow_repeat_within_current_state].eq(true))
         )
       end
 
