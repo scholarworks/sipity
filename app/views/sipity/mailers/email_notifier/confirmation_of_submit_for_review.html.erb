@@ -3,7 +3,7 @@
 <ul>
   <li>You may access your submission record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></li>
   <li>The access type you have chosen is:
-    <%= render partial: 'accessible_objects', object: @entity.accessible_objects %>
+    <%= render partial: 'sipity/shared/accessible_objects', object: @entity.accessible_objects %>
   </li>
 </ul>
 
