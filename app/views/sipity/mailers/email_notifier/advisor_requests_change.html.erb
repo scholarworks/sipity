@@ -4,9 +4,7 @@
   Your director will then be prompted to review the changes.
 </p>
 
-<p><strong><%= @entity.name_of_commentor %> Comments:</strong></p>
-
-<blockquote><%= @entity.comment %></blockquote>
+<%= render partial: 'comment', object: @entity %>
 
 <%= render partial: 'etd_submission_assistance' %>
 <%= render partial: 'grad_school_email_signature' %>
