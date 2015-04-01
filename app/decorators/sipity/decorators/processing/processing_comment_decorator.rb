@@ -13,7 +13,7 @@ module Sipity
         end
 
         def work_type
-          work.work_type
+          work.work_type.titleize
         end
 
         delegate :comment, :actor, :entity, to: :@processing_comment
