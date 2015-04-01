@@ -27,9 +27,9 @@ module Sipity
 
         def query_for_availability_state
           if repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity).include?(action)
-            ACTION_UNAVAILABLE
+            STATE_PREREQUISITES_NOT_MET
           else
-            ACTION_AVAILABLE
+            STATE_AVAILABLE
           end
         end
       end

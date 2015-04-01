@@ -174,10 +174,77 @@ module Sipity
       # * Actions that are permitted to the current user
       # * Actions that are available for the entity's current state.
       #
+      # AND
+      #
+      # * Actions that are permitted to be taken multiple times within the
+      #   current state OR
+      # * Actions that are not allowed to be taken multiple times and have not
+      #   yet been taken.
+      #
       # @param user [User]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
       def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
+        action_scope = scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state(user: user, entity: entity)
+
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        actor = Conversions::ConvertToProcessingActor.call(user)
+        registers = Models::Processing::EntityActionRegister.arel_table
+        analogues = Models::Processing::StrategyActionAnalogue.arel_table
+
+        actions_that_have_not_occurred_for_the_actor = action_scope.arel_table.project(
+          action_scope.arel_table[:id]
+        ).join(
+          registers, Arel::Nodes::OuterJoin
+        ).on(
+          registers[:entity_id].eq(entity.id).and(
+            registers[:on_behalf_of_actor_id].eq(actor.id)
+          ).and(
+            registers[:strategy_action_id].eq(action_scope.arel_table[:id])
+          )
+        ).where(
+          registers[:strategy_action_id].eq(nil).and(
+            action_scope.arel_table[:allow_repeat_within_current_state].eq(false)
+          )
+        )
+
+        # TODO: This is presently broken up into two queries. It could be
+        # consolidated into a single query with a left outer join.
+        permitted_ids = action_scope.where(
+          action_scope.arel_table[:allow_repeat_within_current_state].eq(true).or(
+            action_scope.arel_table[:id].in(
+              actions_that_have_not_occurred_for_the_actor
+            )
+          )
+        ).pluck(:id)
+
+        # I have a list of permitted ids. I need to eliminate from the list any
+        # ids that have analogs not in the list. However I should keep any ids
+        # that can be repeated for a given state.
+        action_scope.klass.where(id: permitted_ids).where(
+          action_scope.arel_table[:id].not_in(
+            analogues.project(
+              analogues[:strategy_action_id]
+            ).where(
+              analogues[:analogous_to_strategy_action_id].not_in(permitted_ids).and(
+                analogues[:analogous_to_strategy_action_id].not_eq(analogues[:strategy_action_id])
+              )
+            )
+          ).or(action_scope.arel_table[:allow_repeat_within_current_state].eq(true))
+        )
+      end
+
+      # @api private
+      #
+      # An ActiveRecord::Relation scope that meets the following criteria:
+      #
+      # * Actions that are permitted to the current user
+      # * Actions that are available for the entity's current state.
+      #
+      # @param user [User]
+      # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
+      def scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state(user:, entity:)
         strategy_actions = Models::Processing::StrategyAction
 
         strategy_actions_for_current_state_scope = scope_strategy_actions_for_current_state(entity: entity)
@@ -201,6 +268,7 @@ module Sipity
           )
         )
       end
+      private :scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state
 
       # @api public
       #
@@ -266,7 +334,8 @@ module Sipity
 
         proxy_for_type.where(
           proxy_for_type.arel_table[proxy_for_type.primary_key].in(
-            processing_entities_scope.arel_table.project(:proxy_for_id).where(
+            processing_entities_scope.arel_table.project(:proxy_for_id).
+            where(
               processing_entities_scope.arel.constraints.reduce
             )
           )

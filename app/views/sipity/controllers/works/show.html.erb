@@ -3,7 +3,7 @@
   available_enrichment_actions = model.enrichment_actions(user: current_user)
   has_available_enrichment_actions = available_enrichment_actions.present?
   available_state_advancing_actions = model.state_advancing_actions(user: current_user)
-  has_available_state_advancing_actions = available_state_advancing_actions.select {|action| action.available?}.present?
+  has_available_state_advancing_actions = available_state_advancing_actions.detect { |action| action.available? }
 
   if has_available_state_advancing_actions
     state_advancing_alert_class = 'alert-success'
@@ -82,9 +82,6 @@
         <% end %>
       </div>
     </div>
-  <% end %>
-
-  <% if model.comments.present? %>
     <p><%= link_to "Show all comments", work_comments_path(work_id: model.id) %></p>
   <% end %>
 
@@ -206,16 +203,7 @@
               <% available_resourceful_actions.each do |action| %>
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
                   <meta itemprop="name" content="event_trigger/<%= action.name %>" />
-                  <% if action.available? %>
-                    <%= action.render_entry_point %>
-                  <% else %>
-                    <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
-                      <meta itemprop="name" content="<%= action.name %>" />
-                      <span class="btn btn-default disabled">
-                        <%= t("sipity/works.resourceful_actions.label.#{ action.name }") %>
-                      </span>
-                    </div>
-                  <% end %>
+                  <%= action.render_entry_point %>
                   <span itemprop="actionStatus" class="visuallyhidden"><%= action.availability_state %></span>
                 </li>
               <% end %>

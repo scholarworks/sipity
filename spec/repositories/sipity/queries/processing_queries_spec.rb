@@ -264,7 +264,7 @@ module Sipity
 
         subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
         it "will return the correct actions based on user and entity state" do
-          expect(subject.pluck(:name)).to eq(['show'])
+          expect(subject.pluck(:name)).to eq(['show', 'already_taken_but_by_someone_else'])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)

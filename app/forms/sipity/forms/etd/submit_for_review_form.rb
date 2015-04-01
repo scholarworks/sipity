@@ -3,7 +3,7 @@ module Sipity
     module Etd
       # Responsible for submitting the associated entity to the advisor
       # for signoff.
-      class SubmitForReviewForm < Forms::StateAdvancingAction
+      class SubmitForReviewForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
           self.agree_to_terms_of_deposit = attributes[:agree_to_terms_of_deposit]

@@ -168,25 +168,26 @@ ActiveRecord::Base.transaction do
 
       etd_actions = {}
       [
-        ['show', nil, 1],
-        ['destroy', nil, 2],
-        ['describe', nil, 1],
-        ['collaborators', nil, 2],
-        ['attach', nil, 3],
-        ['defense_date', nil, 4],
-        ['search_terms', nil, 5],
-        ['degree', nil, 6],
-        ['access_policy', nil, 7],
-        ['submit_for_review', 'under_advisor_review', 1],
-        ['advisor_signoff', 'under_grad_school_review', 1],
-        ['signoff_on_behalf_of', 'under_grad_school_review', 1],
-        ['advisor_requests_change', 'advisor_changes_requested', 2],
-        ['respond_to_advisor_request', 'under_advisor_review', 1],
-        ['respond_to_grad_school_request', 'under_grad_school_review', 1],
-        ['grad_school_requests_change', 'grad_school_changes_requested', 2],
-        ['grad_school_signoff', 'ready_for_ingest', 1]
-      ].each do |action_name, strategy_state_name, presentation_sequence|
-        resulting_state = strategy_state_name ? etd_states.fetch(strategy_state_name) : nil
+        { action_name: 'show', seq: 1 },
+        { action_name: 'destroy', seq: 2 },
+        { action_name: 'describe', seq: 1 },
+        { action_name: 'collaborators', seq: 2 },
+        { action_name: 'attach', seq: 3 },
+        { action_name: 'defense_date', seq: 4 },
+        { action_name: 'search_terms', seq: 5 },
+        { action_name: 'degree', seq: 6 },
+        { action_name: 'access_policy', seq: 7 },
+        { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2, allow_repeat_within_current_state: false },
+        { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
+        { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+        { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: false },
+        { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
+      ].each do |structure|
+        action_name = structure.fetch(:action_name)
+        resulting_state = structure[:resulting_state_name] ? etd_states.fetch(structure[:resulting_state_name]) : nil
         action = find_or_initialize_or_create!(
           context: etd_strategy,
           receiver: etd_strategy.strategy_actions,
@@ -198,16 +199,29 @@ ActiveRecord::Base.transaction do
         action.resulting_strategy_state = resulting_state
         if action.persisted?
           action.update(
-            presentation_sequence: presentation_sequence, resulting_strategy_state: resulting_state,
-            action_type: action.default_action_type
+            presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
+            action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
           )
         else
-          action.presentation_sequence = presentation_sequence
+          action.presentation_sequence = structure.fetch(:seq)
+          action.allow_repeat_within_current_state = structure.fetch(:allow_repeat_within_current_state, true)
           # Because the objects are being instantiated differently, I need to make
           # sure to capture the default action_type.
           action.action_type = action.default_action_type
         end
         etd_actions[action_name] = action
+      end
+
+      [
+        { action: 'advisor_requests_change', analogous_to: 'advisor_signoff' }
+      ].each do |options|
+        action = etd_actions.fetch(options.fetch(:action))
+        analogous_to = etd_actions.fetch(options.fetch(:analogous_to))
+        find_or_initialize_or_create!(
+          context: action,
+          receiver: action.base_element_for_strategy_actions_analogues,
+          analogous_to_strategy_action: analogous_to
+        )
       end
 
       pre_requisite_states =       {

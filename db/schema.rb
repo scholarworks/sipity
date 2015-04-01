@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318193942) do
+ActiveRecord::Schema.define(version: 20150331155606) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32, null: false
@@ -206,6 +206,17 @@ ActiveRecord::Schema.define(version: 20150318193942) do
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true
   add_index "sipity_processing_strategies", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_strategies_proxy_for", unique: true
 
+  create_table "sipity_processing_strategy_action_analogues", force: :cascade do |t|
+    t.integer  "strategy_action_id",              null: false
+    t.integer  "analogous_to_strategy_action_id", null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
+
+  add_index "sipity_processing_strategy_action_analogues", ["analogous_to_strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_analogous_stgy"
+  add_index "sipity_processing_strategy_action_analogues", ["strategy_action_id", "analogous_to_strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_aggregate", unique: true
+  add_index "sipity_processing_strategy_action_analogues", ["strategy_action_id"], name: "ix_sipity_processing_strategy_action_analogues_strategy"
+
   create_table "sipity_processing_strategy_action_prerequisites", force: :cascade do |t|
     t.integer  "guarded_strategy_action_id"
     t.integer  "prerequisite_strategy_action_id"
@@ -216,15 +227,16 @@ ActiveRecord::Schema.define(version: 20150318193942) do
   add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
-    t.integer  "strategy_id",                                 null: false
+    t.integer  "strategy_id",                                       null: false
     t.integer  "resulting_strategy_state_id"
-    t.string   "name",                                        null: false
+    t.string   "name",                                              null: false
     t.string   "form_class_name"
-    t.boolean  "completion_required",         default: false
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
-    t.string   "action_type",                                 null: false
+    t.boolean  "completion_required",               default: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.string   "action_type",                                       null: false
     t.integer  "presentation_sequence"
+    t.boolean  "allow_repeat_within_current_state", default: true,  null: false
   end
 
   add_index "sipity_processing_strategy_actions", ["action_type"], name: "index_sipity_processing_strategy_actions_on_action_type"

@@ -2,7 +2,7 @@ module Sipity
   module Forms
     module Etd
       # Responsible for submitting the final Grad School approval.
-      class GradSchoolSignoffForm < Forms::StateAdvancingAction
+      class GradSchoolSignoffForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
           self.agree_to_signoff = attributes[:agree_to_signoff]

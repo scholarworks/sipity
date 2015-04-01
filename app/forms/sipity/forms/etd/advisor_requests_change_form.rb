@@ -3,7 +3,7 @@ module Sipity
     module Etd
       # Responsible for capturing advisor comments and forwarding them on to
       # the student.
-      class AdvisorRequestsChangeForm < Forms::StateAdvancingAction
+      class AdvisorRequestsChangeForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
           @comment = attributes[:comment]

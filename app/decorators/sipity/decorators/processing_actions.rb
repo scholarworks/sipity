@@ -2,14 +2,14 @@ module Sipity
   module Decorators
     # For the given :user and :entity what are the available actions?
     class ProcessingActions
-      def initialize(user:, entity:, repository: default_repository, action_builder: default_action_builder)
+      def initialize(user:, entity:, repository: default_repository, action_decorator: default_action_decorator)
         @user = user
         @entity = entity
         @repository = repository
-        @action_builder = action_builder
+        @action_decorator = action_decorator
       end
-      attr_reader :user, :entity, :repository, :action_builder
-      private :repository, :action_builder
+      attr_reader :user, :entity, :repository, :action_decorator
+      private :repository, :action_decorator
 
       def enrichment_actions
         fetch(Models::Processing::StrategyAction::ENRICHMENT_ACTION)
@@ -26,22 +26,33 @@ module Sipity
       private
 
       def fetch(key)
-        @data_store ||= processing_actions.each_with_object({}) do |action, mem|
-          mem[action.action_type] ||= []
-          mem[action.action_type] << action
-          mem
-        end
+        @data_store ||= build_data_store
         @data_store.fetch(key, [])
       end
 
       def processing_actions
-        repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity).map do |action|
-          action_builder.call(
-            action: action, user: user, entity: entity,
-            is_complete: completed_action_ids.include?(action.id),
-            is_a_prerequisite: action_ids_that_are_prerequisites.include?(action.id)
-          )
+        repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
+      end
+
+      def build_data_store
+        processing_actions.each_with_object({}) do |action, mem|
+          with_decorated_action(action) do |decorated_action|
+            mem[decorated_action.action_type] ||= []
+            mem[decorated_action.action_type] << decorated_action
+          end
+          mem
         end
+      end
+
+      def with_decorated_action(action)
+        # TODO: Can the query be built such that is_complete and is_a_prerequisite are
+        # already part of the returned data structure? Yes.
+        decorated_action = action_decorator.call(
+          action: action, user: user, entity: entity,
+          is_complete: completed_action_ids.include?(action.id),
+          is_a_prerequisite: action_ids_that_are_prerequisites.include?(action.id)
+        )
+        yield(decorated_action)
       end
 
       def action_ids_that_are_prerequisites
@@ -56,7 +67,7 @@ module Sipity
         QueryRepository.new
       end
 
-      def default_action_builder
+      def default_action_decorator
         ActionDecorator.method(:build)
       end
     end
