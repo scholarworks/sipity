@@ -67,6 +67,10 @@ module Sipity
         }
       )
 
+      def to_s
+        name
+      end
+
       def possible_roles
         self.class.roles
       end

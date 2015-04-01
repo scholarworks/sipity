@@ -81,6 +81,11 @@ module Sipity
         end
       end
 
+      it 'will have a #to_s that is its #name' do
+        subject.name = 'Hello World'
+        expect(subject.to_s).to eq(subject.name)
+      end
+
       its(:possible_roles) { should eq(described_class.roles) }
 
       it 'will raise an ArgumentError if you provide an invalid role' do
