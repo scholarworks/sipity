@@ -2,7 +2,7 @@
 
 <p>Access URLs:</p>
 <ul>
-  <li>You may access your formal ETD record at: <%= link_to Conversions::ConvertToPermanentUri.call(@entity), Conversions::ConvertToPermanentUri.call(@entity) %></li>
+  <li>You may access your formal ETD record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></li>
 </ul>
 
 <p>Access Settings:</p>
