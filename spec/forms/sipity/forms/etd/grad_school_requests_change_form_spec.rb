@@ -30,7 +30,11 @@ module Sipity
         end
 
         context 'with valid data' do
-          before { expect(subject).to receive(:valid?).and_return(true) }
+          let(:processing_comment) { double('Processing Comment') }
+          before do
+            expect(subject).to receive(:valid?).and_return(true)
+            allow(repository).to receive(:record_processing_comment).and_return(processing_comment)
+          end
 
           it 'will log the event' do
             expect(repository).to receive(:log_event!).and_call_original
@@ -51,7 +55,7 @@ module Sipity
 
           it 'will send creating user a note that the advisor has requested changes' do
             expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'grad_school_requests_change', entity: work, acting_as: ['creating_user']).
+              with(notification: 'grad_school_requests_change', entity: processing_comment, acting_as: ['creating_user']).
               and_call_original
             subject.submit(requested_by: user)
           end
