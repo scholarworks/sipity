@@ -26,11 +26,11 @@ module Sipity
         accessible_object.class.human_attribute_name(name)
       end
 
-      def access_url
+      def access_url(template: view_context)
         if accessible_object.respond_to?(:file_url)
           accessible_object.file_url
         else
-          view_context.polymorphic_url(accessible_object)
+          template.polymorphic_url(accessible_object)
         end
       end
 
