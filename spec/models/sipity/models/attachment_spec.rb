@@ -30,9 +30,9 @@ module Sipity
           expect(subject.thumbnail_url).to match(/\/#{File.basename(__FILE__)}/)
         end
 
-        it 'has a file_url' do
-          subject.file = File.new(__FILE__)
-          expect(subject.file_url).to eq(subject.file.url)
+        it 'will have a file_url that is an actual URL (not a path)' do
+          subject = described_class.create!(work_id: 1, pid: 2, file: File.new(__FILE__), predicate_name: 'attachment')
+          expect(subject.file_url).to match(%r{https?://[^/]+/attachments})
         end
 
         it 'has an file_name via the dragonfly gem' do
