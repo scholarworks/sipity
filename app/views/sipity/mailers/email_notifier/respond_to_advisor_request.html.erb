@@ -4,6 +4,6 @@
 
 <p><strong><%= @entity.name_of_commentor %> Comments:</strong></p>
 
-<p><%= @entity.comment %></p>
+<blockquote><%= @entity.comment %></blockquote>
 
 <%= render(partial: 'action_in_the_inbox', object: @entity) %>
