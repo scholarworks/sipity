@@ -175,22 +175,7 @@
             <% if model.accessible_objects.any? %>
               <dt class="predicate accessible-objects"><%= model.human_attribute_name('access_rights').html_safe %></dt>
               <dd class="value accessible-objects">
-                <ul class="nested-attributes-list">
-                  <% model.accessible_objects.each do |accessible_object| %>
-                    <li class="nested-attribute-list">
-                      <dl class="nested-attribute-definition">
-                        <dt class="predicate title"><%= accessible_object.human_attribute_name(:title) %></dt>
-                        <dd class="value title"><%= link_to accessible_object, accessible_object.access_url %></dd>
-                        <dt class="predicate access-right"><%= accessible_object.human_attribute_name(:access_right_code) %></dt>
-                        <dd class="value access-right"><%= accessible_object.access_right_code.to_s.titleize %></dd>
-                        <% if accessible_object.release_date.present? %>
-                        <dt class="predicate release-date"><%= accessible_object.human_attribute_name(:release_date) %></dt>
-                        <dd class="value release-date"><%= accessible_object.release_date %></dd>
-                        <% end %>
-                      </dl>
-                    </li>
-                  <% end %>
-                </ul>
+                <%= render partial: 'sipity/shared/accessible_objects', object: model.accessible_objects %>
               </dt>
             <% end %>
           </dl>
