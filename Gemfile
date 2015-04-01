@@ -93,4 +93,5 @@ group :production, :pre_production, :staging do
   gem 'dragonfly-s3_data_store'
   gem 'mysql2'
   gem 'rack-cache', require: 'rack/cache'
+  gem 'rb-readline'
 end
