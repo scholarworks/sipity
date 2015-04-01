@@ -18,6 +18,15 @@ GIT
       json (~> 1.8)
       rest-client (~> 1.6)
 
+GIT
+  remote: git://github.com/projecthydra-labs/hydra-validations.git
+  revision: bd9a84a8fd5acc607ad5c36984b7d09e4b3fc4d0
+  ref: bd9a84a8fd5acc607ad5c36984b7d09e4b3fc4d0
+  branch: master
+  specs:
+    hydra-validations (0.4.0)
+      activemodel (~> 4.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -565,6 +574,7 @@ DEPENDENCIES
   guard-scss-lint
   hesburgh-lib!
   high_voltage
+  hydra-validations!
   i18n-debug
   inch
   jbuilder (~> 2.0)
