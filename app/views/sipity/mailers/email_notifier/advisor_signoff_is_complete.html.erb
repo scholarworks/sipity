@@ -1,19 +1,11 @@
-<p><%= @entity.title %> (<%= @entity.work_type %>) by <%= @entity.creator_names %> is ready for Grad School Review at <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></p>
+<p><em><%= @entity.title %></em> (<%= @entity.work_type %>) by <%= @entity.creator_names.to_sentence %> is ready for Grad School Review at <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></p>
 <p>
   All advisors have signed off (see the list below).
   <ul>
     <% @entity.collaborators.each do |advisor| %>
       <li>
-        <dl>
-          <dt>Name:</dt>
-          <dd><%= advisor.name %></dd>
-          <dt>NetID:</dt>
-          <dd><%= advisor.netid %></dd>
-          <dt>Email:</dt>
-          <dd><%= advisor.email %></dd>
-          <dt>Role:</dt>
-          <dd><%= advisor.role %></dd>
-        </dl>
+        <strong><%= advisor.role %>:</strong>
+        <%= advisor.name %> <%= "(NetID: #{mail_to(advisor.netid + '@nd.edu', advisor.netid)})".html_safe if advisor.netid.present? %> <%= "(Email: #{mail_to(advisor.email)})".html_safe if advisor.email.present? %>
       </li>
     <% end %>
   </ul>
