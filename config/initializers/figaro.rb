@@ -1,5 +1,6 @@
 Figaro.require_keys(
   'domain_name',
+  'url_host',
   'default_email_return_path',
   'default_email_from',
   'noid_server',
