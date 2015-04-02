@@ -156,7 +156,7 @@ GEM
     dragonfly-s3_data_store (1.0.4)
       dragonfly (~> 1.0)
       fog
-    draper (2.0.0)
+    draper (2.1.0)
       actionpack (>= 3.0)
       activemodel (>= 3.0)
       activesupport (>= 3.0)
@@ -563,7 +563,7 @@ DEPENDENCIES
   devise_cas_authenticatable
   dragonfly (~> 1.0.7)
   dragonfly-s3_data_store
-  draper (~> 2.0.0)
+  draper
   execjs
   ezid-client!
   faker
