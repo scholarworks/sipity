@@ -16,10 +16,14 @@ module Sipity
       delegate :strategy, to: :entity
 
       def call
-        entity.update!(strategy_state: processing_state)
+        transition_entity_to_new_processing_state
       end
 
       private
+
+      def transition_entity_to_new_processing_state
+        entity.update!(strategy_state: processing_state)
+      end
 
       def entity=(object)
         @entity = convert_to_processing_entity(object)
