@@ -4,7 +4,7 @@ module Sipity
   module Decorators
     module Processing
       RSpec.describe ResourcefulActionDecorator do
-        ENTITY_ID = '1234'
+        ENTITY_ID = '1234' unless defined?(ENTITY_ID)
         let(:entity) { Models::Work.new(id: ENTITY_ID) }
         let(:user) { double }
 
