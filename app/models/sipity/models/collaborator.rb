@@ -10,11 +10,11 @@ module Sipity
     # @see Sipity::Models::Processing::Actor
     # @see Sipity::Models::Role
     class Collaborator < ActiveRecord::Base
-      RESEARCH_DIRECTOR_ROLE = 'Research Director'.freeze
-      COMMITTEE_MEMBER_ROLE = DEFAULT_ROLE = 'Committee Member'.freeze
+      RESEARCH_DIRECTOR_ROLE = DEFAULT_ROLE = 'Research Director'.freeze
+      COMMITTEE_MEMBER_ROLE =  'Committee Member'.freeze
 
       def self.build_default
-        new(role: DEFAULT_ROLE)
+        new(role: DEFAULT_ROLE, responsible_for_review: true)
       end
 
       belongs_to :work, foreign_key: 'work_id'
