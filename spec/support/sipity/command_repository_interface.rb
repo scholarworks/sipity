@@ -306,7 +306,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def set_as_representative_attachment(work:, pid:, user: user)
+    def set_as_representative_attachment(work:, pid:)
     end
 
     # @see ./app/repositories/sipity/commands/doi_commands.rb
