@@ -76,6 +76,18 @@ module Sipity
         end
       end
 
+      context "#current_comments" do
+        let(:comment) { double(Sipity::Models::Processing::Comment) }
+        let(:decorated_comment) { Sipity::Decorators::Processing::ProcessingCommentDecorator.decorate(comment) }
+        it 'will have #comments' do
+          comments = [comment, comment]
+          decorated_comments = [decorated_comment, decorated_comment]
+
+          expect(repository).to receive(:find_current_comments_for_work).with(work: work).and_return(comments)
+          expect(subject.current_comments).to eq(decorated_comments)
+        end
+      end
+
       xit '#state_advancing_actions is missing'
       xit '#resourceful_actions is missing'
       xit '#enrichment_actions is missing'

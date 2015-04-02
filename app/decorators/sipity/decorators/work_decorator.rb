@@ -69,13 +69,23 @@ module Sipity
         end
       end
 
-      def comments
+      def comments(decorator: default_comment_decorator)
         @comments ||= repository.find_comments_for_work(work: self).map do|comment|
-          Decorators::Processing::ProcessingCommentDecorator.decorate(comment)
+          decorator.decorate(comment)
+        end
+      end
+
+      def current_comments(decorator: default_comment_decorator)
+        @current_comments ||= repository.find_current_comments_for_work(work: self).map do|comment|
+          decorator.decorate(comment)
         end
       end
 
       private
+
+      def default_comment_decorator
+        Decorators::Processing::ProcessingCommentDecorator
+      end
 
       def processing_actions(user:)
         @processing_actions ||= ProcessingActions.new(user: user, entity: self)
