@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require readmore
 //= require_tree .
 //= stub vendor/modernizr
 
@@ -44,6 +45,11 @@
     adjustRequiredCollaborators();
     adjustRequiredAttachements();
     $('.help-icon').tooltip();
+		$('.abstract').readmore({
+			speed: 75,
+			collapsedHeight: 200,
+			lessLink: '<a href="#">Read less</a>'
+		});
   };
 
   $(document).ready(ready);
