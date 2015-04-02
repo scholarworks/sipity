@@ -32,11 +32,11 @@ module Sipity
 
         def save(requested_by:)
           super do
-            repository.record_processing_comment(entity: work, commenter: requested_by, comment: comment, action: action)
+            processing_comment = repository.record_processing_comment(
+              entity: work, commenter: requested_by, comment: comment, action: action
+            )
             repository.send_notification_for_entity_trigger(
-              notification: 'grad_school_requests_change',
-              entity: work,
-              acting_as: ['creating_user']
+              notification: 'grad_school_requests_change', entity: processing_comment, acting_as: ['creating_user']
             )
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end

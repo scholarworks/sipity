@@ -25,7 +25,9 @@ class User < ActiveRecord::Base
   end
 
   def to_s
-    name
+    # HACK: Name is better, but in some cases this may not be assigned.
+    # So defer to username. See issues#436
+    name || username
   end
 
   private

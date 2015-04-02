@@ -50,13 +50,14 @@ module Sipity
       context '#access_url' do
         it 'will be a file url if one is given' do
           object = Models::Attachment.new(file: __FILE__)
-          subject = described_class.new(object, work: object)
+          allow(object).to receive(:file_url).and_return('http://somewhere.com/hello/world')
+          subject = described_class.new(object, work: work)
           expect(subject.access_url).to eq(object.file_url)
         end
 
         it 'will be a resolve polymorphic path for a Models::Work' do
           allow(object).to receive(:persisted?).and_return(true)
-          subject = described_class.new(object, work: object)
+          subject = described_class.new(object, work: work)
           expect(subject.access_url).to match(%r{^https?://[^/]*/works/#{object.id}$})
         end
       end

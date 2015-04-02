@@ -1,8 +1,14 @@
 <p>Congratulations! Your <%= @entity.work_type %> has been approved by the Graduate School, and will now be added to the Hesburgh Library ETD collection.</p>
-<p>Access URLS:</p>
-<%= render partial: 'accessible_objects', object: @entity.accessible_objects %>
-<p>Patent/Publication Information:</p>
-<p><!-- TODO: Review this because I don't know if its applicable --></p>
+
+<p>Access URLs:</p>
+<ul>
+  <li>You may access your formal ETD record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></li>
+</ul>
+
+<p>Access Settings:</p>
+<%= render partial: 'sipity/shared/accessible_objects', object: @entity.accessible_objects %>
+
+<%# TODO: Incorporate Patent/Publication Information. See https://github.com/ndlib/sipity/issues/421 %>
 
 <p>If you have not yet submitted the other items required, please refer to the Graduate School’s <a href="http://www.google.com/url?q=http%3A%2F%2Fgraduateschool.nd.edu%2Fresources-for-current-students%2Fdt%2Fdt-checklist%2F&sa=D&sntz=1&usg=AFQjCNGvwVT72W1yRY7b1cf01bMby9lmxw">submission checklist</a>. If you have questions about your ETD record or the other submission materials, please contact me or my assistant at <a href="mailto:dteditor@nd.edu" target="_top">dteditor@nd.edu</a> or 574-631-7545 for assistance.</p>
 

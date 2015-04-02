@@ -46,7 +46,7 @@ module Sipity
           repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
           repository.send_notification_for_entity_trigger(
-            notification: "confirmation_of_entity_created", entity: work, acting_as: 'creating_user'
+            notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
           )
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         end

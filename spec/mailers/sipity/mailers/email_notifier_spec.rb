@@ -40,7 +40,9 @@ module Sipity
       EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION.each do |email_method|
         context "##{email_method}" do
           # YOWZA! This is a lot of collaborators!
-          let(:registered_action) { Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor) }
+          let(:registered_action) do
+            Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor, created_at: Time.now)
+          end
           it 'should send an email' do
             described_class.send(email_method, entity: registered_action, to: to).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)

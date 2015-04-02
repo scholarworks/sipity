@@ -6,6 +6,7 @@ Dragonfly.app.configure do
 
   secret Figaro.env.dragonfly_secret
 
+  url_host Figaro.env.url_host!
   url_format "/attachments/:job/:name"
 
   if Rails.env.test?

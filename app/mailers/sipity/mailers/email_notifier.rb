@@ -9,7 +9,7 @@ module Sipity
       NOTIFCATION_METHOD_NAMES_FOR_WORK = [
         :advisor_signoff_is_complete,
         :confirmation_of_advisor_signoff_is_complete,
-        :confirmation_of_entity_created,
+        :confirmation_of_work_created,
         :confirmation_of_submit_for_review,
         :confirmation_of_grad_school_signoff,
         :submit_for_review
