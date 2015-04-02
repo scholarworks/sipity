@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150331155606) do
+ActiveRecord::Schema.define(version: 20150402195713) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32, null: false
@@ -140,13 +140,14 @@ ActiveRecord::Schema.define(version: 20150331155606) do
   add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_actors_proxy_for", unique: true
 
   create_table "sipity_processing_comments", force: :cascade do |t|
-    t.string   "entity_id",                      limit: 32, null: false
-    t.integer  "actor_id",                                  null: false
+    t.string   "entity_id",                      limit: 32,                 null: false
+    t.integer  "actor_id",                                                  null: false
     t.text     "comment"
-    t.integer  "originating_strategy_action_id",            null: false
-    t.integer  "originating_strategy_state_id",             null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
+    t.integer  "originating_strategy_action_id",                            null: false
+    t.integer  "originating_strategy_state_id",                             null: false
+    t.datetime "created_at",                                                null: false
+    t.datetime "updated_at",                                                null: false
+    t.boolean  "stale",                                     default: false
   end
 
   add_index "sipity_processing_comments", ["actor_id"], name: "index_sipity_processing_comments_on_actor_id"

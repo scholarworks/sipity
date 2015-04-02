@@ -12,6 +12,7 @@ module Sipity
           its(:column_names) { should include('comment') }
           its(:column_names) { should include('originating_strategy_action_id') }
           its(:column_names) { should include('originating_strategy_state_id') }
+          its(:column_names) { should include('stale') }
         end
       end
     end
