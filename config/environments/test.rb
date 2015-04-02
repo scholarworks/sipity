@@ -33,6 +33,10 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host:  Rails.application.secrets.domain_name }
 
+  # Included to make sure that the ConvertToBoolean is available as part of the
+  # boot process.
+  Sipity::Conversions::ConvertToBoolean.call('true')
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 
