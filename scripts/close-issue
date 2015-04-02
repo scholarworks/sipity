@@ -74,11 +74,17 @@ else
   exit!(2)
 end
 
-# # Guard that we have a clean working directory
-# if `cd #{REPOSITORY_PATH} && git status --porcelain`.strip.size > 0
-#   $stderr.puts "Repository @ #{REPOSITORY_PATH} did not have a clean working directory"
-#   exit!(3)
-# end
+# Guard that we have a clean working directory
+if `cd #{REPOSITORY_PATH} && git status --porcelain`.strip.size > 0
+  $stderr.puts "Repository @ #{REPOSITORY_PATH} did not have a clean working directory"
+  exit!(3)
+end
+
+# Guard that the tests all pass
+unless system("cd #{REPOSITORY_PATH} && bundle exec rake")
+  $stderr.puts "Your tests failed. Please review the above output."
+  exit!(4)
+end
 
 #*******************************************************************************
 #
