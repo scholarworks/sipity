@@ -29,6 +29,7 @@ GIT
 
 GEM
   remote: https://rubygems.org/
+  remote: https://rails-assets.org/
   specs:
     CFPropertyList (2.3.0)
     actionmailer (4.2.1)
@@ -390,6 +391,7 @@ GEM
       bundler (>= 1.3.0, < 2.0)
       railties (= 4.2.1)
       sprockets-rails
+    rails-assets-readmore (2.0.5)
     rails-deprecated_sanitizer (1.0.3)
       activesupport (>= 4.2.0.alpha)
     rails-dom-testing (1.0.6)
@@ -594,6 +596,7 @@ DEPENDENCIES
   rack-cache
   railroady
   rails (~> 4.2)
+  rails-assets-readmore!
   rails_layout
   rb-fchange
   rb-fsevent

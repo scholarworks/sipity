@@ -164,10 +164,10 @@
             <% end %>
             <% if model.additional_attributes.any? %>
               <% model.additional_attributes.group_by(&:key).each do |key, attributes| %>
-                <dt class="predicate"><%= model.human_attribute_name(key) %></dt>
+                <dt class="predicate <%=key%>"><%= model.human_attribute_name(key) %></dt>
                 <dd class="value">
                   <ul class="occurances">
-                  <% attributes.each do |attribute| next unless attribute.value.present? %><li class="occurance"><%= model.rich_text_value(attribute.value) %></li><% end %>
+                  <% attributes.each do |attribute| next unless attribute.value.present? %><li class="occurance <%=key%>"><%= model.rich_text_value(attribute.value) %></li><% end %>
                   </ul>
                 </dd>
               <% end %>
