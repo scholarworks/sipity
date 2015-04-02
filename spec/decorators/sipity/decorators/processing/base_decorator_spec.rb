@@ -4,15 +4,14 @@ module Sipity
   module Decorators
     module Processing
       RSpec.describe BaseDecorator do
-        ENTITY_ID = '1234'
-        let(:entity) { Models::Work.new(id: ENTITY_ID) }
+        let(:entity) { Models::Work.new(id: '1234') }
         let(:action) { double(name: 'herd', action_type: 'cattle') }
         let(:user) { double('User') }
         subject { described_class.new(action: action, entity: entity, user: user) }
 
         its(:name) { should eq(action.name) }
         its(:action_type) { should eq(action.action_type) }
-        its(:path) { should eq('/works/1234/herd') }
+        its(:path) { should eq("/works/#{entity.id}/herd") }
       end
     end
   end
