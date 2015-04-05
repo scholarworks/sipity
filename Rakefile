@@ -26,6 +26,26 @@ rescue LoadError
   puts "Unable to load RuboCop. Who will enforce your Ruby styleguide now?"
 end
 
+namespace :brakeman do
+  task scan: :environment do
+    require 'brakeman'
+    Brakeman.run app_path: '.', output_files: [Rails.root.join('.tmp.brakeman.json').to_s], print_report: true
+  end
+
+  desc 'Ensure that brakeman has not detected any vulnerabilities'
+  task(guard_against_deteced_vulnerabilities: [:environment, 'brakeman:scan']) do
+    json_document = Rails.root.join('.tmp.brakeman.json').read
+    json = JSON.parse(json_document)
+    errors = []
+    ['errors', 'warnings', 'ignored_warnings'].each do |key|
+      errors += Array.wrap(json.fetch(key))
+    end
+    if errors.any?
+      abort("Brakeman Vulnerabilities Detected:\n\n\t" << errors.join("\n\t"))
+    end
+  end
+end
+
 types = begin
   dirs = Dir['./app/**/*.rb'].map { |f| f.sub(%r{^\./(app/\w+)/.*}, '\\1') }.uniq.select { |f| File.directory?(f) }
   Hash[dirs.map { |d| [d.split('/').last, d] }]
@@ -55,7 +75,7 @@ if defined?(RSpec)
     end
 
     desc 'Run the Travis CI specs'
-    task travis: [:rubocop, :jshint] do
+    task travis: [:rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task['spec:all'].invoke
     end
@@ -79,7 +99,16 @@ if defined?(RSpec)
   end
 
   Rake::Task["default"].clear
-  task default: ['db:schema:load', 'rubocop', 'jshint', 'spec:all', 'spec:validate_coverage_goals']
+  task(
+    default: [
+      'db:schema:load',
+      'rubocop',
+      'jshint',
+      'spec:all',
+      'spec:validate_coverage_goals',
+      'brakeman:guard_against_deteced_vulnerabilities'
+    ]
+  )
   task spec: ['sipity:rebuild_interfaces']
   task stats: ['sipity:stats_setup']
 end
