@@ -8,7 +8,6 @@ Rails.application.load_tasks
 begin
   require 'jshintrb/jshinttask'
   Jshintrb::JshintTask.new :jshint do |t|
-    puts 'Running JSHint...'
     t.pattern = 'app/assets/**/*.js'
     t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
     t.options = JSON.parse(IO.read('.jshintrc'))
