@@ -78,6 +78,7 @@ if defined?(RSpec)
     task travis: [:rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task['spec:all'].invoke
+      Rake::Task['spec:validate_coverage_goals'].invoke
     end
 
     desc "Run all features with accessibility checks"
