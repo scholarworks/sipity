@@ -65,10 +65,10 @@ end
 # Guard that I know what the issue number is
 current_branch = `cd #{REPOSITORY_PATH} && git branch | grep '^*'`.sub(/^\*\s*/, '').strip
 
-if current_branch =~ /^(\d+)-\w+/
+if current_branch =~ /^(\d+)[^\d]/
   ISSUE_NUMBER = $1.to_i
 else
-  $stderr.puts "Expected to be able to determine issue number from branch #{current_branch} name @ #{repository_path}.\n\n"
+  $stderr.puts "Expected to be able to determine issue number from branch #{current_branch} name @ #{REPOSITORY_PATH}.\n\n"
   $stderr.puts "See help for more information.\n\n"
   $stderr.puts "$ ./#{File.basename(__FILE__)} -h"
   exit!(2)
