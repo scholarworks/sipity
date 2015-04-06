@@ -3,10 +3,6 @@ module Sipity
   module Services
     # Responsible for querying people API server to get more details for netid
     class NetidQueryService
-      def self.call(netid:)
-        new(netid)
-      end
-
       def self.preferred_name(netid:)
         new(netid).preferred_name
       end

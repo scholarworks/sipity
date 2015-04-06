@@ -7,13 +7,6 @@ module Sipity
       let(:full_name) { 'Full Name' }
       subject { described_class.new(netid) }
 
-      context '.call' do
-        it 'will instantiate then call the instance' do
-          expect(described_class).to receive(:new).and_return(double(call: true))
-          described_class.call(netid: netid)
-        end
-      end
-
       context 'self.preferred_name' do
         it 'will get preferred_name for the given netid' do
           expect(described_class).to receive_message_chain(:new, :preferred_name).
