@@ -1,3 +1,5 @@
+@import 'bootstrap/variables';
+
 .no-js .row-controls {
   display: none;
 }
@@ -87,5 +89,10 @@
       white-space: nowrap;
       width: auto;
     }
+  }
+
+  .accessible-object.work {
+    border: 2px solid $panel-default-border;
+    background-color: $panel-default-heading-bg;
   }
 }
