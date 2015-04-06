@@ -93,12 +93,12 @@
 
   .accessible-object {
     &.work {
-      border: 2px solid $panel-default-border;
       background-color: $panel-default-heading-bg;
+      border: 2px solid $panel-default-border;
     }
 
     .title {
-      word-break:break-all;
+      word-break: break-all;
     }
   }
 }
