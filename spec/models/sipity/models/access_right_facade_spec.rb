@@ -20,6 +20,9 @@ module Sipity
       its(:release_date) { should eq(access_right.release_date) }
       it { should respond_to :access_url }
 
+      its(:model_name) { should eq(work.class.model_name) }
+      its(:human_model_name) { should eq(work.class.model_name.human) }
+
       it 'will leverage the access right to translate human_attribute_name' do
         expect(subject.human_attribute_name(:title)).to eq('Title')
       end

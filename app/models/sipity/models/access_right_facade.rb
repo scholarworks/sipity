@@ -26,6 +26,12 @@ module Sipity
         accessible_object.class.human_attribute_name(name)
       end
 
+      delegate :model_name, to: :entity_type
+
+      def human_model_name
+        model_name.human
+      end
+
       def access_url(template: view_context)
         if accessible_object.respond_to?(:file_url)
           accessible_object.file_url
