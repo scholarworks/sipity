@@ -194,7 +194,7 @@ en:
         title_html: 'Please choose a <b>program name</b> of your work'
         hint: 'You must have choose a program name for your work'
       search_terms:
-        title_html: 'Please <b>describe</b> the nature of your work'
+        title_html: 'Provide additional <b>search terms</b> for your item'
         hint: 'The more richly you describe your work the better we can promote it.'
   sipity/decorators/entitiy_enrichment_actions:
     access_policy:
