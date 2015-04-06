@@ -17,6 +17,13 @@ rescue LoadError
 end
 
 begin
+  require 'scss_lint/rake_task'
+  SCSSLint::RakeTask.new('scss-lint')
+rescue LoadError
+  puts "Unable to load SCSS Lint. Who will enforce your SCSS styleguide now?"
+end
+
+begin
   require 'rubocop/rake_task'
   RuboCop::RakeTask.new do |t|
     t.options << '--config=./.hound.yml'
@@ -104,6 +111,7 @@ if defined?(RSpec)
       'db:schema:load',
       'rubocop',
       'jshint',
+      'scss-lint',
       'spec:all',
       'spec:validate_coverage_goals',
       'brakeman:guard_against_deteced_vulnerabilities'
