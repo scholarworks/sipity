@@ -16,7 +16,9 @@ module Sipity
         validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
         def valid_on_behalf_of_collaborators
-          repository.collaborators_that_can_advance_the_current_state_of(work: work)
+          # TODO: This can be consolidated into a singular query
+          repository.collaborators_that_can_advance_the_current_state_of(work: work) -
+            repository.collaborators_that_have_taken_the_action_on_the_entity(entity: work, action: action)
         end
 
         def render(f:)

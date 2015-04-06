@@ -15,10 +15,16 @@ module Sipity
 
         it { should respond_to :work }
 
+        let(:someone) { double(id: 'one') }
+        let(:sometwo) { double(id: 'two') }
+        let(:somethree) { double(id: 'three') }
+
+        before do
+          allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
+          allow(repository).to receive(:collaborators_that_have_taken_the_action_on_the_entity).and_return([sometwo, somethree])
+        end
+
         context 'validation' do
-          before do
-            allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([double(id: 'someone')])
-          end
           it 'will require that someone be specified for approval' do
             subject.valid?
             expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
@@ -33,18 +39,20 @@ module Sipity
         end
 
         it 'will forward delegate #on_behalf_of_collaborator to the underlying repository' do
-          expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([])
-          subject.on_behalf_of_collaborator
+          expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
+          expect(subject.on_behalf_of_collaborator).to eq(someone)
+        end
+
+        it 'will #valid_on_behalf_of_collaborators will be those that can act but have not' do
+          expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
+          expect(repository).to receive(:collaborators_that_have_taken_the_action_on_the_entity).and_return([sometwo, somethree])
+          expect(subject.valid_on_behalf_of_collaborators).to eq([someone])
         end
 
         context '#render' do
-          let(:collaborator) { Models::Collaborator.new(name: 'Hello World', id: 1) }
-          before do
-            allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([collaborator])
-          end
           it 'will expose select box' do
             form_object = double('Form Object')
-            expect(form_object).to receive(:input).with(:on_behalf_of_collaborator_id, collection: [collaborator], value_method: :id).
+            expect(form_object).to receive(:input).with(:on_behalf_of_collaborator_id, collection: [someone], value_method: :id).
               and_return("<input />")
             expect(subject.render(f: form_object)).to eq("<input />")
           end
