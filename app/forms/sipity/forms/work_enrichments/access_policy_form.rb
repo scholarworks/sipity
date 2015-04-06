@@ -24,7 +24,7 @@ module Sipity
         validate :each_accessible_objects_attributes_are_valid
         validate :at_lease_one_accessible_objects_attributes_entry
         validates :copyright, presence: true
-        validates :representative_attachment_id, presence: true
+        validates :representative_attachment_id, presence: true, if: :at_least_one_attachment?
 
         def accessible_objects
           if @accessible_objects_attributes.present?
@@ -43,6 +43,10 @@ module Sipity
         end
 
         private
+
+        def at_least_one_attachment?
+          available_representative_attachments.count > 0
+        end
 
         def representative_attachment_id_from_work
           repository.representative_attachment_for(work: work).to_param

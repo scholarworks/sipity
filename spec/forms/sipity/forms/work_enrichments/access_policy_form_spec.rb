@@ -15,6 +15,7 @@ module Sipity
           allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
           allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
           allow(repository).to receive(:representative_attachment_for).with(work: work).and_return(attachment)
+          allow(repository).to receive(:work_attachments).with(work: work).and_return([attachment])
         end
 
         it { should respond_to :accessible_objects_attributes= }
@@ -48,6 +49,13 @@ module Sipity
           subject = described_class.new(work: work, repository: repository, representative_attachment_id: '')
           subject.valid?
           expect(subject.errors[:representative_attachment_id]).to be_present
+        end
+
+        it 'will not validate the presence of a representative attachment if there are no attachments' do
+          expect(repository).to receive(:work_attachments).with(work: work).and_return([])
+          subject = described_class.new(work: work, repository: repository, representative_attachment_id: '')
+          subject.valid?
+          expect(subject.errors[:representative_attachment_id]).to_not be_present
         end
 
         it 'will validate each of the given attributes' do
