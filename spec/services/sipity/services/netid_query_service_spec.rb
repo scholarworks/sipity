@@ -22,6 +22,14 @@ module Sipity
         end
       end
 
+      context 'self.valid_netid?' do
+        it 'will validate netif for the given netid' do
+          expect(described_class).to receive_message_chain(:new, :valid_netid?).
+            and_return(netid)
+          expect(described_class.valid_netid?(netid: netid)).to eq(netid)
+        end
+      end
+
       context 'preferred_name' do
         it 'will return false when the request returns a 404 status' do
           expect(subject).to receive(:open).and_raise(OpenURI::HTTPError.new('', ''))
@@ -39,6 +47,26 @@ module Sipity
         it 'will raise an exception if the returned document is malformed' do
           expect(subject).to receive(:open).and_return(StringIO.new(invalid_document))
           expect { subject.preferred_name }.to raise_error(NoMethodError)
+        end
+      end
+
+      context 'valid_netid?' do
+        it 'will return false when the request returns a 404 status' do
+          expect(subject).to receive(:open).and_raise(OpenURI::HTTPError.new('', ''))
+          expect(subject.valid_netid?).to eq(false)
+        end
+
+        it 'will return false when the requested NetID is not found for a person'do
+          expect(subject).to receive(:open).and_return(StringIO.new(valid_response_but_not_for_a_user))
+          expect(subject.valid_netid?).to eq(false)
+        end
+        it 'will return the NetID when the document contains the NetID' do
+          expect(subject).to receive(:open).and_return(StringIO.new(valid_response_with_netid))
+          expect(subject.valid_netid?).to eq('a_netid')
+        end
+        it 'will raise an exception if the returned document is malformed' do
+          expect(subject).to receive(:open).and_return(StringIO.new(invalid_document))
+          expect { subject.valid_netid? }.to raise_error(NoMethodError)
         end
       end
 

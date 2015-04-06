@@ -11,17 +11,29 @@ module Sipity
         new(netid).preferred_name
       end
 
+      def self.valid_netid?(netid:)
+        new(netid).valid_netid?
+      end
+
       def initialize(netid)
         @netid = netid
       end
       attr_reader :netid
 
-      # @return [nil] if the input is not a valid NetID
+      # @return [netid] if the input is not a valid NetID
       # @return [String] if the input is a valid NetID
       def preferred_name
         person.fetch('full_name')
       rescue KeyError
         netid
+      end
+
+      # @return [false] if the input is not a valid NetID
+      # @return [String] if the input is a valid NetID
+      def valid_netid?
+        person.fetch('netid')
+      rescue KeyError
+        false
       end
 
       private
