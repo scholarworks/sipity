@@ -74,6 +74,7 @@ group :development, :test do
   gem 'rubocop', require: false
   gem 'jshintrb', require: false
   gem 'sqlite3'
+  gem 'brakeman', require: false
 end
 
 group :test do

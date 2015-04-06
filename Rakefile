@@ -8,7 +8,6 @@ Rails.application.load_tasks
 begin
   require 'jshintrb/jshinttask'
   Jshintrb::JshintTask.new :jshint do |t|
-    puts 'Running JSHint...'
     t.pattern = 'app/assets/**/*.js'
     t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
     t.options = JSON.parse(IO.read('.jshintrc'))
@@ -24,6 +23,26 @@ begin
   end
 rescue LoadError
   puts "Unable to load RuboCop. Who will enforce your Ruby styleguide now?"
+end
+
+namespace :brakeman do
+  task scan: :environment do
+    require 'brakeman'
+    Brakeman.run app_path: '.', output_files: [Rails.root.join('.tmp.brakeman.json').to_s], print_report: true
+  end
+
+  desc 'Ensure that brakeman has not detected any vulnerabilities'
+  task(guard_against_deteced_vulnerabilities: [:environment, 'brakeman:scan']) do
+    json_document = Rails.root.join('.tmp.brakeman.json').read
+    json = JSON.parse(json_document)
+    errors = []
+    ['errors', 'warnings', 'ignored_warnings'].each do |key|
+      errors += Array.wrap(json.fetch(key))
+    end
+    if errors.any?
+      abort("Brakeman Vulnerabilities Detected:\n\n\t" << errors.join("\n\t"))
+    end
+  end
 end
 
 types = begin
@@ -55,9 +74,10 @@ if defined?(RSpec)
     end
 
     desc 'Run the Travis CI specs'
-    task travis: [:rubocop, :jshint] do
+    task travis: [:rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task['spec:all'].invoke
+      Rake::Task['spec:validate_coverage_goals'].invoke
     end
 
     desc "Run all features with accessibility checks"
@@ -79,7 +99,16 @@ if defined?(RSpec)
   end
 
   Rake::Task["default"].clear
-  task default: ['db:schema:load', 'rubocop', 'jshint', 'spec:all', 'spec:validate_coverage_goals']
+  task(
+    default: [
+      'db:schema:load',
+      'rubocop',
+      'jshint',
+      'spec:all',
+      'spec:validate_coverage_goals',
+      'brakeman:guard_against_deteced_vulnerabilities'
+    ]
+  )
   task spec: ['sipity:rebuild_interfaces']
   task stats: ['sipity:stats_setup']
 end
