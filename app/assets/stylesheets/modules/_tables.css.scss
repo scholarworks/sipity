@@ -91,8 +91,14 @@
     }
   }
 
-  .accessible-object.work {
-    border: 2px solid $panel-default-border;
-    background-color: $panel-default-heading-bg;
+  .accessible-object {
+    &.work {
+      border: 2px solid $panel-default-border;
+      background-color: $panel-default-heading-bg;
+    }
+
+    .title {
+      word-break:break-all;
+    }
   }
 }
