@@ -167,7 +167,15 @@
                 <dt class="predicate <%=key%>"><%= model.human_attribute_name(key) %></dt>
                 <dd class="value">
                   <ul class="occurances">
-                  <% attributes.each do |attribute| next unless attribute.value.present? %><li class="occurance <%=key%>"><%= model.rich_text_value(attribute.value) %></li><% end %>
+                  <% attributes.each do |attribute| next unless attribute.value.present? %>
+                    <li class="occurance <%=key%>">
+                      <% if key == "copyright" %>
+                        <%= model.rich_text_value(model.selected_copyright(attribute.value)) %>
+                      <% else %>
+                        <%= model.rich_text_value(attribute.value) %>
+                      <% end %>
+                    </li>
+                  <% end %>
                   </ul>
                 </dd>
               <% end %>
