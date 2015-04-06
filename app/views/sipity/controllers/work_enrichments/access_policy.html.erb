@@ -22,7 +22,8 @@
       <caption><!--TODO? Should we have a caption? --></caption>
       <thead>
         <tr>
-          <th>&nbsp;</th>
+          <th>Type</th>
+          <th>Title</th>
           <th class="single-option">Open Access</th>
           <th class="single-option">Restricted to Notre Dame</th>
           <th class="single-option">Private</th>
@@ -31,9 +32,12 @@
       </thead>
       <tbody>
         <%= f.fields_for :accessible_objects do |field| %>
-          <tr>
+          <tr class="accessible-object <%= dom_class(field.object.entity_type) %>">
             <td>
-              <p><%= field.object %></p>
+              <p class="human-model-name"><%= field.object.human_model_name %></p>
+            </td>
+            <td>
+              <p class="title"><%= field.object %></p>
             </td>
             <td class="single-option">
               <label class="radio-inline">

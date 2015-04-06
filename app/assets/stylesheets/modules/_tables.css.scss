@@ -1,3 +1,5 @@
+@import 'bootstrap/variables';
+
 .no-js .row-controls {
   display: none;
 }
@@ -86,6 +88,17 @@
       padding: 0 10px;
       white-space: nowrap;
       width: auto;
+    }
+  }
+
+  .accessible-object {
+    &.work {
+      background-color: $panel-default-heading-bg;
+      border: 2px solid $panel-default-border;
+    }
+
+    .title {
+      word-break: break-all;
     }
   }
 }
