@@ -16,6 +16,43 @@ module Sipity
           expect(subject).to eq([comment])
         end
       end
+
+      context '#find_current_comments_for_work' do
+        let(:strategy_id) { 1 }
+        let(:current_strategy_state_id) { 2 }
+        let(:work) { Models::Work.new(id: 'abc') }
+        let(:entity) do
+          Models::Processing::Entity.create!(
+            proxy_for_id: work.id, proxy_for_type: work.class, strategy_id: strategy_id, strategy_state_id: current_strategy_state_id
+          )
+        end
+
+        let!(:actions) do
+          # Creating actions, some of which will be associated with the entity's current_strategy_state
+          (1..2).collect do |index|
+            Models::Processing::StrategyAction.create(
+              strategy_id: strategy_id,
+              resulting_strategy_state_id: current_strategy_state_id + (index % 2),
+              name: "action_#{index}"
+            )
+          end
+        end
+
+        let!(:comments) do
+          # Creating comments for various points along the way; Not we don't care about originating strategy state
+          # Just what was the action taken as part of this comment.
+          (1..4).collect do |index|
+            Models::Processing::Comment.create!(
+              originating_strategy_state_id: index, originating_strategy_action_id: (index % actions.size + 1),
+              entity_id: entity.id, actor_id: 99, comment: "Comment #{index}"
+            )
+          end
+        end
+
+        it 'will find all comments that were written as part of any action that can transition the entity to its current state' do
+          expect(test_repository.find_current_comments_for_work(work: work).pluck(:comment)).to eq(["Comment 3", "Comment 1"])
+        end
+      end
     end
   end
 end

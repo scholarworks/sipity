@@ -73,10 +73,10 @@
     </div>
   </div>
 
-  <% if model.comments.present? %>
+  <% if model.current_comments.present? %>
     <div class="row">
       <div class="col-md-6 alert alert-warning feedback-notice">
-        <% model.comments.each do |comment| %>
+        <% model.current_comments.each do |comment| %>
           <p><strong>Feedback from <%= comment.name_of_commentor %></strong>:</p>
           <p><%= comment.comment %></p>
         <% end %>
