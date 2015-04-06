@@ -4,6 +4,14 @@ module Sipity
       # Responsible for capturing a :comment made by a given :actor on a given
       # :entity at a given :originating_strategy_state as part of a given
       # :originating_strategy_action.
+      #
+      # A :stale comment is a comment that is not relevant based on processing
+      # that has happened.
+      #
+      # @example
+      #   As a graduate student that has had multiple changes requested by an advisor
+      #   I want to see my advisors latest comments (and not previous comments from a previous requested change)
+      #   So that I can see the immediate thing I need to work on
       class Comment < ActiveRecord::Base
         self.table_name = 'sipity_processing_comments'
 

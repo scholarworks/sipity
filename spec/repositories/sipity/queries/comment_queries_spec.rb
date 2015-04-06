@@ -44,13 +44,15 @@ module Sipity
           (1..4).collect do |index|
             Models::Processing::Comment.create!(
               originating_strategy_state_id: index, originating_strategy_action_id: (index % actions.size + 1),
-              entity_id: entity.id, actor_id: 99, comment: "Comment #{index}"
+              entity_id: entity.id, actor_id: 99, comment: "Comment #{index}",
+              stale: (index % 3 == 0)
             )
           end
         end
 
         it 'will find all comments that were written as part of any action that can transition the entity to its current state' do
-          expect(test_repository.find_current_comments_for_work(work: work).pluck(:comment)).to eq(["Comment 3", "Comment 1"])
+          # NOTE: the 3rd comment is stale and thus excluded
+          expect(test_repository.find_current_comments_for_work(work: work).pluck(:comment)).to eq(["Comment 1"])
         end
       end
     end

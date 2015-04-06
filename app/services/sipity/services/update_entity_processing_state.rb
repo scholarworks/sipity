@@ -16,10 +16,19 @@ module Sipity
       delegate :strategy, to: :entity
 
       def call
-        entity.update!(strategy_state: processing_state)
+        mark_existing_comments_for_new_processing_state_as_stale
+        transition_entity_to_new_processing_state
       end
 
       private
+
+      def mark_existing_comments_for_new_processing_state_as_stale
+        Models::Processing::Comment.where(entity_id: entity.id, originating_strategy_state_id: processing_state.id).update_all(stale: true)
+      end
+
+      def transition_entity_to_new_processing_state
+        entity.update!(strategy_state: processing_state)
+      end
 
       def entity=(object)
         @entity = convert_to_processing_entity(object)

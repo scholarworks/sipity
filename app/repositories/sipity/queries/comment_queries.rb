@@ -22,7 +22,7 @@ module Sipity
                 actions[:resulting_strategy_state_id].eq(entities[:strategy_state_id])
               ).where(entities[:id].eq(entity.id))
             )
-          )
+          ).and(comments[:stale].eq(false))
         ).order('created_at DESC')
       end
     end
