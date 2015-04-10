@@ -19,7 +19,7 @@ module Sipity
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::WorkEmailDecorator }.new(entity)
-          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+          mail(options.slice(:to, :cc, :bcc).merge(subject: email_subject(method_name)))
         end
       end
 
@@ -31,7 +31,7 @@ module Sipity
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::RegisteredActionDecorator }.new(entity)
-          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+          mail(options.slice(:to, :cc, :bcc).merge(subject: email_subject(method_name)))
         end
       end
 
@@ -46,8 +46,16 @@ module Sipity
         define_method(method_name) do |options = {}|
           entity = options.fetch(:entity)
           @entity = options.fetch(:decorator) { Decorators::Emails::ProcessingCommentDecorator }.new(entity)
-          mail(options.slice(:to, :cc, :bcc).merge(subject: @entity.email_subject))
+          mail(options.slice(:to, :cc, :bcc).merge(subject: email_subject(method_name)))
         end
+      end
+
+      private
+
+      def email_subject(email_method_name)
+        prefix = t('application.name')
+        suffix = t("email_name.#{email_method_name}", scope: self.class.to_s.underscore, default: email_method_name.to_s.titleize)
+        "#{prefix}: #{suffix}"
       end
     end
   end
