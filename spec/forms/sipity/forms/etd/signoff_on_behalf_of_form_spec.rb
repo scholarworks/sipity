@@ -8,7 +8,9 @@ module Sipity
         let(:work) { double('Work', to_processing_entity: processing_entity) }
         let(:repository) { CommandRepositoryInterface.new }
         let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id) }
-        subject { described_class.new(work: work, repository: repository, processing_action_name: action) }
+        let(:base_options) { { work: work, processing_action_name: action, repository: repository } }
+
+        subject { described_class.new(base_options) }
 
         its(:enrichment_type) { should eq('signoff_on_behalf_of') }
         its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
@@ -16,12 +18,14 @@ module Sipity
         it { should respond_to :work }
 
         let(:someone) { double(id: 'one') }
-        let(:sometwo) { double(id: 'two') }
-        let(:somethree) { double(id: 'three') }
 
         before do
-          allow(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
-          allow(repository).to receive(:collaborators_that_have_taken_the_action_on_the_entity).and_return([sometwo, somethree])
+          allow_any_instance_of(Forms::ComposableElements::OnBehalfOfCollaborator).
+            to receive(:valid_on_behalf_of_collaborator_ids).and_return([someone.id])
+          allow_any_instance_of(Forms::ComposableElements::OnBehalfOfCollaborator).
+            to receive(:valid_on_behalf_of_collaborators).and_return([someone])
+          allow_any_instance_of(Forms::ComposableElements::OnBehalfOfCollaborator).
+            to receive(:on_behalf_of_collaborator).and_return(someone)
         end
 
         context 'validation' do
@@ -30,23 +34,10 @@ module Sipity
             expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
           end
           it 'will require that someone amongst the collaborators is specified' do
-            subject = described_class.new(
-              work: work, repository: repository, on_behalf_of_collaborator_id: '__no_one__', processing_action_name: action
-            )
+            subject = described_class.new(base_options.merge(on_behalf_of_collaborator_id: '__no_one__'))
             subject.valid?
             expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
           end
-        end
-
-        it 'will forward delegate #on_behalf_of_collaborator to the underlying repository' do
-          expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
-          expect(subject.on_behalf_of_collaborator).to eq(someone)
-        end
-
-        it 'will #valid_on_behalf_of_collaborators will be those that can act but have not' do
-          expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])
-          expect(repository).to receive(:collaborators_that_have_taken_the_action_on_the_entity).and_return([sometwo, somethree])
-          expect(subject.valid_on_behalf_of_collaborators).to eq([someone])
         end
 
         context '#render' do
@@ -64,8 +55,7 @@ module Sipity
           let(:on_behalf_of_collaborator) { double('Collaborator') }
           subject do
             described_class.new(
-              work: work, processing_action_name: action, repository: repository, on_behalf_of_collaborator_id: 'someone_valid',
-              signoff_service: signoff_service
+              base_options.merge(on_behalf_of_collaborator_id: 'someone_valid', signoff_service: signoff_service)
             )
           end
           before do

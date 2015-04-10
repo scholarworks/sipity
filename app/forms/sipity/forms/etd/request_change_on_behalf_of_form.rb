@@ -7,16 +7,30 @@ module Sipity
         def initialize(options = {})
           super
           self.comment = options[:comment]
+          self.on_behalf_of_collaborator_extension = Forms::ComposableElements::OnBehalfOfCollaborator.new(
+            form: self, repository: repository
+          )
           self.on_behalf_of_collaborator_id = options[:on_behalf_of_collaborator_id]
         end
 
-        attr_accessor :comment, :on_behalf_of_collaborator_id
-        private(:comment=, :on_behalf_of_collaborator_id)
+        delegate(
+          :valid_on_behalf_of_collaborators,
+          :on_behalf_of_collaborator,
+          :on_behalf_of_collaborator_id,
+          :on_behalf_of_collaborator_id=,
+          :valid_on_behalf_of_collaborator_ids,
+          to: :on_behalf_of_collaborator_extension
+        )
+
+        attr_accessor :comment
+        private(:comment=, :on_behalf_of_collaborator_id=)
 
         validates :comment, presence: true
-        validates :on_behalf_of_collaborator_id, presence: true
+        validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
         private
+
+        attr_accessor :on_behalf_of_collaborator_extension
 
         def save(requested_by:)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
