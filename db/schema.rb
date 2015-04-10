@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150402195713) do
+ActiveRecord::Schema.define(version: 20150410193943) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32, null: false
@@ -336,7 +336,7 @@ ActiveRecord::Schema.define(version: 20150402195713) do
   create_table "sipity_works", id: false, force: :cascade do |t|
     t.string   "id",                        limit: 32, null: false
     t.string   "work_publication_strategy"
-    t.string   "title"
+    t.text     "title"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "work_type",                            null: false
