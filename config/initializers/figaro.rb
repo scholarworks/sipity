@@ -1,11 +1,11 @@
 Figaro.require_keys(
-  'domain_name',
-  'url_host',
-  'default_email_return_path',
   'default_email_from',
-  'noid_server',
-  'noid_port',
-  'noid_pool',
+  'default_email_return_path',
+  'domain_name',
+  'hesburgh_api_auth_token',
   'hesburgh_api_host',
-  'hesburgh_api_auth_token'
+  'noid_pool',
+  'noid_port',
+  'noid_server',
+  'url_host'
 )
