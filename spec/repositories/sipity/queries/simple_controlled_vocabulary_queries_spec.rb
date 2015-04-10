@@ -13,16 +13,23 @@ module Sipity
             predicate_value_code: 'A code')
         end
 
-        before do
-          vocab
-        end
-
         it 'will get all the values associated with predicate_name' do
+          vocab
           expect(test_repository.get_controlled_vocabulary_values_for_predicate_name(name: name)).to eq([value])
         end
 
         it 'will get records associated with predicate_name' do
+          vocab
           expect(test_repository.get_controlled_vocabulary_entries_for_predicate_name(name: name)).to eq([vocab])
+        end
+
+        it 'will get controlled vocabulary value for the predicate and code' do
+          vocab
+          expect(test_repository.get_controlled_vocabulary_value_for(name: name, predicate_value_code: 'A code')).to eq(value)
+        end
+
+        it 'will default to the given code if nothing is found' do
+          expect(test_repository.get_controlled_vocabulary_value_for(name: name, predicate_value_code: 'A code')).to eq('A code')
         end
       end
     end
