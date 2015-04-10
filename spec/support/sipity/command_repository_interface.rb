@@ -121,6 +121,10 @@ module Sipity
     def destroy_a_work(work:)
     end
 
+    # @see ./app/repositories/sipity/commands/processing_commands.rb
+    def destroy_existing_registered_state_changing_actions_for(entity:, strategy_state:)
+    end
+
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def destroy_work_attribute_values!(work:, key:, values:)
     end
@@ -131,6 +135,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/doi_queries.rb
     def doi_request_is_pending?(work)
+    end
+
+    # @see ./app/repositories/sipity/commands/processing_commands.rb
+    def existing_registered_state_changing_actions_for(entity:, strategy_state:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

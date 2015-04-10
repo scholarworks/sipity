@@ -34,6 +34,7 @@ MethodLength:
     - 'app/repositories/sipity/queries/comment_queries.rb'
     - 'app/repositories/sipity/queries/enrichment_queries.rb'
     - 'app/repositories/sipity/queries/processing_queries.rb'
+    - 'app/repositories/sipity/commands/processing_commands.rb'
     - 'app/state_machines/sipity/state_machines/state_diagram.rb'
     - 'spec/support/site_prism_support.rb'
 
@@ -84,6 +85,7 @@ Metrics/AbcSize:
      - app/repositories/sipity/queries/*.rb
      - app/controllers/application_controller.rb
      - app/forms/sipity/forms/work_enrichments/attach_form.rb
+     - 'app/repositories/sipity/commands/processing_commands.rb'
 Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: false
