@@ -28,11 +28,11 @@ module Sipity
 
         private
 
-        attr_accessor :on_behalf_of_collaborator_extension
-
         def save(requested_by:)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         end
+
+        attr_accessor :on_behalf_of_collaborator_extension
 
         def build_collaborator_extension
           Forms::ComposableElements::OnBehalfOfCollaborator.new(form: self, repository: repository)

@@ -32,8 +32,6 @@ module Sipity
 
         private
 
-        attr_accessor :on_behalf_of_collaborator_extension, :signoff_service
-
         def save(requested_by:)
           register_the_actions(requested_by: requested_by)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
@@ -50,6 +48,8 @@ module Sipity
             work: work, enrichment_type: RELATED_ACTION_FOR_SIGNOFF, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
           )
         end
+
+        attr_accessor :on_behalf_of_collaborator_extension, :signoff_service
 
         def default_signoff_service
           Services::AdvisorSignsOff
