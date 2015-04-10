@@ -24,7 +24,7 @@ module Sipity
     end
 
     config.default_netid_remote_validator = lambda do |a_netid|
-      Services::RemoteNetidValidator.valid_netid?(a_netid)
+      Services::NetidQueryService.valid_netid?(a_netid)
     end
 
     config.default_pid_minter = lambda do
