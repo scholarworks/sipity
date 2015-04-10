@@ -88,6 +88,26 @@ module Sipity
         end
       end
 
+      context "#selected_copyright" do
+        let(:predicate_value_code) { "http://creativecommons.org/licenses/by/3.0/us/" }
+        let(:predicate_value) { "Attribution 3.0 United States" }
+        let(:obtained_copyrights) do
+          [Sipity::Models::SimpleControlledVocabulary.new(
+            predicate_name: 'copyright', predicate_value: predicate_value, predicate_value_code: predicate_value_code
+          )]
+        end
+        let(:copyrights) do
+          double(ActiveRecord::Relation)
+        end
+        let(:copyright_link) { "<a href='#{predicate_value_code}'>#{predicate_value}</a>" }
+        it 'will have #selected_copyrights' do
+          expect(repository).to receive(:get_controlled_vocabulary_for_predicate_name).with(name: 'copyright').
+            and_return(copyrights)
+          expect(copyrights).to receive(:where).and_return(obtained_copyrights)
+          expect(subject.selected_copyright(predicate_value_code)).to eq(copyright_link)
+        end
+      end
+
       xit '#state_advancing_actions is missing'
       xit '#resourceful_actions is missing'
       xit '#enrichment_actions is missing'
