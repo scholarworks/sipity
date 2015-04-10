@@ -7,9 +7,7 @@ module Sipity
         def initialize(options = {})
           super
           self.comment = options[:comment]
-          self.on_behalf_of_collaborator_extension = Forms::ComposableElements::OnBehalfOfCollaborator.new(
-            form: self, repository: repository
-          )
+          self.on_behalf_of_collaborator_extension = build_collaborator_extension
           self.on_behalf_of_collaborator_id = options[:on_behalf_of_collaborator_id]
         end
 
@@ -34,6 +32,10 @@ module Sipity
 
         def save(requested_by:)
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+        end
+
+        def build_collaborator_extension
+          Forms::ComposableElements::OnBehalfOfCollaborator.new(form: self, repository: repository)
         end
       end
     end

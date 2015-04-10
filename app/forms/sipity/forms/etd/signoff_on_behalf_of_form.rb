@@ -8,9 +8,7 @@ module Sipity
       class SignoffOnBehalfOfForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
-          self.on_behalf_of_collaborator_extension = Forms::ComposableElements::OnBehalfOfCollaborator.new(
-            form: self, repository: repository
-          )
+          self.on_behalf_of_collaborator_extension = build_collaborator_extension
           self.on_behalf_of_collaborator_id = attributes[:on_behalf_of_collaborator_id]
           self.signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
         end
@@ -55,6 +53,10 @@ module Sipity
 
         def default_signoff_service
           Services::AdvisorSignsOff
+        end
+
+        def build_collaborator_extension
+          Forms::ComposableElements::OnBehalfOfCollaborator.new(form: self, repository: repository)
         end
       end
     end
