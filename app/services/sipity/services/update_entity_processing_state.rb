@@ -3,7 +3,6 @@ module Sipity
     # Service object that handles the business logic of updating an entity's
     # processing state.
     class UpdateEntityProcessingState
-      include Conversions::ConvertToProcessingEntity
       def self.call(entity:, processing_state:)
         new(entity: entity, processing_state: processing_state).call
       end
@@ -30,6 +29,7 @@ module Sipity
         entity.update!(strategy_state: processing_state)
       end
 
+      include Conversions::ConvertToProcessingEntity
       def entity=(object)
         @entity = convert_to_processing_entity(object)
       end
