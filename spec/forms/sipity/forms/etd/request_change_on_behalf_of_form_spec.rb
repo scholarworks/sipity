@@ -9,10 +9,25 @@ module Sipity
         let(:repository) { CommandRepositoryInterface.new }
         let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'hello') }
         let(:user) { User.new(id: 1) }
-        subject { described_class.new(work: work, processing_action_name: action, repository: repository) }
+        let(:base_options) { { work: work, processing_action_name: action, repository: repository } }
+        subject { described_class.new(base_options) }
 
         its(:processing_action_name) { should eq(action.name) }
         its(:event_name) { should eq('etd/request_change_on_behalf_of_form/submit') }
+
+        context 'validations' do
+          it 'will require a comment' do
+            subject = described_class.new(base_options.merge(comment: nil))
+            subject.valid?
+            expect(subject.errors[:comment]).to be_present
+          end
+
+          it 'will require an on_behalf_of_collaborator_id' do
+            subject = described_class.new(base_options.merge(on_behalf_of_collaborator_id: nil))
+            subject.valid?
+            expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
+          end
+        end
 
         context 'with valid data' do
           let(:a_processing_comment) { double }

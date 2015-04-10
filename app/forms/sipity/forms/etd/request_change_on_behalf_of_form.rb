@@ -4,6 +4,17 @@ module Sipity
       # Responsible for exposing ability for someone to comment and request
       # changes to the work on behalf of someone else.
       class RequestChangeOnBehalfOfForm < Forms::StateAdvancingActionForm
+        def initialize(options = {})
+          super
+          self.comment = options[:comment]
+          self.on_behalf_of_collaborator_id = options[:on_behalf_of_collaborator_id]
+        end
+
+        attr_accessor :comment, :on_behalf_of_collaborator_id
+        private(:comment=, :on_behalf_of_collaborator_id)
+
+        validates :comment, presence: true
+        validates :on_behalf_of_collaborator_id, presence: true
 
         private
 
