@@ -29,7 +29,18 @@ module Sipity
         private
 
         def save(requested_by:)
+          # TODO: Consider extracting common behavior to a service method (see AdvisorRequestsChangeForm#save)
+          processing_comment = repository.record_processing_comment(
+            entity: work, commenter: on_behalf_of_collaborator, comment: comment, action: action
+          )
+          repository.send_notification_for_entity_trigger(
+            notification: enrichment_type, entity: processing_comment, acting_as: ['creating_user']
+          )
+          repository.register_action_taken_on_entity(
+            work: work, enrichment_type: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
+          )
           repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+          repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
         end
 
         attr_accessor :on_behalf_of_collaborator_extension

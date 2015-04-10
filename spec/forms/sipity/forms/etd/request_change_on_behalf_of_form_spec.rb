@@ -9,13 +9,7 @@ module Sipity
         let(:repository) { CommandRepositoryInterface.new }
         let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'hello') }
         let(:user) { User.new(id: 1) }
-        let(:base_options) do
-          {
-            work: work,
-            processing_action_name: action,
-            repository: repository
-          }
-        end
+        let(:base_options) { { work: work, processing_action_name: action, repository: repository } }
         subject { described_class.new(base_options) }
 
         before do
@@ -53,6 +47,7 @@ module Sipity
         end
 
         context 'with valid data' do
+          subject { described_class.new(base_options.merge(comment: 'Comments!', on_behalf_of_collaborator_id: someone.id)) }
           let(:a_processing_comment) { double }
           before do
             allow(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
@@ -61,6 +56,39 @@ module Sipity
 
           it 'will log the event' do
             expect(repository).to receive(:log_event!).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will update the processing state' do
+            strategy_state = action.build_resulting_strategy_state
+            expect(repository).to receive(:update_processing_state!).
+              with(entity: work, to: strategy_state).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will register the action' do
+            expect(repository).to receive(:register_action_taken_on_entity).
+              with(work: work, enrichment_type: 'request_change_on_behalf_of', requested_by: user, on_behalf_of: someone).
+              and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will register the action' do
+            expect(repository).to receive(:register_action_taken_on_entity).
+              with(work: work, enrichment_type: 'request_change_on_behalf_of', requested_by: user, on_behalf_of: someone).
+              and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will record the processing comment' do
+            expect(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
+            subject.submit(requested_by: user)
+          end
+
+          it 'will send creating user a note that the advisor has requested changes' do
+            expect(repository).to receive(:send_notification_for_entity_trigger).
+              with(notification: 'request_change_on_behalf_of', entity: a_processing_comment, acting_as: ['creating_user']).
+              and_call_original
             subject.submit(requested_by: user)
           end
         end
