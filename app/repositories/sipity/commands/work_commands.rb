@@ -68,7 +68,7 @@ module Sipity
       end
 
       def update_processing_state!(entity:, to:)
-        Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to)
+        Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to, repository: self)
       end
 
       def attach_files_to(work:, files:, user:, pid_minter: default_pid_minter)

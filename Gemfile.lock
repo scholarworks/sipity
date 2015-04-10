@@ -368,6 +368,7 @@ GEM
       cliver (~> 0.3.1)
       multi_json (~> 1.0)
       websocket-driver (>= 0.2.0)
+    power_converter (0.0.3)
     powerpack (0.1.0)
     pry (0.10.1)
       coderay (~> 1.1.0)
@@ -610,6 +611,7 @@ DEPENDENCIES
   mysql2
   noids_client!
   poltergeist
+  power_converter
   pry-byebug
   pry-rails
   pry-rescue

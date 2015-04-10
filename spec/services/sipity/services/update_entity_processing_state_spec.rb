@@ -5,8 +5,10 @@ module Sipity
     RSpec.describe UpdateEntityProcessingState do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
+      let(:repository) { CommandRepositoryInterface.new }
+      let(:processing_state) { Models::Processing::StrategyState.new(id: 2, strategy_id: strategy.id, name: 'submit_for_review') }
 
-      subject { described_class.new(entity: entity, processing_state: processing_state) }
+      subject { described_class.new(entity: entity, processing_state: processing_state, repository: repository) }
 
       context '.call' do
         it 'will instantiate then call the instance' do
@@ -15,26 +17,9 @@ module Sipity
         end
       end
 
-      context 'with an invalid processing state' do
-        let(:processing_state) { double }
-        it 'will raise an error' do
-          expect { subject.call }.to raise_error Exceptions::ProcessingStrategyStateConversionError
-        end
-      end
-
-      context 'with a processing state string' do
-        before do
-          Models::Processing::StrategyState.create!(strategy_id: strategy.id, name: 'submit_for_review')
-        end
-        let(:processing_state) { 'submit_for_review' }
-        it 'will change the processing state' do
-          expect(entity).to receive(:update!).with(strategy_state: kind_of(Models::Processing::StrategyState))
-          subject.call
-        end
-      end
+      its(:default_repository) { should respond_to :destroy_existing_registered_state_changing_actions_for }
 
       context 'with a processing state object' do
-        let(:processing_state) { Models::Processing::StrategyState.new(id: 2, strategy_id: strategy.id, name: 'submit_for_review') }
         before do
           allow(entity).to receive(:update!).with(strategy_state: kind_of(Models::Processing::StrategyState))
         end
@@ -50,6 +35,12 @@ module Sipity
           )
           subject.call
           expect(comment.reload.stale?).to be_truthy
+        end
+
+        it 'will destroy existing registered actions for the entity and processing_state' do
+          expect(repository).to receive(:destroy_existing_registered_state_changing_actions_for).
+            with(entity: entity, strategy_state: processing_state)
+          subject.call
         end
       end
     end
