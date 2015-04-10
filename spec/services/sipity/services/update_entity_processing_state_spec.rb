@@ -15,13 +15,6 @@ module Sipity
         end
       end
 
-      context 'with an invalid processing state' do
-        let(:processing_state) { double }
-        it 'will raise an error' do
-          expect { subject.call }.to raise_error Exceptions::ProcessingStrategyStateConversionError
-        end
-      end
-
       context 'with a processing state string' do
         before do
           Models::Processing::StrategyState.create!(strategy_id: strategy.id, name: 'submit_for_review')

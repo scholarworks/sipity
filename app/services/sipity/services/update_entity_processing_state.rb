@@ -35,16 +35,7 @@ module Sipity
       end
 
       def processing_state=(object)
-        @processing_state = convert_to_processing_state(object)
-      end
-
-      def convert_to_processing_state(object)
-        return object if object.is_a?(Models::Processing::StrategyState)
-        if object.is_a?(String) || object.is_a?(Symbol)
-          state = Models::Processing::StrategyState.where(strategy_id: strategy.id, name: object).first
-          return state if state.present?
-        end
-        fail Exceptions::ProcessingStrategyStateConversionError, { strategy_id: strategy.id, name: object }.inspect
+        @processing_state = PowerConverter.convert(object, scope: strategy, to: :strategy_state)
       end
     end
   end
