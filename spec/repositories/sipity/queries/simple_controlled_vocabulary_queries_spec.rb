@@ -22,7 +22,7 @@ module Sipity
         end
 
         it 'will get records associated with predicate_name' do
-          expect(test_repository.get_controlled_vocabulary_for_predicate_name(name: name)).to eq([vocab])
+          expect(test_repository.get_controlled_vocabulary_entries_for_predicate_name(name: name)).to eq([vocab])
         end
       end
     end

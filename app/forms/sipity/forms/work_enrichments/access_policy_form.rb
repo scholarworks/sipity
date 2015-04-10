@@ -35,7 +35,7 @@ module Sipity
         end
 
         def available_copyrights
-          repository.get_controlled_vocabulary_for_predicate_name(name: 'copyright')
+          repository.get_controlled_vocabulary_entries_for_predicate_name(name: 'copyright')
         end
 
         def available_representative_attachments

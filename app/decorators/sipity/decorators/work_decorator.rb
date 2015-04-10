@@ -98,7 +98,7 @@ module Sipity
       end
 
       def available_copyrights
-        @available_copyrights ||= repository.get_controlled_vocabulary_for_predicate_name(name: 'copyright')
+        @available_copyrights ||= repository.get_controlled_vocabulary_entries_for_predicate_name(name: 'copyright')
       end
 
       def build_copyright_link(copyright_text, copyright_link)

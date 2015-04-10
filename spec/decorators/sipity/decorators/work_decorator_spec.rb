@@ -101,7 +101,7 @@ module Sipity
         end
         let(:copyright_link) { "<a href='#{predicate_value_code}'>#{predicate_value}</a>" }
         it 'will have #selected_copyrights' do
-          expect(repository).to receive(:get_controlled_vocabulary_for_predicate_name).with(name: 'copyright').
+          expect(repository).to receive(:get_controlled_vocabulary_entries_for_predicate_name).with(name: 'copyright').
             and_return(copyrights)
           expect(copyrights).to receive(:where).and_return(obtained_copyrights)
           expect(subject.selected_copyright(predicate_value_code)).to eq(copyright_link)

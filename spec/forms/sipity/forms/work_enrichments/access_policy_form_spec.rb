@@ -66,7 +66,7 @@ module Sipity
         end
 
         it 'will have #available_copyrights' do
-          expect(repository).to receive(:get_controlled_vocabulary_for_predicate_name).with(name: 'copyright').
+          expect(repository).to receive(:get_controlled_vocabulary_entries_for_predicate_name).with(name: 'copyright').
             and_return(copyrights)
           expect(subject.available_copyrights).to eq(copyrights)
         end
