@@ -6,12 +6,12 @@ module Sipity
       class SignoffOnBehalfOfForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
-          @on_behalf_of_collaborator_id = attributes[:on_behalf_of_collaborator_id]
-          @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
+          self.on_behalf_of_collaborator_id = attributes[:on_behalf_of_collaborator_id]
+          self.signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
         end
-        attr_reader :on_behalf_of_collaborator_id
-        attr_reader :signoff_service
-        private :signoff_service
+        attr_accessor :on_behalf_of_collaborator_id
+        attr_accessor :signoff_service
+        private :signoff_service, :signoff_service=, :on_behalf_of_collaborator_id=
 
         validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
