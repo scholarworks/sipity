@@ -312,7 +312,8 @@ en:
       at_least_one_collaborator_must_be_responsible_for_review: 'At least one collaborator must be responsible for review'
       presence_of_access_policies_for_all_objects_required: 'Please select access policy for each item'
       at_least_one_attachment_required: 'At least one file must be attached'
-
+  sipity/mailers/email_notifier:
+    email_name:
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'

@@ -42,10 +42,6 @@ module Sipity
           "Go to #{work_type} “#{title}”"
         end
 
-        def email_subject
-          "#{view_context.t('application.name')}: #{email_message_action_description}"
-        end
-
         def work_type
           work.work_type.titleize
         end
