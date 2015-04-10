@@ -21,6 +21,8 @@ hesburgh_api_host: https://api.library.nd.edu/
 noid_pool: 'pool_name'
 noid_port: '3000'
 noid_server: 'noidserver.com'
+airbrake_api_key: 'this-makes-no-sense'
+airbrake_host: 'errbit.library.nd.edu'
 
 development:
   domain_name: "localhost:3000"
