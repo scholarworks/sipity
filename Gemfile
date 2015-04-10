@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 gem 'rails', '~> 4.2'
 
+gem 'airbrake'
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails', '~> 4.0'
