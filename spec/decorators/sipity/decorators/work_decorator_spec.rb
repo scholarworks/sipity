@@ -91,19 +91,11 @@ module Sipity
       context "#selected_copyright" do
         let(:predicate_value_code) { "http://creativecommons.org/licenses/by/3.0/us/" }
         let(:predicate_value) { "Attribution 3.0 United States" }
-        let(:obtained_copyrights) do
-          [Sipity::Models::SimpleControlledVocabulary.new(
-            predicate_name: 'copyright', predicate_value: predicate_value, predicate_value_code: predicate_value_code
-          )]
-        end
-        let(:copyrights) do
-          double(ActiveRecord::Relation)
-        end
         let(:copyright_link) { "<a href='#{predicate_value_code}'>#{predicate_value}</a>" }
         it 'will have #selected_copyrights' do
-          expect(repository).to receive(:get_controlled_vocabulary_entries_for_predicate_name).with(name: 'copyright').
-            and_return(copyrights)
-          expect(copyrights).to receive(:where).and_return(obtained_copyrights)
+          expect(repository).to receive(:get_controlled_vocabulary_value_for).
+            with(name: 'copyright', predicate_value_code: predicate_value_code).
+            and_return(predicate_value)
           expect(subject.selected_copyright(predicate_value_code)).to eq(copyright_link)
         end
       end
