@@ -121,10 +121,11 @@ module Sipity
 
       RSpec.describe AccessPolicyForm::AccessibleObjectFromInput do
         let(:attributes) { {} }
-        let(:persisted_object) { double('Persisted Object', entity_type: 'Hello') }
+        let(:persisted_object) { double('Persisted Object', entity_type: 'Hello', human_model_name: 'Work') }
         subject { described_class.new(persisted_object, attributes) }
 
         its(:persisted?) { should be_truthy }
+        its(:human_model_name) { should eq(persisted_object.human_model_name) }
 
         it 'will parse the input date' do
           subject = described_class.new(persisted_object, release_date: '2014-12-1')
