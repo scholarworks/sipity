@@ -81,10 +81,9 @@ module Sipity
         end
       end
 
-      def selected_copyright(copyright)
-        saved_copyright = available_copyrights.where(predicate_value_code: copyright)
-        return nil unless saved_copyright.any?
-        build_copyright_link(saved_copyright.first.predicate_value, copyright)
+      def selected_copyright(copyright_url)
+        copyright_value = repository.get_controlled_vocabulary_value_for(name: 'copyright', predicate_value_code: copyright_url)
+        "<a href='#{copyright_url}'>#{copyright_value}</a>"
       end
 
       private
@@ -95,14 +94,6 @@ module Sipity
 
       def processing_actions(user:)
         @processing_actions ||= ProcessingActions.new(user: user, entity: self)
-      end
-
-      def available_copyrights
-        @available_copyrights ||= repository.get_controlled_vocabulary_for_predicate_name(name: 'copyright')
-      end
-
-      def build_copyright_link(copyright_text, copyright_link)
-        "<a href='#{copyright_link}'>#{copyright_text}</a>"
       end
     end
   end
