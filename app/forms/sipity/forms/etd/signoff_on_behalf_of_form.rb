@@ -1,3 +1,5 @@
+require_relative '../composable_elements/on_behalf_of_collaborator'
+
 module Sipity
   module Forms
     module Etd
@@ -6,34 +8,29 @@ module Sipity
       class SignoffOnBehalfOfForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
-          @on_behalf_of_collaborator_id = attributes[:on_behalf_of_collaborator_id]
-          @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
+          self.on_behalf_of_collaborator_extension = build_collaborator_extension
+          self.on_behalf_of_collaborator_id = attributes[:on_behalf_of_collaborator_id]
+          self.signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
         end
-        attr_reader :on_behalf_of_collaborator_id
-        attr_reader :signoff_service
-        private :signoff_service
 
         validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
-        def valid_on_behalf_of_collaborators
-          # TODO: This can be consolidated into a singular query
-          repository.collaborators_that_can_advance_the_current_state_of(work: work) -
-            repository.collaborators_that_have_taken_the_action_on_the_entity(entity: work, action: action)
-        end
+        delegate(
+          :valid_on_behalf_of_collaborators,
+          :on_behalf_of_collaborator,
+          :on_behalf_of_collaborator_id,
+          :on_behalf_of_collaborator_id=,
+          :valid_on_behalf_of_collaborator_ids,
+          to: :on_behalf_of_collaborator_extension
+        )
+
+        private(:on_behalf_of_collaborator_id=)
 
         def render(f:)
           f.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
         end
 
-        def on_behalf_of_collaborator
-          repository.collaborators_that_can_advance_the_current_state_of(work: work, id: on_behalf_of_collaborator_id).first
-        end
-
         private
-
-        def valid_on_behalf_of_collaborator_ids
-          valid_on_behalf_of_collaborators.map { |collaborator| collaborator.id.to_s }
-        end
 
         def save(requested_by:)
           register_the_actions(requested_by: requested_by)
@@ -52,8 +49,14 @@ module Sipity
           )
         end
 
+        attr_accessor :on_behalf_of_collaborator_extension, :signoff_service
+
         def default_signoff_service
           Services::AdvisorSignsOff
+        end
+
+        def build_collaborator_extension
+          Forms::ComposableElements::OnBehalfOfCollaborator.new(form: self, repository: repository)
         end
       end
     end
