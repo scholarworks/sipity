@@ -50,10 +50,6 @@ module Sipity
           "Review #{work_type} “#{title}”"
         end
 
-        def email_subject
-          "#{view_context.t('application.name')}: #{email_message_action_description}"
-        end
-
         private
 
         include Conversions::ConvertToWork
