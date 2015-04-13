@@ -18,7 +18,7 @@ module Sipity
         its(:email_message_action_description) { should eq("Review comments for “#{work.title}”") }
         its(:email_message_action_name) { should eq("Review comments") }
         its(:email_message_action_name) { should eq("Review comments") }
-        its(:email_message_action_url) { should match(/\/#{work.to_param}\Z/) }
+        its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
       end
     end
   end

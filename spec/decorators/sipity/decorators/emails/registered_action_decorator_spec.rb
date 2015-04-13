@@ -24,7 +24,7 @@ module Sipity
         its(:title) { should eq(work.title) }
         its(:email_message_action_description) { should eq("Go to Doctoral Dissertation “#{work.title}”") }
         its(:email_message_action_name) { should eq("Go to Doctoral Dissertation") }
-        its(:email_message_action_url) { should match(/\/#{work.to_param}\Z/) }
+        its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
         its(:action_taken_at) { should eq registered_action.created_at }
         its(:requested_by) { should eq requesting_user }
         its(:on_behalf_of) { should eq on_behalf_of_user }

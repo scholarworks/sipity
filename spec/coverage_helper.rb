@@ -19,7 +19,7 @@ if ENV['COV'] || ENV['COVERAGE'] || ENV['TRAVIS']
         require 'rake/file_list'
         pattern = File.expand_path('../../app/*', __FILE__)
 
-        Rake::FileList[pattern].exclude { |path| path =~ /app\/#{coverage_profile_name}/ }.each do |path|
+        Rake::FileList[pattern].exclude { |path| path =~ %r{app/#{coverage_profile_name}} }.each do |path|
           add_filter path
         end
         add_filter 'lib'
