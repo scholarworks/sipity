@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/duke-libraries/ezid-client.git
-  revision: afee48e7279ffd53077dbdb54ec0d82b2f0dbed8
+  revision: 3ac81cc3941948d22007b91d3338774f603f02b0
   specs:
-    ezid-client (0.11.0)
+    ezid-client (1.1.0)
 
 GIT
   remote: git://github.com/ndlib/hesburgh-lib.git
