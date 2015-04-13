@@ -45,7 +45,7 @@ module Sipity
         end
 
         it 'will yield and not raise if unparsable but block is given' do
-          today = Date.today
+          today = Time.zone.today
           expect(convert_to_date(1) { today }).to eq(today)
         end
       end
