@@ -29,7 +29,7 @@ gem 'power_converter'
 
 group :doc do
   gem 'inch', require: false
-  gem 'railroady', require: false
+  gem 'railroady', require: false, github: 'jeremyf/railroady', branch: 'allowing-namespaced-models'
   gem 'yard', require: false
 end
 
