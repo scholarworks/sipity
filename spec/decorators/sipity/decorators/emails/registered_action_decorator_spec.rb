@@ -14,7 +14,7 @@ module Sipity
         let(:entity) { Models::Processing::Entity.new(proxy_for: work) }
         let(:registered_action) do
           Models::Processing::EntityActionRegister.new(
-            on_behalf_of_actor: on_behalf_of_actor, requested_by_actor: requested_by_actor, entity: entity, created_at: Time.now
+            on_behalf_of_actor: on_behalf_of_actor, requested_by_actor: requested_by_actor, entity: entity, created_at: Time.zone.now
           )
         end
         let(:repository) { QueryRepositoryInterface.new }
