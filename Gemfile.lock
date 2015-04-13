@@ -450,7 +450,7 @@ GEM
     rspec-html-matchers (0.7.0)
       nokogiri (~> 1)
       rspec (~> 3)
-    rspec-its (1.1.0)
+    rspec-its (1.2.0)
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
     rspec-mocks (3.1.3)
