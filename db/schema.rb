@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413174323) do
+ActiveRecord::Schema.define(version: 20150413175239) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -128,6 +128,19 @@ ActiveRecord::Schema.define(version: 20150413174323) do
   end
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
+
+  create_table "sipity_notification_email_recipients", force: :cascade do |t|
+    t.integer  "email_id",           null: false
+    t.integer  "role_id",            null: false
+    t.string   "recipient_strategy", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "sipity_notification_email_recipients", ["email_id", "role_id", "recipient_strategy"], name: "sipity_notification_email_recipients_surrogate"
+  add_index "sipity_notification_email_recipients", ["email_id"], name: "sipity_notification_email_recipients_email"
+  add_index "sipity_notification_email_recipients", ["recipient_strategy"], name: "sipity_notification_email_recipients_recipient_strategy"
+  add_index "sipity_notification_email_recipients", ["role_id"], name: "sipity_notification_email_recipients_role"
 
   create_table "sipity_notification_emails", force: :cascade do |t|
     t.string   "method_name", limit: 255, null: false
