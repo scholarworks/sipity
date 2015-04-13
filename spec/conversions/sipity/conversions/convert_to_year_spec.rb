@@ -48,7 +48,7 @@ module Sipity
         end
 
         it "will return the object time's year if the object responds to #to_time" do
-          time = DateTime.new(2014, 1, 23)
+          time = Time.zone.new(2014, 1, 23)
           object = double(to_time: time)
           expect(convert_to_year(object)).to eq(time.year)
         end
