@@ -7,7 +7,7 @@ module Sipity
         let(:attachment) { Models::Attachment.new(id: 2) }
         let(:repository) { CommandRepositoryInterface.new }
         let(:copyrights) do
-          [double(predicate_name: 'name', predicate_value: 'value', predicate_value_code: 'code'), double]
+          [double(predicate_name: 'name', term_label: 'value', term_uri: 'code'), double]
         end
         subject { described_class.new(work: work, repository: repository) }
 

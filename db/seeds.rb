@@ -40,24 +40,23 @@ ActiveRecord::Base.transaction do
 
   $stdout.puts 'Creating copyright names...'
   content_licenses = [
-      ['copyright', 'Attribution 3.0 United States', 'http://creativecommons.org/licenses/by/3.0/us/'],
-      ['copyright', 'Attribution-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-sa/3.0/us/'],
-      ['copyright', 'Attribution-NonCommercial 3.0 United States', 'http://creativecommons.org/licenses/by-nc/3.0/us/'],
-      ['copyright', 'Attribution-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nd/3.0/us/'],
-      ['copyright', 'Attribution-NonCommercial-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nc-nd/3.0/us/'],
-      ['copyright', 'Attribution-NonCommercial-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-nc-sa/3.0/us/'],
-      ['copyright', 'Public Domain Mark 1.0', 'http://creativecommons.org/publicdomain/mark/1.0/'],
-      ['copyright', 'CC0 1.0 Universal', 'http://creativecommons.org/publicdomain/zero/1.0/'],
-      ['copyright', 'All rights reserved', 'All rights reserved']
+    ['copyright', 'Attribution 3.0 United States', 'http://creativecommons.org/licenses/by/3.0/us/'],
+    ['copyright', 'Attribution-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-sa/3.0/us/'],
+    ['copyright', 'Attribution-NonCommercial 3.0 United States', 'http://creativecommons.org/licenses/by-nc/3.0/us/'],
+    ['copyright', 'Attribution-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nd/3.0/us/'],
+    ['copyright', 'Attribution-NonCommercial-NoDerivs 3.0 United States', 'http://creativecommons.org/licenses/by-nc-nd/3.0/us/'],
+    ['copyright', 'Attribution-NonCommercial-ShareAlike 3.0 United States', 'http://creativecommons.org/licenses/by-nc-sa/3.0/us/'],
+    ['copyright', 'Public Domain Mark 1.0', 'http://creativecommons.org/publicdomain/mark/1.0/'],
+    ['copyright', 'CC0 1.0 Universal', 'http://creativecommons.org/publicdomain/zero/1.0/'],
+    ['copyright', 'All rights reserved', 'All rights reserved']
   ]
-  content_licenses.each do |predicate_name, predicate_value, predicate_value_code|
+  content_licenses.each do |predicate_name, term_label, term_uri|
     Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-      predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+    predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)
   end
 
 
   $stdout.puts 'Creating degree names...'
-  degree_names =
   [
     ['degree', 'Doctor of Musical Arts', 'DMA'],
     ['degree', 'Doctor of Philosophy', 'PhD'],
@@ -75,16 +74,7 @@ ActiveRecord::Base.transaction do
     ['degree', 'Master of Science in Environmental Engineering', 'MSEnvE'],
     ['degree', 'Master of Science in Geological Sciences', 'MSGS'],
     ['degree', 'Master of Science in Interdisciplinary Mathematics', 'MSIM'],
-    ['degree', 'Master of Science in Mechanical Engineering', 'MSME']
-  ]
-  degree_names.each do |predicate_name, predicate_value, predicate_value_code|
-    Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-    predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
-  end
-
-  $stdout.puts 'Creating program names...'
-  program_names =
-  [
+    ['degree', 'Master of Science in Mechanical Engineering', 'MSME'],
     ['program_name', 'Aerospace and Mechanical Engineering', 'AME'],
     ['program_name', 'Anthropology', 'ANTH'],
     ['program_name', 'Applied and Computational Mathematics and Statistics', 'ACMS'],
@@ -117,13 +107,15 @@ ActiveRecord::Base.transaction do
     ['program_name', 'Sacred Music', 'SACM'],
     ['program_name', 'Sociology', 'SOC'],
     ['program_name', 'Theology', 'THEO']
-  ]
-  program_names.each do |predicate_name, predicate_value, predicate_value_code|
-    Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-    predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+  ].each do |predicate_name, term_label, subject_searchable_terms|
+    if vocab = Sipity::Models::SimpleControlledVocabulary.find_by(predicate_name: predicate_name, term_label: term_label)
+      if vocab.term_uri !~ %r{\A\w+://\w}
+        vocab.update(term_uri: nil)
+      end
+    else
+      Sipity::Models::SimpleControlledVocabulary.create!(predicate_name: predicate_name, term_label: term_label)
+    end
   end
-
-
 
   $stdout.puts 'Creating ETD State Diagram...'
   ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|

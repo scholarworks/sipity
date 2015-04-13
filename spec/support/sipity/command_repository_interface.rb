@@ -186,7 +186,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
-    def get_controlled_vocabulary_value_for(name:, predicate_value_code:)
+    def get_controlled_vocabulary_value_for(name:, term_uri:)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb

@@ -9,8 +9,8 @@ module Sipity
         let(:vocab) do
           Models::SimpleControlledVocabulary.create!(
             predicate_name: name,
-            predicate_value: value,
-            predicate_value_code: 'A code')
+            term_label: value,
+            term_uri: 'A code')
         end
 
         it 'will get all the values associated with predicate_name' do
@@ -25,11 +25,11 @@ module Sipity
 
         it 'will get controlled vocabulary value for the predicate and code' do
           vocab
-          expect(test_repository.get_controlled_vocabulary_value_for(name: name, predicate_value_code: 'A code')).to eq(value)
+          expect(test_repository.get_controlled_vocabulary_value_for(name: name, term_uri: 'A code')).to eq(value)
         end
 
         it 'will default to the given code if nothing is found' do
-          expect(test_repository.get_controlled_vocabulary_value_for(name: name, predicate_value_code: 'A code')).to eq('A code')
+          expect(test_repository.get_controlled_vocabulary_value_for(name: name, term_uri: 'A code')).to eq('A code')
         end
       end
     end

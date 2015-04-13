@@ -89,14 +89,14 @@ module Sipity
       end
 
       context "#selected_copyright" do
-        let(:predicate_value_code) { "http://creativecommons.org/licenses/by/3.0/us/" }
-        let(:predicate_value) { "Attribution 3.0 United States" }
-        let(:copyright_link) { "<a href='#{predicate_value_code}'>#{predicate_value}</a>" }
+        let(:term_uri) { "http://creativecommons.org/licenses/by/3.0/us/" }
+        let(:term_label) { "Attribution 3.0 United States" }
+        let(:copyright_link) { "<a href='#{term_uri}'>#{term_label}</a>" }
         it 'will have #selected_copyrights' do
           expect(repository).to receive(:get_controlled_vocabulary_value_for).
-            with(name: 'copyright', predicate_value_code: predicate_value_code).
-            and_return(predicate_value)
-          expect(subject.selected_copyright(predicate_value_code)).to eq(copyright_link)
+            with(name: 'copyright', term_uri: term_uri).
+            and_return(term_label)
+          expect(subject.selected_copyright(term_uri)).to eq(copyright_link)
         end
       end
 
