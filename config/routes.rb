@@ -46,4 +46,15 @@ Rails.application.routes.draw do
   devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
+
+
+  # I need parentheses or `{ }` for the block, because of when the blocks are
+  # bound.
+  get(
+    "extname_thumbnails/:width/:height/:text(.:format)" => Dragonfly.app.endpoint do |params, app|
+      height = params[:height].to_i
+      app.generate(:text, params[:text], 'font-size' => (height / 4 * 3), 'padding' => "#{(height - (height / 4 * 3)) / 2} 8").
+        thumb("#{height}x#{params[:width]}#", 'format' => params['format'] )
+    end
+  )
 end

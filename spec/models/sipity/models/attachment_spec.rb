@@ -25,9 +25,18 @@ module Sipity
           expect(subject.file.data).to eq(File.read(__FILE__))
         end
 
-        it 'has a thumbnail_url' do
-          subject.file = File.new(__FILE__)
-          expect(subject.thumbnail_url).to match(/\/#{File.basename(__FILE__)}/)
+        context '#thumbnail_url' do
+          it "will link to an image's thumbnail" do
+            subject.file = File.new(__FILE__)
+            expect(subject.file).to receive(:image?).and_return(true)
+            expect(subject.thumbnail_url).to match(/\/#{File.basename(__FILE__)}/)
+          end
+
+          it "will link to a non-image thumbnail" do
+            subject.file = File.new(__FILE__)
+            expect(subject.file).to receive(:image?).and_return(false)
+            expect(subject.thumbnail_url).to match(%r{/extname_thumbnails/64/64/rb\.png\Z})
+          end
         end
 
         it 'will have a file_url that is an actual URL (not a path)' do
