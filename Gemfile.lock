@@ -381,7 +381,7 @@ GEM
     pry-rescue (1.4.1)
       interception (>= 0.5)
       pry
-    pry-stack_explorer (0.4.9.1)
+    pry-stack_explorer (0.4.9.2)
       binding_of_caller (>= 0.7)
       pry (>= 0.9.11)
     quiet_assets (1.1.0)
