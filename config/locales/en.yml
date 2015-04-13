@@ -298,7 +298,7 @@ en:
             access_changes_over_time_html: 'It will <i>change over time</i> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
         work_publication_strategy:
           will_not_publish_html: 'I have <i>no plans to publish</i> this work in the future.'
-          already_published: 'I have already published this work.'
+          already_published: 'I have already published portions of this work..'
           going_to_publish_html: 'I am <i>planning on publishing</i> this work in the future.'
           do_not_know: 'I don’t know.'
         work_type:
