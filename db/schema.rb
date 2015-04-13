@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150410193943) do
+ActiveRecord::Schema.define(version: 20150413125439) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32, null: false
@@ -301,16 +301,16 @@ ActiveRecord::Schema.define(version: 20150410193943) do
   add_index "sipity_roles", ["name"], name: "index_sipity_roles_on_name", unique: true
 
   create_table "sipity_simple_controlled_vocabularies", force: :cascade do |t|
-    t.string   "predicate_name",       null: false
-    t.string   "predicate_value",      null: false
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
-    t.string   "predicate_value_code"
+    t.string   "predicate_name", null: false
+    t.string   "term_label",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "term_uri"
   end
 
-  add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "predicate_value"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true
+  add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "term_label"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true
   add_index "sipity_simple_controlled_vocabularies", ["predicate_name"], name: "index_sipity_simple_controlled_vocabularies_on_predicate_name"
-  add_index "sipity_simple_controlled_vocabularies", ["predicate_value_code"], name: "sipity_simple_controlled_vocabularies_predicate_code"
+  add_index "sipity_simple_controlled_vocabularies", ["term_uri"], name: "sipity_simple_controlled_vocabularies_term_uri", unique: true
 
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.string   "entity_id",     limit: 32, null: false

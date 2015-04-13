@@ -82,7 +82,7 @@ module Sipity
       end
 
       def selected_copyright(copyright_url)
-        copyright_value = repository.get_controlled_vocabulary_value_for(name: 'copyright', predicate_value_code: copyright_url)
+        copyright_value = repository.get_controlled_vocabulary_value_for(name: 'copyright', term_uri: copyright_url)
         "<a href='#{copyright_url}'>#{copyright_value}</a>"
       end
 

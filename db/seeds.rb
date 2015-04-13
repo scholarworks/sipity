@@ -50,9 +50,9 @@ ActiveRecord::Base.transaction do
       ['copyright', 'CC0 1.0 Universal', 'http://creativecommons.org/publicdomain/zero/1.0/'],
       ['copyright', 'All rights reserved', 'All rights reserved']
   ]
-  content_licenses.each do |predicate_name, predicate_value, predicate_value_code|
+  content_licenses.each do |predicate_name, subject_label, subject_uri|
     Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-      predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+      predicate_name: predicate_name, subject_label: subject_label, subject_uri: subject_uri)
   end
 
 
@@ -77,9 +77,9 @@ ActiveRecord::Base.transaction do
     ['degree', 'Master of Science in Interdisciplinary Mathematics', 'MSIM'],
     ['degree', 'Master of Science in Mechanical Engineering', 'MSME']
   ]
-  degree_names.each do |predicate_name, predicate_value, predicate_value_code|
+  degree_names.each do |predicate_name, subject_label, subject_uri|
     Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-    predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+    predicate_name: predicate_name, subject_label: subject_label, subject_uri: subject_uri)
   end
 
   $stdout.puts 'Creating program names...'
@@ -118,9 +118,9 @@ ActiveRecord::Base.transaction do
     ['program_name', 'Sociology', 'SOC'],
     ['program_name', 'Theology', 'THEO']
   ]
-  program_names.each do |predicate_name, predicate_value, predicate_value_code|
+  program_names.each do |predicate_name, subject_label, subject_uri|
     Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-    predicate_name: predicate_name, predicate_value: predicate_value, predicate_value_code: predicate_value_code)
+    predicate_name: predicate_name, subject_label: subject_label, subject_uri: subject_uri)
   end
 
 

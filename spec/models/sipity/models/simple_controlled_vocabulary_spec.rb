@@ -6,8 +6,8 @@ module Sipity
       context 'data structure' do
         subject { described_class }
         its(:column_names) { should include('predicate_name') }
-        its(:column_names) { should include('predicate_value') }
-        its(:column_names) { should include('predicate_value_code') }
+        its(:column_names) { should include('term_label') }
+        its(:column_names) { should include('term_uri') }
       end
 
       subject { described_class.new }
