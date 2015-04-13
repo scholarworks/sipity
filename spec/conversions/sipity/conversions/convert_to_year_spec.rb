@@ -47,12 +47,6 @@ module Sipity
           expect(convert_to_year(object)).to eq(date.year)
         end
 
-        it "will return the object time's year if the object responds to #to_time" do
-          time = Time.zone.new(2014, 1, 23)
-          object = double(to_time: time)
-          expect(convert_to_year(object)).to eq(time.year)
-        end
-
         it "will handle a string that looks like an ISO date" do
           string = "2014-12-15"
           expect(convert_to_year(string)).to eq(2014)
