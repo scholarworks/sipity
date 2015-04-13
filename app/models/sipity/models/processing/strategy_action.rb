@@ -12,6 +12,23 @@ module Sipity
 
         has_many :strategy_state_actions, dependent: :destroy
         has_many :strategy_state_action_permissions, through: :strategy_state_actions
+
+        has_many(
+          :email_notifications,
+          through: :notifiable_contexts,
+          source: :email
+        )
+
+        # TODO: There is only one context, consider finding only that one
+        #    context when asking for email_notifications for the given action.
+        NOTIFYING_CONTEXT_ACTION_IS_TAKEN = 'action_is_taken'.freeze
+        has_many(
+          :notifiable_contexts,
+          as: :notifying_concern,
+          dependent: :destroy,
+          class_name: 'Sipity::Models::Notification::NotifiableContext'
+        )
+
         has_many(
           :guarding_strategy_action_prerequisites,
           dependent: :destroy,
