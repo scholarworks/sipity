@@ -7,7 +7,18 @@ module Sipity
       # relationship. It is instead a polymorphic relationship.
       class Email < ActiveRecord::Base
         self.table_name = 'sipity_notification_emails'
-        belongs_to :context, polymorphic: true
+        has_many(
+          :notifiable_contexts,
+          dependent: :destroy,
+          foreign_key: :email_id,
+          class_name: 'Sipity::Models::Notification::NotifiableContext'
+        )
+        has_many(
+          :recipients,
+          dependent: :destroy,
+          foreign_key: :email_id,
+          class_name: 'Sipity::Models::Notification::EmailRecipient'
+        )
       end
     end
   end

@@ -5,6 +5,8 @@ module Sipity
       # (eg to:, cc:, bcc:)
       class EmailRecipient < ActiveRecord::Base
         self.table_name = 'sipity_notification_email_recipients'
+        belongs_to :email, class_name: 'Sipity::Models::Notification::Email'
+        belongs_to :role, class_name: 'Sipity::Models::Role'
       end
     end
   end

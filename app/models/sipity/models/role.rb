@@ -20,6 +20,13 @@ module Sipity
         class_name: 'Sipity::Models::Processing::StrategyRole'
       )
 
+      has_many(
+        :email_recipients,
+        dependent: :destroy,
+        foreign_key: :role_id,
+        class_name: 'Sipity::Models::Notification::EmailRecipient'
+      )
+
       CREATING_USER = 'creating_user'.freeze
       ADVISOR = 'advisor'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
