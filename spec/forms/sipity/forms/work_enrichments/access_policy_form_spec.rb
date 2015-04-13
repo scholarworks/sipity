@@ -150,17 +150,17 @@ module Sipity
         end
 
         it 'will blank out the release date when a release date is given but the access_right_code is "open_access"' do
-          subject = described_class.new(persisted_object, release_date: Date.today, access_right_code: 'open_access')
+          subject = described_class.new(persisted_object, release_date: Time.zone.today, access_right_code: 'open_access')
           expect(subject.release_date).to_not be_present
         end
 
         it 'will not blank out the release date when a release date is given but no access_right_code' do
-          subject = described_class.new(persisted_object, release_date: Date.today)
+          subject = described_class.new(persisted_object, release_date: Time.zone.today)
           expect(subject.release_date).to be_present
         end
 
         it 'will not blank out the release date when a release date is given and access_right code is "embargo_then_open_access"' do
-          subject = described_class.new(persisted_object, release_date: Date.today, access_right_code: 'embargo_then_open_access')
+          subject = described_class.new(persisted_object, release_date: Time.zone.today, access_right_code: 'embargo_then_open_access')
           expect(subject.release_date).to be_present
         end
 

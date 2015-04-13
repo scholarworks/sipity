@@ -5,7 +5,7 @@ module Sipity
     module WorkEnrichments
       RSpec.describe DefenseDateForm do
         let(:work) { Models::Work.new(id: '1234') }
-        let(:defense_date) { Date.today }
+        let(:defense_date) { Time.zone.today }
         let(:repository) { CommandRepositoryInterface.new }
         subject { described_class.new(work: work, repository: repository) }
 

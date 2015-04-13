@@ -19,14 +19,15 @@ module Sipity
         # @return String
         def render(f:)
           markup = view_context.content_tag('legend', advisor_signoff_legend)
-          markup << f.input(:agree_to_signoff,
-                            as: :boolean,
-                            inline_label:
-                            signoff_agreement,
-                            input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
-                            label: false,
-                            wrapper_class: 'checkbox'
-                            ).html_safe
+          markup << f.input(
+            :agree_to_signoff,
+            as: :boolean,
+            inline_label:
+            signoff_agreement,
+            input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
+            label: false,
+            wrapper_class: 'checkbox'
+          ).html_safe
         end
 
         def advisor_signoff_legend

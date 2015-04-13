@@ -5,7 +5,7 @@ module Sipity
     RSpec.describe AccessRightFacade do
       let(:object) { work }
       let(:work) { Models::Work.new(id: 123) }
-      let(:access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Date.today) }
+      let(:access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today) }
       subject { described_class.new(object, work: work) }
 
       before { allow(Models::AccessRight).to receive(:find_or_initialize_by).and_return(access_right) }
@@ -29,7 +29,7 @@ module Sipity
 
       context 'with prepopulation of access right information' do
         let(:object) { Models::Attachment.new(id: 234) }
-        let(:work_access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Date.today) }
+        let(:work_access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today) }
         let(:access_right) { Models::AccessRight.new }
         it "will default an accessible object without a code to have the work's access right" do
           expect(Models::AccessRight).to receive(:find_or_initialize_by).

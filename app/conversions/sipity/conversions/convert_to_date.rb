@@ -20,8 +20,8 @@ module Sipity
       # Does its best to convert the input into a date.
       #
       # @example
-      #   convert_to_date(1) { Date.today }
-      #   => Date.today
+      #   convert_to_date(1) { Time.zone.today }
+      #   => Time.zone.today
       #
       # @param input [Object] something coercable
       #

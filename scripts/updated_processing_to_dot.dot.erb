@@ -3,7 +3,7 @@ digraph "G" {
   node[color="grey15" margin="0.15, 0.125"];
 
   subgraph cluster_0 {
-    label="<%= strategy.fetch(:name) %> (<%= Date.today %>)"
+    label="<%= strategy.fetch(:name) %> (<%= Time.zone.today %>)"
     node[style=filled fillcolor=white color="seashell4"]
 
     subgraph 0 {

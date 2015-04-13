@@ -41,7 +41,7 @@ module Sipity
         context "##{email_method}" do
           # YOWZA! This is a lot of collaborators!
           let(:registered_action) do
-            Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor, created_at: Time.now)
+            Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor, created_at: Time.zone.now)
           end
           it 'should send an email' do
             described_class.send(email_method, entity: registered_action, to: to).deliver_now

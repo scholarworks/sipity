@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe WorkDecorator do
-      let(:work) { Models::Work.new(title: 'Hello World', id: 123, created_at: Time.now) }
+      let(:work) { Models::Work.new(title: 'Hello World', id: 123, created_at: Time.zone.now) }
       let(:repository) { QueryRepositoryInterface.new }
       subject { WorkDecorator.new(work, repository: repository) }
       it 'will have a #to_s equal its #title' do

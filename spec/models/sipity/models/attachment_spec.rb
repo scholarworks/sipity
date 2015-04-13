@@ -29,7 +29,7 @@ module Sipity
           it "will link to an image's thumbnail" do
             subject.file = File.new(__FILE__)
             expect(subject.file).to receive(:image?).and_return(true)
-            expect(subject.thumbnail_url).to match(/\/#{File.basename(__FILE__)}/)
+            expect(subject.thumbnail_url).to match(%r{/#{File.basename(__FILE__)}})
           end
 
           it "will link to a non-image thumbnail" do
