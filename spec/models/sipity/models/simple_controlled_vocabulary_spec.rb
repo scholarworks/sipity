@@ -7,6 +7,7 @@ module Sipity
         subject { described_class }
         its(:column_names) { should include('predicate_name') }
         its(:column_names) { should include('predicate_value') }
+        its(:column_names) { should include('predicate_value_code') }
       end
 
       subject { described_class.new }
