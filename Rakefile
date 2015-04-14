@@ -18,7 +18,10 @@ end
 
 begin
   require 'scss_lint/rake_task'
-  SCSSLint::RakeTask.new('scss-lint')
+  SCSSLint::RakeTask.new('scss-lint') do |t|
+    t.config = File.expand_path('../.scss-lint.yml', __FILE__)
+    t.files = [] # Rely instead on the above configuration
+  end
 rescue LoadError
   puts "Unable to load SCSS Lint. Who will enforce your SCSS styleguide now?"
 end
