@@ -302,7 +302,7 @@ ActiveRecord::Schema.define(version: 20150413125439) do
 
   create_table "sipity_simple_controlled_vocabularies", force: :cascade do |t|
     t.string   "predicate_name", null: false
-    t.string   "term_label",  null: false
+    t.string   "term_label",     null: false
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
     t.string   "term_uri"
