@@ -77,6 +77,9 @@ group :development, :test do
   gem 'jshintrb', require: false
   gem 'sqlite3'
   gem 'brakeman', require: false
+  # Reported on https://github.com/seattlerb/ruby_parser/issues/183
+  # v3.6.6 introduces a parse error
+  gem 'ruby_parser', '3.6.5', require: false
 end
 
 group :test do
