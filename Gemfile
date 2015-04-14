@@ -34,6 +34,7 @@ group :doc do
 end
 
 group :development do
+  gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', platforms: [:mri_21]
   gem 'capistrano', '~> 3.1'
@@ -75,7 +76,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'jshintrb', require: false
-  gem 'sqlite3'
   gem 'brakeman', require: false
   # Reported on https://github.com/seattlerb/ruby_parser/issues/183
   # v3.6.6 introduces a parse error
@@ -94,11 +94,12 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'site_prism'
+  gem 'sqlite3'
 end
 
 group :production, :pre_production, :staging do
-  gem 'dragonfly-s3_data_store'
   gem 'mysql2'
+  gem 'dragonfly-s3_data_store'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rb-readline'
 end

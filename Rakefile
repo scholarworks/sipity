@@ -52,6 +52,19 @@ namespace :brakeman do
   end
 end
 
+namespace :db do
+  task prepare: :environment do
+    abort("Run this only in test or development") unless Rails.env.test? || Rails.env.development?
+    begin
+      Rake::Task["db:drop"].invoke
+    rescue
+      $stdout.puts "Unable to drop database, moving on."
+    end
+    Rake::Task["db:create"].invoke
+    Rake::Task['db:schema:load'].invoke
+  end
+end
+
 types = begin
   dirs = Dir['./app/**/*.rb'].map { |f| f.sub(%r{^\./(app/\w+)/.*}, '\\1') }.uniq.select { |f| File.directory?(f) }
   Hash[dirs.map { |d| [d.split('/').last, d] }]
@@ -81,7 +94,7 @@ if defined?(RSpec)
     end
 
     desc 'Run the Travis CI specs'
-    task travis: [:rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
+    task travis: ['db:prepare', :rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task['spec:all'].invoke
       Rake::Task['spec:validate_coverage_goals'].invoke
@@ -108,7 +121,7 @@ if defined?(RSpec)
   Rake::Task["default"].clear
   task(
     default: [
-      'db:schema:load',
+      'db:prepare',
       'rubocop',
       'jshint',
       'scss-lint',
