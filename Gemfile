@@ -26,6 +26,7 @@ gem 'turbolinks'
 gem 'uglifier'
 gem 'hydra-validations', github: 'projecthydra-labs/hydra-validations', branch: 'master', ref: 'bd9a84a8fd5acc607ad5c36984b7d09e4b3fc4d0'
 gem 'power_converter'
+gem 'mysql2'
 
 group :doc do
   gem 'inch', require: false
@@ -75,7 +76,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'jshintrb', require: false
-  gem 'sqlite3'
   gem 'brakeman', require: false
   # Reported on https://github.com/seattlerb/ruby_parser/issues/183
   # v3.6.6 introduces a parse error
@@ -98,7 +98,6 @@ end
 
 group :production, :pre_production, :staging do
   gem 'dragonfly-s3_data_store'
-  gem 'mysql2'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rb-readline'
 end
