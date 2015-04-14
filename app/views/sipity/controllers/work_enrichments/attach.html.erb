@@ -7,7 +7,7 @@
   url: enrich_work_path(model.work, model.enrichment_type),
   method: :post,
   as: :work,
-  html: { class: 'panel panel-primary with-footer attachements-form' }
+  html: { class: 'simple-form panel panel-primary with-footer attachements-form' }
 ) do |f| %>
   <legend class="panel-heading">
     <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.attach.title_html"), class: 'panel-title' %>
