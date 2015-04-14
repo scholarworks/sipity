@@ -28,7 +28,7 @@ module Sipity
       end
 
       def to_s
-        title
+        title.html_safe
       end
 
       def human_attribute_name(name)

@@ -64,7 +64,7 @@
   <div class="row">
     <div class="col-xs-12 work-show page-header">
       <h1 class="work-title">
-        <span itemprop="name"><%= raw(model.title) %></span>
+        <span itemprop="name"><%= model.rich_text_value(model.title) %></span>
       </h1>
       <p class="work-status">
         <%= content_tag :span, t("simple_form.options.defaults.work_type.#{model.work_type}"), class: 'work-type' %> &bull;
@@ -136,7 +136,7 @@
         <div class="panel-body">
           <dl class="work attribute-listing">
             <dt class="predicate title"><%= model.human_attribute_name(:title) %></dt>
-            <dd class="value title"><%= raw(model.title )%></dd>
+            <dd class="value title"><%= model.rich_text_value(model.title)%></dd>
             <dt class="predicate work-type"><%= model.human_attribute_name(:work_type) %></dt>
             <dd class="value work-type">
               <%= t("simple_form.options.defaults.work_type.#{model.work_type}") %>

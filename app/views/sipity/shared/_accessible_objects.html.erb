@@ -3,7 +3,7 @@
     <li class="nested-attribute-list">
       <dl class="nested-attribute-definition">
         <dt class="predicate title"><%= accessible_object.human_attribute_name(:title) %></dt>
-        <dd class="value title"><%= link_to raw(accessible_object.to_s), accessible_object.access_url(template: self) %></dd>
+        <dd class="value title"><%= link_to accessible_object.to_s, accessible_object.access_url(template: self) %></dd>
         <dt class="predicate access-right"><%= accessible_object.human_attribute_name(:access_right_code) %></dt>
         <dd class="value access-right"><%= t("sipity/emails.access_controls.#{accessible_object.access_right_code.to_s.titleize}") %></dd>
         <% if accessible_object.release_date.present? %>

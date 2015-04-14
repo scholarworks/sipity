@@ -33,7 +33,7 @@
       <tbody>
         <% view.works.each do |work| %>
           <tr>
-            <td><%= link_to(raw(work.title), work_path(work)) %></td>
+            <td><%= link_to(work.to_s, work_path(work)) %></td>
             <td><%= work.work_type.humanize %></td>
             <td><%= work.creator_names.to_sentence %></td>
             <td><%= work.processing_state.humanize %></td>
