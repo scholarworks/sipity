@@ -26,7 +26,6 @@ gem 'turbolinks'
 gem 'uglifier'
 gem 'hydra-validations', github: 'projecthydra-labs/hydra-validations', branch: 'master', ref: 'bd9a84a8fd5acc607ad5c36984b7d09e4b3fc4d0'
 gem 'power_converter'
-gem 'mysql2'
 
 group :doc do
   gem 'inch', require: false
@@ -35,6 +34,7 @@ group :doc do
 end
 
 group :development do
+  gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', platforms: [:mri_21]
   gem 'capistrano', '~> 3.1'
@@ -94,9 +94,11 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'site_prism'
+  gem 'sqlite3'
 end
 
 group :production, :pre_production, :staging do
+  gem 'mysql2'
   gem 'dragonfly-s3_data_store'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rb-readline'
