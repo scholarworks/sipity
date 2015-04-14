@@ -1,5 +1,5 @@
 # config valid only for Capistrano 3.1
-lock '3.3.5'
+lock '3.4.0'
 set :default_env, {
   path: "/opt/ruby/current/bin:$PATH"
 }
@@ -117,5 +117,5 @@ namespace :configuration do
   end
 end
 
-        require './config/boot'
-        require 'airbrake/capistrano'
+require './config/boot'
+require 'airbrake/capistrano3'
