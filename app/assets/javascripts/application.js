@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap-sprockets
+//= require redactor
 //= require readmore
 //= require_tree .
 //= stub vendor/modernizr
