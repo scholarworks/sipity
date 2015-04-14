@@ -8,7 +8,7 @@ RSpec.describe 'sipity/controllers/works/new.html.erb', type: :view do
     render template: 'sipity/controllers/works/new', locals: { model: model }
     expect(rendered).to have_tag('form.new_work[action="/works"][method="post"]') do
       with_tag('fieldset.attributes_work') do
-        with_tag('input', with: { name: 'work[title]' })
+        with_tag('textarea', with: { name: 'work[title]' })
       end
       with_tag('fieldset.work_publication_strategy_work') do
         model.work_publication_strategies_for_select.each do |name|

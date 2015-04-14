@@ -11,7 +11,7 @@ module Sipity
         ActionMailer::Base.deliveries.clear
       end
 
-      let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation') }
+      let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation', title: 'a title') }
       let(:processing_entity) { work.build_processing_entity(strategy_id: '1', strategy_state_id: '1', proxy_for: work) }
       let(:user) { User.new(name: 'User') }
       let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
