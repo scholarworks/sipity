@@ -21,7 +21,7 @@ files_to_copy="
     config/database.yml
     config/environment_bootstrapper.rb
     config/locales/site-specific.yml
-    app/assets/stylesheets/theme/_default.css.scss
+    app/assets/stylesheets/theme/_default.scss
     "
 
 for f in $files_to_copy; do
