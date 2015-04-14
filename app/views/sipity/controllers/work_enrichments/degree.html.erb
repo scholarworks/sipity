@@ -5,11 +5,11 @@
 <div class="panel-tiles">
 
   <%= simple_form_for(
-          model,
-          url: enrich_work_path(model.work, model.enrichment_type),
-      method: :post,
-      as: :work,
-      html: { class: 'panel panel-primary with-footer' }
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'simple-form panel panel-primary with-footer' }
   ) do |f| %>
     <legend class="panel-heading">
       <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.degree.title_html"), class: 'panel-title' %>
@@ -17,10 +17,10 @@
 
     <fieldset class="panel-body">
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.degree.hint_html"), class: 'panel-hint' %>
-        <%= f.error_notification %>
-        <%= f.error :base, error_method: :to_sentence %>
-        <%= f.input :degree, collection: model.available_degrees, input_html: { class: 'form-control', selected: model.degree } %>
-        <%= f.input :program_name, collection: model.available_program_names, input_html: { class: 'form-control', multiple: true, selected: model.program_name } %>
+      <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
+      <%= f.input :degree, collection: model.available_degrees, input_html: { class: 'form-control', selected: model.degree } %>
+      <%= f.input :program_name, collection: model.available_program_names, input_html: { class: 'form-control', multiple: true, selected: model.program_name } %>
     </fieldset>
 
     <div class="panel-footer action-pane">
