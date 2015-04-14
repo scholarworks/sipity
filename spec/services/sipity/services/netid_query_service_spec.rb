@@ -11,7 +11,7 @@ module Sipity
         it 'will get preferred_name for the given netid' do
           expect(described_class).to receive_message_chain(:new, :preferred_name).
             and_return(full_name)
-          expect(described_class.preferred_name(netid: netid)).to eq(full_name)
+          expect(described_class.preferred_name(netid)).to eq(full_name)
         end
       end
 
@@ -19,7 +19,7 @@ module Sipity
         it 'will validate netif for the given netid' do
           expect(described_class).to receive_message_chain(:new, :valid_netid?).
             and_return(netid)
-          expect(described_class.valid_netid?(netid: netid)).to eq(netid)
+          expect(described_class.valid_netid?(netid)).to eq(netid)
         end
       end
 
