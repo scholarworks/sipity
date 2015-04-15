@@ -306,6 +306,61 @@ ActiveRecord::Base.transaction do
           end
         end
       end
+
+      # Define associated emails by action
+      [
+        {
+          action: 'submit_for_review',
+          emails: {
+            confirmation_of_submit_for_review: { to: 'creating_user' },
+            submit_for_review: { to: ['advisor', 'etd_reviewer'] }
+          }
+        },
+        {
+          action: 'advisor_signoff',
+          emails: {
+            advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+            confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+          }
+        },
+        {
+          action: 'signoff_on_behalf_of',
+          emails: {
+            advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+            confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+          }
+        },
+        {
+          action: 'advisor_requests_change',
+          emails: {
+            advisor_requests_change: { to: 'creating_user' }
+          }
+        },
+        {
+          action: 'request_change_on_behalf_of',
+          emails: {
+            request_change_on_behalf_of: { to: 'creating_user' }
+          }
+        },
+        {
+          action: 'respond_to_advisor_request',
+          emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
+        },
+        {
+          action: 'respond_to_grad_school_request',
+          emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
+        },
+        {
+          action: 'grad_school_requests_change',
+          emails: { grad_school_requests_change: { to: 'creating_user' } }
+        },
+        {
+          action: 'grad_school_signoff',
+          emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'grad_school'] } }
+        }
+      ].each do |email_config|
+
+      end
     end.save!
   end
 end
