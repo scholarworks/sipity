@@ -9,5 +9,6 @@ Figaro.require_keys(
   'noid_pool',
   'noid_port',
   'noid_server',
+  'secret_key_base',
   'url_host'
 )
