@@ -47,7 +47,7 @@ group :development do
   gem 'guard-rails'
   gem 'guard-rspec'
   gem 'guard-rubocop'
-  gem 'guard-scss-lint'
+  gem 'guard-scss-lint', github: 'ndlib/guard-scss-lint'
   gem 'i18n-debug'
   gem 'letter_opener'
   # Paired with Chrome the RailsPanel plugin, you can see request information
@@ -60,7 +60,6 @@ group :development do
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
-  gem 'scss-lint'
   gem 'seed_dump'
   gem 'spring'
   gem 'spring-commands-rspec'
@@ -80,6 +79,7 @@ group :development, :test do
   # Reported on https://github.com/seattlerb/ruby_parser/issues/183
   # v3.6.6 introduces a parse error
   gem 'ruby_parser', '3.6.5', require: false
+  gem 'scss-lint'
 end
 
 group :test do

@@ -1,3 +1,5 @@
+scss_files: "app/**/*.scss"
+
 linters:
   PlaceholderInExtend:
     exclude: app/assets/stylesheets/framework_and_overrides.css.scss

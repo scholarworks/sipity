@@ -18,7 +18,10 @@ end
 
 begin
   require 'scss_lint/rake_task'
-  SCSSLint::RakeTask.new('scss-lint')
+  SCSSLint::RakeTask.new('scss-lint') do |t|
+    t.config = File.expand_path('../.scss-lint.yml', __FILE__)
+    t.files = [] # Rely instead on the above configuration
+  end
 rescue LoadError
   puts "Unable to load SCSS Lint. Who will enforce your SCSS styleguide now?"
 end
@@ -94,10 +97,9 @@ if defined?(RSpec)
     end
 
     desc 'Run the Travis CI specs'
-    task travis: ['db:prepare', :rubocop, :jshint, 'brakeman:guard_against_deteced_vulnerabilities'] do
+    task :travis do
       ENV['SPEC_OPTS'] ||= "--profile 5"
-      Rake::Task['spec:all'].invoke
-      Rake::Task['spec:validate_coverage_goals'].invoke
+      Rake::Task[:default].invoke
     end
 
     desc "Run all features with accessibility checks"
