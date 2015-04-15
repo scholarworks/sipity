@@ -10,7 +10,7 @@ module Sipity
       end
 
       def initialize(attributes = {})
-        @title = attributes[:title]
+        self.title = attributes[:title]
         @work_publication_strategy = attributes[:work_publication_strategy]
         @work_type = attributes[:work_type]
         @access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
@@ -53,6 +53,11 @@ module Sipity
       end
 
       private
+
+      include Conversions::SanitizeHtml
+      def title=(value)
+        @title = sanitize_html(value)
+      end
 
       def create_the_work
         work = repository.create_work!(title: title, work_publication_strategy: work_publication_strategy, work_type: work_type)

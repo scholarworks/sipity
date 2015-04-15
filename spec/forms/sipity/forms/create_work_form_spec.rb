@@ -69,6 +69,22 @@ module Sipity
         end
       end
 
+      context 'Sanitizing HTML title' do
+        let(:attributes) { { title: title, access_rights_answer: nil, work_publication_strategy: nil } }
+        subject { described_class.new(attributes) }
+        context 'removes script tags' do
+          let(:title) { "<script>alert('Like this');</script>" }
+          it { expect(subject.title).to_not have_tag('script') }
+        end
+        context 'removes JavaScript links' do
+          let(:title) do
+            "JavaScript can also be included in an anchor tag
+            <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
+          end
+          it { expect(subject.title).to_not have_tag("a[href]") }
+        end
+      end
+
       context '#submit' do
         let(:user) { User.new(id: '123') }
         let(:repository) { CommandRepositoryInterface.new }

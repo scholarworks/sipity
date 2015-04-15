@@ -59,6 +59,24 @@ module Sipity
           expect(subject.title).to eq title
         end
 
+        context 'Sanitizing HTML within attributes' do
+          subject do
+            described_class.new(work: work, title: title, alternate_title: alternate_title,
+                                abstract: abstract, repository: repository)
+          end
+          context 'removes script tags' do
+            let(:title) { "<script>alert('Like this');</script>" }
+            let(:alternate_title) { "My alternate title: <script>alert('Like this');</script>" }
+            let(:abstract) do
+              "JavaScript can also be included in an anchor tag
+              <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
+            end
+            it { expect(subject.title).to_not have_tag('script') }
+            it { expect(subject.alternate_title).to_not have_tag('script') }
+            it { expect(subject.abstract).to_not have_tag("a[href]") }
+          end
+        end
+
         context '#submit' do
           let(:user) { double('User') }
           context 'with invalid data' do
