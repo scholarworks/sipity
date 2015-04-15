@@ -306,61 +306,81 @@ ActiveRecord::Base.transaction do
           end
         end
       end
-
-      # Define associated emails by action
-      [
-        {
-          action: 'submit_for_review',
-          emails: {
-            confirmation_of_submit_for_review: { to: 'creating_user' },
-            submit_for_review: { to: ['advisor', 'etd_reviewer'] }
-          }
-        },
-        {
-          action: 'advisor_signoff',
-          emails: {
-            advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-            confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
-          }
-        },
-        {
-          action: 'signoff_on_behalf_of',
-          emails: {
-            advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-            confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
-          }
-        },
-        {
-          action: 'advisor_requests_change',
-          emails: {
-            advisor_requests_change: { to: 'creating_user' }
-          }
-        },
-        {
-          action: 'request_change_on_behalf_of',
-          emails: {
-            request_change_on_behalf_of: { to: 'creating_user' }
-          }
-        },
-        {
-          action: 'respond_to_advisor_request',
-          emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
-        },
-        {
-          action: 'respond_to_grad_school_request',
-          emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
-        },
-        {
-          action: 'grad_school_requests_change',
-          emails: { grad_school_requests_change: { to: 'creating_user' } }
-        },
-        {
-          action: 'grad_school_signoff',
-          emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'grad_school'] } }
-        }
-      ].each do |email_config|
-
-      end
     end.save!
+
+    # Define associated emails by action
+    [
+      {
+        action_name: 'submit_for_review',
+        emails: {
+          confirmation_of_submit_for_review: { to: 'creating_user' },
+          submit_for_review: { to: ['advisor', 'etd_reviewer'] }
+        }
+      },
+      {
+        action_name: 'advisor_signoff',
+        emails: {
+          advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+          confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+        }
+      },
+      {
+        action_name: 'signoff_on_behalf_of',
+        emails: {
+          advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+          confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+        }
+      },
+      {
+        action_name: 'advisor_requests_change',
+        emails: {
+          advisor_requests_change: { to: 'creating_user' }
+        }
+      },
+      {
+        action_name: 'request_change_on_behalf_of',
+        emails: {
+          request_change_on_behalf_of: { to: 'creating_user' }
+        }
+      },
+      {
+        action_name: 'respond_to_advisor_request',
+        emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
+      },
+      {
+        action_name: 'respond_to_grad_school_request',
+        emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
+      },
+      {
+        action_name: 'grad_school_requests_change',
+        emails: { grad_school_requests_change: { to: 'creating_user' } }
+      },
+      {
+        action_name: 'grad_school_signoff',
+        emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
+      }
+    ].each do |email_config|
+      action_name = email_config.fetch(:action_name)
+      Sipity::Models::Processing::StrategyAction.where(name: action_name).each do |action|
+        email_config.fetch(:emails).each do |email_name, recipients|
+          the_email = Sipity::Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
+            recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
+              Array.wrap(recipient_roles).each do |recipient_role|
+                find_or_initialize_or_create!(
+                  context: email,
+                  receiver: email.recipients,
+                  role: roles.fetch(recipient_role),
+                  recipient_strategy: recipient_strategy.to_s
+                )
+              end
+            end
+          end
+
+          Sipity::Models::Notification::NotifiableContext.find_or_create_by!(
+            notifying_concern: action, notifying_context: action.class::NOTIFYING_CONTEXT_ACTION_IS_TAKEN, email: the_email
+          )
+        end
+      end
+    end
   end
 end
