@@ -39,9 +39,9 @@ module Sipity
         @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
       end
 
-      include Conversions::ConvertToRichText
-      def rich_text_value(attribute)
-        Conversions::ConvertToRichText.call(attribute).html_safe
+      include Conversions::SanitizeHtml
+      def sanitize_html(attribute)
+        Conversions::SanitizeHtml.call(attribute).html_safe
       end
 
       def authors(decorator: Decorators::CollaboratorDecorator)

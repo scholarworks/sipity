@@ -34,10 +34,10 @@ module Sipity
         end
       end
 
-      context '#rich_text_value' do
+      context '#sanitize_html' do
         it 'returns the value rendered as HTML' do
-          rendered = subject.rich_text_value("several\n\nparagraphs")
-          expect(rendered).to have_tag('p', count: 2)
+          rendered = subject.sanitize_html('<p><script>alert("test");</script></p>')
+          expect(rendered).to_not have_tag('script')
           expect(rendered).to be_html_safe
         end
       end
