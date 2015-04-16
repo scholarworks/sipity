@@ -3,9 +3,16 @@ require 'spec_helper'
 module Sipity
   module Commands
     RSpec.describe NotificationCommands, type: :isolated_repository_module do
+      context '#deliver_form_submission_notifications_for' do
+        let(:parameters) { { action: double, entity: double, requested_by: double, on_behalf_of: double } }
+        it 'will delegate to the DeliverFormSubmissionNotificationsService' do
+          expect(Services::DeliverFormSubmissionNotificationsService).to receive(:call)
+          test_repository.deliver_form_submission_notifications_for(parameters)
+        end
+      end
       context '#send_notification_for_entity_trigger' do
-        let(:notification) { double }
         let(:entity) { double }
+        let(:notification) { double }
         let(:acting_as) { double }
         let(:emails) { ['test@hello.com'] }
 

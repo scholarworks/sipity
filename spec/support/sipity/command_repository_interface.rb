@@ -117,6 +117,10 @@ module Sipity
     def default_pid_minter
     end
 
+    # @see ./app/repositories/sipity/commands/notification_commands.rb
+    def deliver_form_submission_notifications_for(action:, entity:, requested_by: nil, on_behalf_of: nil)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def destroy_a_work(work:)
     end
