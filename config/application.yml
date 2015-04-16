@@ -12,7 +12,7 @@ dragonfly_s3_bucket_name: 'bucket_name'
 dragonfly_s3_root_path: 's3_root_dir'
 dragonfly_s3_secret_access_key: 'secret'
 dragonfly_s3_url_host: 'bucketname.aws.com'
-dragonfly_secret: "e03509c7cbee4f602ba6cf4bb088bda4891efabfffb6f122cc1e20c7e807e8b8"
+dragonfly_secret: "12345"
 ezid_client_default_shoulder: "doi:10.5072/FK2"
 ezid_client_password: apitest
 ezid_client_user: apitest
@@ -27,7 +27,9 @@ airbrake_host: 'errbit.library.nd.edu'
 development:
   domain_name: "localhost:3000"
   url_host: "http://localhost:3000"
+  secret_key_base: 'bd6953190e19dabc215af75a5c856f584dca49a3ab729696946a80ec50f46094d4643d908b88b07011f898f5c6748f2ffa832c96bae409e5462f2cf3055f1ee7'
 
 test:
   domain_name: "localhost:3000"
   url_host: "http://localhost:3000"
+  secret_key_base: 'bd6953190e19dabc215af75a5c856f584dca49a3ab729696946a80ec50f46094d4643d908b88b07011f898f5c6748f2ffa832c96bae409e5462f2cf3055f1ee7'
