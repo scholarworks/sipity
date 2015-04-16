@@ -11,6 +11,7 @@ module Sipity
       end
 
       its(:date_created) { should be_a(String) }
+      its(:title) { should be_html_safe }
 
       context '#creators and #creator_names' do
         let(:creators) { [double(name: 'Hello')] }
@@ -31,14 +32,6 @@ module Sipity
             with_tag('.panel-heading .panel-title')
             with_tag('.panel-body', text: /hello/)
           end
-        end
-      end
-
-      context '#sanitize_html' do
-        it 'returns the value rendered as HTML' do
-          rendered = subject.sanitize_html('<p><script>alert("test");</script></p>')
-          expect(rendered).to_not have_tag('script')
-          expect(rendered).to be_html_safe
         end
       end
 

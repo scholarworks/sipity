@@ -3,6 +3,7 @@ module Sipity
     module WorkEnrichments
       # Responsible for capturing and validating information for describe.
       class DescribeForm < Forms::WorkEnrichmentForm
+        include Conversions::SanitizeHtml
         def initialize(attributes = {})
           super
           self.title = attributes.fetch(:title) { title_from_work }
@@ -10,9 +11,7 @@ module Sipity
           self.alternate_title = attributes.fetch(:alternate_title) { alternate_title_from_work }
         end
 
-        attr_accessor :alternate_title, :abstract, :title
-        private :alternate_title=, :abstract=, :title=
-
+        attr_reader :alternate_title, :abstract, :title
         validates :title, presence: true
         validates :abstract, presence: true
 
@@ -26,11 +25,6 @@ module Sipity
           end
         end
 
-        include Conversions::SanitizeHtml
-        def sanitize_html(value)
-          Conversions::SanitizeHtml.call(value)
-        end
-
         def title=(value)
           @title = sanitize_html(value)
         end
@@ -40,7 +34,7 @@ module Sipity
         end
 
         def alternate_title=(value)
-          @alternate_title = sanitize_html(value)
+          @alternate_title = sanitize_html(value) { nil }
         end
 
         def abstract_from_work
