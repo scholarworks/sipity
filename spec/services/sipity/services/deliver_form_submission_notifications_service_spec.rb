@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Services
     RSpec.describe DeliverFormSubmissionNotificationsService do
-      let(:notification_context) { double(action: action, entity: entity) }
+      let(:notification_context) { Parameters::NotificationContextParameter.new(action: action, entity: entity) }
       let(:entity) { double('Entity') }
       let(:action) { double(emails: [email]) }
       let(:repository) { QueryRepositoryInterface.new }
