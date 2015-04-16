@@ -3,9 +3,9 @@ module Sipity
     # Responsible for consolidating the objects necessary for sending a
     # notification.
     class NotificationContextParameter
-      attr_reader :action, :entity, :requested_by, :on_behalf_of
+      attr_reader :action, :the_thing, :requested_by, :on_behalf_of
       def initialize(**keywords)
-        self.entity = keywords.fetch(:entity)
+        self.the_thing = keywords.fetch(:the_thing)
         # TODO: Should this be converted to an action via a conversion method?
         self.action = keywords.fetch(:action)
         self.requested_by = keywords.fetch(:requested_by) { nil }
@@ -14,7 +14,7 @@ module Sipity
 
       private
 
-      attr_writer :action, :entity, :requested_by, :on_behalf_of
+      attr_writer :action, :the_thing, :requested_by, :on_behalf_of
     end
   end
 end

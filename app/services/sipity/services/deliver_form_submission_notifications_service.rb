@@ -18,8 +18,8 @@ module Sipity
         self.notifier = notifier
       end
 
-      delegate :action, :entity, to: :notification_context
-      private :action, :entity
+      delegate :action, :the_thing, to: :notification_context
+      private :action, :the_thing
 
       def call
         action.emails.each { |email| notifier.call(options_for_an_email(email)) }
@@ -30,14 +30,14 @@ module Sipity
       attr_accessor :notification_context, :repository, :notifier
 
       def options_for_an_email(email)
-        base_options = { notification: email.method_name, entity: entity, to: [], cc: [], bcc: [] }
+        base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }
         email.recipients.each { |recipient| append_recipient_options_to(base_options, recipient) }
         base_options
       end
 
       def append_recipient_options_to(base_options, recipient)
         recipient_strategy = recipient.recipient_strategy.to_sym
-        emails = repository.user_emails_for_entity_and_roles(entity: entity, roles: recipient.role)
+        emails = repository.user_emails_for_entity_and_roles(entity: the_thing, roles: recipient.role)
         base_options[recipient_strategy] += Array.wrap(emails) if emails.present?
         base_options
       end
