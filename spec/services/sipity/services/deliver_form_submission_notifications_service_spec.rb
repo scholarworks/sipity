@@ -20,7 +20,7 @@ module Sipity
         end
       end
 
-      subject { described_class.new(notification_context, repository: repository, notifier: notifier) }
+      subject { described_class.new(notification_context: notification_context, repository: repository, notifier: notifier) }
 
       its(:default_repository) { should respond_to :user_emails_for_entity_and_roles }
       its(:default_notifier) { should respond_to :call }
@@ -28,6 +28,11 @@ module Sipity
       before do
         allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: entity, roles: role_for_to).and_return(to_emails)
         allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: entity, roles: role_for_cc).and_return(cc_emails)
+      end
+
+      it 'will expose .call as a convenience method' do
+        expect(described_class).to receive_message_chain(:new, :call)
+        described_class.call(notification_context: notification_context)
       end
 
       context '#call' do

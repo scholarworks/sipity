@@ -8,7 +8,12 @@ module Sipity
     #   use the #classify and #constantize to return a singular version of the
     #   given string (i.e. "Pigs".classify == "Pig")
     class DeliverFormSubmissionNotificationsService
-      def initialize(notification_context, repository: default_repository, notifier: default_notifier)
+
+      def self.call(**keywords)
+        new(**keywords).call
+      end
+
+      def initialize(notification_context:, repository: notification_context.repository, notifier: default_notifier)
         self.notification_context = notification_context
         self.repository = repository
         self.notifier = notifier
