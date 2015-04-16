@@ -8,7 +8,6 @@ module Sipity
     #   use the #classify and #constantize to return a singular version of the
     #   given string (i.e. "Pigs".classify == "Pig")
     class DeliverFormSubmissionNotificationsService
-
       def self.call(**keywords)
         new(**keywords).call
       end
