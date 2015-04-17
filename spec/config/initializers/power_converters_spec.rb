@@ -36,4 +36,15 @@ RSpec.describe 'power converters' do
         to raise_error(PowerConverter::ConversionError)
     end
   end
+
+  context 'slug' do
+    [
+      { to_convert: 'Hello World', expected: 'hello-world' },
+      { to_convert: nil, expected: '' }
+    ].each do |scenario|
+      it "will convert #{scenario.fetch(:to_convert)} to #{scenario.fetch(:expected)}" do
+        expect(PowerConverter.convert(scenario.fetch(:to_convert), to: :slug)).to eq(scenario.fetch(:expected))
+      end
+    end
+  end
 end
