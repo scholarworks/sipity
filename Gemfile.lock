@@ -586,6 +586,8 @@ GEM
     xpath (2.0.0)
       nokogiri (~> 1.3)
     yard (0.8.7.6)
+    yard-activerecord (0.0.14)
+      yard (>= 0.8.3)
 
 PLATFORMS
   ruby
@@ -675,3 +677,4 @@ DEPENDENCIES
   turbolinks
   uglifier
   yard
+  yard-activerecord
