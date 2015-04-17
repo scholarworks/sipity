@@ -7,6 +7,8 @@ module Sipity
     class WorkArea < ActiveRecord::Base
       self.table_name = 'sipity_work_areas'
 
+      has_many :submission_windows, dependent: :destroy
+
       # @!attribute [rw] slug
       #
       #   A URI safe string that can be used as a "directory" of an application

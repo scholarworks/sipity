@@ -11,6 +11,11 @@ module Sipity
       end
 
       subject { described_class.new }
+
+      it 'will have many .submission_windows' do
+        expect(subject.submission_windows).to be_a(ActiveRecord::Relation)
+      end
+
       context '#slug' do
         it 'will transform the slug to a URI safe item' do
           subject.slug = 'Hello World'

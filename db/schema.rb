@@ -347,6 +347,17 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   add_index "sipity_simple_controlled_vocabularies", ["predicate_name"], name: "index_sipity_simple_controlled_vocabularies_on_predicate_name", using: :btree
   add_index "sipity_simple_controlled_vocabularies", ["term_uri"], name: "sipity_simple_controlled_vocabularies_term_uri", unique: true, using: :btree
 
+  create_table "sipity_submission_windows", force: :cascade do |t|
+    t.integer  "work_area_id", limit: 4,   null: false
+    t.string   "slug",         limit: 255, null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+  end
+
+  add_index "sipity_submission_windows", ["slug"], name: "index_sipity_submission_windows_on_slug", using: :btree
+  add_index "sipity_submission_windows", ["work_area_id", "slug"], name: "index_sipity_submission_windows_on_work_area_id_and_slug", unique: true, using: :btree
+  add_index "sipity_submission_windows", ["work_area_id"], name: "index_sipity_submission_windows_on_work_area_id", using: :btree
+
   create_table "sipity_transient_answers", force: :cascade do |t|
     t.string   "entity_id",     limit: 32,  null: false
     t.string   "entity_type",   limit: 255, null: false
