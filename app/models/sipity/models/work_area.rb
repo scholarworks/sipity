@@ -15,6 +15,11 @@ module Sipity
       #   :id).
       #
       #   @return [String] A URI safe string.
+
+      def slug=(value)
+        super(PowerConverter.convert(value, to: :slug))
+      end
+
       #
       # @!attribute [rw] partial_suffix
       #
