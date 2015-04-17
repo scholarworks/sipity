@@ -3,9 +3,9 @@ require 'spec_helper'
 module Sipity
   module Services
     RSpec.describe DeliverFormSubmissionNotificationsService do
-      let(:notification_context) { Parameters::NotificationContextParameter.new(action: action, entity: entity) }
-      let(:entity) { double('Entity') }
-      let(:action) { double(emails: [email]) }
+      let(:notification_context) { Parameters::NotificationContextParameter.new(action: action, the_thing: the_thing) }
+      let(:the_thing) { double('Entity') }
+      let(:action) { Models::Processing::StrategyAction.new }
       let(:repository) { QueryRepositoryInterface.new }
       let(:notifier) { Services::Notifier }
       let(:role_for_to) { Models::Role.new }
@@ -26,8 +26,9 @@ module Sipity
       its(:default_notifier) { should respond_to :call }
 
       before do
-        allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: entity, roles: role_for_to).and_return(to_emails)
-        allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: entity, roles: role_for_cc).and_return(cc_emails)
+        allow(action).to receive(:email_notifications).and_return([email])
+        allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: the_thing, roles: role_for_to).and_return(to_emails)
+        allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: the_thing, roles: role_for_cc).and_return(cc_emails)
       end
 
       it 'will expose .call as a convenience method' do
@@ -38,7 +39,7 @@ module Sipity
       context '#call' do
         it 'will deliver each of the action emails to the associated recipients based on role' do
           expect(notifier).to receive(:call).
-            with(notification: email.method_name, entity: entity, to: to_emails, cc: cc_emails, bcc: bcc_emails)
+            with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails)
           subject.call
         end
       end

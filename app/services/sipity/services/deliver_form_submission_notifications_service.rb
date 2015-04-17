@@ -22,7 +22,7 @@ module Sipity
       private :action, :the_thing
 
       def call
-        action.emails.each { |email| notifier.call(options_for_an_email(email)) }
+        action.email_notifications.each { |email| notifier.call(options_for_an_email(email)) }
       end
 
       private
