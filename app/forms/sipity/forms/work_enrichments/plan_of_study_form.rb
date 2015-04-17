@@ -3,8 +3,6 @@ module Sipity
     module WorkEnrichments
       # Responsible for capturing and validating information for plan_of_study.
       class PlanOfStudyForm < Forms::WorkEnrichmentForm
-        include ActiveModel::Validations
-        include Hydra::Validations
         def initialize(attributes = {})
           super
           self.expected_graduation_date = attributes.fetch(:expected_graduation_date) { expected_graduation_date_from_work }
@@ -13,8 +11,9 @@ module Sipity
 
         attr_reader :expected_graduation_date, :majors
 
+        include Hydra::Validations
         validates :expected_graduation_date, presence: true
-        validates_presence_of :majors, message: "Can't have blank values"
+        validates :majors, presence: true
 
         private
 
