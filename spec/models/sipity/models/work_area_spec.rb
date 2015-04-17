@@ -12,11 +12,16 @@ module Sipity
 
       subject { described_class.new }
       context '#slug' do
-        # TODO: Consider using a slugging library as there are use cases that
-        #   we may need to account for.
         it 'will transform the slug to a URI safe item' do
           subject.slug = 'Hello World'
           expect(subject.slug).to eq('hello-world')
+        end
+      end
+
+      context '#partial_suffix' do
+        it 'will transform the partial_suffix to a file system safe string' do
+          subject.partial_suffix = 'Hello World'
+          expect(subject.partial_suffix).to eq('hello-world')
         end
       end
     end

@@ -20,7 +20,6 @@ module Sipity
         super(PowerConverter.convert(value, to: :slug))
       end
 
-      #
       # @!attribute [rw] partial_suffix
       #
       #   A file system safe string that can be used to assist with rendering
@@ -28,7 +27,11 @@ module Sipity
       #
       #   @return [String] A file system safe string.
       #   @note Experimental in its concern. We could derive this from the slug.
-      #
+
+      def partial_suffix=(value)
+        super(PowerConverter.convert(value, to: :file_system_safe_file_name))
+      end
+
       # @!attribute [rw] demodulized_class_prefix_name
       #
       #   A string that is a valid demondulized class name (i.e. Hello is valid
