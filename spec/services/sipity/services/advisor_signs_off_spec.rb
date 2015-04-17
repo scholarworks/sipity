@@ -1,7 +1,7 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', resulting_strategy_state: 'chubacabra') }
+      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
 
@@ -21,8 +21,8 @@ module Sipity
           subject.call
         end
         it 'will send an email to the creating user' do
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user')
+          expect(repository).to receive(:deliver_form_submission_notifications_for).
+            with(the_thing: form, action: form.action, requested_by: requested_by)
           subject.call
         end
       end
@@ -38,8 +38,8 @@ module Sipity
             with(notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer', cc: 'creating_user')
           expect(repository).to receive(:send_notification_for_entity_trigger).
             with(notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user')
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user')
+          expect(repository).to receive(:deliver_form_submission_notifications_for).
+            with(the_thing: form, action: form.action, requested_by: requested_by)
           subject.call
         end
       end

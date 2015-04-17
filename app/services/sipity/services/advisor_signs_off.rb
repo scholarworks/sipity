@@ -13,6 +13,7 @@ module Sipity
       end
 
       attr_reader :form, :repository, :requested_by
+      delegate :resulting_strategy_state, :action, to: :form
 
       def call
         send_confirmation_of_advisor_signoff
@@ -26,13 +27,14 @@ module Sipity
       end
 
       def send_confirmation_of_advisor_signoff
-        repository.send_notification_for_entity_trigger(
-          notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user'
-        )
+        # TODO: Account for messaging regarding "on behalf of"
+        # @see https://github.com/ndlib/sipity/issues/507
+        repository.deliver_form_submission_notifications_for(the_thing: form, action: action, requested_by: requested_by)
       end
 
       def handle_last_advisor_signoff
-        repository.update_processing_state!(entity: form, to: form.resulting_strategy_state)
+        repository.update_processing_state!(entity: form, to: resulting_strategy_state)
+        # TODO: Push these emails into state exit/entry
         repository.send_notification_for_entity_trigger(
           notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer', cc: 'creating_user'
         )
