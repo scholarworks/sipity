@@ -359,6 +359,14 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   add_index "sipity_transient_answers", ["entity_id", "entity_type", "question_code"], name: "sipity_transient_entity_answers", unique: true, using: :btree
   add_index "sipity_transient_answers", ["entity_id", "entity_type"], name: "index_sipity_transient_answers_on_entity_id_and_entity_type", using: :btree
 
+  create_table "sipity_work_areas", force: :cascade do |t|
+    t.string   "slug",                          limit: 255, null: false
+    t.string   "partial_suffix",                limit: 255, null: false
+    t.string   "demodulized_class_prefix_name", limit: 255, null: false
+    t.datetime "created_at",                                null: false
+    t.datetime "updated_at",                                null: false
+  end
+
   create_table "sipity_work_types", force: :cascade do |t|
     t.string   "name",        limit: 255,   null: false
     t.text     "description", limit: 65535
