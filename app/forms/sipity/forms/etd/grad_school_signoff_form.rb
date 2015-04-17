@@ -49,9 +49,7 @@ module Sipity
         def save(requested_by:)
           super do
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
-            repository.send_notification_for_entity_trigger(
-              notification: "confirmation_of_grad_school_signoff", entity: work, acting_as: ['creating_user', 'etd_reviewer']
-            )
+            repository.deliver_form_submission_notifications_for(the_thing: work, action: action, requested_by: requested_by)
           end
         end
       end
