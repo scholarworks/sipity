@@ -24,6 +24,13 @@ module Sipity
           expect(subject.partial_suffix).to eq('hello-world')
         end
       end
+
+      context '#demodulized_class_prefix_name' do
+        it 'will transform the demodulized_class_prefix_name' do
+          subject.demodulized_class_prefix_name = 'Hello World'
+          expect(subject.demodulized_class_prefix_name).to eq('HelloWorld')
+        end
+      end
     end
   end
 end

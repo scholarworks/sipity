@@ -40,6 +40,10 @@ module Sipity
       #
       #   @return [String] A string that when classified equals itself.
       #   @note Experimental in its concern. We could derive this from the slug.
+
+      def demodulized_class_prefix_name=(value)
+        super(PowerConverter.convert(value, to: :demodulized_class_name))
+      end
     end
   end
 end
