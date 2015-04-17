@@ -170,9 +170,9 @@
                   <% attributes.each do |attribute| next unless attribute.value.present? %>
                     <li class="occurance <%=key%>">
                       <% if key == "copyright" %>
-                        <%= model.rich_text_value(model.selected_copyright(attribute.value)) %>
+                        <%= model.selected_copyright(attribute.value) %>
                       <% else %>
-                        <%= model.rich_text_value(attribute.value) %>
+                        <%= attribute.value.html_safe %>
                       <% end %>
                     </li>
                   <% end %>

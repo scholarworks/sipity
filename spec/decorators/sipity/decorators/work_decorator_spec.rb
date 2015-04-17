@@ -11,6 +11,7 @@ module Sipity
       end
 
       its(:date_created) { should be_a(String) }
+      its(:title) { should be_html_safe }
 
       context '#creators and #creator_names' do
         let(:creators) { [double(name: 'Hello')] }
@@ -31,14 +32,6 @@ module Sipity
             with_tag('.panel-heading .panel-title')
             with_tag('.panel-body', text: /hello/)
           end
-        end
-      end
-
-      context '#rich_text_value' do
-        it 'returns the value rendered as HTML' do
-          rendered = subject.rich_text_value("several\n\nparagraphs")
-          expect(rendered).to have_tag('p', count: 2)
-          expect(rendered).to be_html_safe
         end
       end
 

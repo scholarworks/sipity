@@ -2,6 +2,7 @@ module Sipity
   module Decorators
     # A decoration layer for Sipity::Work
     class WorkDecorator < ApplicationDecorator
+      include Conversions::SanitizeHtml
       def self.object_class
         Models::Work
       end
@@ -27,6 +28,11 @@ module Sipity
         creators.map(&:name)
       end
 
+      def title
+        return if object.title.nil?
+        object.title.html_safe
+      end
+
       def to_s
         title
       end
@@ -37,11 +43,6 @@ module Sipity
 
       def accessible_objects
         @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
-      end
-
-      include Conversions::ConvertToRichText
-      def rich_text_value(attribute)
-        Conversions::ConvertToRichText.call(attribute).html_safe
       end
 
       def authors(decorator: Decorators::CollaboratorDecorator)
