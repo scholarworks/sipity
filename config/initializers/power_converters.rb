@@ -23,3 +23,5 @@ PowerConverter.define_conversion_for(:slug) do |input|
     input.to_s.gsub(/\W+/, '-').downcase
   end
 end
+
+PowerConverter.define_alias(:file_system_safe_file_name, is_alias_of: :slug)
