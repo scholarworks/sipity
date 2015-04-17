@@ -26,6 +26,19 @@ module Sipity
           subject.valid?
           expect(subject.errors[:majors]).to be_present
         end
+
+        it 'will require at least one non-blank major' do
+          subject = described_class.new(work: work, repository: repository, majors: ['', ''])
+          subject.valid?
+          expect(subject.errors[:majors]).to be_present
+        end
+
+        it 'will require at least one non-blank major' do
+          subject = described_class.new(work: work, repository: repository, majors: ['chocolate', ''])
+          subject.valid?
+          expect(subject.errors[:majors]).to_not be_present
+        end
+
         context 'retrieving values from the repository' do
           context 'with data from the database' do
             let(:expected_graduation_date) { Time.zone.today }

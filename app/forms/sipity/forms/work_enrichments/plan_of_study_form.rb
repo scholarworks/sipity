@@ -14,7 +14,7 @@ module Sipity
         attr_reader :expected_graduation_date, :majors
 
         validates :expected_graduation_date, presence: true
-        validates_presence_of :majors, message: "Can't have blank values"
+        validates :majors, presence: true
 
         private
 
