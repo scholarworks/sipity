@@ -31,6 +31,7 @@ group :doc do
   gem 'inch', require: false
   gem 'railroady', require: false, github: 'jeremyf/railroady', branch: 'allowing-namespaced-models'
   gem 'yard', require: false
+  gem 'yard-activerecord', require: false
 end
 
 group :development do
