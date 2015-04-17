@@ -30,7 +30,7 @@ module Sipity
 
         def save(requested_by:)
           # TODO: Consider extracting common behavior to a service method (see AdvisorRequestsChangeForm#save)
-          send_notification_for(processing_comment: record_processing_comment)
+          send_notification_for(processing_comment: record_processing_comment, requested_by: requested_by)
           register_action_taken(requested_by: requested_by)
           log_event(requested_by: requested_by)
           update_processing_state
@@ -42,9 +42,9 @@ module Sipity
           )
         end
 
-        def send_notification_for(processing_comment:)
-          repository.send_notification_for_entity_trigger(
-            notification: enrichment_type, entity: processing_comment, acting_as: ['creating_user']
+        def send_notification_for(processing_comment:, requested_by:)
+          repository.deliver_form_submission_notifications_for(
+            the_thing: processing_comment, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
           )
         end
 
