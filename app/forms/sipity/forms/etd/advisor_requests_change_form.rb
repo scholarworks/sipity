@@ -36,9 +36,7 @@ module Sipity
             processing_comment = repository.record_processing_comment(
               entity: work, commenter: requested_by, comment: comment, action: action
             )
-            repository.send_notification_for_entity_trigger(
-              notification: 'advisor_requests_change', entity: processing_comment, acting_as: ['creating_user']
-            )
+            repository.deliver_form_submission_notifications_for(the_thing: processing_comment, action: action, requested_by: requested_by)
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end
         end
