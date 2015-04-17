@@ -9,7 +9,7 @@ module Sipity
         # TODO: Should this be converted to an action via a conversion method?
         self.action = keywords.fetch(:action)
         self.requested_by = keywords.fetch(:requested_by) { nil }
-        self.on_behalf_of = keywords.fetch(:on_behalf_of) { requested_by }
+        self.on_behalf_of = keywords[:on_behalf_of] || requested_by
       end
 
       private
