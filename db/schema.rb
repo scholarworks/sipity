@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150417130019) do
+ActiveRecord::Schema.define(version: 20150417182120) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -346,6 +346,17 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "term_label"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true, using: :btree
   add_index "sipity_simple_controlled_vocabularies", ["predicate_name"], name: "index_sipity_simple_controlled_vocabularies_on_predicate_name", using: :btree
   add_index "sipity_simple_controlled_vocabularies", ["term_uri"], name: "sipity_simple_controlled_vocabularies_term_uri", unique: true, using: :btree
+
+  create_table "sipity_submission_window_work_types", force: :cascade do |t|
+    t.integer  "submission_window_id", limit: 4, null: false
+    t.integer  "work_type_id",         limit: 4, null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  add_index "sipity_submission_window_work_types", ["submission_window_id", "work_type_id"], name: "sipity_submission_window_work_types_surrogate", unique: true, using: :btree
+  add_index "sipity_submission_window_work_types", ["submission_window_id"], name: "idx_sipity_submission_window_work_types_submission_window_id", using: :btree
+  add_index "sipity_submission_window_work_types", ["work_type_id"], name: "idx_sipity_submission_window_work_types_work_type_id", using: :btree
 
   create_table "sipity_submission_windows", force: :cascade do |t|
     t.integer  "work_area_id", limit: 4,   null: false

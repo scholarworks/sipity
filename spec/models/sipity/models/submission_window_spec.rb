@@ -9,6 +9,16 @@ module Sipity
         its(:column_names) { should include('slug') }
       end
 
+      subject { described_class.new }
+
+      it 'will have many .submission_window_work_types' do
+        expect(subject.submission_window_work_types).to be_a(ActiveRecord::Relation)
+      end
+
+      it 'will have many .work_types' do
+        expect(subject.work_types).to be_a(ActiveRecord::Relation)
+      end
+
       context '#slug' do
         it 'will transform the slug to a URI safe item' do
           subject.slug = 'Hello World'

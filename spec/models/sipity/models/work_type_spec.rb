@@ -14,6 +14,14 @@ module Sipity
         end
       end
 
+      it 'will have many .submission_window_work_types' do
+        expect(subject.submission_window_work_types).to be_a(ActiveRecord::Relation)
+      end
+
+      it 'will have many .submission_windows' do
+        expect(subject.submission_windows).to be_a(ActiveRecord::Relation)
+      end
+
       context '.all_for_enum_configuration' do
         it 'will be a Hash to appease the enum interface' do
           expect(described_class.all_for_enum_configuration).to be_a(Hash)
