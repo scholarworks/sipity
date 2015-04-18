@@ -26,7 +26,7 @@ module Sipity
       # @return String containing HTML after sanitizing
       def sanitize_html(input)
         return '' if input.nil?
-        Sanitize.clean(input, Sanitize::Config::RELAXED)
+        Sanitize.clean(input.to_s, Sanitize::Config::RELAXED)
       end
 
       module_function :sanitize_html

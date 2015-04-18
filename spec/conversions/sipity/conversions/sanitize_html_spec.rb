@@ -31,6 +31,9 @@ module Sipity
         end
 
         context 'Sanitizing HTML output' do
+          it 'will sanitize nil as an empty string' do
+            expect(sanitize_html(nil)).to eq('')
+          end
           it 'removes script tags' do
             text = <<-eos.gsub(/^ {14}/, '')
               A malicious user could try to inject JavaScript directly into the
