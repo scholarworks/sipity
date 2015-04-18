@@ -5,10 +5,11 @@ module Sipity
     module NotificationCommands
       # Responsible for delivering notifications (i.e., email)
       # @param notification [String] Name of the notification
+      # @param roles_for_recipients [Hash]
       # @param entity [String] The entity that is the "subject" of the notification
-      # @param acting_as [Array<String>] an arra
-      # @param cc [Array<String>] role (names) to use to find associated emails to send as :cc
-      # @param bcc [Array<String>] role (names) to use to find associated emails to send as :to
+      # @option roles_for_recipients [Array<String>] :acting_as
+      # @option roles_for_recipients [Array<String>] :cc role (names) to use to find associated emails to send as :cc
+      # @option roles_for_recipients [Array<String>] :bcc role (names) to use to find associated emails to send as :to
       # @return [void]
       def send_notification_for_entity_trigger(notification:, entity:, **roles_for_recipients)
         Services::Notifier.deliver(

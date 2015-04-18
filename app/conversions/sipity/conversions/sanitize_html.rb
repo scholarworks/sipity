@@ -24,9 +24,9 @@ module Sipity
       # @param input [Object] something in html
       #
       # @return String containing HTML after sanitizing
-      def sanitize_html(html)
-        return if html.nil?
-        Sanitize.clean(html, Sanitize::Config::RELAXED)
+      def sanitize_html(input)
+        return if input.nil?
+        Sanitize.clean(input, Sanitize::Config::RELAXED)
       end
 
       module_function :sanitize_html
