@@ -1,0 +1,39 @@
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<div class="panel-tiles">
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'simple-form panel panel-primary with-footer' }
+  ) do |f| %>
+    <legend class="panel-heading">
+      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.publication_name.title_html"), class: 'panel-title' %>
+    </legend>
+
+    <fieldset class="panel-body">
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.publication_name.hint_html"), class: 'panel-hint' %>
+      <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
+      <%= f.input :publication_name, input_html: { class: 'form-control' } %>
+      <ul>
+        <li>Allow deposit of pre-prints to an Institutional Digital Repository</li>
+        <li><%= field.radio_button(:allow_pre_prints, "Yes") %></li>
+        <li><%= field.radio_button(:allow_pre_prints, "No") %></li>
+        <li><%= field.radio_button(:allow_pre_prints, "I don't know") %></li>
+      </ul>
+    </fieldset>
+
+    <div class="panel-footer action-pane">
+      <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+    </div>
+  <% end %>
+</div>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>

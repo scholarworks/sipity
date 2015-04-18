@@ -207,6 +207,8 @@ en:
       search_terms:
         title_html: 'Provide additional <b>search terms</b> for your item'
         hint: 'The more richly you describe your work the better we can promote it.'
+      publication_name:
+        title_html: 'Please provide a <b>publication name</b> of your work'
   sipity/decorators/entitiy_enrichment_actions:
     access_policy:
       label: "Set <b>access controls</b> and <b>copyright</b> for this %{entity_type}"
@@ -261,6 +263,10 @@ en:
             access_rights_answer:
               blank: 'Please select an option'
               inclusion: 'Please select an option from the list'
+        sipity/forms/work_enrichments/publisher_information_form:
+          attributes:
+            allow_pre_prints:
+              inclusion: 'is not included in the list'
   sipity/forms:
     error_messages:
     state_advancing_actions:
