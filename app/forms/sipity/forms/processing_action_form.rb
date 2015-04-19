@@ -25,15 +25,15 @@ module Sipity
       self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
 
       def initialize(attributes = {})
-        @work = attributes.fetch(:work)
-        @repository = attributes.fetch(:repository) { default_repository }
+        self.work = attributes.fetch(:work)
+        self.repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_reader :work, :repository
+      attr_accessor :work, :repository
       delegate :to_processing_entity, :work_type, to: :work
       delegate :strategy_id, :strategy, to: :to_processing_entity
       alias_method :to_model, :work
-      private :repository
+      private(:repository, :repository=, :work=)
 
       validates :work, presence: true
 

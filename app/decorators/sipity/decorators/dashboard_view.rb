@@ -4,13 +4,13 @@ module Sipity
     # dashboard.
     class DashboardView
       def initialize(repository: default_repository, user:, filter: {})
-        @repository = repository
-        @filter = filter
-        @user = user
+        self.repository = repository
+        self.filter = filter
+        self.user = user
       end
 
-      attr_reader :repository, :user, :filter
-      private :repository, :user, :filter
+      attr_accessor :repository, :user, :filter
+      private :repository=, :user=, :filter=
 
       def search_path
         view_context.dashboard_path

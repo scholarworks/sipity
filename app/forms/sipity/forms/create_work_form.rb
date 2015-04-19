@@ -12,15 +12,14 @@ module Sipity
 
       def initialize(attributes = {})
         self.title = attributes[:title]
-        @work_publication_strategy = attributes[:work_publication_strategy]
-        @work_type = attributes[:work_type]
-        @access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
+        self.work_publication_strategy = attributes[:work_publication_strategy]
+        self.work_type = attributes[:work_type]
+        self.access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
         self.repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_reader :title, :work_publication_strategy, :work_type, :access_rights_answer
-      attr_accessor :repository
-      private(:repository, :repository=)
+      attr_accessor :repository, :title, :work_publication_strategy, :work_type, :access_rights_answer
+      private(:repository, :repository=, :title=, :work_publication_strategy=, :work_type=, :access_rights_answer=)
 
       validates :title, presence: true
       validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }

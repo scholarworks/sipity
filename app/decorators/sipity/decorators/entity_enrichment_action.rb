@@ -7,9 +7,13 @@ module Sipity
     #   template to render different elements.
     class EntityEnrichmentAction
       def initialize(entity:, name:, state:)
-        @entity, @name, @state = entity, name, state
+        self.entity = entity
+        self.name = name
+        self.state = state
       end
-      attr_reader :entity, :name, :state
+
+      attr_accessor :entity, :name, :state
+      private :entity=, :name=, :state=
 
       def path
         # REVIEW: Does EntityEnrichment even make sense?

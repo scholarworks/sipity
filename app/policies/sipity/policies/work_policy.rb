@@ -44,13 +44,10 @@ module Sipity
         end
 
         def initialize(user, scope, options = {})
-          @user = user
-          @scope = scope
-          @repository = options.fetch(:repository) { default_repository }
+          self.user = user
+          self.scope = scope
+          self.repository = options.fetch(:repository) { default_repository }
         end
-
-        attr_reader :user, :scope, :repository
-        private :user, :scope, :repository
 
         def resolve(options = {})
           repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
@@ -60,6 +57,8 @@ module Sipity
         end
 
         private
+
+        attr_accessor :user, :scope, :repository
 
         def default_repository
           QueryRepository.new

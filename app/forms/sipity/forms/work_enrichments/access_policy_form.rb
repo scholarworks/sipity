@@ -106,8 +106,7 @@ module Sipity
             @access_right_code = attributes[:access_right_code]
             self.release_date = extract_input_date_from_input(:release_date, attributes) { nil }
           end
-          attr_reader :access_right_code, :release_date, :persisted_object
-          private :persisted_object
+          attr_reader :release_date
 
           delegate :to_param, :id, :to_s, :human_model_name, to: :persisted_object
 
@@ -140,6 +139,8 @@ module Sipity
           end
 
           private
+
+          attr_accessor :access_right_code, :persisted_object
 
           include Conversions::ConvertToDate
           def release_date=(value)

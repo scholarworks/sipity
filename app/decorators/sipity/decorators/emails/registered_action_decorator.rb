@@ -6,11 +6,12 @@ module Sipity
       class RegisteredActionDecorator
         def initialize(registered_action, repository: default_repository)
           self.registered_action = registered_action
-          @repository = repository
+          self.repository = repository
         end
 
-        attr_reader :repository, :registered_action
-        private :repository
+        attr_reader :registered_action
+        attr_accessor :repository
+        private :repository, :repository=
 
         delegate :entity, to: :registered_action
 

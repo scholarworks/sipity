@@ -6,10 +6,11 @@ module Sipity
       class RespondToAdvisorRequestForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
-          @comment = attributes[:comment]
+          self.comment = attributes[:comment]
         end
 
-        attr_reader :comment
+        attr_accessor :comment
+        private(:comment=)
         validates :comment, presence: true
 
         # @param f SimpleFormBuilder

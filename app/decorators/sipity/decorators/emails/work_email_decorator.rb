@@ -6,11 +6,8 @@ module Sipity
       class WorkEmailDecorator
         def initialize(work, repository: default_repository)
           self.work = work
-          @repository = repository
+          self.repository = repository
         end
-
-        attr_reader :work, :repository
-        private :work, :repository
 
         delegate :title, to: :work
 
@@ -51,6 +48,9 @@ module Sipity
         end
 
         private
+
+        attr_reader :work
+        attr_accessor :repository
 
         include Conversions::ConvertToWork
         def work=(object)

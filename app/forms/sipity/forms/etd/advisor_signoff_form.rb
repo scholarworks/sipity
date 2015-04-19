@@ -6,11 +6,10 @@ module Sipity
       class AdvisorSignoffForm < Forms::StateAdvancingActionForm
         def initialize(attributes = {})
           super
-          @signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
+          self.signoff_service = attributes.fetch(:signoff_service) { default_signoff_service }
           self.agree_to_signoff = attributes[:agree_to_signoff]
         end
 
-        attr_reader :signoff_service
         attr_reader :agree_to_signoff
         validates :agree_to_signoff, acceptance: { accept: true }
 
@@ -48,7 +47,7 @@ module Sipity
           Draper::ViewContext.current
         end
 
-        private :signoff_service
+        attr_accessor :signoff_service
         def default_signoff_service
           Services::AdvisorSignsOff
         end

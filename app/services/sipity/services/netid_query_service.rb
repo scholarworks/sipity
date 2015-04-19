@@ -12,9 +12,10 @@ module Sipity
       end
 
       def initialize(netid)
-        @netid = netid
+        self.netid = netid
       end
-      attr_reader :netid
+      attr_accessor :netid
+      private(:netid=)
 
       # @return [netid] if the input is not a valid NetID
       # @return [String] if the input is a valid NetID

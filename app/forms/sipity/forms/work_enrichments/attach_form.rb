@@ -90,12 +90,14 @@ module Sipity
         # for deletion.
         class AttachmentFormElement
           def initialize(attachment)
-            @attachment = attachment
+            self.attachment = attachment
           end
           delegate :id, :name, :thumbnail_url, :persisted?, :file_url, to: :attachment
           attr_accessor :delete
-          attr_reader :attachment
-          private :attachment
+
+          private
+
+          attr_accessor :attachment
         end
         private_constant :AttachmentFormElement
       end

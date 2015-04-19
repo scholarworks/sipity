@@ -5,7 +5,7 @@ module Sipity
       # too fancy.
       class ProcessingCommentDecorator < ApplicationDecorator
         def initialize(processing_comment, _opts = {})
-          @processing_comment = processing_comment
+          self.processing_comment = processing_comment
         end
 
         def name_of_commentor
@@ -16,10 +16,12 @@ module Sipity
           work.work_type.titleize
         end
 
-        delegate :comment, :actor, :entity, to: :@processing_comment
+        delegate :comment, :actor, :entity, to: :processing_comment
         private :actor, :entity
 
         private
+
+        attr_accessor :processing_comment
 
         def work
           entity.proxy_for

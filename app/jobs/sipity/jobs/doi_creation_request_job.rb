@@ -7,13 +7,14 @@ module Sipity
       end
 
       def initialize(work_id, options = {})
-        @repository = options.fetch(:repository) { default_repository }
-        @minter = options.fetch(:minter) { default_minter }
-        @minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
-        @work = repository.find_work(work_id)
-        @doi_creation_request = repository.find_doi_creation_request(work: work)
+        self.repository = options.fetch(:repository) { default_repository }
+        self.minter = options.fetch(:minter) { default_minter }
+        self.minter_handled_exceptions = options.fetch(:minter_handled_exceptions) { default_minter_handled_exceptions }
+        self.work = repository.find_work(work_id)
+        self.doi_creation_request = repository.find_doi_creation_request(work: work)
       end
-      attr_reader :work, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
+      attr_accessor :work, :doi_creation_request, :minter, :minter_handled_exceptions, :metadata_gatherer, :repository
+      private(:work=, :doi_creation_request=, :minter=, :minter_handled_exceptions=, :metadata_gatherer=, :repository=)
 
       def call
         # TODO: Do we need to track history for the given person?

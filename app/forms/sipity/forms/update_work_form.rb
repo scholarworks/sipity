@@ -17,12 +17,13 @@ module Sipity
       end
 
       def initialize(work:, exposed_attribute_names: [], attributes: {})
-        @work = work
-        @attributes = attributes.stringify_keys
+        self.work = work
+        self.attributes = attributes.stringify_keys
         self.exposed_attribute_names = exposed_attribute_names
       end
 
-      attr_reader :work
+      attr_accessor :work, :attributes, :exposed_attribute_names
+      private :work=, :attributes=, :exposed_attribute_names=, :attributes, :exposed_attribute_names
       delegate :to_key, :to_param, :persisted?, :to_processing_entity, to: :work
 
       def to_model
