@@ -27,9 +27,10 @@ module Sipity
       end
 
       def send_confirmation_of_advisor_signoff
-        # TODO: Account for messaging regarding "on behalf of"
-        # @see https://github.com/ndlib/sipity/issues/507
-        repository.deliver_form_submission_notifications_for(the_thing: form, action: action, requested_by: requested_by)
+        options = { the_thing: form, action: action, requested_by: requested_by }
+        # HACK: This is a weak solution
+        options[:on_behalf_of] = form.on_behalf_of_collaborator if form.respond_to?(:on_behalf_of_collaborator)
+        repository.deliver_form_submission_notifications_for(options)
       end
 
       def handle_last_advisor_signoff
