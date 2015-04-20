@@ -15,7 +15,7 @@ module Sipity
       #
       #   Sipity::Models::Notification::NotifiableContext.new(
       #     notifying_concern: strategy_state,
-      #     notifying_context: 'on_enter',
+      #     reason_for_notification: 'on_enter',
       #     email: email
       #   )
       class NotifiableContext < ActiveRecord::Base

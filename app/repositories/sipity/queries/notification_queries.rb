@@ -11,7 +11,7 @@ module Sipity
               notifiable_contexts[:notifying_concern_id].eq(concerning.id).and(
                 notifiable_contexts[:notifying_concern_type].eq(Conversions::ConvertToPolymorphicType.call(concerning))
               ).and(
-                notifiable_contexts[:notifying_context].eq(context)
+                notifiable_contexts[:reason_for_notification].eq(context)
               )
             )
           )
@@ -20,3 +20,6 @@ module Sipity
     end
   end
 end
+
+
+notifying_concern

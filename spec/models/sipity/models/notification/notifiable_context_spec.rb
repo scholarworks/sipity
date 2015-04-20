@@ -8,7 +8,7 @@ module Sipity
           subject { described_class }
           its(:column_names) { should include('notifying_concern_id') }
           its(:column_names) { should include('notifying_concern_type') }
-          its(:column_names) { should include('notifying_context') }
+          its(:column_names) { should include('reason_for_notification') }
           its(:column_names) { should include('email_id') }
         end
       end

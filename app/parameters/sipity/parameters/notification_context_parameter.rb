@@ -13,7 +13,7 @@ module Sipity
         self.on_behalf_of = keywords[:on_behalf_of] || requested_by
       end
 
-      def notifying_context
+      def reason_for_notification
         NOTIFYING_CONTEXT_ACTION_IS_TAKEN
       end
 

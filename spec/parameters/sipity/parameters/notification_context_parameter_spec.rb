@@ -13,7 +13,7 @@ module Sipity
 
       its(:action) { should eq action }
       its(:the_thing) { should eq the_thing }
-      its(:notifying_context) { should be_a String }
+      its(:reason_for_notification) { should be_a String }
       it { should respond_to :requested_by }
       it { should respond_to :on_behalf_of }
 
