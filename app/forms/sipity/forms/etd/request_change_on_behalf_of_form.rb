@@ -43,7 +43,7 @@ module Sipity
         end
 
         def send_notification_for(processing_comment:, requested_by:)
-          repository.deliver_form_submission_notifications_for(
+          repository.deliver_notification_for(
             the_thing: processing_comment, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
           )
         end

@@ -22,7 +22,7 @@ module Sipity
           subject.call
         end
         it 'will send an email to the creating user' do
-          expect(repository).to receive(:deliver_form_submission_notifications_for).
+          expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end
@@ -39,7 +39,7 @@ module Sipity
             with(notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer', cc: 'creating_user')
           expect(repository).to receive(:send_notification_for_entity_trigger).
             with(notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user')
-          expect(repository).to receive(:deliver_form_submission_notifications_for).
+          expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end

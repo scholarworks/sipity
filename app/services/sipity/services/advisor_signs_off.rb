@@ -30,7 +30,7 @@ module Sipity
         options = { the_thing: form, scope: action, requested_by: requested_by }
         # HACK: This is a weak solution
         options[:on_behalf_of] = form.on_behalf_of_collaborator if form.respond_to?(:on_behalf_of_collaborator)
-        repository.deliver_form_submission_notifications_for(options)
+        repository.deliver_notification_for(options)
       end
 
       def handle_last_advisor_signoff

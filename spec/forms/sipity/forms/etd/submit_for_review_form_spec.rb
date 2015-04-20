@@ -58,7 +58,7 @@ module Sipity
           end
 
           it 'will send differing notifications to the creating user, etd reviewer, and advisor' do
-            expect(repository).to receive(:deliver_form_submission_notifications_for).
+            expect(repository).to receive(:deliver_notification_for).
               with(the_thing: work, scope: action, requested_by: user)
             subject.submit(requested_by: user)
           end

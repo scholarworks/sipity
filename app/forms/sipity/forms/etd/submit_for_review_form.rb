@@ -46,7 +46,7 @@ module Sipity
         def save(requested_by:)
           super do
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
-            repository.deliver_form_submission_notifications_for(the_thing: work, scope: action, requested_by: requested_by)
+            repository.deliver_notification_for(the_thing: work, scope: action, requested_by: requested_by)
           end
         end
 

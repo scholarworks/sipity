@@ -56,7 +56,7 @@ module Sipity
           end
 
           it 'will deliver form submission notifications for' do
-            expect(repository).to receive(:deliver_form_submission_notifications_for).and_call_original
+            expect(repository).to receive(:deliver_notification_for).and_call_original
             subject.submit(requested_by: user)
           end
 

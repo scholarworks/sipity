@@ -7,7 +7,7 @@ module Sipity
         let(:parameters) { { scope: double, the_thing: double, requested_by: double, on_behalf_of: double } }
         it 'will delegate to the DeliverFormSubmissionNotificationsService' do
           expect(Services::DeliverFormSubmissionNotificationsService).to receive(:call)
-          test_repository.deliver_form_submission_notifications_for(parameters)
+          test_repository.deliver_notification_for(parameters)
         end
       end
       context '#send_notification_for_entity_trigger' do
