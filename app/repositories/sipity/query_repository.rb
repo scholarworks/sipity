@@ -5,19 +5,19 @@ module Sipity
   # Defines and exposes the query methods for interacting with the public API of
   # the persistence layer.
   class QueryRepository
-    include Queries::WorkQueries
-    include Queries::CitationQueries
-    include Queries::DoiQueries
-    include Queries::EventLogQueries
     include Queries::AccountPlaceholderQueries
+    include Queries::AccountProfileQueries
     include Queries::AdditionalAttributeQueries
+    include Queries::AttachmentQueries
+    include Queries::CitationQueries
     include Queries::CollaboratorQueries
+    include Queries::CommentQueries
+    include Queries::DoiQueries
     include Queries::EnrichmentQueries
+    include Queries::EventLogQueries
     include Queries::EventTriggerQueries
     include Queries::ProcessingQueries
-    include Queries::AttachmentQueries
     include Queries::SimpleControlledVocabularyQueries
-    include Queries::AccountProfileQueries
-    include Queries::CommentQueries
+    include Queries::WorkQueries
   end
 end
