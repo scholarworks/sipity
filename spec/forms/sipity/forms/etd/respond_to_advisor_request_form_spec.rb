@@ -59,7 +59,7 @@ module Sipity
 
           it 'will send creating user a note that the advisor has requested changes' do
             expect(repository).to receive(:deliver_form_submission_notifications_for).
-              with(the_thing: a_processing_comment, action: action, requested_by: user).
+              with(the_thing: a_processing_comment, scope: action, requested_by: user).
               and_call_original
             subject.submit(requested_by: user)
           end

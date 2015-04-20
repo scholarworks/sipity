@@ -27,7 +27,7 @@ module Sipity
       end
 
       def send_confirmation_of_advisor_signoff
-        options = { the_thing: form, action: action, requested_by: requested_by }
+        options = { the_thing: form, scope: action, requested_by: requested_by }
         # HACK: This is a weak solution
         options[:on_behalf_of] = form.on_behalf_of_collaborator if form.respond_to?(:on_behalf_of_collaborator)
         repository.deliver_form_submission_notifications_for(options)

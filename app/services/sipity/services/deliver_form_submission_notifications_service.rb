@@ -18,11 +18,11 @@ module Sipity
         self.notifier = notifier
       end
 
-      delegate :action, :the_thing, :reason_for_notification, to: :notification_context
-      private :action, :the_thing
+      delegate :scope, :the_thing, :reason_for_notification, to: :notification_context
+      private :scope, :the_thing
 
       def call
-        repository.email_notifications_for(scope: action, reason: reason_for_notification).each do |email|
+        repository.email_notifications_for(scope: scope, reason: reason_for_notification).each do |email|
           notifier.call(options_for_an_email(email))
         end
       end

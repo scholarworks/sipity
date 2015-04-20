@@ -36,7 +36,7 @@ module Sipity
             processing_comment = repository.record_processing_comment(
               entity: work, commenter: requested_by, comment: comment, action: action
             )
-            repository.deliver_form_submission_notifications_for(the_thing: processing_comment, action: action, requested_by: requested_by)
+            repository.deliver_form_submission_notifications_for(the_thing: processing_comment, scope: action, requested_by: requested_by)
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
           end
         end

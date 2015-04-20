@@ -4,7 +4,7 @@ module Sipity
     # Commands
     module NotificationCommands
       # Responsible for delivering notifications (i.e. emails)
-      # @param action [Sipity::Model::Processing::StrategyAction]
+      # @param scope [Object]
       # @param the_thing [Object] what are you going to be building most of the email content from?
       # @param requested_by [User]
       # @param on_behalf_of [Sipity::Model::Collaborator]
@@ -12,9 +12,9 @@ module Sipity
       #
       # @see Parameters::NotificationContextParameter
       # @see Services::DeliverFormSubmissionNotificationsService
-      def deliver_form_submission_notifications_for(action:, the_thing:, requested_by: nil, on_behalf_of: nil)
+      def deliver_form_submission_notifications_for(scope:, the_thing:, requested_by: nil, on_behalf_of: nil)
         notification_context = Parameters::NotificationContextParameter.new(
-          action: action, the_thing: the_thing, requested_by: requested_by, on_behalf_of: on_behalf_of
+          scope: scope, the_thing: the_thing, requested_by: requested_by, on_behalf_of: on_behalf_of
         )
         Services::DeliverFormSubmissionNotificationsService.call(notification_context: notification_context, repository: self)
       end

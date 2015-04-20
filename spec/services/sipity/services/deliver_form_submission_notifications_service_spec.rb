@@ -3,9 +3,9 @@ require 'spec_helper'
 module Sipity
   module Services
     RSpec.describe DeliverFormSubmissionNotificationsService do
-      let(:notification_context) { Parameters::NotificationContextParameter.new(action: action, the_thing: the_thing) }
+      let(:notification_context) { Parameters::NotificationContextParameter.new(scope: scope, the_thing: the_thing) }
       let(:the_thing) { double('Entity') }
-      let(:action) { Models::Processing::StrategyAction.new }
+      let(:scope) { Models::Processing::StrategyAction.new }
       let(:repository) { QueryRepositoryInterface.new }
       let(:notifier) { Services::Notifier }
       let(:role_for_to) { Models::Role.new }
@@ -37,7 +37,7 @@ module Sipity
       end
 
       context '#call' do
-        it 'will deliver each of the action emails to the associated recipients based on role' do
+        it 'will deliver each of the scope emails to the associated recipients based on role' do
           expect(notifier).to receive(:call).
             with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails)
           subject.call
