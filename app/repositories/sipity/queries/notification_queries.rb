@@ -8,8 +8,8 @@ module Sipity
         Models::Notification::Email.where(
           emails[:id].in(
             notifiable_contexts.project(notifiable_contexts[:email_id]).where(
-              notifiable_contexts[:notifying_concern_id].eq(concerning.id).and(
-                notifiable_contexts[:notifying_concern_type].eq(Conversions::ConvertToPolymorphicType.call(concerning))
+              notifiable_contexts[:scope_for_notification_id].eq(concerning.id).and(
+                notifiable_contexts[:scope_for_notification_type].eq(Conversions::ConvertToPolymorphicType.call(concerning))
               ).and(
                 notifiable_contexts[:reason_for_notification].eq(context)
               )
@@ -22,4 +22,4 @@ module Sipity
 end
 
 
-notifying_concern
+scope_for_notification

@@ -377,7 +377,7 @@ ActiveRecord::Base.transaction do
           end
 
           Sipity::Models::Notification::NotifiableContext.find_or_create_by!(
-            notifying_concern: action,
+            scope_for_notification: action,
             reason_for_notification: Sipity::Parameters::NotificationContextParameter::NOTIFYING_CONTEXT_ACTION_IS_TAKEN,
             email: the_email
           )

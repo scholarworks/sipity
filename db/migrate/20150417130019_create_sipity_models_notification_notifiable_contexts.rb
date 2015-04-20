@@ -1,8 +1,8 @@
 class CreateSipityModelsNotificationNotifiableContexts < ActiveRecord::Migration
   def change
     create_table :sipity_notification_notifiable_contexts do |t|
-      t.integer :notifying_concern_id, null: false
-      t.string :notifying_concern_type, null: false
+      t.integer :scope_for_notification_id, null: false
+      t.string :scope_for_notification_type, null: false
       t.string :reason_for_notification, null: false
       t.integer :email_id, null: false
 
@@ -10,12 +10,12 @@ class CreateSipityModelsNotificationNotifiableContexts < ActiveRecord::Migration
     end
     add_index(
       :sipity_notification_notifiable_contexts,
-      [:notifying_concern_id, :notifying_concern_type],
+      [:scope_for_notification_id, :scope_for_notification_type],
       name: :idx_sipity_notification_notifiable_contexts_concern
     )
     add_index(
       :sipity_notification_notifiable_contexts,
-      [:notifying_concern_id, :notifying_concern_type, :reason_for_notification],
+      [:scope_for_notification_id, :scope_for_notification_type, :reason_for_notification],
       name: :idx_sipity_notification_notifiable_contexts_concern_context
     )
     add_index(
@@ -25,7 +25,7 @@ class CreateSipityModelsNotificationNotifiableContexts < ActiveRecord::Migration
     )
     add_index(
       :sipity_notification_notifiable_contexts,
-      [:notifying_concern_id, :notifying_concern_type, :reason_for_notification, :email_id],
+      [:scope_for_notification_id, :scope_for_notification_type, :reason_for_notification, :email_id],
       name: :idx_sipity_notification_notifiable_contexts_concern_surrogate,
       unique: true
     )

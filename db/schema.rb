@@ -151,8 +151,8 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   add_index "sipity_notification_emails", ["method_name"], name: "index_sipity_notification_emails_on_method_name", using: :btree
 
   create_table "sipity_notification_notifiable_contexts", force: :cascade do |t|
-    t.integer  "notifying_concern_id",   limit: 4,   null: false
-    t.string   "notifying_concern_type", limit: 255, null: false
+    t.integer  "scope_for_notification_id",   limit: 4,   null: false
+    t.string   "scope_for_notification_type", limit: 255, null: false
     t.string   "reason_for_notification",      limit: 255, null: false
     t.integer  "email_id",               limit: 4,   null: false
     t.datetime "created_at",                         null: false
@@ -160,9 +160,9 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   end
 
   add_index "sipity_notification_notifiable_contexts", ["email_id"], name: "idx_sipity_notification_notifiable_contexts_email_id", using: :btree
-  add_index "sipity_notification_notifiable_contexts", ["notifying_concern_id", "notifying_concern_type", "reason_for_notification", "email_id"], name: "idx_sipity_notification_notifiable_contexts_concern_surrogate", unique: true, using: :btree
-  add_index "sipity_notification_notifiable_contexts", ["notifying_concern_id", "notifying_concern_type", "reason_for_notification"], name: "idx_sipity_notification_notifiable_contexts_concern_context", using: :btree
-  add_index "sipity_notification_notifiable_contexts", ["notifying_concern_id", "notifying_concern_type"], name: "idx_sipity_notification_notifiable_contexts_concern", using: :btree
+  add_index "sipity_notification_notifiable_contexts", ["scope_for_notification_id", "scope_for_notification_type", "reason_for_notification", "email_id"], name: "idx_sipity_notification_notifiable_contexts_concern_surrogate", unique: true, using: :btree
+  add_index "sipity_notification_notifiable_contexts", ["scope_for_notification_id", "scope_for_notification_type", "reason_for_notification"], name: "idx_sipity_notification_notifiable_contexts_concern_context", using: :btree
+  add_index "sipity_notification_notifiable_contexts", ["scope_for_notification_id", "scope_for_notification_type"], name: "idx_sipity_notification_notifiable_contexts_concern", using: :btree
 
   create_table "sipity_processing_actors", force: :cascade do |t|
     t.string   "proxy_for_id",   limit: 32,  null: false
