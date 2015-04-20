@@ -28,6 +28,11 @@ module Sipity
           subject.call
         end
 
+        it 'will deliver_entering_state_change_notifications_for' do
+          expect(repository).to receive(:deliver_notification_for)
+          subject.call
+        end
+
         it 'will mark as stale all comments for the new processing state' do
           comment = Models::Processing::Comment.create!(
             entity_id: entity.id, actor_id: 99, comment: 'a comment', stale: false, originating_strategy_state_id: processing_state.id,
