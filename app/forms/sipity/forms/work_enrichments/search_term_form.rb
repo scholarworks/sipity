@@ -28,19 +28,19 @@ module Sipity
         end
 
         def subject_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'subject')
+          repository.work_attribute_values_for(work: work, key: 'subject')
         end
 
         def language_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'language')
+          repository.work_attribute_values_for(work: work, key: 'language')
         end
 
         def temporal_coverage_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'temporal_coverage')
+          repository.work_attribute_values_for(work: work, key: 'temporal_coverage')
         end
 
         def spatial_coverage_from_work
-          Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: 'spatial_coverage')
+          repository.work_attribute_values_for(work: work, key: 'spatial_coverage')
         end
       end
     end
