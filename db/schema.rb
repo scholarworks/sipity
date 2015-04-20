@@ -153,10 +153,10 @@ ActiveRecord::Schema.define(version: 20150417130019) do
   create_table "sipity_notification_notifiable_contexts", force: :cascade do |t|
     t.integer  "scope_for_notification_id",   limit: 4,   null: false
     t.string   "scope_for_notification_type", limit: 255, null: false
-    t.string   "reason_for_notification",      limit: 255, null: false
-    t.integer  "email_id",               limit: 4,   null: false
-    t.datetime "created_at",                         null: false
-    t.datetime "updated_at",                         null: false
+    t.string   "reason_for_notification",     limit: 255, null: false
+    t.integer  "email_id",                    limit: 4,   null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
   add_index "sipity_notification_notifiable_contexts", ["email_id"], name: "idx_sipity_notification_notifiable_contexts_email_id", using: :btree

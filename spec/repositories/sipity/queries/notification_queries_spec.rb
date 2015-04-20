@@ -32,7 +32,7 @@ module Sipity
         end
 
         it 'will return the email objects' do
-          expect(test_repository.email_notifications_for(context: reason_for_notification, concerning: scope_for_notification)).
+          expect(test_repository.email_notifications_for(reason: reason_for_notification, scope: scope_for_notification)).
             to eq([email_to_send])
         end
       end

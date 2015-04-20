@@ -22,7 +22,7 @@ module Sipity
       private :action, :the_thing
 
       def call
-        repository.email_notifications_for(concerning: action, context: reason_for_notification).each do |email|
+        repository.email_notifications_for(scope: action, reason: reason_for_notification).each do |email|
           notifier.call(options_for_an_email(email))
         end
       end
