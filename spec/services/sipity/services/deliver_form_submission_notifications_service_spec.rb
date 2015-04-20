@@ -26,7 +26,7 @@ module Sipity
       its(:default_notifier) { should respond_to :call }
 
       before do
-        allow(action).to receive(:email_notifications).and_return([email])
+        allow(repository).to receive(:email_notifications_for).and_return([email])
         allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: the_thing, roles: role_for_to).and_return(to_emails)
         allow(repository).to receive(:user_emails_for_entity_and_roles).with(entity: the_thing, roles: role_for_cc).and_return(cc_emails)
       end
