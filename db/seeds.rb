@@ -55,6 +55,22 @@ ActiveRecord::Base.transaction do
     predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)
   end
 
+  $stdout.puts 'Creating research process names...'
+  research_process = [
+    ['resource_consulted', 'Print sources', 'Print sources'],
+    ['resource_consulted', 'Electronic journals', 'Electronic journals'],
+    ['resource_consulted', 'Databases accessed via Hesburgh Libraries', 'Databases accessed via Hesburgh Libraries'],
+    ['resource_consulted', 'Web sites or other internet research sources', 'Web sites or other internet research sources'],
+    ['resource_consulted', 'Hesburgh Libraries Rare Books and Special Collections and/or Archives', 'Hesburgh Libraries Rare Books and Special Collections and/or Archives'],
+    ['resource_consulted', 'Consultation with a librarian', 'Consultation with a librarian'],
+    ['citation_style', 'American Psychological Association', 'APA'],
+    ['citation_style', 'Chicago Manual of Style', 'Chicago'],
+    ['citation_style', 'Modern Language Association', 'MLA']
+  ]
+  research_process.each do |predicate_name, term_label, term_uri|
+    Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
+    predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)
+  end
 
   $stdout.puts 'Creating degree names...'
   [

@@ -20,6 +20,8 @@ module Sipity
       LANGUAGE = 'language'.freeze
       TEMPORAL_COVERAGE = 'temporal_coverage'.freeze
       SPATIAL_COVERAGE = 'spatial_coverage'.freeze
+      RESOURCE_CONSULTED_NAME = 'resource_consulted'.freeze
+      CITATION_STYLE_NAME = 'citation_style'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -40,7 +42,9 @@ module Sipity
           SUBJECT => SUBJECT,
           LANGUAGE => LANGUAGE,
           TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
-          SPATIAL_COVERAGE => SPATIAL_COVERAGE
+          SPATIAL_COVERAGE => SPATIAL_COVERAGE,
+          RESOURCE_CONSULTED_NAME => RESOURCE_CONSULTED_NAME,
+          CITATION_STYLE_NAME => CITATION_STYLE_NAME
         }
       )
     end
