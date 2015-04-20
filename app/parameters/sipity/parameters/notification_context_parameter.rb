@@ -3,7 +3,7 @@ module Sipity
     # Responsible for consolidating the objects necessary for sending a
     # notification.
     class NotificationContextParameter
-      NOTIFYING_CONTEXT_ACTION_IS_TAKEN = 'action_is_taken'.freeze
+      REASON_ACTION_IS_TAKEN = 'action_is_taken'.freeze
       attr_reader :scope, :reason, :the_thing, :requested_by, :on_behalf_of
       def initialize(**keywords)
         self.the_thing = keywords.fetch(:the_thing)
@@ -20,7 +20,7 @@ module Sipity
       private
 
       def default_reason
-        NOTIFYING_CONTEXT_ACTION_IS_TAKEN
+        REASON_ACTION_IS_TAKEN
       end
 
       attr_writer :scope, :the_thing, :requested_by, :on_behalf_of, :reason
