@@ -16,6 +16,7 @@ module Sipity
     include Queries::EnrichmentQueries
     include Queries::EventLogQueries
     include Queries::EventTriggerQueries
+    include Queries::NotificationQueries
     include Queries::ProcessingQueries
     include Queries::SimpleControlledVocabularyQueries
     include Queries::WorkQueries

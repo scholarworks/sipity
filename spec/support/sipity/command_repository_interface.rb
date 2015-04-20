@@ -141,6 +141,10 @@ module Sipity
     def doi_request_is_pending?(work)
     end
 
+    # @see ./app/repositories/sipity/queries/notification_queries.rb
+    def email_notifications_for(context:, concerning:)
+    end
+
     # @see ./app/repositories/sipity/commands/processing_commands.rb
     def existing_registered_state_changing_actions_for(entity:, strategy_state:)
     end
