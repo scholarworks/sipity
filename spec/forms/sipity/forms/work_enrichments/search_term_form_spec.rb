@@ -21,6 +21,18 @@ module Sipity
         it { should respond_to :spatial_coverage }
         it { should respond_to :spatial_coverage= }
 
+        context 'without specified values' do
+          before do
+            allow(repository).to receive(:work_attribute_values_for)
+          end
+          ['subject', 'language', 'temporal_coverage', 'spatial_coverage'].each do |key|
+            it "will retrieve the #{key} from the repository" do
+              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: key.to_s).and_return("#{key}_value")
+              expect(subject.send(key)).to eq("#{key}_value")
+            end
+          end
+        end
+
         context '#submit' do
           let(:user) { double('User') }
           let(:subject_attr) { 'Literature' }
@@ -29,10 +41,11 @@ module Sipity
           let(:spatial_coverage) { '20 sq miles' }
           context 'with valid data' do
             subject do
-              described_class.new(work: work, subject: subject_attr, language: language,
-                                  temporal_coverage: temporal_coverage, spatial_coverage: spatial_coverage,
-                                  repository: repository
-                                 )
+              described_class.new(
+                work: work, subject: subject_attr, language: language,
+                temporal_coverage: temporal_coverage, spatial_coverage: spatial_coverage,
+                repository: repository
+              )
             end
             before do
               expect(subject).to receive(:valid?).and_return(true)
