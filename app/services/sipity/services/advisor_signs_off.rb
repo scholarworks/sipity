@@ -35,13 +35,6 @@ module Sipity
 
       def handle_last_advisor_signoff
         repository.update_processing_state!(entity: form, to: resulting_strategy_state)
-        # TODO: Push these emails into state exit/entry
-        repository.send_notification_for_entity_trigger(
-          notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer', cc: 'creating_user'
-        )
-        repository.send_notification_for_entity_trigger(
-          notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user'
-        )
       end
 
       def last_advisor_to_signoff?

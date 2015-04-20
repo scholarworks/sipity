@@ -367,6 +367,22 @@ ActiveRecord::Base.transaction do
         named_container: Sipity::Models::Processing::StrategyAction,
         name: 'grad_school_signoff',
         emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
+      },
+      {
+        named_container: Sipity::Models::Processing::StrategyState,
+        name: 'under_grad_school_review',
+        emails: {
+          advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+          confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
+        }
+      },
+      {
+        named_container: Sipity::Models::Processing::StrategyState,
+        name: 'ready_for_ingest',
+        emails: {
+          advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+          confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
+        }
       }
     ].each do |email_config|
       named_container = email_config.fetch(:named_container)
@@ -390,6 +406,7 @@ ActiveRecord::Base.transaction do
             when Sipity::Models::Processing::StrategyAction
               Sipity::Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
             when Sipity::Models::Processing::StrategyState
+              Sipity::Parameters::NotificationContextParameter::REASON_ENTERED_STATE
             end
           end
           Sipity::Models::Notification::NotifiableContext.find_or_create_by!(
