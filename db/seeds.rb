@@ -308,60 +308,70 @@ ActiveRecord::Base.transaction do
       end
     end.save!
 
-    # Define associated emails by action
+    # Define associated emails by a named thing
     [
       {
-        action_name: 'submit_for_review',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'submit_for_review',
         emails: {
           confirmation_of_submit_for_review: { to: 'creating_user' },
           submit_for_review: { to: ['advisor', 'etd_reviewer'] }
         }
       },
       {
-        action_name: 'advisor_signoff',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'advisor_signoff',
         emails: {
           advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
           confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
         }
       },
       {
-        action_name: 'signoff_on_behalf_of',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'signoff_on_behalf_of',
         emails: {
           advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
           confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
         }
       },
       {
-        action_name: 'advisor_requests_change',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'advisor_requests_change',
         emails: {
           advisor_requests_change: { to: 'creating_user' }
         }
       },
       {
-        action_name: 'request_change_on_behalf_of',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'request_change_on_behalf_of',
         emails: {
           request_change_on_behalf_of: { to: 'creating_user' }
         }
       },
       {
-        action_name: 'respond_to_advisor_request',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'respond_to_advisor_request',
         emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
       },
       {
-        action_name: 'respond_to_grad_school_request',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'respond_to_grad_school_request',
         emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
       },
       {
-        action_name: 'grad_school_requests_change',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'grad_school_requests_change',
         emails: { grad_school_requests_change: { to: 'creating_user' } }
       },
       {
-        action_name: 'grad_school_signoff',
+        named_container: Sipity::Models::Processing::StrategyAction,
+        name: 'grad_school_signoff',
         emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
       }
     ].each do |email_config|
-      action_name = email_config.fetch(:action_name)
-      Sipity::Models::Processing::StrategyAction.where(name: action_name).each do |action|
+      named_container = email_config.fetch(:named_container)
+      name = email_config.fetch(:name)
+      named_container.where(name: name).each do |named_thing|
         email_config.fetch(:emails).each do |email_name, recipients|
           the_email = Sipity::Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
             recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
@@ -375,10 +385,16 @@ ActiveRecord::Base.transaction do
               end
             end
           end
-
+          reason_for_notification = begin
+            case named_thing
+            when Sipity::Models::Processing::StrategyAction
+              Sipity::Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
+            when Sipity::Models::Processing::StrategyState
+            end
+          end
           Sipity::Models::Notification::NotifiableContext.find_or_create_by!(
-            scope_for_notification: action,
-            reason_for_notification: Sipity::Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
+            scope_for_notification: named_thing,
+            reason_for_notification: reason_for_notification,
             email: the_email
           )
         end
