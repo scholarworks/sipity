@@ -20,12 +20,6 @@ module Sipity
           expect { subject.action_type = '__incorrect_type__' }.to raise_error(ArgumentError)
         end
 
-        context '#email_notifications' do
-          it 'will be an active record relation' do
-            expect(described_class.new.email_notifications).to be_a(ActiveRecord::Relation)
-          end
-        end
-
         context '#name' do
           it 'will convert the action name on write' do
             expect(described_class.new(name: :create?).name).to eq('new')
