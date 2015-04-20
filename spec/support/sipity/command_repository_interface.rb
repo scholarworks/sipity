@@ -118,7 +118,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def deliver_form_submission_notifications_for(scope:, the_thing:, requested_by: nil, on_behalf_of: nil)
+    def deliver_notification_for(scope:, the_thing:, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
