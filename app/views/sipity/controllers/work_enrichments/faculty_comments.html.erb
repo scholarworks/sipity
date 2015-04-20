@@ -1,0 +1,47 @@
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<div class="panel-tiles">
+
+  <%= simple_form_for(
+    model,
+    url: enrich_work_path(model.work, model.enrichment_type),
+    method: :post,
+    as: :work,
+    html: { class: 'simple-form panel panel-primary with-footer' }
+  ) do |f| %>
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+    <fieldset class="panel-body">
+      <legend class="panel-heading">
+        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_info.title_html"), class: 'panel-hint' %>
+      </legend>
+      <%= f.input :course, label: t('sipity/decorators/entitiy_enrichments.course'), input_html: { class: 'form-control' }  %>
+      <%= f.input :nature_of_supervision, label: t('sipity/decorators/entitiy_enrichments.nature_of_supervision'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
+      <% #TODO %>
+      <% # Change the input field to 2 dropdown box %>
+      <% # one for semester and one for year %>
+      <%= f.input :supervising_semester, label: t('sipity/decorators/entitiy_enrichments.supervising_semester'), as: :multi_value, input_html: { class: 'form-control' }  %>
+
+    </fieldset>
+
+    <fieldset class="panel-body">
+      <legend class="panel-heading">
+        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_evaluation.title_html"), class: 'panel-hint' %>
+      </legend>
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_evaluation.title_html"), class: 'panel-hint' %>
+      <%= f.input :quality_of_research, label: t('sipity/decorators/entitiy_enrichments.quality_of_research'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
+      <%= f.input :use_of_library_resources, label: t('sipity/decorators/entitiy_enrichments.use_of_library_resources'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
+    </fieldset>
+
+    <div class="panel-footer action-pane">
+      <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+    </div>
+  <% end %>
+
+</div>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>
