@@ -55,9 +55,8 @@ module Sipity
           end
         end
 
-        include Conversions::ConvertToBoolean
         def agree_to_terms_of_deposit=(value)
-          @agree_to_terms_of_deposit = convert_to_boolean(value)
+          @agree_to_terms_of_deposit = PowerConverter.convert_to_boolean(value)
         end
       end
     end

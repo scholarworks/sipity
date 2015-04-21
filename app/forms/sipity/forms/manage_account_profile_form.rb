@@ -30,9 +30,8 @@ module Sipity
 
       private
 
-      include Conversions::ConvertToBoolean
       def agreed_to_terms_of_service=(value)
-        @agreed_to_terms_of_service = convert_to_boolean(value)
+        @agreed_to_terms_of_service = PowerConverter.convert_to_boolean(value)
       end
 
       def default_repository
