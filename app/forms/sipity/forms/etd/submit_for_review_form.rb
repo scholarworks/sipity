@@ -46,12 +46,7 @@ module Sipity
         def save(requested_by:)
           super do
             repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
-            repository.send_notification_for_entity_trigger(
-              notification: "confirmation_of_submit_for_review", entity: work, acting_as: 'creating_user'
-            )
-            repository.send_notification_for_entity_trigger(
-              notification: "submit_for_review", entity: work, acting_as: ['etd_reviewer', 'advisor']
-            )
+            repository.deliver_notification_for(the_thing: work, scope: action, requested_by: requested_by)
           end
         end
 

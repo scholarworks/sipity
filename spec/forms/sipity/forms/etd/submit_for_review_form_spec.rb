@@ -58,10 +58,8 @@ module Sipity
           end
 
           it 'will send differing notifications to the creating user, etd reviewer, and advisor' do
-            expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'confirmation_of_submit_for_review', entity: work, acting_as: 'creating_user')
-            expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'submit_for_review', entity: work, acting_as: ['etd_reviewer', 'advisor'])
+            expect(repository).to receive(:deliver_notification_for).
+              with(the_thing: work, scope: action, requested_by: user)
             subject.submit(requested_by: user)
           end
         end

@@ -22,6 +22,7 @@ module Sipity
         mark_as_stale_existing_comments_for_new_processing_state
         destroy_existing_registered_state_changing_actions_for_new_processing_state
         transition_entity_to_new_processing_state
+        deliver_emails_for_transitioning_into_new_processing_state
       end
 
       private
@@ -37,6 +38,14 @@ module Sipity
 
       def transition_entity_to_new_processing_state
         entity.update!(strategy_state: processing_state)
+      end
+
+      def deliver_emails_for_transitioning_into_new_processing_state
+        repository.deliver_notification_for(scope: processing_state, the_thing: entity, reason: entered_processing_state_is_the_reason)
+      end
+
+      def entered_processing_state_is_the_reason
+        Parameters::NotificationContextParameter::REASON_ENTERED_STATE
       end
 
       include Conversions::ConvertToProcessingEntity

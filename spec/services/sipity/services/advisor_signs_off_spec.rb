@@ -1,7 +1,8 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', resulting_strategy_state: 'chubacabra') }
+      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action', on_behalf_of_collaborator: on_behalf_of) }
+      let(:on_behalf_of) { double('Collaborator') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
 
@@ -21,8 +22,8 @@ module Sipity
           subject.call
         end
         it 'will send an email to the creating user' do
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user')
+          expect(repository).to receive(:deliver_notification_for).
+            with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end
       end
@@ -33,13 +34,9 @@ module Sipity
           expect(repository).to receive(:update_processing_state!).and_call_original
           subject.call
         end
-        it 'will send emails to the etd_reviewers and creating user' do
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'advisor_signoff_is_complete', entity: form, acting_as: 'etd_reviewer', cc: 'creating_user')
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_advisor_signoff_is_complete', entity: form, acting_as: 'creating_user')
-          expect(repository).to receive(:send_notification_for_entity_trigger).
-            with(notification: 'confirmation_of_advisor_signoff', entity: form, acting_as: 'creating_user')
+        it 'will deliver form submission notifications' do
+          expect(repository).to receive(:deliver_notification_for).
+            with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end
       end

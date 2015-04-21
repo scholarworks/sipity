@@ -55,10 +55,8 @@ module Sipity
             subject.submit(requested_by: user)
           end
 
-          it 'will send creating user a note that the advisor has requested changes' do
-            expect(repository).to receive(:send_notification_for_entity_trigger).
-              with(notification: 'advisor_requests_change', entity: a_processing_comment, acting_as: ['creating_user']).
-              and_call_original
+          it 'will deliver form submission notifications for' do
+            expect(repository).to receive(:deliver_notification_for).and_call_original
             subject.submit(requested_by: user)
           end
 

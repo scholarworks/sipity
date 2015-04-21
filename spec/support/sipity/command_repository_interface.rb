@@ -117,6 +117,10 @@ module Sipity
     def default_pid_minter
     end
 
+    # @see ./app/repositories/sipity/commands/notification_commands.rb
+    def deliver_notification_for(scope:, the_thing:, **keywords)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def destroy_a_work(work:)
     end
@@ -135,6 +139,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/doi_queries.rb
     def doi_request_is_pending?(work)
+    end
+
+    # @see ./app/repositories/sipity/queries/notification_queries.rb
+    def email_notifications_for(reason:, scope:)
     end
 
     # @see ./app/repositories/sipity/commands/processing_commands.rb

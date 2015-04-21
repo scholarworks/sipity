@@ -1,9 +1,11 @@
 module Sipity
   module Services
     # The entry point into the notification (via email) subsystem.
-    class Notifier
+    module Notifier
+      module_function
+
       # Providing a singular end point for sending messages
-      def self.deliver(options = {})
+      def deliver(options = {})
         notification_name = options.fetch(:notification)
         notificaton_container = options.fetch(:nonotificaton_container) { Sipity::Mailers::EmailNotifier }
         unless notificaton_container.respond_to?(notification_name)
@@ -14,6 +16,10 @@ module Sipity
         entity = options.fetch(:entity)
         email_notifier = notificaton_container.public_send(notification_name, entity: entity, to: to, cc: cc, bcc: bcc)
         email_notifier.deliver_now
+      end
+
+      class << self
+        alias_method :call, :deliver
       end
     end
   end

@@ -46,6 +46,8 @@ module Sipity
           # Consider pushing some of the behavior down into the repository.
           repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
           repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+
+          # TODO: See https://github.com/ndlib/sipity/issues/506
           repository.send_notification_for_entity_trigger(
             notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
           )

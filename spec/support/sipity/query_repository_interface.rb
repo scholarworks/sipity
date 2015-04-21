@@ -81,6 +81,10 @@ module Sipity
     def doi_request_is_pending?(work)
     end
 
+    # @see ./app/repositories/sipity/queries/notification_queries.rb
+    def email_notifications_for(reason:, scope:)
+    end
+
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def existing_work_attributes_for(work)
     end
