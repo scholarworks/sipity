@@ -77,7 +77,7 @@ Rails.application.configure do
     user_name:            Figaro.env.smtp_user_name!,
     password:             Figaro.env.smtp_password,
     authentication:       Figaro.env.smtp_authentication_type!,
-    enable_starttls_auto: Sipity::Conversions::ConvertToBoolean.call(Figaro.env.smtp_enable_starttls_auto!)
+    enable_starttls_auto: true
   }
 
   # Disable automatic flushing of the log to improve performance.
