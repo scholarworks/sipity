@@ -1,5 +1,13 @@
 require 'power_converter'
 
+PowerConverter.define_conversion_for(:boolean) do |input|
+  case input
+  when false, 0, '0', 'false', 'no', nil then false
+  else
+    true
+  end
+end
+
 PowerConverter.define_conversion_for(:strategy_state) do |input, strategy|
   case input
   when Sipity::Models::Processing::StrategyState
