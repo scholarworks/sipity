@@ -13,6 +13,10 @@ module Sipity
         'master_thesis' => 'master_thesis'
       }.freeze
 
+      has_many :submission_window_work_types, dependent: :destroy
+
+      has_many :submission_windows, through: :submission_window_work_types
+
       # As I don't have a means for assigning roles for a given processing type
       # I need a controlled vocabulary for roles.
       enum(name: NAMED_WORK_TYPES_FOR_ENUM)
