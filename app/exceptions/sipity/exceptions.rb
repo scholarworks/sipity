@@ -22,6 +22,13 @@ module Sipity
       end
     end
 
+    # Indicates that the returned value from the runner was incorrectly built.
+    class InvalidHandledResponseStatus < RuntimeError
+      def initialize(input, expected_class: Symbol)
+        super("Expected #{input} to be a #{expected_class}; It was a #{input.class}")
+      end
+    end
+
     # When you go about building an object that has method missing expectations
     # you may need to raise an exception if you are planning to catch a
     # method_name via message missing, but won't because the method is already
