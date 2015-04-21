@@ -37,9 +37,8 @@ module Sipity
 
         private
 
-        include Conversions::ConvertToBoolean
         def agree_to_signoff=(value)
-          @agree_to_signoff = convert_to_boolean(value)
+          @agree_to_signoff = PowerConverter.convert_to_boolean(value)
         end
 
         def view_context

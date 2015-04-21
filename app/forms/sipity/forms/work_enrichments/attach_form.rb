@@ -53,13 +53,11 @@ module Sipity
           @ids_for_deletion || []
         end
 
-        include Conversions::ConvertToBoolean
-
         def collect_files_for_deletion_and_update(value)
           @ids_for_deletion = []
           @attachments_metadata = {}
           value.each do |_key, attributes|
-            if convert_to_boolean(attributes['delete'])
+            if PowerConverter.convert_to_boolean(attributes['delete'])
               @ids_for_deletion << attributes.fetch('id')
             else
               @attachments_metadata[attributes.fetch('id')] = extract_permitted_attributes(attributes, 'name')
