@@ -71,13 +71,13 @@ module Sipity
         Services::UpdateEntityProcessingState.call(entity: entity, processing_state: to, repository: self)
       end
 
-      def attach_files_to(work:, files:, user:, pid_minter: default_pid_minter)
+      def attach_files_to(work:, files:, predicate_name: 'attachment', **keywords)
         # I know I want the user, but I'm not certain what we are doing with it
         # just yet.
-        _user = user
+        pid_minter =  keywords.fetch(:pid_minter) { default_pid_minter }
         Array.wrap(files).each do |file|
           pid = pid_minter.call
-          Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: 'attachment')
+          Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: predicate_name)
         end
       end
 

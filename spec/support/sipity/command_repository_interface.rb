@@ -30,7 +30,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def attach_files_to(work:, files:, user:, pid_minter: default_pid_minter)
+    def attach_files_to(work:, files:, predicate_name: 'attachment', **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
