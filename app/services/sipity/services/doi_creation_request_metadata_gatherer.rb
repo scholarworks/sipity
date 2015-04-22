@@ -15,12 +15,10 @@ module Sipity
       end
 
       def initialize(work, options = {})
-        @work = work
+        self.work = work
         # TODO: I don't want to craft a custom repository
-        @repository = options.fetch(:repository) { default_repository }
+        self.repository = options.fetch(:repository) { default_repository }
       end
-      attr_reader :work, :repository
-      private :work, :repository
 
       def as_hash
         {
@@ -33,6 +31,8 @@ module Sipity
       end
 
       private
+
+      attr_accessor :work, :repository
 
       # The permanent URL in which we promise that you can always find this
       # object.

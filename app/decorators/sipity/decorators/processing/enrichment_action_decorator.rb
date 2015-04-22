@@ -6,11 +6,12 @@ module Sipity
       class EnrichmentActionDecorator < BaseDecorator
         def initialize(options = {})
           super
-          @is_complete = options.fetch(:is_complete) { false }
-          @is_a_prerequisite = options.fetch(:is_a_prerequisite) { false }
+          self.is_complete = options.fetch(:is_complete) { false }
+          self.is_a_prerequisite = options.fetch(:is_a_prerequisite) { false }
         end
 
-        attr_reader :is_complete, :is_a_prerequisite
+        attr_accessor :is_complete, :is_a_prerequisite
+        private :is_complete=, :is_a_prerequisite=
 
         alias_method :is_complete?, :is_complete
         alias_method :is_a_prerequisite?, :is_a_prerequisite

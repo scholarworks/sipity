@@ -6,14 +6,13 @@ module Sipity
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)
-        @publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
-        @enrichment_type = attributes.fetch(:enrichment_type, default_enrichment_type)
-        @repository = attributes.fetch(:repository) { default_repository }
+        self.publisher, @publication_date = attributes.values_at(:publisher, :publication_date)
+        self.enrichment_type = attributes.fetch(:enrichment_type, default_enrichment_type)
+        self.repository = attributes.fetch(:repository) { default_repository }
       end
 
-      attr_accessor :work
-      attr_reader :enrichment_type, :repository, :publisher, :publication_date
-      private :work=, :repository
+      attr_accessor :work, :enrichment_type, :repository, :publisher, :publication_date
+      private(:work=, :repository, :enrichment_type=, :repository=, :publisher=, :publication_date=)
 
       delegate :title, to: :work
 

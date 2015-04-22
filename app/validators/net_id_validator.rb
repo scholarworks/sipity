@@ -2,11 +2,8 @@
 class NetIdValidator < ActiveModel::EachValidator
   def initialize(options = {})
     super
-    @netid_remote_validator = options.fetch(:netid_remote_validator) { default_netid_remote_validator }
+    self.netid_remote_validator = options.fetch(:netid_remote_validator) { default_netid_remote_validator }
   end
-
-  attr_reader :netid_remote_validator
-  private :netid_remote_validator
 
   def default_netid_remote_validator
     Rails.application.config.default_netid_remote_validator
@@ -17,4 +14,8 @@ class NetIdValidator < ActiveModel::EachValidator
     # TODO: validate netid is valid one through ldap
     record.errors.add(attribute, options[:message] || :invalid) unless netid_remote_validator.call(value)
   end
+
+  private
+
+  attr_accessor :netid_remote_validator
 end

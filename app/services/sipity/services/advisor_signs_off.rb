@@ -7,12 +7,14 @@ module Sipity
       end
 
       def initialize(form:, requested_by:, repository: default_repository)
-        @form = form
-        @repository = repository
-        @requested_by = requested_by
+        self.form = form
+        self.repository = repository
+        self.requested_by = requested_by
       end
 
-      attr_reader :form, :repository, :requested_by
+      attr_accessor :form, :repository, :requested_by
+      private(:form=, :repository=, :requested_by=)
+
       delegate :resulting_strategy_state, :action, to: :form
 
       def call

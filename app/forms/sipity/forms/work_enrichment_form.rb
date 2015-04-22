@@ -5,9 +5,10 @@ module Sipity
     class WorkEnrichmentForm < ProcessingActionForm
       def initialize(attributes = {})
         super
-        @enrichment_type = attributes.fetch(:enrichment_type) { default_enrichment_type }
+        self.enrichment_type = attributes.fetch(:enrichment_type) { default_enrichment_type }
       end
-      attr_reader :enrichment_type
+      attr_accessor :enrichment_type
+      private(:enrichment_type=)
 
       private
 

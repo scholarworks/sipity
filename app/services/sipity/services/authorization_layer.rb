@@ -32,12 +32,10 @@ module Sipity
       end
 
       def initialize(context, collaborators = {})
-        @context = context
-        @user = context.current_user
-        @policy_authorizer = collaborators.fetch(:policy_authorizer) { default_policy_authorizer }
+        self.context = context
+        self.user = context.current_user
+        self.policy_authorizer = collaborators.fetch(:policy_authorizer) { default_policy_authorizer }
       end
-      attr_reader :user, :context, :policy_authorizer
-      private :user, :context, :policy_authorizer
 
       # Responsible for enforcing policies on the :action_to_authorizes_and_entity_pairs.
       #
@@ -64,6 +62,8 @@ module Sipity
       end
 
       private
+
+      attr_accessor :user, :context, :policy_authorizer
 
       def default_policy_authorizer
         Policies.method(:authorized_for?)

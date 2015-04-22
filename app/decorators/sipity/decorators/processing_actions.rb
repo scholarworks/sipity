@@ -3,13 +3,13 @@ module Sipity
     # For the given :user and :entity what are the available actions?
     class ProcessingActions
       def initialize(user:, entity:, repository: default_repository, action_decorator: default_action_decorator)
-        @user = user
-        @entity = entity
-        @repository = repository
-        @action_decorator = action_decorator
+        self.user = user
+        self.entity = entity
+        self.repository = repository
+        self.action_decorator = action_decorator
       end
-      attr_reader :user, :entity, :repository, :action_decorator
-      private :repository, :action_decorator
+      attr_accessor :user, :entity, :repository, :action_decorator
+      private :repository, :action_decorator, :user=, :entity=, :repository=, :action_decorator=
 
       def enrichment_actions
         fetch(Models::Processing::StrategyAction::ENRICHMENT_ACTION)

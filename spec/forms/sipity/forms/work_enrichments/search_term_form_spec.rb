@@ -13,13 +13,9 @@ module Sipity
 
         it { should respond_to :work }
         it { should respond_to :subject }
-        it { should respond_to :subject= }
         it { should respond_to :language }
-        it { should respond_to :language= }
         it { should respond_to :temporal_coverage }
-        it { should respond_to :temporal_coverage= }
         it { should respond_to :spatial_coverage }
-        it { should respond_to :spatial_coverage= }
 
         context 'without specified values' do
           before do

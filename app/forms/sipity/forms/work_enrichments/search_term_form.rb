@@ -5,16 +5,14 @@ module Sipity
       class SearchTermForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          @subject = attributes.fetch(:subject) { subject_from_work }
-          @language = attributes.fetch(:language) { language_from_work }
-          @temporal_coverage = attributes.fetch(:temporal_coverage) { temporal_coverage_from_work }
-          @spatial_coverage = attributes.fetch(:spatial_coverage) { spatial_coverage_from_work }
+          self.subject = attributes.fetch(:subject) { subject_from_work }
+          self.language = attributes.fetch(:language) { language_from_work }
+          self.temporal_coverage = attributes.fetch(:temporal_coverage) { temporal_coverage_from_work }
+          self.spatial_coverage = attributes.fetch(:spatial_coverage) { spatial_coverage_from_work }
         end
 
-        attr_accessor :subject
-        attr_accessor :language
-        attr_accessor :temporal_coverage
-        attr_accessor :spatial_coverage
+        attr_accessor :subject, :language, :temporal_coverage, :spatial_coverage
+        private(:subject=, :language=, :temporal_coverage=, :spatial_coverage=)
 
         private
 

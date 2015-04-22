@@ -5,7 +5,7 @@ module Sipity
       class StateAdvancingActionDecorator < BaseDecorator
         def initialize(options = {})
           super
-          @repository = options.fetch(:repository) { default_repository }
+          self.repository = options.fetch(:repository) { default_repository }
         end
 
         def availability_state
@@ -18,8 +18,7 @@ module Sipity
 
         private
 
-        attr_reader :repository
-        private :repository
+        attr_accessor :repository
 
         def default_repository
           QueryRepository.new

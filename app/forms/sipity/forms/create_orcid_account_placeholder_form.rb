@@ -5,9 +5,11 @@ module Sipity
       ORCID_IDENTIFIER_REGEXP = /\A\w{4}-\w{4}-\w{4}-\w{4}\Z/
 
       def initialize(attributes = {})
-        @identifier, @name = attributes.values_at(:identifier, :name)
+        self.identifier = attributes[:identifier]
+        self.name = attributes[:name]
       end
-      attr_reader :identifier, :name
+      attr_accessor :identifier, :name
+      private(:identifier=, :name=)
 
       validates :identifier, presence: true, format: { with: ORCID_IDENTIFIER_REGEXP }
       validates :name, presence: true

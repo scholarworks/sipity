@@ -4,9 +4,11 @@ module Sipity
     class AssignACitationForm < WorkEnrichmentForm
       def initialize(attributes = {})
         super
-        @type, @citation = attributes.values_at(:type, :citation)
+        self.type = attributes[:type]
+        self.citation = attributes[:citation]
       end
-      attr_reader :type, :citation
+      attr_accessor :type, :citation
+      private :type=, :citation=
 
       validates :citation, presence: true
       validates :type, presence: true
