@@ -20,7 +20,7 @@ module Sipity
         title
       end
 
-      Processing.is_a_processing_entity(self)
+      Processing.configure_as_a_processible_entity(self)
       alias_attribute :processing_status, :processing_state
 
       # TODO: Extract to TransientAnswer

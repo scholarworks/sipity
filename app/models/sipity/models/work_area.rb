@@ -9,7 +9,7 @@ module Sipity
 
       has_many :submission_windows, dependent: :destroy
 
-      Processing.is_a_processing_entity(self)
+      Processing.configure_as_a_processible_entity(self)
 
       # @!attribute [rw] slug
       #

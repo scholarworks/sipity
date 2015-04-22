@@ -5,7 +5,7 @@ module Sipity
       module_function
 
       # A method for composition; I'm going this route instead of the concerns.
-      def is_a_processing_entity(base_class)
+      def configure_as_a_processible_entity(base_class)
         class_name = 'Sipity::Models::Processing::Entity'
         base_class.has_one(:processing_entity, -> { includes :strategy_state }, as: :proxy_for, dependent: :destroy, class_name: class_name)
 
