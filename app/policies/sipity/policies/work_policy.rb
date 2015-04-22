@@ -17,7 +17,7 @@ module Sipity
       private
 
       def method_missing(method_name, *)
-        Processing::WorkProcessingPolicy.call(user: user, entity: entity, action_to_authorize: method_name)
+        Processing::ProcessingEntityPolicy.call(user: user, entity: entity, action_to_authorize: method_name)
       end
 
       # Responsible for building a scoped query to find a collection of

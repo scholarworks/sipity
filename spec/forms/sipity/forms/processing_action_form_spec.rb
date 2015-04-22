@@ -7,7 +7,7 @@ module Sipity
       let(:repository) { CommandRepositoryInterface.new }
       subject { described_class.new(work: work, repository: repository) }
 
-      its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+      its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
       its(:to_key) { should be_empty }
       its(:to_param) { should be_nil }
       its(:persisted?) { should eq(false) }

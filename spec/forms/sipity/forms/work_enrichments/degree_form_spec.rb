@@ -11,7 +11,7 @@ module Sipity
         subject { described_class.new(work: work, repository: repository) }
 
         its(:enrichment_type) { should eq('degree') }
-        its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+        its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
 
         it { should respond_to :work }
         it { should respond_to :degree }

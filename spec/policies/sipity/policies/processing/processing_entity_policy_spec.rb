@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Policies
     module Processing
-      RSpec.describe WorkProcessingPolicy do
+      RSpec.describe ProcessingEntityPolicy do
         let(:user) { User.new(id: '1') }
         let(:work) { Models::Work.new(id: '2') }
         let(:repository) { double('Repository') }
