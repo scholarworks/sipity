@@ -22,6 +22,13 @@ module Sipity
       end
     end
 
+    # The object did not implement the expected interface.
+    class InterfaceExpectationError < RuntimeError
+      def initialize(object:, expectation:)
+        super("Expected #{object} to implement ##{expectation}")
+      end
+    end
+
     # Indicates that the returned value from the runner was incorrectly built.
     class InvalidHandledResponseStatus < RuntimeError
       def initialize(input, expected_class: Symbol)
