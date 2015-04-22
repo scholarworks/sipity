@@ -48,6 +48,8 @@ Rails.application.routes.draw do
   get 'start', to: redirect('/works/new'), as: 'start'
 
 
+  get 'work_areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#show'
+
   # I need parentheses or `{ }` for the block, because of when the blocks are
   # bound.
   get(
