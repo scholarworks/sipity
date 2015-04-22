@@ -12,5 +12,15 @@ module Sipity
   # @see Sipity::Parameters::HandledResponseParameter
   # @see Sipity::Runners::BaseRunner
   module ResponseHandlers
+    module_function
+
+    def handle_response(context:, handled_response:, container:)
+      response_handler = build_response_handler(container: container, handled_response_status: handled_response.status)
+      response_handler.respond(context: context, handled_response: handled_response)
+    end
+
+    def build_response_handler(container:, handled_response_status:)
+      container.qualified_const_get("#{handled_response_status.to_s.classify}Response")
+    end
   end
 end
