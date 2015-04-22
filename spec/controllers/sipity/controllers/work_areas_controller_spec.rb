@@ -8,7 +8,7 @@ module Sipity
       # REVIEW: It is possible the runner will return a well formed object
       let(:runner) { double('Runner', run: [status, work_area]) }
       context 'configuration' do
-        its(:runner_container) { should eq(Sipity::Runners::WorkRunners) }
+        its(:runner_container) { should eq(Sipity::Runners::WorkAreaRunners) }
         its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkAreaHandler) }
       end
 

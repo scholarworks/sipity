@@ -5,7 +5,7 @@ module Sipity
     # @note This is part of the Sipity::ResponseHandlers experimentation.
     class WorkAreasController < ApplicationController
       class_attribute :response_handler_container
-      self.runner_container = Sipity::Runners::WorkRunners
+      self.runner_container = Sipity::Runners::WorkAreaRunners
       self.response_handler_container = Sipity::ResponseHandlers::WorkAreaHandler
 
       def show
