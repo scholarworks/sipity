@@ -23,6 +23,7 @@ module Sipity
       end
 
       def call
+        find_or_create_the_work_area_concept!
         create_work_area!
         create_processing_strategy!
         create_work_area_processing_entity!
@@ -33,18 +34,28 @@ module Sipity
       private
 
       attr_accessor :work_area
-      attr_reader :processing_strategy, :work_area_managers
+      attr_reader :processing_strategy, :work_area_managers, :application_concept
 
       delegate :slug, to: :work_area
+
+      def find_or_create_the_work_area_concept!
+        @application_concept ||= begin
+          Models::ApplicationConcept.find_by(
+            class_name: work_area.class.to_s
+          ) || Models::ApplicationConcept.create!(
+            class_name: work_area.class.to_s, slug: 'areas', name: 'Work Area'
+          )
+        end
+      end
 
       def create_work_area!
         work_area.save! unless work_area.persisted?
       end
 
       def create_processing_strategy!
-        # REVIEW: Is there a generalized Work Area processing strategy that we
-        #   should be creating?
-        @processing_strategy ||= Models::Processing::Strategy.create!(proxy_for: work_area, name: "#{slug} processing strategy")
+        @processing_strategy ||= Models::Processing::Strategy.create!(
+          proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
+        )
       end
 
       def create_work_area_processing_entity!
