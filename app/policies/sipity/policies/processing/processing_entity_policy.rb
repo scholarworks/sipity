@@ -11,7 +11,7 @@ module Sipity
       #
       # @note This class implements method_missing in an attempt to splice in
       #   this policy into Sipity's interactions.
-      class WorkProcessingPolicy
+      class ProcessingEntityPolicy
         # Exposed as a convenience method and the public interface into the Policy
         # subsystem.
         #

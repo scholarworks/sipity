@@ -8,12 +8,6 @@ module Sipity
     # @see [Pundit gem](http://rubygems.org/gems/pundit) for more on object
     #   oriented authorizaiton.
     class WorkPolicy < BasePolicy
-      def initialize(user, work)
-        super(user, work)
-      end
-      attr_reader :original_entity
-      private :original_entity
-
       define_action_to_authorize :create? do
         return false unless user.present?
         return false if entity.persisted?
@@ -23,7 +17,7 @@ module Sipity
       private
 
       def method_missing(method_name, *)
-        Processing::WorkProcessingPolicy.call(user: user, entity: entity, action_to_authorize: method_name)
+        Processing::ProcessingEntityPolicy.call(user: user, entity: entity, action_to_authorize: method_name)
       end
 
       # Responsible for building a scoped query to find a collection of

@@ -2,7 +2,7 @@ module Sipity
   module Forms
     # Submit a request for a DOI for the given Work
     class RequestADoiForm < BaseForm
-      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
+      self.policy_enforcer = Policies::Processing::ProcessingEntityPolicy
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)

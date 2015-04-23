@@ -13,7 +13,7 @@ module Sipity
         subject { described_class.new(base_options) }
 
         its(:enrichment_type) { should eq('signoff_on_behalf_of') }
-        its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+        its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
 
         it { should respond_to :work }
 

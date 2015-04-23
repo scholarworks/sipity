@@ -11,7 +11,7 @@ module Sipity
           allow(repository).to receive(:find_or_initialize_collaborators_by).and_return(Models::Collaborator.new)
         end
 
-        its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+        its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
 
         it { should respond_to :work }
         its(:enrichment_type) { should eq('collaborator') }

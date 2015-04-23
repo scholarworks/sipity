@@ -15,28 +15,13 @@ module Sipity
       has_many :access_rights, as: :entity, dependent: :destroy
       has_many :transient_answers, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
-      has_one(
-        :processing_entity,
-        -> { includes :strategy_state },
-        as: :proxy_for,
-        dependent: :destroy,
-        class_name: 'Sipity::Models::Processing::Entity'
-      )
 
       def to_s
         title
       end
 
-      # @!attribute [rw] :processing_state The processing state of the work.
-      #   @return [String]
-      delegate :processing_state, to: :processing_entity, allow_nil: true
+      Processing.configure_as_a_processible_entity(self)
       alias_attribute :processing_status, :processing_state
-
-      def to_processing_entity
-        # This is a bit of a short cut, perhaps I should check if its persisted?
-        # But I'll settle for this right now.
-        processing_entity || fail(Exceptions::ProcessingEntityConversionError, self)
-      end
 
       # TODO: Extract to TransientAnswer
       ALREADY_PUBLISHED = 'already_published'.freeze

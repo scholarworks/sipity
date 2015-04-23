@@ -13,7 +13,7 @@ module Sipity
         end
 
         its(:enrichment_type) { should eq('describe') }
-        its(:policy_enforcer) { should eq Policies::Processing::WorkProcessingPolicy }
+        its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
 
         it { should respond_to :work }
         it { should respond_to :title }

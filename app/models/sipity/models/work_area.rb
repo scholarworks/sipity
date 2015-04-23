@@ -9,6 +9,8 @@ module Sipity
 
       has_many :submission_windows, dependent: :destroy
 
+      Processing.configure_as_a_processible_entity(self)
+
       # @!attribute [rw] slug
       #
       #   A URI safe string that can be used as a "directory" of an application

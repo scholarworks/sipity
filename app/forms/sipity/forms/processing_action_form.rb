@@ -22,7 +22,7 @@ module Sipity
       def render(*)
       end
 
-      self.policy_enforcer = Policies::Processing::WorkProcessingPolicy
+      self.policy_enforcer = Policies::Processing::ProcessingEntityPolicy
 
       def initialize(attributes = {})
         self.work = attributes.fetch(:work)

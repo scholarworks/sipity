@@ -12,6 +12,16 @@ module Sipity
 
       subject { described_class.new }
 
+      context '#to_processing_entity' do
+        it 'will raise an exception if one has not been created' do
+          expect { subject.to_processing_entity }.to raise_error(Exceptions::ProcessingEntityConversionError)
+        end
+        it 'will return the existing process entity' do
+          expect_processing_entity = subject.build_processing_entity
+          expect(subject.to_processing_entity).to eq(expect_processing_entity)
+        end
+      end
+
       it 'will have many .submission_windows' do
         expect(subject.submission_windows).to be_a(ActiveRecord::Relation)
       end
