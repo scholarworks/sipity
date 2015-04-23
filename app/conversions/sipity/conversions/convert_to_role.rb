@@ -10,6 +10,10 @@ module Sipity
         return input if input.is_a?(Models::Role)
         case input
         when String, Symbol then
+          # I am willing to do find_or_create_by! because the names are
+          # "controlled" via an enumeration. So there is an acknowledgement that
+          # if something doesn't exist, its permissible to exist if its part
+          # of the Models::Role name enumeration.
           return Models::Role.find_or_create_by!(name: input)
         end
         fail Exceptions::RoleConversionError, input

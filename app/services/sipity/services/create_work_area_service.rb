@@ -16,6 +16,7 @@ module Sipity
       def initialize(slug:, **keywords)
         partial_suffix = keywords.fetch(:partial_suffix, slug)
         demodulized_class_prefix_name = keywords.fetch(:demodulized_class_prefix_name, slug)
+        self.work_area_managers = keywords.fetch(:work_area_managers, [])
         self.work_area = Models::WorkArea.new(
           slug: slug, partial_suffix: partial_suffix, demodulized_class_prefix_name: demodulized_class_prefix_name
         )
@@ -25,10 +26,14 @@ module Sipity
         create_work_area!
         create_processing_strategy!
         create_work_area_processing_entity!
+        associate_work_area_manager_with_processing_strategy!
         work_area
       end
 
       private
+
+      attr_accessor :work_area
+      attr_reader :processing_strategy, :work_area_managers
 
       delegate :slug, to: :work_area
 
@@ -37,6 +42,8 @@ module Sipity
       end
 
       def create_processing_strategy!
+        # REVIEW: Is there a generalized Work Area processing strategy that we
+        #   should be creating?
         @processing_strategy ||= Models::Processing::Strategy.create!(proxy_for: work_area, name: "#{slug} processing strategy")
       end
 
@@ -44,8 +51,24 @@ module Sipity
         work_area.create_processing_entity!(strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state)
       end
 
-      attr_accessor :work_area
-      attr_reader :processing_strategy
+      def associate_work_area_manager_with_processing_strategy!
+        strategy_role = Models::Processing::StrategyRole.create!(role: work_area_manager_role, strategy: processing_strategy)
+        work_area_managers.each do |manager|
+          Models::Processing::EntitySpecificResponsibility.create!(
+            strategy_role: strategy_role,
+            entity: work_area.processing_entity,
+            actor: manager
+          )
+        end
+      end
+
+      def work_area_manager_role
+        @work_area_manager_role ||= Conversions::ConvertToRole.call(Models::Role::WORK_AREA_MANAGER)
+      end
+
+      def work_area_managers=(managers)
+        @work_area_managers = Array.wrap(managers).map { |manager| Conversions::ConvertToProcessingActor.call(manager) }
+      end
     end
   end
 end
