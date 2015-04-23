@@ -3,14 +3,15 @@ require 'rails_helper'
 module Sipity
   module Services
     RSpec.describe CreateWorkAreaService do
+      let(:user) { Sipity::Factories.create_user }
 
       it 'will create the WorkArea application concept if none exist' do
-        work_area = described_class.call(slug: 'worm', work_area_managers: actor)
+        work_area = described_class.call(slug: 'worm', work_area_managers: user)
         expect(Models::ApplicationConcept.where(class_name: work_area.class).count).to eq(1)
       end
 
       it 'will create a Processing Strategy for the ApplicationConcept and not the WorkArea' do
-        work_area = described_class.call(slug: 'worm', work_area_managers: actor)
+        work_area = described_class.call(slug: 'worm', work_area_managers: user)
 
         expect(Models::Processing::Strategy.where(proxy_for: work_area).count).to eq(0)
 
@@ -20,24 +21,23 @@ module Sipity
         expect(Models::Processing::Strategy.last.proxy_for).to eq(application_concept)
       end
 
-      it 'will create the bare-bones entries based on the slug' do
-        expect do
-          expect(described_class.call(slug: 'worm')).to be_a(Models::WorkArea)
-        end.to change { Models::WorkArea.count }.by(1)
-      end
-
-      let(:actor) { Models::Processing::Actor.new(id: 2, proxy_for_id: 3, proxy_for_type: 'User') }
       it 'will grant permission specific permission but not general permission' do
-        work_area = described_class.call(slug: 'worm', work_area_managers: actor)
+        work_area = described_class.call(slug: 'worm', work_area_managers: user)
 
         expect(
           Models::Processing::EntitySpecificResponsibility.where(
             entity: work_area.processing_entity,
-            actor_id: actor.id
+            actor: Conversions::ConvertToProcessingActor.call(user)
           ).count
         ).to eq(1)
 
         expect(Models::Processing::StrategyResponsibility.count).to eq(0)
+      end
+
+      it 'will grant permission to show the work area if a work_area_manager is given' do
+        work_area = described_class.call(slug: 'worm', work_area_managers: user)
+        actual_policy_anwer = Policies::Processing::ProcessingEntityPolicy.call(user: user, entity: work_area, action_to_authorize: 'show')
+        expect(actual_policy_anwer).to be_truthy
       end
     end
   end

@@ -28,13 +28,14 @@ module Sipity
         create_processing_strategy!
         create_work_area_processing_entity!
         associate_work_area_manager_with_processing_strategy!
+        grant_permission_for_the_work_area_manager_to_see_the_area!
         work_area
       end
 
       private
 
       attr_accessor :work_area
-      attr_reader :processing_strategy, :work_area_managers, :application_concept
+      attr_reader :processing_strategy, :work_area_managers, :application_concept, :strategy_role
 
       delegate :slug, to: :work_area
 
@@ -63,7 +64,7 @@ module Sipity
       end
 
       def associate_work_area_manager_with_processing_strategy!
-        strategy_role = Models::Processing::StrategyRole.create!(role: work_area_manager_role, strategy: processing_strategy)
+        @strategy_role = Models::Processing::StrategyRole.create!(role: work_area_manager_role, strategy: processing_strategy)
         work_area_managers.each do |manager|
           Models::Processing::EntitySpecificResponsibility.create!(
             strategy_role: strategy_role,
@@ -71,6 +72,16 @@ module Sipity
             actor: manager
           )
         end
+      end
+
+      def grant_permission_for_the_work_area_manager_to_see_the_area!
+        strategy_action = Models::Processing::StrategyAction.create!(
+          strategy: processing_strategy, name: 'show', allow_repeat_within_current_state: true
+        )
+        state_action = Models::Processing::StrategyStateAction.create!(
+          strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
+        )
+        Models::Processing::StrategyStateActionPermission.create!(strategy_role: strategy_role, strategy_state_action: state_action)
       end
 
       def work_area_manager_role
