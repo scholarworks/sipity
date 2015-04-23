@@ -23,7 +23,7 @@ module Sipity
       end
 
       def call
-        find_or_create_the_work_area_concept!
+        find_or_create_the_work_area_application_concept!
         create_work_area!
         create_processing_strategy!
         create_work_area_processing_entity!
@@ -38,7 +38,7 @@ module Sipity
 
       delegate :slug, to: :work_area
 
-      def find_or_create_the_work_area_concept!
+      def find_or_create_the_work_area_application_concept!
         @application_concept ||= begin
           Models::ApplicationConcept.find_by(
             class_name: work_area.class.to_s
