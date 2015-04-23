@@ -30,6 +30,7 @@ module Sipity
       CREATING_USER = 'creating_user'.freeze
       ADVISOR = 'advisor'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
+      WORK_AREA_MANAGER = 'work_area_manager'.freeze
 
       # As I don't have a means for assigning roles for a given processing type
       # I need a controlled vocabulary for roles.
@@ -37,7 +38,8 @@ module Sipity
         name: {
           CREATING_USER => CREATING_USER,
           ETD_REVIEWER => ETD_REVIEWER,
-          ADVISOR => ADVISOR
+          ADVISOR => ADVISOR,
+          WORK_AREA_MANAGER => WORK_AREA_MANAGER
         }
       )
 
