@@ -30,14 +30,15 @@ module Sipity
       end
 
       def create_processing_strategy!
-        self.processing_strategy ||= Models::Processing::Strategy.create!(proxy_for: work_area, name: "#{slug} processing strategy")
+        @processing_strategy ||= Models::Processing::Strategy.create!(proxy_for: work_area, name: "#{slug} processing strategy")
       end
 
       def create_work_area_processing_entity!
         work_area.create_processing_entity!(strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state)
       end
 
-      attr_accessor :work_area, :processing_strategy
+      attr_accessor :work_area
+      attr_reader :processing_strategy
     end
   end
 end
