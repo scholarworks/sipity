@@ -35,9 +35,18 @@ module Sipity
       end
 
       it 'will grant permission to show the work area if a work_area_manager is given' do
+        another_work_area = described_class.call(slug: 'another')
         work_area = described_class.call(slug: 'worm', work_area_managers: user)
-        actual_policy_anwer = Policies::Processing::ProcessingEntityPolicy.call(user: user, entity: work_area, action_to_authorize: 'show')
-        expect(actual_policy_anwer).to be_truthy
+
+        permission_to_show_work_area = Policies::Processing::ProcessingEntityPolicy.call(
+          user: user, entity: work_area, action_to_authorize: 'show'
+        )
+        expect(permission_to_show_work_area).to be_truthy
+
+        permission_to_show_another_work_area = Policies::Processing::ProcessingEntityPolicy.call(
+          user: user, entity: another_work_area, action_to_authorize: 'show'
+        )
+        expect(permission_to_show_another_work_area).to be_falsey
       end
     end
   end

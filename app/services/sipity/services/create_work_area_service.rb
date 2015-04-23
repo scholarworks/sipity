@@ -54,9 +54,13 @@ module Sipity
       end
 
       def create_processing_strategy!
-        @processing_strategy ||= Models::Processing::Strategy.create!(
-          proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
-        )
+        @processing_strategy ||= begin
+          Models::Processing::Strategy.find_by(
+            proxy_for: application_concept
+          ) || Models::Processing::Strategy.create!(
+            proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
+          )
+        end
       end
 
       def create_work_area_processing_entity!
@@ -64,7 +68,7 @@ module Sipity
       end
 
       def associate_work_area_manager_with_processing_strategy!
-        @strategy_role = Models::Processing::StrategyRole.create!(role: work_area_manager_role, strategy: processing_strategy)
+        @strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_area_manager_role, strategy: processing_strategy)
         work_area_managers.each do |manager|
           Models::Processing::EntitySpecificResponsibility.create!(
             strategy_role: strategy_role,
@@ -75,13 +79,15 @@ module Sipity
       end
 
       def grant_permission_for_the_work_area_manager_to_see_the_area!
-        strategy_action = Models::Processing::StrategyAction.create!(
+        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
           strategy: processing_strategy, name: 'show', allow_repeat_within_current_state: true
         )
-        state_action = Models::Processing::StrategyStateAction.create!(
+        state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
           strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
         )
-        Models::Processing::StrategyStateActionPermission.create!(strategy_role: strategy_role, strategy_state_action: state_action)
+        Models::Processing::StrategyStateActionPermission.find_or_create_by!(
+          strategy_role: strategy_role, strategy_state_action: state_action
+        )
       end
 
       def work_area_manager_role
