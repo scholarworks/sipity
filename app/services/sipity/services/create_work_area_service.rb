@@ -1,6 +1,13 @@
 module Sipity
   module Services
     # Codifies what it takes to "bootstrap" a bare-bones work area.
+    #
+    # My rationale for this is that the creation of a WorkArea sits outside of
+    # the permissioning/processing system. In other words, a system
+    # administrator (data super user) is needed to create a WorkArea.
+    #
+    # As an added benefit, this service is the equivalent of a FactoryGirl
+    # factory; But something under proper test.
     class CreateWorkAreaService
       def self.call(**keywords)
         new(**keywords).call
