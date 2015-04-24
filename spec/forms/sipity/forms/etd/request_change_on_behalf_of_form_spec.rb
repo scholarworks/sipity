@@ -63,8 +63,8 @@ module Sipity
             expect(subject).to receive(:valid?).and_return(true)
           end
 
-          it 'will delegate to Services::RequestChangesService' do
-            expect(Services::RequestChangesService).to receive(:call)
+          it 'will delegate to Services::RequestChangesViaCommentService' do
+            expect(Services::RequestChangesViaCommentService).to receive(:call)
             subject.submit(requested_by: user)
           end
         end

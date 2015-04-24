@@ -2,7 +2,7 @@ module Sipity
   module Services
     # When someone has requested changes via a comment, this is the service that
     # can be used as a foundation for handling that comment.
-    class RequestChangesService
+    class RequestChangesViaCommentService
       def self.call(**keywords)
         new(**keywords).call
       end

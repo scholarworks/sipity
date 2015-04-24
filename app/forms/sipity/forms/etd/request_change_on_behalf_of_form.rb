@@ -45,7 +45,7 @@ module Sipity
         end
 
         def save(requested_by:)
-          Services::RequestChangesService.call(
+          Services::RequestChangesViaCommentService.call(
             form: self, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
           )
         end

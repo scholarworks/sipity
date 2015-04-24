@@ -1,6 +1,6 @@
 module Sipity
   module Services
-    RSpec.describe RequestChangesService do
+    RSpec.describe RequestChangesViaCommentService do
       let(:form) do
         double(
           'Form',
