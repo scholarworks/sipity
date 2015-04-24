@@ -84,7 +84,7 @@ module Sipity
       context "#selected_copyright" do
         let(:term_uri) { "http://creativecommons.org/licenses/by/3.0/us/" }
         let(:term_label) { "Attribution 3.0 United States" }
-        let(:copyright_link) { "<a href='#{term_uri}'>#{term_label}</a>" }
+        let(:copyright_link) { "<a href=\"#{term_uri}\">#{term_label}</a>" }
         it 'will have #selected_copyrights' do
           expect(repository).to receive(:get_controlled_vocabulary_value_for).
             with(name: 'copyright', term_uri: term_uri).

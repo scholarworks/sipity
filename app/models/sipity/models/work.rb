@@ -16,8 +16,9 @@ module Sipity
       has_many :transient_answers, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
 
+      include Conversions::SanitizeHtml
       def to_s
-        title
+        sanitize_html(title)
       end
 
       Processing.configure_as_a_processible_entity(self)

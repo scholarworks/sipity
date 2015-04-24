@@ -9,7 +9,10 @@ module Sipity
           self.repository = repository
         end
 
-        delegate :title, to: :work
+        include Conversions::SanitizeHtml
+        def title
+          sanitize_html(work.title)
+        end
 
         def work_type
           work.work_type.titleize
