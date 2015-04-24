@@ -48,6 +48,15 @@ module Sipity
         )
         expect(permission_to_show_another_work_area).to be_falsey
       end
+
+      it 'will grant permission to create a submission window (via the submission window form)' do
+        work_area = described_class.call(slug: 'worm', work_area_managers: user)
+
+        permission_to_create_a_submission_window = Policies::Processing::ProcessingEntityPolicy.call(
+          user: user, entity: work_area, action_to_authorize: 'create_submission_window'
+        )
+        expect(permission_to_create_a_submission_window).to be_truthy
+      end
     end
   end
 end
