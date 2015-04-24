@@ -20,3 +20,7 @@ before_install:
 addons:
   code_climate:
     repo_token: d25517494137c5bf0d9acca7243f70eba7ec0c354940c54eb33ec395b05900de
+
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
