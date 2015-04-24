@@ -22,7 +22,7 @@ module Sipity
           end
         end
 
-        its(:advisor_requests_change_legend) { should be_html_safe }
+        its(:comment_legend) { should be_html_safe }
 
         context 'processing_action_name to action conversion' do
           it 'will use the given action if the strategy matches' do
