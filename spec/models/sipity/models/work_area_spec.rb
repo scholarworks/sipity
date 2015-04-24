@@ -8,9 +8,15 @@ module Sipity
         its(:column_names) { should include('slug') }
         its(:column_names) { should include('partial_suffix') }
         its(:column_names) { should include('demodulized_class_prefix_name') }
+        its(:column_names) { should include('name') }
       end
 
       subject { described_class.new }
+
+      it 'will have a #to_s equal to its name' do
+        subject.name = 'hello'
+        expect(subject.to_s).to eq(subject.name)
+      end
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do

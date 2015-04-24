@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150423194449) do
+ActiveRecord::Schema.define(version: 20150424183914) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -56,6 +56,8 @@ ActiveRecord::Schema.define(version: 20150423194449) do
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
   end
+
+  add_index "sipity_application_concepts", ["slug"], name: "index_sipity_application_concepts_on_slug", unique: true, using: :btree
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.string   "work_id",                limit: 32,                  null: false
@@ -395,7 +397,11 @@ ActiveRecord::Schema.define(version: 20150423194449) do
     t.string   "demodulized_class_prefix_name", limit: 255, null: false
     t.datetime "created_at",                                null: false
     t.datetime "updated_at",                                null: false
+    t.string   "name",                          limit: 255, null: false
   end
+
+  add_index "sipity_work_areas", ["name"], name: "index_sipity_work_areas_on_name", unique: true, using: :btree
+  add_index "sipity_work_areas", ["slug"], name: "index_sipity_work_areas_on_slug", unique: true, using: :btree
 
   create_table "sipity_work_types", force: :cascade do |t|
     t.string   "name",        limit: 255,   null: false
