@@ -23,6 +23,8 @@ module Sipity
         }
       )
 
+      has_one :processing_strategy, as: :proxy_for, dependent: :destroy, class_name: 'Sipity::Models::Processing::Strategy'
+
       # @!attribute [rw] slug
       #
       #   A URI safe string that can be used as a "directory" of an application
