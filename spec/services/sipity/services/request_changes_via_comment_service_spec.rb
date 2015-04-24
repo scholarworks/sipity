@@ -26,6 +26,8 @@ module Sipity
         end
       end
 
+      its(:default_repository) { should respond_to :record_processing_comment }
+
       context 'with valid data' do
         subject { described_class.new(base_options) }
         let(:a_processing_comment) { double }
