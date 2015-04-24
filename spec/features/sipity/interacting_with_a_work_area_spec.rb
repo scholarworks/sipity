@@ -12,6 +12,6 @@ feature 'Interacting with a Work Area', :devise, :feature do
     Sipity::Services::CreateWorkAreaService.call(slug: slug)
 
     login_as(user, scope: :user)
-    expect { visit("/work_areas/#{slug}") }.to raise_error(Sipity::Exceptions::AuthorizationFailureError)
+    expect { visit("/areas/#{slug}") }.to raise_error(Sipity::Exceptions::AuthorizationFailureError)
   end
 end
