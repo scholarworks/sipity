@@ -34,3 +34,22 @@ PowerConverter.define_conversion_for(:demodulized_class_name) do |input|
     ''
   end
 end
+
+PowerConverter.define_conversion_for(:work_type) do |input|
+  case input
+  when Symbol, String
+    Sipity::Models::WorkType.find_by(name: input.to_s)
+  when Sipity::Models::WorkType
+    input
+  end
+end
+
+PowerConverter.define_conversion_for(:work_area) do |input|
+  # TODO: Add the case for a Work, ProcessingEntity
+  case input
+  when Sipity::Models::WorkArea
+    input
+  when Symbol, String
+    Sipity::Models::WorkArea.find_by(name: input.to_s) || Sipity::Models::WorkArea.find_by(slug: input.to_s)
+  end
+end
