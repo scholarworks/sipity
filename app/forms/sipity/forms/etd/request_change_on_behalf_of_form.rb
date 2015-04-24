@@ -26,7 +26,23 @@ module Sipity
         validates :comment, presence: true
         validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
+        # @param f SimpleFormBuilder
+        #
+        # @return String
+        def render(f:)
+          markup = view_context.content_tag('legend', comment_legend)
+          markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
+        end
+
         private
+
+        def comment_legend
+          view_context.t('etd/advisor_requests_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
+        end
+
+        def view_context
+          Draper::ViewContext.current
+        end
 
         def save(requested_by:)
           # TODO: Consider extracting common behavior to a service method (see AdvisorRequestsChangeForm#save)

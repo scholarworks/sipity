@@ -26,6 +26,16 @@ module Sipity
 
         let(:someone) { double(id: 'one') }
 
+        context '#render' do
+          let(:f) { double }
+          it 'will return an input text area' do
+            expect(f).to receive(:input).with(:comment, hash_including(as: :text))
+            subject.render(f: f)
+          end
+        end
+
+        its(:comment_legend) { should be_html_safe }
+
         context 'validations' do
           it 'will require a comment' do
             subject = described_class.new(base_options.merge(comment: nil))
