@@ -1,6 +1,8 @@
 module Sipity
   module Decorators
     # For the given :user and :entity what are the available actions?
+    #
+    # These actions are grouped by the StrategyAction type.
     class ProcessingActions
       def initialize(user:, entity:, repository: default_repository, action_decorator: default_action_decorator)
         self.user = user
