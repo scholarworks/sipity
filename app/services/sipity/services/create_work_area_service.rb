@@ -24,11 +24,11 @@ module Sipity
 
       def call
         find_or_create_the_work_area_application_concept!
-        create_work_area!
         create_processing_strategy!
-        create_work_area_processing_entity!
+        create_work_area!
         associate_work_area_manager_with_processing_strategy!
         grant_permission_for_the_work_area_manager_to_see_the_area!
+        grant_permission_for_the_work_area_manager_to_create_a_submission_window!
         work_area
       end
 
@@ -51,6 +51,7 @@ module Sipity
 
       def create_work_area!
         work_area.save! unless work_area.persisted?
+        work_area.create_processing_entity!(strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state)
       end
 
       def create_processing_strategy!
@@ -61,10 +62,6 @@ module Sipity
             proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
           )
         end
-      end
-
-      def create_work_area_processing_entity!
-        work_area.create_processing_entity!(strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state)
       end
 
       def associate_work_area_manager_with_processing_strategy!
@@ -81,6 +78,18 @@ module Sipity
       def grant_permission_for_the_work_area_manager_to_see_the_area!
         strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
           strategy: processing_strategy, name: 'show', allow_repeat_within_current_state: true
+        )
+        state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
+          strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
+        )
+        Models::Processing::StrategyStateActionPermission.find_or_create_by!(
+          strategy_role: strategy_role, strategy_state_action: state_action
+        )
+      end
+
+      def grant_permission_for_the_work_area_manager_to_create_a_submission_window!
+        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
+          strategy: processing_strategy, name: 'create_submission_window', allow_repeat_within_current_state: true
         )
         state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
           strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
