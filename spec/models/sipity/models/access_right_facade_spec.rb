@@ -4,7 +4,7 @@ module Sipity
   module Models
     RSpec.describe AccessRightFacade do
       let(:object) { work }
-      let(:work) { Models::Work.new(id: 123) }
+      let(:work) { Models::Work.new(id: 123, title: 'dummy') }
       let(:access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today) }
       subject { described_class.new(object, work: work) }
 

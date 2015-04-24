@@ -49,6 +49,14 @@ module Sipity
             eos
             expect(sanitize_html(text)).to_not have_tag("a[href]")
           end
+
+          it 'should be html_safe' do
+            text = <<-eos.gsub(/^ {14}/, '')
+              JavaScript can also be included in an anchor tag
+              <a href="javascript:alert('CLICK HIJACK');">like so</a>
+            eos
+            expect(sanitize_html(text)).to be_html_safe
+          end
         end
       end
     end
