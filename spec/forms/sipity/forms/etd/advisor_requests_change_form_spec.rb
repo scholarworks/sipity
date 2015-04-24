@@ -34,34 +34,11 @@ module Sipity
         context 'with valid data' do
           let(:a_processing_comment) { double }
           before do
-            allow(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
             expect(subject).to receive(:valid?).and_return(true)
           end
 
-          it 'will log the event' do
-            expect(repository).to receive(:log_event!).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will register than the given action was taken on the entity' do
-            expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will update the processing state' do
-            strategy_state = action.build_resulting_strategy_state
-            expect(repository).to receive(:update_processing_state!).
-              with(entity: work, to: strategy_state).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will deliver form submission notifications for' do
-            expect(repository).to receive(:deliver_notification_for).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will record the processing comment' do
-            expect(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
+          it 'will delegate to Services::RequestChangesService' do
+            expect(Services::RequestChangesService).to receive(:call)
             subject.submit(requested_by: user)
           end
         end

@@ -32,14 +32,9 @@ module Sipity
         end
 
         def save(requested_by:)
-          # TODO: Consider extracting common behavior to a service method (see RequestChangeOnBehalfOfForm#save)
-          super do
-            processing_comment = repository.record_processing_comment(
-              entity: work, commenter: requested_by, comment: comment, action: action
-            )
-            repository.deliver_notification_for(the_thing: processing_comment, scope: action, requested_by: requested_by)
-            repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
-          end
+          Services::RequestChangesService.call(
+            form: self, repository: repository, requested_by: requested_by
+          )
         end
       end
     end

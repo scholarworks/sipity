@@ -37,7 +37,7 @@ module Sipity
         private
 
         def comment_legend
-          view_context.t('etd/advisor_requests_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
+          view_context.t("etd/#{enrichment_type}", scope: 'sipity/forms.state_advancing_actions.legend').html_safe
         end
 
         def view_context
@@ -45,37 +45,9 @@ module Sipity
         end
 
         def save(requested_by:)
-          # TODO: Consider extracting common behavior to a service method (see AdvisorRequestsChangeForm#save)
-          send_notification_for(processing_comment: record_processing_comment, requested_by: requested_by)
-          register_action_taken(requested_by: requested_by)
-          log_event(requested_by: requested_by)
-          update_processing_state
-        end
-
-        def record_processing_comment
-          repository.record_processing_comment(
-            entity: work, commenter: on_behalf_of_collaborator, comment: comment, action: action
+          Services::RequestChangesService.call(
+            form: self, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
           )
-        end
-
-        def send_notification_for(processing_comment:, requested_by:)
-          repository.deliver_notification_for(
-            the_thing: processing_comment, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
-          )
-        end
-
-        def register_action_taken(requested_by:)
-          repository.register_action_taken_on_entity(
-            work: work, enrichment_type: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
-          )
-        end
-
-        def log_event(requested_by:)
-          repository.log_event!(entity: work, user: requested_by, event_name: event_name)
-        end
-
-        def update_processing_state
-          repository.update_processing_state!(entity: work, to: action.resulting_strategy_state)
         end
 
         attr_accessor :on_behalf_of_collaborator_extension
