@@ -11,7 +11,6 @@ module Sipity
         has_many :entity_action_registers, dependent: :destroy
 
         has_many :strategy_state_actions, dependent: :destroy
-        has_many :strategy_state_action_permissions, through: :strategy_state_actions
 
         has_many(
           :guarding_strategy_action_prerequisites,
@@ -25,18 +24,6 @@ module Sipity
           dependent: :destroy,
           foreign_key: :guarded_strategy_action_id,
           class_name: 'Sipity::Models::Processing::StrategyActionPrerequisite'
-        )
-
-        has_many(
-          :guards_these_strategy_actions,
-          through: :guarding_strategy_action_prerequisites,
-          class_name: 'Sipity::Models::Processing::StrategyAction'
-        )
-
-        has_many(
-          :requires_these_strategy_actions,
-          through: :requiring_strategy_action_prerequisites,
-          class_name: 'Sipity::Models::Processing::StrategyAction'
         )
 
         has_many(

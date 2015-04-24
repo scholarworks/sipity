@@ -8,8 +8,6 @@ module Sipity
 
       has_many :submission_window_work_types, dependent: :destroy
 
-      has_many :work_types, through: :submission_window_work_types
-
       def slug=(value)
         super(PowerConverter.convert(value, to: :slug))
       end

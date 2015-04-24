@@ -14,7 +14,6 @@ module Sipity
       validates :name, presence: true, uniqueness: true
 
       has_many :group_memberships, dependent: :destroy
-      has_many :users, through: :group_memberships, class_name: '::User'
       has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
     end
   end
