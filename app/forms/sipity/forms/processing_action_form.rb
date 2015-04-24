@@ -49,6 +49,10 @@ module Sipity
       attr_reader :registered_action
       alias_method :to_registered_action, :registered_action
 
+      def event_name
+        File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
+      end
+
       private
 
       def save(requested_by:)
@@ -58,10 +62,6 @@ module Sipity
         repository.log_event!(entity: work, user: requested_by, event_name: event_name)
         yield if block_given?
         work
-      end
-
-      def event_name
-        File.join(self.class.to_s.underscore.sub('sipity/forms/', ''), 'submit')
       end
 
       def default_repository

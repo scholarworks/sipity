@@ -26,6 +26,16 @@ module Sipity
 
         let(:someone) { double(id: 'one') }
 
+        context '#render' do
+          let(:f) { double }
+          it 'will return an input text area' do
+            expect(f).to receive(:input).with(:comment, hash_including(as: :text))
+            subject.render(f: f)
+          end
+        end
+
+        its(:comment_legend) { should be_html_safe }
+
         context 'validations' do
           it 'will require a comment' do
             subject = described_class.new(base_options.merge(comment: nil))
@@ -50,45 +60,11 @@ module Sipity
           subject { described_class.new(base_options.merge(comment: 'Comments!', on_behalf_of_collaborator_id: someone.id)) }
           let(:a_processing_comment) { double }
           before do
-            allow(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
             expect(subject).to receive(:valid?).and_return(true)
           end
 
-          it 'will log the event' do
-            expect(repository).to receive(:log_event!).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will update the processing state' do
-            strategy_state = action.build_resulting_strategy_state
-            expect(repository).to receive(:update_processing_state!).
-              with(entity: work, to: strategy_state).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will register the action' do
-            expect(repository).to receive(:register_action_taken_on_entity).
-              with(work: work, enrichment_type: 'request_change_on_behalf_of', requested_by: user, on_behalf_of: someone).
-              and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will register the action' do
-            expect(repository).to receive(:register_action_taken_on_entity).
-              with(work: work, enrichment_type: 'request_change_on_behalf_of', requested_by: user, on_behalf_of: someone).
-              and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will record the processing comment' do
-            expect(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
-            subject.submit(requested_by: user)
-          end
-
-          it 'will send creating user a note that the advisor has requested changes' do
-            expect(repository).to receive(:deliver_notification_for).
-              with(scope: action, the_thing: a_processing_comment, requested_by: user, on_behalf_of: someone).
-              and_call_original
+          it 'will delegate to Services::RequestChangesViaCommentService' do
+            expect(Services::RequestChangesViaCommentService).to receive(:call)
             subject.submit(requested_by: user)
           end
         end

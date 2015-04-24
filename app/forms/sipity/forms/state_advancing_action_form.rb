@@ -18,12 +18,12 @@ module Sipity
         action.name
       end
 
-      private
-
       def enrichment_type
         self.class.to_s.demodulize.underscore.sub(/_form\Z/i, '')
       end
       alias_method :default_processing_action_name, :enrichment_type
+
+      private
 
       include Conversions::ConvertToProcessingAction
       def action=(value)
