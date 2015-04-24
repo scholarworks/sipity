@@ -13,12 +13,11 @@ module Sipity
         new(**keywords).call
       end
 
-      def initialize(name:, **keywords)
-        partial_suffix = keywords.fetch(:partial_suffix, name)
-        demodulized_class_prefix_name = keywords.fetch(:demodulized_class_prefix_name, name)
-        slug = keywords.fetch(:slug, name)
+      def initialize(name:, slug:, **keywords)
+        partial_suffix = keywords.fetch(:partial_suffix, slug)
+        demodulized_class_prefix_name = keywords.fetch(:demodulized_class_prefix_name, slug)
         self.work_area_managers = keywords.fetch(:work_area_managers, [])
-        self.work_area = Models::WorkArea.new(
+        self.work_area = find_or_create_work_area(
           name: name, slug: slug, partial_suffix: partial_suffix, demodulized_class_prefix_name: demodulized_class_prefix_name
         )
       end
@@ -33,9 +32,11 @@ module Sipity
         work_area
       end
 
+      attr_reader :work_area
+
       private
 
-      attr_accessor :work_area
+      attr_writer :work_area
       attr_reader :processing_strategy, :work_area_managers, :application_concept, :strategy_role
 
       def find_or_create_the_work_area_application_concept!
@@ -48,9 +49,14 @@ module Sipity
         end
       end
 
+      def find_or_create_work_area(attributes)
+        Models::WorkArea.find_by(attributes.slice(:name)) || Models::WorkArea.create!(attributes)
+      end
+
       def create_work_area!
-        work_area.save! unless work_area.persisted?
-        work_area.create_processing_entity!(strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state)
+        work_area.processing_entity || work_area.create_processing_entity!(
+          strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state
+        )
       end
 
       def create_processing_strategy!
@@ -66,7 +72,7 @@ module Sipity
       def associate_work_area_manager_with_processing_strategy!
         @strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_area_manager_role, strategy: processing_strategy)
         work_area_managers.each do |manager|
-          Models::Processing::EntitySpecificResponsibility.create!(
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
             strategy_role: strategy_role,
             entity: work_area.processing_entity,
             actor: manager
