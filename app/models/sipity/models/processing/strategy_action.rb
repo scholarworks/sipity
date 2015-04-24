@@ -13,6 +13,13 @@ module Sipity
         has_many :strategy_state_actions, dependent: :destroy
 
         has_many(
+          :notifiable_contexts,
+          dependent: :destroy,
+          as: :scope_for_notification,
+          class_name: 'Sipity::Models::Notification::NotifiableContext'
+        )
+
+        has_many(
           :guarding_strategy_action_prerequisites,
           dependent: :destroy,
           foreign_key: :prerequisite_strategy_action_id,

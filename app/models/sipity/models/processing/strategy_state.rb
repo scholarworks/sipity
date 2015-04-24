@@ -25,6 +25,13 @@ module Sipity
           class_name: 'Sipity::Models::Processing::Comment'
         )
         has_many(:entities) # TODO: should this be destroyed
+
+        has_many(
+          :notifiable_contexts,
+          dependent: :destroy,
+          as: :scope_for_notification,
+          class_name: 'Sipity::Models::Notification::NotifiableContext'
+        )
       end
     end
   end
