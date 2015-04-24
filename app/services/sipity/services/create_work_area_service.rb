@@ -13,12 +13,13 @@ module Sipity
         new(**keywords).call
       end
 
-      def initialize(slug:, **keywords)
-        partial_suffix = keywords.fetch(:partial_suffix, slug)
-        demodulized_class_prefix_name = keywords.fetch(:demodulized_class_prefix_name, slug)
+      def initialize(name:, **keywords)
+        partial_suffix = keywords.fetch(:partial_suffix, name)
+        demodulized_class_prefix_name = keywords.fetch(:demodulized_class_prefix_name, name)
+        slug = keywords.fetch(:slug, name)
         self.work_area_managers = keywords.fetch(:work_area_managers, [])
         self.work_area = Models::WorkArea.new(
-          slug: slug, partial_suffix: partial_suffix, demodulized_class_prefix_name: demodulized_class_prefix_name
+          name: name, slug: slug, partial_suffix: partial_suffix, demodulized_class_prefix_name: demodulized_class_prefix_name
         )
       end
 
@@ -36,8 +37,6 @@ module Sipity
 
       attr_accessor :work_area
       attr_reader :processing_strategy, :work_area_managers, :application_concept, :strategy_role
-
-      delegate :slug, to: :work_area
 
       def find_or_create_the_work_area_application_concept!
         @application_concept ||= begin

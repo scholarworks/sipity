@@ -15,6 +15,10 @@ module Sipity
 
       Processing.configure_as_a_processible_entity(self)
 
+      def to_s
+        name
+      end
+
       # @!attribute [rw] slug
       #
       #   A URI safe string that can be used as a "directory" of an application
