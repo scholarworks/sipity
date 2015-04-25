@@ -49,6 +49,8 @@ PowerConverter.define_conversion_for(:work_area) do |input|
   case input
   when Sipity::Models::WorkArea
     input
+  when Sipity::Models::SubmissionWindow
+    input.work_area
   when Symbol, String
     Sipity::Models::WorkArea.find_by(name: input.to_s) || Sipity::Models::WorkArea.find_by(slug: input.to_s)
   end

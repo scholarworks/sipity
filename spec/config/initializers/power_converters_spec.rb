@@ -102,6 +102,8 @@ RSpec.describe 'power converters' do
       end
 
       expect(PowerConverter.convert_to_work_area(work_area)).to eq(work_area)
+      submission_window = Sipity::Models::SubmissionWindow.new(work_area: work_area)
+      expect(PowerConverter.convert_to_work_area(submission_window)).to eq(work_area)
 
       [
         'The Missing Name'
