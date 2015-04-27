@@ -1,7 +1,4 @@
-work_types = {}
-Sipity::Models::WorkType.valid_names.each do |work_type_name|
-  work_types[work_type_name] = Sipity::Models::WorkType.find_or_create_by!(name: work_type_name)
-end
+doctoral_dissertation = Sipity::Models::WorkType.find_or_create_by!(name: 'doctoral_dissertation')
 
 roles = {}
 [
@@ -12,7 +9,8 @@ roles = {}
   roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
 end
 
-work_types.fetch('doctoral_dissertation').find_or_initialize_default_processing_strategy do |etd_strategy|
+Sipity::Models::Processing::Strategy.find_or_create_by!(name: "#{doctoral_dissertation} processing") do |etd_strategy|
+  etd_strategy.strategy_usages.find_or_initialize_by(usage: doctoral_dissertation)
   etd_strategy_roles = {}
 
   [
