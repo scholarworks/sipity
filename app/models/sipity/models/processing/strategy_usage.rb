@@ -7,7 +7,7 @@ module Sipity
       # dynamic.
       class StrategyUsage < ActiveRecord::Base
         self.table_name = 'sipity_processing_strategy_usages'
-        belongs_to :stragegy
+        belongs_to :strategy
         belongs_to :usage, polymorphic: true
       end
     end

@@ -26,6 +26,7 @@ module Sipity
         find_or_create_the_work_area_application_concept!
         create_processing_strategy!
         create_work_area!
+        associate_work_area_with_processing_strategy!
         associate_work_area_manager_with_processing_strategy!
         grant_permission_for_the_work_area_manager_to_see_the_area!
         grant_permission_for_the_work_area_manager_to_create_a_submission_window!
@@ -59,12 +60,15 @@ module Sipity
         )
       end
 
+      def associate_work_area_with_processing_strategy!
+        Models::Processing::StrategyUsage.find_or_create_by!(strategy: processing_strategy, usage: work_area)
+      end
+
       def create_processing_strategy!
         @processing_strategy ||= begin
-          Models::Processing::Strategy.find_by(
-            proxy_for: application_concept
-          ) || Models::Processing::Strategy.create!(
-            proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
+          Models::Processing::Strategy.find_by(proxy_for_type: work_area.class.to_s) ||
+          Models::Processing::Strategy.create!(
+            proxy_for_id: 0, proxy_for_type: work_area.class, name: "#{application_concept.name} processing strategy"
           )
         end
       end
