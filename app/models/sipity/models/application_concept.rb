@@ -23,7 +23,7 @@ module Sipity
         }
       )
 
-      has_one :processing_strategy, as: :proxy_for, dependent: :destroy, class_name: 'Sipity::Models::Processing::Strategy'
+      has_one :strategy_usage, as: :usage, dependent: :destroy, class_name: 'Sipity::Models::Processing::StrategyUsage'
 
       # @!attribute [rw] slug
       #
