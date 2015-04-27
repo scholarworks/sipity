@@ -16,7 +16,7 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
       next if state_action.strategy_action.resulting_strategy_state_id
       state[:enrichments] << {
         name: state_action.strategy_action.name,
-        roles: state_action.strategy_state_action_permissions.map {|o| o.role.name }
+        roles: state_action.strategy_state_action_permissions.map {|o| o.strategy_role.role.name }
       }
     end
 
@@ -28,7 +28,9 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
       strategy[:actions] << {
         name: __action.name,
         next_state: __action.resulting_strategy_state.name,
-        roles: __action.strategy_state_action_permissions.map { |perm| perm.role.name }.uniq
+        roles: __action.strategy_state_actions.map do |ssa|
+          ssa.strategy_state_action_permissions.map { |perm| perm.strategy_role.role.name }
+        end.flatten.compact.uniq
       }
     end
   end
