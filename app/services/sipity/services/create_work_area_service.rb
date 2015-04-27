@@ -23,9 +23,9 @@ module Sipity
       end
 
       def call
-        find_or_create_the_work_area_application_concept!
         create_processing_strategy!
         create_work_area!
+        associate_work_area_with_processing_strategy!
         associate_work_area_manager_with_processing_strategy!
         grant_permission_for_the_work_area_manager_to_see_the_area!
         grant_permission_for_the_work_area_manager_to_create_a_submission_window!
@@ -37,17 +37,7 @@ module Sipity
       private
 
       attr_writer :work_area
-      attr_reader :processing_strategy, :work_area_managers, :application_concept, :strategy_role
-
-      def find_or_create_the_work_area_application_concept!
-        @application_concept ||= begin
-          Models::ApplicationConcept.find_by(
-            class_name: work_area.class.to_s
-          ) || Models::ApplicationConcept.create!(
-            class_name: work_area.class.to_s, slug: 'areas', name: 'Work Area'
-          )
-        end
-      end
+      attr_reader :processing_strategy, :work_area_managers, :strategy_role
 
       def find_or_create_work_area(attributes)
         Models::WorkArea.find_by(attributes.slice(:name)) || Models::WorkArea.create!(attributes)
@@ -59,12 +49,15 @@ module Sipity
         )
       end
 
+      def associate_work_area_with_processing_strategy!
+        Models::Processing::StrategyUsage.find_or_create_by!(strategy: processing_strategy, usage: work_area)
+      end
+
       def create_processing_strategy!
         @processing_strategy ||= begin
-          Models::Processing::Strategy.find_by(
-            proxy_for: application_concept
-          ) || Models::Processing::Strategy.create!(
-            proxy_for: application_concept, name: "#{application_concept.name} processing strategy"
+          Models::Processing::Strategy.find_by(proxy_for_type: work_area.class.to_s) ||
+          Models::Processing::Strategy.create!(
+            proxy_for_id: 0, proxy_for_type: work_area.class, name: "#{work_area.class} processing strategy"
           )
         end
       end

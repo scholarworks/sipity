@@ -5,20 +5,19 @@ module Sipity
     RSpec.describe CreateWorkAreaService do
       let(:user) { Sipity::Factories.create_user }
 
-      it 'will create the WorkArea application concept if none exist' do
-        work_area = described_class.call(name: 'Worm', slug: 'worm', work_area_managers: user)
-        expect(Models::ApplicationConcept.where(class_name: work_area.class).count).to eq(1)
+      it 'will create a processing strategy if none exists for work areas otherwise reuse it' do
+        expect { described_class.call(name: 'Worm', slug: 'worm') }.
+          to change { Models::Processing::Strategy.count }.by(1)
+
+        expect { described_class.call(name: 'Another', slug: 'another') }.
+          to_not change { Models::Processing::Strategy.count }
       end
 
-      it 'will create a Processing Strategy for the ApplicationConcept and not the WorkArea' do
-        work_area = described_class.call(name: 'Worm', slug: 'worm', work_area_managers: user)
-
-        expect(Models::Processing::Strategy.where(proxy_for: work_area).count).to eq(0)
-
-        application_concept = Models::ApplicationConcept.find_by!(class_name: work_area.class.to_s)
-
-        # By convention the last one created should be for the WorkArea concept
-        expect(Models::Processing::Strategy.last.proxy_for).to eq(application_concept)
+      it 'will create a strategy usages for each work areas' do
+        expect do
+          described_class.call(name: 'Worm', slug: 'worm')
+          described_class.call(name: 'Another', slug: 'another')
+        end.to change { Models::Processing::StrategyUsage.count }.by(2)
       end
 
       it 'will grant permission specific permission but not general permission' do

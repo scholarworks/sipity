@@ -8,8 +8,7 @@ module Sipity
           comment: 'This is a comment',
           enrichment_type: 'hello',
           action: action,
-          event_name: 'hello_event',
-          enrichment_type: 'hello'
+          event_name: 'hello_event'
         )
       end
       let(:action) { Models::Processing::StrategyAction.new }

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150424183914) do
+ActiveRecord::Schema.define(version: 20150427194112) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -48,16 +48,6 @@ ActiveRecord::Schema.define(version: 20150424183914) do
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
-
-  create_table "sipity_application_concepts", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.string   "class_name", limit: 255, null: false
-    t.string   "slug",       limit: 255, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "sipity_application_concepts", ["slug"], name: "index_sipity_application_concepts_on_slug", unique: true, using: :btree
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.string   "work_id",                limit: 32,                  null: false
@@ -335,6 +325,17 @@ ActiveRecord::Schema.define(version: 20150424183914) do
 
   add_index "sipity_processing_strategy_states", ["name"], name: "index_sipity_processing_strategy_states_on_name", using: :btree
   add_index "sipity_processing_strategy_states", ["strategy_id", "name"], name: "sipity_processing_type_state_aggregate", unique: true, using: :btree
+
+  create_table "sipity_processing_strategy_usages", force: :cascade do |t|
+    t.integer  "strategy_id", limit: 4,   null: false
+    t.integer  "usage_id",    limit: 4,   null: false
+    t.string   "usage_type",  limit: 255, null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  add_index "sipity_processing_strategy_usages", ["strategy_id"], name: "idx_sipity_processing_strategy_usages_strategy_fk", using: :btree
+  add_index "sipity_processing_strategy_usages", ["usage_id", "usage_type"], name: "idx_sipity_processing_strategy_usages_usage_fk", unique: true, using: :btree
 
   create_table "sipity_roles", force: :cascade do |t|
     t.string   "name",        limit: 255,   null: false

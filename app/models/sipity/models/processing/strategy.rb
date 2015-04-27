@@ -14,7 +14,9 @@ module Sipity
         has_many :strategy_actions, dependent: :destroy
         has_many :strategy_roles, dependent: :destroy
 
-        belongs_to :proxy_for, polymorphic: true
+        # belongs_to :proxy_for, polymorphic: true
+
+        has_many :strategy_usages, dependent: :destroy
 
         def initial_strategy_state
           strategy_states.find_or_create_by!(name: DEFAULT_INITIAL_STRATEGY_STATE)

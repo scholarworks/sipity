@@ -35,6 +35,11 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
+      it 'has one :strategy_usage' do
+        expect(described_class.reflect_on_association(:strategy_usage)).
+          to be_a(ActiveRecord::Reflection::AssociationReflection)
+      end
+
       context '#find_or_initialize_default_processing_strategy' do
         subject { described_class.new(name: 'doctoral_dissertation') }
         it 'will create a processing strategy if none already exist' do
