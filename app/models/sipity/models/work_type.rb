@@ -34,7 +34,10 @@ module Sipity
         NAMED_WORK_TYPES_FOR_ENUM
       end
 
+      has_one :strategy_usage, as: :usage, class_name: 'Sipity::Models::Processing::StrategyUsage', dependent: :destroy
+
       has_one :default_processing_strategy, as: :proxy_for, class_name: 'Sipity::Models::Processing::Strategy', dependent: :destroy
+      deprecate :default_processing_strategy
 
       def find_or_initialize_default_processing_strategy(&block)
         if default_processing_strategy
@@ -46,6 +49,9 @@ module Sipity
           build_default_processing_strategy(name: "#{name} processing")
         end
       end
+      # I don't know when this will get removed, but it will be once we have deployed
+      # and loaded the StrategyUsage.
+      deprecate :find_or_initialize_default_processing_strategy
     end
   end
 end

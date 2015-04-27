@@ -9,7 +9,14 @@ end
 
 ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
   $stdout.puts "Creating #{work_type_name} State Machine"
-  Sipity::Models::WorkType.find_by(name: work_type_name).find_or_initialize_default_processing_strategy do |etd_strategy|
+  work_type = Sipity::Models::WorkType.find_by(name: work_type_name)
+
+  work_type.find_or_initialize_default_processing_strategy do |etd_strategy|
+    find_or_initialize_or_create!(
+      context: etd_strategy,
+      receiver: etd_strategy.strategy_usages,
+      usage: work_type
+    )
     etd_strategy_roles = {}
 
     [
