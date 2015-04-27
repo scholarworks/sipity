@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427194112) do
+ActiveRecord::Schema.define(version: 20150427200550) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -231,16 +231,13 @@ ActiveRecord::Schema.define(version: 20150427194112) do
   add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id"], name: "sipity_processing_entity_specific_responsibilities_role", using: :btree
 
   create_table "sipity_processing_strategies", force: :cascade do |t|
-    t.string   "name",           limit: 255,   null: false
-    t.text     "description",    limit: 65535
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.integer  "proxy_for_id",   limit: 4,     null: false
-    t.string   "proxy_for_type", limit: 255,   null: false
+    t.string   "name",        limit: 255,   null: false
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "sipity_processing_strategies", ["name"], name: "index_sipity_processing_strategies_on_name", unique: true, using: :btree
-  add_index "sipity_processing_strategies", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_strategies_proxy_for", unique: true, using: :btree
 
   create_table "sipity_processing_strategy_action_analogues", force: :cascade do |t|
     t.integer  "strategy_action_id",              limit: 4, null: false
