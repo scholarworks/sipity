@@ -39,7 +39,6 @@ module Sipity
           let(:yielded_object) { work }
           it 'will redirect to the work' do
             post 'create', work_id: work.to_param, processing_action_name: processing_action_name, work: attributes
-            expect(flash[:notice]).to_not be_empty
             expect(assigns(:model)).to be_nil
             expect(response).to redirect_to work_path(work.to_param)
           end
