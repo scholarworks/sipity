@@ -30,11 +30,6 @@ module Sipity
         end
       end
 
-      it 'has one :default_processing_strategy' do
-        expect(described_class.reflect_on_association(:default_processing_strategy)).
-          to be_a(ActiveRecord::Reflection::AssociationReflection)
-      end
-
       it 'has one :strategy_usage' do
         expect(described_class.reflect_on_association(:strategy_usage)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)

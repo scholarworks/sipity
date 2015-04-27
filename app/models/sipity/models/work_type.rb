@@ -36,7 +36,9 @@ module Sipity
 
       has_one :strategy_usage, as: :usage, class_name: 'Sipity::Models::Processing::StrategyUsage', dependent: :destroy
 
-      has_one :default_processing_strategy, as: :proxy_for, class_name: 'Sipity::Models::Processing::Strategy', dependent: :destroy
+      def default_processing_strategy
+        strategy_usage.strategy
+      end
       deprecate :default_processing_strategy
 
       def find_or_initialize_default_processing_strategy(&block)
