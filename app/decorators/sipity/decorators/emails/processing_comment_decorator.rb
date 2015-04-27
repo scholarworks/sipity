@@ -19,8 +19,12 @@ module Sipity
           work.work_type.titleize
         end
 
+        include Conversions::SanitizeHtml
+        def title
+          sanitize_html(work.title)
+        end
+
         delegate :comment, :actor, :entity, to: :processing_comment
-        delegate :title, to: :work
         private :actor, :entity
 
         # Related to building information for https://developers.google.com/gmail/markup/

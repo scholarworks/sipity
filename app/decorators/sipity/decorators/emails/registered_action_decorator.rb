@@ -47,7 +47,10 @@ module Sipity
           work.work_type.titleize
         end
 
-        delegate :title, to: :work
+        include Conversions::SanitizeHtml
+        def title
+          sanitize_html(work.title)
+        end
 
         private
 
