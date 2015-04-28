@@ -8,7 +8,7 @@ def find_or_initialize_or_create!(attributes = {})
 end
 
 # TODO: Assign work_area_manager to Grad School Group
-etd_work_area = Sipity::Services::CreateWorkAreaService.call(name: 'Electronic Thesis and Dissertation', slug: 'etd')
+etd_work_area = Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd')
 
 # TODO: Assign submission_window_manager to Grad School Group
 submission_window = Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: etd_work_area)
