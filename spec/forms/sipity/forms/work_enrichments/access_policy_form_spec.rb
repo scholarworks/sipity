@@ -127,6 +127,14 @@ module Sipity
         its(:persisted?) { should be_truthy }
         its(:human_model_name) { should eq(persisted_object.human_model_name) }
 
+        it 'will have a public :access_right_code' do
+          expect { subject.access_right_code }.to_not raise_error
+        end
+
+        it 'will have a public :release_date' do
+          expect { subject.release_date }.to_not raise_error
+        end
+
         it 'will parse the input date' do
           subject = described_class.new(persisted_object, release_date: '2014-12-1')
           expect(subject.release_date).to eq(Date.new(2014, 12, 1))
