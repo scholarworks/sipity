@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 module Sipity
-  module Services
-    RSpec.describe CreateWorkAreaService do
+  module DataGenerators
+    RSpec.describe FindOrCreateWorkArea do
       let(:user) { Sipity::Factories.create_user }
 
       it 'will create a processing strategy if none exists for work areas otherwise reuse it' do

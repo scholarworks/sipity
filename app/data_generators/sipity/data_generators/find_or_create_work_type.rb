@@ -1,5 +1,5 @@
 module Sipity
-  module Services
+  module DataGenerators
     # Responsible for finding or creating the corresponding work type and the
     # requisite processing entries.
     #
@@ -11,7 +11,7 @@ module Sipity
     # @TODO: With lots of bootstrapping data and complex data interactions, this
     #   class can be used in the test ecosystem to help build a somewhat well
     #   defined and expected WorkType.
-    class FindOrCreateWorkTypeService
+    class FindOrCreateWorkType
       def self.call(**keywords, &block)
         new(**keywords).call(&block)
       end

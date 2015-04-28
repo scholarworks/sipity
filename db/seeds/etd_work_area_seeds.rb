@@ -8,14 +8,14 @@ def find_or_initialize_or_create!(attributes = {})
 end
 
 # TODO: Assign work_area_manager to Grad School Group
-etd_work_area = Sipity::Services::CreateWorkAreaService.call(name: 'Electronic Thesis and Dissertation', slug: 'etd')
+etd_work_area = Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd')
 
 # TODO: Assign submission_window_manager to Grad School Group
-submission_window = Sipity::Services::FindOrCreateSubmissionWindowService.call(slug: 'start', work_area: etd_work_area)
+submission_window = Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: etd_work_area)
 
 ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
   $stdout.puts "Creating #{work_type_name} State Machine"
-  Sipity::Services::FindOrCreateWorkTypeService.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
+  Sipity::DataGenerators::FindOrCreateWorkType.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
     etd_strategy_roles = {}
 
     [

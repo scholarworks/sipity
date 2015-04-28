@@ -12,7 +12,7 @@ roles = {}
   roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
 end
 
-Sipity::Services::FindOrCreateWorkTypeService.call(name: 'doctoral_dissertation') do |work_type, etd_strategy, initial_state|
+Sipity::DataGenerators::FindOrCreateWorkType.call(name: 'doctoral_dissertation') do |work_type, etd_strategy, initial_state|
   etd_strategy_roles = {}
 
   [

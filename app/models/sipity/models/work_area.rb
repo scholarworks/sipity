@@ -6,7 +6,7 @@ module Sipity
     #
     # It provides a :slug for a routable location and customization.
     #
-    # @see Sipity::Services::CreateWorkAreaService for how to bootstrap a Work
+    # @see Sipity::DataGenerators::FindOrCreateWorkArea for how to bootstrap a Work
     #   Area in the system.
     class WorkArea < ActiveRecord::Base
       self.table_name = 'sipity_work_areas'
