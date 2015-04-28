@@ -15,7 +15,7 @@ submission_window = Sipity::Services::FindOrCreateSubmissionWindowService.call(s
 
 ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
   $stdout.puts "Creating #{work_type_name} State Machine"
-  Sipity::Services::FindOrCreateWorkTypeService.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
+  Sipity::DataGenerators::FindOrCreateWorkType.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
     etd_strategy_roles = {}
 
     [

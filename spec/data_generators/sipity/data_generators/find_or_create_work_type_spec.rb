@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 module Sipity
-  module Services
-    RSpec.describe FindOrCreateWorkTypeService do
+  module DataGenerators
+    RSpec.describe FindOrCreateWorkType do
       let(:name) { 'doctoral_dissertation' }
 
       it 'will create the work type' do

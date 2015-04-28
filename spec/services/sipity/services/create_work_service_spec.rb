@@ -11,7 +11,8 @@ module Sipity
       subject { described_class.new(attributes.merge(pid_minter: pid_minter)) }
 
       it 'will create a work object and associated processing entity' do
-        expect(FindOrCreateWorkTypeService).to receive(:call).with(name: 'doctoral_dissertation').and_yield(work_type, strategy, state)
+        expect(DataGenerators::FindOrCreateWorkType).to receive(:call).
+          with(name: 'doctoral_dissertation').and_yield(work_type, strategy, state)
         expect do
           expect do
             expect(subject.call).to be_a(Models::Work)

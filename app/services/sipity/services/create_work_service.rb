@@ -28,7 +28,7 @@ module Sipity
         # Why did I not use dependency injection?
         # Because, in my estimation, there is a harder coupling going on. Hence
         # the yielded block.
-        FindOrCreateWorkTypeService.call(name: attributes.fetch(:work_type)) do |_work_type, processing_strategy, strategy_state|
+        DataGenerators::FindOrCreateWorkType.call(name: attributes.fetch(:work_type)) do |_work_type, processing_strategy, strategy_state|
           work.create_processing_entity!(strategy_state_id: strategy_state.id, strategy_id: processing_strategy.id)
         end
       end
