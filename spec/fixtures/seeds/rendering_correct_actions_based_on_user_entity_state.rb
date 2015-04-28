@@ -17,7 +17,10 @@ Sipity::Models::Processing::EntitySpecificResponsibility.create!([
   {strategy_role_id: 1, entity_id: 1, actor_id: 1}
 ])
 Sipity::Models::Processing::Strategy.create!([
-  {name: "doctoral_dissertation processing", description: nil, proxy_for_id: 1, proxy_for_type: "Sipity::Models::WorkType"}
+  {name: "doctoral_dissertation processing", description: nil}
+])
+Sipity::Models::Processing::StrategyUsage.create!([
+  {strategy_id: 1, usage_id: 1, usage_type: 'Sipity::Models::WorkType'}
 ])
 Sipity::Models::Processing::StrategyAction.create!([
   {strategy_id: 1, name: "show", action_type: "resourceful_action"},
@@ -88,4 +91,7 @@ Sipity::Models::Role.create!([
   {name: "creating_user", description: nil},
   {name: "etd_reviewer", description: nil},
   {name: "advisor", description: nil}
+])
+Sipity::Models::WorkType.create!([
+  {name: "doctoral_dissertation", description: nil}
 ])

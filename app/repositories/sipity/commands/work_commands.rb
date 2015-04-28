@@ -42,19 +42,8 @@ module Sipity
         from_proxy.processing_actor.update(proxy_for: to_proxy)
       end
 
-      def create_work!(attributes = {}, collaborators = {})
-        # TODO: Encapsulate this into a Service Object as there is logic spilling
-        #   around.
-        work_attributes = attributes.slice(:title, :work_publication_strategy, :work_type)
-        work_attributes[:id] = collaborators.fetch(:pid_minter) { default_pid_minter }.call
-        Models::Work.create!(work_attributes) do |work|
-          named_work_type = attributes.fetch(:work_type)
-          work_type = Models::WorkType.find_or_create_by!(name: named_work_type)
-          # A bit of a weirdness as I splice in the new behavior
-          strategy = attributes.fetch(:processing_strategy) { work_type.find_or_initialize_default_processing_strategy.tap(&:save!) }
-          strategy_state = attributes.fetch(:processing_strategy_state) { strategy.initial_strategy_state }
-          work.build_processing_entity(strategy_state: strategy_state, strategy: strategy)
-        end
+      def create_work!(attributes = {})
+        Services::CreateWorkService.call(attributes.merge(repository: self))
       end
 
       def update_work_title!(work:, title:)

@@ -83,22 +83,17 @@ module Sipity
 
       context '#create_work!' do
         let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'doctoral_dissertation' } }
-        let(:pid_minter) { double(call: '1') }
-        it 'will create a work object' do
-          expect do
-            expect do
-              test_repository.create_work!(attributes, pid_minter: pid_minter)
-            end.to change { Models::Work.count }.by(1)
-          end.to change { Models::Processing::Entity.count }.by(1)
+        it 'will delegate to the Services::CreateWorkService' do
+          expect(Services::CreateWorkService).to receive(:call).with(attributes.merge(repository: test_repository))
+          test_repository.create_work!(attributes)
         end
       end
 
       context '#update_title!' do
-        let(:attributes) { { title: 'bogus', work_publication_strategy: 'do_not_know', work_type: 'doctoral_dissertation' } }
-        subject { test_repository.create_work!(attributes) }
         it 'will update title of the work object' do
-          expect { test_repository.update_work_title!(work: subject, title: 'helloworld') }.
-            to change(subject, :title).from('bogus').to('helloworld')
+          work = Models::Work.create!(id: '12', title: 'bogus')
+          expect { test_repository.update_work_title!(work: work, title: 'helloworld') }.
+            to change(work, :title).from('bogus').to('helloworld')
         end
       end
 

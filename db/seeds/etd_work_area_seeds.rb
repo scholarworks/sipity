@@ -9,14 +9,7 @@ end
 
 ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
   $stdout.puts "Creating #{work_type_name} State Machine"
-  work_type = Sipity::Models::WorkType.find_by(name: work_type_name)
-
-  work_type.find_or_initialize_default_processing_strategy do |etd_strategy|
-    find_or_initialize_or_create!(
-      context: etd_strategy,
-      receiver: etd_strategy.strategy_usages,
-      usage: work_type
-    )
+  Sipity::Services::FindOrCreateWorkTypeService.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
     etd_strategy_roles = {}
 
     [
@@ -203,7 +196,7 @@ end
         end
       end
     end
-  end.save!
+  end
 
   # Define associated emails by a named thing
   [

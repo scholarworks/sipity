@@ -54,12 +54,7 @@ module Sipity
       end
 
       def create_processing_strategy!
-        @processing_strategy ||= begin
-          Models::Processing::Strategy.find_by(proxy_for_type: work_area.class.to_s) ||
-          Models::Processing::Strategy.create!(
-            proxy_for_id: 0, proxy_for_type: work_area.class, name: "#{work_area.class} processing strategy"
-          )
-        end
+        @processing_strategy ||= Models::Processing::Strategy.find_or_create_by!(name: "#{work_area.class} processing")
       end
 
       def associate_work_area_manager_with_processing_strategy!

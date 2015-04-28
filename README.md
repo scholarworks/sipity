@@ -243,4 +243,3 @@ is at a point where forms could be composed of a QueryService and
 CommandService object. And that is how things may move going forward.
 But for now we factor towards an understanding of how our code is
 growing and taking shape.
-
