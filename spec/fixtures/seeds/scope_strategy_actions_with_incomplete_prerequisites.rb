@@ -19,7 +19,10 @@ Sipity::Models::Processing::EntitySpecificResponsibility.create!([
   {strategy_role_id: 1, entity_id: 1, actor_id: 1}
 ])
 Sipity::Models::Processing::Strategy.create!([
-  {name: "etd processing", description: nil, proxy_for_id: 1, proxy_for_type: "Sipity::Models::WorkType"}
+  {name: "etd processing", description: nil}
+])
+Sipity::Models::Processing::StrategyUsage.create!([
+  {strategy_id: 1, usage_id: 1, usage_type: 'Sipity::Models::WorkType'}
 ])
 Sipity::Models::Processing::StrategyAction.create!([
   {strategy_id: 1, resulting_strategy_state_id: nil, name: "show", form_class_name: nil, completion_required: false, action_type: "resourceful_action"},
