@@ -220,3 +220,27 @@ If you don't want to fill it out, cancel what you are doing.
 
 If another context is "Tell us about your metadata" and we expose geo-spatial data, then that data would not be required.
 
+## Why Do Some Repository Methods Use Service Objects?
+
+> Why do some repository methods delegate to a service object and
+> other methods have inline behavior?
+
+My short answer is that methods are very readable, but classes allow
+encapsulation of ideas. So, as a repository method gets more
+complicated it becomes a primary candidate for factoring into a class.
+
+Another way to think about it is that repository methods provide a
+convenience method for Presenter and Form interaction with the data.
+
+My suspicion is that each form should leverage a collaborating service
+class instead of service method(s); The service class could be swapped
+out as well. But forms are a complicated critter; They need data from
+the persistence layer and need to issue a command to update the
+persistence layer. (They leverage both commands and queries).
+
+With the separation of CommandRepository and QueryRepository, our code
+is at a point where forms could be composed of a QueryService and
+CommandService object. And that is how things may move going forward.
+But for now we factor towards an understanding of how our code is
+growing and taking shape.
+
