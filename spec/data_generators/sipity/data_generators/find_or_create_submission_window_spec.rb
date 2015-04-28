@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 module Sipity
-  module Services
-    RSpec.describe FindOrCreateSubmissionWindowService do
+  module DataGenerators
+    RSpec.describe FindOrCreateSubmissionWindow do
       subject { described_class }
       let(:work_area) { Models::WorkArea.new(slug: 'etd', id: 1) }
       let(:strategy_id) { 888_999_111 }

@@ -1,10 +1,10 @@
 module Sipity
-  module Services
+  module DataGenerators
     # Responsible for creating a SubmissionWindow within a given WorkArea
     #
     # It will also attempt to reuse an existing
     # Sipity::Models::ProcessingStrategy
-    class FindOrCreateSubmissionWindowService
+    class FindOrCreateSubmissionWindow
       def self.call(**keywords, &block)
         new(**keywords).call(&block)
       end
