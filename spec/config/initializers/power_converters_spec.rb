@@ -60,4 +60,56 @@ RSpec.describe 'power converters' do
       end
     end
   end
+
+  context "work_type" do
+    let(:a_work_type) { Sipity::Models::WorkType.new }
+    it 'will attempt to find the given String' do
+      expect(Sipity::Models::WorkType).to receive(:find_by).with(name: 'doctoral_dissertation').and_return(a_work_type)
+      expect(PowerConverter.convert('doctoral_dissertation', to: :work_type)).to eq(a_work_type)
+    end
+
+    it 'will attempt to find the given Symbol' do
+      expect(Sipity::Models::WorkType).to receive(:find_by).with(name: 'doctoral_dissertation').and_return(a_work_type)
+      expect(PowerConverter.convert(:doctoral_dissertation, to: :work_type)).to eq(a_work_type)
+    end
+
+    it 'will raise an error if not found' do
+      expect(Sipity::Models::WorkType).to receive(:find_by).with(name: 'doctoral_dissertation').and_return(nil)
+      expect { PowerConverter.convert(:doctoral_dissertation, to: :work_type) }.
+        to raise_error(PowerConverter::ConversionError)
+    end
+
+    it 'will pass through a given WorkType' do
+      expect(PowerConverter.convert(a_work_type, to: :work_type)).to eq(a_work_type)
+    end
+  end
+
+  context 'work_area' do
+    it "will convert based on the given scenarios" do
+
+      # Putting these all in one scenario as there is a database hit that occurs
+      # It breaks the "convention" of one assertion per spec, but speed is nice.
+
+      work_area = Sipity::Models::WorkArea.create!(
+        name: 'The Name', slug: 'the-slug', partial_suffix: 'the-partial-suffix', demodulized_class_prefix_name: 'TheName'
+      )
+      [
+        { to_convert: 'The Name', expected_name: 'The Name' },
+        { to_convert: 'the-slug', expected_name: 'The Name' }
+      ].each do |scenario|
+        to_convert = scenario.fetch(:to_convert)
+        expect(PowerConverter.convert_to_work_area(to_convert).name).to eq(scenario.fetch(:expected_name))
+      end
+
+      expect(PowerConverter.convert_to_work_area(work_area)).to eq(work_area)
+      submission_window = Sipity::Models::SubmissionWindow.new(work_area: work_area)
+      expect(PowerConverter.convert_to_work_area(submission_window)).to eq(work_area)
+
+      [
+        'The Missing Name'
+      ].each do |to_convert_but_will_fail|
+        expect { PowerConverter.convert_to_work_area(to_convert_but_will_fail) }.to raise_error(PowerConverter::ConversionError)
+      end
+    end
+  end
 end
