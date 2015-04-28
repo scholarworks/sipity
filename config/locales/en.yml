@@ -144,16 +144,6 @@ en:
       degree_enrichment: 'Your degree and program selections have been saved.'
       describe_enrichment: 'The additional information you provided has been saved.'
       search_terms_enrichment: 'Your search-related metadata has been saved.'
-  sipity/work_event_triggers:
-    action/create:
-      submit_for_review_triggered: 'Thank you for submitting your work for review. We will send you email notifications as review process progresses.'
-      advisor_requests_change_triggered: 'Your comments have been sent. You will recieve an email when the appropriate changes have been made.'
-      advisor_signoff_triggered: 'Thank you for logging your approval! This manuscript will be now sent to the dissertation and thesis editor for final review.'
-      signoff_on_behalf_of_triggered: 'Your signoff on behalf of another has been recorded.'
-      grad_school_requests_change_triggered: 'Your changes have been recorded and forwarded to the creating user.'
-      respond_to_grad_school_request_triggered: 'Thank you for your response we are forwarding it on the Grad School.'
-      respond_to_grad_school_request_triggered: 'Thank you for your response we are forwarding it to your research directors.'
-      grad_school_signoff_triggered: 'Thank you for your signoff.'
   sipity/decorators/account:
     call_to_action: 'Welcome to the ETD Submission System powered by CurateND'
     description: ''

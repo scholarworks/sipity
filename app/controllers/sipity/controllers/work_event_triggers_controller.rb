@@ -14,7 +14,7 @@ module Sipity
 
       def create
         run(create_params) do |on|
-          on.success { |work| redirect_to work_path(work), notice: message_for("#{processing_action_name}_triggered", title: work.title) }
+          on.success { |work| redirect_to work_path(work) }
           on.failure do |model|
             @model = model
             render action: 'new'
