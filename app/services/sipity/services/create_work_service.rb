@@ -13,17 +13,25 @@ module Sipity
       end
 
       def call
-        Models::Work.create!(attributes) do |work|
-          named_work_type = attributes.fetch(:work_type)
-          work_type = Models::WorkType.find_or_create_by!(name: named_work_type)
-          # A bit of a weirdness as I splice in the new behavior
-          strategy = attributes.fetch(:processing_strategy) { work_type.find_or_initialize_default_processing_strategy.tap(&:save!) }
-          strategy_state = attributes.fetch(:processing_strategy_state) { strategy.initial_strategy_state }
-          work.build_processing_entity(strategy_state: strategy_state, strategy: strategy)
-        end
+        create_the_work!
+        create_the_work_processing_entity!
+        work
       end
 
       private
+
+      def create_the_work!
+        @work = Models::Work.create!(attributes)
+      end
+
+      def create_the_work_processing_entity!
+        # Why did I not use dependency injection?
+        # Because, in my estimation, there is a harder coupling going on. Hence
+        # the yielded block.
+        FindOrCreateWorkTypeService.call(name: attributes.fetch(:work_type)) do |_work_type, processing_strategy, strategy_state|
+          work.create_processing_entity!(strategy_state_id: strategy_state.id, strategy_id: processing_strategy.id)
+        end
+      end
 
       attr_accessor :pid_minter, :repository, :attributes
       attr_reader :work
@@ -32,8 +40,10 @@ module Sipity
         CommandRepository.new
       end
 
+      WORK_ATTRIBUTES_FOR_CREATE = [:title, :work_publication_strategy, :work_type].freeze
+
       def attributes=(input)
-        @attributes = input.slice(:title, :work_publication_strategy, :work_type).merge(id: pid_minter.call)
+        @attributes = input.slice(*WORK_ATTRIBUTES_FOR_CREATE).merge(id: pid_minter.call)
       end
 
       def default_pid_minter
