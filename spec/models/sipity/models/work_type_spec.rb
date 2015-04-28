@@ -31,8 +31,7 @@ module Sipity
       end
 
       it 'has one :strategy_usage' do
-        expect(described_class.reflect_on_association(:strategy_usage)).
-          to be_a(ActiveRecord::Reflection::AssociationReflection)
+        expect(subject.association(:strategy_usage)).to be_a(ActiveRecord::Associations::HasOneAssociation)
       end
     end
   end
