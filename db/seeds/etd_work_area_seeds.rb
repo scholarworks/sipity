@@ -7,6 +7,8 @@ def find_or_initialize_or_create!(attributes = {})
   receiver.send(method_name, attributes.except(:context, :receiver))
 end
 
+Sipity::Services::CreateWorkAreaService.call(name: 'Electronic Thesis and Dissertation', slug: 'etd')
+
 ['doctoral_dissertation', 'master_thesis'].each do |work_type_name|
   $stdout.puts "Creating #{work_type_name} State Machine"
   Sipity::Services::FindOrCreateWorkTypeService.call(name: work_type_name) do |work_type, etd_strategy, _initial_strategy_state|
