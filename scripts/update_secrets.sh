@@ -19,6 +19,7 @@ git clone "git@git.library.nd.edu:$secret_repo"
 files_to_copy="
     config/application.yml
     config/database.yml
+    config/newrelic.yml
     config/environment_bootstrapper.rb
     config/locales/site-specific.yml
     app/assets/stylesheets/theme/_default.scss

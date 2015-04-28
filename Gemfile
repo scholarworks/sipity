@@ -107,3 +107,7 @@ end
 source 'https://rails-assets.org' do
   gem 'rails-assets-readmore'
 end
+
+group :production, :pre_production, :staging, :development do
+  gem 'newrelic_rpm'
+end
