@@ -142,3 +142,7 @@ We are leveraging [inch-ci.org](http://inch-ci.org) to show us where we might be
 * Follow the suggestions as you write the inline documentation
 * Run `$ yard` and open the `./doc/index.html` to review your changes
 * Submit a pull request; Don’t forget to add a `[skip ci]` line to the git commit message
+
+# Code of Conduct
+Please note that this project is released with a Contributor Code of Conduct.
+By participating in this project you agree to abide by its terms.
