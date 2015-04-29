@@ -43,8 +43,7 @@ module Sipity
 
         def associate_work_types_with_permission_window!
           WORK_TYPE_NAMES.each do |work_type_name|
-            work_type = PowerConverter.convert_to_work_type(work_type_name)
-            submission_window.submission_window_work_types.find_or_create_by!(work_type: work_type)
+            DataGenerators::FindOrCreateWorkType.call(name: work_type_name)
           end
         end
       end

@@ -15,8 +15,10 @@ module Sipity
         end
 
         it 'will associate the configured work types to the submission window' do
-          expect { subject.call(submission_window: submission_window, work_area: work_area) }.
-            to change { Models::SubmissionWindowWorkType.count }.by(described_class::WORK_TYPE_NAMES.size)
+          described_class::WORK_TYPE_NAMES.each do |work_type_name|
+            expect(DataGenerators::FindOrCreateWorkType).to receive(:call).with(name: work_type_name)
+          end
+          subject.call(submission_window: submission_window, work_area: work_area)
         end
 
         it 'will grant permission to all authenticated users to create an ETD within the submission window'
