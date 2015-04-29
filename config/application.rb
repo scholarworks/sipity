@@ -31,8 +31,8 @@ module Sipity
       Services::NoidMinter.call
     end
 
-    config.default_on_user_create_service = lambda do
-      DataGenerators::OnUserCreate
+    config.default_on_user_create_service = lambda do |a_user|
+      Sipity::DataGenerators::OnUserCreate.call(a_user)
     end
 
     # Settings in config/environments/* take precedence over those specified here.
