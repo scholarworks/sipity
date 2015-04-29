@@ -92,6 +92,7 @@ group :test do
   gem 'poltergeist'
   gem 'rspec-given'
   gem 'rspec-html-matchers', '~>0.6'
+  gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'site_prism'

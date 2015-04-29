@@ -529,6 +529,8 @@ GEM
       websocket (~> 1.0)
     sexp_processor (4.5.0)
     shellany (0.0.1)
+    shoulda-callback-matchers (1.1.3)
+      activesupport (>= 3)
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -668,6 +670,7 @@ DEPENDENCIES
   scss-lint
   seed_dump
   selenium-webdriver
+  shoulda-callback-matchers
   simple_form
   simplecov
   site_prism
