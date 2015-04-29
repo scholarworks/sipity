@@ -31,6 +31,10 @@ module Sipity
       Services::NoidMinter.call
     end
 
+    config.default_on_user_create_service = lambda do
+      DataGenerators::OnUserCreate
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
