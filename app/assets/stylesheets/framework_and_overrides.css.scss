@@ -120,11 +120,16 @@ section {
     margin-bottom: 5px;
   }
 
+  .work-state {
+    color: $brand-warning;
+  }
+
   .work-status {
     color: $gray-light;
     font-size: .9em;
     letter-spacing: .09em;
     margin: 0;
+    margin-bottom: 5px;
     padding-top: .5em;
     text-transform: uppercase;
   }
