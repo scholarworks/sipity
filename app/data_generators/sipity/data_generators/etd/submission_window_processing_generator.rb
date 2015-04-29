@@ -151,7 +151,7 @@ module Sipity
                 'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
               }
 
-              if work_type_name == 'doctoral_dissertation'
+              if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
                 pre_requisite_states['submit_for_review'] << 'defense_date'
               end
 
