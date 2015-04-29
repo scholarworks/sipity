@@ -47,6 +47,8 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
   end
 
   erb_file = File.join(File.dirname(__FILE__), 'processing_to_dot.dot.erb')
-  puts ERB.new(File.read(erb_file)).result(binding).split("\n").each(&:strip).select(&:present?).join("\n")
-  break
+  output_filename = Rails.root.join("artifacts/state_machines/#{PowerConverter.convert_to_file_system_safe_file_name(strategy.fetch(:name))}.dot")
+  File.open(output_filename, 'w+') do |file|
+    file.puts ERB.new(File.read(erb_file)).result(binding).split("\n").each(&:strip).select(&:present?).join("\n")
+  end
 end
