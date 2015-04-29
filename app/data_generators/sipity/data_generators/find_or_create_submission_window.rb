@@ -39,10 +39,11 @@ module Sipity
 
       def associate_submission_window_with_processing_strategy_usage(submission_window)
         return submission_window.strategy_usage if submission_window.strategy_usage.present?
-        another_window = Models::SubmissionWindow.where(work_area_id: work_area.id).includes(:strategy_usage).first
-        submission_window.create_strategy_usage!(strategy_id: another_window.strategy_usage.strategy_id) if another_window.strategy_usage
-        # TODO: Create templated workflow for submission window and work area if
-        # there is not an existing window with a strategy_usage
+        work_area_specific_submission_window_generator.call(work_area: work_area, submission_window: submission_window)
+      end
+
+      def work_area_specific_submission_window_generator
+        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::SubmissionWindowProcessingGenerator".constantize
       end
     end
   end
