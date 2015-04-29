@@ -6,12 +6,13 @@ $border-radius-small: 0;
 // Include theme
 @import 'theme/default';
 
-// Theme variables
-$text-highlight-color: #ffec87 !default;
-
 // Include framework
 @import 'bootstrap-sprockets';
 @import 'bootstrap';
+
+// Theme variables
+$text-highlight-color: #ffec87 !default;
+$work-status-color: $gray-light !default;
 
 // Make all images responsive by default
 img {
@@ -121,7 +122,7 @@ section {
   }
 
   .work-processing-state {
-    color: $brand-warning;
+    color: $work-status-color;
   }
 
   .work-status {
