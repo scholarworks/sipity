@@ -59,3 +59,10 @@ PowerConverter.define_conversion_for(:work_area) do |input|
     Sipity::Models::WorkArea.find_by(name: input.to_s) || Sipity::Models::WorkArea.find_by(slug: input.to_s)
   end
 end
+
+PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
+  case input
+  when Sipity::Models::SubmissionWindow
+    input if input.work_area_id == work_area.id
+  end
+end

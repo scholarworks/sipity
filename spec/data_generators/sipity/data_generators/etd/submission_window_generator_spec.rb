@@ -5,17 +5,21 @@ module Sipity
     module Etd
       # Responsible for generating the submission window for the ETD work area.
       RSpec.describe SubmissionWindowGenerator do
-        let(:submission_window) { Sipity::Models::SubmissionWindow.new(id: 1, slug: 'start') }
+        let(:work_area) { Models::WorkArea.new(id: 1, slug: 'etd') }
+        let(:submission_window) { Models::SubmissionWindow.new(id: 2, slug: 'start', work_area_id: work_area.id) }
         subject { described_class }
-        xit 'will create (or reuse) the master_thesis work type' do
-          subject.call(submission_window: submission_window)
-        end
-        xit 'will create (or reuse) the doctoral_dissertation work type' do
-          subject.call(submission_window: submission_window)
+
+        it 'will persist the submission window if it has not already been persisted' do
+          expect { subject.call(submission_window: submission_window, work_area: work_area) }.
+            to change { Models::SubmissionWindow.count }.by(1)
         end
 
-        it 'will grant permission to :everyone to create a master_thesis within the submission window'
-        it 'will grant permission to :everyone to create a doctoral_dissertation within the submission window'
+        it 'will associate the configured work types to the submission window' do
+          expect { subject.call(submission_window: submission_window, work_area: work_area) }.
+            to change { Models::SubmissionWindowWorkType.count }.by(described_class::WORK_TYPE_NAMES.size)
+        end
+
+        it 'will grant permission to all authenticated users to create an ETD within the submission window'
       end
     end
   end
