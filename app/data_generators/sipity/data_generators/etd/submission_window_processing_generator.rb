@@ -7,6 +7,7 @@ module Sipity
           Models::WorkType::DOCTORAL_DISSERTATION,
           Models::WorkType::MASTER_THESIS
         ]
+        GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
         def self.call(**keywords)
           new(**keywords).call
         end
