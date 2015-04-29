@@ -8,9 +8,12 @@ module Sipity
     class WorkType < ActiveRecord::Base
       self.table_name = 'sipity_work_types'
 
+      DOCTORAL_DISSERTATION = 'doctoral_dissertation'.freeze
+      MASTER_THESIS = 'master_thesis'.freeze
+
       NAMED_WORK_TYPES_FOR_ENUM = {
-        'doctoral_dissertation' => 'doctoral_dissertation',
-        'master_thesis' => 'master_thesis'
+        DOCTORAL_DISSERTATION => DOCTORAL_DISSERTATION,
+        MASTER_THESIS => MASTER_THESIS
       }.freeze
 
       has_many :submission_window_work_types, dependent: :destroy
