@@ -4,7 +4,7 @@ module Sipity
   module DataGenerators
     module Etd
       # Responsible for generating the submission window for the ETD work area.
-      RSpec.describe SubmissionWindowGenerator do
+      RSpec.describe SubmissionWindowProcessingGenerator do
         let(:work_area) { Models::WorkArea.new(id: 1, slug: 'etd') }
         let(:submission_window) { Models::SubmissionWindow.new(id: 2, slug: 'start', work_area_id: work_area.id) }
         subject { described_class }

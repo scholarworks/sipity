@@ -2,7 +2,7 @@ module Sipity
   module DataGenerators
     module Etd
       # Responsible for generating the submission window for the ETD work area.
-      class SubmissionWindowGenerator
+      class SubmissionWindowProcessingGenerator
         WORK_TYPE_NAMES = [
           Models::WorkType::DOCTORAL_DISSERTATION,
           Models::WorkType::MASTER_THESIS
