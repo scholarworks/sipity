@@ -32,8 +32,6 @@ module Sipity
 
       def find_or_create_the_work_type!
         PowerConverter.convert_to_work_type(name)
-      rescue PowerConverter::ConversionError
-        Models::WorkType.find_or_create_by!(name: name)
       end
 
       def find_or_create_strategy_usage!

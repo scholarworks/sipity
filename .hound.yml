@@ -12,6 +12,7 @@ AllCops:
   Include:
     - Rakefile
   Exclude:
+    - app/data_generators/sipity/data_generators/etd/**/*
     - db/**/*
     - config/**/*
     - 'spec/fixtures/**/*'

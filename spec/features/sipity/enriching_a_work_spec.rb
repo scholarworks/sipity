@@ -3,7 +3,9 @@ require 'rails_helper'
 feature 'Enriching a Work', :devise, :feature do
   include Warden::Test::Helpers
   before do
-    Sipity::SpecSupport.load_database_seeds!
+    Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd') do |work_area|
+      Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: work_area)
+    end
     Warden.test_mode!
   end
   let(:user) { Sipity::Factories.create_user }

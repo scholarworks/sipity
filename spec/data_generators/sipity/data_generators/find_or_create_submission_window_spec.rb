@@ -20,7 +20,8 @@ module Sipity
       end
 
       it 'will leverage the custom etd processing generator' do
-        expect(Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator).to receive(:call).with(work_area: work_area, submission_window: be_persisted)
+        expect(Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator).
+          to receive(:call).with(work_area: work_area, submission_window: be_persisted)
         subject.call(slug: slug, work_area: work_area)
       end
     end

@@ -20,8 +20,6 @@ module Sipity
           end
           subject.call(submission_window: submission_window, work_area: work_area)
         end
-
-        it 'will grant permission to all authenticated users to create an ETD within the submission window'
       end
     end
   end
