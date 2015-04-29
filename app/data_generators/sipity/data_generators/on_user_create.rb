@@ -4,10 +4,10 @@ module Sipity
     #
     class OnUserCreate
       def self.call(user)
-        new(user).call
+        new(user: user).call
       end
 
-      def initialize(user)
+      def initialize(user:)
         self.user = user
       end
 
@@ -22,8 +22,8 @@ module Sipity
       attr_writer :user
 
       def add_user_to_registered_group!
-        all_registered_users_group = Sipity::Models::Group.find_or_create_by!(name: Models::Group::ALL_REGISTERED_USERS)
-        all_registered_users_group.group_memberships.create(user: user) unless register_user.group_memberships.where(user: user)
+        registered_users_group = Sipity::Models::Group.find_or_create_by!(name: Models::Group::ALL_REGISTERED_USERS)
+        registered_users_group.group_memberships.create(user: user) if registered_users_group.group_memberships.where(user: user).empty?
       end
     end
   end
