@@ -13,17 +13,13 @@ module Sipity
       def self.call(**keywords, &block)
         new(**keywords, &block).call
       end
-      def initialize(actors:, role:, strategy:, **keywords)
-        self.actors = actors
+      def initialize(role:, strategy:, actors: [], **keywords)
         self.role = role
-        self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
         self.strategy = strategy
-        if keywords.key?(:action_names)
-          self.strategy_state = keywords.fetch(:strategy_state)
-          self.action_names = keywords.fetch(:action_names)
-        else
-          self.action_names = []
-        end
+        self.actors = actors
+        self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
+        self.strategy_state = keywords.fetch(:strategy_state, false)
+        self.action_names = keywords.fetch(:action_names, [])
         yield(self) if block_given?
       end
 
@@ -67,15 +63,20 @@ module Sipity
 
       def create_action_and_permission_for_actions(strategy_role)
         action_names.each do |action_name|
-          strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-            strategy: strategy, name: action_name, allow_repeat_within_current_state: allow_repeat_within_current_state
-          )
-          state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
-            strategy_action: strategy_action, originating_strategy_state: strategy_state
-          )
-          Models::Processing::StrategyStateActionPermission.
-            find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
+          create_action_and_permission_for(action_name, strategy_role)
         end
+      end
+
+      def create_action_and_permission_for(action_name, strategy_role)
+        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
+          strategy: strategy, name: action_name, allow_repeat_within_current_state: allow_repeat_within_current_state
+        )
+        return unless strategy_state.present?
+        state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
+          strategy_action: strategy_action, originating_strategy_state: strategy_state
+        )
+        Models::Processing::StrategyStateActionPermission.
+          find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
       end
 
       def associate_strategy_role_at_strategy_level(strategy_role)

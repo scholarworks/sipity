@@ -34,7 +34,7 @@ module Sipity
       end
 
       it 'will be idempotent' do
-        builder = lambda {
+        builder = lambda do
           described_class.call(
             actors: user,
             role: role,
@@ -43,7 +43,7 @@ module Sipity
             strategy_state: strategy_state,
             action_names: action_name
           )
-        }
+        end
         builder.call
         [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
           expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
