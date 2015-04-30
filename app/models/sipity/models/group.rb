@@ -8,6 +8,8 @@ module Sipity
     class Group < ActiveRecord::Base
       self.table_name = 'sipity_groups'
 
+      ALL_REGISTERED_USERS =  'All Registered Users'.freeze
+
       # Why are there validations here and not on other models? Because I'm
       # not intending to create a form to represent this object. If things get
       # complicated, then a form will happen.

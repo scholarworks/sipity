@@ -31,6 +31,10 @@ module Sipity
       Services::NoidMinter.call
     end
 
+    config.default_on_user_create_service = lambda do |a_user|
+      Sipity::DataGenerators::OnUserCreate.call(a_user)
+    end
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
@@ -44,5 +48,7 @@ module Sipity
     # config.i18n.default_locale = :de
 
     config.action_dispatch.rescue_responses['Sipity::Exceptions::AuthorizationFailureError'] = :unauthorized
+
+    config.active_record.raise_in_transactional_callbacks = true
   end
 end
