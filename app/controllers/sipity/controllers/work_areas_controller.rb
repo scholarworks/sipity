@@ -13,6 +13,11 @@ module Sipity
         handle_response(runner_response)
       end
 
+      def submission_window
+        runner_response = run(work_area_slug: work_area_slug, submission_window_slug: submission_window_slug)
+        handle_response(runner_response)
+      end
+
       attr_accessor :view_object
       helper_method :view_object
 
@@ -20,6 +25,10 @@ module Sipity
 
       def work_area_slug
         params.require(:work_area_slug)
+      end
+
+      def submission_window_slug
+        params.require(:submission_window_slug)
       end
 
       def handle_response(handled_response)

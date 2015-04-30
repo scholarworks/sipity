@@ -49,6 +49,11 @@ Rails.application.routes.draw do
 
 
   get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#show'
+  get(
+    'areas/:work_area_slug/:submission_window_slug',
+    as: 'submission_window_for_work_area',
+    to: 'sipity/controllers/work_areas#submission_window'
+  )
 
   # I need parentheses or `{ }` for the block, because of when the blocks are
   # bound.
