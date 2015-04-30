@@ -29,6 +29,21 @@ module Sipity
           expect(submission_window.processing_entity).to be_present
         end
 
+        it 'will continue to use an assigned processing strategy' do
+          processing_strategy = Models::Processing::Strategy.create!(id: 1, name: 'Ketchup')
+          expect(submission_window).to receive(:processing_strategy).and_return(processing_strategy).at_least(:once)
+          subject.call(submission_window: submission_window, work_area: work_area)
+        end
+
+        it 'will reuse a processing strategy assigned to the work area' do
+          processing_strategy = Models::Processing::Strategy.create!(id: 1, name: 'Ketchup')
+          expect(work_area).to receive(:submission_window_ids).and_return([999])
+          expect(Models::Processing::StrategyUsage).to receive(:where).
+            with(usage_id: [999], usage_type: Conversions::ConvertToPolymorphicType.call(submission_window)).
+            and_return([processing_strategy])
+          subject.call(submission_window: submission_window, work_area: work_area)
+        end
+
         it 'will grant the given work_submitters the ability to create a work' do
           user = Sipity::Factories.create_user
           subject.call(submission_window: submission_window, work_area: work_area, work_submitters: user)

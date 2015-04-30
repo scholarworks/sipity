@@ -63,8 +63,10 @@ module Sipity
           if submission_window.processing_strategy
             @processing_strategy = submission_window.processing_strategy
           else
-            already_used = Models::Processing::StrategyUsage.where(usage_id: work_area.submission_window_ids, usage_type: submission_window.class).first
-            if already_used
+            already_used_processing_strategy = Models::Processing::StrategyUsage.where(
+              usage_id: work_area.submission_window_ids, usage_type: Conversions::ConvertToPolymorphicType.call(submission_window)
+            ).first
+            if already_used_processing_strategy
               @processing_strategy = already_used_processing_strategy
             else
               @processing_strategy = Models::Processing::Strategy.find_or_create_by!(
