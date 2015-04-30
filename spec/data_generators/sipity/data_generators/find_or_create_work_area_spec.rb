@@ -13,6 +13,14 @@ module Sipity
           to_not change { Models::Processing::Strategy.count }
       end
 
+      it 'can be called repeatedly without updating things' do
+        described_class.call(name: 'Worm', slug: 'worm')
+        [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+          expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+        end
+        described_class.call(name: 'Worm', slug: 'worm')
+      end
+
       it 'will create a strategy usages for each work areas (and yield)' do
         expect do
           expect { |b| described_class.call(name: 'Worm', slug: 'worm', &b) }.to yield_with_args(Models::WorkArea)
