@@ -23,6 +23,11 @@ module Sipity
         described_class.call(name: 'Worm', slug: 'worm')
       end
 
+      it 'will call the custom work area processing generator' do
+        expect(Etd::WorkAreaProcessingGenerator).to receive(:call)
+        described_class.call(name: 'ETD', slug: 'etd')
+      end
+
       it 'will create a strategy usages for each work areas (and yield)' do
         expect do
           expect { |b| described_class.call(name: 'Worm', slug: 'worm', &b) }.to yield_with_args(Models::WorkArea)
