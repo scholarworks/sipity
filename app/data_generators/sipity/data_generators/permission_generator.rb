@@ -1,0 +1,95 @@
+module Sipity
+  # :nodoc:
+  module DataGenerators
+    # A "power users" helper class. It builds out the permissions for a host of
+    # information.
+    #
+    # See the specs for more on what is happening, however the general idea is
+    # to encapsulate the logic of assigning :actors to the :role either for
+    # the :entity or the :strategy. Then creating the given :action_names for
+    # the :strategy and :strategy_state and granting permission in that
+    # :strategy_state for the given :role.
+    class PermissionGenerator
+      def self.call(**keywords, &block)
+        new(**keywords, &block).call
+      end
+      def initialize(actors:, role:, strategy:, strategy_state:, action_names:, **keywords)
+        self.actors = actors
+        self.role = role
+        self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
+        self.strategy = strategy
+        self.strategy_state = strategy_state
+        self.action_names = action_names
+        yield(self) if block_given?
+      end
+
+      attr_writer :allow_repeat_within_current_state
+
+      def allow_repeat_within_current_state
+        defined?(@allow_repeat_within_current_state) ? @allow_repeat_within_current_state : true
+      end
+
+      private
+
+      attr_accessor :strategy, :strategy_state
+      attr_reader :entity, :actors, :action_names, :role
+
+      def actors=(input)
+        @actors = Array.wrap(input).map { |i| Conversions::ConvertToProcessingActor.call(i) }
+      end
+
+      def action_names=(input)
+        @action_names = Array.wrap(input)
+      end
+
+      def role=(role)
+        @role = Conversions::ConvertToRole.call(role)
+      end
+
+      def entity=(entity)
+        @entity = Conversions::ConvertToProcessingEntity.call(entity)
+      end
+
+      public
+
+      def call
+        strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy)
+        associate_strategy_role_at_entity_level(strategy_role)
+        associate_strategy_role_at_strategy_level(strategy_role)
+        create_action_and_permission_for_actions(strategy_role)
+      end
+
+      private
+
+      def create_action_and_permission_for_actions(strategy_role)
+        action_names.each do |action_name|
+          strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
+            strategy: strategy, name: action_name, allow_repeat_within_current_state: allow_repeat_within_current_state
+          )
+          state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
+            strategy_action: strategy_action, originating_strategy_state: strategy_state
+          )
+          Models::Processing::StrategyStateActionPermission.
+            find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
+        end
+      end
+
+      def associate_strategy_role_at_strategy_level(strategy_role)
+        return if entity
+        # TODO: What if we don't have an entity? If that is the case then we want to associate the
+        #   actor at the strategy level.
+        actors.each { |actor| Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: actor) }
+      end
+
+      def associate_strategy_role_at_entity_level(strategy_role)
+        return unless entity
+        # TODO: What if we don't have an entity? If that is the case then we want to associate the
+        #   actor at the strategy level.
+        actors.each do |actor|
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(strategy_role: strategy_role, entity: entity, actor: actor)
+        end
+      end
+    end
+    private_constant :PermissionGenerator
+  end
+end

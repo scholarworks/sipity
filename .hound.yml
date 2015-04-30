@@ -119,6 +119,8 @@ ParameterLists:
   Description: 'Avoid parameter lists longer than three or four parameters.'
   Enabled: true
   Max: 4
+  Exclude:
+  - app/data_generators/sipity/data_generators/permission_generator.rb
 
 PercentLiteralDelimiters:
   Description: 'Use `%`-literal delimiters consistently'
