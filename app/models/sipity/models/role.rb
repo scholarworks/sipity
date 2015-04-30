@@ -48,7 +48,7 @@ module Sipity
       )
 
       def self.[](name)
-        where(name: name.to_s).first!
+        find_or_create_by!(name: name.to_s)
       end
 
       def self.valid_names
