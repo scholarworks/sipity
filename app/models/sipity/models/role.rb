@@ -31,6 +31,7 @@ module Sipity
       ADVISOR = 'advisor'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
       WORK_AREA_MANAGER = 'work_area_manager'.freeze
+      WORK_AREA_VIEWER = 'work_area_viewer'.freeze
       WORK_SUBMITTER = 'work_submitter'.freeze
 
       # As I don't have a means for assigning roles for a given processing type
@@ -41,6 +42,7 @@ module Sipity
           ETD_REVIEWER => ETD_REVIEWER,
           ADVISOR => ADVISOR,
           WORK_AREA_MANAGER => WORK_AREA_MANAGER,
+          WORK_AREA_VIEWER => WORK_AREA_VIEWER,
           WORK_SUBMITTER => WORK_SUBMITTER
         }
       )
