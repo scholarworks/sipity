@@ -174,7 +174,7 @@ GEM
     docile (1.1.5)
     domain_name (0.5.23)
       unf (>= 0.0.5, < 1.0.0)
-    dragonfly (1.0.8)
+    dragonfly (1.0.9)
       addressable (~> 2.3)
       multi_json (~> 1.0)
       rack
