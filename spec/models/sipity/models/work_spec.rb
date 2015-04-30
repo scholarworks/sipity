@@ -27,27 +27,6 @@ module Sipity
         end
       end
 
-      context '.work_types' do
-        it 'is a Hash of keys that equal their values' do
-          expect(Work.work_types.keys).
-            to eq(Work.work_types.values)
-        end
-      end
-
-      context '#work_type' do
-        it 'will raise an ArgumentError if you provide an invalid work_type' do
-          expect { subject.work_type = '__incorrect_work_type__' }.to raise_error(ArgumentError)
-        end
-
-        it 'accepts "doctoral_dissertation" as an acceptable work_type' do
-          expect { subject.work_type = 'doctoral_dissertation' }.to_not raise_error
-        end
-
-        it 'will not accept "ETD" as it is case sensitive' do
-          expect { subject.work_type = 'ETD' }.to raise_error(ArgumentError)
-        end
-      end
-
       context '.work_publication_strategies' do
         it 'is a Hash of keys that equal their values' do
           expect(Work.work_publication_strategies.keys).
