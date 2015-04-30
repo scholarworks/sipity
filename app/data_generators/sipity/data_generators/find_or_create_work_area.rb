@@ -27,8 +27,8 @@ module Sipity
         create_work_area_processing_entity!
         associate_work_area_with_processing_strategy!
         associate_work_area_manager_with_processing_strategy!
-        grant_permission_for_the_work_area_manager_to_see_the_area!
-        grant_permission_for_the_work_area_manager_to_create_a_submission_window!
+        grant_permission_for_the_work_area_manager!
+        call_work_area_specific_data_generator!
         yield(work_area) if block_given?
         work_area
       end
@@ -70,28 +70,30 @@ module Sipity
         end
       end
 
-      def grant_permission_for_the_work_area_manager_to_see_the_area!
-        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-          strategy: processing_strategy, name: 'show', allow_repeat_within_current_state: true
-        )
-        state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
-          strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
-        )
-        Models::Processing::StrategyStateActionPermission.find_or_create_by!(
-          strategy_role: strategy_role, strategy_state_action: state_action
-        )
+      PERMITTED_WORK_MANAGER_ACTIONS = ['show', 'create_submission_window'].freeze
+
+      def grant_permission_for_the_work_area_manager!
+        PERMITTED_WORK_MANAGER_ACTIONS.each do |action_name|
+          strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
+            strategy: processing_strategy, name: action_name, allow_repeat_within_current_state: true
+          )
+          state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
+            strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
+          )
+          Models::Processing::StrategyStateActionPermission.
+            find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
+        end
       end
 
-      def grant_permission_for_the_work_area_manager_to_create_a_submission_window!
-        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-          strategy: processing_strategy, name: 'create_submission_window', allow_repeat_within_current_state: true
-        )
-        state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
-          strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
-        )
-        Models::Processing::StrategyStateActionPermission.find_or_create_by!(
-          strategy_role: strategy_role, strategy_state_action: state_action
-        )
+      def call_work_area_specific_data_generator!
+        work_area_specific_generator.call(work_area: work_area, processing_strategy: processing_strategy)
+      end
+
+      def work_area_specific_generator
+        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::WorkAreaProcessingGenerator".constantize
+      rescue NameError
+        # Return a null generator
+        ->(**_) {}
       end
 
       def work_area_manager_role
