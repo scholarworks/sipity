@@ -47,7 +47,11 @@ module Sipity
           expect(permission_to_show_submission_window).to be_truthy
         end
 
-        xit 'will have a default work_submitters of Models::Group::ALL_REGISTERED_USERS'
+        context 'default values' do
+          subject { described_class.new(submission_window: submission_window, work_area: work_area) }
+          its(:default_work_submitters) { should eq Models::Group.all_registered_users }
+          its(:default_work_submitter_role) { should eq Models::Role::WORK_SUBMITTER }
+        end
       end
     end
   end

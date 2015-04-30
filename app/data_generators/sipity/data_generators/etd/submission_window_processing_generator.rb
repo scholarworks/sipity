@@ -7,17 +7,21 @@ module Sipity
           new(**keywords).call
         end
 
-        def initialize(work_area:, submission_window:, work_submitters: default_work_submitters)
+        def initialize(work_area:, submission_window:, **keywords)
           self.work_area = work_area
           self.submission_window = submission_window
-          self.work_submitters = work_submitters
-          self.work_submitter_role = Models::Role::WORK_SUBMITTER
+          self.work_submitters = keywords.fetch(:work_submitters) { default_work_submitters }
+          self.work_submitter_role = keywords.fetch(:work_submitter_role) { default_work_submitter_role }
         end
 
         private
 
         attr_reader :submission_window, :work_area, :work_submitters, :work_submitter_role
         attr_reader :processing_strategy
+
+        def default_work_submitter_role
+          Models::Role::WORK_SUBMITTER
+        end
 
         def work_submitter_role=(input)
           @work_submitter_role = Conversions::ConvertToRole.call(input)
@@ -28,8 +32,7 @@ module Sipity
         end
 
         def default_work_submitters
-          # TODO: Models::Group::ALL_REGISTERED_USERS
-          []
+          Models::Group.all_registered_users
         end
 
         def work_submitters=(input)
