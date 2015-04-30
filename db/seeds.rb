@@ -12,7 +12,6 @@ ActiveRecord::Base.transaction do
   [
     'groups_and_roles',
     'controlled_vocabularies',
-    'work_types_and_application_concepts',
     'etd_work_area'
   ].each do |seed_filename|
     load File.expand_path("../seeds/#{seed_filename}_seeds.rb", __FILE__)

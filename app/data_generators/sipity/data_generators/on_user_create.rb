@@ -22,7 +22,7 @@ module Sipity
       attr_writer :user
 
       def add_user_to_registered_group!
-        registered_users_group = Sipity::Models::Group.find_or_create_by!(name: Models::Group::ALL_REGISTERED_USERS)
+        registered_users_group = Sipity::Models::Group.all_registered_users
         registered_users_group.group_memberships.create(user: user) if registered_users_group.group_memberships.where(user: user).empty?
       end
     end

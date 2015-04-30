@@ -10,6 +10,10 @@ module Sipity
 
       ALL_REGISTERED_USERS =  'All Registered Users'.freeze
 
+      def self.all_registered_users
+        find_or_create_by!(name: ALL_REGISTERED_USERS)
+      end
+
       # Why are there validations here and not on other models? Because I'm
       # not intending to create a form to represent this object. If things get
       # complicated, then a form will happen.

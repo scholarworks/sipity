@@ -13,10 +13,10 @@ module Sipity
           to_not change { Models::Processing::Strategy.count }
       end
 
-      it 'will create a strategy usages for each work areas' do
+      it 'will create a strategy usages for each work areas (and yield)' do
         expect do
-          described_class.call(name: 'Worm', slug: 'worm')
-          described_class.call(name: 'Another', slug: 'another')
+          expect { |b| described_class.call(name: 'Worm', slug: 'worm', &b) }.to yield_with_args(Models::WorkArea)
+          expect { |b| described_class.call(name: 'Another', slug: 'another', &b) }.to yield_with_args(Models::WorkArea)
         end.to change { Models::Processing::StrategyUsage.count }.by(2)
       end
 

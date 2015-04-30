@@ -9,14 +9,15 @@ module Sipity
         new(**keywords).call(&block)
       end
 
-      def initialize(slug:, work_area:)
+      def initialize(slug:, work_area:, work_submitters: [])
         self.slug = slug
         self.work_area = work_area
+        self.work_submitters = work_submitters
       end
 
       private
 
-      attr_accessor :slug, :work_area
+      attr_accessor :slug, :work_submitters
       attr_reader :submission_window, :work_area
 
       def work_area=(input)
@@ -26,9 +27,10 @@ module Sipity
       public
 
       def call
-        submission_window = create_submission_window!
-        associate_submission_window_with_processing_strategy_usage(submission_window)
+        @submission_window = create_submission_window!
+        build_submission_window_workflow!
         yield(submission_window) if block_given?
+        submission_window
       end
 
       private
@@ -37,12 +39,21 @@ module Sipity
         Models::SubmissionWindow.find_or_create_by!(work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug))
       end
 
-      def associate_submission_window_with_processing_strategy_usage(submission_window)
-        return submission_window.strategy_usage if submission_window.strategy_usage.present?
-        another_window = Models::SubmissionWindow.where(work_area_id: work_area.id).includes(:strategy_usage).first
-        submission_window.create_strategy_usage!(strategy_id: another_window.strategy_usage.strategy_id) if another_window.strategy_usage
-        # TODO: Create templated workflow for submission window and work area if
-        # there is not an existing window with a strategy_usage
+      def build_submission_window_workflow!
+        work_area_specific_submission_window_generator.call(
+          work_area: work_area, submission_window: submission_window, work_submitters: work_submitters
+        )
+        work_area_specific_work_types_generator.call(
+          work_area: work_area, submission_window: submission_window, work_submitters: work_submitters
+        )
+      end
+
+      def work_area_specific_submission_window_generator
+        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::SubmissionWindowProcessingGenerator".constantize
+      end
+
+      def work_area_specific_work_types_generator
+        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::WorkTypesProcessingGenerator".constantize
       end
     end
   end

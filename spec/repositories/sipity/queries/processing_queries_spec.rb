@@ -206,22 +206,6 @@ module Sipity
         end
       end
 
-      context '#scope_users_from_actors' do
-        subject { test_repository.scope_users_from_actors(actors: [group_processing_actor, user_processing_actor]) }
-        it "will resolve to an array of users" do
-          group_user = User.create!(username: 'another')
-          _skip_this_user = User.create!(username: 'skip')
-          Models::GroupMembership.create(user: group_user, group: group)
-          user_processing_actor
-          group_processing_actor
-          user_processing_actor
-          expect(subject).to eq([user, group_user])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
-      end
-
       context '#scope_strategy_actions_that_are_prerequisites' do
         subject { test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity) }
         let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'guarded_action') }

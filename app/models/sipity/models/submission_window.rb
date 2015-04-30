@@ -8,6 +8,8 @@ module Sipity
 
       has_many :submission_window_work_types, dependent: :destroy
 
+      Processing.configure_as_a_processible_entity(self)
+
       has_one :strategy_usage, as: :usage, class_name: 'Sipity::Models::Processing::StrategyUsage', dependent: :destroy
 
       def slug=(value)

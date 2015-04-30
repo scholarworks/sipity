@@ -32,8 +32,6 @@ module Sipity
 
       def find_or_create_the_work_type!
         PowerConverter.convert_to_work_type(name)
-      rescue PowerConverter::ConversionError
-        Models::WorkType.find_or_create_by!(name: name)
       end
 
       def find_or_create_strategy_usage!
@@ -42,6 +40,8 @@ module Sipity
       end
 
       def create_strategy_usage!
+        # NOTE: Assumption, each work type has one and only one processing strategy
+        #   and it does not vary by submission window.
         strategy = Models::Processing::Strategy.find_or_create_by!(name: "#{work_type.name} processing")
         work_type.create_strategy_usage!(strategy: strategy)
       end

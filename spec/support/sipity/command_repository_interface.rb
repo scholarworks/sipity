@@ -321,10 +321,6 @@ module Sipity
     def scope_users_for_entity_and_roles(entity:, roles:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_users_from_actors(actors:)
-    end
-
     # @see ./app/repositories/sipity/commands/notification_commands.rb
     def send_notification_for_entity_trigger(notification:, entity:, **roles_for_recipients)
     end

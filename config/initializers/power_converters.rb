@@ -38,7 +38,11 @@ end
 PowerConverter.define_conversion_for(:work_type) do |input|
   case input
   when Symbol, String
-    Sipity::Models::WorkType.find_by(name: input.to_s)
+    begin
+      Sipity::Models::WorkType.find_or_create_by!(name: input.to_s)
+    rescue ArgumentError
+      nil
+    end
   when Sipity::Models::WorkType
     input
   end
@@ -53,5 +57,12 @@ PowerConverter.define_conversion_for(:work_area) do |input|
     input.work_area
   when Symbol, String
     Sipity::Models::WorkArea.find_by(name: input.to_s) || Sipity::Models::WorkArea.find_by(slug: input.to_s)
+  end
+end
+
+PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
+  case input
+  when Sipity::Models::SubmissionWindow
+    input if input.work_area_id == work_area.id
   end
 end

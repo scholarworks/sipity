@@ -9,8 +9,8 @@ module Sipity
     # As an added benefit, this service is the equivalent of a FactoryGirl
     # factory; But something under proper test.
     class FindOrCreateWorkArea
-      def self.call(**keywords)
-        new(**keywords).call
+      def self.call(**keywords, &block)
+        new(**keywords).call(&block)
       end
 
       def initialize(name:, slug:, **keywords)
@@ -29,6 +29,7 @@ module Sipity
         associate_work_area_manager_with_processing_strategy!
         grant_permission_for_the_work_area_manager_to_see_the_area!
         grant_permission_for_the_work_area_manager_to_create_a_submission_window!
+        yield(work_area) if block_given?
         work_area
       end
 
