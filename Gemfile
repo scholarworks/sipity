@@ -109,6 +109,7 @@ source 'https://rails-assets.org' do
   gem 'rails-assets-readmore'
 end
 
-group :production, :pre_production, :staging, :development do
-  gem 'newrelic_rpm'
-end
+# Removing until I have a non-pro license
+# group :production, :pre_production, :staging, :development do
+#   gem 'newrelic_rpm'
+# end
