@@ -1,5 +1,5 @@
 $stdout.puts 'Creating Groups...'
-graduate_school_reviewers = Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator::GRADUATE_SCHOOL_REVIEWERS
+graduate_school_reviewers = Sipity::DataGenerators::Etd::WorkTypesProcessingGenerator::GRADUATE_SCHOOL_REVIEWERS
 Sipity::Conversions::ConvertToProcessingActor.call(
   Sipity::Models::Group.find_or_create_by!(name: graduate_school_reviewers)
 )
