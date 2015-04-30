@@ -11,6 +11,9 @@ module Sipity
 
       subject { described_class.new }
 
+      it { should respond_to :processing_strategy }
+      it { should respond_to :processing_state }
+
       it 'will have many .submission_window_work_types' do
         expect(subject.submission_window_work_types).to be_a(ActiveRecord::Relation)
       end
