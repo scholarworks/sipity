@@ -80,20 +80,20 @@ module Sipity
           state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
             strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
           )
-          Models::Processing::StrategyStateActionPermission.find_or_create_by!(
-            strategy_role: strategy_role, strategy_state_action: state_action
-          )
+          Models::Processing::StrategyStateActionPermission.
+            find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
         end
       end
 
       def call_work_area_specific_data_generator!
         work_area_specific_generator.call(work_area: work_area, processing_strategy: processing_strategy)
-      rescue NameError
-        # TODO: Is this an error?
       end
 
       def work_area_specific_generator
         "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::WorkAreaProcessingGenerator".constantize
+      rescue NameError
+        # Return a null generator
+        ->(**_) {}
       end
 
       def work_area_manager_role
