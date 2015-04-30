@@ -24,17 +24,12 @@ module Sipity
           to yield_with_args(be_persisted, be_persisted, be_persisted)
       end
 
-      it 'can be called multiple times without creating new ones' do
+      it 'can be called repeatedly without updating things' do
         described_class.call(name: name)
-        expect do
-          expect do
-            expect do
-              expect do
-                described_class.call(name: name)
-              end.to_not change { Models::WorkType.count }
-            end.to_not change { Models::Processing::Strategy.count }
-          end.to_not change { Models::Processing::StrategyState.count }
-        end.to_not change { Models::Processing::StrategyUsage.count }
+        [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+          expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+        end
+        described_class.call(name: name)
       end
     end
   end
