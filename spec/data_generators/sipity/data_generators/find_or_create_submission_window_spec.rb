@@ -9,6 +9,7 @@ module Sipity
       let(:slug) { 'start' }
       before do
         allow(Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator).to receive(:call)
+        allow(Sipity::DataGenerators::Etd::WorkTypesProcessingGenerator).to receive(:call)
       end
       it 'will create a submission window for the given work area' do
         expect { subject.call(slug: slug, work_area: work_area) }.
@@ -21,9 +22,12 @@ module Sipity
 
       it 'will leverage the custom etd processing generator' do
         expect(Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator).
-          to receive(:call).with(work_area: work_area, submission_window: be_persisted)
-        subject.call(slug: slug, work_area: work_area)
+          to receive(:call).with(work_area: work_area, submission_window: be_persisted, work_submitters: ['anyone'])
+        expect(Sipity::DataGenerators::Etd::WorkTypesProcessingGenerator).
+          to receive(:call).with(work_area: work_area, submission_window: be_persisted, work_submitters: ['anyone'])
+        subject.call(slug: slug, work_area: work_area, work_submitters: ['anyone'])
       end
+
     end
   end
 end
