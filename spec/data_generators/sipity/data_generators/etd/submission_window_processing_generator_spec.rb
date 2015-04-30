@@ -9,18 +9,23 @@ module Sipity
         let(:submission_window) { Models::SubmissionWindow.new(slug: 'start', work_area_id: work_area.id) }
         subject { described_class }
 
-        it 'will persist the submission window if it has not already been persisted' do
-          expect { subject.call(submission_window: submission_window, work_area: work_area) }.
-            to change { Models::SubmissionWindow.count }.by(1)
+        it 'will persist records as expected (see spec for details)' do
+          expect do
+            expect do
+              subject.call(submission_window: submission_window, work_area: work_area)
+              # The SubmissionWindow is persisted if that was not the case already
+            end.to change { Models::SubmissionWindow.count }.by(1)
+            # Only one strategy state is created for an ETD; As things get moving
+            # we may say that ETDs will have a more meaningful submission window:
+            # * New
+            # * Open For Submissions
+            # * Closed for Submissions
+          end.to change { Models::Processing::StrategyState.count }.by(1)
         end
 
-        it 'will create have a strategy usage for the submission window' do
+        it 'will create a processing entity and strategy usage for the submission window' do
           subject.call(submission_window: submission_window, work_area: work_area)
           expect(submission_window.strategy_usage).to be_present
-        end
-
-        it 'will create a processing entity for the submission window' do
-          subject.call(submission_window: submission_window, work_area: work_area)
           expect(submission_window.processing_entity).to be_present
         end
 

@@ -7,7 +7,7 @@ module Sipity
           new(**keywords).call
         end
 
-        def initialize(work_area:, submission_window:, work_submitters: [])
+        def initialize(work_area:, submission_window:, work_submitters: default_work_submitters)
           self.work_area = work_area
           self.submission_window = submission_window
           self.work_submitters = work_submitters
@@ -25,6 +25,11 @@ module Sipity
 
         def work_area=(input)
           @work_area = PowerConverter.convert(input, to: :work_area)
+        end
+
+        def default_work_submitters
+          # TODO: Models::Group::ALL_REGISTERED_USERS
+          []
         end
 
         def work_submitters=(input)
