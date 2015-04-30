@@ -17,8 +17,7 @@ module Sipity
         let(:all_registered_users_group) { Sipity::Models::Group.find_by(name: Models::Group::ALL_REGISTERED_USERS) }
         it 'user will be part of all_registered user group' do
           described_class.call(user)
-          expect(all_registered_users_group.group_memberships.where(user: user).map(&:group)).
-            not_to be_empty
+          expect(all_registered_users_group.group_memberships.where(user: user).count).to eq(1)
         end
       end
 

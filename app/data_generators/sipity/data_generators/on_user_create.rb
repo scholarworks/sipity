@@ -4,10 +4,10 @@ module Sipity
     #
     class OnUserCreate
       def self.call(user)
-        new(user: user).call
+        new(user).call
       end
 
-      def initialize(user:)
+      def initialize(user)
         self.user = user
       end
 

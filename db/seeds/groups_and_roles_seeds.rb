@@ -7,7 +7,8 @@ Sipity::Conversions::ConvertToProcessingActor.call(
 $stdout.puts 'Add existing users to All Registered Users Groups...'
 Sipity::Models::Group.find_or_create_by!(name: Sipity::Models::Group::ALL_REGISTERED_USERS)
 #add existing users to that group (unless they are already there)
-Sipity::Models::User.all.each do |user|
+User.find_each do |user|
+  puts "User: #{user.inspect}"
   Sipity::DataGenerators::OnUserCreate.call(user)
 end
 
