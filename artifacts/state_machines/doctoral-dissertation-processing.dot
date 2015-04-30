@@ -2,17 +2,17 @@ digraph "G" {
   compound=true;
   node[color="grey15" margin="0.15, 0.125"];
   subgraph cluster_0 {
-    label="doctoral_dissertation processing (2015-04-27)"
+    label="doctoral_dissertation processing (2015-04-29)"
     node[style=filled fillcolor=white color="seashell4"]
     subgraph 0 {
       label="States";
       node[shape="record" fillcolor="seashell1" penwidth=5]
-      state_advisor_changes_requested [label="{ STATE: Advisor Changes Requested | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor | Destroy: etd_reviewer | Describe: creating_user, etd_reviewer | Collaborators: creating_user, etd_reviewer | Attach: creating_user, etd_reviewer | Defense Date: creating_user, etd_reviewer | Search Terms: creating_user, etd_reviewer | Degree: creating_user, etd_reviewer | Access Policy: creating_user, etd_reviewer }"]
-      state_grad_school_changes_requested [label="{ STATE: Grad School Changes Requested | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor | Destroy: etd_reviewer }"]
-      state_new [label="{ STATE: New | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor | Destroy: creating_user, etd_reviewer | Describe: creating_user, etd_reviewer | Collaborators: creating_user, etd_reviewer | Attach: creating_user, etd_reviewer | Defense Date: creating_user, etd_reviewer | Search Terms: creating_user, etd_reviewer | Degree: creating_user, etd_reviewer | Access Policy: creating_user, etd_reviewer }"]
-      state_ready_for_ingest [label="{ STATE: Ready For Ingest | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor }"]
-      state_under_advisor_review [label="{ STATE: Under Advisor Review | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor | Destroy: etd_reviewer }"]
-      state_under_grad_school_review [label="{ STATE: Under Grad School Review | ENRICHMENTS: | Show: creating_user, etd_reviewer, advisor | Destroy: etd_reviewer }"]
+      state_advisor_changes_requested [label="{ STATE: Advisor Changes Requested | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer | Destroy: etd_reviewer | Describe: creating_user, etd_reviewer | Collaborators: creating_user, etd_reviewer | Attach: creating_user, etd_reviewer | Defense Date: creating_user, etd_reviewer | Search Terms: creating_user, etd_reviewer | Degree: creating_user, etd_reviewer | Access Policy: creating_user, etd_reviewer }"]
+      state_grad_school_changes_requested [label="{ STATE: Grad School Changes Requested | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer | Destroy: etd_reviewer }"]
+      state_new [label="{ STATE: New | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer | Destroy: creating_user, etd_reviewer | Describe: creating_user, etd_reviewer | Collaborators: creating_user, etd_reviewer | Attach: creating_user, etd_reviewer | Defense Date: creating_user, etd_reviewer | Search Terms: creating_user, etd_reviewer | Degree: creating_user, etd_reviewer | Access Policy: creating_user, etd_reviewer }"]
+      state_ready_for_ingest [label="{ STATE: Ready For Ingest | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer }"]
+      state_under_advisor_review [label="{ STATE: Under Advisor Review | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer | Destroy: etd_reviewer }"]
+      state_under_grad_school_review [label="{ STATE: Under Grad School Review | ENRICHMENTS: | Show: creating_user, advisor, etd_reviewer | Destroy: etd_reviewer }"]
     }
     subgraph 1 {
       label="Actions"
