@@ -17,6 +17,8 @@ module Sipity
           end
         end
 
+        its(:action_name) { should eq(:show?) }
+
         it 'will require authentication by default' do
           expect(described_class.authentication_layer).to eq(:default)
         end
@@ -43,6 +45,8 @@ module Sipity
             on.success { |a| handler.invoked("SUCCESS", a) }
           end
         end
+
+        its(:action_name) { should eq(:show?) }
 
         it 'will require authentication by default' do
           expect(described_class.authentication_layer).to eq(:default)
