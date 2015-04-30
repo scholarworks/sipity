@@ -34,8 +34,10 @@ module Sipity
         possible_work_publication_strategies.map { |elem| elem.first.to_sym }
       end
 
+      # Convert string to to_sym since simple_forn require sym to
+      # look_up 18n translation for work_type
       def work_types_for_select
-        possible_work_types.map { |elem| elem.first.to_sym }
+        possible_work_types.map(&:to_sym)
       end
 
       def submit(requested_by:)
@@ -67,7 +69,7 @@ module Sipity
       end
 
       def possible_work_types
-        Models::Work.work_types
+        DataGenerators::Etd::WorkTypesProcessingGenerator::WORK_TYPE_NAMES
       end
 
       def possible_work_publication_strategies
