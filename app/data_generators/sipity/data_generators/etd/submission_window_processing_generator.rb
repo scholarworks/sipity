@@ -3,31 +3,32 @@ module Sipity
     module Etd
       # Responsible for generating the submission window for the ETD work area.
       class SubmissionWindowProcessingGenerator
-        WORK_TYPE_NAMES = [
-          Models::WorkType::DOCTORAL_DISSERTATION,
-          Models::WorkType::MASTER_THESIS
-        ]
-        PROCESSING_ROLE_NAMES = [
-          Models::Role::CREATING_USER,
-          Models::Role::ETD_REVIEWER,
-          Models::Role::ADVISOR
-        ]
-        GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
         def self.call(**keywords)
           new(**keywords).call
         end
 
-        def initialize(work_area:, submission_window:)
+        def initialize(work_area:, submission_window:, work_submitters: [])
           self.work_area = work_area
           self.submission_window = submission_window
+          self.work_submitters = work_submitters
+          self.work_submitter_role = Models::Role::WORK_SUBMITTER
         end
 
         private
 
-        attr_reader :submission_window, :work_area
+        attr_reader :submission_window, :work_area, :work_submitters, :work_submitter_role
+        attr_reader :processing_strategy
+
+        def work_submitter_role=(input)
+          @work_submitter_role = Conversions::ConvertToRole.call(input)
+        end
 
         def work_area=(input)
-          @work_area = PowerConverter.convert_to_work_area(input)
+          @work_area = PowerConverter.convert(input, to: :work_area)
+        end
+
+        def work_submitters=(input)
+          @work_submitters = Array.wrap(input).map {|i| Conversions::ConvertToProcessingActor.call(i) }
         end
 
         def submission_window=(input)
@@ -37,316 +38,62 @@ module Sipity
         public
 
         def call
-          save_submission_window_if_applicable!
-          associate_work_types_with_permission_window!
+          persist_submission_window_if_applicable!
+          find_or_resuse_or_create_processing_strategy!
+          find_or_create_submission_windows_processing_entity!
+          grant_permissions_to_submission_actions!
+          yield(submission_window, processing_strategy) if block_given?
         end
 
         private
 
-        def save_submission_window_if_applicable!
+        def persist_submission_window_if_applicable!
           submission_window.save! unless submission_window.persisted?
         end
 
-        # The goal is to create an idempotent script
-        def find_or_initialize_or_create!(context:, receiver:, **attributes)
-          method_name = context.persisted? ? :find_or_create_by! : :find_or_initialize_by
-          receiver.send(method_name, attributes)
+        def find_or_resuse_or_create_processing_strategy!
+          if submission_window.processing_strategy
+            @processing_strategy = submission_window.processing_strategy
+          else
+            already_used = Models::Processing::StrategyUsage.where(usage_id: work_area.submission_window_ids, usage_type: submission_window.class).first
+            if already_used
+              @processing_strategy = already_used_processing_strategy
+            else
+              @processing_strategy = Models::Processing::Strategy.find_or_create_by!(
+                name: "Submission Window #{work_area.slug} #{submission_window.slug} processing"
+              )
+            end
+          end
         end
 
-        def associate_work_types_with_permission_window!
-          WORK_TYPE_NAMES.each do |work_type_name|
-            DataGenerators::FindOrCreateWorkType.call(name: work_type_name) do |work_type, etd_strategy, initial_state|
-              etd_strategy_roles = {}
+        def find_or_create_submission_windows_processing_entity!
+          submission_window.processing_entity || submission_window.create_processing_entity!(
+            strategy: processing_strategy, strategy_state: processing_strategy.initial_strategy_state
+          )
+          Models::Processing::StrategyUsage.find_or_create_by!(strategy: processing_strategy, usage: submission_window)
+        end
 
-              [
-                'creating_user',
-                'etd_reviewer',
-                'advisor'
-              ].each do |role_name|
-                etd_strategy_roles[role_name] = find_or_initialize_or_create!(
-                  context: etd_strategy,
-                  receiver: etd_strategy.strategy_roles,
-                  role: Models::Role.find_or_create_by!(name: role_name)
-                )
-              end
+        SUBMISSION_WINDOW_ACTION_NAMES = ['show', 'create_a_work'].freeze
 
-              etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
-
-              find_or_initialize_or_create!(
-                context: etd_reviewer,
-                receiver: etd_reviewer.strategy_responsibilities,
-                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
-              )
-
-              etd_states = {}
-              [
-                'new',
-                'under_advisor_review',
-                'advisor_changes_requested',
-                'under_grad_school_review',
-                'grad_school_changes_requested',
-                'ready_for_ingest'
-              ].each do |state_name|
-                etd_states[state_name] = find_or_initialize_or_create!(
-                  context: etd_strategy,
-                  receiver: etd_strategy.strategy_states,
-                  name: state_name
-                )
-              end
-
-              etd_actions = {}
-              [
-                { action_name: 'show', seq: 1 },
-                { action_name: 'destroy', seq: 2 },
-                { action_name: 'describe', seq: 1 },
-                { action_name: 'collaborators', seq: 2 },
-                { action_name: 'attach', seq: 3 },
-                { action_name: 'defense_date', seq: 4 },
-                { action_name: 'search_terms', seq: 5 },
-                { action_name: 'degree', seq: 6 },
-                { action_name: 'access_policy', seq: 7 },
-                { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2, allow_repeat_within_current_state: false },
-                { action_name: 'request_change_on_behalf_of', resulting_state_name: 'advisor_changes_requested', seq: 3, allow_repeat_within_current_state: false },
-                { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
-                { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: false },
-                { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
-              ].each do |structure|
-                action_name = structure.fetch(:action_name)
-                resulting_state = structure[:resulting_state_name] ? etd_states.fetch(structure[:resulting_state_name]) : nil
-                action = find_or_initialize_or_create!(
-                  context: etd_strategy,
-                  receiver: etd_strategy.strategy_actions,
-                  name: action_name
-                )
-
-                # Because the objects are being instantiated differently, I need to make
-                # sure to capture the default action_type.
-                action.resulting_strategy_state = resulting_state
-                if action.persisted?
-                  action.update(
-                    presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
-                    action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
-                  )
-                end
-                etd_actions[action_name] = action
-              end
-
-              [
-                { action: 'advisor_requests_change', analogous_to: 'advisor_signoff' }
-              ].each do |options|
-                action = etd_actions.fetch(options.fetch(:action))
-                analogous_to = etd_actions.fetch(options.fetch(:analogous_to))
-                find_or_initialize_or_create!(
-                  context: action,
-                  receiver: action.base_element_for_strategy_actions_analogues,
-                  analogous_to_strategy_action: analogous_to
-                )
-              end
-
-              pre_requisite_states =       {
-                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
-              }
-
-              if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
-                pre_requisite_states['submit_for_review'] << 'defense_date'
-              end
-
-              pre_requisite_states.each do |guarded_action_name, prereq_action_names|
-                guarded_action = etd_actions.fetch(guarded_action_name)
-                Array.wrap(prereq_action_names).each do |prereq_action_name|
-                  prereq_action = etd_actions.fetch(prereq_action_name)
-                  find_or_initialize_or_create!(
-                    context: guarded_action,
-                    receiver: guarded_action.requiring_strategy_action_prerequisites,
-                    prerequisite_strategy_action: prereq_action
-                  )
-                end
-              end
-
-
-              [
-                [
-                  ['new'],
-                  ['submit_for_review'],
-                  ['creating_user']
-                ],[
-                  ['advisor_changes_requested'],
-                  ['respond_to_advisor_request'],
-                  ['creating_user']
-                ],[
-                  ['grad_school_changes_requested'],
-                  ['respond_to_grad_school_request'],
-                  ['creating_user']
-                ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
-                  ['show'],
-                  ['creating_user', 'advisor', 'etd_reviewer'],
-                ],[
-                  ['new', 'advisor_changes_requested'],
-                  ['defense_date','degree', 'access_policy', 'describe','search_terms', 'attach', 'collaborators'],
-                  ['creating_user', 'etd_reviewer']
-                ],[
-                  ['new'],
-                  ['destroy'],
-                  ['creating_user', 'etd_reviewer']
-                ],[
-                  ['under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested'],
-                  ['destroy'],
-                  ['etd_reviewer']
-                ],[
-                  ['under_advisor_review'],
-                  ['advisor_signoff'],
-                  ['advisor']
-                ],[
-                  ['under_advisor_review'],
-                  ['signoff_on_behalf_of', 'request_change_on_behalf_of'],
-                  ['etd_reviewer']
-                ],[
-                  ['under_advisor_review'],
-                  ['advisor_requests_change'],
-                  ['etd_reviewer', 'advisor']
-                ],[
-                  ['under_grad_school_review'],
-                  ['grad_school_requests_change', 'grad_school_signoff'],
-                  ['etd_reviewer']
-                ]
-              ].each do |originating_state_names, action_names, role_names|
-                Array.wrap(originating_state_names).each do |originating_state_name|
-                  Array.wrap(action_names).each do |action_name|
-                    action = etd_actions.fetch(action_name)
-                    originating_state = etd_states.fetch(originating_state_name)
-                    event = find_or_initialize_or_create!(
-                      context: action,
-                      receiver: action.strategy_state_actions,
-                      originating_strategy_state: originating_state
-                    )
-
-                    Array.wrap(role_names).each do |role_name|
-                      strategy_role = etd_strategy_roles.fetch(role_name)
-                      find_or_initialize_or_create!(
-                        context: strategy_role,
-                        receiver: strategy_role.strategy_state_action_permissions,
-                        strategy_state_action: event
-                      )
-                    end
-                  end
-                end
-              end
-            end
-
-            # Define associated emails by a named thing
-            [
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'submit_for_review',
-                emails: {
-                  confirmation_of_submit_for_review: { to: 'creating_user' },
-                  submit_for_review: { to: ['advisor', 'etd_reviewer'] }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'advisor_signoff',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'signoff_on_behalf_of',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'advisor_requests_change',
-                emails: {
-                  advisor_requests_change: { to: 'creating_user' }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'request_change_on_behalf_of',
-                emails: {
-                  request_change_on_behalf_of: { to: 'creating_user' }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'respond_to_advisor_request',
-                emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'respond_to_grad_school_request',
-                emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'grad_school_requests_change',
-                emails: { grad_school_requests_change: { to: 'creating_user' } }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'grad_school_signoff',
-                emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
-              },
-              {
-                named_container: Models::Processing::StrategyState,
-                name: 'under_grad_school_review',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyState,
-                name: 'ready_for_ingest',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
-                }
-              }
-            ].each do |email_config|
-              named_container = email_config.fetch(:named_container)
-              name = email_config.fetch(:name)
-              named_container.where(name: name).each do |named_thing|
-                email_config.fetch(:emails).each do |email_name, recipients|
-                  the_email = Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
-                    recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
-                      Array.wrap(recipient_roles).each do |recipient_role|
-                        find_or_initialize_or_create!(
-                          context: email,
-                          receiver: email.recipients,
-                          role: Models::Role.find_by!(name: recipient_role),
-                          recipient_strategy: recipient_strategy.to_s
-                        )
-                      end
-                    end
-                  end
-                  reason_for_notification = begin
-                    case named_thing
-                    when Models::Processing::StrategyAction
-                      Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
-                    when Models::Processing::StrategyState
-                      Parameters::NotificationContextParameter::REASON_ENTERED_STATE
-                    end
-                  end
-                  Models::Notification::NotifiableContext.find_or_create_by!(
-                    scope_for_notification: named_thing,
-                    reason_for_notification: reason_for_notification,
-                    email: the_email
-                  )
-                end
-              end
-            end
+        def grant_permissions_to_submission_actions!
+          strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_submitter_role, strategy: processing_strategy)
+          work_submitters.each do |submitter|
+            Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
+              strategy_role: strategy_role,
+              entity: submission_window.processing_entity,
+              actor: submitter
+            )
+          end
+          SUBMISSION_WINDOW_ACTION_NAMES.each do |action_name|
+            strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
+              strategy: processing_strategy, name: action_name, allow_repeat_within_current_state: true
+            )
+            state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
+              strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
+            )
+            Models::Processing::StrategyStateActionPermission.find_or_create_by!(
+              strategy_role: strategy_role, strategy_state_action: state_action
+            )
           end
         end
       end
