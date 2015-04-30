@@ -33,6 +33,24 @@ module Sipity
         end.to_not change { Models::Processing::StrategyResponsibility.count }
       end
 
+      it 'will be idempotent' do
+        builder = lambda {
+          described_class.call(
+            actors: user,
+            role: role,
+            entity: entity,
+            strategy: strategy,
+            strategy_state: strategy_state,
+            action_names: action_name
+          )
+        }
+        builder.call
+        [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+          expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+        end
+        builder.call
+      end
+
       it 'will build the entity level permissions if an entity is specified' do
         described_class.call(
           actors: user,
