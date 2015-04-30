@@ -15,6 +15,24 @@ module Sipity
       end
       let(:action_name) { 'show' }
 
+      it 'will grant strategy responsible to actor as the given role' do
+        expect do
+          expect do
+            described_class.call(actors: user, role: role, strategy: strategy)
+          end.to change { Models::Processing::StrategyRole.count }.by(1)
+        end.to change { Models::Processing::StrategyResponsibility.count }.by(1)
+      end
+
+      it 'will grant entity responsiblity to actor as the given role' do
+        expect do
+          expect do
+            expect do
+              described_class.call(actors: user, role: role, strategy: strategy, entity: entity)
+            end.to change { Models::Processing::StrategyRole.count }.by(1)
+          end.to change { Models::Processing::EntitySpecificResponsibility.count }.by(1)
+        end.to_not change { Models::Processing::StrategyResponsibility.count }
+      end
+
       it 'will build the entity level permissions if an entity is specified' do
         described_class.call(
           actors: user,

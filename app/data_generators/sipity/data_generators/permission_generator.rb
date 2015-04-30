@@ -13,13 +13,17 @@ module Sipity
       def self.call(**keywords, &block)
         new(**keywords, &block).call
       end
-      def initialize(actors:, role:, strategy:, strategy_state:, action_names:, **keywords)
+      def initialize(actors:, role:, strategy:, **keywords)
         self.actors = actors
         self.role = role
         self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
         self.strategy = strategy
-        self.strategy_state = strategy_state
-        self.action_names = action_names
+        if keywords.key?(:action_names)
+          self.strategy_state = keywords.fetch(:strategy_state)
+          self.action_names = keywords.fetch(:action_names)
+        else
+          self.action_names = []
+        end
         yield(self) if block_given?
       end
 
