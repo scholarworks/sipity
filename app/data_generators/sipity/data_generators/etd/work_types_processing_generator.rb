@@ -114,10 +114,19 @@ module Sipity
                 # sure to capture the default action_type.
                 action.resulting_strategy_state = resulting_state
                 if action.persisted?
-                  action.update(
-                    presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
-                    action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
-                  )
+                  expected_attributes = {
+                    presentation_sequence: structure.fetch(:seq),
+                    resulting_strategy_state: resulting_state,
+                    action_type: action.default_action_type,
+                    allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
+                  }
+                  # No sense making changes if none are needed
+                  if expected_attributes.none? { |key, value| action.attributes[key.to_s] == value }
+                    action.update(
+                      presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
+                      action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
+                    )
+                  end
                 end
                 etd_actions[action_name] = action
               end

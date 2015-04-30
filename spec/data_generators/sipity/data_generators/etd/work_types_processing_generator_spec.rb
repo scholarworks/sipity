@@ -20,6 +20,14 @@ module Sipity
             end.to change { Models::WorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
           end.to change { Models::Processing::Strategy.count }.by(described_class::WORK_TYPE_NAMES.count)
         end
+
+        it 'can be called repeatedly without updating things' do
+          subject.call(submission_window: submission_window, work_area: work_area)
+          [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+            expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+          end
+          subject.call(submission_window: submission_window, work_area: work_area)
+        end
       end
     end
   end

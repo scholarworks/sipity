@@ -20,6 +20,14 @@ module Sipity
           to yield_with_args(Models::SubmissionWindow)
       end
 
+      it 'can be called repeatedly without updating things' do
+        subject.call(slug: slug, work_area: work_area)
+        [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+          expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+        end
+        subject.call(slug: slug, work_area: work_area)
+      end
+
       it 'will leverage the custom etd processing generator' do
         expect(Sipity::DataGenerators::Etd::SubmissionWindowProcessingGenerator).
           to receive(:call).with(work_area: work_area, submission_window: be_persisted, work_submitters: ['anyone'])
