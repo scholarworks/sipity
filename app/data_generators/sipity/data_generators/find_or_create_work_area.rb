@@ -26,8 +26,7 @@ module Sipity
         create_processing_strategy!
         create_work_area_processing_entity!
         associate_work_area_with_processing_strategy!
-        associate_work_area_manager_with_processing_strategy!
-        grant_permission_for_the_work_area_manager!
+        generate_general_work_area_permissions!
         call_work_area_specific_data_generator!
         yield(work_area) if block_given?
         work_area
@@ -38,7 +37,8 @@ module Sipity
       private
 
       attr_writer :work_area
-      attr_reader :processing_strategy, :work_area_managers, :strategy_role
+      attr_accessor :work_area_managers
+      attr_reader :processing_strategy, :strategy_role
 
       def find_or_create_work_area(attributes)
         # Going with slug because these are "more permanent"
@@ -59,30 +59,16 @@ module Sipity
         @processing_strategy ||= Models::Processing::Strategy.find_or_create_by!(name: "#{work_area.class} processing")
       end
 
-      def associate_work_area_manager_with_processing_strategy!
-        @strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_area_manager_role, strategy: processing_strategy)
-        work_area_managers.each do |manager|
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role,
-            entity: work_area.processing_entity,
-            actor: manager
-          )
-        end
-      end
-
       PERMITTED_WORK_MANAGER_ACTIONS = ['show', 'create_submission_window'].freeze
-
-      def grant_permission_for_the_work_area_manager!
-        PERMITTED_WORK_MANAGER_ACTIONS.each do |action_name|
-          strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-            strategy: processing_strategy, name: action_name, allow_repeat_within_current_state: true
-          )
-          state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
-            strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
-          )
-          Models::Processing::StrategyStateActionPermission.
-            find_or_create_by!(strategy_role: strategy_role, strategy_state_action: state_action)
-        end
+      def generate_general_work_area_permissions!
+        PermissionGenerator.call(
+          actors: work_area_managers,
+          role: Models::Role::WORK_AREA_MANAGER,
+          action_names: PERMITTED_WORK_MANAGER_ACTIONS,
+          entity: work_area,
+          strategy: processing_strategy,
+          strategy_state: processing_strategy.initial_strategy_state
+        )
       end
 
       def call_work_area_specific_data_generator!
@@ -94,14 +80,6 @@ module Sipity
       rescue NameError
         # Return a null generator
         ->(**_) {}
-      end
-
-      def work_area_manager_role
-        @work_area_manager_role ||= Conversions::ConvertToRole.call(Models::Role::WORK_AREA_MANAGER)
-      end
-
-      def work_area_managers=(managers)
-        @work_area_managers = Array.wrap(managers).map { |manager| Conversions::ConvertToProcessingActor.call(manager) }
       end
     end
   end
