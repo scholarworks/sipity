@@ -16,15 +16,13 @@ module Sipity
 
         private
 
-        attr_reader :submission_window, :work_area, :work_submitters, :work_submitter_role
+        attr_reader :submission_window, :work_area
+        attr_accessor :work_submitters, :work_submitter_role
         attr_reader :processing_strategy
+
 
         def default_work_submitter_role
           Models::Role::WORK_SUBMITTER
-        end
-
-        def work_submitter_role=(input)
-          @work_submitter_role = Conversions::ConvertToRole.call(input)
         end
 
         def work_area=(input)
@@ -33,10 +31,6 @@ module Sipity
 
         def default_work_submitters
           Models::Group.all_registered_users
-        end
-
-        def work_submitters=(input)
-          @work_submitters = Array.wrap(input).map {|i| Conversions::ConvertToProcessingActor.call(i) }
         end
 
         def submission_window=(input)
@@ -86,25 +80,14 @@ module Sipity
         SUBMISSION_WINDOW_ACTION_NAMES = ['show', 'start_a_submission'].freeze
 
         def grant_permissions_to_submission_actions!
-          strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_submitter_role, strategy: processing_strategy)
-          work_submitters.each do |submitter|
-            Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-              strategy_role: strategy_role,
-              entity: submission_window.processing_entity,
-              actor: submitter
-            )
-          end
-          SUBMISSION_WINDOW_ACTION_NAMES.each do |action_name|
-            strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-              strategy: processing_strategy, name: action_name, allow_repeat_within_current_state: true
-            )
-            state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
-              strategy_action: strategy_action, originating_strategy_state: processing_strategy.initial_strategy_state
-            )
-            Models::Processing::StrategyStateActionPermission.find_or_create_by!(
-              strategy_role: strategy_role, strategy_state_action: state_action
-            )
-          end
+          PermissionGenerator.call(
+            actors: work_submitters,
+            role: work_submitter_role,
+            action_names: SUBMISSION_WINDOW_ACTION_NAMES,
+            entity: submission_window,
+            strategy: processing_strategy,
+            strategy_state: processing_strategy.initial_strategy_state
+          )
         end
       end
     end
