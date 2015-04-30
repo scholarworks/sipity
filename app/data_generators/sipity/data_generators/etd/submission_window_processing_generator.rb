@@ -83,7 +83,7 @@ module Sipity
           Models::Processing::StrategyUsage.find_or_create_by!(strategy: processing_strategy, usage: submission_window)
         end
 
-        SUBMISSION_WINDOW_ACTION_NAMES = ['show', 'create_a_work'].freeze
+        SUBMISSION_WINDOW_ACTION_NAMES = ['show', 'start_a_submission'].freeze
 
         def grant_permissions_to_submission_actions!
           strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: work_submitter_role, strategy: processing_strategy)

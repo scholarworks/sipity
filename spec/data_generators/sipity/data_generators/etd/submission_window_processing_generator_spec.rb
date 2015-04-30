@@ -44,22 +44,15 @@ module Sipity
           subject.call(submission_window: submission_window, work_area: work_area)
         end
 
-        it 'will grant the given work_submitters the ability to create a work' do
+        it 'will grant the given work_submitters the submission window actions' do
           user = Sipity::Factories.create_user
           subject.call(submission_window: submission_window, work_area: work_area, work_submitters: user)
-          permission_to_show_submission_window = Policies::Processing::ProcessingEntityPolicy.call(
-            user: user, entity: submission_window, action_to_authorize: 'create_a_work'
-          )
-          expect(permission_to_show_submission_window).to be_truthy
-        end
-
-        it 'will grant the given work_submitters the ability to see the submission window' do
-          user = Sipity::Factories.create_user
-          subject.call(submission_window: submission_window, work_area: work_area, work_submitters: user)
-          permission_to_show_submission_window = Policies::Processing::ProcessingEntityPolicy.call(
-            user: user, entity: submission_window, action_to_authorize: 'show'
-          )
-          expect(permission_to_show_submission_window).to be_truthy
+          described_class::SUBMISSION_WINDOW_ACTION_NAMES.each do |action_name|
+            permission_to_show_submission_window = Policies::Processing::ProcessingEntityPolicy.call(
+              user: user, entity: submission_window, action_to_authorize: action_name
+            )
+            expect(permission_to_show_submission_window).to be_truthy
+          end
         end
 
         context 'default values' do
