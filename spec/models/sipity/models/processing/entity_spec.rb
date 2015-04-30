@@ -14,6 +14,7 @@ module Sipity
           subject { described_class.new }
           it { should respond_to(:strategy_state_name) }
           it { should respond_to(:processing_state) }
+          it { should respond_to(:processing_strategy) }
         end
       end
     end
