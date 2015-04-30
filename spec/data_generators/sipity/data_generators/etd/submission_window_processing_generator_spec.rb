@@ -55,6 +55,14 @@ module Sipity
           end
         end
 
+        it 'can called repeatedly without updating things' do
+          subject.call(submission_window: submission_window, work_area: work_area)
+          [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
+            expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)
+          end
+          subject.call(submission_window: submission_window, work_area: work_area)
+        end
+
         context 'default values' do
           subject { described_class.new(submission_window: submission_window, work_area: work_area) }
           its(:default_work_submitters) { should eq Models::Group.all_registered_users }
