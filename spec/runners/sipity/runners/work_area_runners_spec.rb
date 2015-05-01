@@ -41,28 +41,27 @@ module Sipity
         let(:processing_action_name) { 'fun_things' }
         let(:context) do
           TestRunnerContext.new(find_work_area_by: work_area, current_user: user, build_work_area_processing_action_form: form)
-          ends
-          let(:handler) { double(invoked: true) }
+        end
+        let(:handler) { double(invoked: true) }
 
-          subject do
-            described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
-              on.success { |a| handler.invoked("SUCCESS", a) }
-            end
+        subject do
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
+            on.success { |a| handler.invoked("SUCCESS", a) }
           end
+        end
 
-          it 'will require authentication by default' do
-            expect(described_class.authentication_layer).to eq(:default)
-          end
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
+        end
 
-          it 'enforces authorization' do
-            expect(described_class.authorization_layer).to eq(:default)
-          end
+        it 'enforces authorization' do
+          expect(described_class.authorization_layer).to eq(:default)
+        end
 
-          it 'issues the :success callback' do
-            response = subject.run(work_area_slug: 'a_work_area', processing_action_name: processing_action_name, attributes: double)
-            expect(handler).to have_received(:invoked).with("SUCCESS", form)
-            expect(response).to eq([:success, form])
-          end
+        it 'issues the :success callback' do
+          response = subject.run(work_area_slug: 'a_work_area', processing_action_name: processing_action_name, attributes: double)
+          expect(handler).to have_received(:invoked).with("SUCCESS", form)
+          expect(response).to eq([:success, form])
         end
       end
 
