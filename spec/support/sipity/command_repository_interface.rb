@@ -77,6 +77,10 @@ module Sipity
     def build_update_work_form(work:, attributes: {})
     end
 
+    # @see ./app/repositories/sipity/queries/work_area_queries.rb
+    def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def change_processing_actor_proxy(from_proxy:, to_proxy:)
     end
