@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   get(
     'areas/:work_area_slug/:submission_window_slug',
     as: 'submission_window_for_work_area',
-    to: 'sipity/controllers/work_areas#submission_window'
+    to: 'sipity/controllers/submission_windows#show'
   )
 
   # I need parentheses or `{ }` for the block, because of when the blocks are
