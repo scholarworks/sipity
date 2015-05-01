@@ -18,6 +18,15 @@ module Sipity
             to eq(submission_window)
         end
       end
+
+      context '#build_work_area_processing_action_form' do
+        let(:parameters) { { work_area: double, processing_action_name: double, attributes: double } }
+        let(:form) { double }
+        it 'will delegate the heavy lifting to a builder' do
+          expect(Forms::WorkAreaForms).to receive(:build_the_form).with(parameters).and_return(form)
+          expect(test_repository.build_work_area_processing_action_form(parameters)).to eq(form)
+        end
+      end
     end
   end
 end
