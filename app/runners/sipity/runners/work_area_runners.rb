@@ -23,8 +23,8 @@ module Sipity
 
         def run(work_area_slug:, processing_action_name:, attributes: {})
           work_area = repository.find_work_area_by(slug: work_area_slug)
-          form = repository.build_processing_action_form(
-            entity: work_area, processing_action_name: processing_action_name, attributes: attributes
+          form = repository.build_work_area_processing_action_form(
+            work_area: work_area, processing_action_name: processing_action_name, attributes: attributes
           )
           authorization_layer.enforce!(processing_action_name => form) do
             callback(:success, form)
@@ -39,8 +39,8 @@ module Sipity
 
         def run(work_area_slug:, processing_action_name:, attributes: {})
           work_area = repository.find_work_area_by(slug: work_area_slug)
-          form = repository.build_processing_action_form(
-            entity: work_area, processing_action_name: processing_action_name, attributes: attributes
+          form = repository.build_work_area_processing_action_form(
+            work_area: work_area, processing_action_name: processing_action_name, attributes: attributes
           )
           authorization_layer.enforce!(processing_action_name => form) do
             form.submit(requested_by: current_user) ? callback(:success, work_area) : callback(:failure, form)

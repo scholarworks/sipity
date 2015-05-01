@@ -39,7 +39,9 @@ module Sipity
         let(:user) { double('User') }
         let(:form) { double('Form') }
         let(:processing_action_name) { 'fun_things' }
-        let(:context) { TestRunnerContext.new(find_work_area_by: work_area, current_user: user, build_processing_action_form: form) }
+        let(:context) do
+          TestRunnerContext.new(find_work_area_by: work_area, current_user: user, build_work_area_processing_action_form: form)
+          ends
         let(:handler) { double(invoked: true) }
 
         subject do
@@ -68,7 +70,9 @@ module Sipity
         let(:user) { double('User') }
         let(:form) { double('Form') }
         let(:processing_action_name) { 'fun_things' }
-        let(:context) { TestRunnerContext.new(find_work_area_by: work_area, current_user: user, build_processing_action_form: form) }
+        let(:context) do
+          TestRunnerContext.new(find_work_area_by: work_area, current_user: user, build_work_area_processing_action_form: form)
+        end
         let(:handler) { double(invoked: true) }
 
         subject do
