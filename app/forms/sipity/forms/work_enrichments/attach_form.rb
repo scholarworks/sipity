@@ -5,24 +5,22 @@ module Sipity
       class AttachForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
-          self.files = attributes[:files]
           self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
-          self.attachments_attributes = attributes.fetch(:attachments_attributes, {})
+          self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
         end
 
-        attr_accessor :files, :representative_attachment_id
-        private(:files=, :representative_attachment_id=)
+        attr_accessor :representative_attachment_id, :attachments_extension
         validate :at_least_one_file_must_be_attached
 
-        def attachments
-          @attachments ||= attachments_from_work
-        end
-
-        # Exposed so that field_for will work
-        def attachments_attributes=(value)
-          @attachments_attributes = value
-          collect_files_for_deletion_and_update(value)
-        end
+        delegate(
+          :attachments,
+          :attachments_metadata,
+          :attach_or_update_files,
+          :attachments_attributes=,
+          :files,
+          to: :attachments_extension
+        )
+        private(:representative_attachment_id=, :attachments_extension, :attachments_extension=, :attach_or_update_files)
 
         private
 
@@ -32,10 +30,8 @@ module Sipity
 
         def save(requested_by:)
           super do
-            repository.attach_files_to(work: work, files: files, user: requested_by)
             repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
-            repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
-            repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
+            attach_or_update_files(requested_by: requested_by)
             # HACK: This is expanding the knowledge of what action is being
             #   taken. Instead it is something that should be modeled in the
             #   underlying database. That is to say: When an action fires what
@@ -43,38 +39,6 @@ module Sipity
             #   unregistered.
             repository.unregister_action_taken_on_entity(work: work, enrichment_type: 'access_policy', requested_by: requested_by)
           end
-        end
-
-        def attachments_metadata
-          @attachments_metadata || {}
-        end
-
-        def ids_for_deletion
-          @ids_for_deletion || []
-        end
-
-        def collect_files_for_deletion_and_update(value)
-          @ids_for_deletion = []
-          @attachments_metadata = {}
-          value.each do |_key, attributes|
-            if PowerConverter.convert_to_boolean(attributes['delete'])
-              @ids_for_deletion << attributes.fetch('id')
-            else
-              @attachments_metadata[attributes.fetch('id')] = extract_permitted_attributes(attributes, 'name')
-            end
-          end
-        end
-
-        # Because strong parameters might be in play, I need to make sure to
-        # permit these, or things fall apart later in the application.
-        def extract_permitted_attributes(attributes, *keys)
-          permitted_attributes = attributes.slice(*keys)
-          permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
-          permitted_attributes
-        end
-
-        def attachments_from_work
-          repository.work_attachments(work: work).map { |attachment| AttachmentFormElement.new(attachment) }
         end
 
         def attachments_associated_with_the_work?
@@ -86,20 +50,14 @@ module Sipity
           errors.add(:base, :at_least_one_attachment_required)
         end
 
-        # Responsible for exposing a means of displaying and marking the object
-        # for deletion.
-        class AttachmentFormElement
-          def initialize(attachment)
-            self.attachment = attachment
-          end
-          delegate :id, :name, :thumbnail_url, :persisted?, :file_url, to: :attachment
-          attr_accessor :delete
-
-          private
-
-          attr_accessor :attachment
+        def build_attachments(attachment_attr)
+          ComposableElements::AttachmentsExtension.new(
+            form: self,
+            repository: repository,
+            files: attachment_attr[:files],
+            attachments_attributes: attachment_attr[:attachments_attributes]
+          )
         end
-        private_constant :AttachmentFormElement
       end
     end
   end
