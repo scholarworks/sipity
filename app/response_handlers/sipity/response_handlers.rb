@@ -14,9 +14,9 @@ module Sipity
   module ResponseHandlers
     module_function
 
-    def handle_response(context:, handled_response:, container:)
+    def handle_response(context:, handled_response:, container:, template:)
       response_handler = build_response_handler(container: container, handled_response_status: handled_response.status)
-      response_handler.respond(context: context, handled_response: handled_response)
+      response_handler.respond(context: context, handled_response: handled_response, template: template)
     end
 
     def build_response_handler(container:, handled_response_status:)

@@ -13,11 +13,13 @@ module Sipity
     after { Sipity.send(:remove_const, :MockContainer) }
     let(:context) { double }
     let(:handled_response) { double(status: :success) }
+    let(:template) { double }
 
     context '.handle_response' do
       it 'will build a handler then respond with that handler' do
-        expect(MockContainer::SuccessResponse).to receive(:respond).with(context: context, handled_response: handled_response)
-        described_class.handle_response(container: MockContainer, context: context, handled_response: handled_response)
+        expect(MockContainer::SuccessResponse).to receive(:respond).
+          with(context: context, handled_response: handled_response, template: template)
+        described_class.handle_response(container: MockContainer, context: context, handled_response: handled_response, template: template)
       end
     end
 
