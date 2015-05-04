@@ -30,6 +30,10 @@ module Sipity
 
         its(:default_action_type) { should be_a(String) }
 
+        it { should respond_to(:resourceful_action?) }
+        it { should respond_to(:state_advancing_action?) }
+        it { should respond_to(:enrichment_action?) }
+
         context 'set action type' do
           it 'will set the action type if none is specified' do
             expect(subject.action_type).to be_present
