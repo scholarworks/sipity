@@ -1,0 +1,15 @@
+<h1>This is a work area</h1>
+
+{{#resourceful_actions?}}
+  <div class="panel-footer">
+    <ul class="action-listing">
+      {{*resourceful_actions}}
+        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+          <meta itemprop="name" content="event_trigger/{{action_name}}" />
+          {{render_entry_point}}
+          <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
+        </li>
+      {{/resourceful_actions}}
+    </ul>
+  </div>
+{{/resourceful_actions?}}

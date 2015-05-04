@@ -19,7 +19,17 @@ module Sipity
         request_specs: false
     end
 
-    %w(conversions forms jobs policies runners services response_handlers data_generators).each do |concept|
+    [
+      'conversions',
+      'data_generators',
+      'forms',
+      'jobs',
+      'policies',
+      'presenters',
+      'response_handlers',
+      'runners',
+      'services'
+    ].each do |concept|
       config.autoload_paths << Rails.root.join("app/#{concept}")
     end
 
