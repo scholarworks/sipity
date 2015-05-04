@@ -3,11 +3,26 @@ module Sipity
     module WorkAreas
       # Responsible for presenting a work area
       class ShowPresenter < Curly::Presenter
-        presents :view_object
+        presents :work_area
 
         def initialize(context, options = {})
           self.repository = options.delete(:repository) || default_repository
+          # Because controller actions may not cooperate and instead set a
+          # :view_object.
+          options['work_area'] ||= options['view_object']
           super
+        end
+
+        private
+
+        attr_reader :work_area
+
+        public
+
+        def submission_windows
+          repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+            user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area }
+          )
         end
 
         def resourceful_actions
@@ -35,7 +50,7 @@ module Sipity
         end
 
         def processing_state
-          view_object.processing_state.to_s
+          work_area.processing_state.to_s
         end
 
         private
@@ -44,7 +59,7 @@ module Sipity
 
         def processing_actions
           @processing_actions ||= repository.scope_permitted_entity_strategy_actions_for_current_state(
-            user: current_user, entity: view_object
+            user: current_user, entity: work_area
           )
         end
 

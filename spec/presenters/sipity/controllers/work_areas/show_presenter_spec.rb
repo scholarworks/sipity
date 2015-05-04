@@ -4,25 +4,31 @@ module Sipity
   module Controllers
     module WorkAreas
       RSpec.describe ShowPresenter do
-        let(:context) { PresenterHelper::Context.new(view_object: view_object, current_user: current_user) }
+        let(:context) { PresenterHelper::Context.new(work_area: work_area, current_user: current_user) }
         let(:current_user) { double('Current User') }
-        let(:view_object) { Models::WorkArea.new(slug: 'the-slug') }
+        let(:work_area) { Models::WorkArea.new(slug: 'the-slug') }
         let(:resourceful_action) { double(resourceful_action?: true, enrichment_action?: false, state_advancing_action?: false) }
         let(:enrichment_action) { double(resourceful_action?: false, enrichment_action?: true, state_advancing_action?: false) }
         let(:state_advancing_action) { double(resourceful_action?: false, enrichment_action?: false, state_advancing_action?: true) }
         let(:processing_actions) { [resourceful_action, enrichment_action, state_advancing_action] }
         let(:repository) { QueryRepositoryInterface.new }
-        subject { described_class.new(context, view_object: view_object, repository: repository) }
+        subject { described_class.new(context, work_area: work_area, repository: repository) }
 
         its(:default_repository) { should respond_to :scope_permitted_entity_strategy_actions_for_current_state }
 
+        it 'exposes submission_windows that are available to the user' do
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
+            with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
+          subject.submission_windows
+        end
+
         it 'exposes processing_state' do
-          allow(view_object).to receive(:processing_state).and_return('Hello')
+          allow(work_area).to receive(:processing_state).and_return('Hello')
           expect(subject.processing_state).to eq('Hello')
         end
 
-        it 'sets the view_object' do
-          expect(subject.view_object).to eq(view_object)
+        it 'sets the work_area' do
+          expect(subject.work_area).to eq(work_area)
         end
 
         it 'exposes resourceful_actions' do

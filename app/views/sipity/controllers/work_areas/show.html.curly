@@ -8,6 +8,10 @@
 <!-- TODO: There are no enrichment actions just yet -->
 {{/enrichment_actions?}}
 
+{{*submission_windows}}
+  {{ submission_window_slug }}
+{{/submission_windows}}
+
 {{#resourceful_actions?}}
   <div class="panel-footer">
     <ul class="action-listing">
