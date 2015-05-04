@@ -1,5 +1,13 @@
 <h1>This is a work area</h1>
 
+{{#state_advancing_actions?}}
+<!-- TODO: There are no state advancing actions just yet -->
+{{/state_advancing_actions?}}
+
+{{#enrichment_actions?}}
+<!-- TODO: There are no enrichment actions just yet -->
+{{/enrichment_actions?}}
+
 {{#resourceful_actions?}}
   <div class="panel-footer">
     <ul class="action-listing">
