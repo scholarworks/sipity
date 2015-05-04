@@ -11,10 +11,12 @@ module Sipity
           # :view_object.
           options['work_area'] ||= options['view_object']
           super
+          self.processing_actions = compose_processing_actions
         end
 
         private
 
+        attr_accessor :processing_actions
         attr_reader :work_area
 
         public
@@ -29,29 +31,12 @@ module Sipity
           submission_windows.present?
         end
 
-        def resourceful_actions
-          @resourceful_actions ||= processing_actions.select(&:resourceful_action?)
-        end
-
-        def resourceful_actions?
-          resourceful_actions.present?
-        end
-
-        def state_advancing_actions
-          @state_advancing_actions ||= processing_actions.select(&:state_advancing_action?)
-        end
-
-        def state_advancing_actions?
-          state_advancing_actions.present?
-        end
-
-        def enrichment_actions
-          @enrichment_actions ||= processing_actions.select(&:enrichment_action?)
-        end
-
-        def enrichment_actions?
-          state_advancing_actions.present?
-        end
+        delegate(
+          :resourceful_actions, :resourceful_actions?,
+          :enrichment_actions, :enrichment_actions?,
+          :state_advancing_actions, :state_advancing_actions?,
+          to: :processing_actions
+        )
 
         def processing_state
           work_area.processing_state.to_s
@@ -59,13 +44,11 @@ module Sipity
 
         private
 
-        attr_accessor :repository
-
-        def processing_actions
-          @processing_actions ||= repository.scope_permitted_entity_strategy_actions_for_current_state(
-            user: current_user, entity: work_area
-          )
+        def compose_processing_actions
+          ComposableElements::ProcessingActionsComposer.new(repository: repository, user: current_user, entity: work_area)
         end
+
+        attr_accessor :repository
 
         def default_repository
           QueryRepository.new
