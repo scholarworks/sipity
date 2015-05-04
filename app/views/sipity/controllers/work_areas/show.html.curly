@@ -8,9 +8,12 @@
 <!-- TODO: There are no enrichment actions just yet -->
 {{/enrichment_actions?}}
 
-{{*submission_windows}}
-  {{ submission_window_slug }}
-{{/submission_windows}}
+{{#submission_windows?}}
+  <h2>Available Submission Windows</h2>
+  {{*submission_windows}}
+    {{link}}
+  {{/submission_windows}}
+{{/submission_windows?}}
 
 {{#resourceful_actions?}}
   <div class="panel-footer">
