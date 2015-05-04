@@ -20,9 +20,13 @@ module Sipity
         public
 
         def submission_windows
-          repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+          @submission_windows ||= repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
             user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area }
           )
+        end
+
+        def submission_windows?
+          submission_windows.present?
         end
 
         def resourceful_actions

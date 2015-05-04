@@ -22,6 +22,11 @@ module Sipity
           subject.submission_windows
         end
 
+        it 'exposes submission_windows?' do
+          expect(subject).to receive(:submission_windows).and_return([1])
+          expect(subject.submission_windows?).to be_truthy
+        end
+
         it 'exposes processing_state' do
           allow(work_area).to receive(:processing_state).and_return('Hello')
           expect(subject.processing_state).to eq('Hello')
