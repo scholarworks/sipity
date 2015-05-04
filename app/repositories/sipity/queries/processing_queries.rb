@@ -324,15 +324,16 @@ module Sipity
       # @param [Hash] filter
       # @option filter [String] :processing_state - Limit the returned objects
       #   to those objects that are in the named :processing_state
+      # @param [Hash] where - A where clause to evaluate against the ActiveRecord::Relation
       #
       # @return [ActiveRecord::Relation<proxy_for_types>]
-      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
+      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
         processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(
           user: user, proxy_for_type: proxy_for_type, filter: filter
         )
 
-        proxy_for_type.where(
+        unfiltered = proxy_for_type.where(
           proxy_for_type.arel_table[proxy_for_type.primary_key].in(
             processing_entities_scope.arel_table.project(:proxy_for_id).
             where(
@@ -340,6 +341,8 @@ module Sipity
             )
           )
         )
+        return unfiltered unless where.present?
+        unfiltered.where(where)
       end
 
       # @api private
