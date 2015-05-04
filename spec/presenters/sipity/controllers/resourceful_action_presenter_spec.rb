@@ -1,4 +1,6 @@
 require 'spec_helper'
+# Because RSpec's described_class is getting confused
+require 'sipity/controllers/resourceful_action_presenter'
 
 module Sipity
   module Controllers
