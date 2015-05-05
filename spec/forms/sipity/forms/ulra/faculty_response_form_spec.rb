@@ -3,12 +3,12 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Ulra
-      RSpec.describe FacultyCommentsForm do
+      RSpec.describe FacultyResponseForm do
         let(:work) { Models::Work.new(id: '1234') }
         let(:repository) { CommandRepositoryInterface.new }
         subject { described_class.new(work: work, repository: repository) }
 
-        its(:enrichment_type) { should eq('faculty_comments') }
+        its(:enrichment_type) { should eq('faculty_response') }
         its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
 
         it { should respond_to :work }
