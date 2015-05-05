@@ -16,6 +16,15 @@ describe 'work area routing spec' do
           action: 'query_action',
           query_action_name: 'edit'
         }
+      ], [
+        :post,
+        {
+          path: "/areas/area-slug/start/do/edit",
+          work_area_slug: 'area-slug',
+          submission_window_slug: 'start',
+          action: 'command_action',
+          command_action_name: 'edit'
+        }
       ]
     ].each do |http_method, settings|
       it "will #{http_method.to_s.upcase} #{settings.fetch(:path)}" do

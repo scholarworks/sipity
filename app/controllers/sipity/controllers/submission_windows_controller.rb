@@ -13,6 +13,32 @@ module Sipity
         handle_response(runner_response)
       end
 
+      def query_action
+        runner_response = run(
+          work_area_slug: work_area_slug,
+          submission_window_slug: submission_window_slug,
+          processing_action_name: query_action_name,
+          attributes: query_or_command_attributes
+        )
+
+        # I could use action instead of template, but I feel the explicit path
+        # for template is better than the implicit pathing of :action
+        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{query_action_name}")
+      end
+
+      def command_action
+        runner_response = run(
+          work_area_slug: work_area_slug,
+          submission_window_slug: submission_window_slug,
+          processing_action_name: command_action_name,
+          attributes: query_or_command_attributes
+        )
+
+        # I could use action instead of template, but I feel the explicit path
+        # for template is better than the implicit pathing of :action
+        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{command_action_name}")
+      end
+
       attr_accessor :view_object
       helper_method :view_object
 
@@ -24,6 +50,18 @@ module Sipity
 
       def submission_window_slug
         params.require(:submission_window_slug)
+      end
+
+      def query_action_name
+        params.require(:query_action_name)
+      end
+
+      def command_action_name
+        params.require(:command_action_name)
+      end
+
+      def query_or_command_attributes
+        params.fetch(:submission_window) { HashWithIndifferentAccess.new }
       end
 
       def handle_response(handled_response, template:  "sipity/controllers/submission_windows/#{action_name}")
