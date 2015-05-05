@@ -26,10 +26,23 @@ end
 
 PowerConverter.define_alias(:file_system_safe_file_name, is_alias_of: :slug)
 
+PowerConverter.define_conversion_for(:safe_for_method_name) do |input|
+  case input
+  when NilClass
+    nil
+  when Symbol, String
+    if input.present?
+      input.to_s.gsub(/\W+/, '_').underscore
+    else
+      nil
+    end
+  end
+end
+
 PowerConverter.define_conversion_for(:demodulized_class_name) do |input|
   case input
   when Symbol, String
-    input.to_s.downcase.gsub(/\W+/, '_').classify
+    input.to_s.gsub(/\W+/, '_').classify
   when NilClass
     ''
   end

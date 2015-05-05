@@ -9,15 +9,14 @@ module Sipity
         new(**keywords).call(&block)
       end
 
-      def initialize(slug:, work_area:, work_submitters: [])
+      def initialize(slug:, work_area:)
         self.slug = slug
         self.work_area = work_area
-        self.work_submitters = work_submitters
       end
 
       private
 
-      attr_accessor :slug, :work_submitters
+      attr_accessor :slug
       attr_reader :submission_window, :work_area
 
       def work_area=(input)
@@ -40,12 +39,8 @@ module Sipity
       end
 
       def build_submission_window_workflow!
-        work_area_specific_submission_window_generator.call(
-          work_area: work_area, submission_window: submission_window, work_submitters: work_submitters
-        )
-        work_area_specific_work_types_generator.call(
-          work_area: work_area, submission_window: submission_window, work_submitters: work_submitters
-        )
+        work_area_specific_submission_window_generator.call(work_area: work_area, submission_window: submission_window)
+        work_area_specific_work_types_generator.call(work_area: work_area, submission_window: submission_window)
       end
 
       def work_area_specific_submission_window_generator

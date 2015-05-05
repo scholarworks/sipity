@@ -9,6 +9,8 @@ module Sipity
           its(:column_names) { should include('strategy_id') }
           its(:column_names) { should include('resulting_strategy_state_id') }
           its(:column_names) { should include('name') }
+          # TODO: Does this even make sense? It is not used outside of this
+          # class. It was a presumptive change.
           its(:column_names) { should include('form_class_name') }
           its(:column_names) { should include('completion_required') }
           its(:column_names) { should include('action_type') }
@@ -27,6 +29,10 @@ module Sipity
         end
 
         its(:default_action_type) { should be_a(String) }
+
+        it { should respond_to(:resourceful_action?) }
+        it { should respond_to(:state_advancing_action?) }
+        it { should respond_to(:enrichment_action?) }
 
         context 'set action type' do
           it 'will set the action type if none is specified' do

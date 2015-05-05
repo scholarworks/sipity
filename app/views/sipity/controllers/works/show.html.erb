@@ -1,8 +1,8 @@
 <%
   # REVIEW: It appears as though we need an ActionSet container decorator.
-  available_enrichment_actions = model.enrichment_actions(user: current_user)
+  available_enrichment_actions = model.enrichment_actions
   has_available_enrichment_actions = available_enrichment_actions.present?
-  available_state_advancing_actions = model.state_advancing_actions(user: current_user)
+  available_state_advancing_actions = model.state_advancing_actions
   has_available_state_advancing_actions = available_state_advancing_actions.detect { |action| action.available? }
 
   if has_available_state_advancing_actions
@@ -188,7 +188,7 @@
             <% end %>
           </dl>
         </div>
-        <% resourceful_actions = model.resourceful_actions(user: current_user) %>
+        <% resourceful_actions = model.resourceful_actions %>
         <% available_resourceful_actions = resourceful_actions.reject{ |action| controller_name == 'works' && action_name == action.name } %>
         <% if available_resourceful_actions.present? %>
           <div class="panel-footer">

@@ -26,6 +26,7 @@ gem 'turbolinks'
 gem 'uglifier'
 gem 'hydra-validations', github: 'projecthydra-labs/hydra-validations', branch: 'master', ref: 'bd9a84a8fd5acc607ad5c36984b7d09e4b3fc4d0'
 gem 'power_converter'
+gem 'curly-templates'
 
 group :doc do
   gem 'inch', require: false

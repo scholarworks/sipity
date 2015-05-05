@@ -13,6 +13,7 @@ module Sipity
 
       it { should respond_to :processing_strategy }
       it { should respond_to :processing_state }
+      it { should respond_to :work_area_slug }
 
       it 'will have many .submission_window_work_types' do
         expect(subject.submission_window_work_types).to be_a(ActiveRecord::Relation)

@@ -77,6 +77,10 @@ module Sipity
     def build_update_work_form(work:, attributes: {})
     end
 
+    # @see ./app/repositories/sipity/queries/work_area_queries.rb
+    def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def change_processing_actor_proxy(from_proxy:, to_proxy:)
     end
@@ -175,6 +179,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
     def find_or_initialize_collaborators_by(work:, id:, &block)
+    end
+
+    # @see ./app/repositories/sipity/queries/work_area_queries.rb
+    def find_submission_window_by(slug:, work_area:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
@@ -286,7 +294,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
+    def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

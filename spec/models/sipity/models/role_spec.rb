@@ -13,8 +13,11 @@ module Sipity
             expected_object = described_class.create!(name: valid_name)
             expect(described_class[valid_name]).to eq(expected_object)
           end
-          it 'will raise an exception if no named role' do
-            expect { described_class['string'] }.to raise_error(ActiveRecord::RecordNotFound)
+          it 'will created the named role' do
+            expect { described_class[valid_name].name }.to change { described_class.count }.by(1)
+          end
+          it 'will raise an exception if the role name is invalid' do
+            expect { described_class['string'] }.to raise_error(ArgumentError)
           end
         end
       end
