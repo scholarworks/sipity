@@ -72,6 +72,11 @@ Rails.application.routes.draw do
     to: 'sipity/controllers/submission_windows#query_action'
   )
 
+  post(
+    'areas/:work_area_slug/:submission_window_slug/do/:command_action_name',
+    to: 'sipity/controllers/submission_windows#command_action'
+  )
+
   # I need parentheses or `{ }` for the block, because of when the blocks are
   # bound.
   get(
