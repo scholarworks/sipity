@@ -305,7 +305,7 @@ en:
             open_access_html: '<b>Open Access:</b> freely viewable to the world'
             restricted_access_html: '<b>Restricted:</b> only specific groups or people can see it'
             private_access_html: '<b>Private:</b> Only viewable to the depositor and content reviewers'
-            access_changes_over_time_html: 'It will <i>change over time</i> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
+            access_changes_over_time_html: 'It will <b>change over time</b> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
         work_publication_strategy:
           will_not_publish_html: 'I have <i>no plans to publish</i> this work in the future.'
           already_published: 'I have already published portions of this work..'
@@ -318,7 +318,7 @@ en:
           open_access_html: '<b>Open Access:</b> freely viewable to the world'
           restricted_access_html: '<b>Restricted:</b> only specific groups or people can see it'
           private_access_html: '<b>Private:</b> Only viewable to the depositor and content reviewers'
-          access_changes_over_time: 'It will <i>change over time</i>'
+          access_changes_over_time_html: 'It will <b>change over time</b> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
     labels:
       doi:
         identifier: 'Existing DOI'
