@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    module WorkEnrichments
+    module Ulra
       RSpec.describe PublisherInformationForm do
         let(:work) { Models::Work.new(id: '1234') }
         let(:publication_name) { 'publication_name' }
