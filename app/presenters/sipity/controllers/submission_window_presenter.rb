@@ -37,7 +37,7 @@ module Sipity
       attr_accessor :processing_actions
 
       def compose_processing_actions
-        ComposableElements::ProcessingActionsComposer.new(user: current_user, entity: work_area)
+        ComposableElements::ProcessingActionsComposer.new(user: current_user, entity: submission_window)
       end
     end
   end

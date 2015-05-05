@@ -28,8 +28,14 @@ module Sipity
           expect(subject.processing_state).to eq('Hello')
         end
 
-        it 'sets the work_area' do
-          expect(subject.work_area).to eq(work_area)
+        it 'sets the work_area (which is private)' do
+          expect(subject.send(:work_area)).to eq(work_area)
+        end
+
+        it 'will compose actions for the submission window' do
+          expect(ComposableElements::ProcessingActionsComposer).to receive(:new).
+            with(user: current_user, entity: work_area, repository: repository)
+          subject
         end
 
         it 'exposes resourceful_actions' do
