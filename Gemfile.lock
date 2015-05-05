@@ -180,7 +180,7 @@ GEM
       addressable (~> 2.3)
       multi_json (~> 1.0)
       rack
-    dragonfly-s3_data_store (1.0.4)
+    dragonfly-s3_data_store (1.0.5)
       dragonfly (~> 1.0)
       fog
     draper (2.1.0)
@@ -189,7 +189,7 @@ GEM
       activesupport (>= 3.0)
       request_store (~> 1.0)
     erubis (2.7.0)
-    excon (0.45.1)
+    excon (0.45.3)
     execjs (2.5.2)
     faker (1.4.3)
       i18n (~> 0.5)
@@ -368,7 +368,7 @@ GEM
       rack-contrib (~> 1.1)
       railties (>= 3.0.0, < 5.0.0)
     method_source (0.8.2)
-    mime-types (2.4.3)
+    mime-types (2.5)
     mini_portile (0.6.2)
     minitest (5.6.1)
     multi_json (1.11.0)
