@@ -50,6 +50,28 @@ RSpec.describe 'power converters' do
       end
     end
   end
+
+  [:safe_for_method_name].each do |named_converter|
+    context "#{named_converter}" do
+      [
+        { to_convert: 'Hello World', expected: 'hello_world' },
+        { to_convert: 'HelloWorld', expected: 'hello_world' }
+      ].each do |scenario|
+        it "will convert #{scenario.fetch(:to_convert)} to #{scenario.fetch(:expected)}" do
+          expect(PowerConverter.convert(scenario.fetch(:to_convert), to: named_converter)).to eq(scenario.fetch(:expected))
+        end
+      end
+
+      [
+        ''
+      ].each do |to_convert_but_will_fail|
+        it "will fail to convert #{to_convert_but_will_fail.inspect}" do
+          expect { PowerConverter.convert(to_convert_but_will_fail, to: named_converter) }.to raise_error(PowerConverter::ConversionError)
+        end
+      end
+    end
+  end
+
   context "demodulized_class_name" do
     [
       { to_convert: 'Hello World', expected: 'HelloWorld' },
