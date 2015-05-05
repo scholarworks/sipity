@@ -6,7 +6,7 @@ module Sipity
         presents :work_area
 
         def initialize(context, options = {})
-          self.repository = options.delete(:repository) || default_repository
+          self.repository = options.delete(:repository) { default_repository }
           # Because controller actions may not cooperate and instead set a
           # :view_object.
           options['work_area'] ||= options['view_object']
