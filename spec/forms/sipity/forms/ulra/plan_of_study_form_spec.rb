@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    module WorkEnrichments
+    module Ulra
       RSpec.describe PlanOfStudyForm do
         let(:work) { Models::Work.new(id: '1234') }
         let(:expected_graduation_date) { Time.zone.today }

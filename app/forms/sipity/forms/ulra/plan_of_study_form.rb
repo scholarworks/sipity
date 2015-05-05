@@ -1,6 +1,6 @@
 module Sipity
   module Forms
-    module WorkEnrichments
+    module Ulra
       # Responsible for capturing and validating information for plan_of_study.
       class PlanOfStudyForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
