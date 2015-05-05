@@ -75,7 +75,7 @@
     </table>
     <div>
       <% if model.available_representative_attachments.any? %>
-      <%= f.input :representative_attachment_id, collection: model.available_representative_attachments, input_html: { class: 'form-control' } %>
+        <%= f.input :representative_attachment_id, collection: model.available_representative_attachments, input_html: { class: 'form-control' }, required: true %>
       <% end %>
       <%= f.input :copyright, collection: model.available_copyrights,
             label_method: :term_label, value_method: :term_uri,
