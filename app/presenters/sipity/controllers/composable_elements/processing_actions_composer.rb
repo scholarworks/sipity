@@ -37,7 +37,7 @@ module Sipity
         end
 
         def enrichment_actions?
-          state_advancing_actions.present?
+          enrichment_actions.present?
         end
 
         private

@@ -20,7 +20,7 @@ module Sipity
         end
 
         it 'exposes resourceful_actions?' do
-          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return([resourceful_action])
           expect(subject.resourceful_actions?).to be_truthy
         end
 
@@ -30,7 +30,7 @@ module Sipity
         end
 
         it 'exposes state_advancing_actions?' do
-          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return([state_advancing_action])
           expect(subject.state_advancing_actions?).to be_truthy
         end
 
@@ -40,9 +40,8 @@ module Sipity
         end
 
         it 'exposes enrichment_actions?' do
-          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return([enrichment_action])
           expect(subject.enrichment_actions?).to be_truthy
-
         end
       end
     end
