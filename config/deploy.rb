@@ -89,7 +89,7 @@ namespace :deploy do
       on roles(:app) do
         within release_path do
           with rails_env: fetch(:rails_env) do
-            execute :rails, %(runner -e #{fetch(:rails_env)} "group = Sipity::Models::Group.where(name: 'Graduate School Reviewers').first!; user = User.where(username: Figaro.env.qa_username!).first!; group.users << user unless group.users.include?(user)")
+            execute :rails, %(runner -e #{fetch(:rails_env)} "group = Sipity::Models::Group.where(name: 'Graduate School Reviewers').first!; user = User.where(username: Figaro.env.qa_username!).first!; group.group_memberships.find_or_create_by(user: user)")
           end
         end
       end
