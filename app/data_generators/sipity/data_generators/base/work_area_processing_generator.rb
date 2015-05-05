@@ -38,7 +38,7 @@ module Sipity
         def call
           PermissionGenerator.call(
             actors: work_area_viewers,
-            role: work_area_viewer_role,
+            roles: work_area_viewer_role,
             action_names: PERMITTED_WORK_AREA_VIEWER_ACTIONS,
             entity: work_area,
             strategy: processing_strategy,

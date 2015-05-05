@@ -63,7 +63,7 @@ module Sipity
       def generate_general_work_area_permissions!
         PermissionGenerator.call(
           actors: work_area_managers,
-          role: Models::Role::WORK_AREA_MANAGER,
+          roles: Models::Role::WORK_AREA_MANAGER,
           action_names: PERMITTED_WORK_MANAGER_ACTIONS,
           entity: work_area,
           strategy: processing_strategy,

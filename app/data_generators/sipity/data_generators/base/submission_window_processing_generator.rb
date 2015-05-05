@@ -82,7 +82,7 @@ module Sipity
         def grant_permissions_to_submission_actions!
           PermissionGenerator.call(
             actors: work_submitters,
-            role: work_submitter_role,
+            roles: work_submitter_role,
             action_names: SUBMISSION_WINDOW_ACTION_NAMES,
             entity: submission_window,
             strategy: processing_strategy,

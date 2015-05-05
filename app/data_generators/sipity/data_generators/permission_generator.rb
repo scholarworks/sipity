@@ -13,8 +13,8 @@ module Sipity
       def self.call(**keywords, &block)
         new(**keywords, &block).call
       end
-      def initialize(role:, strategy:, actors: [], **keywords)
-        self.role = role
+      def initialize(roles:, strategy:, actors: [], **keywords)
+        self.roles = roles
         self.strategy = strategy
         self.actors = actors
         self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
@@ -32,7 +32,7 @@ module Sipity
       private
 
       attr_accessor :strategy, :strategy_state
-      attr_reader :entity, :actors, :action_names, :role
+      attr_reader :entity, :actors, :action_names, :roles
 
       def actors=(input)
         @actors = Array.wrap(input).map { |i| Conversions::ConvertToProcessingActor.call(i) }
@@ -42,8 +42,8 @@ module Sipity
         @action_names = Array.wrap(input)
       end
 
-      def role=(role)
-        @role = Conversions::ConvertToRole.call(role)
+      def roles=(input)
+        @roles = Array.wrap(input).map { |role| Conversions::ConvertToRole.call(role) }
       end
 
       def entity=(entity)
@@ -53,10 +53,12 @@ module Sipity
       public
 
       def call
-        strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy)
-        associate_strategy_role_at_entity_level(strategy_role)
-        associate_strategy_role_at_strategy_level(strategy_role)
-        create_action_and_permission_for_actions(strategy_role)
+        roles.each do |role|
+          strategy_role = Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy)
+          associate_strategy_role_at_entity_level(strategy_role)
+          associate_strategy_role_at_strategy_level(strategy_role)
+          create_action_and_permission_for_actions(strategy_role)
+        end
       end
 
       private
