@@ -8,12 +8,16 @@ module Sipity
     class WorkType < ActiveRecord::Base
       self.table_name = 'sipity_work_types'
 
+      # TODO: I believe we will need to push this into a database to say what
+      #   are the valid work types to create.
       DOCTORAL_DISSERTATION = 'doctoral_dissertation'.freeze
       MASTER_THESIS = 'master_thesis'.freeze
+      ULRA_SUBMISSION = 'urla_submission'.freeze
 
       NAMED_WORK_TYPES_FOR_ENUM = {
         DOCTORAL_DISSERTATION => DOCTORAL_DISSERTATION,
-        MASTER_THESIS => MASTER_THESIS
+        MASTER_THESIS => MASTER_THESIS,
+        ULRA_SUBMISSION => ULRA_SUBMISSION
       }.freeze
 
       has_many :submission_window_work_types, dependent: :destroy

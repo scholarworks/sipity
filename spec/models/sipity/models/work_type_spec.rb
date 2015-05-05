@@ -3,6 +3,13 @@ require 'rails_helper'
 module Sipity
   module Models
     RSpec.describe WorkType, type: :model do
+      context 'work type constants' do
+        [:ULRA_SUBMISSION, :MASTER_THESIS, :DOCTORAL_DISSERTATION].each do |constant_name|
+          it "will expose #{constant_name}" do
+            expect(described_class.const_get(constant_name)).to be_a(String)
+          end
+        end
+      end
       context '.[]' do
         it 'will have an ETD' do
           described_class.create!(name: 'doctoral_dissertation')
