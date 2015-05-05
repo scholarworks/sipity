@@ -5,6 +5,9 @@ module Sipity
     class ResourcefulActionPresenter < Curly::Presenter
       presents :resourceful_action
 
+      attr_reader :resourceful_action
+      private :resourceful_action
+
       delegate :name, to: :@resourceful_action, prefix: :action
 
       def render_entry_point

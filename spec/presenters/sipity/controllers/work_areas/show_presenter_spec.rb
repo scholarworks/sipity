@@ -4,7 +4,7 @@ module Sipity
   module Controllers
     module WorkAreas
       RSpec.describe ShowPresenter do
-        let(:context) { PresenterHelper::Context.new(work_area: work_area, current_user: current_user) }
+        let(:context) { PresenterHelper::Context.new(current_user: current_user) }
         let(:current_user) { double('Current User') }
         let(:work_area) { Models::WorkArea.new(slug: 'the-slug') }
         let(:repository) { QueryRepositoryInterface.new }

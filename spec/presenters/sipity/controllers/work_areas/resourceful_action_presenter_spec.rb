@@ -7,7 +7,7 @@ module Sipity
     module WorkAreas
       RSpec.describe ResourcefulActionPresenter, type: :presenter do
         let(:context) do
-          PresenterHelper::Context.new(work_area: work_area, current_user: current_user, resourceful_action: resourceful_action)
+          PresenterHelper::Context.new(current_user: current_user)
         end
         let(:current_user) { double('Current User') }
         let(:work_area) { Models::WorkArea.new(slug: 'the-slug') }

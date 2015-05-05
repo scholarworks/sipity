@@ -5,8 +5,12 @@ module Sipity
       # WorkArea.
       class ResourcefulActionPresenter < Sipity::Controllers::ResourcefulActionPresenter
         presents :submission_window
-        delegate :slug, to: :@submission_window, prefix: :submission_window
-        delegate :work_area_slug, to: :@submission_window
+
+        attr_reader :submission_window
+        private :submission_window
+
+        delegate :slug, to: :submission_window, prefix: :submission_window
+        delegate :work_area_slug, to: :submission_window
 
         def path
           submission_window_query_action_path(

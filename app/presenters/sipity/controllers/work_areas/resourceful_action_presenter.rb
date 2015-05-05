@@ -6,6 +6,9 @@ module Sipity
       class ResourcefulActionPresenter < Sipity::Controllers::ResourcefulActionPresenter
         presents :work_area
 
+        attr_reader :work_area
+        private :work_area
+
         delegate :slug, to: :work_area, prefix: :work_area
 
         def path
