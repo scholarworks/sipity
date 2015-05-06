@@ -41,6 +41,10 @@ module Sipity
     def build_event_trigger_form(attributes = {})
     end
 
+    # @see ./app/repositories/sipity/queries/submission_window_queries.rb
+    def build_submission_window_processing_action_form(submission_window:, processing_action_name:, attributes: {})
+    end
+
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
     def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
     end

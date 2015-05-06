@@ -4,17 +4,17 @@ module Sipity
       let(:work_area) do
         Models::WorkArea.new(id: 1, name: 'worm', slug: 'worm', partial_suffix: 'worm', demodulized_class_prefix_name: 'Worm')
       end
+      let(:submission_window) { Models::SubmissionWindow.new(work_area_id: work_area.id, slug: 'segment') }
       context '#find_submission_window_by' do
-        let(:submission_window) do
-          Models::SubmissionWindow.create!(work_area_id: work_area.id, slug: 'segment')
-        end
 
         it 'will find by slug and work area' do
+          submission_window.save!
           expect(test_repository.find_submission_window_by(slug: submission_window.slug, work_area: work_area)).
             to eq(submission_window)
         end
 
         it 'will raise an error if we have a bad work area' do
+          submission_window.save!
           expect { test_repository.find_submission_window_by(slug: submission_window.slug, work_area: nil) }.
             to raise_error(PowerConverter::ConversionError)
         end
@@ -30,6 +30,16 @@ module Sipity
             to raise_error(ActiveRecord::RecordNotFound)
         end
       end
+
+      context '#build_submission_window_processing_action_form' do
+        let(:parameters) { { submission_window: double, processing_action_name: double, attributes: double } }
+        let(:form) { double }
+        it 'will delegate the heavy lifting to a builder' do
+          expect(Forms::SubmissionWindowForms).to receive(:build_the_form).with(parameters).and_return(form)
+          expect(test_repository.build_submission_window_processing_action_form(parameters)).to eq(form)
+        end
+      end
+
     end
   end
 end
