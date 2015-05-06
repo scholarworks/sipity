@@ -149,7 +149,7 @@ module Sipity
     def find_or_initialize_collaborators_by(work:, id:, &block)
     end
 
-    # @see ./app/repositories/sipity/queries/work_area_queries.rb
+    # @see ./app/repositories/sipity/queries/submission_window_queries.rb
     def find_submission_window_by(slug:, work_area:)
     end
 
