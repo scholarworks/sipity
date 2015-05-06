@@ -12,17 +12,17 @@ module Sipity
         self.processing_actions = compose_processing_actions
       end
 
-      delegate :work_area, :work_area_slug, :slug, to: :submission_window
-
       attr_reader :submission_window
-      private :submission_window, :work_area
+      private :submission_window
 
       def link
-        link_to(slug, path)
+        link_to(submission_window.slug, path)
       end
 
       def path
-        submission_window_for_work_area_path(work_area_slug: work_area_slug, submission_window_slug: slug)
+        submission_window_for_work_area_path(
+          work_area_slug: submission_window.work_area_slug, submission_window_slug: submission_window.slug
+        )
       end
 
       delegate(
