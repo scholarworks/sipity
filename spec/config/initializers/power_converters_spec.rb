@@ -150,6 +150,9 @@ RSpec.describe 'power converters' do
       submission_window = Sipity::Models::SubmissionWindow.new(id: 2, slug: 'slug', work_area_id: work_area.id)
       expect(PowerConverter.convert(submission_window, to: :submission_window, scope: work_area)).to eq(submission_window)
 
+      # Without scope as a consideration
+      expect(PowerConverter.convert(submission_window, to: :submission_window)).to eq(submission_window)
+
       work = Sipity::Models::Work.new(id: 8)
       allow(work).to receive(:submission_window).and_return(submission_window)
       expect(PowerConverter.convert(work, to: :submission_window)).to eq(submission_window)
