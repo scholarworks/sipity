@@ -3,11 +3,13 @@ module Sipity
     module SubmissionWindows
       # Responsible for presenting a work area
       class ShowPresenter < SubmissionWindowPresenter
+        RENDER_METHOD_PREFIX = "render_submission_window_for_".freeze
+        RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/
         def render_submission_window
           # HACK: Oh boy is this ugly, but it delivers what I am after.
           # It also draws attention to the new rendering that I'm after
-          slug_to_method_name_suffix = PowerConverter.convert_to_safe_for_method_name(work_area_slug)
-          send("render_submission_window_for_#{slug_to_method_name_suffix}")
+          slug_to_method_name_suffix = PowerConverter.convert_to_safe_for_method_name(submission_window.work_area_slug)
+          send("#{RENDER_METHOD_PREFIX}#{slug_to_method_name_suffix}")
         end
 
         private
