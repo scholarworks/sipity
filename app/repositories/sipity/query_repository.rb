@@ -16,6 +16,7 @@ module Sipity
     include Queries::NotificationQueries
     include Queries::ProcessingQueries
     include Queries::SimpleControlledVocabularyQueries
+    include Queries::SubmissionWindowQueries
     include Queries::WorkAreaQueries
     include Queries::WorkQueries
   end
