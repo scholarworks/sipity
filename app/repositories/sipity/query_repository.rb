@@ -9,7 +9,6 @@ module Sipity
     include Queries::AccountProfileQueries
     include Queries::AdditionalAttributeQueries
     include Queries::AttachmentQueries
-    include Queries::CitationQueries
     include Queries::CollaboratorQueries
     include Queries::CommentQueries
     include Queries::DoiQueries

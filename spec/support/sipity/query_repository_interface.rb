@@ -25,10 +25,6 @@ module Sipity
     def build_account_profile_form(user:, attributes:)
     end
 
-    # @see ./app/repositories/sipity/queries/citation_queries.rb
-    def build_assign_a_citation_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/doi_queries.rb
     def build_assign_a_doi_form(attributes = {})
     end
@@ -63,10 +59,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
     def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
-    end
-
-    # @see ./app/repositories/sipity/queries/citation_queries.rb
-    def citation_already_assigned?(work)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

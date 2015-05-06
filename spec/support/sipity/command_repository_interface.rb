@@ -41,10 +41,6 @@ module Sipity
     def build_account_profile_form(user:, attributes:)
     end
 
-    # @see ./app/repositories/sipity/queries/citation_queries.rb
-    def build_assign_a_citation_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/doi_queries.rb
     def build_assign_a_doi_form(attributes = {})
     end
@@ -83,10 +79,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def change_processing_actor_proxy(from_proxy:, to_proxy:)
-    end
-
-    # @see ./app/repositories/sipity/queries/citation_queries.rb
-    def citation_already_assigned?(work)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
