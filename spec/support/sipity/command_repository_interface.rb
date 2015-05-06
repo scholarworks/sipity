@@ -41,10 +41,6 @@ module Sipity
     def build_account_profile_form(user:, attributes:)
     end
 
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def build_assign_a_doi_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/account_placeholder_queries.rb
     def build_create_orcid_account_placeholder_form(attributes: {})
     end
@@ -63,10 +59,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/event_trigger_queries.rb
     def build_event_trigger_form(attributes = {})
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def build_request_a_doi_form(attributes = {})
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
@@ -129,14 +121,6 @@ module Sipity
     def destroy_work_attribute_values!(work:, key:, values:)
     end
 
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def doi_already_assigned?(work)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def doi_request_is_pending?(work)
-    end
-
     # @see ./app/repositories/sipity/queries/notification_queries.rb
     def email_notifications_for(reason:, scope:)
     end
@@ -161,10 +145,6 @@ module Sipity
     def find_current_comments_for_work(work:)
     end
 
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def find_doi_creation_request(work:)
-    end
-
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def find_or_initialize_attachments_by(work:, pid:)
     end
@@ -187,10 +167,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def find_works_for(user:, processing_state: nil)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def gather_doi_creation_request_metadata(work:)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
@@ -333,18 +309,6 @@ module Sipity
     def set_as_representative_attachment(work:, pid:)
     end
 
-    # @see ./app/repositories/sipity/commands/doi_commands.rb
-    def submit_assign_a_doi_form(form, requested_by:)
-    end
-
-    # @see ./app/repositories/sipity/commands/doi_commands.rb
-    def submit_doi_creation_request_job!(work:)
-    end
-
-    # @see ./app/repositories/sipity/commands/doi_commands.rb
-    def submit_request_a_doi_form(form, requested_by:)
-    end
-
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
     end
@@ -359,10 +323,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def update_work_attribute_values!(work:, key:, values:)
-    end
-
-    # @see ./app/repositories/sipity/commands/doi_commands.rb
-    def update_work_doi_creation_request_state!(work:, state:, response_message: nil)
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb

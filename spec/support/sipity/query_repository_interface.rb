@@ -25,10 +25,6 @@ module Sipity
     def build_account_profile_form(user:, attributes:)
     end
 
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def build_assign_a_doi_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/account_placeholder_queries.rb
     def build_create_orcid_account_placeholder_form(attributes: {})
     end
@@ -49,10 +45,6 @@ module Sipity
     def build_event_trigger_form(attributes = {})
     end
 
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def build_request_a_doi_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def build_update_work_form(work:, attributes: {})
     end
@@ -67,14 +59,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def doi_already_assigned?(work)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def doi_request_is_pending?(work)
     end
 
     # @see ./app/repositories/sipity/queries/notification_queries.rb
@@ -95,10 +79,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
     def find_current_comments_for_work(work:)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def find_doi_creation_request(work:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
@@ -123,10 +103,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def find_works_for(user:, processing_state: nil)
-    end
-
-    # @see ./app/repositories/sipity/queries/doi_queries.rb
-    def gather_doi_creation_request_metadata(work:)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
