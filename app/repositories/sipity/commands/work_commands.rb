@@ -42,8 +42,8 @@ module Sipity
         from_proxy.processing_actor.update(proxy_for: to_proxy)
       end
 
-      def create_work!(attributes = {})
-        Services::CreateWorkService.call(attributes.merge(repository: self))
+      def create_work!(submission_window:, **attributes)
+        Services::CreateWorkService.call(submission_window: submission_window, repository: self, **attributes)
       end
 
       def update_work_title!(work:, title:)

@@ -6,10 +6,10 @@ module Sipity
         new(**attributes).call
       end
 
-      def initialize(pid_minter: default_pid_minter, repository: default_repository, **attributes)
+      def initialize(submission_window:, pid_minter: default_pid_minter, repository: default_repository, **attributes)
         self.pid_minter = pid_minter
         self.repository = repository
-        self.submission_window = attributes.delete(:submission_window) { default_submission_window }
+        self.submission_window = submission_window
         self.attributes = attributes
       end
 
@@ -41,8 +41,8 @@ module Sipity
         end
       end
 
-      attr_accessor :pid_minter, :repository, :attributes, :submission_window
-      attr_reader :work
+      attr_accessor :pid_minter, :repository, :attributes
+      attr_reader :work, :submission_window
 
       def default_repository
         CommandRepository.new
@@ -58,23 +58,9 @@ module Sipity
         Rails.application.config.default_pid_minter
       end
 
-      def default_submission_window
-        # This is a conceit to the tests; It is also indicative of a greater problem.
-        # TODO: Remove the default behavior; Its presumptive and an expensive test.
-        #   Also as we look at things, pay attention to the deprecation warnings.
-        #   Those methods may be doing too much and not operating in isolation.
-        submission_window_slug = Forms::Etd::StartASubmissionForm::DEFAULT_SUBMISSION_WINDOW_SLUG
-        work_area_slug = Forms::Etd::StartASubmissionForm::DEFAULT_WORK_AREA_SLUG
-        Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: work_area_slug) do |work_area|
-          Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: submission_window_slug, work_area: work_area)
-        end
-        repository.find_submission_window_by(
-          slug: submission_window_slug,
-          work_area: work_area_slug
-        )
+      def submission_window=(input)
+        @submission_window = PowerConverter.convert(input, to: :submission_window)
       end
-      # The submission window will be a requirement after ULRA is added.
-      deprecate :default_submission_window
     end
   end
 end

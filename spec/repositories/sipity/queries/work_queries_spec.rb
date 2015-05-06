@@ -16,8 +16,8 @@ module Sipity
           expect { test_repository.find_work('8675309') }.to raise_error
         end
         it 'returns the Work when the object is found' do
-          allow(Models::Work).to receive(:find).with('8675309').and_return(:found)
-          expect(test_repository.find_work('8675309')).to eq(:found)
+          work = Models::Work.create!(id: '8675309', title: "Hello")
+          expect(test_repository.find_work('8675309')).to eq(work)
         end
       end
 

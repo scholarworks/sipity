@@ -15,6 +15,8 @@ module Sipity
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       has_one :work_submission, dependent: :destroy
 
+      delegate :submission_window, :work_area, to: :work_submission, allow_nil: true
+
       include Conversions::SanitizeHtml
       def to_s
         sanitize_html(title)

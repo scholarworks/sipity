@@ -16,6 +16,8 @@ module Sipity
 
       it { should respond_to :processing_strategy }
       it { should respond_to :processing_state }
+      it { should respond_to :work_area }
+      it { should respond_to :submission_window }
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do
