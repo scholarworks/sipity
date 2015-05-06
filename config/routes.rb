@@ -49,16 +49,11 @@ Rails.application.routes.draw do
 
 
   get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#show'
-
-  # The edit action for routing; Experimental and it may be obviated by the processing action
-  get 'areas/:work_area_slug/edit', as: 'edit_work_area', to: 'sipity/controllers/work_areas#edit'
-  get 'areas/:work_area_slug/do/edit', to: 'sipity/controllers/work_areas#edit'
-  put 'areas/:work_area_slug/do/edit', to: 'sipity/controllers/work_areas#update'
-  put 'areas/:work_area_slug', to: 'sipity/controllers/work_areas#update'
-  put 'areas/:work_area_slug/edit', to: 'sipity/controllers/work_areas#update'
-
   get 'areas/:work_area_slug/do/:query_action_name', as: 'work_area_query_action', to: 'sipity/controllers/work_areas#query_action'
-  post 'areas/:work_area_slug/do/:command_action_name', to: 'sipity/controllers/work_areas#command_action'
+
+  [:post, :put, :patch, :delete].each do |http_verb_name|
+    send(http_verb_name, 'areas/:work_area_slug/do/:command_action_name', to: 'sipity/controllers/work_areas#command_action')
+  end
 
   get(
     'areas/:work_area_slug/:submission_window_slug',
@@ -72,10 +67,13 @@ Rails.application.routes.draw do
     to: 'sipity/controllers/submission_windows#query_action'
   )
 
-  post(
-    'areas/:work_area_slug/:submission_window_slug/do/:command_action_name',
-    to: 'sipity/controllers/submission_windows#command_action'
-  )
+  [:post, :put, :patch, :delete].each do |http_verb_name|
+    send(
+      http_verb_name,
+      'areas/:work_area_slug/:submission_window_slug/do/:command_action_name',
+      to: 'sipity/controllers/submission_windows#command_action'
+    )
+  end
 
   # I need parentheses or `{ }` for the block, because of when the blocks are
   # bound.

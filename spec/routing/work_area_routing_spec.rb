@@ -9,24 +9,18 @@ describe 'work area routing spec' do
         { path: "/areas/my_slug", action: 'show', work_area_slug: 'my_slug' }
       ], [
         :get,
-        { path: "/areas/my_slug/edit", action: 'edit', work_area_slug: 'my_slug' }
-      ], [
-        :get,
-        { path: "/areas/my_slug/do/edit", action: 'edit', work_area_slug: 'my_slug' }
-      ], [
-        :get,
         { path: "/areas/my_slug/do/fun_things", action: 'query_action', work_area_slug: 'my_slug', query_action_name: 'fun_things' }
       ], [
-        :put,
-        { path: "/areas/my_slug", action: 'update', work_area_slug: 'my_slug' }
-      ], [
-        :put,
-        { path: "/areas/my_slug/edit", action: 'update', work_area_slug: 'my_slug' }
-      ], [
-        :put,
-        { path: "/areas/my_slug/do/edit", action: 'update', work_area_slug: 'my_slug' }
-      ], [
         :post,
+        { path: "/areas/my_slug/do/fun_things", action: 'command_action', work_area_slug: 'my_slug', command_action_name: 'fun_things' }
+      ], [
+        :put,
+        { path: "/areas/my_slug/do/fun_things", action: 'command_action', work_area_slug: 'my_slug', command_action_name: 'fun_things' }
+      ], [
+        :patch,
+        { path: "/areas/my_slug/do/fun_things", action: 'command_action', work_area_slug: 'my_slug', command_action_name: 'fun_things' }
+      ], [
+        :delete,
         { path: "/areas/my_slug/do/fun_things", action: 'command_action', work_area_slug: 'my_slug', command_action_name: 'fun_things' }
       ]
     ].each do |http_method, settings|
