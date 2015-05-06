@@ -25,10 +25,6 @@ module Sipity
     def build_account_profile_form(user:, attributes:)
     end
 
-    # @see ./app/repositories/sipity/queries/account_placeholder_queries.rb
-    def build_create_orcid_account_placeholder_form(attributes: {})
-    end
-
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def build_create_work_form(attributes: {})
     end
