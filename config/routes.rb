@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   scope module: :sipity do
     scope module: :controllers do
       resources :works do
-        resource :citation
         resource :doi do
           member do
             post :assign_a_doi
@@ -25,7 +24,6 @@ Rails.application.routes.draw do
       # HACK: This is a shim to account for the policy behavior. I can look
       #   towards future normalization.
       get 'works/:work_id/assign_a_doi', to: 'dois#show'
-      get 'works/:work_id/assign_a_citation', to: 'citations#show'
 
       get 'works/:id/trigger/update', to: 'works#edit'
       get 'works/:id/trigger/show', to: 'works#show'
