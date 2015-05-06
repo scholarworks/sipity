@@ -170,7 +170,9 @@ module Sipity
     class AuthorizationFailureError < RuntimeError
       attr_reader :user, :action_to_authorize, :entity
       def initialize(user:, action_to_authorize:, entity:)
-        @user, @action_to_authorize, @entity = user, action_to_authorize, entity
+        @user = user
+        @action_to_authorize = action_to_authorize
+        @entity  = entity
         super("#{user} not allowed to #{action_to_authorize} this #{entity}")
       end
     end
@@ -180,7 +182,9 @@ module Sipity
     class InvalidStateError < RuntimeError
       attr_reader :entity, :actual, :expected
       def initialize(entity:, actual:, expected: nil)
-        @entity, @actual, @expected = entity, actual, expected
+        @entity = entity
+        @actual = actual
+        @expected = expected
         super(build_message)
       end
 

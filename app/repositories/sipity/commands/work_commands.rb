@@ -76,7 +76,7 @@ module Sipity
       end
 
       def amend_files_metadata(work:, user:, metadata: {})
-        _work, _user, _files = work, user, metadata
+        _user = user
         metadata.each do |pid, data|
           Models::Attachment.where(work: work).find(pid).
             update_attributes!(data.with_indifferent_access.slice(:name))

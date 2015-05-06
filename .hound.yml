@@ -22,6 +22,10 @@ AllCops:
     - 'spec/support/sipity/query_repository_interface.rb'
   RunRailsCops: true
 
+ModuleLength:
+  Exclude:
+    - '**/*'
+
 MethodLength:
   Max: 10
   Description: 'Avoid methods longer than 10 lines of code.'
