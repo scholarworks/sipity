@@ -5,7 +5,6 @@ module Sipity
   # Defines and exposes the query methods for interacting with the public API of
   # the persistence layer.
   class QueryRepository
-    include Queries::AccountPlaceholderQueries
     include Queries::AccountProfileQueries
     include Queries::AdditionalAttributeQueries
     include Queries::AttachmentQueries
