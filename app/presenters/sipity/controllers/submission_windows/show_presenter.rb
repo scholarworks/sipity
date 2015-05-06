@@ -14,6 +14,19 @@ module Sipity
 
         private
 
+        def method_missing(method_name, *args, &block)
+          match_data = RENDER_METHOD_WORK_TYPE_REGEXP.match(method_name)
+          if match_data
+            render_general_submission_window
+          else
+            super
+          end
+        end
+
+        def render_general_submission_window
+          render partial: "#{action_name}_#{submission_window.work_area_partial_suffix}", object: self
+        end
+
         def render_submission_window_for_etd
           deprecated_render_submission_window_for_etd
         end

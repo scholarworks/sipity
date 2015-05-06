@@ -20,7 +20,9 @@ module Sipity
       end
 
       def path
-        submission_window_for_work_area_path(work_area_slug: submission_window.work_area_slug, submission_window_slug: submission_window.slug)
+        submission_window_for_work_area_path(
+          work_area_slug: submission_window.work_area_slug, submission_window_slug: submission_window.slug
+        )
       end
 
       delegate(
