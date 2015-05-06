@@ -1,5 +1,3 @@
-require_relative '../composable_elements/on_behalf_of_collaborator'
-
 module Sipity
   module Forms
     module Etd

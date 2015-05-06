@@ -1,4 +1,3 @@
-require 'sipity/models'
 module Sipity
   module Models
     # A rudimentary container for all (as of now string based) attributes
