@@ -13,6 +13,7 @@ module Sipity
       has_many :access_rights, as: :entity, dependent: :destroy
       has_many :transient_answers, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
+      has_one :work_submission, dependent: :destroy
 
       include Conversions::SanitizeHtml
       def to_s

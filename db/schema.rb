@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150427200550) do
+ActiveRecord::Schema.define(version: 20150506153407) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -400,6 +400,18 @@ ActiveRecord::Schema.define(version: 20150427200550) do
 
   add_index "sipity_work_areas", ["name"], name: "index_sipity_work_areas_on_name", unique: true, using: :btree
   add_index "sipity_work_areas", ["slug"], name: "index_sipity_work_areas_on_slug", unique: true, using: :btree
+
+  create_table "sipity_work_submissions", id: false, force: :cascade do |t|
+    t.integer  "work_area_id",         limit: 4,   null: false
+    t.integer  "submission_window_id", limit: 4,   null: false
+    t.string   "work_id",              limit: 255, null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+  end
+
+  add_index "sipity_work_submissions", ["submission_window_id", "work_id"], name: "idx_sipity_work_submissions_submission_window", using: :btree
+  add_index "sipity_work_submissions", ["work_area_id", "work_id"], name: "idx_sipity_work_submissions_work_area", using: :btree
+  add_index "sipity_work_submissions", ["work_id"], name: "idx_sipity_work_submissions_primary_key", unique: true, using: :btree
 
   create_table "sipity_work_types", force: :cascade do |t|
     t.string   "name",        limit: 255,   null: false
