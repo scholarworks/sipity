@@ -5,7 +5,7 @@ module Sipity
       self.table_name = 'sipity_submission_windows'
 
       belongs_to :work_area
-      delegate :slug, to: :work_area, prefix: :work_area
+      delegate :slug, :partial_suffix, to: :work_area, prefix: :work_area
 
       has_many :submission_window_work_types, dependent: :destroy
       has_many :work_submissions, dependent: :destroy
