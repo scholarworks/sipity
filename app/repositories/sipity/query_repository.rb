@@ -11,7 +11,6 @@ module Sipity
     include Queries::AttachmentQueries
     include Queries::CollaboratorQueries
     include Queries::CommentQueries
-    include Queries::DoiQueries
     include Queries::EnrichmentQueries
     include Queries::EventLogQueries
     include Queries::EventTriggerQueries

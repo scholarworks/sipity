@@ -16,7 +16,6 @@ module Sipity
     end
 
     include Commands::WorkCommands
-    include Commands::DoiCommands
     include Commands::EventLogCommands
     include Commands::NotificationCommands
     include Commands::AdditionalAttributeCommands

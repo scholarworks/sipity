@@ -2,12 +2,6 @@ Rails.application.routes.draw do
   scope module: :sipity do
     scope module: :controllers do
       resources :works do
-        resource :doi do
-          member do
-            post :assign_a_doi
-            post :request_a_doi
-          end
-        end
         resources :comments, only: :index
       end
 
@@ -20,10 +14,6 @@ Rails.application.routes.draw do
       end
       get 'works/:work_id/:enrichment_type', to: 'work_enrichments#edit', as: 'enrich_work', constraints: enrichment_constraint
       post 'works/:work_id/:enrichment_type', to: 'work_enrichments#update', constraints: enrichment_constraint
-
-      # HACK: This is a shim to account for the policy behavior. I can look
-      #   towards future normalization.
-      get 'works/:work_id/assign_a_doi', to: 'dois#show'
 
       get 'works/:id/trigger/update', to: 'works#edit'
       get 'works/:id/trigger/show', to: 'works#show'
