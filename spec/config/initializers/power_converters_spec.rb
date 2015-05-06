@@ -131,12 +131,31 @@ RSpec.describe 'power converters' do
       expect(PowerConverter.convert_to_work_area(work_area)).to eq(work_area)
       submission_window = Sipity::Models::SubmissionWindow.new(work_area: work_area)
       expect(PowerConverter.convert_to_work_area(submission_window)).to eq(work_area)
+      work = Sipity::Models::Work.new
+      allow(work).to receive(:work_area).and_return(work_area)
+      expect(PowerConverter.convert_to_work_area(work)).to eq(work_area)
 
       [
         'The Missing Name'
       ].each do |to_convert_but_will_fail|
         expect { PowerConverter.convert_to_work_area(to_convert_but_will_fail) }.to raise_error(PowerConverter::ConversionError)
       end
+    end
+  end
+
+  context 'submission_window' do
+    it "will convert based on the given scenarios" do
+
+      work_area = Sipity::Models::WorkArea.new(id: 1)
+      submission_window = Sipity::Models::SubmissionWindow.new(id: 2, slug: 'slug', work_area_id: work_area.id)
+      expect(PowerConverter.convert(submission_window, to: :submission_window, scope: work_area)).to eq(submission_window)
+
+      work = Sipity::Models::Work.new(id: 8)
+      allow(work).to receive(:submission_window).and_return(submission_window)
+      expect(PowerConverter.convert(work, to: :submission_window)).to eq(submission_window)
+
+      expect { PowerConverter.convert(submission_window, to: :submission_window, scope: Sipity::Models::WorkArea.new(id: 822)) }.
+        to raise_error(PowerConverter::ConversionError)
     end
   end
 end
