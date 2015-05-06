@@ -12,6 +12,20 @@ module Sipity
 
       subject { test_repository }
 
+      context '#update_work_publication_date!' do
+        it 'will not attempt an update if a nil value is given' do
+          expect(test_repository).to_not receive(:update_work_attribute_values!)
+          test_repository.update_work_publication_date!(work: work, publication_date: nil)
+        end
+
+        it 'will update if a non-nil value is given' do
+          publication_date = double
+          expect(test_repository).to receive(:update_work_attribute_values!).
+            with(work: work, values: publication_date, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME)
+          test_repository.update_work_publication_date!(work: work, publication_date: publication_date)
+        end
+      end
+
       it 'will create a key/value pair if the value does not exist' do
         expect { subject.update_work_attribute_values!(work: work, key: key, values: 'abc') }.
           to change { subject.work_attribute_values_for(work: work, key: key) }.from([]).to(['abc'])
