@@ -30,8 +30,9 @@ module Sipity
       end
 
       context '#build_create_work_form' do
-        it 'will build an object that can be submitted' do
-          expect(test_repository.build_create_work_form).to respond_to(:submit)
+        it 'will build an ETD based form (note this may be delegated to a generalized form builder)' do
+          expect(Forms::Etd::StartASubmissionForm).to receive(:new).with(repository: test_repository, title: 'title')
+          test_repository.build_create_work_form(attributes: { title: 'title' })
         end
       end
 

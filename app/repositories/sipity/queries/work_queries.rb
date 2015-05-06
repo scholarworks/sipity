@@ -20,7 +20,7 @@ module Sipity
       end
 
       def build_create_work_form(attributes: {})
-        Forms::CreateWorkForm.new(attributes.merge(repository: self))
+        Forms::Etd::StartASubmissionForm.new(attributes.merge(repository: self))
       end
 
       def build_update_work_form(work:, attributes: {})

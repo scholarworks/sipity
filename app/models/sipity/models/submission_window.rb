@@ -8,6 +8,7 @@ module Sipity
       delegate :slug, to: :work_area, prefix: :work_area
 
       has_many :submission_window_work_types, dependent: :destroy
+      has_many :work_submissions, dependent: :destroy
 
       Processing.configure_as_a_processible_entity(self)
 

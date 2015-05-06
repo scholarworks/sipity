@@ -11,6 +11,7 @@ module Sipity
       self.table_name = 'sipity_work_areas'
 
       has_many :submission_windows, dependent: :destroy
+      has_many :work_submissions, dependent: :destroy
 
       Processing.configure_as_a_processible_entity(self)
 

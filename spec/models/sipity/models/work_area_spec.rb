@@ -39,6 +39,10 @@ module Sipity
         expect(subject.submission_windows).to be_a(ActiveRecord::Relation)
       end
 
+      it 'will have many .work_submissions' do
+        expect(subject.work_submissions).to be_a(ActiveRecord::Relation)
+      end
+
       context '#slug' do
         it 'will transform the slug to a URI safe item' do
           subject.slug = 'Hello World'

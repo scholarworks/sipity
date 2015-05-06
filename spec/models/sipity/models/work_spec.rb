@@ -64,6 +64,11 @@ module Sipity
           to be_a(ActiveRecord::Reflection::AssociationReflection)
       end
 
+      it 'has many :work_submission' do
+        expect(Work.reflect_on_association(:work_submission)).
+          to be_a(ActiveRecord::Reflection::AssociationReflection)
+      end
+
       it 'has many :attachments' do
         expect(Work.reflect_on_association(:attachments)).
           to be_a(ActiveRecord::Reflection::AssociationReflection)
