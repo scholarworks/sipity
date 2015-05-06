@@ -67,7 +67,9 @@ module Sipity
         end
 
         def create_the_work
-          work = repository.create_work!(title: title, work_publication_strategy: work_publication_strategy, work_type: work_type)
+          work = repository.create_work!(
+            submission_window: submission_window, title: title, work_publication_strategy: work_publication_strategy, work_type: work_type
+          )
           yield(work)
           work
         end

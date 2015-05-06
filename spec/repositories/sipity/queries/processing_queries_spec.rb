@@ -105,11 +105,22 @@ module Sipity
         let(:user) { User.create!(username: 'user') }
         let(:advisor) { User.create!(username: 'advisor') }
         let(:no_access) { User.create!(username: 'no_access') }
+        let(:submission_window) { Models::SubmissionWindow.new(id: 111, work_area_id: 222) }
         let(:commands) { CommandRepository.new }
 
         it "will resolve to an array of entities" do
-          work_one = commands.create_work!(title: 'Book', work_type: 'doctoral_dissertation', work_publication_strategy: 'will_not_publish')
-          work_two = commands.create_work!(title: 'Book', work_type: 'doctoral_dissertation', work_publication_strategy: 'will_not_publish')
+          work_one = commands.create_work!(
+            submission_window: submission_window,
+            title: 'Book',
+            work_type: 'doctoral_dissertation',
+            work_publication_strategy: 'will_not_publish'
+          )
+          work_two = commands.create_work!(
+            submission_window: submission_window,
+            title: 'Book',
+            work_type: 'doctoral_dissertation',
+            work_publication_strategy: 'will_not_publish'
+          )
 
           commands.grant_creating_user_permission_for!(entity: work_one, user: user)
           commands.grant_creating_user_permission_for!(entity: work_two, user: user)

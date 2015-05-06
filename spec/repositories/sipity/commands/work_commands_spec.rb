@@ -84,8 +84,10 @@ module Sipity
       context '#create_work!' do
         let(:attributes) { { title: 'Hello', work_publication_strategy: 'do_not_know', work_type: 'doctoral_dissertation' } }
         it 'will delegate to the Services::CreateWorkService' do
-          expect(Services::CreateWorkService).to receive(:call).with(attributes.merge(repository: test_repository))
-          test_repository.create_work!(attributes)
+          submission_window = double
+          expect(Services::CreateWorkService).to receive(:call).
+            with(submission_window: submission_window, repository: test_repository, **attributes)
+          test_repository.create_work!(submission_window: submission_window, **attributes)
         end
       end
 
