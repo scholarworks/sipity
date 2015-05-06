@@ -43,28 +43,6 @@ module Sipity
         it { should respond_to :filterable_processing_states }
         it { should respond_to :search_path }
       end
-
-      context '#build_update_work_form' do
-        let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
-        it 'will raise an exception if the work is not persisted' do
-          allow(work).to receive(:persisted?).and_return(false)
-          expect { test_repository.build_update_work_form(work: work) }.
-            to raise_error(RuntimeError)
-        end
-
-        context 'with a persisted object will return an object that' do
-          before { allow(work).to receive(:persisted?).and_return(true) }
-          subject { test_repository.build_update_work_form(work: work) }
-          it { should respond_to :submit }
-          it 'will expose an attribute of the underlying work' do
-            expect(subject.title).to eq(work.title)
-          end
-          it 'will expose an additional attribute' do
-            Models::AdditionalAttribute.create!(work: work, key: 'publisher', value: 'parmasean')
-            expect(subject.publisher).to eq('parmasean')
-          end
-        end
-      end
     end
   end
 end

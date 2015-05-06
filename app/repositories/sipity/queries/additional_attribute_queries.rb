@@ -17,18 +17,6 @@ module Sipity
       end
       module_function :work_attribute_key_value_pairs
       public :work_attribute_key_value_pairs
-
-      def work_attribute_keys_for(work:)
-        Models::AdditionalAttribute.where(work: work).order(:key).pluck(:key).uniq
-      end
-      module_function :work_attribute_keys_for
-      public :work_attribute_keys_for
-
-      def work_default_attribute_keys_for(*)
-        [:publication_date]
-      end
-      module_function :work_default_attribute_keys_for
-      public :work_default_attribute_keys_for
     end
   end
 end
