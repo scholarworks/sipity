@@ -1,0 +1,16 @@
+<!-- This is basic form for submitting a ulra -->
+<%= simple_form_for(model) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error :base, error_method: :to_sentence %>
+  <div class="panel-tiles">
+    <%= model.with_form_panel('attributes', :info) do %>
+      <%= f.input :title, input_html: { class: 'form-control' } %>
+    <% end %>
+    <%= model.with_form_panel('work_publication_strategy', :info) do %>
+      <%= render 'form_for_work_publication_strategy', { f: f } %>
+    <% end %>
+  </div>
+  <div class="action-pane">
+    <%= f.submit %>
+  </div>
+<% end %>

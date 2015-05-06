@@ -17,7 +17,10 @@ $stdout.puts 'Creating controlled vocabularies'
   ['resource_consulted', 'Consultation with a librarian', 'Consultation with a librarian'],
   ['citation_style', 'American Psychological Association', 'APA'],
   ['citation_style', 'Chicago Manual of Style', 'Chicago'],
-  ['citation_style', 'Modern Language Association', 'MLA']
+  ['citation_style', 'Modern Language Association', 'MLA'],
+  ['award_category', 'Senior/Honors Thesis'],
+  ['award_category', '2000–4000 Level Papers'],
+  ['award_category', '10000 Level Papers']
 ].each do |predicate_name, term_label, term_uri|
   Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
   predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)
