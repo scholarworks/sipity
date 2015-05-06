@@ -1,4 +1,3 @@
-require 'sipity/models/processing'
 module Sipity
   module Models
     # A WorkArea is a container for performing common work against a

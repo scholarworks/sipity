@@ -1,9 +1,9 @@
 require 'rails_helper'
-require 'sipity/data_generators/etd/work_area_processing_generator'
+require 'sipity/data_generators/ulra/work_area_processing_generator'
 
 module Sipity
   module DataGenerators
-    module Etd
+    module Ulra
       # Responsible for generating the submission window for the ETD work area.
       RSpec.describe WorkAreaProcessingGenerator do
         it 'does not deviate from the base implementation' do

@@ -2,7 +2,7 @@ module Sipity
   module Forms
     module Ulra
       # Responsible for capturing and validating information for faculty comments
-      class FacultyCommentsForm < Forms::WorkEnrichmentForm
+      class FacultyResponseForm < Forms::WorkEnrichmentForm
         def initialize(attributes = {})
           super
           initialize_non_attachment_attributes(attributes)

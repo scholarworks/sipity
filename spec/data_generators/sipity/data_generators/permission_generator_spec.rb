@@ -18,7 +18,7 @@ module Sipity
       it 'will grant strategy responsible to actor as the given role' do
         expect do
           expect do
-            described_class.call(actors: user, role: role, strategy: strategy)
+            described_class.call(actors: user, roles: role, strategy: strategy)
           end.to change { Models::Processing::StrategyRole.count }.by(1)
         end.to change { Models::Processing::StrategyResponsibility.count }.by(1)
       end
@@ -27,7 +27,7 @@ module Sipity
         expect do
           expect do
             expect do
-              described_class.call(actors: user, role: role, strategy: strategy, entity: entity)
+              described_class.call(actors: user, roles: role, strategy: strategy, entity: entity)
             end.to change { Models::Processing::StrategyRole.count }.by(1)
           end.to change { Models::Processing::EntitySpecificResponsibility.count }.by(1)
         end.to_not change { Models::Processing::StrategyResponsibility.count }
@@ -37,7 +37,7 @@ module Sipity
         builder = lambda do
           described_class.call(
             actors: user,
-            role: role,
+            roles: role,
             entity: entity,
             strategy: strategy,
             strategy_state: strategy_state,
@@ -54,7 +54,7 @@ module Sipity
       it 'will build the entity level permissions if an entity is specified' do
         described_class.call(
           actors: user,
-          role: role,
+          roles: role,
           entity: entity,
           strategy: strategy,
           strategy_state: strategy_state,
@@ -74,7 +74,7 @@ module Sipity
       it 'will build the strategy level permissions if no entity is given' do
         described_class.call(
           actors: user,
-          role: role,
+          roles: role,
           strategy: strategy,
           strategy_state: strategy_state,
           action_names: action_name

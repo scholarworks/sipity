@@ -1,4 +1,3 @@
-require 'sipity/models'
 module Sipity
   module Models
     # The most basic of information required for generating a valid work.

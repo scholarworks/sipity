@@ -1,4 +1,3 @@
-require 'sipity/models'
 module Sipity
   module Models
     # A collaborator for the given work. These are the named people that

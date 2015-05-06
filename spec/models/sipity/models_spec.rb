@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'sipity/models'
 
 module Sipity
   RSpec.describe Models do

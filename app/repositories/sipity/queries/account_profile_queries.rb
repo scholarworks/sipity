@@ -1,5 +1,3 @@
-require 'sipity/forms/manage_account_profile_form'
-
 module Sipity
   module Queries
     # Queries

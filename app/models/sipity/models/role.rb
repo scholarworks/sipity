@@ -30,6 +30,7 @@ module Sipity
       CREATING_USER = 'creating_user'.freeze
       ADVISOR = 'advisor'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
+      ULRA_REVIEWER = 'ulra_reviewer'.freeze
       WORK_AREA_MANAGER = 'work_area_manager'.freeze
       WORK_AREA_VIEWER = 'work_area_viewer'.freeze
       WORK_SUBMITTER = 'work_submitter'.freeze
@@ -45,7 +46,8 @@ module Sipity
           WORK_AREA_MANAGER => WORK_AREA_MANAGER,
           WORK_AREA_VIEWER => WORK_AREA_VIEWER,
           WORK_SUBMITTER => WORK_SUBMITTER,
-          SUBMISSION_WINDOW_VIEWER => SUBMISSION_WINDOW_VIEWER
+          SUBMISSION_WINDOW_VIEWER => SUBMISSION_WINDOW_VIEWER,
+          ULRA_REVIEWER => ULRA_REVIEWER
         }
       )
 

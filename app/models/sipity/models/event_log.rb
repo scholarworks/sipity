@@ -1,4 +1,3 @@
-require 'sipity/models'
 module Sipity
   module Models
     # A place to record the named event for the given entity that was trigger by
