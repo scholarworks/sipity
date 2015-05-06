@@ -57,10 +57,6 @@ module Sipity
     def build_event_trigger_form(attributes = {})
     end
 
-    # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_update_work_form(work:, attributes: {})
-    end
-
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
     def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
     end
@@ -123,14 +119,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/processing_commands.rb
     def existing_registered_state_changing_actions_for(entity:, strategy_state:)
-    end
-
-    # @see ./app/repositories/sipity/queries/work_queries.rb
-    def existing_work_attributes_for(work)
-    end
-
-    # @see ./app/repositories/sipity/queries/work_queries.rb
-    def exposed_work_attribute_names_for(work:, additional_attribute_names: BASE_HEADER_ATTRIBUTES)
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
@@ -354,10 +342,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
-    def work_attribute_keys_for(work:)
-    end
-
-    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
     def work_attribute_values_for(work:, key:)
     end
 
@@ -371,10 +355,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
     def work_collaborators_responsible_for_review(work:)
-    end
-
-    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
-    def work_default_attribute_keys_for(*)
     end
 
   end
