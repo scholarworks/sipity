@@ -8,11 +8,6 @@ module Sipity
       self.runner_container = Sipity::Runners::SubmissionWindowRunners
       self.response_handler_container = Sipity::ResponseHandlers::SubmissionWindowHandler
 
-      def show
-        runner_response = run(work_area_slug: work_area_slug, submission_window_slug: submission_window_slug)
-        handle_response(runner_response)
-      end
-
       def query_action
         runner_response = run(
           work_area_slug: work_area_slug,
