@@ -15,6 +15,13 @@ module Sipity
     class NonPrimativeParameterError < RuntimeError
     end
 
+    # Uh oh! It looks like our response handler didn't know what to do.
+    class UnhandledResponseError < RuntimeError
+      def initialize(handler)
+        super("Expected to be able to handle #{handler.inspect}.")
+      end
+    end
+
     # This is not a defined resourceful action
     class UnprocessableResourcefulActionNameError < RuntimeError
       def initialize(container:, object:)
