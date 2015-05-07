@@ -21,6 +21,7 @@ module Sipity
       SPATIAL_COVERAGE = 'spatial_coverage'.freeze
       RESOURCE_CONSULTED_NAME = 'resource_consulted'.freeze
       CITATION_STYLE_NAME = 'citation_style'.freeze
+      AWARD_CATEGORY = 'award_category'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -43,7 +44,8 @@ module Sipity
           TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
           SPATIAL_COVERAGE => SPATIAL_COVERAGE,
           RESOURCE_CONSULTED_NAME => RESOURCE_CONSULTED_NAME,
-          CITATION_STYLE_NAME => CITATION_STYLE_NAME
+          CITATION_STYLE_NAME => CITATION_STYLE_NAME,
+          AWARD_CATEGORY => AWARD_CATEGORY
         }
       )
     end
