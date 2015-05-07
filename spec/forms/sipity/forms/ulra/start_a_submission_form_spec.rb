@@ -4,21 +4,22 @@ module Sipity
   module Forms
     module Ulra
       RSpec.describe StartASubmissionForm do
-        subject { described_class.new(repository: repository) }
+        subject { described_class.new(repository: repository, submission_window: submission_window) }
         let(:repository) { CommandRepositoryInterface.new }
-        let(:submission_window) do
-          Models::SubmissionWindow.new(id: 1, work_area_id: work_area.id, slug: described_class::DEFAULT_SUBMISSION_WINDOW_SLUG)
-        end
+        let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area_id: work_area.id, slug: '1234') }
         let(:work_area) { Models::WorkArea.new(id: 2, slug: described_class::DEFAULT_WORK_AREA_SLUG) }
         before do
-          allow(repository).to receive(:find_submission_window_by).
-            with(slug: described_class::DEFAULT_SUBMISSION_WINDOW_SLUG, work_area: work_area).and_return(submission_window)
-          allow(repository).to receive(:find_work_area_by).
-            with(slug: work_area.slug).and_return(work_area)
+          allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
         end
 
         its(:default_repository) { should respond_to :create_work! }
         its(:default_repository) { should respond_to :find_submission_window_by }
+        its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
+
+        it 'will delegate #to_processing_entity to the submission window' do
+          expect(submission_window).to receive(:to_processing_entity)
+          subject.to_processing_entity
+        end
 
         it 'will have a model name like Work' do
           expect(described_class.model_name).to be_a(ActiveModel::Name)
@@ -37,10 +38,8 @@ module Sipity
         end
 
         context 'validations for' do
-          let(:attributes) do
-            { repository: repository, title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil }
-          end
-          subject { described_class.new(attributes) }
+          let(:attributes) { { title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
+          subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
           context '#title' do
             it 'must be present' do
               subject.valid?
@@ -61,13 +60,12 @@ module Sipity
           end
           context '#submission_window' do
             it 'must be present and will throw an exception if incorrect' do
-              expect { described_class.new(attributes.merge(submission_window: nil)) }.to raise_error(PowerConverter::ConversionError)
+              expect { described_class.new(repository: repository, attributes: attributes) }.to raise_error(ArgumentError)
             end
           end
           context '#work_type' do
             it 'must be present' do
               subject.valid?
-              puts subject.work_type
               expect(subject.errors[:work_type]).to be_present
             end
           end
@@ -77,7 +75,9 @@ module Sipity
               expect(subject.errors[:work_publication_strategy]).to be_present
             end
             it 'must be from the approved list' do
-              subject = described_class.new(repository: repository, work_publication_strategy: '__not_found__')
+              subject = described_class.new(
+                repository: repository, submission_window: submission_window, attributes: { work_publication_strategy: '__not_found__' }
+              )
               subject.valid?
               expect(subject.errors[:work_publication_strategy]).to be_present
             end
@@ -86,7 +86,7 @@ module Sipity
 
         context 'Sanitizing HTML title' do
           let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-          subject { described_class.new(repository: repository, **attributes) }
+          subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
           context 'removes script tags' do
             let(:title) { "<script>alert('Like this');</script>" }
             it { expect(subject.title).to_not have_tag('script') }
@@ -104,11 +104,14 @@ module Sipity
           let(:user) { User.new(id: '123') }
           subject do
             described_class.new(
-              title: 'This is my title',
-              work_publication_strategy: 'do_not_know',
               repository: repository,
-              advisor_net_id: 'dummy_id',
-              award_category: 'some_category'
+              submission_window: submission_window,
+              attributes: {
+                title: 'This is my title',
+                work_publication_strategy: 'do_not_know',
+                advisor_net_id: 'dummy_id',
+                award_category: 'some_category'
+              }
             )
           end
           context 'with invalid data' do

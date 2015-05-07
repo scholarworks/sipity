@@ -34,7 +34,7 @@ module Sipity
         it 'will use the work area and action name to find the correct object' do
           expect(
             described_class.build_the_form(
-              submission_window: submission_window, processing_action_name: processing_action_name, attributes: {}
+              submission_window: submission_window, processing_action_name: processing_action_name, attributes: {}, repository: double
             )
           ).to be_a(Forms::MockEtd::SubmissionWindows::DoFunThingForm)
         end
@@ -42,14 +42,16 @@ module Sipity
         it 'will fall back to the core namespace' do
           expect(
             described_class.build_the_form(
-              submission_window: submission_window, processing_action_name: 'fallback', attributes: {}
+              submission_window: submission_window, processing_action_name: 'fallback', attributes: {}, repository: double
             )
           ).to be_a(Forms::Core::SubmissionWindows::FallbackForm)
         end
 
         it 'will raise an exception if neither is found' do
           expect do
-            described_class.build_the_form(submission_window: submission_window, processing_action_name: 'missing', attributes: {})
+            described_class.build_the_form(
+              submission_window: submission_window, processing_action_name: 'missing', attributes: {}, repository: double
+            )
           end.to raise_error(NameError)
         end
       end

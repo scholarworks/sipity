@@ -4,24 +4,38 @@ module Sipity
       # Responsible for creating a new work within the ULRA work area.
       # What goes into this is more complicated that the entity might allow.
       class StartASubmissionForm < BaseForm
-        include Conversions::SanitizeHtml
+        # Because creating a new work is enforced by the container in which the
+        # work is to be created.
+        self.policy_enforcer = Policies::SubmissionWindowPolicy
 
         def self.model_name
           Models::Work.model_name
         end
 
-        def initialize(attributes = {})
-          initialize_attributes(attributes)
+        def initialize(submission_window:, attributes: {}, repository: default_repository, processing_action_name: 'start_a_submission')
+          self.repository = repository
+          self.processing_action_name = processing_action_name
           initialize_work_area!
-          self.submission_window = attributes.fetch(:submission_window) { default_submission_window }
+          self.submission_window = submission_window
+          initialize_attributes(attributes)
         end
 
         def available_award_category
           repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
         end
 
-        attr_accessor :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-        private(:repository, :repository=, :title=, :award_category=, :work_publication_strategy=, :advisor_netid=, :work_type=)
+        attr_reader :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
+
+        private
+
+        attr_accessor :processing_action_name, :repository
+        attr_writer :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
+        attr_reader :submission_window, :work_area
+
+        public
+
+        delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
+        alias_method :to_model, :submission_window
 
         validates :title, presence: true
         validates :award_category, presence: true
@@ -57,9 +71,9 @@ module Sipity
           self.award_category = attributes[:award_category]
           self.work_type = attributes[:work_type]
           self.work_publication_strategy = attributes[:work_publication_strategy]
-          self.repository = attributes.fetch(:repository) { default_repository }
         end
 
+        include Conversions::SanitizeHtml
         def title=(value)
           @title = sanitize_html(value)
         end
@@ -89,14 +103,7 @@ module Sipity
           CommandRepository.new
         end
 
-        attr_reader :submission_window, :work_area
-
         DEFAULT_WORK_AREA_SLUG = 'ulra'.freeze
-        DEFAULT_SUBMISSION_WINDOW_SLUG = 'start'.freeze
-        def default_submission_window
-          repository.find_submission_window_by(slug: DEFAULT_SUBMISSION_WINDOW_SLUG, work_area: work_area)
-        end
-
         def initialize_work_area!
           @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
         end

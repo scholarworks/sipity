@@ -4,11 +4,12 @@ module Sipity
     module WorkAreaForms
       module_function
 
-      def build_the_form(work_area:, processing_action_name:, attributes:)
+      def build_the_form(work_area:, processing_action_name:, attributes:, repository:)
         find_the_form(work_area: work_area, processing_action_name: processing_action_name).new(
           work_area: work_area,
           processing_action_name: processing_action_name,
-          attributes: attributes
+          attributes: attributes,
+          repository: repository
         )
       end
 

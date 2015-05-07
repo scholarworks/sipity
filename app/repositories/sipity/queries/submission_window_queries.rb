@@ -13,6 +13,7 @@ module Sipity
         Forms::SubmissionWindowForms.build_the_form(
           submission_window: submission_window,
           processing_action_name: processing_action_name,
+          repository: self,
           attributes: attributes
         )
       end

@@ -31,18 +31,23 @@ module Sipity
         let(:work_area) { Models::WorkArea.new(demodulized_class_prefix_name: 'MockEtd') }
         let(:processing_action_name) { 'do_fun_thing' }
         it 'will use the work area and action name to find the correct object' do
-          expect(described_class.build_the_form(work_area: work_area, processing_action_name: processing_action_name, attributes: {})).
-            to be_a(Forms::MockEtd::WorkAreas::DoFunThingForm)
+          expect(
+            described_class.build_the_form(
+              work_area: work_area, processing_action_name: processing_action_name, attributes: {}, repository: double
+            )
+          ).to be_a(Forms::MockEtd::WorkAreas::DoFunThingForm)
         end
 
         it 'will fall back to the core namespace' do
-          expect(described_class.build_the_form(work_area: work_area, processing_action_name: 'fallback', attributes: {})).
-            to be_a(Forms::Core::WorkAreas::FallbackForm)
+          expect(
+            described_class.build_the_form(work_area: work_area, processing_action_name: 'fallback', attributes: {}, repository: double)
+          ).to be_a(Forms::Core::WorkAreas::FallbackForm)
         end
 
         it 'will raise an exception if neither is found' do
-          expect { described_class.build_the_form(work_area: work_area, processing_action_name: 'missing', attributes: {}) }.
-            to raise_error(NameError)
+          expect do
+            described_class.build_the_form(work_area: work_area, processing_action_name: 'missing', attributes: {}, repository: double)
+          end.to raise_error(NameError)
         end
       end
     end

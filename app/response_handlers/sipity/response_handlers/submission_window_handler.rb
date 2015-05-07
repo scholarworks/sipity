@@ -4,8 +4,16 @@ module Sipity
     module SubmissionWindowHandler
       # Responsible for handling a :success-ful action
       #
-      # TODO: Extract a porper base class, if one exists
+      # TODO: Extract a proper base class, if one exists
+      #
+      # :Success
+      # :Submitted
+      # :FailedToSubmit
       class SuccessResponse < ResponseHandlers::WorkAreaHandler::SuccessResponse
+      end
+
+      # TODO: This should do something
+      class FailureResponse < SuccessResponse
       end
     end
   end

@@ -14,18 +14,23 @@ module Sipity
 
       context 'GET #query_action' do
         before { controller.runner = runner }
-        let(:query_action_name) { 'fun_things' }
+        let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
           expect_any_instance_of(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponse).to receive(:respond).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do
-            get 'query_action', work_area_slug: work_area.slug, query_action_name: query_action_name, work_area: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{query_action_name}})
+            get(
+              'query_action',
+              work_area_slug: work_area.slug,
+              processing_action_name: processing_action_name,
+              work_area: { title: 'Hello' }
+            )
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: query_action_name, attributes: { 'title' => 'Hello' }
+            work_area_slug: work_area.slug, processing_action_name: processing_action_name, attributes: { 'title' => 'Hello' }
           )
 
           expect(controller.view_object).to be_present
@@ -34,18 +39,23 @@ module Sipity
 
       context 'POST #command_action' do
         before { controller.runner = runner }
-        let(:command_action_name) { 'fun_things' }
+        let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
           expect_any_instance_of(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponse).to receive(:respond).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do
-            post 'command_action', work_area_slug: work_area.slug, command_action_name: command_action_name, work_area: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{command_action_name}})
+            post(
+              'command_action',
+              work_area_slug: work_area.slug,
+              processing_action_name: processing_action_name,
+              work_area: { title: 'Hello' }
+            )
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: command_action_name, attributes: { 'title' => 'Hello' }
+            work_area_slug: work_area.slug, processing_action_name: processing_action_name, attributes: { 'title' => 'Hello' }
           )
 
           expect(controller.view_object).to be_present

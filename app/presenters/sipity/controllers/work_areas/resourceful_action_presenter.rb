@@ -12,7 +12,7 @@ module Sipity
         delegate :slug, to: :work_area, prefix: :work_area
 
         def path
-          work_area_query_action_path(work_area_slug: work_area_slug, query_action_name: action_name)
+          work_area_action_path(work_area_slug: work_area_slug, processing_action_name: action_name)
         end
       end
     end

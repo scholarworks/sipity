@@ -21,7 +21,8 @@ module Sipity
         Forms::WorkSubmissionForms.build_the_form(
           work: work,
           processing_action_name: processing_action_name,
-          attributes: attributes
+          attributes: attributes,
+          repository: self
         )
       end
 

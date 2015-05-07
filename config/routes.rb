@@ -35,38 +35,49 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
 
-  get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { query_action_name: 'show' }
-  get 'areas/:work_area_slug/do/:query_action_name', as: 'work_area_query_action', to: 'sipity/controllers/work_areas#query_action'
+  get(
+    'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { processing_action_name: 'show' }
+  )
+  get 'areas/:work_area_slug/do/:processing_action_name', as: 'work_area_action', to: 'sipity/controllers/work_areas#query_action'
 
   [:post, :put, :patch, :delete].each do |http_verb_name|
-    send(http_verb_name, 'areas/:work_area_slug/do/:command_action_name', to: 'sipity/controllers/work_areas#command_action')
+    send(http_verb_name, 'areas/:work_area_slug/do/:processing_action_name', to: 'sipity/controllers/work_areas#command_action')
   end
 
   get(
     'areas/:work_area_slug/:submission_window_slug',
-    as: 'submission_window_for_work_area',
-    defaults: { query_action_name: 'show'},
+    as: 'submission_window',
+    defaults: { processing_action_name: 'show'},
     to: 'sipity/controllers/submission_windows#query_action'
   )
 
   get(
-    'areas/:work_area_slug/:submission_window_slug/do/:query_action_name',
-    as: 'submission_window_query_action',
+    'areas/:work_area_slug/:submission_window_slug/do/:processing_action_name',
+    as: 'submission_window_action',
     to: 'sipity/controllers/submission_windows#query_action'
   )
 
   [:post, :put, :patch, :delete].each do |http_verb_name|
     send(
       http_verb_name,
-      'areas/:work_area_slug/:submission_window_slug/do/:command_action_name',
+      'areas/:work_area_slug/:submission_window_slug/do/:processing_action_name',
       to: 'sipity/controllers/submission_windows#command_action'
     )
   end
 
-  get 'work_submissions/:work_id', as: 'work_submission', to: 'sipity/controllers/work_submissions#query_action', defaults: { query_action_name: 'show' }
-  get 'work_submissions/:work_id/do/:query_action_name', as: 'work_submission_query_action', to: 'sipity/controllers/work_submissions#query_action'
+  get(
+    'work_submissions/:work_id',
+    as: 'work_submission',
+    to: 'sipity/controllers/work_submissions#query_action',
+    defaults: { processing_action_name: 'show' }
+  )
+  get(
+    'work_submissions/:work_id/do/:processing_action_name',
+    as: 'work_submission_action',
+    to: 'sipity/controllers/work_submissions#query_action'
+  )
   [:post, :put, :patch, :delete].each do |http_verb_name|
-    send(http_verb_name, 'work_submissions/:work_id/do/:command_action_name', to: 'sipity/controllers/work_submissions#command_action')
+    send(http_verb_name, 'work_submissions/:work_id/do/:processing_action_name', to: 'sipity/controllers/work_submissions#command_action')
   end
 
   # I need parentheses or `{ }` for the block, because of when the blocks are

@@ -25,18 +25,6 @@ module Sipity
         respond_with(@model)
       end
 
-      def edit
-        _status, @model = run(work_id: work_id)
-        @model = Decorators::WorkDecorator.decorate(model)
-        respond_with(@model)
-      end
-
-      def update
-        status, @model = run(work_id: work_id, attributes: update_params)
-        flash[:notice] = message_for(status, title: @model.title)
-        respond_with(@model)
-      end
-
       def destroy
         status, model = run(work_id: work_id)
         flash[:notice] = message_for(status, title: model.title)
@@ -58,10 +46,6 @@ module Sipity
       end
 
       def create_params
-        params.require(:work)
-      end
-
-      def update_params
         params.require(:work)
       end
     end
