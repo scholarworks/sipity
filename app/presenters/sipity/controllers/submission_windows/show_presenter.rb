@@ -1,7 +1,9 @@
 module Sipity
   module Controllers
     module SubmissionWindows
-      # Responsible for presenting a work area
+      # Responsible for presenting a submission window
+      #
+      # @see Sipity::Forms::Core::SubmissionWindows::ShowForm for interface
       class ShowPresenter < SubmissionWindowPresenter
         RENDER_METHOD_PREFIX = "render_submission_window_for_".freeze
         RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/
@@ -24,7 +26,7 @@ module Sipity
         end
 
         def render_general_submission_window
-          render partial: "#{action_name}_#{submission_window.work_area_partial_suffix}", object: self
+          render partial: "#{submission_window.processing_action_name}_#{submission_window.work_area_partial_suffix}", object: self
         end
 
         def render_submission_window_for_etd
