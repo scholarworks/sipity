@@ -1,3 +1,6 @@
+require 'spec_helper'
+require 'sipity/models/notification'
+
 module Sipity
   module Models
     RSpec.describe Notification do
