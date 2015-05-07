@@ -15,7 +15,7 @@ module Sipity
 
       context 'GET #query_action' do
         before { controller.runner = runner }
-        let(:query_action_name) { 'fun_things' }
+        let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
           expect_any_instance_of(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponse).to receive(:respond).and_call_original
 
@@ -25,16 +25,16 @@ module Sipity
               'query_action',
               work_area_slug: work_area.slug,
               submission_window_slug: submission_window.slug,
-              query_action_name: query_action_name,
+              processing_action_name: processing_action_name,
               submission_window: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{query_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::SubmissionWindowsController,
             work_area_slug: work_area.slug,
             submission_window_slug: submission_window.slug,
-            processing_action_name: query_action_name,
+            processing_action_name: processing_action_name,
             attributes: { 'title' => 'Hello' }
           )
 
@@ -44,7 +44,7 @@ module Sipity
 
       context 'POST #command_action' do
         before { controller.runner = runner }
-        let(:command_action_name) { 'fun_things' }
+        let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
           expect_any_instance_of(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponse).to receive(:respond).and_call_original
 
@@ -54,16 +54,16 @@ module Sipity
               'command_action',
               work_area_slug: work_area.slug,
               submission_window_slug: submission_window.slug,
-              command_action_name: command_action_name,
+              processing_action_name: processing_action_name,
               submission_window: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{command_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::SubmissionWindowsController,
             work_area_slug: work_area.slug,
             submission_window_slug: submission_window.slug,
-            processing_action_name: command_action_name,
+            processing_action_name: processing_action_name,
             attributes: { 'title' => 'Hello' }
           )
 

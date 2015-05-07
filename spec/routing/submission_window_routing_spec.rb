@@ -11,7 +11,7 @@ describe 'work area routing spec' do
           action: 'query_action',
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
-          query_action_name: 'show'
+          processing_action_name: 'show'
         }
       ], [
         :get,
@@ -20,7 +20,7 @@ describe 'work area routing spec' do
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
           action: 'query_action',
-          query_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :post,
@@ -29,7 +29,7 @@ describe 'work area routing spec' do
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :patch,
@@ -38,7 +38,7 @@ describe 'work area routing spec' do
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :put,
@@ -47,7 +47,7 @@ describe 'work area routing spec' do
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :delete,
@@ -56,7 +56,7 @@ describe 'work area routing spec' do
           work_area_slug: 'area-slug',
           submission_window_slug: 'start',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ]
     ].each do |http_method, settings|

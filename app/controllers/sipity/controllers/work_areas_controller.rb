@@ -11,25 +11,25 @@ module Sipity
       def query_action
         runner_response = run(
           work_area_slug: work_area_slug,
-          processing_action_name: query_action_name,
+          processing_action_name: processing_action_name,
           attributes: query_or_command_attributes
         )
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/work_areas/#{query_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/work_areas/#{processing_action_name}")
       end
 
       def command_action
         runner_response = run(
           work_area_slug: work_area_slug,
-          processing_action_name: command_action_name,
+          processing_action_name: processing_action_name,
           attributes: query_or_command_attributes
         )
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/work_areas/#{command_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/work_areas/#{processing_action_name}")
       end
 
       attr_accessor :view_object
@@ -41,12 +41,8 @@ module Sipity
         params.require(:work_area_slug)
       end
 
-      def query_action_name
-        params.require(:query_action_name)
-      end
-
-      def command_action_name
-        params.require(:command_action_name)
+      def processing_action_name
+        params.require(:processing_action_name)
       end
 
       def query_or_command_attributes

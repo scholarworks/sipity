@@ -10,7 +10,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234",
           work_id: '1234',
           action: 'query_action',
-          query_action_name: 'show'
+          processing_action_name: 'show'
         }
       ], [
         :get,
@@ -18,7 +18,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234/do/edit",
           work_id: '1234',
           action: 'query_action',
-          query_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :post,
@@ -26,7 +26,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234/do/edit",
           work_id: '1234',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :patch,
@@ -34,7 +34,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234/do/edit",
           work_id: '1234',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :put,
@@ -42,7 +42,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234/do/edit",
           work_id: '1234',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ], [
         :delete,
@@ -50,7 +50,7 @@ describe 'work area routing spec' do
           path: "/work_submissions/1234/do/edit",
           work_id: '1234',
           action: 'command_action',
-          command_action_name: 'edit'
+          processing_action_name: 'edit'
         }
       ]
     ].each do |http_method, settings|
