@@ -12,16 +12,6 @@ module Sipity
         its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkAreaHandler) }
       end
 
-      context 'GET #show' do
-        before { controller.runner = runner }
-        it 'will pass along to the response handler' do
-          expect_any_instance_of(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponse).to receive(:respond).and_call_original
-          get 'show', work_area_slug: work_area.slug
-
-          expect(controller.view_object).to be_present
-        end
-      end
-
       context 'GET #query_action' do
         before { controller.runner = runner }
         let(:query_action_name) { 'fun_things' }

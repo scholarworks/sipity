@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
 
-  get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#show'
+  get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { query_action_name: 'show' }
   get 'areas/:work_area_slug/do/:query_action_name', as: 'work_area_query_action', to: 'sipity/controllers/work_areas#query_action'
 
   [:post, :put, :patch, :delete].each do |http_verb_name|
