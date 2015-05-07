@@ -15,7 +15,7 @@ module Sipity
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/work_submissions/#{query_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/works/#{query_action_name}")
       end
 
       def command_action
@@ -27,11 +27,13 @@ module Sipity
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/work_submissions/#{command_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/works/#{command_action_name}")
       end
 
       attr_accessor :view_object
       helper_method :view_object
+      alias_method :model, :view_object
+      helper_method :model
 
       private
 

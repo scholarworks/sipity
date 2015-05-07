@@ -22,7 +22,7 @@ module Sipity
           # I don't want to mess around with all the possible actions
           expect do
             get 'query_action', work_id: work.id, query_action_name: query_action_name, work: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_submissions/#{query_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{query_action_name}})
 
           expect(runner).to have_received(:run).with(
             described_class,
@@ -30,6 +30,7 @@ module Sipity
           )
 
           expect(controller.view_object).to be_present
+          expect(controller.model).to eq(controller.view_object)
         end
       end
 
@@ -42,7 +43,7 @@ module Sipity
           # I don't want to mess around with all the possible actions
           expect do
             post 'command_action', work_id: work.id, command_action_name: command_action_name, work: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_submissions/#{command_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{command_action_name}})
 
           expect(runner).to have_received(:run).with(
             described_class,
@@ -50,6 +51,7 @@ module Sipity
           )
 
           expect(controller.view_object).to be_present
+          expect(controller.model).to eq(controller.view_object)
         end
       end
     end
