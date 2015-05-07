@@ -4,8 +4,6 @@ module Sipity
       # Responsible for creating a new work within the ULRA work area.
       # What goes into this is more complicated that the entity might allow.
       class StartASubmissionForm < BaseForm
-        include Conversions::SanitizeHtml
-
         def self.model_name
           Models::Work.model_name
         end
@@ -60,6 +58,7 @@ module Sipity
           self.repository = attributes.fetch(:repository) { default_repository }
         end
 
+        include Conversions::SanitizeHtml
         def title=(value)
           @title = sanitize_html(value)
         end
