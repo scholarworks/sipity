@@ -35,7 +35,6 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
   get 'start', to: redirect('/works/new'), as: 'start'
 
-
   get 'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#show'
   get 'areas/:work_area_slug/do/:query_action_name', as: 'work_area_query_action', to: 'sipity/controllers/work_areas#query_action'
 
@@ -46,7 +45,8 @@ Rails.application.routes.draw do
   get(
     'areas/:work_area_slug/:submission_window_slug',
     as: 'submission_window_for_work_area',
-    to: 'sipity/controllers/submission_windows#show'
+    defaults: { query_action_name: 'show'},
+    to: 'sipity/controllers/submission_windows#query_action'
   )
 
   get(
@@ -61,6 +61,12 @@ Rails.application.routes.draw do
       'areas/:work_area_slug/:submission_window_slug/do/:command_action_name',
       to: 'sipity/controllers/submission_windows#command_action'
     )
+  end
+
+  get 'work_submissions/:work_id', as: 'work_submission', to: 'sipity/controllers/work_submissions#query_action', defaults: { query_action_name: 'show' }
+  get 'work_submissions/:work_id/do/:query_action_name', as: 'work_submission_query_action', to: 'sipity/controllers/work_submissions#query_action'
+  [:post, :put, :patch, :delete].each do |http_verb_name|
+    send(http_verb_name, 'work_submissions/:work_id/do/:command_action_name', to: 'sipity/controllers/work_submissions#command_action')
   end
 
   # I need parentheses or `{ }` for the block, because of when the blocks are

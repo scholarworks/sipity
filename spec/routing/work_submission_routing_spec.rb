@@ -1,60 +1,54 @@
 require 'spec_helper'
 
 describe 'work area routing spec' do
-  context 'sipity/controllers/submission_windows' do
-    let(:controller) { 'sipity/controllers/submission_windows' }
+  context 'sipity/controllers/work_submissions' do
+    let(:controller) { 'sipity/controllers/work_submissions' }
     [
       [
         :get,
         {
-          path: "/areas/area-slug/start",
+          path: "/work_submissions/1234",
+          work_id: '1234',
           action: 'query_action',
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
           query_action_name: 'show'
         }
       ], [
         :get,
         {
-          path: "/areas/area-slug/start/do/edit",
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
+          path: "/work_submissions/1234/do/edit",
+          work_id: '1234',
           action: 'query_action',
           query_action_name: 'edit'
         }
       ], [
         :post,
         {
-          path: "/areas/area-slug/start/do/edit",
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
+          path: "/work_submissions/1234/do/edit",
+          work_id: '1234',
           action: 'command_action',
           command_action_name: 'edit'
         }
       ], [
         :patch,
         {
-          path: "/areas/area-slug/start/do/edit",
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
+          path: "/work_submissions/1234/do/edit",
+          work_id: '1234',
           action: 'command_action',
           command_action_name: 'edit'
         }
       ], [
         :put,
         {
-          path: "/areas/area-slug/start/do/edit",
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
+          path: "/work_submissions/1234/do/edit",
+          work_id: '1234',
           action: 'command_action',
           command_action_name: 'edit'
         }
       ], [
         :delete,
         {
-          path: "/areas/area-slug/start/do/edit",
-          work_area_slug: 'area-slug',
-          submission_window_slug: 'start',
+          path: "/work_submissions/1234/do/edit",
+          work_id: '1234',
           action: 'command_action',
           command_action_name: 'edit'
         }
