@@ -116,7 +116,6 @@ module Sipity
           expect(response).to eq([:failure, form])
         end
       end
-
     end
   end
 end
