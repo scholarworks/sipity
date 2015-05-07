@@ -23,7 +23,8 @@ module Sipity
       end
       after do
         Forms.send(:remove_const, :MockEtd)
-        Forms.send(:remove_const, :Core)
+        # Because autoload doesn't like me removing "live" modules
+        Forms::Core::WorkAreas.send(:remove_const, :FallbackForm)
       end
 
       context '#build_the_form' do
