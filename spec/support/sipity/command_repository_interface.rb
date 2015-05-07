@@ -65,6 +65,10 @@ module Sipity
     def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {})
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def change_processing_actor_proxy(from_proxy:, to_proxy:)
     end
@@ -151,6 +155,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
     def find_work_area_by(slug:)
+    end
+
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def find_work_by(id:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
