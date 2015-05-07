@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity'
 
 RSpec.describe Sipity do
   subject { described_class }
