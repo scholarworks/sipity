@@ -39,7 +39,7 @@ module Sipity
 
         context 'validations for' do
           let(:attributes) { { title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-          subject { described_class.new(repository: repository, submission_window: submission_window, **attributes) }
+          subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
           context '#title' do
             it 'must be present' do
               subject.valid?
@@ -60,7 +60,7 @@ module Sipity
           end
           context '#submission_window' do
             it 'must be present and will throw an exception if incorrect' do
-              expect { described_class.new(repository: repository, **attributes) }.to raise_error(ArgumentError)
+              expect { described_class.new(repository: repository, attributes: attributes) }.to raise_error(ArgumentError)
             end
           end
           context '#work_type' do
@@ -75,7 +75,9 @@ module Sipity
               expect(subject.errors[:work_publication_strategy]).to be_present
             end
             it 'must be from the approved list' do
-              subject = described_class.new(repository: repository, submission_window: submission_window, work_publication_strategy: '__not_found__')
+              subject = described_class.new(
+                repository: repository, submission_window: submission_window, attributes: { work_publication_strategy: '__not_found__' }
+              )
               subject.valid?
               expect(subject.errors[:work_publication_strategy]).to be_present
             end
@@ -84,7 +86,7 @@ module Sipity
 
         context 'Sanitizing HTML title' do
           let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-          subject { described_class.new(repository: repository, submission_window: submission_window, **attributes) }
+          subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
           context 'removes script tags' do
             let(:title) { "<script>alert('Like this');</script>" }
             it { expect(subject.title).to_not have_tag('script') }
@@ -104,10 +106,12 @@ module Sipity
             described_class.new(
               repository: repository,
               submission_window: submission_window,
-              title: 'This is my title',
-              work_publication_strategy: 'do_not_know',
-              advisor_net_id: 'dummy_id',
-              award_category: 'some_category'
+              attributes: {
+                title: 'This is my title',
+                work_publication_strategy: 'do_not_know',
+                advisor_net_id: 'dummy_id',
+                award_category: 'some_category'
+              }
             )
           end
           context 'with invalid data' do

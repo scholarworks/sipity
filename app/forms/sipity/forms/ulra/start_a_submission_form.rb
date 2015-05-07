@@ -12,8 +12,9 @@ module Sipity
           Models::Work.model_name
         end
 
-        def initialize(submission_window:, repository: default_repository, **attributes)
+        def initialize(submission_window:, attributes: {}, repository: default_repository, processing_action_name: 'start_a_submission')
           self.repository = repository
+          self.processing_action_name = processing_action_name
           initialize_work_area!
           self.submission_window = submission_window
           initialize_attributes(attributes)
@@ -23,10 +24,18 @@ module Sipity
           repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
         end
 
-        delegate :to_processing_entity, to: :submission_window
+        attr_reader :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
 
-        attr_accessor :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-        private(:repository, :repository=, :title=, :award_category=, :work_publication_strategy=, :advisor_netid=, :work_type=)
+        private
+
+        attr_accessor :processing_action_name, :repository
+        attr_writer :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
+        attr_reader :submission_window, :work_area
+
+        public
+
+        delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
+        alias_method :to_model, :submission_window
 
         validates :title, presence: true
         validates :award_category, presence: true
@@ -93,8 +102,6 @@ module Sipity
         def default_repository
           CommandRepository.new
         end
-
-        attr_reader :submission_window, :work_area
 
         DEFAULT_WORK_AREA_SLUG = 'ulra'.freeze
         def initialize_work_area!
