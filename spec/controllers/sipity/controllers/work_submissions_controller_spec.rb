@@ -2,14 +2,15 @@ require 'spec_helper'
 
 module Sipity
   module Controllers
-    RSpec.describe WorkAreasController, type: :controller do
-      let(:work_area) { Models::WorkArea.new(slug: 'work-area') }
+    RSpec.describe WorkSubmissionsController, type: :controller do
+      let(:work) { Models::Work.new(id: 'abc') }
       let(:status) { :success }
       # REVIEW: It is possible the runner will return a well formed object
-      let(:runner) { double('Runner', run: [status, work_area]) }
+      let(:runner) { double('Runner', run: [status, work]) }
+
       context 'configuration' do
-        its(:runner_container) { should eq(Sipity::Runners::WorkAreaRunners) }
-        its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkAreaHandler) }
+        its(:runner_container) { should eq(Sipity::Runners::WorkSubmissionsRunners) }
+        its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }
       end
 
       context 'GET #query_action' do
@@ -20,15 +21,16 @@ module Sipity
 
           # I don't want to mess around with all the possible actions
           expect do
-            get 'query_action', work_area_slug: work_area.slug, query_action_name: query_action_name, work_area: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{query_action_name}})
+            get 'query_action', work_id: work.id, query_action_name: query_action_name, work: { title: 'Hello' }
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{query_action_name}})
 
           expect(runner).to have_received(:run).with(
-            Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: query_action_name, attributes: { 'title' => 'Hello' }
+            described_class,
+            work_id: work.id, processing_action_name: query_action_name, attributes: { 'title' => 'Hello' }
           )
 
           expect(controller.view_object).to be_present
+          expect(controller.model).to eq(controller.view_object)
         end
       end
 
@@ -40,15 +42,16 @@ module Sipity
 
           # I don't want to mess around with all the possible actions
           expect do
-            post 'command_action', work_area_slug: work_area.slug, command_action_name: command_action_name, work_area: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{command_action_name}})
+            post 'command_action', work_id: work.id, command_action_name: command_action_name, work: { title: 'Hello' }
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{command_action_name}})
 
           expect(runner).to have_received(:run).with(
-            Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: command_action_name, attributes: { 'title' => 'Hello' }
+            described_class,
+            work_id: work.id, processing_action_name: command_action_name, attributes: { 'title' => 'Hello' }
           )
 
           expect(controller.view_object).to be_present
+          expect(controller.model).to eq(controller.view_object)
         end
       end
     end

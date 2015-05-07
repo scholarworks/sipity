@@ -1,50 +1,44 @@
 module Sipity
   module Controllers
-    # Responsible for handling an HTTP request to interact with a WorkArea.
-    #
-    # @note This is part of the Sipity::ResponseHandlers experimentation.
-    class SubmissionWindowsController < ApplicationController
+    # The controller for creating works.
+    class WorkSubmissionsController < ApplicationController
       class_attribute :response_handler_container
-      self.runner_container = Sipity::Runners::SubmissionWindowRunners
-      self.response_handler_container = Sipity::ResponseHandlers::SubmissionWindowHandler
+      self.runner_container = Sipity::Runners::WorkSubmissionsRunners
+      self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler
 
       def query_action
         runner_response = run(
-          work_area_slug: work_area_slug,
-          submission_window_slug: submission_window_slug,
+          work_id: work_id,
           processing_action_name: query_action_name,
           attributes: query_or_command_attributes
         )
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{query_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/works/#{query_action_name}")
       end
 
       def command_action
         runner_response = run(
-          work_area_slug: work_area_slug,
-          submission_window_slug: submission_window_slug,
+          work_id: work_id,
           processing_action_name: command_action_name,
           attributes: query_or_command_attributes
         )
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{command_action_name}")
+        handle_response(runner_response, template: "sipity/controllers/works/#{command_action_name}")
       end
 
       attr_accessor :view_object
       helper_method :view_object
+      alias_method :model, :view_object
+      helper_method :model
 
       private
 
-      def work_area_slug
-        params.require(:work_area_slug)
-      end
-
-      def submission_window_slug
-        params.require(:submission_window_slug)
+      def work_id
+        params.require(:work_id)
       end
 
       def query_action_name
@@ -56,10 +50,10 @@ module Sipity
       end
 
       def query_or_command_attributes
-        params.fetch(:submission_window) { HashWithIndifferentAccess.new }
+        params.fetch(:work) { HashWithIndifferentAccess.new }
       end
 
-      def handle_response(handled_response, template:  "sipity/controllers/submission_windows/#{action_name}")
+      def handle_response(handled_response, template:)
         Sipity::ResponseHandlers.handle_response(
           context: self,
           handled_response: handled_response,

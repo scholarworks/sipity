@@ -13,6 +13,7 @@ module Sipity
 
       its(:path) { should eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}") }
       its(:link) { should eq(%(<a href="#{subject.path}">the-slug</a>)) }
+      its(:slug) { should eq(submission_window.slug) }
 
       it 'will compose actions for the submission window' do
         expect(ComposableElements::ProcessingActionsComposer).to receive(:new).with(user: current_user, entity: submission_window)

@@ -21,6 +21,25 @@ module Sipity
         end
       end
 
+      context '#find_work_by' do
+        it 'raises an exception if nothing is found' do
+          expect { test_repository.find_work_by(id: '8675309') }.to raise_error
+        end
+        it 'returns the Work when the object is found' do
+          work = Models::Work.create!(id: '8675309', title: "Hello")
+          expect(test_repository.find_work_by(id: '8675309')).to eq(work)
+        end
+      end
+
+      context '#build_work_submission_processing_action_form' do
+        let(:parameters) { { work: double, processing_action_name: double, attributes: double } }
+        let(:form) { double }
+        it 'will delegate the heavy lifting to a builder' do
+          expect(Forms::WorkSubmissionForms).to receive(:build_the_form).with(parameters).and_return(form)
+          expect(test_repository.build_work_submission_processing_action_form(parameters)).to eq(form)
+        end
+      end
+
       context '#work_access_right_codes' do
         let(:work) { Models::Work.new(title: 'Hello World', id: '123') }
         it 'will expose access_right_code of the underlying work' do

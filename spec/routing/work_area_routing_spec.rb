@@ -6,7 +6,7 @@ describe 'work area routing spec' do
     [
       [
         :get,
-        { path: "/areas/my_slug", action: 'show', work_area_slug: 'my_slug' }
+        { path: "/areas/my_slug", action: 'query_action', work_area_slug: 'my_slug', query_action_name: 'show' }
       ], [
         :get,
         { path: "/areas/my_slug/do/fun_things", action: 'query_action', work_area_slug: 'my_slug', query_action_name: 'fun_things' }

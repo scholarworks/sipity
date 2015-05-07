@@ -15,6 +15,8 @@ module Sipity
       attr_reader :submission_window
       private :submission_window
 
+      delegate :slug, to: :submission_window
+
       def link
         link_to(submission_window.slug, path)
       end

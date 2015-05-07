@@ -1,20 +1,18 @@
 require 'spec_helper'
-require 'sipity/runners/submission_window_runners'
+require 'sipity/runners/work_submissions_runners'
 
 module Sipity
   module Runners
-    module SubmissionWindowRunners
+    module WorkSubmissionsRunners
       include RunnersSupport
+
       RSpec.describe QueryAction do
-        let(:submission_window) { double('Submission Window') }
-        let(:form) { double('Form') }
+        let(:work) { double('Work', id: 1) }
         let(:user) { double('User') }
+        let(:form) { double('Form') }
+        let(:processing_action_name) { 'fun_things' }
         let(:context) do
-          TestRunnerContext.new(
-            find_submission_window_by: submission_window,
-            current_user: user,
-            build_submission_window_processing_action_form: form
-          )
+          TestRunnerContext.new(find_work_by: work, current_user: user, build_work_submission_processing_action_form: form)
         end
         let(:handler) { double(invoked: true) }
 
@@ -33,24 +31,19 @@ module Sipity
         end
 
         it 'issues the :success callback' do
-          response = subject.run(
-            work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
-          )
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("SUCCESS", form)
           expect(response).to eq([:success, form])
         end
       end
 
       RSpec.describe CommandAction do
-        let(:submission_window) { double('Submission Window') }
-        let(:form) { double('Form') }
+        let(:work) { double('Work', id: 1) }
         let(:user) { double('User') }
+        let(:form) { double('Form') }
+        let(:processing_action_name) { 'fun_things' }
         let(:context) do
-          TestRunnerContext.new(
-            find_submission_window_by: submission_window,
-            current_user: user,
-            build_submission_window_processing_action_form: form
-          )
+          TestRunnerContext.new(find_work_by: work, current_user: user, build_work_submission_processing_action_form: form)
         end
         let(:handler) { double(invoked: true) }
 
@@ -71,18 +64,14 @@ module Sipity
 
         it 'issues the :success callback when form is submitted' do
           expect(form).to receive(:submit).with(requested_by: user).and_return(true)
-          response = subject.run(
-            work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
-          )
-          expect(handler).to have_received(:invoked).with("SUCCESS", submission_window)
-          expect(response).to eq([:success, submission_window])
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
+          expect(handler).to have_received(:invoked).with("SUCCESS", work)
+          expect(response).to eq([:success, work])
         end
 
         it 'issues the :failure callback when form fails to submit' do
           expect(form).to receive(:submit).with(requested_by: user).and_return(false)
-          response = subject.run(
-            work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
-          )
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
           expect(response).to eq([:failure, form])
         end
