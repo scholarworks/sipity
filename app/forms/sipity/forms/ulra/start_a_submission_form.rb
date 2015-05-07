@@ -12,15 +12,18 @@ module Sipity
           Models::Work.model_name
         end
 
-        def initialize(attributes = {})
-          initialize_attributes(attributes)
+        def initialize(submission_window:, repository: default_repository, **attributes)
+          self.repository = repository
           initialize_work_area!
-          self.submission_window = attributes.fetch(:submission_window) { default_submission_window }
+          self.submission_window = submission_window
+          initialize_attributes(attributes)
         end
 
         def available_award_category
           repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
         end
+
+        delegate :to_processing_entity, to: :submission_window
 
         attr_accessor :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
         private(:repository, :repository=, :title=, :award_category=, :work_publication_strategy=, :advisor_netid=, :work_type=)
@@ -59,7 +62,6 @@ module Sipity
           self.award_category = attributes[:award_category]
           self.work_type = attributes[:work_type]
           self.work_publication_strategy = attributes[:work_publication_strategy]
-          self.repository = attributes.fetch(:repository) { default_repository }
         end
 
         include Conversions::SanitizeHtml
@@ -95,11 +97,6 @@ module Sipity
         attr_reader :submission_window, :work_area
 
         DEFAULT_WORK_AREA_SLUG = 'ulra'.freeze
-        DEFAULT_SUBMISSION_WINDOW_SLUG = 'start'.freeze
-        def default_submission_window
-          repository.find_submission_window_by(slug: DEFAULT_SUBMISSION_WINDOW_SLUG, work_area: work_area)
-        end
-
         def initialize_work_area!
           @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
         end
