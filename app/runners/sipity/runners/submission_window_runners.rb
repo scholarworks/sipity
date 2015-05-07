@@ -34,10 +34,11 @@ module Sipity
       class CommandAction < CommandQueryAction
         def run(**keywords)
           super do |form, submission_window|
-            if form.submit(requested_by: current_user)
-              callback(:success, submission_window)
+            returned_object = form.submit(requested_by: current_user)
+            if returned_object
+              callback(:submit_success, returned_object)
             else
-              callback(:failure, form)
+              callback(:submit_failure, form)
             end
           end
         end
