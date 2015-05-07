@@ -19,6 +19,7 @@ module Sipity
 
         its(:default_repository) { should respond_to :create_work! }
         its(:default_repository) { should respond_to :find_submission_window_by }
+        its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
 
         it 'will have a model name like Work' do
           expect(described_class.model_name).to be_a(ActiveModel::Name)

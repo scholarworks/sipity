@@ -4,6 +4,10 @@ module Sipity
       # Responsible for creating a new work within the ULRA work area.
       # What goes into this is more complicated that the entity might allow.
       class StartASubmissionForm < BaseForm
+        # Because creating a new work is enforced by the container in which the
+        # work is to be created.
+        self.policy_enforcer = Policies::SubmissionWindowPolicy
+
         def self.model_name
           Models::Work.model_name
         end
