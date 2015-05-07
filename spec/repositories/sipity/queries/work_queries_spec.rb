@@ -35,7 +35,7 @@ module Sipity
         let(:parameters) { { work: double, processing_action_name: double, attributes: double } }
         let(:form) { double }
         it 'will delegate the heavy lifting to a builder' do
-          expect(Forms::WorkSubmissionForms).to receive(:build_the_form).with(parameters).and_return(form)
+          expect(Forms::WorkSubmissionForms).to receive(:build_the_form).with(repository: test_repository, **parameters).and_return(form)
           expect(test_repository.build_work_submission_processing_action_form(parameters)).to eq(form)
         end
       end

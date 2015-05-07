@@ -12,6 +12,7 @@ module Sipity
         Forms::WorkAreaForms.build_the_form(
           work_area: work_area,
           processing_action_name: processing_action_name,
+          repository: self,
           attributes: attributes
         )
       end

@@ -4,12 +4,13 @@ module Sipity
     module SubmissionWindowForms
       module_function
 
-      def build_the_form(submission_window:, processing_action_name:, attributes:)
+      def build_the_form(submission_window:, processing_action_name:, attributes:, repository:)
         # ASSUMPTION: We will not have custom forms for the given
         # Submission Window.
         find_the_form(submission_window: submission_window, processing_action_name: processing_action_name).new(
           submission_window: submission_window,
           processing_action_name: processing_action_name,
+          repository: repository,
           attributes: attributes
         )
       end

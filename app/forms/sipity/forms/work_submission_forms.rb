@@ -4,11 +4,12 @@ module Sipity
     module WorkSubmissionForms
       module_function
 
-      def build_the_form(work:, processing_action_name:, attributes:)
+      def build_the_form(work:, processing_action_name:, attributes:, repository:)
         find_the_form(work: work, processing_action_name: processing_action_name).new(
           work: work,
           processing_action_name: processing_action_name,
-          attributes: attributes
+          attributes: attributes,
+          repository: repository
         )
       end
 
