@@ -1,5 +1,6 @@
 module Sipity
   module Runners
+    # Responsible for being a collection of SubmissionWindow runners
     module SubmissionWindowRunners
       # :nodoc:
       class CommandQueryAction < BaseRunner
@@ -16,6 +17,7 @@ module Sipity
           end
         end
       end
+      private_constant :CommandQueryAction
 
       # The general handler for general query actions (show may be a customized
       # case).
