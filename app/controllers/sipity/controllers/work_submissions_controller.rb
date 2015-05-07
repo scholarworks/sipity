@@ -3,10 +3,8 @@ module Sipity
     # The controller for creating works.
     class WorkSubmissionsController < ApplicationController
       class_attribute :response_handler_container
-      # TODO: Review this
-      self.runner_container = Sipity::Runners::WorkRunners
-      # TODO: This is a stop-gap
-      self.response_handler_container = Sipity::ResponseHandlers::WorkAreaHandler
+      self.runner_container = Sipity::Runners::WorkSubmissionsRunners
+      self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler
 
       def query_action
         runner_response = run(

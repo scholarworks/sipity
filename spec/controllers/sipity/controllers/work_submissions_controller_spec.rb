@@ -9,8 +9,8 @@ module Sipity
       let(:runner) { double('Runner', run: [status, work]) }
 
       context 'configuration' do
-        its(:runner_container) { should eq(Sipity::Runners::WorkRunners) }
-        its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkAreaHandler) }
+        its(:runner_container) { should eq(Sipity::Runners::WorkSubmissionsRunners) }
+        its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }
       end
 
       context 'GET #query_action' do
