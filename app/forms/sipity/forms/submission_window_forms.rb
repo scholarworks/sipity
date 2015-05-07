@@ -11,7 +11,7 @@ module Sipity
 
         # ASSUMPTION: We will not have custom forms for the given
         # Submission Window.
-        "#{self}::#{namespace}::SubmissionWindows::#{form_name}".constantize.new(
+        "Sipity::Forms::#{namespace}::SubmissionWindows::#{form_name}".constantize.new(
           submission_window: submission_window,
           processing_action_name: processing_action_name,
           attributes: attributes

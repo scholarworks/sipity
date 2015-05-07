@@ -4,19 +4,17 @@ module Sipity
   module Forms
     RSpec.describe SubmissionWindowForms do
       before do
-        module SubmissionWindowForms
-          module MockEtd
-            module SubmissionWindows
-              class DoFunThingForm
-                def initialize(**_keywords)
-                end
+        module MockEtd
+          module SubmissionWindows
+            class DoFunThingForm
+              def initialize(**_keywords)
               end
             end
           end
         end
       end
       after do
-        SubmissionWindowForms.send(:remove_const, :MockEtd)
+        Forms.send(:remove_const, :MockEtd)
       end
 
       context '#build_the_form' do
@@ -28,7 +26,7 @@ module Sipity
             described_class.build_the_form(
               submission_window: submission_window, processing_action_name: processing_action_name, attributes: {}
             )
-          ).to be_a(SubmissionWindowForms::MockEtd::SubmissionWindows::DoFunThingForm)
+          ).to be_a(Forms::MockEtd::SubmissionWindows::DoFunThingForm)
         end
       end
     end
