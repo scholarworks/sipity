@@ -33,6 +33,42 @@ module Sipity
           expect(response).to eq([:success, submission_window])
         end
       end
+
+      RSpec.describe QueryAction do
+        let(:submission_window) { double('Submission Window') }
+        let(:form) { double('Form') }
+        let(:user) { double('User') }
+        let(:context) do
+          TestRunnerContext.new(
+            find_submission_window_by: submission_window,
+            current_user: user,
+            build_submission_window_processing_action_form: form
+          )
+        end
+        let(:handler) { double(invoked: true) }
+
+        subject do
+          described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
+            on.success { |a| handler.invoked("SUCCESS", a) }
+          end
+        end
+
+        it 'will require authentication by default' do
+          expect(described_class.authentication_layer).to eq(:default)
+        end
+
+        it 'enforces authorization' do
+          expect(described_class.authorization_layer).to eq(:default)
+        end
+
+        it 'issues the :success callback' do
+          response = subject.run(
+            work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
+          )
+          expect(handler).to have_received(:invoked).with("SUCCESS", form)
+          expect(response).to eq([:success, form])
+        end
+      end
     end
   end
 end
