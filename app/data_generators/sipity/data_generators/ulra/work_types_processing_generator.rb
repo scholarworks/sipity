@@ -56,7 +56,7 @@ module Sipity
                 under_review: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] }
               }
             },
-            delete: {
+            destroy: {
               states: {
                 initial_state.name.to_sym => { roles: ['creating_user', 'ulra_reviewer'] },
                 under_review: { roles: ['ulra_reviewer'] }
