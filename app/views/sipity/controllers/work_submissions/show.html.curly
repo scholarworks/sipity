@@ -1,23 +1,54 @@
-<h1>This is a work</h1>
-
-{{#state_advancing_actions?}}
-<!-- TODO: There are no state advancing actions just yet -->
-{{/state_advancing_actions?}}
-
-{{#enrichment_actions?}}
-<!-- TODO: There are no enrichment actions just yet -->
-{{/enrichment_actions?}}
-
-{{#resourceful_actions?}}
-  <div class="panel-footer">
-    <ul class="action-listing">
-      {{*resourceful_actions}}
-        <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
-          <meta itemprop="name" content="event_trigger/{{action_name}}" />
-          {{render_entry_point}}
-          <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
-        </li>
-      {{/resourceful_actions}}
-    </ul>
+<section itemscope itemtype="http://schema.org/CreativeWork">
+  <div class="row">
+    <div class="col-xs-12 work-show page-header">
+      <h1 class="work-title">
+        <span itemprop="name">{{ title }}</span>
+      </h1>
+      <p class="work-status">
+        <span class="work-type">{{ work_type }}</span> &bull;
+        <span class="work-processing-state">{{ processing_state }}</span>
+      </p>
+    </div>
   </div>
-{{/resourceful_actions?}}
+  {{#state_advancing_actions?}}
+  <!-- TODO: There are no state advancing actions just yet -->
+  {{/state_advancing_actions?}}
+  <div class="row">
+    {{#enrichment_actions?}}
+      <ul>
+        {{*enrichment_actions}}
+          <li>{{action_name}}</li>
+        {{/enrichment_actions}}
+      </ul>
+    {{/enrichment_actions?}}
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <article class="panel panel-default work-description">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ overview_section }}</h3>
+        </div>
+        <div class="panel-body">
+          <dl class="work attribute-listing">
+            <dt class="predicate title">{{ label.title }}</dt>
+            <dd class="value title">{{ title }}</dd>
+          </dl>
+        </div>
+        <!-- TODO: Extract this to a partial -->
+        {{#resourceful_actions?}}
+          <div class="panel-footer">
+            <ul class="action-listing">
+              {{*resourceful_actions}}
+                <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+                  <meta itemprop="name" content="event_trigger/{{action_name}}" />
+                  {{render_entry_point}}
+                  <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
+                </li>
+              {{/resourceful_actions}}
+            </ul>
+          </div>
+        {{/resourceful_actions?}}
+    </div>
+  </div>
+</section>

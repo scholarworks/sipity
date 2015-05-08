@@ -15,6 +15,17 @@ module Sipity
           expect(subject.processing_state).to eq('Hello')
         end
 
+        it 'will expose an overview_section' do
+          expect(I18n).to receive(:t)
+          subject.overview_section
+        end
+
+        context '#label' do
+          it "will delegate to the work_submission's human_attribute_name" do
+            expect(subject.label(:title)).to eq('Title')
+          end
+        end
+
         it 'will compose actions for the submission window' do
           expect(ComposableElements::ProcessingActionsComposer).to receive(:new).
             with(user: current_user, entity: work_submission)

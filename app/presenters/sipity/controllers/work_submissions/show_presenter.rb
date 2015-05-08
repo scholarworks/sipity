@@ -20,10 +20,21 @@ module Sipity
           to: :processing_actions
         )
 
+        # TODO: work_type, processing_state should be translated
         delegate :id, to: :work_submission, prefix: :work
+        delegate :title, :work_type, to: :work_submission
 
         def processing_state
           work_submission.processing_state.to_s
+        end
+
+        def overview_section
+          I18n.t('sipity/works.action/show.label.overview_section')
+        end
+
+        def label(identifier)
+          # Violation of the Law of Demeter
+          work_submission.class.human_attribute_name(identifier)
         end
 
         private
