@@ -10,11 +10,13 @@ module Sipity
         let(:work_area) { Models::WorkArea.new(id: 2, slug: described_class::DEFAULT_WORK_AREA_SLUG) }
         before do
           allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
+          allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
         end
 
         its(:default_repository) { should respond_to :create_work! }
         its(:default_repository) { should respond_to :find_submission_window_by }
         its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
+        its(:default_work_type) { should eq(Models::WorkType::ULRA_SUBMISSION) }
 
         it 'will delegate #to_processing_entity to the submission window' do
           expect(submission_window).to receive(:to_processing_entity)
@@ -25,10 +27,10 @@ module Sipity
           expect(described_class.model_name).to be_a(ActiveModel::Name)
         end
 
-        it 'will have #available_award_category' do
+        it 'will have #award_categories_for_select' do
           expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').
             and_return(['award_category', 'bogus'])
-          expect(subject.available_award_category).to be_a(Array)
+          expect(subject.award_categories_for_select).to be_a(Array)
         end
 
         context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
@@ -65,6 +67,7 @@ module Sipity
           end
           context '#work_type' do
             it 'must be present' do
+              subject = described_class.new(submission_window: submission_window, repository: repository, attributes: { work_type: nil })
               subject.valid?
               expect(subject.errors[:work_type]).to be_present
             end

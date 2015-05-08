@@ -20,7 +20,7 @@ module Sipity
           initialize_attributes(attributes)
         end
 
-        def available_award_category
+        def award_categories_for_select
           repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
         end
 
@@ -38,8 +38,8 @@ module Sipity
         alias_method :to_model, :submission_window
 
         validates :title, presence: true
-        validates :award_category, presence: true
-        validates :advisor_netid, presence: true
+        validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
+        validates :advisor_netid, presence: true, net_id: true
         validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
         validates :work_type, presence: true
         validates :submission_window, presence: true
@@ -69,7 +69,7 @@ module Sipity
           self.title = attributes[:title]
           self.advisor_netid = attributes[:advisor_netid]
           self.award_category = attributes[:award_category]
-          self.work_type = attributes[:work_type]
+          self.work_type = attributes.fetch(:work_type) { default_work_type }
           self.work_publication_strategy = attributes[:work_publication_strategy]
         end
 
@@ -89,6 +89,10 @@ module Sipity
           )
           yield(work)
           work
+        end
+
+        def default_work_type
+          Models::WorkType::ULRA_SUBMISSION
         end
 
         def possible_work_publication_strategies
