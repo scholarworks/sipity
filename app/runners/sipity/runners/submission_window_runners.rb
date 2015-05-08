@@ -13,7 +13,7 @@ module Sipity
             submission_window: submission_window, processing_action_name: processing_action_name, attributes: attributes
           )
           authorization_layer.enforce!(processing_action_name => form) do
-            yield(form, submission_window)
+            yield(form)
           end
         end
       end
@@ -23,7 +23,7 @@ module Sipity
       # case).
       class QueryAction < CommandQueryAction
         def run(**keywords)
-          super do |form, _submission_window|
+          super do |form|
             callback(:success, form)
           end
         end
@@ -33,7 +33,7 @@ module Sipity
       # case).
       class CommandAction < CommandQueryAction
         def run(**keywords)
-          super do |form, submission_window|
+          super do |form|
             returned_object = form.submit(requested_by: current_user)
             if returned_object
               callback(:submit_success, returned_object)
