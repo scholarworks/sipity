@@ -12,7 +12,7 @@ module Sipity
       #   are the valid work types to create.
       DOCTORAL_DISSERTATION = 'doctoral_dissertation'.freeze
       MASTER_THESIS = 'master_thesis'.freeze
-      ULRA_SUBMISSION = 'urla_submission'.freeze
+      ULRA_SUBMISSION = 'ulra_submission'.freeze
 
       NAMED_WORK_TYPES_FOR_ENUM = {
         DOCTORAL_DISSERTATION => DOCTORAL_DISSERTATION,
