@@ -17,7 +17,7 @@ module Sipity
         before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
-          expect_any_instance_of(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponse).to receive(:respond).and_call_original
+          expect(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponder).to receive(:call).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do
@@ -46,7 +46,7 @@ module Sipity
         before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
-          expect_any_instance_of(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponse).to receive(:respond).and_call_original
+          expect(Sipity::ResponseHandlers::SubmissionWindowHandler::SuccessResponder).to receive(:call).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do

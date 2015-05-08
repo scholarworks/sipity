@@ -3,9 +3,10 @@ module Sipity
     # Responsible for defining the mapping interface between the Runners
     # and the ResponseHandlers.
     class HandledResponseParameter
-      def initialize(object:, status:)
+      def initialize(object:, status:, template:)
         self.object = object
         self.status = status
+        self.template = template
       end
 
       # @!attribute [r] object
@@ -23,9 +24,16 @@ module Sipity
       #   @return [Symbol]
       attr_reader :status
 
+      # @!attribute [r] template
+      #   The name of the template that we "may" render.
+      #   @return [Object]
+      #   @note I chose :template instead of :template_name as Rails convention
+      #     for rendering a named template is `render template: 'show'`
+      attr_reader :template
+
       private
 
-      attr_writer :object
+      attr_writer :object, :template
 
       def status=(input)
         fail Exceptions::InvalidHandledResponseStatus, input unless input.is_a?(Symbol)

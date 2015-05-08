@@ -18,7 +18,7 @@ module Sipity
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{processing_action_name}")
+        handle_response(runner_response)
       end
 
       def command_action
@@ -31,7 +31,7 @@ module Sipity
 
         # I could use action instead of template, but I feel the explicit path
         # for template is better than the implicit pathing of :action
-        handle_response(runner_response, template: "sipity/controllers/submission_windows/#{processing_action_name}")
+        handle_response(runner_response)
       end
 
       attr_accessor :view_object
@@ -55,20 +55,17 @@ module Sipity
         params.fetch(:submission_window) { HashWithIndifferentAccess.new }
       end
 
-      def handle_response(handled_response, template:  "sipity/controllers/submission_windows/#{action_name}")
-        Sipity::ResponseHandlers.handle_response(
-          context: self,
-          handled_response: handled_response,
-          container: response_handler_container,
-          template: template
-        )
+      def handle_response(handled_response)
+        Sipity::ResponseHandlers.handle_response(context: self, handled_response: handled_response, container: response_handler_container)
       end
 
       def run(*args)
         # TODO: This is an intermediary step that will be wrapped into the
         #   existing #run method; However it should be considered experimental
         status, object = super(*args)
-        Parameters::HandledResponseParameter.new(status: status, object: object)
+        Parameters::HandledResponseParameter.new(
+          status: status, object: object, template: "sipity/controllers/submission_windows/#{processing_action_name}"
+        )
       end
     end
   end

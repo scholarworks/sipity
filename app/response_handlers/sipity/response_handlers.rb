@@ -14,13 +14,89 @@ module Sipity
   module ResponseHandlers
     module_function
 
-    def handle_response(context:, handled_response:, container:, template:)
-      response_handler = build_response_handler(container: container, handled_response_status: handled_response.status)
-      response_handler.respond(context: context, handled_response: handled_response, template: template)
+    # TODO: Remove the template as it can be packed into the handled response
+    def handle_response(context:, handled_response:, container:, handler: DefaultHandler)
+      responder = build_responder(container: container, handled_response_status: handled_response.status)
+      handler.respond(context: context, handled_response: handled_response, responder: responder)
     end
 
-    def build_response_handler(container:, handled_response_status:)
-      container.qualified_const_get("#{handled_response_status.to_s.classify}Response")
+    def build_responder(container:, handled_response_status:)
+      container.qualified_const_get("#{handled_response_status.to_s.classify}Responder")
+    end
+
+    # The default response handler. It makes sure things are well composed,
+    # guarding the interface of collaborating objects.
+    class DefaultHandler
+      def self.respond(**keywords)
+        new(**keywords).respond
+      end
+
+      attr_reader :context, :handled_response
+      def initialize(context:, handled_response:, responder: default_responder)
+        self.context = context
+        self.handled_response = handled_response
+        self.responder = responder
+        prepare_context_for_response
+      end
+
+      def respond
+        responder.call(handler: self)
+      end
+
+      delegate :render, :redirect_to, to: :context
+      delegate :object, to: :handled_response, prefix: :response
+      delegate :template, to: :handled_response
+
+      private
+
+      PATH_METHOD_REGEXP = /_path\Z/.freeze
+
+      def method_missing(method_name, *args, **keywords, &block)
+        if method_name =~ PATH_METHOD_REGEXP
+          context.public_send(method_name, *args, **keywords, &block)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(method_name, include_private = false)
+        if method_name =~ PATH_METHOD_REGEXP
+          context.respond_to?(method_name, include_private)
+        else
+          super
+        end
+      end
+
+      attr_accessor :responder
+      attr_writer :template
+
+      def default_responder
+        -> (handler:) { handler.render(template: handler.template) }
+      end
+
+      def prepare_context_for_response
+        # Wouldn't it be great if we had proper View objects in Rails? Instead
+        # of this crazy copy instance variables from the controller to the
+        # template (aka 'ActionView') layer.
+        context.view_object = handled_response.object
+      end
+
+      def context=(input)
+        guard_interface_expectation!(input, :view_object=, :render, :redirect_to)
+        @context = input
+      end
+
+      def handled_response=(input)
+        guard_interface_expectation!(input, :object, :template)
+        @handled_response = input
+      end
+
+      # TODO: Extract this concept?
+      def guard_interface_expectation!(input, *expectations)
+        expectations.each do |expectation|
+          fail(Exceptions::InterfaceExpectationError, object: input, expectation: expectation) unless input.respond_to?(expectation)
+        end
+      end
     end
   end
 end

@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/response_handlers/work_area_handler'
+require 'sipity/response_handlers/work_submission_handler'
 
 module Sipity
   module ResponseHandlers
-    module WorkAreaHandler
+    module WorkSubmissionHandler
       RSpec.describe SuccessResponder do
         let(:handler) { double(render: 'rendered', template: 'show') }
 
