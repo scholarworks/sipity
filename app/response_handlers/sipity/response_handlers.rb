@@ -15,9 +15,9 @@ module Sipity
     module_function
 
     # TODO: Remove the template as it can be packed into the handled response
-    def handle_response(context:, handled_response:, container:, template:, handler: DefaultHandler)
+    def handle_response(context:, handled_response:, container:, handler: DefaultHandler)
       responder = build_responder(container: container, handled_response_status: handled_response.status)
-      handler.respond(context: context, handled_response: handled_response, template: template, responder: responder)
+      handler.respond(context: context, handled_response: handled_response, responder: responder)
     end
 
     def build_responder(container:, handled_response_status:)
@@ -31,11 +31,10 @@ module Sipity
         new(**keywords).respond
       end
 
-      attr_reader :context, :handled_response, :template
-      def initialize(context:, handled_response:, template:, responder: default_responder)
+      attr_reader :context, :handled_response
+      def initialize(context:, handled_response:, responder: default_responder)
         self.context = context
         self.handled_response = handled_response
-        self.template = template
         self.responder = responder
         prepare_context_for_response
       end
@@ -46,6 +45,7 @@ module Sipity
 
       delegate :render, :redirect_to, to: :context
       delegate :object, to: :handled_response, prefix: :response
+      delegate :template, to: :handled_response
 
       private
 
@@ -69,7 +69,7 @@ module Sipity
       end
 
       def handled_response=(input)
-        guard_interface_expectation!(input, :object)
+        guard_interface_expectation!(input, :object, :template)
         @handled_response = input
       end
 

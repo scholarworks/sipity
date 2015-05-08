@@ -17,12 +17,12 @@ module Sipity
         before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
-          expect_any_instance_of(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponse).to receive(:respond).and_call_original
+          expect(Sipity::ResponseHandlers::WorkSubmissionHandler::SuccessResponder).to receive(:call).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do
             get 'query_action', work_id: work.id, processing_action_name: processing_action_name, work: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{processing_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_submissions/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             described_class,
@@ -38,12 +38,12 @@ module Sipity
         before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
         it 'will pass along to the response handler' do
-          expect_any_instance_of(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponse).to receive(:respond).and_call_original
+          expect(Sipity::ResponseHandlers::WorkSubmissionHandler::SuccessResponder).to receive(:call).and_call_original
 
           # I don't want to mess around with all the possible actions
           expect do
             post 'command_action', work_id: work.id, processing_action_name: processing_action_name, work: { title: 'Hello' }
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/works/#{processing_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_submissions/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             described_class,
