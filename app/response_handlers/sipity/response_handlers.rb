@@ -49,6 +49,24 @@ module Sipity
 
       private
 
+      PATH_METHOD_REGEXP = /_path\Z/.freeze
+
+      def method_missing(method_name, *args, **keywords, &block)
+        if method_name =~ PATH_METHOD_REGEXP
+          context.public_send(method_name, *args, **keywords, &block)
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(method_name, include_private = false)
+        if method_name =~ PATH_METHOD_REGEXP
+          context.respond_to?(method_name, include_private)
+        else
+          super
+        end
+      end
+
       attr_accessor :responder
       attr_writer :template
 

@@ -56,6 +56,27 @@ module Sipity
         expect(responder).to have_received(:call).with(handler: subject)
       end
 
+      context '#method_missing' do
+        it 'will delegate all *_path methods to the context' do
+          expect(context).to receive(:submission_window_path).with(key: 'value')
+          subject.submission_window_path(key: 'value')
+        end
+        it 'will pass through if the method_name is not *_path' do
+          expect { subject.obviously_missing }.to raise_error(NoMethodError)
+        end
+      end
+
+      context '#respond_to?' do
+        it 'will respond to all *_path methods (if the context does)' do
+          context = double(render: 'rendered', :view_object= => true, redirect_to: 'redirected_to', submission_window_path: true)
+          subject = described_class.new(context: context, handled_response: handled_response)
+          expect(subject.respond_to?(:submission_window_path)).to eq(true)
+        end
+        it 'will pass through if the method_name is not *_path' do
+          expect(subject.respond_to?(:obviously_missing)).to be_falsey
+        end
+      end
+
       context 'collaborating objects expected interface' do
         it '#context must implement #view_object=' do
           expect { described_class.new(context: double(render: true), handled_response: handled_response) }.
