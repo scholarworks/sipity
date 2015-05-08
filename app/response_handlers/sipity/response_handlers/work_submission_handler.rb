@@ -2,10 +2,18 @@ module Sipity
   module ResponseHandlers
     # This is an Experimental module and concept
     module WorkSubmissionHandler
-      # Responsible for handling a :success-ful action
-      #
-      # TODO: Extract a porper base class, if one exists
-      class SuccessResponse < ResponseHandlers::WorkAreaHandler::SuccessResponse
+      # It worked
+      module SuccessResponder
+        def self.call(handler:)
+          handler.render(template: handler.template)
+        end
+      end
+
+      # Forms that fail to submit may have different errors.
+      module SubmitFailureResponder
+        def self.call(handler:)
+          handler.render(template: handler.template, status: :unprocessable_entity)
+        end
       end
     end
   end
