@@ -14,13 +14,14 @@ module Sipity
   module ResponseHandlers
     module_function
 
-    def handle_response(context:, handled_response:, container:, template:)
-      response_handler = build_response_handler(container: container, handled_response_status: handled_response.status)
-      response_handler.respond(context: context, handled_response: handled_response, template: template)
+    # TODO: Remove the template as it can be packed into the handled response
+    def handle_response(context:, handled_response:, container:, template:, handler: DefaultHandler)
+      responder = build_responder(container: container, handled_response_status: handled_response.status)
+      handler.respond(context: context, handled_response: handled_response, template: template, responder: responder)
     end
 
-    def build_response_handler(container:, handled_response_status:)
-      container.qualified_const_get("#{handled_response_status.to_s.classify}Response")
+    def build_responder(container:, handled_response_status:)
+      container.qualified_const_get("#{handled_response_status.to_s.classify}Responder")
     end
 
     # The default response handler. It makes sure things are well composed,

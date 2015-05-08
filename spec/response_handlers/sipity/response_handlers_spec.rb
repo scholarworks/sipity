@@ -4,29 +4,33 @@ module Sipity
   RSpec.describe ResponseHandlers do
     before do
       module MockContainer
-        module SuccessResponse
-          def self.respond(**_keywords)
+        module SuccessResponder
+          def self.call(handler:)
+            # I want to make sure the interface is correct, but Rubocop wants
+            # me to do something with the keyword.
+            _handler = handler
           end
         end
       end
     end
     after { Sipity.send(:remove_const, :MockContainer) }
-    let(:context) { double }
-    let(:handled_response) { double(status: :success) }
+    let(:context) { double(render: true, redirect_to: true, :view_object= => true) }
+    let(:handled_response) { double(status: :success, object: double) }
     let(:template) { double }
 
     context '.handle_response' do
       it 'will build a handler then respond with that handler' do
-        expect(MockContainer::SuccessResponse).to receive(:respond).
-          with(context: context, handled_response: handled_response, template: template)
-        described_class.handle_response(container: MockContainer, context: context, handled_response: handled_response, template: template)
+        expect(MockContainer::SuccessResponder).to receive(:call).with(handler: kind_of(described_class::DefaultHandler))
+        described_class.handle_response(
+          container: MockContainer, context: context, handled_response: handled_response, template: template
+        )
       end
     end
 
-    context '.build_response_handler' do
-      it 'will return a response handler object' do
-        actual = described_class.build_response_handler(container: MockContainer, handled_response_status: :success)
-        expect(actual).to eq(MockContainer::SuccessResponse)
+    context '.build_responder' do
+      it 'will return a handler object' do
+        actual = described_class.build_responder(container: MockContainer, handled_response_status: :success)
+        expect(actual).to eq(MockContainer::SuccessResponder)
       end
     end
   end
@@ -44,6 +48,13 @@ module Sipity
       it 'will .respond by rendering the context' do
         expect(described_class.respond(context: context, handled_response: handled_response, template: 'show')).to eq(context.render)
         expect(context).to have_received(:render).with(template: 'show')
+      end
+
+      it 'accepts a custom responder' do
+        responder = double(call: true)
+        subject = described_class.new(context: context, handled_response: handled_response, template: 'show', responder: responder)
+        subject.respond
+        expect(responder).to have_received(:call).with(handler: subject)
       end
 
       context 'collaborating objects expected interface' do
