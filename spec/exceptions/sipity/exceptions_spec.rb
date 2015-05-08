@@ -24,6 +24,11 @@ module Sipity
       its(:message) { should be_a(String) }
     end
 
+    RSpec.describe UnhandledResponseError do
+      subject { described_class.new('hello') }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe InterfaceExpectationError do
       subject { described_class.new(object: 'hello', expectation: :fly) }
       its(:message) { should be_a(String) }
