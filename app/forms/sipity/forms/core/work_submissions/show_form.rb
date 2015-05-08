@@ -19,6 +19,8 @@ module Sipity
 
           attr_reader :processing_action_name
 
+          delegate :id, to: :work, prefix: :work
+
           private
 
           def decorated_work
