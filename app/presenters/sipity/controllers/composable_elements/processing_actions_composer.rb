@@ -42,7 +42,7 @@ module Sipity
 
         def enrichment_action_set_for(identifier:)
           collection = send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
-          Parameters::ActionSet.new(identifier: identifier, collection: collection)
+          Parameters::ActionSet.new(identifier: identifier, collection: collection, entity: entity)
         end
 
         private

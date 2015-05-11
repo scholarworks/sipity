@@ -5,7 +5,7 @@ module Sipity
   module Controllers
     module WorkSubmissions
       RSpec.describe ShowPresenter do
-        let(:context) { PresenterHelper::Context.new(current_user: current_user) }
+        let(:context) { PresenterHelper::Context.new(current_user: current_user, render: true) }
         let(:current_user) { double('Current User') }
         let(:work_submission) { Models::Work.new(id: 'hello-world') }
         subject { described_class.new(context, work_submission: work_submission) }
@@ -15,9 +15,26 @@ module Sipity
           expect(subject.processing_state).to eq('Hello')
         end
 
-        it 'will expose an overview_section' do
+        context '#render_enrichment_action_set' do
+          it 'will render the partial if there are elements' do
+            action_set = double(present?: true)
+            expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
+              to receive(:enrichment_action_set_for).with(identifier: 'required').and_return(action_set)
+            expect(context).to receive(:render).with(partial: "enrichment_action_set", object: action_set)
+            subject.render_enrichment_action_set('required')
+          end
+          it 'will render the partial if there are elements' do
+            action_set = double(present?: false)
+            expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
+              to receive(:enrichment_action_set_for).with(identifier: 'required').and_return(action_set)
+            expect(context).to_not receive(:render)
+            subject.render_enrichment_action_set('required')
+          end
+        end
+
+        it 'will expose #section that accepts an identifier' do
           expect(I18n).to receive(:t)
-          subject.overview_section
+          subject.section('overview')
         end
 
         context '#label' do

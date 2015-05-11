@@ -15,10 +15,11 @@
   {{/state_advancing_actions?}}
   <div class="row">
     {{#enrichment_actions?}}
-      <ul>
-        {{*enrichment_actions}}
-          <li>{{action_name}}</li>
-        {{/enrichment_actions}}
+      <aside class="col-md-6 work-tasks">
+        <h2 class="task-heading">{{ section.todo.heading }}</h2>
+        <div class="todo">
+          {{render_enrichment_action_set.required}}
+          {{render_enrichment_action_set.optional}}
       </ul>
     {{/enrichment_actions?}}
   </div>
@@ -27,12 +28,12 @@
     <div class="col-md-6">
       <article class="panel panel-default work-description">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ overview_section }}</h3>
+          <h3 class="panel-title">{{ section.overview.heading }}</h3>
         </div>
         <div class="panel-body">
           <dl class="work attribute-listing">
             <dt class="predicate title">{{ label.title }}</dt>
-            <dd class="value title">{{ title }}</dd>
+            <dd class="value title">{{ html_safe.title }}</dd>
           </dl>
         </div>
         <!-- TODO: Extract this to a partial -->

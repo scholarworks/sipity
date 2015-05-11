@@ -13,10 +13,16 @@ module Sipity
           self.processing_actions = compose_processing_actions
         end
 
+        def render_enrichment_action_set(identifier)
+          object = enrichment_action_set_for(identifier: identifier)
+          render partial: "enrichment_action_set", object: object if object.present?
+        end
+
         delegate(
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,
           :state_advancing_actions, :state_advancing_actions?,
+          :enrichment_action_set_for,
           to: :processing_actions
         )
 
@@ -28,16 +34,21 @@ module Sipity
           work_submission.processing_state.to_s
         end
 
-        def overview_section
-          I18n.t('sipity/works.action/show.label.overview_section')
+        def label(identifier)
+          # TODO: Is there a better way to namespace this?
+          Models::Work.human_attribute_name(identifier)
         end
 
-        def label(identifier)
-          # Violation of the Law of Demeter
-          work_submission.class.human_attribute_name(identifier)
+        def section(identifier)
+          I18n.t("sipity/works.processing_action_names.#{processing_action_name}.#{identifier}")
         end
 
         private
+
+        def processing_action_name
+          # TODO: Magic string here!
+          'show'
+        end
 
         attr_reader :work_submission
 

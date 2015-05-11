@@ -1,0 +1,8 @@
+<div class="item-set">
+  <h3 class="set-title">{{ title }}</h3>
+  <ul class="item-list">
+    {{*enrichment_actions}}
+      {{render_enrichment_action}}
+    {{/enrichment_actions}}
+  </ul>
+</div>

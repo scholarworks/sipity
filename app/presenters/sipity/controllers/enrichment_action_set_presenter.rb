@@ -4,7 +4,7 @@ module Sipity
     class EnrichmentActionSetPresenter < Curly::Presenter
       presents :enrichment_action_set
 
-      delegate :identifier, to: :enrichment_action_set
+      delegate :identifier, :entity, to: :enrichment_action_set
 
       # Naming it this way for Curly conventions
       def enrichment_actions
