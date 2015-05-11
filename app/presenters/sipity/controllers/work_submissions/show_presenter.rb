@@ -18,6 +18,10 @@ module Sipity
           render partial: "enrichment_action_set", object: object if object.present?
         end
 
+        def render_processing_state_notice
+          render partial: "processing_state_notice", object: self
+        end
+
         delegate(
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,

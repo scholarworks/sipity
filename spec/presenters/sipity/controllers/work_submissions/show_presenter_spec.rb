@@ -15,6 +15,11 @@ module Sipity
           expect(subject.processing_state).to eq('Hello')
         end
 
+        it 'will expose #render_processing_state_notice' do
+          expect(context).to receive(:render).with(partial: "processing_state_notice", object: subject)
+          subject.render_processing_state_notice
+        end
+
         context '#render_enrichment_action_set' do
           it 'will render the partial if there are elements' do
             action_set = double(present?: true)
