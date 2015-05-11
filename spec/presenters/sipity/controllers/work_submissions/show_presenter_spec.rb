@@ -78,6 +78,11 @@ module Sipity
           expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:enrichment_actions?)
           subject.enrichment_actions?
         end
+
+        it 'exposes can_advance_processing_state?' do
+          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:can_advance_processing_state?)
+          subject.can_advance_processing_state?
+        end
       end
     end
   end

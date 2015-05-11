@@ -40,6 +40,10 @@ module Sipity
           enrichment_actions.present?
         end
 
+        def can_advance_processing_state?
+          (state_advancing_actions & actions_with_incomplete_prerequisites).empty?
+        end
+
         def enrichment_action_set_for(identifier:)
           collection = send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
           Parameters::ActionSet.new(identifier: identifier, collection: collection, entity: entity)
@@ -56,11 +60,21 @@ module Sipity
         end
 
         def processing_actions
-          @processing_actions ||= repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
+          @processing_actions ||= Array.wrap(
+            repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
+          )
         end
 
         def action_ids_that_are_prerequisites
-          @action_ids_that_are_prerequisites ||= repository.scope_strategy_actions_that_are_prerequisites(entity: entity, pluck: :id)
+          @action_ids_that_are_prerequisites ||= Array.wrap(
+            repository.scope_strategy_actions_that_are_prerequisites(entity: entity, pluck: :id)
+          )
+        end
+
+        def actions_with_incomplete_prerequisites
+          @actions_with_incomplete_prerequisites ||= Array.wrap(
+            repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity)
+          )
         end
 
         def default_repository

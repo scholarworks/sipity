@@ -22,7 +22,7 @@ module Sipity
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,
           :state_advancing_actions, :state_advancing_actions?,
-          :enrichment_action_set_for,
+          :enrichment_action_set_for, :can_advance_processing_state?,
           to: :processing_actions
         )
 

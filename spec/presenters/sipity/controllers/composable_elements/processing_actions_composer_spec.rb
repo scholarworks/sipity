@@ -14,6 +14,7 @@ module Sipity
 
         its(:default_repository) { should respond_to :scope_permitted_entity_strategy_actions_for_current_state }
         its(:default_repository) { should respond_to :scope_strategy_actions_that_are_prerequisites }
+        its(:default_repository) { should respond_to :scope_strategy_actions_with_incomplete_prerequisites }
 
         it 'exposes resourceful_actions' do
           allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
@@ -43,6 +44,22 @@ module Sipity
         it 'exposes enrichment_actions?' do
           allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return([enrichment_action])
           expect(subject.enrichment_actions?).to be_truthy
+        end
+
+        context '#can_advance_processing_state?' do
+          it 'will be true if the only actions with prerequisites are non-state_advancing_actions' do
+            allow(repository).to receive(:scope_strategy_actions_with_incomplete_prerequisites).and_return([enrichment_action])
+            allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+
+            # Because only an enrichment action has an incomplete prerequisite
+            expect(subject.can_advance_processing_state?).to be_truthy
+          end
+
+          it 'will be false if there exists at least one state advancing action with incomplete prerequisites' do
+            allow(repository).to receive(:scope_strategy_actions_with_incomplete_prerequisites).and_return([state_advancing_action])
+            allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+            expect(subject.can_advance_processing_state?).to be_falsey
+          end
         end
 
         context '#enrichment_action_set_for' do
