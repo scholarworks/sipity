@@ -40,10 +40,27 @@ module Sipity
           enrichment_actions.present?
         end
 
+        def enrichment_action_set_for(identifier:)
+          collection = send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
+          Parameters::ActionSet.new(identifier: identifier, collection: collection)
+        end
+
         private
+
+        def enrichment_actions_that_are_optional
+          enrichment_actions.select { |action| !action_ids_that_are_prerequisites.include?(action.id) }
+        end
+
+        def enrichment_actions_that_are_required
+          enrichment_actions.select { |action| action_ids_that_are_prerequisites.include?(action.id) }
+        end
 
         def processing_actions
           @processing_actions ||= repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
+        end
+
+        def action_ids_that_are_prerequisites
+          @action_ids_that_are_prerequisites ||= repository.scope_strategy_actions_that_are_prerequisites(entity: entity, pluck: :id)
         end
 
         def default_repository
