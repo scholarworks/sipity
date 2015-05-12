@@ -11,6 +11,7 @@
       </p>
     </div>
   </div>
+  {{render_current_comments}}
   {{#state_advancing_actions?}}
   <!-- TODO: There are no state advancing actions just yet -->
   {{/state_advancing_actions?}}

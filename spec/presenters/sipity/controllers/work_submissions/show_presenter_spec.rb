@@ -8,7 +8,10 @@ module Sipity
         let(:context) { PresenterHelper::Context.new(current_user: current_user, render: true) }
         let(:current_user) { double('Current User') }
         let(:work_submission) { Models::Work.new(id: 'hello-world') }
+        let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(context, work_submission: work_submission) }
+
+        its(:default_repository) { should respond_to :find_current_comments_for }
 
         it 'exposes processing_state' do
           allow(work_submission).to receive(:processing_state).and_return('Hello')
@@ -18,6 +21,20 @@ module Sipity
         it 'will expose #render_processing_state_notice' do
           expect(context).to receive(:render).with(partial: "processing_state_notice", object: subject)
           subject.render_processing_state_notice
+        end
+
+        context '#render_current_comments' do
+          subject { described_class.new(context, work_submission: work_submission, repository: repository) }
+          it 'will return nil if there are no comments in the repository' do
+            expect(repository).to receive(:find_current_comments_for).with(entity: work_submission).and_return([])
+            expect(subject.render_current_comments).to be_nil
+          end
+
+          it 'will render the current_comments partial if there are comments in the repository' do
+            expect(repository).to receive(:find_current_comments_for).with(entity: work_submission).and_return([double])
+            expect(context).to receive(:render).with(partial: "current_comments", object: kind_of(Parameters::EntityWithCommentsParameter))
+            expect(subject.render_current_comments).to be_nil
+          end
         end
 
         context '#render_enrichment_action_set' do

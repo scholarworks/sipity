@@ -9,6 +9,7 @@ module Sipity
           # Because controller actions may not cooperate and instead set a
           # :view_object.
           options['work_submission'] ||= options['view_object']
+          self.repository = options.fetch(:repository) { default_repository }
           super
           self.processing_actions = compose_processing_actions
         end
@@ -20,6 +21,15 @@ module Sipity
 
         def render_processing_state_notice
           render partial: "processing_state_notice", object: self
+        end
+
+        def render_current_comments
+          # I'm keeping these as one method as its all rather interrelated
+          # Plus, I'd prefer to no memoize comments
+          current_comments = repository.find_current_comments_for(entity: work_submission)
+          return unless current_comments.any?
+          object = Parameters::EntityWithCommentsParameter.new(comments: current_comments, entity: work_submission)
+          render partial: "current_comments", object: object
         end
 
         delegate(
@@ -60,6 +70,12 @@ module Sipity
 
         def compose_processing_actions
           ComposableElements::ProcessingActionsComposer.new(user: current_user, entity: work_submission)
+        end
+
+        attr_accessor :repository
+
+        def default_repository
+          QueryRepository.new
         end
       end
     end
