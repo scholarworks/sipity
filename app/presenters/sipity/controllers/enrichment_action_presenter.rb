@@ -23,9 +23,11 @@ module Sipity
       end
 
       def path
-        # HACK: This only works for the work submission path; I need it to work
-        #   for more things.
-        work_submission_action_path(work_id: entity.id, processing_action_name: action_name)
+        # HACK: Is there a better method for collaboration? In doing this, I
+        # might be able to get rid of several underlying classes; So composition
+        # by a convention.
+        root_path = PowerConverter.convert_to_processing_action_root_path(entity)
+        File.join(root_path, action_name)
       end
 
       delegate :identifier, :entity, to: :enrichment_action_set

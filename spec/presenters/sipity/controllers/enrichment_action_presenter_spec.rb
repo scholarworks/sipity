@@ -8,7 +8,7 @@ module Sipity
       let(:context) { PresenterHelper::Context.new(current_user: current_user) }
       let(:current_user) { double('Current User') }
       let(:enrichment_action) { Models::Processing::StrategyAction.new(name: 'create_a_window', id: 1) }
-      let(:entity) { double }
+      let(:entity) { Models::Work.new(id: '12ab') }
       let(:repository) { QueryRepositoryInterface.new }
       let(:enrichment_action_set) { Parameters::ActionSet.new(identifier: 'required', collection: [enrichment_action], entity: entity) }
       subject do
@@ -26,6 +26,7 @@ module Sipity
       its(:identifier) { should eq(enrichment_action_set.identifier) }
       its(:entity) { should eq(enrichment_action_set.entity) }
       its(:action_name) { should eq(enrichment_action.name) }
+      its(:path) { should be_a(String) }
 
       # TODO: This is provisional and should be translated
       its(:label) { should eq(enrichment_action.name) }
