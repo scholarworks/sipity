@@ -1,0 +1,29 @@
+<div class="work-actions" itemprop="hasPart" itemscope itemtype="http://schema.org/Enumeration/ProcessingState">
+  <meta itemprop="name" content="work/processing_state" />
+  <!--Opting to not use a meta-tag instead; If this becomes a meta-tag, then
+  the underlying tests will need to change to find[:content] instead of find.text-->
+
+  <span class="visuallyhidden">It is <span itemprop="description">{{processing_state}}</span>.</span>
+
+  <ul class="action-listing">
+    {{*state_advancing_actions}}
+      <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+        <meta itemprop="name" content="event_trigger/{{action_name}}" />
+        <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
+          <meta itemprop="name" content="{{action_name}}" />
+          {{#available?}}
+            <a itemprop="url" href="<%= path %>" class="btn btn-primary %>">
+              {{label}}
+            </a>
+          {{/available?}}
+          {{^available?}}
+            <span class="btn btn-default disabled">
+              {{label}}
+            </span>
+          {{/available?}}
+          </div>
+        <span itemprop="actionStatus" class="visuallyhidden"><%= availability_state %></span>
+      </li>
+    {{/state_advancing_actions}}
+  </ul>
+</div>

@@ -7,7 +7,9 @@ module Sipity
     RSpec.describe EnrichmentActionSetPresenter, type: :presenter do
       let(:context) { PresenterHelper::Context.new(current_user: current_user) }
       let(:current_user) { double('Current User') }
-      let(:enrichment_action_set) { Parameters::ActionSet.new(identifier: 'optional', collection: [double], entity: double) }
+      let(:enrichment_action_set) do
+        Parameters::ActionSetParameter.new(identifier: 'optional', collection: [double], entity: double(processing_state: 'hello'))
+      end
       subject { described_class.new(context, enrichment_action_set: enrichment_action_set) }
 
       its(:enrichment_actions) { should eq(enrichment_action_set.collection) }

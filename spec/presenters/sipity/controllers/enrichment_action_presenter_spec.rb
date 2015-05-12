@@ -10,7 +10,9 @@ module Sipity
       let(:enrichment_action) { Models::Processing::StrategyAction.new(name: 'create_a_window', id: 1) }
       let(:entity) { Models::Work.new(id: '12ab') }
       let(:repository) { QueryRepositoryInterface.new }
-      let(:enrichment_action_set) { Parameters::ActionSet.new(identifier: 'required', collection: [enrichment_action], entity: entity) }
+      let(:enrichment_action_set) do
+        Parameters::ActionSetParameter.new(identifier: 'required', collection: [enrichment_action], entity: entity)
+      end
       subject do
         described_class.new(
           context,
