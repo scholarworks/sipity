@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/work_areas/show_presenter'
 
 module Sipity
   module Controllers

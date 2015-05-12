@@ -2,9 +2,9 @@ module Sipity
   module Queries
     RSpec.describe CommentQueries, type: :isolated_repository_module do
       subject { test_repository }
-      context '#find_comments_for_work' do
+      context '#find_comments_for' do
         let(:entity) { Models::Processing::Entity.new(id: 1) }
-        subject { test_repository.find_comments_for_work(work: entity) }
+        subject { test_repository.find_comments_for(entity: entity) }
         it 'will return comments for that work' do
           comment = Models::Processing::Comment.create!(
             entity_id: entity.id,
@@ -14,10 +14,13 @@ module Sipity
             originating_strategy_state_id: '100'
           )
           expect(subject).to eq([comment])
+
+          # Deprecation check
+          expect(test_repository.find_comments_for_work(work: entity)).to eq([comment])
         end
       end
 
-      context '#find_current_comments_for_work' do
+      context '#find_current_comments_for' do
         let(:strategy_id) { 1 }
         let(:current_strategy_state_id) { 2 }
         let(:work) { Models::Work.new(id: 'abc') }
@@ -52,6 +55,9 @@ module Sipity
 
         it 'will find all comments that were written as part of any action that can transition the entity to its current state' do
           # NOTE: the 3rd comment is stale and thus excluded
+          expect(test_repository.find_current_comments_for(entity: work).pluck(:comment)).to eq(["Comment 1"])
+
+          # Deprecation check
           expect(test_repository.find_current_comments_for_work(work: work).pluck(:comment)).to eq(["Comment 1"])
         end
       end

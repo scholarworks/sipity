@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/submission_windows/show_presenter'
 
 module Sipity
   module Controllers

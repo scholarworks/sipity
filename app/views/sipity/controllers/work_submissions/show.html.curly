@@ -1,0 +1,66 @@
+<section itemscope itemtype="http://schema.org/CreativeWork">
+  {{ render_processing_state_notice }}
+  <div class="row">
+    <div class="col-xs-12 work-show page-header">
+      <h1 class="work-title">
+        <span itemprop="name">{{ title }}</span>
+      </h1>
+      <p class="work-status">
+        <span class="work-type">{{ work_type }}</span> &bull;
+        <span class="work-processing-state">{{ processing_state }}</span>
+      </p>
+    </div>
+  </div>
+  {{render_current_comments}}
+  {{#state_advancing_actions?}}
+  <!-- TODO: There are no state advancing actions just yet -->
+  {{/state_advancing_actions?}}
+  <div class="row">
+    {{#enrichment_actions?}}
+      <aside class="col-md-6 work-tasks">
+        <h2 class="task-heading">{{ section.todo.heading }}</h2>
+        <div class="todo">
+          {{render_enrichment_action_set.required}}
+          {{render_enrichment_action_set.optional}}
+        </div>
+        {{ render_state_advancing_action_set }}
+      </aside>
+    {{/enrichment_actions?}}
+    <div class={{#enrichment_actions?}}"col-md-6"{{/enrichment_actions?}}{{^enrichment_actions?}}"col-md-8"{{/enrichment_actions?}}>
+      <article class="panel panel-default work-description">
+        <div class="panel-heading">
+          <h3 class="panel-title">{{ section.overview.heading }}</h3>
+        </div>
+        <div class="panel-body">
+          <dl class="work attribute-listing">
+            <dt class="predicate title">{{label.title}}</dt>
+            <dd class="value title">{{ title }}</dd>
+            <dt class="predicate work-type">{{label.work_type}}</dt>
+            <dd class="value work-type">{{work_type}}</dd>
+            <!--TODO Add attributes -->
+          </dl>
+        </div>
+        {{#resourceful_actions?}}
+          <!-- TODO: Extract this to a partial -->
+          <div class="panel-footer">
+            <ul class="action-listing">
+              {{*resourceful_actions}}
+                <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+                  <meta itemprop="name" content="event_trigger/{{action_name}}" />
+                  {{render_entry_point}}
+                  <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
+                </li>
+              {{/resourceful_actions}}
+            </ul>
+          </div>
+        {{/resourceful_actions?}}
+    </div>
+  </div>
+  {{^enrichment_actions?}}
+    <div class="row">
+      <div class="col-xs-12">
+        {{render_state_advancing_action_set}}
+      </div>
+    </div>
+  {{/enrichment_actions?}}
+</section>

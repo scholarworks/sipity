@@ -233,6 +233,13 @@ module Sipity
           )
           expect(subject).to eq([action])
         end
+        it 'will be pluckable' do
+          Models::Processing::StrategyActionPrerequisite.find_or_create_by!(
+            guarded_strategy_action_id: guarded_action.id, prerequisite_strategy_action_id: action.id
+          )
+          expect(test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity, pluck: :id)).to eq([action.id])
+        end
+
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)
         end
@@ -316,6 +323,10 @@ module Sipity
           end
           it 'will return only the actions with all prerequisites completed' do
             expect(subject).to eq([incomplete_action])
+
+            # And be plucakble
+            expect(test_repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity, pluck: :id)).
+              to eq([incomplete_action.id])
           end
           it "will be a chainable scope" do
             expect(subject).to be_a(ActiveRecord::Relation)
@@ -343,6 +354,10 @@ module Sipity
         it "will include actions that do not have prerequisites" do
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
           expect(subject).to eq([action])
+        end
+        it "will allow you to pluck entries" do
+          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
+          expect(test_repository.scope_statetegy_actions_that_have_occurred(entity: entity, pluck: :id)).to eq([action.id])
         end
         it "will be a chainable scope" do
           expect(subject).to be_a(ActiveRecord::Relation)

@@ -1,0 +1,17 @@
+<div class="item-set">
+  <h3 class="set-title">{{identifier}}</h3>
+  <ul class="item-list">
+    {{*enrichment_actions}}
+      <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item {{state}}">
+        <meta itemprop="name" content="enrichment/{{identifier}}/{{action_name}}" />
+        <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
+          <span class="circle"></span>
+          {{completion_mark_if_applicable}}
+          <span itemprop="name" class="item-name">{{label}}</span>
+          <span class="visuallyhidden">is <span itemprop="actionStatus">{{state}}</span></span>
+          <a itemprop="url" href="{{path}}" class="todo-item-trigger btn {{button_class}}">Go</a>
+        </div>
+      </li>
+    {{/enrichment_actions}}
+  </ul>
+</div>

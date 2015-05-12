@@ -11,10 +11,6 @@ module Sipity
         attr_accessor :processing_comment
         private :processing_comment=, :processing_comment
 
-        def name_of_commentor
-          actor.proxy_for.name
-        end
-
         def work_type
           work.work_type.titleize
         end
@@ -24,8 +20,8 @@ module Sipity
           sanitize_html(work.title)
         end
 
-        delegate :comment, :actor, :entity, to: :processing_comment
-        private :actor, :entity
+        delegate :comment, :entity, :name_of_commentor, to: :processing_comment
+        private :entity
 
         # Related to building information for https://developers.google.com/gmail/markup/
         def email_message_action_url

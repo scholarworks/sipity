@@ -13,11 +13,14 @@ module Sipity
           def initialize(work:, processing_action_name:, **_keywords)
             self.work = work
             self.processing_action_name = processing_action_name
-            # A concession regard
+            # TODO: Remove dependency on WorkDecorator, this is needed for the
+            # HTML sanitization/rendering.
             super(decorated_work)
           end
 
           attr_reader :processing_action_name
+
+          delegate :id, to: :work, prefix: :work
 
           private
 

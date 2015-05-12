@@ -130,7 +130,15 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
+    def find_comments_for(entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/comment_queries.rb
     def find_comments_for_work(work:)
+    end
+
+    # @see ./app/repositories/sipity/queries/comment_queries.rb
+    def find_current_comments_for(entity:)
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
@@ -262,7 +270,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_statetegy_actions_that_have_occurred(entity:)
+    def scope_statetegy_actions_that_have_occurred(entity:, pluck: nil)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -274,7 +282,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_strategy_actions_that_are_prerequisites(entity:)
+    def scope_strategy_actions_that_are_prerequisites(entity:, pluck: nil)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -282,7 +290,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_strategy_actions_with_incomplete_prerequisites(entity:)
+    def scope_strategy_actions_with_incomplete_prerequisites(entity:, pluck: nil)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
