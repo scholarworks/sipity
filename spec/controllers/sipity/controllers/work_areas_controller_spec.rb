@@ -26,7 +26,7 @@ module Sipity
               processing_action_name: processing_action_name,
               work_area: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{processing_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{work_areas/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::WorkAreasController,
@@ -51,7 +51,7 @@ module Sipity
               processing_action_name: processing_action_name,
               work_area: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/work_areas/#{processing_action_name}})
+          end.to raise_error(ActionView::MissingTemplate, %r{work_areas/#{processing_action_name}})
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::WorkAreasController,

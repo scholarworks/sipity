@@ -28,7 +28,9 @@ module Sipity
               processing_action_name: processing_action_name,
               submission_window: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{processing_action_name}})
+          end.to raise_error(
+            ActionView::MissingTemplate, %r{submission_windows/#{processing_action_name}}
+          )
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::SubmissionWindowsController,
@@ -57,7 +59,9 @@ module Sipity
               processing_action_name: processing_action_name,
               submission_window: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{sipity/controllers/submission_windows/#{processing_action_name}})
+          end.to raise_error(
+            ActionView::MissingTemplate, %r{submission_windows/#{processing_action_name}}
+          )
 
           expect(runner).to have_received(:run).with(
             Sipity::Controllers::SubmissionWindowsController,

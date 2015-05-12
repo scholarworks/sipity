@@ -41,7 +41,7 @@ module Sipity
       end
 
       def template=(input)
-        @template = input.sub(%r{\A(/?sipity/controllers/)}, '\1' << work_area.slug << '/' )
+        @template = File.join("sipity/controllers", work_area.slug, input)
       end
 
       def work_area

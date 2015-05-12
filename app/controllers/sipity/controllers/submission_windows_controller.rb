@@ -64,7 +64,7 @@ module Sipity
         #   existing #run method; However it should be considered experimental
         status, object = super(*args)
         Parameters::HandledResponseParameter.new(
-          status: status, object: object, template: "sipity/controllers/submission_windows/#{processing_action_name}"
+          status: status, object: object, template: "submission_windows/#{processing_action_name}"
         )
       end
     end
