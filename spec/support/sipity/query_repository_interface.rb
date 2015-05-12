@@ -66,7 +66,15 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
+    def find_comments_for(entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/comment_queries.rb
     def find_comments_for_work(work:)
+    end
+
+    # @see ./app/repositories/sipity/queries/comment_queries.rb
+    def find_current_comments_for(entity:)
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
