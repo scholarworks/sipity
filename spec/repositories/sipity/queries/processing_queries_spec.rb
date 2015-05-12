@@ -323,6 +323,10 @@ module Sipity
           end
           it 'will return only the actions with all prerequisites completed' do
             expect(subject).to eq([incomplete_action])
+
+            # And be plucakble
+            expect(test_repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity, pluck: :id)).
+              to eq([incomplete_action.id])
           end
           it "will be a chainable scope" do
             expect(subject).to be_a(ActiveRecord::Relation)

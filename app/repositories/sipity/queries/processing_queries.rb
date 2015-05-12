@@ -663,8 +663,10 @@ module Sipity
       # * And at least one of those prerequisites is incomplete
       #
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
+      # @param pluck a list of column names to pluck from the query
       # @return [ActiveRecord::Relation<Models::Processing::StrategyAction>]
-      def scope_strategy_actions_with_incomplete_prerequisites(entity:)
+      # @return [Array] if a pluck is given
+      def scope_strategy_actions_with_incomplete_prerequisites(entity:, pluck: nil)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         actions = Models::Processing::StrategyAction
         prerequisites = Models::Processing::StrategyActionPrerequisite.arel_table
@@ -678,11 +680,13 @@ module Sipity
           )
         ).where(registers[:strategy_action_id].eq(nil))
 
-        actions.where(
+        unplucked = actions.where(
           actions.arel_table[:strategy_id].eq(entity.strategy_id).and(
             actions.arel_table[:id].in(incomplete_prerequisites_subquery)
           )
         )
+        return unplucked unless pluck.present?
+        unplucked.pluck(pluck)
       end
 
       # @api private

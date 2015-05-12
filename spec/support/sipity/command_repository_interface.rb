@@ -290,7 +290,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_strategy_actions_with_incomplete_prerequisites(entity:)
+    def scope_strategy_actions_with_incomplete_prerequisites(entity:, pluck: nil)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
