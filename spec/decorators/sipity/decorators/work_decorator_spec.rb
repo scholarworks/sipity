@@ -64,7 +64,7 @@ module Sipity
           comments = [comment, comment]
           decorated_comments = [decorated_comment, decorated_comment]
 
-          expect(repository).to receive(:find_comments_for_work).with(work: work).and_return(comments)
+          expect(repository).to receive(:find_comments_for).with(entity: work).and_return(comments)
           expect(subject.comments).to eq(decorated_comments)
         end
       end
@@ -76,7 +76,7 @@ module Sipity
           comments = [comment, comment]
           decorated_comments = [decorated_comment, decorated_comment]
 
-          expect(repository).to receive(:find_current_comments_for_work).with(work: work).and_return(comments)
+          expect(repository).to receive(:find_current_comments_for).with(entity: work).and_return(comments)
           expect(subject.current_comments).to eq(decorated_comments)
         end
       end
