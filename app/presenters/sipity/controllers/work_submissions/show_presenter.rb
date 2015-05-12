@@ -15,8 +15,13 @@ module Sipity
         end
 
         def render_enrichment_action_set(identifier)
-          object = enrichment_action_set_for(identifier: identifier)
+          object = action_set_for(name: 'enrichment_actions', identifier: identifier)
           render partial: "enrichment_action_set", object: object if object.present?
+        end
+        # NOTICE THE DUPLICATION ABOVE AND BELOW
+        def render_state_advancing_action_set
+          object = action_set_for(name: 'state_advancing_actions')
+          render partial: "state_advancing_action_set", object: object
         end
 
         def render_processing_state_notice
@@ -36,7 +41,7 @@ module Sipity
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,
           :state_advancing_actions, :state_advancing_actions?,
-          :enrichment_action_set_for, :can_advance_processing_state?,
+          :action_set_for, :can_advance_processing_state?,
           to: :processing_actions
         )
 

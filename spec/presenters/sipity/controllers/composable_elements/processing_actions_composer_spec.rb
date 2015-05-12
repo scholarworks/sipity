@@ -3,7 +3,7 @@ module Sipity
     module ComposableElements
       RSpec.describe ProcessingActionsComposer do
         let(:user) { double }
-        let(:entity) { double }
+        let(:entity) { double(processing_state: 'hello') }
         let(:repository) { QueryRepositoryInterface.new }
         let(:resourceful_action) { double(resourceful_action?: true, enrichment_action?: false, state_advancing_action?: false) }
         let(:enrichment_action) { double(resourceful_action?: false, enrichment_action?: true, state_advancing_action?: false) }
@@ -62,22 +62,34 @@ module Sipity
           end
         end
 
-        context '#enrichment_action_set_for' do
+        context '#action_set_for' do
           let(:required_action) { double(id: 1) }
           let(:optional_action) { double(id: 2) }
-          before do
-            allow(subject).to receive(:enrichment_actions).and_return([required_action, optional_action])
-            allow(repository).to receive(:scope_strategy_actions_that_are_prerequisites).
-              with(entity: entity, pluck: :id).and_return([required_action.id])
+          context 'enrichment_actions' do
+            before do
+              allow(subject).to receive(:enrichment_actions).and_return([required_action, optional_action])
+              allow(repository).to receive(:scope_strategy_actions_that_are_prerequisites).
+                with(entity: entity, pluck: :id).and_return([required_action.id])
+            end
+            it 'will handled "required" actions' do
+              expect(subject.enrichment_action_set_for(identifier: 'required').collection).to eq([required_action])
+            end
+            it 'will handled "optional" actions' do
+              expect(subject.enrichment_action_set_for(identifier: 'optional').collection).to eq([optional_action])
+            end
+            it 'will raise an exception for unknown' do
+              expect { subject.enrichment_action_set_for(identifier: 'enchiladas') }.to raise_error(NoMethodError)
+            end
           end
-          it 'will handled "required" actions' do
-            expect(subject.enrichment_action_set_for(identifier: 'required').collection).to eq([required_action])
+
+          it 'will handle :state_advancing_actions' do
+            expect(subject).to receive(:state_advancing_actions).and_return([optional_action])
+            subject.action_set_for(name: 'state_advancing_actions')
           end
-          it 'will handled "optional" actions' do
-            expect(subject.enrichment_action_set_for(identifier: 'optional').collection).to eq([optional_action])
-          end
-          it 'will raise an exception for unknown' do
-            expect { subject.enrichment_action_set_for(identifier: 'enchiladas') }.to raise_error(NoMethodError)
+
+          it 'will handle :resourceful_actions' do
+            expect(subject).to receive(:resourceful_actions).and_return([optional_action])
+            subject.action_set_for(name: 'resourceful_actions')
           end
         end
       end

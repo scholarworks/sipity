@@ -7,7 +7,7 @@ module Sipity
     RSpec.describe EnrichmentActionPresenter, type: :presenter do
       let(:context) { PresenterHelper::Context.new(current_user: current_user) }
       let(:current_user) { double('Current User') }
-      let(:enrichment_action) { Models::Processing::StrategyAction.new(name: 'create_a_window', id: 1) }
+      let(:enrichment_action) { double(name: 'create_a_window', id: 1) }
       let(:entity) { Models::Work.new(id: '12ab') }
       let(:repository) { QueryRepositoryInterface.new }
       let(:enrichment_action_set) do

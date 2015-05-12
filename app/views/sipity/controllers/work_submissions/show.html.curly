@@ -22,24 +22,26 @@
         <div class="todo">
           {{render_enrichment_action_set.required}}
           {{render_enrichment_action_set.optional}}
-      </ul>
+        </div>
+        {{ render_state_advancing_action_set }}
+      </aside>
     {{/enrichment_actions?}}
-  </div>
-
-  <div class="row">
-    <div class="col-md-6">
+    <div class={{#enrichment_actions?}}"col-md-6"{{/enrichment_actions?}}{{^enrichment_actions?}}"col-md-8"{{/enrichment_actions?}}>
       <article class="panel panel-default work-description">
         <div class="panel-heading">
           <h3 class="panel-title">{{ section.overview.heading }}</h3>
         </div>
         <div class="panel-body">
           <dl class="work attribute-listing">
-            <dt class="predicate title">{{ label.title }}</dt>
+            <dt class="predicate title">{{label.title}}</dt>
             <dd class="value title">{{ title }}</dd>
+            <dt class="predicate work-type">{{label.work_type}}</dt>
+            <dd class="value work-type">{{work_type}}</dd>
+            <!--TODO Add attributes -->
           </dl>
         </div>
-        <!-- TODO: Extract this to a partial -->
         {{#resourceful_actions?}}
+          <!-- TODO: Extract this to a partial -->
           <div class="panel-footer">
             <ul class="action-listing">
               {{*resourceful_actions}}
@@ -54,4 +56,11 @@
         {{/resourceful_actions?}}
     </div>
   </div>
+  {{^enrichment_actions?}}
+    <div class="row">
+      <div class="col-xs-12">
+        {{render_state_advancing_action_set}}
+      </div>
+    </div>
+  {{/enrichment_actions?}}
 </section>

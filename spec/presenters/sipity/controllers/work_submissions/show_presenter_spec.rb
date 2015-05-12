@@ -41,16 +41,26 @@ module Sipity
           it 'will render the partial if there are elements' do
             action_set = double(present?: true)
             expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
-              to receive(:enrichment_action_set_for).with(identifier: 'required').and_return(action_set)
+              to receive(:action_set_for).with(name: 'enrichment_actions', identifier: 'required').and_return(action_set)
             expect(context).to receive(:render).with(partial: "enrichment_action_set", object: action_set)
             subject.render_enrichment_action_set('required')
           end
           it 'will render the partial if there are elements' do
             action_set = double(present?: false)
             expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
-              to receive(:enrichment_action_set_for).with(identifier: 'required').and_return(action_set)
+              to receive(:action_set_for).with(name: 'enrichment_actions', identifier: 'required').and_return(action_set)
             expect(context).to_not receive(:render)
             subject.render_enrichment_action_set('required')
+          end
+        end
+
+        context '#render_state_advancing_action_set' do
+          it 'will render the partial if there are elements' do
+            action_set = double(present?: true)
+            expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
+              to receive(:action_set_for).with(name: 'state_advancing_actions').and_return(action_set)
+            expect(context).to receive(:render).with(partial: "state_advancing_action_set", object: action_set)
+            subject.render_state_advancing_action_set
           end
         end
 

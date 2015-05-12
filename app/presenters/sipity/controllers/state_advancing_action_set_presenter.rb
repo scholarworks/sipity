@@ -4,10 +4,10 @@ module Sipity
     class StateAdvancingActionSetPresenter < Curly::Presenter
       presents :state_advancing_action_set
 
-      delegate :entity, to: :state_advancing_action_set
+      delegate :entity, :processing_state, to: :state_advancing_action_set
 
       # Naming it this way for Curly conventions
-      def enrichment_actions
+      def state_advancing_actions
         state_advancing_action_set.collection
       end
 

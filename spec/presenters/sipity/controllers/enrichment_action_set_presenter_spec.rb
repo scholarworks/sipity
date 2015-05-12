@@ -15,6 +15,7 @@ module Sipity
       its(:enrichment_actions) { should eq(enrichment_action_set.collection) }
       its(:identifier) { should eq(enrichment_action_set.identifier) }
       its(:entity) { should eq(enrichment_action_set.entity) }
+      its(:processing_state) { should eq(enrichment_action_set.processing_state) }
     end
   end
 end
