@@ -14,6 +14,13 @@ module Sipity
       its(:to_model) { should eq(work) }
       its(:render) { should be_nil }
 
+      context '#to_work_area' do
+        it 'will convert the underlying work' do
+          expect(PowerConverter).to receive(:convert_to_work_area).with(work)
+          subject.to_work_area
+        end
+      end
+
       context 'the processing entity vs. "entity" differentiation' do
         let(:strategy) { Models::Processing::Strategy.new(id: 1) }
         let(:processing_entity) { Models::Processing::Entity.new(strategy_id: strategy.id, strategy: strategy) }
