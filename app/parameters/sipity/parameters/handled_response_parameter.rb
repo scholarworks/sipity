@@ -33,11 +33,19 @@ module Sipity
 
       private
 
-      attr_writer :object, :template
+      attr_writer :object
 
       def status=(input)
         fail Exceptions::InvalidHandledResponseStatus, input unless input.is_a?(Symbol)
         @status = input
+      end
+
+      def template=(input)
+        @template = input.sub(%r{\A(/?sipity/controllers/)}, '\1' << work_area.slug << '/' )
+      end
+
+      def work_area
+        PowerConverter.convert_to_work_area(object)
       end
     end
   end
