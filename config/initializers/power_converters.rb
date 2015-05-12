@@ -85,3 +85,14 @@ PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
     end
   end
 end
+
+PowerConverter.define_conversion_for(:processing_action_root_path) do |input|
+  case input
+  when Sipity::Models::WorkArea
+    "/areas/#{input.slug}/do"
+  when Sipity::Models::SubmissionWindow
+    "/areas/#{input.work_area_slug}/#{input.slug}/do"
+  when Sipity::Models::Work
+    "/work_submissions/#{input.id}/do"
+  end
+end
