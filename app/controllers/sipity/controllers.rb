@@ -17,5 +17,12 @@ module Sipity
   #   #controller_path method. Rails will use the module namespace to define
   #   where views can be found.
   module Controllers
+    ROOT_VIEW_PATH = Rails.root.join('app/views/sipity/controllers').freeze
+
+    module_function
+
+    def build_processing_action_view_path_for(slug:)
+      File.join(ROOT_VIEW_PATH, PowerConverter.convert_to_file_system_safe_file_name(slug))
+    end
   end
 end
