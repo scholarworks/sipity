@@ -2,6 +2,15 @@ module Sipity
   module Controllers
     module WorkSubmissions
       # Responsible for "showing" a WorkSubmission
+      #
+      # In the case of the render method, I want to leverage the view path for
+      # the presenter, instead of relying on Rail's magical partial lookup logic.
+      #
+      # In otherwords, without the leading '/' on the `render partial:` the
+      # rendering will look for a partial in the current directory of what has
+      # been rendered (more or less). With the leading `/`, render will use
+      # the rendering contexts (i.e. Controller's) view_paths to find the
+      # template file in those view_path directories.
       class ShowPresenter < Curly::Presenter
         presents :work_submission
 
@@ -16,16 +25,16 @@ module Sipity
 
         def render_enrichment_action_set(identifier)
           object = action_set_for(name: 'enrichment_actions', identifier: identifier)
-          render partial: "enrichment_action_set", object: object if object.present?
+          render partial: "/enrichment_action_set", object: object if object.present?
         end
         # NOTICE THE DUPLICATION ABOVE AND BELOW
         def render_state_advancing_action_set
           object = action_set_for(name: 'state_advancing_actions')
-          render partial: "state_advancing_action_set", object: object
+          render partial: "/state_advancing_action_set", object: object
         end
 
         def render_processing_state_notice
-          render partial: "processing_state_notice", object: self
+          render partial: "/processing_state_notice", object: self
         end
 
         def render_current_comments
@@ -34,7 +43,7 @@ module Sipity
           current_comments = repository.find_current_comments_for(entity: work_submission)
           return unless current_comments.any?
           object = Parameters::EntityWithCommentsParameter.new(comments: current_comments, entity: work_submission)
-          render partial: "current_comments", object: object
+          render partial: "/current_comments", object: object
         end
 
         delegate(

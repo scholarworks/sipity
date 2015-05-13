@@ -22,16 +22,10 @@ module Sipity
         @collection = Array.wrap(input)
       end
 
+      include GuardInterfaceExpectation
       def entity=(input)
         guard_interface_expectation!(input, :processing_state)
         @entity = input
-      end
-
-      # TODO: Extract this as a service method
-      def guard_interface_expectation!(input, *expectations)
-        expectations.each do |expectation|
-          fail(Exceptions::InterfaceExpectationError, object: input, expectation: expectation) unless input.respond_to?(expectation)
-        end
       end
     end
   end

@@ -6,7 +6,7 @@ module Sipity
       # @see Sipity::Forms::Core::SubmissionWindows::ShowForm for interface
       class ShowPresenter < SubmissionWindowPresenter
         RENDER_METHOD_PREFIX = "render_submission_window_for_".freeze
-        RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/
+        RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/.freeze
         def render_submission_window
           # HACK: Oh boy is this ugly, but it delivers what I am after.
           # It also draws attention to the new rendering that I'm after
@@ -26,6 +26,7 @@ module Sipity
         end
 
         def render_general_submission_window
+          # REVIEW: This may not be necessary as view paths are going to be altered for processing action rendering.
           render partial: "#{submission_window.processing_action_name}_#{submission_window.work_area_partial_suffix}", object: self
         end
 

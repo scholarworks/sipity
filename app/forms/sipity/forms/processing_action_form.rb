@@ -46,6 +46,12 @@ module Sipity
         fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
 
+      # Because forms are rendering via a lookup context, I want to expose that
+      # context.
+      def to_work_area
+        PowerConverter.convert_to_work_area(work)
+      end
+
       attr_reader :registered_action
       alias_method :to_registered_action, :registered_action
 

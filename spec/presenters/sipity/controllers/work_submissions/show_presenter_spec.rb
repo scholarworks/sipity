@@ -19,7 +19,7 @@ module Sipity
         end
 
         it 'will expose #render_processing_state_notice' do
-          expect(context).to receive(:render).with(partial: "processing_state_notice", object: subject)
+          expect(context).to receive(:render).with(partial: "/processing_state_notice", object: subject)
           subject.render_processing_state_notice
         end
 
@@ -32,7 +32,7 @@ module Sipity
 
           it 'will render the current_comments partial if there are comments in the repository' do
             expect(repository).to receive(:find_current_comments_for).with(entity: work_submission).and_return([double])
-            expect(context).to receive(:render).with(partial: "current_comments", object: kind_of(Parameters::EntityWithCommentsParameter))
+            expect(context).to receive(:render).with(partial: "/current_comments", object: kind_of(Parameters::EntityWithCommentsParameter))
             expect(subject.render_current_comments).to be_nil
           end
         end
@@ -42,7 +42,7 @@ module Sipity
             action_set = double(present?: true)
             expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
               to receive(:action_set_for).with(name: 'enrichment_actions', identifier: 'required').and_return(action_set)
-            expect(context).to receive(:render).with(partial: "enrichment_action_set", object: action_set)
+            expect(context).to receive(:render).with(partial: "/enrichment_action_set", object: action_set)
             subject.render_enrichment_action_set('required')
           end
           it 'will render the partial if there are elements' do
@@ -59,7 +59,7 @@ module Sipity
             action_set = double(present?: true)
             expect_any_instance_of(ComposableElements::ProcessingActionsComposer).
               to receive(:action_set_for).with(name: 'state_advancing_actions').and_return(action_set)
-            expect(context).to receive(:render).with(partial: "state_advancing_action_set", object: action_set)
+            expect(context).to receive(:render).with(partial: "/state_advancing_action_set", object: action_set)
             subject.render_state_advancing_action_set
           end
         end

@@ -31,13 +31,25 @@ module Sipity
       #     for rendering a named template is `render template: 'show'`
       attr_reader :template
 
+      def with_each_additional_view_path_slug
+        yield('') # Important if we want to degrade to a fall-back.
+        yield(work_area.slug) # Important if we want to leverage a specific template
+      end
+
+      attr_reader :work_area
+
       private
 
-      attr_writer :object, :template
+      attr_writer :template
 
       def status=(input)
         fail Exceptions::InvalidHandledResponseStatus, input unless input.is_a?(Symbol)
         @status = input
+      end
+
+      def object=(input)
+        @work_area = PowerConverter.convert_to_work_area(input)
+        @object = input
       end
     end
   end
