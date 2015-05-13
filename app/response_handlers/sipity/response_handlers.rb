@@ -82,7 +82,7 @@ module Sipity
       end
 
       def context=(input)
-        guard_interface_expectation!(input, :view_object=, :render, :redirect_to)
+        guard_interface_expectation!(input, :view_object=, :render, :redirect_to, :view_path)
         @context = input
       end
 

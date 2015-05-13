@@ -2,6 +2,7 @@ module Sipity
   module Controllers
     # The controller for creating works.
     class WorkSubmissionsController < ApplicationController
+
       class_attribute :response_handler_container
       self.runner_container = Sipity::Runners::WorkSubmissionsRunners
       self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler
@@ -42,6 +43,8 @@ module Sipity
       def query_or_command_attributes
         params.fetch(:work) { HashWithIndifferentAccess.new }
       end
+
+      self.view_paths = Rails.root.join('app/views/sipity/controllers/core')
 
       def handle_response(handled_response)
         Sipity::ResponseHandlers.handle_response(
