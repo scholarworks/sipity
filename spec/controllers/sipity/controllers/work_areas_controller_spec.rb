@@ -13,12 +13,9 @@ module Sipity
       end
 
       context 'GET #query_action' do
-        before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
-        it 'will pass along to the response handler' do
-          expect(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponder).to receive(:call).and_call_original
-
-          # I don't want to mess around with all the possible actions
+        it 'will will collaborate with the processing action composer' do
+          expect_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action)
           expect do
             get(
               'query_action',
@@ -26,22 +23,14 @@ module Sipity
               processing_action_name: processing_action_name,
               work_area: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{work_areas/#{processing_action_name}})
-
-          expect(runner).to have_received(:run).with(
-            Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: processing_action_name, attributes: { 'title' => 'Hello' }
-          )
-
-          expect(controller.view_object).to be_present
+          end.to raise_error(ActionView::MissingTemplate, /query_action/) # Because auto-rendering
         end
       end
 
       context 'POST #command_action' do
-        before { controller.runner = runner }
         let(:processing_action_name) { 'fun_things' }
-        it 'will pass along to the response handler' do
-          expect(Sipity::ResponseHandlers::WorkAreaHandler::SuccessResponder).to receive(:call).and_call_original
+        it 'will will collaborate with the processing action composer' do
+          expect_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action)
 
           # I don't want to mess around with all the possible actions
           expect do
@@ -51,14 +40,7 @@ module Sipity
               processing_action_name: processing_action_name,
               work_area: { title: 'Hello' }
             )
-          end.to raise_error(ActionView::MissingTemplate, %r{work_areas/#{processing_action_name}})
-
-          expect(runner).to have_received(:run).with(
-            Sipity::Controllers::WorkAreasController,
-            work_area_slug: work_area.slug, processing_action_name: processing_action_name, attributes: { 'title' => 'Hello' }
-          )
-
-          expect(controller.view_object).to be_present
+          end.to raise_error(ActionView::MissingTemplate, /command_action/) # Because auto-rendering
         end
       end
     end

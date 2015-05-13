@@ -10,25 +10,13 @@ module Sipity
       self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler
 
       def query_action
-        runner_response = run(
-          work_id: work_id,
-          processing_action_name: processing_action_name,
-          attributes: query_or_command_attributes
-        )
-        handle_response(runner_response)
+        run_and_respond_with_processing_action(work_id: work_id, attributes: query_or_command_attributes)
       end
 
       def command_action
-        runner_response = run(
-          work_id: work_id,
-          processing_action_name: processing_action_name,
-          attributes: query_or_command_attributes
-        )
-        handle_response(runner_response)
+        run_and_respond_with_processing_action(work_id: work_id, attributes: query_or_command_attributes)
       end
 
-      # Obliterating view paths because the processing action composer insists
-      # that it handles view paths.
       def initialize(*args, &block)
         super(*args, &block)
         self.processing_action_composer = ProcessingActionComposer.new(controller: self)
@@ -36,8 +24,7 @@ module Sipity
 
       delegate(
         :prepend_processing_action_view_path_with,
-        :handle_response,
-        :processing_action_name,
+        :run_and_respond_with_processing_action,
         to: :processing_action_composer
       )
 
@@ -56,15 +43,6 @@ module Sipity
 
       def query_or_command_attributes
         params.fetch(:work) { HashWithIndifferentAccess.new }
-      end
-
-      def run(*args)
-        # TODO: This is an intermediary step that will be wrapped into the
-        #   existing #run method; However it should be considered experimental
-        status, object = super(*args)
-        Parameters::HandledResponseParameter.new(
-          status: status, object: object, template: processing_action_name
-        )
       end
     end
   end
