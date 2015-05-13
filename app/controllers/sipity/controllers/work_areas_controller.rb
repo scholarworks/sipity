@@ -29,6 +29,11 @@ module Sipity
       attr_accessor :view_object
       helper_method :view_object
 
+      def prepend_processing_action_view_path_with(slug:)
+        view_path = Controllers.build_processing_action_view_path_for(slug: slug)
+        prepend_view_path(view_path)
+      end
+
       private
 
       def work_area_slug

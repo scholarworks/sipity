@@ -1,8 +1,10 @@
+require_relative '../controllers'
+require_relative './processing_action_composer'
+
 module Sipity
   module Controllers
     # The controller for creating works.
     class WorkSubmissionsController < ApplicationController
-
       class_attribute :response_handler_container
       self.runner_container = Sipity::Runners::WorkSubmissionsRunners
       self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler
@@ -25,6 +27,20 @@ module Sipity
         handle_response(runner_response)
       end
 
+      # Obliterating view paths because the processing action composer insists
+      # that it handles view paths.
+      def initialize(*args, &block)
+        super(*args, &block)
+        self.processing_action_composer = ProcessingActionComposer.new(controller: self)
+      end
+
+      delegate(
+        :prepend_processing_action_view_path_with,
+        :handle_response,
+        :processing_action_name,
+        to: :processing_action_composer
+      )
+
       attr_accessor :view_object
       helper_method :view_object
       alias_method :model, :view_object
@@ -32,26 +48,14 @@ module Sipity
 
       private
 
+      attr_accessor :processing_action_composer
+
       def work_id
         params.require(:work_id)
       end
 
-      def processing_action_name
-        params.require(:processing_action_name)
-      end
-
       def query_or_command_attributes
         params.fetch(:work) { HashWithIndifferentAccess.new }
-      end
-
-      self.view_paths = Rails.root.join('app/views/sipity/controllers/core')
-
-      def handle_response(handled_response)
-        Sipity::ResponseHandlers.handle_response(
-          context: self,
-          handled_response: handled_response,
-          container: response_handler_container
-        )
       end
 
       def run(*args)
@@ -59,7 +63,7 @@ module Sipity
         #   existing #run method; However it should be considered experimental
         status, object = super(*args)
         Parameters::HandledResponseParameter.new(
-          status: status, object: object, template: "work_submissions/#{processing_action_name}"
+          status: status, object: object, template: processing_action_name
         )
       end
     end

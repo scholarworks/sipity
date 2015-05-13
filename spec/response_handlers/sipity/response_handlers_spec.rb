@@ -14,8 +14,8 @@ module Sipity
       end
     end
     after { Sipity.send(:remove_const, :MockContainer) }
-    let(:context) { double(render: true, redirect_to: true, :view_object= => true) }
-    let(:handled_response) { double(status: :success, object: double, template: double) }
+    let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
+    let(:handled_response) { double(status: :success, object: double, template: double, with_each_additional_view_path_slug: true) }
 
     context '.handle_response' do
       it 'will build a handler then respond with that handler' do
@@ -36,12 +36,18 @@ module Sipity
 
   module ResponseHandlers
     RSpec.describe DefaultHandler do
-      let(:context) { double(render: 'rendered', :view_object= => true, redirect_to: 'redirected_to') }
-      let(:viewable_object) { double }
-      let(:handled_response) { double(object: viewable_object, template: 'show') }
+      let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
+      let(:handled_response) { double(status: :success, object: double, template: 'show', with_each_additional_view_path_slug: true) }
       subject { described_class.new(context: context, handled_response: handled_response) }
       it 'will #respond by rendering the context' do
         expect(subject.respond).to eq(context.render)
+      end
+
+      it 'will coordinate updating view path information with the context' do
+        expect(handled_response).to receive(:with_each_additional_view_path_slug).and_yield('core').and_yield('ulra')
+        expect(context).to receive(:prepend_processing_action_view_path_with).with(slug: 'core').ordered
+        expect(context).to receive(:prepend_processing_action_view_path_with).with(slug: 'ulra').ordered
+        described_class.new(context: context, handled_response: handled_response)
       end
 
       it 'will .respond by rendering the context' do
@@ -68,7 +74,13 @@ module Sipity
 
       context '#respond_to?' do
         it 'will respond to all *_path methods (if the context does)' do
-          context = double(render: 'rendered', :view_object= => true, redirect_to: 'redirected_to', submission_window_path: true)
+          context = double(
+            render: 'rendered',
+            prepend_processing_action_view_path_with: true,
+            :view_object= => true,
+            redirect_to: 'redirected_to',
+            submission_window_path: true
+          )
           subject = described_class.new(context: context, handled_response: handled_response)
           expect(subject.respond_to?(:submission_window_path)).to eq(true)
         end

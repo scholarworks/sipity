@@ -76,8 +76,7 @@ module Sipity
             end
 
             it 'will amend any attachment metadata' do
-              expect(repository).to receive(:amend_files_metadata).
-              with(
+              expect(repository).to receive(:amend_files_metadata).with(
                 work: work, user: user, metadata: {
                   "y5Fm8YK9-ekjEwUMKeeutw==" => { "name" => "hotel.pdf" },
                   "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }

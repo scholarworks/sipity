@@ -79,23 +79,22 @@ module Sipity
         # of this crazy copy instance variables from the controller to the
         # template (aka 'ActionView') layer.
         context.view_object = handled_response.object
+
+        # Making sure our context can render all kinds of elements.
+        handled_response.with_each_additional_view_path_slug do |slug|
+          context.prepend_processing_action_view_path_with(slug: slug)
+        end
       end
 
+      include GuardInterfaceExpectation
       def context=(input)
-        guard_interface_expectation!(input, :view_object=, :render, :redirect_to, :view_path)
+        guard_interface_expectation!(input, :view_object=, :render, :redirect_to, :prepend_processing_action_view_path_with)
         @context = input
       end
 
       def handled_response=(input)
-        guard_interface_expectation!(input, :object, :template)
+        guard_interface_expectation!(input, :object, :template, :with_each_additional_view_path_slug)
         @handled_response = input
-      end
-
-      # TODO: Extract this concept?
-      def guard_interface_expectation!(input, *expectations)
-        expectations.each do |expectation|
-          fail(Exceptions::InterfaceExpectationError, object: input, expectation: expectation) unless input.respond_to?(expectation)
-        end
       end
     end
   end

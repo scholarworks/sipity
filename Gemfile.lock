@@ -5,6 +5,14 @@ GIT
     ezid-client (1.1.1)
 
 GIT
+  remote: git://github.com/jeremyf/curly.git
+  revision: 1438cd1dd9fbbd40acc8d7c960d63b5531ac36bb
+  branch: sipity-hack
+  specs:
+    curly-templates (2.4.1)
+      actionpack (>= 3.1, < 5.0)
+
+GIT
   remote: git://github.com/jeremyf/railroady.git
   revision: dbd542542b1853f0a100a875c085652654ff1df7
   branch: allowing-namespaced-models
@@ -157,8 +165,6 @@ GEM
     colorize (0.7.7)
     columnize (0.9.0)
     crass (1.0.2)
-    curly-templates (2.4.1)
-      actionpack (>= 3.1, < 5.0)
     database_cleaner (1.4.1)
     debug_inspector (0.0.2)
     devise (3.4.1)
@@ -537,7 +543,7 @@ DEPENDENCIES
   capybara-accessible
   codeclimate-test-reporter
   coffee-rails (~> 4.0)
-  curly-templates
+  curly-templates!
   database_cleaner
   devise
   devise_cas_authenticatable
