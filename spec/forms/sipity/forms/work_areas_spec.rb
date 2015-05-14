@@ -2,18 +2,18 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe WorkAreaForms do
+    RSpec.describe WorkAreas do
       before do
-        module MockEtd
-          module WorkAreas
+        module WorkAreas
+          module MockEtd
             class DoFunThingForm
               def initialize(**_keywords)
               end
             end
           end
         end
-        module Core
-          module WorkAreas
+        module WorkAreas
+          module Core
             class FallbackForm
               def initialize(**_keywords)
               end
@@ -22,9 +22,9 @@ module Sipity
         end
       end
       after do
-        Forms.send(:remove_const, :MockEtd)
         # Because autoload doesn't like me removing "live" modules
-        Forms::Core::WorkAreas.send(:remove_const, :FallbackForm)
+        Forms::WorkAreas::Core.send(:remove_const, :FallbackForm)
+        Forms::WorkAreas.send(:remove_const, :MockEtd)
       end
 
       context '#build_the_form' do
@@ -35,13 +35,13 @@ module Sipity
             described_class.build_the_form(
               work_area: work_area, processing_action_name: processing_action_name, attributes: {}, repository: double
             )
-          ).to be_a(Forms::MockEtd::WorkAreas::DoFunThingForm)
+          ).to be_a(Forms::WorkAreas::MockEtd::DoFunThingForm)
         end
 
         it 'will fall back to the core namespace' do
           expect(
             described_class.build_the_form(work_area: work_area, processing_action_name: 'fallback', attributes: {}, repository: double)
-          ).to be_a(Forms::Core::WorkAreas::FallbackForm)
+          ).to be_a(Forms::WorkAreas::Core::FallbackForm)
         end
 
         it 'will raise an exception if neither is found' do

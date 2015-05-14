@@ -1,7 +1,7 @@
 module Sipity
   module Forms
-    # A container for looking up the correct forms related to work areas.
-    module WorkAreaForms
+    # A container module
+    module WorkAreas
       module_function
 
       def build_the_form(work_area:, processing_action_name:, attributes:, repository:)
@@ -17,9 +17,9 @@ module Sipity
         form_name = "#{processing_action_name}_form".classify
         begin
           namespace = work_area.demodulized_class_prefix_name
-          "Sipity::Forms::#{namespace}::WorkAreas::#{form_name}".constantize
+          "Sipity::Forms::WorkAreas::#{namespace}::#{form_name}".constantize
         rescue NameError
-          "Sipity::Forms::Core::WorkAreas::#{form_name}".constantize
+          "Sipity::Forms::WorkAreas::Core::#{form_name}".constantize
         end
       end
       private_class_method :find_the_form
