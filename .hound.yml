@@ -26,6 +26,19 @@ ModuleLength:
   Exclude:
     - '**/*'
 
+CaseEquality:
+  Exclude:
+    - app/decorators/sipity/decorators.rb
+    - spec/decorators/sipity/decorators_spec.rb
+
+MethodName:
+  Exclude:
+    - app/decorators/sipity/decorators.rb
+
+Style/PredicateName:
+  Exclude:
+    - app/decorators/sipity/decorators.rb
+
 MethodLength:
   Max: 10
   Description: 'Avoid methods longer than 10 lines of code.'
