@@ -76,7 +76,7 @@ module Sipity
       end
 
       def work_area_specific_generator
-        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::WorkAreaProcessingGenerator".constantize
+        "Sipity::DataGenerators::WorkAreas::#{work_area.demodulized_class_prefix_name}Generator".constantize
       rescue NameError
         # Return a null generator
         ->(**_) {}

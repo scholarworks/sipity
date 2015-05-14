@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Ulra
+    module WorkTypes
       # Responsible for generating the work types within the ETD.
-      class WorkTypesProcessingGenerator
+      class UlraGenerator
         WORK_TYPE_NAMES = [
           Models::WorkType::ULRA_SUBMISSION
         ]

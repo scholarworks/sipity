@@ -1,11 +1,11 @@
 require 'rails_helper'
-require 'sipity/data_generators/base/submission_window_processing_generator'
+require 'sipity/data_generators/submission_windows/base_generator'
 
 module Sipity
   module DataGenerators
-    module Base
+    module SubmissionWindows
       # Responsible for generating the submission window for the ETD work area.
-      RSpec.describe SubmissionWindowProcessingGenerator do
+      RSpec.describe BaseGenerator do
         let(:work_area) { Models::WorkArea.new(id: 1, slug: 'etd') }
         let(:submission_window) { Models::SubmissionWindow.new(slug: 'start', work_area_id: work_area.id) }
         subject { described_class }
