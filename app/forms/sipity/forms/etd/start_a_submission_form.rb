@@ -4,7 +4,6 @@ module Sipity
       # Responsible for creating a new work within the ETD work area.
       # What goes into this is more complicated that the entity might allow.
       class StartASubmissionForm < BaseForm
-        include Conversions::SanitizeHtml
         self.policy_enforcer = Policies::WorkPolicy
 
         def self.model_name
@@ -68,6 +67,7 @@ module Sipity
 
         private
 
+        include Conversions::SanitizeHtml
         def title=(value)
           @title = sanitize_html(value)
         end
