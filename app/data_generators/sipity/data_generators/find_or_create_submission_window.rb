@@ -44,11 +44,11 @@ module Sipity
       end
 
       def work_area_specific_submission_window_generator
-        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::SubmissionWindowProcessingGenerator".constantize
+        "Sipity::DataGenerators::SubmissionWindows::#{work_area.demodulized_class_prefix_name}Generator".constantize
       end
 
       def work_area_specific_work_types_generator
-        "Sipity::DataGenerators::#{work_area.demodulized_class_prefix_name}::WorkTypesProcessingGenerator".constantize
+        "Sipity::DataGenerators::WorkTypes::#{work_area.demodulized_class_prefix_name}Generator".constantize
       end
     end
   end

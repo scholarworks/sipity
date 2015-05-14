@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Etd
+    module WorkTypes
       # Responsible for generating the work types within the ETD.
-      class WorkTypesProcessingGenerator
+      class EtdGenerator
         WORK_TYPE_NAMES = [
           Models::WorkType::DOCTORAL_DISSERTATION,
           Models::WorkType::MASTER_THESIS

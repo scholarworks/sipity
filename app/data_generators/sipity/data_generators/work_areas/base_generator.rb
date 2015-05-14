@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Base
+    module WorkAreas
       # Responsible for generating the work types within the ETD.
-      class WorkAreaProcessingGenerator
+      class BaseGenerator
         def self.call(**keywords)
           new(**keywords).call
         end

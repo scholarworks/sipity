@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Ulra
+    module WorkAreas
       # Responsible for generating the work types within the ETD.
-      class WorkAreaProcessingGenerator < DataGenerators::Base::WorkAreaProcessingGenerator
+      class EtdGenerator < BaseGenerator
       end
     end
   end

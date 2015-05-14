@@ -5,7 +5,7 @@ module Sipity
     RSpec.describe FindOrCreateWorkArea do
       let(:user) { Sipity::Factories.create_user }
       before do
-        allow(Etd::WorkAreaProcessingGenerator).to receive(:call)
+        allow(WorkAreas::EtdGenerator).to receive(:call)
       end
       it 'will create a processing strategy if none exists for work areas otherwise reuse it' do
         expect { described_class.call(name: 'Worm', slug: 'worm') }.
@@ -24,7 +24,7 @@ module Sipity
       end
 
       it 'will call the custom work area processing generator' do
-        expect(Etd::WorkAreaProcessingGenerator).to receive(:call)
+        expect(WorkAreas::EtdGenerator).to receive(:call)
         described_class.call(name: 'ETD', slug: 'etd')
       end
 

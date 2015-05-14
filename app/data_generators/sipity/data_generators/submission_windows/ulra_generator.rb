@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Etd
+    module SubmissionWindows
       # Responsible for generating the submission window for the ETD work area.
-      class SubmissionWindowProcessingGenerator < DataGenerators::Base::SubmissionWindowProcessingGenerator
+      class UlraGenerator < BaseGenerator
       end
     end
   end

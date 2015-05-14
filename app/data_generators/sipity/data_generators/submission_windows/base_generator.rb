@@ -1,8 +1,8 @@
 module Sipity
   module DataGenerators
-    module Base
+    module SubmissionWindows
       # Responsible for generating the submission window for the ETD work area.
-      class SubmissionWindowProcessingGenerator
+      class BaseGenerator
         def self.call(**keywords)
           new(**keywords).call
         end

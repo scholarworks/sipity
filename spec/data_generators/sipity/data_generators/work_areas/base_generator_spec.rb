@@ -1,11 +1,11 @@
 require 'rails_helper'
-require 'sipity/data_generators/base/work_area_processing_generator'
+require 'sipity/data_generators/work_areas/base_generator'
 
 module Sipity
   module DataGenerators
-    module Base
+    module WorkAreas
       # Responsible for generating the submission window for the ETD work area.
-      RSpec.describe WorkAreaProcessingGenerator do
+      RSpec.describe BaseGenerator do
         let(:work_area) { Models::WorkArea.new(id: 1, slug: 'etd') }
         let(:processing_strategy) { Models::Processing::Strategy.create!(id: 2, name: 'etd processing') }
         subject { described_class }

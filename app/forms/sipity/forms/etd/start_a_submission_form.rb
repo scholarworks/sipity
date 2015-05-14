@@ -81,7 +81,8 @@ module Sipity
         end
 
         def possible_work_types
-          DataGenerators::Etd::WorkTypesProcessingGenerator::WORK_TYPE_NAMES
+          # Yikes?
+          DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
         end
 
         def possible_work_publication_strategies
