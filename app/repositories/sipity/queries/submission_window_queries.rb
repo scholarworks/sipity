@@ -10,7 +10,7 @@ module Sipity
       def build_submission_window_processing_action_form(submission_window:, processing_action_name:, attributes: {})
         # Leveraging an obvious inflection point, namely each work area may well
         # have its own form module.
-        Forms::SubmissionWindowForms.build_the_form(
+        Forms::SubmissionWindows.build_the_form(
           submission_window: submission_window,
           processing_action_name: processing_action_name,
           repository: self,

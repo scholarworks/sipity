@@ -2,18 +2,18 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe SubmissionWindowForms do
+    RSpec.describe SubmissionWindows do
       before do
-        module MockEtd
-          module SubmissionWindows
+        module SubmissionWindows
+          module MockEtd
             class DoFunThingForm
               def initialize(**_keywords)
               end
             end
           end
         end
-        module Core
-          module SubmissionWindows
+        module SubmissionWindows
+          module Core
             class FallbackForm
               def initialize(**_keywords)
               end
@@ -22,9 +22,9 @@ module Sipity
         end
       end
       after do
-        Forms.send(:remove_const, :MockEtd)
         # Because autoload doesn't like me removing "live" modules
-        Forms::Core::SubmissionWindows.send(:remove_const, :FallbackForm)
+        Forms::SubmissionWindows::Core.send(:remove_const, :FallbackForm)
+        Forms::SubmissionWindows.send(:remove_const, :MockEtd)
       end
 
       context '#build_the_form' do
@@ -36,7 +36,7 @@ module Sipity
             described_class.build_the_form(
               submission_window: submission_window, processing_action_name: processing_action_name, attributes: {}, repository: double
             )
-          ).to be_a(Forms::MockEtd::SubmissionWindows::DoFunThingForm)
+          ).to be_a(Forms::SubmissionWindows::MockEtd::DoFunThingForm)
         end
 
         it 'will fall back to the core namespace' do
@@ -44,7 +44,7 @@ module Sipity
             described_class.build_the_form(
               submission_window: submission_window, processing_action_name: 'fallback', attributes: {}, repository: double
             )
-          ).to be_a(Forms::Core::SubmissionWindows::FallbackForm)
+          ).to be_a(Forms::SubmissionWindows::Core::FallbackForm)
         end
 
         it 'will raise an exception if neither is found' do
