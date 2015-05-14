@@ -14,6 +14,7 @@ module Sipity
           its(:processing_action_name) { should eq processing_action_name }
           its(:work_id) { should eq work.id }
           it { should be_decorated }
+          it { should be_a(Models::Work) }
         end
       end
     end

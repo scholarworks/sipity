@@ -12,6 +12,8 @@ module Sipity
 
           its(:policy_enforcer) { should eq Sipity::Policies::WorkAreaPolicy }
           its(:processing_action_name) { should eq processing_action_name }
+
+          it { expect(subject.is_a?(Models::WorkArea)).to be_truthy }
         end
       end
     end

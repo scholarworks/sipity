@@ -12,6 +12,8 @@ module Sipity
 
           its(:policy_enforcer) { should eq Sipity::Policies::SubmissionWindowPolicy }
           its(:processing_action_name) { should eq processing_action_name }
+
+          it { should be_a(Models::SubmissionWindow) }
         end
       end
     end
