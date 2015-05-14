@@ -18,9 +18,9 @@ module Sipity
         form_name = "#{processing_action_name}_form".classify
         begin
           namespace = work_area.demodulized_class_prefix_name
-          "Sipity::Forms::#{namespace}::WorkSubmissions::#{form_name}".constantize
+          "Sipity::Forms::WorkSubmissions::#{namespace}::#{form_name}".constantize
         rescue NameError
-          "Sipity::Forms::Core::WorkSubmissions::#{form_name}".constantize
+          "Sipity::Forms::WorkSubmissions::Core::#{form_name}".constantize
         end
       end
       private_class_method :find_the_form

@@ -4,16 +4,16 @@ module Sipity
   module Forms
     RSpec.describe WorkSubmissionForms do
       before do
-        module MockEtd
-          module WorkSubmissions
+        module WorkSubmissions
+          module MockEtd
             class DoFunThingForm
               def initialize(**_keywords)
               end
             end
           end
         end
-        module Core
-          module WorkSubmissions
+        module WorkSubmissions
+          module Core
             class FallbackForm
               def initialize(**_keywords)
               end
@@ -22,9 +22,9 @@ module Sipity
         end
       end
       after do
-        Forms.send(:remove_const, :MockEtd)
         # Because autoload doesn't like me removing "live" modules
-        Forms::Core::WorkSubmissions.send(:remove_const, :FallbackForm)
+        Forms::WorkSubmissions.send(:remove_const, :MockEtd)
+        Forms::WorkSubmissions::Core.send(:remove_const, :FallbackForm)
       end
 
       context '#build_the_form' do
@@ -37,7 +37,7 @@ module Sipity
             described_class.build_the_form(
               work: work, processing_action_name: processing_action_name, attributes: {}, repository: double
             )
-          ).to be_a(Forms::MockEtd::WorkSubmissions::DoFunThingForm)
+          ).to be_a(Forms::WorkSubmissions::MockEtd::DoFunThingForm)
         end
 
         it 'will fall back to the core namespace' do
@@ -45,7 +45,7 @@ module Sipity
             described_class.build_the_form(
               work: work, processing_action_name: 'fallback', attributes: {}, repository: double
             )
-          ).to be_a(Forms::Core::WorkSubmissions::FallbackForm)
+          ).to be_a(Forms::WorkSubmissions::Core::FallbackForm)
         end
 
         it 'will raise an exception if neither is found' do
