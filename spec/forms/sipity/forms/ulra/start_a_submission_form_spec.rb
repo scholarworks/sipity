@@ -17,6 +17,7 @@ module Sipity
         its(:default_repository) { should respond_to :find_submission_window_by }
         its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
         its(:default_work_type) { should eq(Models::WorkType::ULRA_SUBMISSION) }
+        its(:to_work_area) { should eq(work_area) }
 
         it 'will delegate #to_processing_entity to the submission window' do
           expect(submission_window).to receive(:to_processing_entity)

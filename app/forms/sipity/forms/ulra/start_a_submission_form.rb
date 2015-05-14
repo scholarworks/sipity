@@ -63,6 +63,12 @@ module Sipity
           end
         end
 
+        # TODO: Extract a work area collaborator; How does that reconcile with
+        #   the submission window.
+        def to_work_area
+          work_area
+        end
+
         private
 
         def initialize_attributes(attributes)

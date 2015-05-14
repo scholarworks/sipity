@@ -30,6 +30,12 @@ module Sipity
         validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
         validates :submission_window, presence: true
 
+        # TODO: Extract a work area collaborator; How does that reconcile with
+        #   the submission window.
+        def to_work_area
+          work_area
+        end
+
         def access_rights_answer_for_select
           possible_access_right_answers.map(&:to_sym)
         end
