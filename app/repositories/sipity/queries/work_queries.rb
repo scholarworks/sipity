@@ -18,7 +18,7 @@ module Sipity
       def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {})
         # Leveraging an obvious inflection point, namely each work area may well
         # have its own form module.
-        Forms::WorkSubmissionForms.build_the_form(
+        Forms::WorkSubmissions.build_the_form(
           work: work,
           processing_action_name: processing_action_name,
           attributes: attributes,

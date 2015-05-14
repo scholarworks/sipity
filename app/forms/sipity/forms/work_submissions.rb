@@ -1,7 +1,7 @@
 module Sipity
   module Forms
     # A container for looking up the correct forms related to work submissions.
-    module WorkSubmissionForms
+    module WorkSubmissions
       module_function
 
       def build_the_form(work:, processing_action_name:, attributes:, repository:)

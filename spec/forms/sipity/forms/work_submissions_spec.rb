@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    RSpec.describe WorkSubmissionForms do
+    RSpec.describe WorkSubmissions do
       before do
         module WorkSubmissions
           module MockEtd
