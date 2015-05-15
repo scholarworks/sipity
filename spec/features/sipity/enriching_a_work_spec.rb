@@ -21,27 +21,7 @@ feature 'Enriching a Work', :devise, :feature do
     end
   end
 
-  def attach_file_work
-    login_as(user, scope: :user)
-    create_a_work(work_type: 'doctoral_dissertation')
-
-    on('work_page') do |the_page|
-      the_page.click_todo_item('enrichment/required/attach')
-    end
-
-    on('attach_page') do |the_page|
-      the_page.attach_file(__FILE__)
-      the_page.submit_button.click
-    end
-  end
-
-  scenario 'User creates a work then sees it on their dashboard' do
-    login_as(user, scope: :user)
-    create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
-    visit '/dashboard'
-  end
-
-  scenario 'User can create a Work' do
+  scenario 'User can enrich their submission' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
@@ -50,14 +30,6 @@ feature 'Enriching a Work', :devise, :feature do
       # of the access rights.
       expect(the_page.text_for('title')).to eq(['Hello World', 'Hello World'])
       expect(the_page.text_for('work_publication_strategy')).to eq(['Do Not Know']) # NOTE: weak match on default I18n
-    end
-  end
-
-  scenario 'User can describe additional data' do
-    login_as(user, scope: :user)
-    create_a_work(work_type: 'doctoral_dissertation')
-
-    on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/describe')
     end
 
@@ -69,37 +41,18 @@ feature 'Enriching a Work', :devise, :feature do
 
     on('work_page') do |the_page|
       expect(the_page.todo_item_named_status_for('enrichment/required/describe')).to eq('done')
-    end
-  end
-
-  scenario 'User can attach files' do
-    login_as(user, scope: :user)
-    create_a_work(work_type: 'doctoral_dissertation')
-
-    on('work_page') do |the_page|
       the_page.click_todo_item('enrichment/required/attach')
     end
 
+    # User will see their attachments
     on('attach_page') do |the_page|
       expect(the_page).to have_input_file
       the_page.attach_file(__FILE__)
-    end
-  end
-
-  scenario 'User can remove files' do
-    attach_file_work
-  end
-
-  scenario 'User can add collaborators' do
-    login_as(user, scope: :user)
-    create_a_work(work_type: 'doctoral_dissertation')
-
-    on('work_page') do |the_page|
-      the_page.click_todo_item('enrichment/required/collaborators')
+      the_page.submit_button.click
     end
 
-    on('collaborators_page') do |the_page|
-      expect(the_page).to be_all_there
-    end
+    # And it shows up on the dashboard
+    visit '/dashboard'
+    expect(page.all(".work-listing a").map(&:text)).to eq(['Hello World'])
   end
 end
