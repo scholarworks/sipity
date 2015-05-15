@@ -4,7 +4,7 @@ require 'rails_helper'
 # make sure that I have rendered a proper email.
 RSpec.describe 'sipity/mailers/email_notifier/confirmation_of_submit_for_review.html.erb', type: :view do
   let(:user) { double }
-  let(:work) { Sipity::Models::Work.create!(id: 1, title: 'Hello', work_type: 'doctoral_dissertation') }
+  let(:work) { Sipity::Models::Work.new(id: 1, title: 'Hello', work_type: 'doctoral_dissertation') }
   let(:repository) { Sipity::CommandRepository.new }
   let(:decorator) { Sipity::Decorators::Emails::WorkEmailDecorator.new(work, repository: repository) }
   let(:file) { File.new(__FILE__) }
