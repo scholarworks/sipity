@@ -1,6 +1,3 @@
-require_relative '../controllers'
-require_relative './processing_action_composer'
-
 module Sipity
   module Controllers
     # The controller for creating works.
