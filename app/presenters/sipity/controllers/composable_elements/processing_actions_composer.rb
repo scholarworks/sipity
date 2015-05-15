@@ -44,11 +44,6 @@ module Sipity
           (state_advancing_actions & actions_with_incomplete_prerequisites).empty?
         end
 
-        def enrichment_action_set_for(identifier:)
-          action_set_for(name: 'enrichment_actions', identifier: identifier)
-        end
-        deprecate enrichment_action_set_for: "Use #action_set_for"
-
         def action_set_for(name:, identifier: nil)
           if name.to_s == 'enrichment_actions'
             collection = send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
