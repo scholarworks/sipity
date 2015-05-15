@@ -18,6 +18,7 @@ module Sipity
     #
     # @todo Extract this to the hesburgh-lib
     def ComparableDelegateClass(base_class)
+      # TODO: Do not duplicate the class for a given base_class?
       klass = Class.new(ComparableSimpleDelegator)
       klass.base_class = base_class
       klass
