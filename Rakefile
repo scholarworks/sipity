@@ -84,6 +84,7 @@ if defined?(RSpec)
       RSpec::Core::RakeTask.new(:without_features) do |t|
         ENV['COVERAGE'] = 'true'
         t.exclude_pattern = './spec/features/**/*_spec.rb'
+        t.rspec_opts = '--profile 10'
       end
 
       types.each do |name, _dir|
