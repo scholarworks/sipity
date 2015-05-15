@@ -14,9 +14,6 @@ module Sipity
             originating_strategy_state_id: '100'
           )
           expect(subject).to eq([comment])
-
-          # Deprecation check
-          expect(test_repository.find_comments_for_work(work: entity)).to eq([comment])
         end
       end
 
@@ -56,9 +53,6 @@ module Sipity
         it 'will find all comments that were written as part of any action that can transition the entity to its current state' do
           # NOTE: the 3rd comment is stale and thus excluded
           expect(test_repository.find_current_comments_for(entity: work).pluck(:comment)).to eq(["Comment 1"])
-
-          # Deprecation check
-          expect(test_repository.find_current_comments_for_work(work: work).pluck(:comment)).to eq(["Comment 1"])
         end
       end
     end
