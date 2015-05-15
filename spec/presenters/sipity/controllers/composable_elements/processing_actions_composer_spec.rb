@@ -72,13 +72,13 @@ module Sipity
                 with(entity: entity, pluck: :id).and_return([required_action.id])
             end
             it 'will handled "required" actions' do
-              expect(subject.enrichment_action_set_for(identifier: 'required').collection).to eq([required_action])
+              expect(subject.action_set_for(name: 'enrichment_actions', identifier: 'required').collection).to eq([required_action])
             end
             it 'will handled "optional" actions' do
-              expect(subject.enrichment_action_set_for(identifier: 'optional').collection).to eq([optional_action])
+              expect(subject.action_set_for(name: 'enrichment_actions', identifier: 'optional').collection).to eq([optional_action])
             end
             it 'will raise an exception for unknown' do
-              expect { subject.enrichment_action_set_for(identifier: 'enchiladas') }.to raise_error(NoMethodError)
+              expect { subject.action_set_for(name: 'enrichment_actions', identifier: 'enchiladas') }.to raise_error(NoMethodError)
             end
           end
 
