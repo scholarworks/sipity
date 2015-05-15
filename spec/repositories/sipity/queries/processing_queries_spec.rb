@@ -67,9 +67,6 @@ module Sipity
           entity_specific_responsibility
           expect(subject).to eq([strategy_role])
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_processing_actors_for' do
@@ -87,9 +84,6 @@ module Sipity
           group_processing_actor
           Models::GroupMembership.create(user_id: user.id, group_id: group.id)
           expect(subject).to eq([user_processing_actor, group_processing_actor])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -160,10 +154,6 @@ module Sipity
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: no_access, proxy_for_type: Sipity::Models::Work)
           ).to eq([])
         end
-
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_proxied_objects_for_the_user_and_proxy_for_type' do
@@ -188,9 +178,6 @@ module Sipity
 
           expect(subject).to eq([work])
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_users_for_entity_and_roles' do
@@ -209,10 +196,6 @@ module Sipity
           Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
 
           expect(subject).to eq([user, group_user])
-        end
-
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -239,10 +222,6 @@ module Sipity
           )
           expect(test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity, pluck: :id)).to eq([action.id])
         end
-
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_processing_strategy_roles_for_user_and_strategy' do
@@ -252,9 +231,6 @@ module Sipity
           user_strategy_responsibility
           expect(subject).to eq([strategy_role])
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_processing_strategy_roles_for_user_and_entity_specific' do
@@ -263,9 +239,6 @@ module Sipity
           user_processing_actor
           entity_specific_responsibility
           expect(subject).to eq([strategy_role])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -281,9 +254,6 @@ module Sipity
         subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
         it "will return the correct actions based on user and entity state" do
           expect(subject.pluck(:name)).to eq(['show', 'already_taken_but_by_someone_else'])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -303,9 +273,6 @@ module Sipity
             guarded_strategy_action_id: other_guarded_action.id, prerequisite_strategy_action_id: guarded_action.id
           )
           expect(subject).to eq([guarded_action])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -328,9 +295,6 @@ module Sipity
             expect(test_repository.scope_strategy_actions_with_incomplete_prerequisites(entity: entity, pluck: :id)).
               to eq([incomplete_action.id])
           end
-          it "will be a chainable scope" do
-            expect(subject).to be_a(ActiveRecord::Relation)
-          end
         end
       end
 
@@ -344,9 +308,6 @@ module Sipity
           action.save! unless action.persisted?
           expect(subject).to eq([action])
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#scope_statetegy_actions_that_have_occurred' do
@@ -358,9 +319,6 @@ module Sipity
         it "will allow you to pluck entries" do
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
           expect(test_repository.scope_statetegy_actions_that_have_occurred(entity: entity, pluck: :id)).to eq([action.id])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -390,9 +348,6 @@ module Sipity
           )
           expect(subject).to eq([action, guarded_action])
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#users_that_have_taken_the_action_on_the_entity' do
@@ -408,9 +363,6 @@ module Sipity
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: group)
           expect(subject).to eq([user, groupy])
-        end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
         end
       end
 
@@ -464,9 +416,6 @@ module Sipity
             ]
           )
         end
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
 
       context '#authorized_for_processing?' do
@@ -519,12 +468,7 @@ module Sipity
 
           expect(subject).to eq([action])
         end
-
-        it "will be a chainable scope" do
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
       end
-
     end
   end
 end
