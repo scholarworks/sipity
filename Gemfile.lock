@@ -181,10 +181,10 @@ GEM
     docile (1.1.5)
     domain_name (0.5.24)
       unf (>= 0.0.5, < 1.0.0)
-    dragonfly (1.0.9)
+    dragonfly (1.0.10)
       addressable (~> 2.3)
       multi_json (~> 1.0)
-      rack
+      rack (>= 1.3.0)
     dragonfly-s3_data_store (1.1.0)
       dragonfly (~> 1.0)
       fog-aws
