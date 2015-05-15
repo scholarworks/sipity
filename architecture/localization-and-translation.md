@@ -48,3 +48,11 @@ That `#model_name` object would return an `ActiveModel::Naming` instance that wa
 
 This leverages the implementation details of `ActiveModel::Name`.
 I am hesistant to choose this implementation, but I'd prefer this over implementing the ActiveModel::Name interface.
+If I implemented the ActiveModel::Name interface I would miss out on the fallback of `human_attribute_name`; Which will
+rescue me from insanity.
+
+Going forward, I would want to push the :hint behavior to the form object:
+
+```ruby
+<%= f.input :title, hint: f.object.hint(:title) %>
+```
