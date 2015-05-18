@@ -30,7 +30,9 @@ module Sipity
           its(:default_work_type) { should eq(Models::WorkType::ULRA_SUBMISSION) }
           its(:to_work_area) { should eq(work_area) }
           its(:base_class) { should eq(submission_window.class) }
-          its(:base_class) { should eq(submission_window.class) }
+          its(:to_key) { should_not be_present }
+          its(:to_param) { should_not be_present }
+          its(:persisted?) { should be_falsey }
 
           it 'will delegate #to_processing_entity to the submission window' do
             expect(submission_window).to receive(:to_processing_entity)

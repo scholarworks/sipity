@@ -4,14 +4,7 @@ module Sipity
       module Ulra
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
-        class StartASubmissionForm
-          # Because creating a new work is enforced by the container in which the
-          # work is to be created.
-          class_attribute :base_class, :policy_enforcer
-
-          self.base_class = Models::SubmissionWindow
-          self.policy_enforcer = Policies::SubmissionWindowPolicy
-
+        class StartASubmissionForm < SubmissionWindows::BaseForm
           def initialize(submission_window:, attributes: {}, **collaborators)
             self.repository = collaborators.fetch(:repository) { default_repository }
             self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
@@ -37,7 +30,6 @@ module Sipity
           delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
           alias_method :to_model, :submission_window
 
-          include ActiveModel::Validations
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
@@ -45,35 +37,8 @@ module Sipity
           validates :work_type, presence: true
           validates :submission_window, presence: true
 
-          class << self
-            # Because ActiveModel::Validations is included at the class level,
-            # and thus makes assumptions. Without `.name` method, the validations
-            # choke.
-            #
-            # @note This needs to be done after the ActiveModel::Validations,
-            #   otherwise you will get the dreaded error:
-            #
-            #   ```console
-            #   A copy of Sipity::Forms::SubmissionWindows::Ulra::StartASubmissionForm
-            #   has been removed from the module tree but is still active!
-            #   ```
-            delegate :name, :human_attribute_name, :model_name, to: :base_class
-          end
-
           def work_publication_strategies_for_select
             possible_work_publication_strategies.map { |elem| elem.first.to_sym }
-          end
-
-          def to_key
-            []
-          end
-
-          def to_param
-            nil
-          end
-
-          def persisted?
-            to_param.nil? ? false : true
           end
 
           def submit(requested_by:)
@@ -95,6 +60,18 @@ module Sipity
           #   the submission window.
           def to_work_area
             work_area
+          end
+
+          def to_key
+            []
+          end
+
+          def to_param
+            nil
+          end
+
+          def persisted?
+            to_param.nil? ? false : true
           end
 
           private
