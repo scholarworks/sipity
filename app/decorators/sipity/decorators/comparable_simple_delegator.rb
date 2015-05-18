@@ -5,22 +5,26 @@ module Sipity
     class ComparableSimpleDelegator < SimpleDelegator
       class_attribute :base_class, instance_writer: false
 
-      def initialize(object, localization_assistant: default_localization_assistant)
-        super(object)
-        self.localization_assistant = localization_assistant
-      end
-
-      # Yup, I'm delegating the #class method to the localization assistant
-      # Because Rails uses `object.class.human_attribute_name` or
-      # `object.class.model_name` with great fervor.
-      delegate :model_name, :class, to: :localization_assistant
-      delegate :base_class, to: :singleton_class
-
       class << self
         def ===(other)
           super || base_class === other
         end
+
+        # Because ActiveModel::Validations is included at the class level,
+        # and thus makes assumptions. Without `.name` method, the validations
+        # choke.
+        #
+        # @note This needs to be done after the ActiveModel::Validations,
+        #   otherwise you will get the dreaded error:
+        #
+        #   ```console
+        #   A copy of Sipity::Forms::SubmissionWindows::Ulra::StartASubmissionForm
+        #   has been removed from the module tree but is still active!
+        #   ```
+        delegate :model_name, :name, :human_attribute_name, to: :base_class
       end
+
+      delegate :model_name, to: :base_class
 
       def is_a?(classification)
         # REVIEW: Is base_class == classification a reasonable assumption?
@@ -29,14 +33,6 @@ module Sipity
       end
 
       alias_method :kind_of?, :is_a?
-
-      private
-
-      attr_accessor :localization_assistant
-
-      def default_localization_assistant
-        Decorators::LocalizationAssistant.new(base_class: base_class, decorating_class: singleton_class)
-      end
     end
   end
 end

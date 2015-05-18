@@ -4,14 +4,18 @@ module Sipity
     RSpec.describe ComparableSimpleDelegator do
       let(:decorating_class) { Class.new(described_class) {  self.base_class = Models::Work } }
       let(:underlying_object) { double }
-      let(:localization_assistant) { double(model_name: "A Model Name", class: "A Class") }
-      subject { decorating_class.new(underlying_object, localization_assistant: localization_assistant) }
+      subject { decorating_class.new(underlying_object) }
+      its(:model_name) { should eq(decorating_class.base_class.model_name)}
 
-      its(:default_localization_assistant) { should respond_to :model_name }
-      its(:default_localization_assistant) { should respond_to :class }
-
-      its(:class) { should eq(localization_assistant.class) }
-      its(:model_name) { should eq(localization_assistant.model_name) }
+      context 'class methods' do
+        subject { decorating_class }
+        its(:model_name) { should eq(decorating_class.base_class.model_name)}
+        its(:name) { should eq(decorating_class.base_class.name)}
+        it 'will delegate .human_attribute_name to .base_class' do
+          expect(decorating_class.base_class).to receive(:human_attribute_name).and_call_original
+          expect(subject.human_attribute_name(:title)).to be_a(String)
+        end
+      end
 
       context 'instantiating an instance of the class' do
         context '.===' do
