@@ -28,8 +28,8 @@ ModuleLength:
 
 CaseEquality:
   Exclude:
-    - app/decorators/sipity/decorators.rb
-    - spec/decorators/sipity/decorators_spec.rb
+    - app/decorators/sipity/decorators/comparable_simple_delegator.rb
+    - spec/decorators/sipity/decorators/comparable_simple_delegator_spec.rb
 
 MethodName:
   Exclude:
@@ -37,7 +37,7 @@ MethodName:
 
 Style/PredicateName:
   Exclude:
-    - app/decorators/sipity/decorators.rb
+    - app/decorators/sipity/decorators/comparable_simple_delegator.rb
 
 MethodLength:
   Max: 10

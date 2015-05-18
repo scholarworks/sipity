@@ -23,25 +23,5 @@ module Sipity
       klass.base_class = base_class
       klass
     end
-
-    # Provides a convenience wrapper of an object to assist in equality testing.
-    # This is key as it relates to PowerConverter and how it is used.
-    class ComparableSimpleDelegator < SimpleDelegator
-      class_attribute :base_class, instance_writer: false
-
-      class << self
-        def ===(other)
-          super || base_class === other
-        end
-      end
-
-      def is_a?(classification)
-        # REVIEW: Is base_class == classification a reasonable assumption?
-        #   Thinking in terms of Liskov's Substitution this may be necessary.
-        super || __getobj__.is_a?(classification) || base_class == classification
-      end
-
-      alias_method :kind_of?, :is_a?
-    end
   end
 end
