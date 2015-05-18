@@ -5,12 +5,12 @@ module Sipity
       let(:decorating_class) { Class.new(described_class) {  self.base_class = Models::Work } }
       let(:underlying_object) { double }
       subject { decorating_class.new(underlying_object) }
-      its(:model_name) { should eq(decorating_class.base_class.model_name)}
+      its(:model_name) { should eq(decorating_class.base_class.model_name) }
 
       context 'class methods' do
         subject { decorating_class }
-        its(:model_name) { should eq(decorating_class.base_class.model_name)}
-        its(:name) { should eq(decorating_class.base_class.name)}
+        its(:model_name) { should eq(decorating_class.base_class.model_name) }
+        its(:name) { should eq(decorating_class.base_class.name) }
         it 'will delegate .human_attribute_name to .base_class' do
           expect(decorating_class.base_class).to receive(:human_attribute_name).and_call_original
           expect(subject.human_attribute_name(:title)).to be_a(String)

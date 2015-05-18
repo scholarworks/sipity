@@ -4,18 +4,17 @@ module Sipity
       module Ulra
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
-        class StartASubmissionForm < BaseForm
+        class StartASubmissionForm
           # Because creating a new work is enforced by the container in which the
           # work is to be created.
+          class_attribute :base_class, :policy_enforcer
+
+          self.base_class = Models::SubmissionWindow
           self.policy_enforcer = Policies::SubmissionWindowPolicy
 
-          def self.model_name
-            Models::Work.model_name
-          end
-
-          def initialize(submission_window:, attributes: {}, repository: default_repository, processing_action_name: 'start_a_submission')
-            self.repository = repository
-            self.processing_action_name = processing_action_name
+          def initialize(submission_window:, attributes: {}, **collaborators)
+            self.repository = collaborators.fetch(:repository) { default_repository }
+            self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
@@ -29,7 +28,7 @@ module Sipity
 
           private
 
-          attr_accessor :processing_action_name, :repository
+          attr_accessor :processing_action_name, :repository, :localization_assistant
           attr_writer :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
           attr_reader :submission_window, :work_area
 
@@ -38,6 +37,7 @@ module Sipity
           delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
           alias_method :to_model, :submission_window
 
+          include ActiveModel::Validations
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
@@ -45,8 +45,35 @@ module Sipity
           validates :work_type, presence: true
           validates :submission_window, presence: true
 
+          class << self
+            # Because ActiveModel::Validations is included at the class level,
+            # and thus makes assumptions. Without `.name` method, the validations
+            # choke.
+            #
+            # @note This needs to be done after the ActiveModel::Validations,
+            #   otherwise you will get the dreaded error:
+            #
+            #   ```console
+            #   A copy of Sipity::Forms::SubmissionWindows::Ulra::StartASubmissionForm
+            #   has been removed from the module tree but is still active!
+            #   ```
+            delegate :name, :human_attribute_name, :model_name, to: :base_class
+          end
+
           def work_publication_strategies_for_select
             possible_work_publication_strategies.map { |elem| elem.first.to_sym }
+          end
+
+          def to_key
+            []
+          end
+
+          def to_param
+            nil
+          end
+
+          def persisted?
+            to_param.nil? ? false : true
           end
 
           def submit(requested_by:)
@@ -107,7 +134,7 @@ module Sipity
           end
 
           def event_name
-            File.join(self.class.to_s.demodulize.underscore, 'submit')
+            File.join(processing_action_name, 'submit')
           end
 
           def default_repository
@@ -121,6 +148,11 @@ module Sipity
 
           def submission_window=(input)
             @submission_window = PowerConverter.convert(input, to: :submission_window, scope: work_area)
+          end
+
+          PROCESSING_ACTION_NAME = 'start_a_submission'.freeze
+          def default_processing_action_name
+            PROCESSING_ACTION_NAME
           end
         end
       end

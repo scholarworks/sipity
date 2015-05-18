@@ -14,11 +14,23 @@ module Sipity
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
           end
 
+          context 'its class configuration' do
+            subject { described_class }
+            its(:base_class) { should eq(submission_window.class) }
+            its(:model_name) { should eq(submission_window.class.model_name) }
+            it 'will delegate human_attribute_name to the base class' do
+              expect(Models::SubmissionWindow).to receive(:human_attribute_name).and_call_original
+              expect(subject.human_attribute_name(:title)).to be_a(String)
+            end
+          end
+
           its(:default_repository) { should respond_to :create_work! }
           its(:default_repository) { should respond_to :find_submission_window_by }
           its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
           its(:default_work_type) { should eq(Models::WorkType::ULRA_SUBMISSION) }
           its(:to_work_area) { should eq(work_area) }
+          its(:base_class) { should eq(submission_window.class) }
+          its(:base_class) { should eq(submission_window.class) }
 
           it 'will delegate #to_processing_entity to the submission window' do
             expect(submission_window).to receive(:to_processing_entity)
