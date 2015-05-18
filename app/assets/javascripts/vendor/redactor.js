@@ -100,7 +100,7 @@
 						  'image', 'indent', 'inline', 'insert', 'keydown', 'keyup',
 						  'lang', 'line', 'link', 'list', 'modal', 'observe', 'paragraphize',
 						  'paste', 'placeholder', 'progress', 'selection', 'shortcuts',
-						  'tabifier', 'tidy',  'toolbar', 'upload', 'utils'];
+						  'tidy',  'toolbar', 'upload', 'utils'];
 
 	$.Redactor.opts = {
 
