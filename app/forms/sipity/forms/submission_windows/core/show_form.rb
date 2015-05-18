@@ -6,7 +6,8 @@ module Sipity
         #
         # @note This is the result of changing the SubmissionsWindows controller
         #   to be two actions.
-        class ShowForm < Decorators::ComparableDelegateClass(Models::SubmissionWindow)
+        class ShowForm < Decorators::ComparableSimpleDelegator
+          self.base_class = Models::SubmissionWindow
           class_attribute :policy_enforcer
           self.policy_enforcer = Sipity::Policies::SubmissionWindowPolicy
 
