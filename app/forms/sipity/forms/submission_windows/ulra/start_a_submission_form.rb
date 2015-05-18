@@ -70,11 +70,6 @@ module Sipity
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-
-              # TODO: See https://github.com/ndlib/sipity/issues/506
-              repository.send_notification_for_entity_trigger(
-                notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
-              )
               repository.log_event!(entity: work, user: requested_by, event_name: event_name)
             end
           end

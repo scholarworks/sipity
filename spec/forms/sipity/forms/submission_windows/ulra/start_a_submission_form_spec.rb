@@ -166,14 +166,6 @@ module Sipity
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
                 subject.submit(requested_by: user)
               end
-
-              it 'will send emails to the creating user' do
-                expect(repository).to receive(:create_work!).and_return(work)
-                expect(repository).to receive(:send_notification_for_entity_trigger).
-                  with(notification: 'confirmation_of_work_created', entity: work, acting_as: 'creating_user').
-                  and_call_original
-                subject.submit(requested_by: user)
-              end
             end
           end
         end
