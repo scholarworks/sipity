@@ -5,6 +5,28 @@ module Sipity
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
         class StartASubmissionForm < SubmissionWindows::BaseForm
+          class_attribute :base_class, :policy_enforcer
+
+          self.base_class = Models::SubmissionWindow
+          self.policy_enforcer = Policies::SubmissionWindowPolicy
+
+          class << self
+            # Because ActiveModel::Validations is included at the class level,
+            # and thus makes assumptions. Without `.model_name` method, the
+            # validations choke.
+            #
+            # Do not delegate .name to the .base_class; Things will fall apart.
+            #
+            # @note This needs to be done after the ActiveModel::Validations,
+            #   otherwise you will get the dreaded error:
+            #
+            #   ```console
+            #   A copy of Sipity::Forms::SubmissionWindows::Ulra::StartASubmissionForm
+            #   has been removed from the module tree but is still active!
+            #   ```
+            delegate :model_name, :human_attribute_name, to: :base_class
+          end
+
           def initialize(submission_window:, attributes: {}, **collaborators)
             self.repository = collaborators.fetch(:repository) { default_repository }
             self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
@@ -30,6 +52,7 @@ module Sipity
           delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
           alias_method :to_model, :submission_window
 
+          include ActiveModel::Validations
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
