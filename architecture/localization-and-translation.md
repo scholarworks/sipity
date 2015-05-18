@@ -1,5 +1,16 @@
 # Localization and Translation
 
+The processing actions are represented through a Form object.
+Each form object is associated with a processing entity.
+At present processing entities represent one of three things:
+
+* Sipity::Models::Work
+* Sipity::Models::WorkArea
+* Sipity::Models::SubmissionWindow
+
+Instead of managing all of localizations of the different form objects through separate translation keys,
+I want to see these unified and predictable.
+
 I am assessing the gnarly localization/translation needs:
 
 * **Form Labels** for input fields on "command pages"
