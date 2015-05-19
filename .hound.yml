@@ -48,6 +48,7 @@ MethodLength:
   Enabled: true
   Exclude:
     - app/conversions/**/*.rb
+    - app/forms/sipity/forms/configure.rb
     - 'app/controllers/sipity/controllers/dois_controller.rb'
     - 'app/forms/sipity/forms/create_work_form.rb'
     - 'app/repositories/sipity/queries/notification_queries.rb'
@@ -64,9 +65,10 @@ LineLength:
   Max: 140
   Enabled: true
 
+# TODO: Restore this to 100 lines
 ClassLength:
-  Max: 100
-  Description: 'Avoid classes longer than 100 lines of code.'
+  Max: 110
+  Description: 'Avoid classes longer than 110 lines of code.'
   CountComments: false
   Enabled: true
 
@@ -87,6 +89,7 @@ CyclomaticComplexity:
   Enabled: true
   Exclude:
      - app/conversions/**/*.rb
+     - app/forms/sipity/forms/configure.rb
      - app/state_machines/sipity/state_machines/state_diagram.rb
 
 Metrics/PerceivedComplexity:
@@ -103,6 +106,7 @@ Metrics/AbcSize:
   Exclude:
      - app/conversions/**/*.rb
      - app/state_machines/**/*.rb
+     - app/forms/sipity/forms/configure.rb
      - app/repositories/sipity/queries/*.rb
      - app/controllers/application_controller.rb
      - app/forms/sipity/forms/work_enrichments/attach_form.rb
