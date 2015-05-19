@@ -15,9 +15,11 @@ AllCops:
     - app/data_generators/sipity/data_generators/**/*
     - db/**/*
     - config/**/*
+    - dragonfly/**/*
     - 'spec/fixtures/**/*'
     - 'vendor/**/*'
     - 'scripts/**/*'
+    - 'tmp/**/*'
     - 'spec/support/sipity/command_repository_interface.rb'
     - 'spec/support/sipity/query_repository_interface.rb'
   RunRailsCops: true
