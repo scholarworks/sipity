@@ -41,9 +41,15 @@ module Sipity
           # instead something that should be better accounted for when rendering
           # the submission window
           controller = @_context.controller
-          _status, form = Runners::WorkRunners::New.run(controller, attributes: {})
-          decorated_form = Decorators::WorkDecorator.decorate(form)
-          render template: 'sipity/controllers/works/new', locals: { model: decorated_form }
+          _status, form = Runners::SubmissionWindowRunners::QueryAction.run(
+            controller,
+            attributes: {},
+            processing_action_name: 'start_a_submission',
+            work_area_slug: submission_window.work_area_slug,
+            submission_window_slug: submission_window.slug
+          )
+          @_context.controller.view_object = form
+          render template: 'sipity/controllers/submission_windows/etd/start_a_submission', locals: { model: form }
         end
         deprecate :deprecated_render_submission_window_for_etd
       end

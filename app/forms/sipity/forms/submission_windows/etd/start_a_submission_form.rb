@@ -1,0 +1,156 @@
+module Sipity
+  module Forms
+    module SubmissionWindows
+      module Etd
+        # Responsible for creating a new work within the ETD work area.
+        # What goes into this is more complicated that the entity might allow.
+        class StartASubmissionForm
+          Forms::Configure.form_for_processing_entity(form_class: self, base_class: Models::SubmissionWindow)
+
+          def initialize(submission_window:, attributes: {}, **collaborators)
+            self.repository = collaborators.fetch(:repository) { default_repository }
+            self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
+            initialize_work_area!
+            self.submission_window = submission_window
+            initialize_attributes(attributes)
+          end
+
+          private
+
+          attr_accessor :processing_action_name, :repository
+          attr_writer :title, :work_publication_strategy, :work_type, :access_rights_answer
+          attr_reader :submission_window, :work_area
+
+          def initialize_attributes(attributes = {})
+            self.title = attributes[:title]
+            self.work_publication_strategy = attributes[:work_publication_strategy]
+            self.work_type = attributes[:work_type]
+            self.access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
+          end
+
+          public
+
+          attr_reader :title, :work_publication_strategy, :work_type, :access_rights_answer
+
+          delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
+          alias_method :to_model, :submission_window
+
+          include ActiveModel::Validations
+          validates :title, presence: true
+          validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
+          validates :work_type, presence: true, inclusion: { in: :possible_work_types }
+          validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
+          validates :submission_window, presence: true
+
+          # TODO: This is composable method based on the "type" of processing
+          # entity I am working with.
+          def form_path
+            "/areas/#{work_area.slug}/#{submission_window.slug}/do/#{processing_action_name}"
+          end
+
+          # TODO: Extract a work area collaborator; How does that reconcile with
+          #   the submission window.
+          def to_work_area
+            work_area
+          end
+
+          def to_key
+            []
+          end
+
+          def to_param
+            nil
+          end
+
+          def persisted?
+            to_param.nil? ? false : true
+          end
+
+          def access_rights_answer_for_select
+            possible_access_right_answers.map(&:to_sym)
+          end
+
+          def work_publication_strategies_for_select
+            possible_work_publication_strategies.map { |elem| elem.first.to_sym }
+          end
+
+          # Convert string to to_sym since simple_forn require sym to
+          # look_up 18n translation for work_type
+          def work_types_for_select
+            possible_work_types.map(&:to_sym)
+          end
+
+          def submit(requested_by:)
+            return false unless valid?
+            create_the_work do |work|
+              # I believe this form has too much knowledge of what is going on;
+              # Consider pushing some of the behavior down into the repository.
+              repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
+              repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+
+              # TODO: See https://github.com/ndlib/sipity/issues/506
+              repository.send_notification_for_entity_trigger(
+                notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
+              )
+              repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+            end
+          end
+
+          private
+
+          include Conversions::SanitizeHtml
+          def title=(value)
+            @title = sanitize_html(value)
+          end
+
+          def create_the_work
+            work = repository.create_work!(
+              submission_window: submission_window, title: title, work_publication_strategy: work_publication_strategy, work_type: work_type
+            )
+            yield(work)
+            work
+          end
+
+          def possible_work_types
+            # Yikes?
+            DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
+          end
+
+          def possible_work_publication_strategies
+            Models::Work.work_publication_strategies
+          end
+
+          def possible_access_right_answers
+            Models::TransientAnswer.access_rights_questions
+          end
+
+          def default_access_rights_answer
+            Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
+          end
+
+          def event_name
+            File.join(processing_action_name, 'submit')
+          end
+
+          def default_repository
+            CommandRepository.new
+          end
+
+          DEFAULT_WORK_AREA_SLUG = 'etd'.freeze
+          def initialize_work_area!
+            @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
+          end
+
+          def submission_window=(input)
+            @submission_window = PowerConverter.convert(input, to: :submission_window, scope: work_area)
+          end
+
+          PROCESSING_ACTION_NAME = 'start_a_submission'.freeze
+          def default_processing_action_name
+            PROCESSING_ACTION_NAME
+          end
+        end
+      end
+    end
+  end
+end
