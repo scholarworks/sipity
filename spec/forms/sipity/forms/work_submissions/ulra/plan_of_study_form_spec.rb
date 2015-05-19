@@ -13,6 +13,16 @@ module Sipity
 
           its(:enrichment_type) { should eq('plan_of_study') }
           its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
+          its(:base_class) { should eq(Models::Work) }
+
+          context 'class configuration' do
+            subject { described_class }
+            its(:model_name) { should eq(Models::Work.model_name) }
+            it 'will delegate human_attribute_name to the base class' do
+              expect(described_class.base_class).to receive(:human_attribute_name).and_call_original
+              expect(described_class.human_attribute_name(:title)).to be_a(String)
+            end
+          end
 
           it { should respond_to :work }
           it { should respond_to :expected_graduation_date }

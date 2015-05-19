@@ -4,6 +4,8 @@ module Sipity
       module Ulra
         # Responsible for capturing and validating information for publisher information
         class PublisherInformationForm < Forms::WorkEnrichmentForm
+          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+
           def initialize(attributes = {})
             super
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }

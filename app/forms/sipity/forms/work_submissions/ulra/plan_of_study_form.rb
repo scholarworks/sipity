@@ -4,6 +4,8 @@ module Sipity
       module Ulra
         # Responsible for capturing and validating information for plan_of_study.
         class PlanOfStudyForm < Forms::WorkEnrichmentForm
+          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+
           def initialize(attributes = {})
             super
             self.expected_graduation_date = attributes.fetch(:expected_graduation_date) { expected_graduation_date_from_work }

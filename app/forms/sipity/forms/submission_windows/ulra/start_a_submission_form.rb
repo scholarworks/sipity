@@ -4,7 +4,7 @@ module Sipity
       module Ulra
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
-        class StartASubmissionForm < SubmissionWindows::BaseForm
+        class StartASubmissionForm
           class_attribute :base_class, :policy_enforcer
 
           self.base_class = Models::SubmissionWindow
