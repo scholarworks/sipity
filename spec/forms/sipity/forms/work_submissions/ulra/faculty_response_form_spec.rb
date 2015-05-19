@@ -10,7 +10,7 @@ module Sipity
           subject { described_class.new(work: work, repository: repository) }
 
           its(:enrichment_type) { should eq('faculty_response') }
-          its(:policy_enforcer) { should eq Policies::Processing::ProcessingEntityPolicy }
+          its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
 
           context 'class configuration' do
