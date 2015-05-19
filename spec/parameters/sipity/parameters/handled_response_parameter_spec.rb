@@ -20,6 +20,12 @@ module Sipity
       it 'will yield each additional view path slug' do
         expect { |b| subject.with_each_additional_view_path_slug(&b) }.to yield_successive_args('', work_area.slug)
       end
+
+      it 'will use the object\'s template if one is assigned' do
+        object = double('Object', to_work_area: work_area, template: 'kittens')
+        subject = described_class.new(status: status, object: object, template: template)
+        expect(subject.template).to eq(object.template)
+      end
     end
   end
 end

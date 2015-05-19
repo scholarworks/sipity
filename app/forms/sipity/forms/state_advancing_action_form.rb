@@ -5,6 +5,10 @@ module Sipity
     #
     # @see Sipity::Models::Processing::StrategyAction
     class StateAdvancingActionForm < ProcessingActionForm
+      # This is a kludge for forms; However it is a better location for it.
+      class_attribute :template
+      self.template = 'state_advancing_action_confirmation'
+
       def initialize(attributes = {})
         super
         self.action = attributes.fetch(:processing_action_name) { default_processing_action_name }
