@@ -25,6 +25,10 @@ module Sipity
         @available
       end
 
+      def availability_state
+        available? ? STATE_AVAILABLE : STATE_PREREQUISITES_NOT_MET
+      end
+
       def path
         # HACK: Is there a better method for collaboration? In doing this, I
         # might be able to get rid of several underlying classes; So composition

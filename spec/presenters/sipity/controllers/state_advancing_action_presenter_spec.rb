@@ -40,11 +40,13 @@ module Sipity
       context 'with all actions having met the prerequites' do
         let(:actions_with_unmet_prerequisites) { [] }
         its(:available?) { should eq(true) }
+        its(:availability_state) { should eq(described_class::STATE_AVAILABLE) }
       end
 
       context 'with unmet prequisites' do
         let(:actions_with_unmet_prerequisites) { [state_advancing_action.id] }
         its(:available?) { should eq(false) }
+        its(:availability_state) { should eq(described_class::STATE_PREREQUISITES_NOT_MET) }
       end
     end
   end

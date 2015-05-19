@@ -12,7 +12,7 @@
         <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint" class="action">
           <meta itemprop="name" content="{{action_name}}" />
           {{#available?}}
-            <a itemprop="url" href="<%= path %>" class="btn btn-primary %>">
+            <a itemprop="url" href="{{path}}" class="btn btn-primary %>">
               {{label}}
             </a>
           {{/available?}}
@@ -22,7 +22,7 @@
             </span>
           {{/available?}}
           </div>
-        <span itemprop="actionStatus" class="visuallyhidden"><%= availability_state %></span>
+        <span itemprop="actionStatus" class="visuallyhidden">{{availability_state}}</span>
       </li>
     {{/state_advancing_actions}}
   </ul>
