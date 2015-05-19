@@ -4,6 +4,14 @@ module Sipity
     module Configure
       module_function
 
+      # Use this method to assist in the composition of a form class.
+      #
+      # The translations are a veritable nightmare considering that Rails
+      # leverages `object.class.human_attribute_name` or
+      # `object.model_name.plural`
+      #
+      # @note
+      #   See architecture/localization-and-translation.md for further details
       def form_for_processing_entity(form_class:, base_class:, **keywords)
         form_class.class_attribute :base_class unless form_class.respond_to?(:base_class=)
         form_class.base_class = base_class
