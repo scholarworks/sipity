@@ -15,7 +15,7 @@ module Sipity
 
       def find_the_form(work:, processing_action_name:)
         work_area = PowerConverter.convert(work, to: :work_area)
-        form_name = "#{processing_action_name}_form".classify
+        form_name = "#{processing_action_name.to_s.classify}Form"
         begin
           namespace = work_area.demodulized_class_prefix_name
           "Sipity::Forms::WorkSubmissions::#{namespace}::#{form_name}".constantize
