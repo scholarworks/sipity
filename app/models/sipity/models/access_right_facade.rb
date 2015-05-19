@@ -36,6 +36,7 @@ module Sipity
         if accessible_object.respond_to?(:file_url)
           accessible_object.file_url
         else
+          # REVIEW: I may not be able to rely on polymorphic URL
           template.polymorphic_url(accessible_object)
         end
       end
