@@ -95,6 +95,7 @@ group :test do
   gem 'rspec-html-matchers', '~>0.6'
   gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers'
   gem 'simplecov', require: false
   gem 'site_prism'
   gem 'sqlite3'
