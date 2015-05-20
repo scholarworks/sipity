@@ -9,12 +9,9 @@ module Sipity
 
       context 'class methods' do
         subject { decorating_class }
-        its(:model_name) { should eq(decorating_class.base_class.model_name) }
-        its(:name) { should eq(decorating_class.base_class.name) }
-        it 'will delegate .human_attribute_name to .base_class' do
-          expect(decorating_class.base_class).to receive(:human_attribute_name).and_call_original
-          expect(subject.human_attribute_name(:title)).to be_a(String)
-        end
+        it { should delegate_method(:model_name).to(:base_class) }
+        it { should delegate_method(:name).to(:base_class) }
+        it { should delegate_method(:human_attribute_name).to(:base_class) }
       end
 
       context 'instantiating an instance of the class' do
