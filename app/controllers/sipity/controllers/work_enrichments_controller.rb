@@ -5,11 +5,12 @@ module Sipity
       respond_to :html, :json
 
       self.runner_container = Sipity::Runners::WorkEnrichmentRunners
+      prepend_view_path(Rails.root.join('app/views/sipity/controllers/work_submissions/etd'))
 
       def edit
         _status, @model = run(work_id: work_id, enrichment_type: enrichment_type)
         respond_with(@model) do |wants|
-          wants.html { render action: enrichment_type }
+          wants.html { render template: enrichment_type }
         end
       end
 
@@ -20,7 +21,7 @@ module Sipity
             @model = model
             # HACK: Consider the JSON; But for now this will have to do as the
             #   Rubocop is complaining about cyclomatic complexity.
-            render action: enrichment_type
+            render template: enrichment_type
           end
         end
       end
