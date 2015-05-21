@@ -57,7 +57,6 @@ MethodLength:
     - 'app/repositories/sipity/queries/enrichment_queries.rb'
     - 'app/repositories/sipity/queries/processing_queries.rb'
     - 'app/repositories/sipity/commands/processing_commands.rb'
-    - 'app/state_machines/sipity/state_machines/state_diagram.rb'
     - 'spec/support/site_prism_support.rb'
 
 LineLength:
@@ -90,13 +89,11 @@ CyclomaticComplexity:
   Exclude:
      - app/conversions/**/*.rb
      - app/forms/sipity/forms/configure.rb
-     - app/state_machines/sipity/state_machines/state_diagram.rb
 
 Metrics/PerceivedComplexity:
   Enabled: true
   Exclude:
      - app/conversions/**/*.rb
-     - app/state_machines/sipity/state_machines/state_diagram.rb
      - app/repositories/sipity/queries/processing_queries.rb
      - spec/support/site_prism_support.rb
 
@@ -105,7 +102,6 @@ Metrics/AbcSize:
   Max: 16
   Exclude:
      - app/conversions/**/*.rb
-     - app/state_machines/**/*.rb
      - app/forms/sipity/forms/configure.rb
      - app/repositories/sipity/queries/*.rb
      - app/controllers/application_controller.rb
