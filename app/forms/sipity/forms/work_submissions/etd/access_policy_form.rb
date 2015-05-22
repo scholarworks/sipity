@@ -5,7 +5,7 @@ module Sipity
         # Exposes a means of assigning an access policy to each of the related
         # items.
         class AccessPolicyForm < WorkEnrichments::AccessPolicyForm
-          def initialize(work:, repository:, attributes:, processing_action_name:)
+          def initialize(work:, repository:, attributes: {}, processing_action_name: 'access_policy')
             super(attributes.merge(work: work, repository: repository, enrichment_type: processing_action_name))
           end
         end
