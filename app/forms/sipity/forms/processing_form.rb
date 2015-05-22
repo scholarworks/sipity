@@ -55,6 +55,8 @@ module Sipity
         repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
 
         form.save(requested_by: requested_by)
+
+        entity
       end
 
       def default_repository

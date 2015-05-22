@@ -42,9 +42,9 @@ module Sipity
 
         context 'when valid' do
           before { allow(form).to receive(:valid?).and_return(true) }
-          it 'will return the results of saving the given form' do
-            expect(form).to receive(:save).with(requested_by: user).and_return(:thank_you)
-            expect(subject.submit(requested_by: user)).to eq(:thank_you)
+          it 'will return the underlying entity' do
+            expect(form).to receive(:save).with(requested_by: user)
+            expect(subject.submit(requested_by: user)).to eq(entity)
           end
 
           it 'will register the action that was taken' do

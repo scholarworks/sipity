@@ -9,7 +9,7 @@ module Sipity
           let(:expected_graduation_date) { Time.zone.today }
           let(:majors) { 'Computer Science' }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          subject { described_class.new(attributes: {}, work: work, repository: repository) }
 
           its(:enrichment_type) { should eq('plan_of_study') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
@@ -24,7 +24,9 @@ module Sipity
             end
           end
 
+          it { should_not be_persisted }
           it { should respond_to :work }
+          it { should delegate_method(:submit).to(:processing_action_form) }
           it { should respond_to :expected_graduation_date }
           it { should respond_to :majors }
 
@@ -39,13 +41,13 @@ module Sipity
           end
 
           it 'will require at least one non-blank major' do
-            subject = described_class.new(work: work, repository: repository, majors: ['', ''])
+            subject = described_class.new(work: work, repository: repository, attributes: { majors: ['', ''] })
             subject.valid?
             expect(subject.errors[:majors]).to be_present
           end
 
           it 'will require at least one non-blank major' do
-            subject = described_class.new(work: work, repository: repository, majors: ['chocolate', ''])
+            subject = described_class.new(work: work, repository: repository, attributes: { majors: ['chocolate', ''] })
             subject.valid?
             expect(subject.errors[:majors]).to_not be_present
           end
@@ -54,7 +56,7 @@ module Sipity
             context 'with data from the database' do
               let(:expected_graduation_date) { Time.zone.today }
               let(:majors) { 'Computer Science' }
-              subject { described_class.new(work: work, repository: repository) }
+              subject { described_class.new(work: work, repository: repository, attributes: {}) }
               it 'will return the expected_graduation_date of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'expected_graduation_date').and_return(expected_graduation_date)
@@ -83,7 +85,7 @@ module Sipity
             context 'with valid data' do
               subject do
                 described_class.new(
-                  work: work, expected_graduation_date: expected_graduation_date, majors: majors, repository: repository
+                  work: work, repository: repository, attributes: { expected_graduation_date: expected_graduation_date, majors: majors }
                 )
               end
               before do
@@ -95,18 +97,8 @@ module Sipity
                 expect(returned_value).to eq(work)
               end
 
-              it "will transition the work's corresponding enrichment todo item to :done" do
-                expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
-              end
-
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will record the event' do
-                expect(repository).to receive(:log_event!).and_call_original
                 subject.submit(requested_by: user)
               end
             end

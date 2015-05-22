@@ -3,29 +3,44 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for plan_of_study.
-        class PlanOfStudyForm < Forms::WorkEnrichmentForm
+        class PlanOfStudyForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
+          private(*ProcessingForm.private_delegate_method_names)
 
-          def initialize(attributes = {})
-            super
+          def initialize(work:, attributes: {}, **keywords)
+            self.work = work
+            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
             self.expected_graduation_date = attributes.fetch(:expected_graduation_date) { expected_graduation_date_from_work }
             self.majors = attributes.fetch(:majors) { majors_from_work }
           end
 
-          attr_reader :expected_graduation_date, :majors
+          private
 
+          attr_accessor :processing_action_form
+          attr_writer :work
+
+          public
+
+          def persisted?
+            false
+          end
+
+          attr_reader :expected_graduation_date, :majors, :work
+          alias_method :entity, :work
+
+          include ActiveModel::Validations
           include Hydra::Validations
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
 
-          private
-
           def save(requested_by:)
-            super do
-              repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
-              repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
-            end
+            repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
+            repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
+            work
           end
+
+          private
 
           def expected_graduation_date_from_work
             repository.work_attribute_values_for(work: work, key: 'expected_graduation_date')
