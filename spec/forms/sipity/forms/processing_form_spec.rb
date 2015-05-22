@@ -9,6 +9,12 @@ module Sipity
       let(:user) { double }
       subject { described_class.new(form: form, repository: repository) }
 
+      context 'configuration methods' do
+        subject { described_class }
+        its(:delegate_method_names) { should be_a(Array) }
+        its(:private_delegate_method_names) { should be_a(Array) }
+      end
+
       it { should delegate_method(:valid?).to(:form) }
 
       its(:default_repository) { should respond_to :register_processing_action_taken_on_entity }

@@ -5,6 +5,14 @@ module Sipity
     #
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
+      def self.delegate_method_names
+        [:to_processing_entity, :enrichment_type, :to_work_area, :repository, :submit, :processing_action_name]
+      end
+
+      def self.private_delegate_method_names
+        [:repository]
+      end
+
       def initialize(form:, repository: default_repository, **keywords)
         self.form = form
         self.repository = repository
