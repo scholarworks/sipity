@@ -17,6 +17,7 @@ module Sipity
           end
 
           its(:policy_enforcer) { should eq Policies::SubmissionWindowPolicy }
+          its(:base_class) { should eq Models::Work }
           its(:default_repository) { should respond_to :create_work! }
           its(:default_repository) { should respond_to :find_submission_window_by }
           its(:to_work_area) { should eq(work_area) }

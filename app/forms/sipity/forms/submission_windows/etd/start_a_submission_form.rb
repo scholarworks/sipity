@@ -5,7 +5,9 @@ module Sipity
         # Responsible for creating a new work within the ETD work area.
         # What goes into this is more complicated that the entity might allow.
         class StartASubmissionForm
-          Forms::Configure.form_for_processing_entity(form_class: self, base_class: Models::SubmissionWindow)
+          Forms::Configure.form_for_processing_entity(
+            form_class: self, base_class: Models::Work, policy_enforcer: Policies::SubmissionWindowPolicy
+          )
 
           def initialize(submission_window:, attributes: {}, **collaborators)
             self.repository = collaborators.fetch(:repository) { default_repository }
