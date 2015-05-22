@@ -16,7 +16,6 @@
     }
   }
 
-
   .panel-body {
     overflow: auto;
     width: 100%;
@@ -36,22 +35,18 @@
 }
 
 // Grid of panels
+.panel-tiles .panel {
+  border: none;
+  box-shadow: none;
+  //box-shadow: 0 0 0 transparent;
+
+  .panel-body {
+    padding: 2px 2px 30px;
+  }
+}
+
 @media only screen and (min-width: 550px) {
-  .panel-tiles {
-    align-items: stretch;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    margin: 0 auto;
-    max-width: 100%;
-  }
-
   .panel-tiles .panel {
-    display: flex;
-    flex: 0 0 49%;
-  }
-
-  .panel-tiles .panel:nth-child(odd) {
-    margin-right: 2%;
+    max-width: 60%;
   }
 }
