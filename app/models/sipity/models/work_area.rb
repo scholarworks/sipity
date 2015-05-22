@@ -17,9 +17,7 @@ module Sipity
 
       has_one :strategy_usage, as: :usage, class_name: 'Sipity::Models::Processing::StrategyUsage', dependent: :destroy
 
-      def to_s
-        name
-      end
+      delegate :to_s, to: :name
 
       # @!attribute [rw] slug
       #
