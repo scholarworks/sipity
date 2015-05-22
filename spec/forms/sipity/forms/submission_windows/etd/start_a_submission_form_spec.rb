@@ -21,6 +21,9 @@ module Sipity
           its(:default_repository) { should respond_to :create_work! }
           its(:default_repository) { should respond_to :find_submission_window_by }
           its(:to_work_area) { should eq(work_area) }
+          its(:form_path) { should be_a(String) }
+          its(:to_key) { should eq([]) }
+          its(:persisted?) { should eq(false) }
 
           it 'will have a model name like Work' do
             expect(described_class.model_name).to be_a(ActiveModel::Name)
