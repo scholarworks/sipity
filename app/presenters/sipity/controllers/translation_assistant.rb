@@ -24,6 +24,9 @@ module Sipity
 
         first_key_to_try = defaults.shift
         I18n.translate(first_key_to_try, options).html_safe
+      rescue I18n::MissingInterpolationArgument => e
+        Rails.logger.debug("#{e.class}: #{e.message}. Falling back to default.")
+        object.to_s.humanize
       end
 
       def inject_work_type(scope:, subject:, options:, defaults:)
@@ -31,7 +34,7 @@ module Sipity
         # TODO: I could leverage power converter, but the work_type has not yet
         # been fully migrated to a relationship.
         return unless subject.respond_to?(:work_type)
-        return if subject != subject.work_type
+        return if subject == subject.work_type
         defaults.unshift(:"work_type/#{subject.work_type}.#{defaults.first}")
         options[:work_type] = call(
           scope: 'work_types', subject: subject.work_type, predicate: :label

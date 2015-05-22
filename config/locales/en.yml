@@ -234,6 +234,27 @@ en:
       label: "Add <b>degree</b> for your %{entity_type}"
     program_name:
       label: "Add <b>program name</b> for your %{entity_type}"
+  processing_actions:
+    access_policy:
+      label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
+    attach:
+      label: "<b>Attach</b> files to this %{work_type}"
+    describe:
+      label: "Further <b>describe</b> your %{work_type}"
+    collaborators:
+      label: "Identify <b>who is involved</b> with this %{work_type}"
+    assign_a_doi:
+      label: 'Assign a <b><abbr title="Digital Object Identifier">DOI</abbr></b>'
+    assign_a_citation:
+      label: 'Create a <b>citation</b>'
+    defense_date:
+      label: "Record the <b>defense date</b> for your %{work_type}"
+    search_terms:
+      label: "Add <b>search terms</b> for your %{work_type}"
+    degree:
+      label: "Add <b>degree</b> for your %{work_type}"
+    program_name:
+      label: "Add <b>program name</b> for your %{work_type}"
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'

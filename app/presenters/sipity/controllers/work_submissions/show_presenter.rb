@@ -56,7 +56,11 @@ module Sipity
 
         # TODO: work_type, processing_state should be translated
         delegate :id, to: :work_submission, prefix: :work
-        delegate :title, :work_type, to: :work_submission
+        delegate :title, to: :work_submission
+
+        def work_type
+          TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type, predicate: :label)
+        end
 
         def processing_state
           work_submission.processing_state.to_s
@@ -68,15 +72,12 @@ module Sipity
         end
 
         def section(identifier)
-          I18n.t("sipity/works.processing_action_names.#{processing_action_name}.#{identifier}")
+          TranslationAssistant.call(
+            scope: :sections, subject: work_submission, object: identifier, predicate: :label
+          )
         end
 
         private
-
-        def processing_action_name
-          # TODO: Magic string here!
-          'show'
-        end
 
         attr_reader :work_submission
 

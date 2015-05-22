@@ -65,8 +65,13 @@ module Sipity
         end
 
         it 'will expose #section that accepts an identifier' do
-          expect(I18n).to receive(:t)
+          expect(TranslationAssistant).to receive(:call)
           subject.section('overview')
+        end
+
+        it 'will expose #work_type and delegate to the TranslationAssistant' do
+          expect(TranslationAssistant).to receive(:call)
+          subject.work_type
         end
 
         context '#label' do

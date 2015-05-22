@@ -18,7 +18,7 @@
   <div class="row">
     {{#enrichment_actions?}}
       <aside class="col-md-6 work-tasks">
-        <h2 class="task-heading">{{ section.todo.heading }}</h2>
+        <h2 class="task-heading">{{ section.todo }}</h2>
         <div class="todo">
           {{render_enrichment_action_set.required}}
           {{render_enrichment_action_set.optional}}
@@ -29,7 +29,7 @@
     <div class={{#enrichment_actions?}}"col-md-6"{{/enrichment_actions?}}{{^enrichment_actions?}}"col-md-8"{{/enrichment_actions?}}>
       <article class="panel panel-default work-description">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ section.overview.heading }}</h3>
+          <h3 class="panel-title">{{ section.overview }}</h3>
         </div>
         <div class="panel-body">
           <dl class="work attribute-listing">

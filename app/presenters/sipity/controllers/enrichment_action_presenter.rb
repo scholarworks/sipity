@@ -9,11 +9,13 @@ module Sipity
 
       delegate :name, to: :enrichment_action, prefix: :action
 
+      include GuardInterfaceExpectation
       def initialize(context, options = {})
         # Because Curly template passes string keys, I need to check those as well; But symbols are convenient.
         self.enrichment_action_set = options.fetch(:enrichment_action_set) { options.fetch('enrichment_action_set') }
         self.repository = options.delete(:repository) { default_repository }
         super
+        guard_interface_expectation!(enrichment_action_set, :entity)
         initialize_state_variables_for_interrogation!
       end
 
@@ -47,7 +49,9 @@ module Sipity
       end
 
       def label
-        @enrichment_action.name
+        TranslationAssistant.call(
+          scope: :processing_actions, subject: entity, object: enrichment_action.name, predicate: :label
+        )
       end
 
       def completion_mark_if_applicable
@@ -61,7 +65,14 @@ module Sipity
 
       private
 
-      attr_accessor :repository, :enrichment_action_set
+      attr_accessor :repository
+      attr_reader :enrichment_action_set
+
+      include GuardInterfaceExpectation
+      def enrichment_action_set=(input)
+        guard_interface_expectation!(input, :entity, :identifier)
+        @enrichment_action_set = input
+      end
 
       def default_repository
         QueryRepository.new

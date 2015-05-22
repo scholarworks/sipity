@@ -11,7 +11,6 @@ module Sipity
       private :state_advancing_action
 
       delegate :name, to: :state_advancing_action, prefix: :action
-      delegate :entity, to: :state_advancing_action_set
 
       def initialize(context, options = {})
         # Because Curly template passes string keys, I need to check those as well; But symbols are convenient.
@@ -38,17 +37,25 @@ module Sipity
       end
 
       def label
-        # TODO: Translate this
-        state_advancing_action.name
+        TranslationAssistant.call(
+          scope: :processing_actions, subject: entity, object: state_advancing_action.name, predicate: :label
+        )
       end
 
       private
 
-      attr_accessor :repository, :state_advancing_action_set
-      attr_reader :state_advancing_action
+      attr_accessor :repository
+      attr_reader :state_advancing_action, :state_advancing_action_set
 
       def default_repository
         QueryRepository.new
+      end
+
+      delegate :entity, to: :state_advancing_action_set
+      include GuardInterfaceExpectation
+      def state_advancing_action_set=(input)
+        guard_interface_expectation!(input, :entity)
+        @state_advancing_action_set = input
       end
 
       def initialize_state_variables_for_interrogation!

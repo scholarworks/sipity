@@ -28,14 +28,15 @@ module Sipity
           with(entity: entity, pluck: :id).and_return(actions_with_unmet_prerequisites)
       end
 
-      # TODO: This is provisional
       its(:default_repository) { should respond_to(:scope_strategy_actions_with_incomplete_prerequisites) }
 
       its(:action_name) { should eq(state_advancing_action.name) }
       its(:path) { should be_a(String) }
 
-      # TODO: This is provisional and should be translated
-      its(:label) { should eq(state_advancing_action.name) }
+      it 'will delegate #label to the TranslationAssistant' do
+        expect(TranslationAssistant).to receive(:call)
+        subject.label
+      end
 
       context 'with all actions having met the prerequites' do
         let(:actions_with_unmet_prerequisites) { [] }

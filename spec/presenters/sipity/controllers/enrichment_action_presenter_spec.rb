@@ -30,8 +30,11 @@ module Sipity
       its(:action_name) { should eq(enrichment_action.name) }
       its(:path) { should be_a(String) }
 
-      # TODO: This is provisional and should be translated
-      its(:label) { should eq(enrichment_action.name) }
+      it 'will delegate #label to the TranslationAssistant' do
+        expect(TranslationAssistant).to receive(:call)
+        subject.label
+      end
+
       it { should respond_to(:complete?) }
       it { should respond_to(:a_prerequisite?) }
 
