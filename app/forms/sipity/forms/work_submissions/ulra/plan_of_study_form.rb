@@ -8,10 +8,13 @@ module Sipity
           delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
           private(*ProcessingForm.private_delegate_method_names)
 
+          include Conversions::ExtractInputDateFromInput
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
             self.processing_action_form = ProcessingForm.new(form: self, **keywords)
-            self.expected_graduation_date = attributes.fetch(:expected_graduation_date) { expected_graduation_date_from_work }
+            self.expected_graduation_date = extract_input_date_from_input(:expected_graduation_date, attributes) do
+              expected_graduation_date_from_work
+            end
             self.majors = attributes.fetch(:majors) { majors_from_work }
           end
 
@@ -34,13 +37,12 @@ module Sipity
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
 
+          private
+
           def save(requested_by:)
             repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
             repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
-            work
           end
-
-          private
 
           def expected_graduation_date_from_work
             repository.work_attribute_values_for(work: work, key: 'expected_graduation_date')

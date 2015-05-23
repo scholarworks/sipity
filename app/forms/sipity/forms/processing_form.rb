@@ -53,9 +53,7 @@ module Sipity
           entity: entity, action: processing_action_name, requested_by: requested_by
         )
         repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
-
-        form.save(requested_by: requested_by)
-
+        form.send(:save, requested_by: requested_by)
         entity
       end
 
@@ -65,7 +63,9 @@ module Sipity
 
       include GuardInterfaceExpectation
       def form=(input)
-        guard_interface_expectation!(input, :valid?, :save, :base_class, :entity)
+        guard_interface_expectation!(input, :valid?, :base_class, :entity)
+        # I want to use send
+        guard_interface_expectation!(input, :save, include_all: true)
         @form = input
       end
 

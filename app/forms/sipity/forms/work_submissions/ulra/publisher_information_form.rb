@@ -5,9 +5,12 @@ module Sipity
         # Responsible for capturing and validating information for publisher information
         class PublisherInformationForm < Forms::WorkEnrichmentForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
+          private(*ProcessingForm.private_delegate_method_names)
 
-          def initialize(attributes = {})
-            super
+          def initialize(work:, attributes: {}, **keywords)
+            self.work = work
+            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }
             self.allow_pre_prints = attributes.fetch(:allow_pre_prints) { allow_pre_prints_from_work }
           end
@@ -22,17 +25,17 @@ module Sipity
           VALID_VALUES_FOR_ALLOW_PRE_PRINTS = ["Yes", "No", "I do not know"].freeze
           validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }
 
+          protected
+
+          def save(requested_by:)
+            repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
+            repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
+          end
+
           private
 
           def allow_pre_prints=(values)
             @allow_pre_prints = to_array_without_empty_values(values)
-          end
-
-          def save(requested_by:)
-            super do
-              repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
-              repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
-            end
           end
 
           def publication_name_from_work
