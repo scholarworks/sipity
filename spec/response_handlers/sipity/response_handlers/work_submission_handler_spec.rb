@@ -13,6 +13,16 @@ module Sipity
         end
       end
 
+      RSpec.describe SubmitSuccessResponder do
+        let(:handler) { double(redirect_to: true, response_object: double(id: '123'), work_submission_path: true) }
+
+        it 'will coordinate the rendering of the template' do
+          expect(handler).to receive(:work_submission_path).with(work_id: handler.response_object.id).and_return(:path)
+          described_class.call(handler: handler)
+          expect(handler).to have_received(:redirect_to).with(:path)
+        end
+      end
+
       RSpec.describe SubmitFailureResponder do
         let(:handler) { double(render: 'rendered', template: 'show') }
 
