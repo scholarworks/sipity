@@ -22,8 +22,10 @@ module Sipity
           end
 
           it { should respond_to :work }
+          it { should respond_to :entity }
           it { should respond_to :publication_name }
           it { should respond_to :allow_pre_prints }
+          it { should_not be_persisted }
 
           it 'will require a publication' do
             subject.valid?
@@ -38,7 +40,7 @@ module Sipity
 
           it 'with valid allow_pre_prints' do
             form_obj = described_class.new(
-              work: work, repository: repository, publication_name: "dummy", allow_pre_prints: "Yes"
+              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: "Yes" }
             )
             form_obj.valid?
             expect(form_obj.errors[:allow_pre_prints]).not_to be_present
@@ -46,7 +48,7 @@ module Sipity
 
           it 'with invalid allow_pre_prints' do
             form_obj = described_class.new(
-              work: work, repository: repository, publication_name: "dummy", allow_pre_prints: "dummy"
+              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: "dummy" }
             )
             form_obj.valid?
             expect(form_obj.errors[:allow_pre_prints]).to be_present
@@ -54,7 +56,7 @@ module Sipity
 
           it 'will require at least one non-blank allow_pre_prints' do
             subject = described_class.new(
-              work: work, repository: repository, publication_name: "dummy", allow_pre_prints: ["", ""]
+              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: ["", ""] }
             )
             subject.valid?
             expect(subject.errors[:allow_pre_prints]).to be_present
@@ -62,19 +64,19 @@ module Sipity
 
           it 'will require at least one non-blank allow_pre_prints' do
             subject = described_class.new(
-              work: work, repository: repository, publication_name: "dummy", allow_pre_prints: ["I do not know", ""]
+              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: ["I do not know", ""] }
             )
             subject.valid?
             expect(subject.errors[:allow_pre_prints]).to_not be_present
           end
 
           it 'will only keep publication entries that are "present?"' do
-            subject = described_class.new(work: work, repository: repository, publication_name: publication_name)
+            subject = described_class.new(work: work, repository: repository, attributes: { publication_name: publication_name })
             expect(subject.publication_name).to eq(publication_name)
           end
 
           it 'will only keep allow_pre_printss entries that are "present?"' do
-            subject = described_class.new(work: work, repository: repository, allow_pre_prints: ['Yes'])
+            subject = described_class.new(work: work, repository: repository, attributes: { allow_pre_prints: ['Yes'] })
             expect(subject.allow_pre_prints).to eq(['Yes'])
           end
 
@@ -83,7 +85,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, publication_name: 'test', repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { publication_name: 'test' })
               expect(subject.publication_name).to eq 'test'
             end
             it 'will fall back on #publication information associated with the work' do
@@ -98,7 +100,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, allow_pre_prints: ['Yes'], repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { allow_pre_prints: ['Yes'] })
               expect(subject.allow_pre_prints).to eq ['Yes']
             end
             it 'will fall back on #allow_pre_prints information associated with the work' do
@@ -120,7 +122,9 @@ module Sipity
             end
 
             context 'with valid data' do
-              subject { described_class.new(work: work, publication_name: 'bogus', allow_pre_prints: 'No', repository: repository) }
+              subject do
+                described_class.new(work: work, repository: repository, attributes: { publication_name: 'bogus', allow_pre_prints: 'No' })
+              end
               before do
                 expect(subject).to receive(:valid?).and_return(true)
               end
@@ -130,18 +134,8 @@ module Sipity
                 expect(returned_value).to eq(work)
               end
 
-              it "will transition the work's corresponding enrichment todo item to :done" do
-                expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
-              end
-
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will record the event' do
-                expect(repository).to receive(:log_event!).and_call_original
                 subject.submit(requested_by: user)
               end
             end

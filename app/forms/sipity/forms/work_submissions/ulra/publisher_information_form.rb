@@ -3,7 +3,7 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for publisher information
-        class PublisherInformationForm < Forms::WorkEnrichmentForm
+        class PublisherInformationForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
           delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
           private(*ProcessingForm.private_delegate_method_names)
@@ -15,8 +15,19 @@ module Sipity
             self.allow_pre_prints = attributes.fetch(:allow_pre_prints) { allow_pre_prints_from_work }
           end
 
-          attr_accessor :publication_name
-          attr_reader :allow_pre_prints
+          private
+
+          attr_accessor :processing_action_form
+          attr_writer :work, :publication_name
+
+          public
+
+          def persisted?
+            false
+          end
+
+          attr_reader :publication_name, :allow_pre_prints, :work
+          alias_method :entity, :work
 
           include ActiveModel::Validations
           include Hydra::Validations
@@ -25,14 +36,12 @@ module Sipity
           VALID_VALUES_FOR_ALLOW_PRE_PRINTS = ["Yes", "No", "I do not know"].freeze
           validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }
 
-          protected
+          private
 
           def save(requested_by:)
             repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
             repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
           end
-
-          private
 
           def allow_pre_prints=(values)
             @allow_pre_prints = to_array_without_empty_values(values)
