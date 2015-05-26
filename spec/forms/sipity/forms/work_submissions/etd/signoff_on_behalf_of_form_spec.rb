@@ -77,7 +77,8 @@ module Sipity
             end
 
             it 'will call the signoff_service (because the logic is complicated)' do
-              expect(signoff_service).to receive(:call).with(form: subject, requested_by: user, repository: repository)
+              expect(signoff_service).to receive(:call).
+                with(form: subject, requested_by: user, repository: repository, on_behalf_of: on_behalf_of_collaborator)
               subject.submit(requested_by: user)
             end
 

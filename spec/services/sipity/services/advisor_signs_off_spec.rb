@@ -1,12 +1,17 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action', on_behalf_of_collaborator: on_behalf_of) }
+      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action') }
       let(:on_behalf_of) { double('Collaborator') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
 
-      subject { described_class.new(form: form, repository: repository, requested_by: requested_by) }
+      subject { described_class.new(form: form, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of) }
+
+      it 'will default the on_behalf_of to the requested_by if none is given' do
+        subject = described_class.new(form: form, repository: repository, requested_by: requested_by)
+        expect(subject.on_behalf_of).to eq(requested_by)
+      end
 
       context '.call' do
         it 'is a wrapper' do

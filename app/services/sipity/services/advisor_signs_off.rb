@@ -6,21 +6,24 @@ module Sipity
         new(*args).call
       end
 
-      def initialize(form:, requested_by:, repository: default_repository)
+      def initialize(form:, requested_by:, on_behalf_of: requested_by, repository: default_repository)
         self.form = form
         self.repository = repository
         self.requested_by = requested_by
+        self.on_behalf_of = on_behalf_of
       end
 
-      attr_accessor :form, :repository, :requested_by
-      private(:form=, :repository=, :requested_by=)
+      private
+
+      attr_writer :form, :repository, :requested_by, :on_behalf_of
+
+      public
+
+      attr_reader :form, :repository, :requested_by, :on_behalf_of
 
       delegate :resulting_strategy_state, :action, to: :form
 
       def call
-        # TODO: Log the event
-        # TODO: Register actions take by the requestor and on behalf of
-        # TODO: Allow for analogues
         send_confirmation_of_advisor_signoff
         handle_last_advisor_signoff if last_advisor_to_signoff?
       end
@@ -32,10 +35,7 @@ module Sipity
       end
 
       def send_confirmation_of_advisor_signoff
-        options = { the_thing: form, scope: action, requested_by: requested_by }
-        # HACK: This is a weak solution
-        options[:on_behalf_of] = form.on_behalf_of_collaborator if form.respond_to?(:on_behalf_of_collaborator)
-        repository.deliver_notification_for(options)
+        repository.deliver_notification_for(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
       end
 
       def handle_last_advisor_signoff

@@ -36,7 +36,7 @@ module Sipity
           def submit(requested_by:)
             return false unless valid?
             register_the_actions(requested_by: requested_by)
-            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
+            signoff_service.call(form: self, requested_by: requested_by, repository: repository, on_behalf_of: on_behalf_of_collaborator)
             work
           end
 
