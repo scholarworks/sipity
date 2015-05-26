@@ -5,45 +5,6 @@ module Sipity
   module Controllers
     RSpec.describe WorksController, type: :controller do
       let(:work) { Models::Work.new(title: 'The Title', id: '1234') }
-
-      context 'GET #new' do
-        before { controller.runner = runner }
-        let(:runner) do
-          Hesburgh::Lib::MockRunner.new(
-            yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
-          )
-        end
-        let(:attributes) { { 'title' => 'My Title' } }
-        let(:yields) { work }
-        let(:callback_name) { :success }
-        it 'will render the new page' do
-          get 'new', work: attributes
-          expect(assigns(:model)).to_not be_nil
-          expect(response).to render_template('new')
-        end
-      end
-
-      context 'POST #create' do
-        before do
-          controller.runner = runner
-          # Because Rails checks persisted for when processing respond_with
-          allow(work).to receive(:persisted?).and_return(true)
-        end
-        let(:runner) do
-          Hesburgh::Lib::MockRunner.new(
-            yields: yields, callback_name: callback_name, run_with: { attributes: attributes }, context: controller
-          )
-        end
-        let(:attributes) { { 'title' => 'My Title' } }
-        let(:yields) { work }
-        let(:callback_name) { :success }
-        it 'will render the new page' do
-          post 'create', work: attributes
-          expect(assigns(:model)).to_not be_nil
-          expect(response).to redirect_to("/works/#{work.to_param}")
-        end
-      end
-
       context 'GET #show' do
         before { controller.runner = runner }
         let(:runner) do
@@ -60,23 +21,6 @@ module Sipity
           expect(response).to render_template('show')
         end
       end
-
-      context 'DELETE #destroy' do
-        before { controller.runner = runner }
-        let(:runner) do
-          Hesburgh::Lib::MockRunner.new(
-            yields: yields, callback_name: callback_name, run_with: { work_id: work.to_param }, context: controller
-          )
-        end
-
-        let(:yields) { work }
-        let(:callback_name) { :success }
-        it 'will redirect to the dashboard' do
-          delete 'destroy', id: work.to_param
-          expect(response).to redirect_to(dashboard_path)
-        end
-      end
-
     end
   end
 end

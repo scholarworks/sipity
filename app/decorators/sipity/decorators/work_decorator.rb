@@ -49,21 +49,6 @@ module Sipity
         repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      delegate :state_advancing_actions, :resourceful_actions, to: :processing_actions
-
-      def enrichment_actions
-        processing_actions.enrichment_actions.each_with_object({}) do |action, mem|
-          mem['required'] ||= []
-          mem['optional'] ||= []
-          if action.is_a_prerequisite?
-            mem['required'] << action
-          else
-            mem['optional'] << action
-          end
-          mem
-        end
-      end
-
       def comments(decorator: default_comment_decorator)
         @comments ||= repository.find_comments_for(entity: self).map do|comment|
           decorator.decorate(comment)
@@ -85,10 +70,6 @@ module Sipity
 
       def default_comment_decorator
         Decorators::Processing::ProcessingCommentDecorator
-      end
-
-      def processing_actions
-        @processing_actions ||= ProcessingActions.new(user: h.current_user, entity: self)
       end
     end
   end
