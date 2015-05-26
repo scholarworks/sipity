@@ -39,7 +39,7 @@ module Sipity
 
           private
 
-          def save(requested_by:)
+          def save(*)
             repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
             repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
           end

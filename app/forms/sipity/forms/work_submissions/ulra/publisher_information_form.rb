@@ -38,7 +38,7 @@ module Sipity
 
           private
 
-          def save(requested_by:)
+          def save(*)
             repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
             repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
           end
