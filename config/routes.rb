@@ -16,7 +16,9 @@ Rails.application.routes.draw do
   devise_for :users #, only: :sessions
   devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
-  get 'start', to: redirect('/works/new'), as: 'start'
+
+  # This route should considered deprecated
+  get 'start', to: redirect('/areas/etd/start', status: 301), as: 'start'
 
   get(
     'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { processing_action_name: 'show' }
