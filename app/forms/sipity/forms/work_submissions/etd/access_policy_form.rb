@@ -122,57 +122,57 @@ module Sipity
             validates :access_right_code, presence: true, inclusion: { in: :valid_access_right_codes, allow_nil: true }
             validates :release_date, presence: { if: :will_be_under_embargo? }
 
-                                                   def to_hash
-                                                     {
-                                                       entity_id: id.to_s,
-                                                       entity_type: entity_type,
-                                                       access_right_code: access_right_code,
-                                                       release_date: release_date
-                                                     }
-                                                   end
+            def to_hash
+              {
+                entity_id: id.to_s,
+                entity_type: entity_type,
+                access_right_code: access_right_code,
+                release_date: release_date
+              }
+            end
 
-                                                   include Conversions::ConvertToPolymorphicType
-                                                   def entity_type
-                                                     # HACK: It would be nice if the possible objects, however the
-                                                     # collaboration of the objects related to this form are out of
-                                                     # whack.
-                                                     if persisted_object.respond_to?(:entity_type)
-                                                       persisted_object.entity_type
-                                                     else
-                                                       convert_to_polymorphic_type(persisted_object)
-                                                     end
-                                                   end
+            include Conversions::ConvertToPolymorphicType
+            def entity_type
+              # HACK: It would be nice if the possible objects, however the
+              # collaboration of the objects related to this form are out of
+              # whack.
+              if persisted_object.respond_to?(:entity_type)
+                persisted_object.entity_type
+              else
+                convert_to_polymorphic_type(persisted_object)
+              end
+            end
 
-                                                   private
+            private
 
-                                                   attr_accessor :persisted_object
-                                                   attr_writer :access_right_code
+            attr_accessor :persisted_object
+            attr_writer :access_right_code
 
-                                                   include Conversions::ConvertToDate
-                                                   def release_date=(value)
-                                                     if keep_user_input_release_date?
-                                                       @release_date = convert_to_date(value) { nil }
-                                                     else
-                                                       @release_date = nil
-                                                     end
-                                                   end
+            include Conversions::ConvertToDate
+            def release_date=(value)
+              if keep_user_input_release_date?
+                @release_date = convert_to_date(value) { nil }
+              else
+                @release_date = nil
+              end
+            end
 
-                                                   def keep_user_input_release_date?
-                                                     # We don't want to obliterate their input just because they didn't
-                                                     # give us an access_right_code.
-                                                     access_right_code.blank? || will_be_under_embargo?
-                                                   end
+            def keep_user_input_release_date?
+              # We don't want to obliterate their input just because they didn't
+              # give us an access_right_code.
+              access_right_code.blank? || will_be_under_embargo?
+            end
 
-                                                   def will_be_under_embargo?
-                                                     access_right_code == Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-                                                   end
+            def will_be_under_embargo?
+              access_right_code == Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
+            end
 
-                                                   def valid_access_right_codes
-                                                     Models::AccessRight.primative_acccess_right_codes
-                                                   end
-                                                 end
-                                                 end
-                                                 end
-                                                 end
-                                                 end
-                                                 end
+            def valid_access_right_codes
+              Models::AccessRight.primative_acccess_right_codes
+            end
+          end
+        end
+      end
+    end
+  end
+end
