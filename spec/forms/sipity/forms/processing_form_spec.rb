@@ -13,7 +13,7 @@ module Sipity
         let(:form_class) do
           Class.new do
             def self.name
-              'Class'
+              'HelloWorld'
             end
 
             def base_class
@@ -34,7 +34,11 @@ module Sipity
         it { should respond_to :entity }
         it { should respond_to :title }
         it { should respond_to :job }
+        its(:processing_subject_name) { should eq('work') }
         its(:attribute_names) { should eq([:title, :job]) }
+        its(:base_class) { should eq(Models::Work) }
+        its(:policy_enforcer) { should eq(Policies::WorkPolicy) }
+        its(:template) { should eq('hello_world') }
         it { should_not be_persisted }
         it { should delegate_method(:enrichment_type).to(:processing_action_form) }
         it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
@@ -75,6 +79,9 @@ module Sipity
             expect(subject).to_not receive(:save)
             expect(subject.submit(requested_by: user)).to be_falsey
           end
+          it 'will not yield control' do
+            expect { |b| subject.submit(requested_by: user, &b) }.to_not yield_control
+          end
         end
 
         context 'when valid' do
@@ -82,6 +89,10 @@ module Sipity
           it 'will return the underlying entity' do
             expect(form).to receive(:save).with(requested_by: user)
             expect(subject.submit(requested_by: user)).to eq(entity)
+          end
+
+          it 'will yield with the repository' do
+            expect { |b| subject.submit(requested_by: user, &b) }.to yield_with_no_args
           end
 
           it 'will register the action that was taken' do

@@ -5,8 +5,7 @@ module Sipity
         # Responsible for capturing and validating information for plan_of_study.
         class PlanOfStudyForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
-          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
-          private(*ProcessingForm.private_delegate_method_names)
+          ProcessingForm.configure(form_class: self, attribute_names: [:expected_graduation_date, :majors], processing_subject_name: :work)
 
           include Conversions::ExtractInputDateFromInput
           def initialize(work:, attributes: {}, **keywords)
@@ -17,20 +16,6 @@ module Sipity
             end
             self.majors = attributes.fetch(:majors) { majors_from_work }
           end
-
-          private
-
-          attr_accessor :processing_action_form
-          attr_writer :work
-
-          public
-
-          def persisted?
-            false
-          end
-
-          attr_reader :expected_graduation_date, :majors, :work
-          alias_method :entity, :work
 
           include ActiveModel::Validations
           include Hydra::Validations

@@ -13,14 +13,33 @@ module Sipity
         [:repository]
       end
 
-      def self.configure(form_class:, attribute_names:, processing_subject_name:)
+      # Code that writes code; Here is a configuration macro to help ensure we
+      # have a common shape to all of our forms.
+      def self.configure(form_class:, base_class:, attribute_names:, **keywords)
         processing_form_class = self
         form_class.module_exec do
           class_attribute(:attribute_names, instance_writer: :false) unless respond_to?(:attribute_names=)
           self.attribute_names = Array.wrap(attribute_names)
 
-          class << form_class
-            private :attribute_names=
+          class_attribute(:processing_subject_name, instance_writer: :false) unless respond_to?(:processing_subject_name=)
+          self.processing_subject_name = keywords.fetch(:processing_subject_name) do
+            base_class.name.sub(/.*::(\w+)::(\w+)\Z/, '\2').underscore
+          end
+
+          class_attribute :base_class unless respond_to?(:base_class=)
+          self.base_class = base_class
+
+          class_attribute :policy_enforcer unless respond_to?(:policy_enforcer=)
+          self.policy_enforcer = keywords.fetch(:policy_enforcer) do
+            base_class.name.sub(/::(\w+)::(\w+)\Z/, '::Policies::\2Policy').constantize
+          end
+
+          class_attribute :template unless respond_to?(:template=)
+          self.template = keywords.fetch(:template) { name.demodulize.sub(/Form\Z/, '').underscore }
+
+          class << self
+            delegate :model_name, :human_attribute_name, to: :base_class
+            private(:attribute_names=)
           end
 
           delegate(*processing_form_class.delegate_method_names, to: :processing_action_form)
