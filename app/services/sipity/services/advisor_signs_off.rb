@@ -18,6 +18,9 @@ module Sipity
       delegate :resulting_strategy_state, :action, to: :form
 
       def call
+        # TODO: Log the event
+        # TODO: Register actions take by the requestor and on behalf of
+        # TODO: Allow for analogues
         send_confirmation_of_advisor_signoff
         handle_last_advisor_signoff if last_advisor_to_signoff?
       end
