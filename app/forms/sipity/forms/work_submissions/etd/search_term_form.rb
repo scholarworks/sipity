@@ -20,16 +20,20 @@ module Sipity
 
           def submit(requested_by:)
             processing_action_form.submit(requested_by: requested_by) do
-              repository.update_work_attribute_values!(work: work, key: 'subject', values: subject)
-              repository.update_work_attribute_values!(work: work, key: 'language', values: language)
-              repository.update_work_attribute_values!(work: work, key: 'temporal_coverage', values: temporal_coverage)
-              repository.update_work_attribute_values!(work: work, key: 'spatial_coverage', values: spatial_coverage)
+              update_attribute_values('subject')
+              update_attribute_values('language')
+              update_attribute_values('temporal_coverage')
+              update_attribute_values('spatial_coverage')
             end
           end
 
           include ActiveModel::Validations
 
           private
+
+          def update_attribute_values(key)
+            repository.update_work_attribute_values!(work: work, key: key, values: send(key))
+          end
 
           def subject_from_work
             repository.work_attribute_values_for(work: work, key: 'subject')
