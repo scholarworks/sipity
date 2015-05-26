@@ -90,6 +90,7 @@ CyclomaticComplexity:
   Exclude:
      - app/conversions/**/*.rb
      - app/forms/sipity/forms/configure.rb
+     - app/forms/sipity/forms/processing_form.rb
 
 Metrics/PerceivedComplexity:
   Enabled: true
@@ -108,6 +109,7 @@ Metrics/AbcSize:
      - app/controllers/application_controller.rb
      - app/forms/sipity/forms/work_enrichments/attach_form.rb
      - 'app/repositories/sipity/commands/processing_commands.rb'
+     - app/forms/sipity/forms/processing_form.rb
 Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: false
