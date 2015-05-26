@@ -3,10 +3,13 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for faculty comments
-        class FacultyResponseForm < Forms::WorkEnrichmentForm
+        class FacultyResponseForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
-          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
-          private(*ProcessingForm.private_delegate_method_names)
+          ProcessingForm.configure(
+            form_class: self,
+            processing_subject_name: :work,
+            attribute_names: [:course, :nature_of_supervision, :supervising_semester, :quality_of_research, :use_of_library_resources]
+          )
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
@@ -17,18 +20,9 @@ module Sipity
 
           private
 
-          attr_accessor :processing_action_form, :attachments_extension
-          attr_writer :work, :course, :nature_of_supervision, :quality_of_research, :use_of_library_resources
+          attr_accessor :attachments_extension
 
           public
-
-          def persisted?
-            false
-          end
-
-          attr_reader :course, :nature_of_supervision, :quality_of_research, :use_of_library_resources, :supervising_semester
-          attr_reader :work
-          alias_method :entity, :work
 
           delegate(
             :attachments,
@@ -64,14 +58,12 @@ module Sipity
           end
 
           def save(requested_by:)
-            super do
-              update_course
-              update_nature_of_supervision
-              update_supervising_semester
-              update_quality_of_research
-              update_use_of_library_resources
-              attach_or_update_files(requested_by: requested_by, predicate_name: "faculty_comments_attachment")
-            end
+            update_course
+            update_nature_of_supervision
+            update_supervising_semester
+            update_quality_of_research
+            update_use_of_library_resources
+            attach_or_update_files(requested_by: requested_by, predicate_name: "faculty_comments_attachment")
           end
 
           def update_course
