@@ -50,7 +50,7 @@ module Sipity
 
           private
 
-          attr_accessor :processing_action_form
+          attr_reader :processing_action_form
           attr_writer(*Array.wrap(attribute_names))
           attr_writer processing_subject_name
 
@@ -62,6 +62,12 @@ module Sipity
 
           def persisted?
             false
+          end
+
+          include GuardInterfaceExpectation
+          def processing_action_form=(input)
+            guard_interface_expectation!(input, :submit, :repository, :to_work_area, :to_processing_entity, :processing_action_name)
+            @processing_action_form = input
           end
         end
       end
