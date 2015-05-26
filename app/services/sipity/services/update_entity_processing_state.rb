@@ -4,6 +4,9 @@ module Sipity
     # processing state.
     class UpdateEntityProcessingState
       def self.call(entity:, processing_state:, **collaborators)
+        # If you tell me you want to update the processing state to nil, I'm
+        # okay with that. I'll just return false. No updates will happen.
+        return false unless processing_state.present?
         new(entity: entity, processing_state: processing_state, **collaborators).call
       end
 

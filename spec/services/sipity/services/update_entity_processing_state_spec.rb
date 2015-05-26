@@ -15,6 +15,11 @@ module Sipity
           expect(described_class).to receive(:new).and_return(double(call: true))
           described_class.call(entity: entity, processing_state: 'submit_for_review')
         end
+
+        it 'will return false if no processing state is given' do
+          expect(described_class).to_not receive(:new)
+          expect(described_class.call(entity: entity, processing_state: '')).to eq(false)
+        end
       end
 
       its(:default_repository) { should respond_to :destroy_existing_registered_state_changing_actions_for }
