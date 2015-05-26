@@ -72,6 +72,12 @@ module Sipity
         expect(subject.to_work_area).to eq(:converted)
       end
 
+      it 'should convert the underlying processing action name to a processing_action' do
+        expect(Conversions::ConvertToProcessingAction).to receive(:call).
+          with(subject.processing_action_name, scope: entity).and_return(:converted)
+        expect(subject.to_processing_action).to eq(:converted)
+      end
+
       context '#submit' do
         context 'when invalid' do
           before { allow(form).to receive(:valid?).and_return(false) }
@@ -85,7 +91,11 @@ module Sipity
         end
 
         context 'when valid' do
-          before { allow(form).to receive(:valid?).and_return(true) }
+          let(:an_action) { double(resulting_strategy_state: double) }
+          before do
+            allow(subject).to receive(:to_processing_action).and_return(an_action)
+            allow(form).to receive(:valid?).and_return(true)
+          end
           it 'will return the underlying entity' do
             expect(form).to receive(:save).with(requested_by: user)
             expect(subject.submit(requested_by: user)).to eq(entity)
@@ -97,6 +107,12 @@ module Sipity
 
           it 'will register the action that was taken' do
             expect(repository).to receive(:register_processing_action_taken_on_entity).and_call_original
+            subject.submit(requested_by: user)
+          end
+
+          it 'will register the action that was taken' do
+            expect(repository).to receive(:update_processing_state!).
+              with(entity: entity, to: an_action.resulting_strategy_state).and_call_original
             subject.submit(requested_by: user)
           end
 

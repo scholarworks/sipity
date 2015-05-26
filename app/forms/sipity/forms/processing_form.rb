@@ -89,6 +89,10 @@ module Sipity
         PowerConverter.convert_to_work_area(entity)
       end
 
+      def to_processing_action
+        Conversions::ConvertToProcessingAction.call(processing_action_name, scope: entity)
+      end
+
       private
 
       def event_name
@@ -104,6 +108,8 @@ module Sipity
         )
         repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
         form.send(:save, requested_by: requested_by)
+
+        repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
         entity
       end
 
