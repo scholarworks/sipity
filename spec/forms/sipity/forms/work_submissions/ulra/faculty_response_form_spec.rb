@@ -9,7 +9,7 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           subject { described_class.new(work: work, repository: repository) }
 
-          its(:enrichment_type) { should eq('faculty_response') }
+          its(:processing_action_name) { should eq('faculty_response') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
 
@@ -26,6 +26,7 @@ module Sipity
           it { should respond_to :course }
           it { should respond_to :supervising_semester }
           it { should respond_to :nature_of_supervision }
+          it { should_not be_persisted }
 
           it 'will require course, supervising_semester and nature_of_supervision' do
             subject.valid?
@@ -50,7 +51,9 @@ module Sipity
                 "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
               }
             end
-            subject { described_class.new(work: work, attachments_attributes: attachments_attributes, repository: repository) }
+            subject do
+              described_class.new(work: work, repository: repository, attributes: { attachments_attributes: attachments_attributes })
+            end
 
             before do
               allow(subject).to receive(:valid?).and_return(true)
@@ -77,7 +80,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, course: 'test', repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { course: 'test' })
               expect(subject.course).to eq 'test'
             end
             it 'will fall back on #course information associated with the work' do
@@ -92,7 +95,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, nature_of_supervision: 'test', repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { nature_of_supervision: 'test' })
               expect(subject.nature_of_supervision).to eq 'test'
             end
             it 'will fall back on #nature_of_supervision information associated with the work' do
@@ -109,7 +112,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, supervising_semester: ['bogus', 'test'], repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { supervising_semester: ['bogus', 'test'] })
               expect(subject.supervising_semester).to eq ['bogus', 'test']
             end
             it 'will fall back on #supervising_semester information associated with the work' do
@@ -126,7 +129,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, quality_of_research: 'bogus', repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { quality_of_research: 'bogus' })
               expect(subject.quality_of_research).to eq 'bogus'
             end
             it 'will fall back on #quality_of_research information associated with the work' do
@@ -143,7 +146,7 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, use_of_library_resources: 'test', repository: repository)
+              subject = described_class.new(work: work, repository: repository, attributes: { use_of_library_resources: 'test' })
               expect(subject.use_of_library_resources).to eq 'test'
             end
             it 'will fall back on #use_of_library_resources information associated with the work' do
@@ -169,11 +172,13 @@ module Sipity
             context 'with valid data' do
               subject do
                 described_class.new(
-                  work: work, course: 'bogus', nature_of_supervision: 'nature of supervision',
-                  supervising_semester: ["bogus", "test"], quality_of_research: 'test',
-                  use_of_library_resources: 'books', repository: repository
+                  work: work, repository: repository, attributes: {
+                    course: 'bogus', nature_of_supervision: 'nature of supervision', supervising_semester: ["bogus", "test"],
+                    quality_of_research: 'test', use_of_library_resources: 'books'
+                  }
                 )
               end
+
               before do
                 expect(subject).to receive(:valid?).and_return(true)
               end
@@ -183,18 +188,8 @@ module Sipity
                 expect(returned_value).to eq(work)
               end
 
-              it "will transition the work's corresponding enrichment todo item to :done" do
-                expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
-              end
-
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(5).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will record the event' do
-                expect(repository).to receive(:log_event!).and_call_original
                 subject.submit(requested_by: user)
               end
             end

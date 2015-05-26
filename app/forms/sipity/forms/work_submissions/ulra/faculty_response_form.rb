@@ -5,15 +5,30 @@ module Sipity
         # Responsible for capturing and validating information for faculty comments
         class FacultyResponseForm < Forms::WorkEnrichmentForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
+          private(*ProcessingForm.private_delegate_method_names)
 
-          def initialize(attributes = {})
-            super
+          def initialize(work:, attributes: {}, **keywords)
+            self.work = work
+            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
 
-          attr_accessor :course, :nature_of_supervision, :quality_of_research, :use_of_library_resources, :attachments_extension
-          attr_reader :supervising_semester
+          private
+
+          attr_accessor :processing_action_form, :attachments_extension
+          attr_writer :work, :course, :nature_of_supervision, :quality_of_research, :use_of_library_resources
+
+          public
+
+          def persisted?
+            false
+          end
+
+          attr_reader :course, :nature_of_supervision, :quality_of_research, :use_of_library_resources, :supervising_semester
+          attr_reader :work
+          alias_method :entity, :work
 
           delegate(
             :attachments,
@@ -22,16 +37,7 @@ module Sipity
             :files,
             to: :attachments_extension
           )
-
-          private(
-            :course=,
-            :nature_of_supervision=,
-            :quality_of_research=,
-            :use_of_library_resources=,
-            :attachments_extension,
-            :attachments_extension=,
-            :attach_or_update_files
-          )
+          private(:attach_or_update_files)
 
           include ActiveModel::Validations
           include Hydra::Validations
