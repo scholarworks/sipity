@@ -3,17 +3,32 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for research process
-        class ResearchProcessForm < Forms::WorkEnrichmentForm
+        class ResearchProcessForm
           Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
+          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
+          private(*ProcessingForm.private_delegate_method_names)
 
-          def initialize(attributes = {})
-            super
+          def initialize(work:, attributes: {}, **keywords)
+            self.work = work
+            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
 
-          attr_reader :resource_consulted
-          attr_accessor :citation_style, :other_resource_consulted, :attachments_extension
+          private
+
+          attr_accessor :processing_action_form, :attachments_extension
+          attr_writer :work
+          attr_writer :resource_consulted, :citation_style, :other_resource_consulted
+
+          public
+
+          def persisted?
+            false
+          end
+
+          attr_reader :resource_consulted, :citation_style, :other_resource_consulted, :work
+          alias_method :entity, :work
 
           delegate(
             :attachments,
@@ -23,8 +38,9 @@ module Sipity
             to: :attachments_extension
           )
 
-          private(:citation_style=, :other_resource_consulted=, :attachments_extension, :attachments_extension=, :attach_or_update_files)
+          private(:attach_or_update_files)
 
+          include ActiveModel::Validations
           validates :citation_style, presence: true
 
           def available_resource_consulted
@@ -46,12 +62,10 @@ module Sipity
           end
 
           def save(requested_by:)
-            super do
-              repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
-              repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
-              repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
-              attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
-            end
+            repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
+            repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
+            repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
+            attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
           end
 
           def resource_consulted=(values)

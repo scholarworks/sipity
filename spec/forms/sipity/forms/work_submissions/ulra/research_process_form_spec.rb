@@ -27,6 +27,7 @@ module Sipity
           it { should respond_to :citation_style }
           it { should respond_to :attachments }
           it { should respond_to :files }
+          it { should_not be_persisted }
 
           it 'will require a citation_style' do
             subject.valid?
@@ -34,13 +35,13 @@ module Sipity
           end
 
           it 'will require a non-blank citation_stype' do
-            subject = described_class.new(work: work, repository: repository, citation_style: '')
+            subject = described_class.new(work: work, repository: repository, attributes: { citation_style: '' })
             subject.valid?
             expect(subject.errors[:citation_style]).to be_present
           end
 
           it 'will require a non-blank citation_style' do
-            subject = described_class.new(work: work, repository: repository, citation_style: 'chocolate')
+            subject = described_class.new(work: work, repository: repository, attributes: { citation_style: 'chocolate' })
             subject.valid?
             expect(subject.errors[:citation_style]).to_not be_present
           end
@@ -71,7 +72,9 @@ module Sipity
                 "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
               }
             end
-            subject { described_class.new(work: work, attachments_attributes: attachments_attributes, repository: repository) }
+            subject do
+              described_class.new(work: work, repository: repository, attributes: { attachments_attributes: attachments_attributes })
+            end
 
             before do
               allow(subject).to receive(:valid?).and_return(true)
@@ -98,7 +101,7 @@ module Sipity
               let(:resource_consulted) { ['dummy', 'test'] }
               let(:other_resource_consulted) { 'some other value' }
               let(:citation_style) { 'other' }
-              subject { described_class.new(work: work, repository: repository) }
+              subject { described_class.new(work: work, repository: repository, attributes: {}) }
               it 'will return the resource_consulted of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'resource_consulted').and_return(resource_consulted)
@@ -126,11 +129,11 @@ module Sipity
             context 'with valid data' do
               subject do
                 described_class.new(
-                  work: work,
-                  resource_consulted: resource_consulted,
-                  other_resource_consulted: other_resource_consulted,
-                  citation_style: citation_style,
-                  repository: repository
+                  work: work, repository: repository, attributes: {
+                    resource_consulted: resource_consulted,
+                    other_resource_consulted: other_resource_consulted,
+                    citation_style: citation_style
+                  }
                 )
               end
               before do
@@ -142,18 +145,8 @@ module Sipity
                 expect(returned_value).to eq(work)
               end
 
-              it "will transition the work's corresponding enrichment todo item to :done" do
-                expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
-              end
-
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(3).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will record the event' do
-                expect(repository).to receive(:log_event!).and_call_original
                 subject.submit(requested_by: user)
               end
             end
