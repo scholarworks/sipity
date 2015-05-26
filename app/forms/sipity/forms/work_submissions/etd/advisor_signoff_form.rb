@@ -43,6 +43,15 @@ module Sipity
             view_context.t('i_agree', scope: 'sipity/forms.state_advancing_actions.verification.etd/advisor_signoff').html_safe
           end
 
+          # Instead of the processing action form's submit, I want to use the
+          # underlying submit service, because so many things may be happening
+          # on that form submission.
+          def submit(requested_by:)
+            return false unless valid?
+            save(requested_by: requested_by)
+            work
+          end
+
           private
 
           def agree_to_signoff=(value)

@@ -57,6 +57,11 @@ module Sipity
               expect(subject).to receive(:valid?).and_return(true)
             end
 
+            it 'will not call the processing_action_form\'s submit' do
+              expect_any_instance_of(ProcessingForm).to_not receive(:submit)
+              subject.submit(requested_by: user)
+            end
+
             it 'will return the given work' do
               expect(subject.submit(requested_by: user)).to eq(work)
             end
