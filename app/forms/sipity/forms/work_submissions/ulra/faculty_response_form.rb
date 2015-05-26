@@ -33,12 +33,12 @@ module Sipity
             :attach_or_update_files
           )
 
+          include ActiveModel::Validations
+          include Hydra::Validations
           validates :course, presence: true
           validates :nature_of_supervision, presence: true
           validates :quality_of_research, presence: true
           validates :use_of_library_resources, presence: true
-
-          include Hydra::Validations
           validates :supervising_semester, presence: true
 
           private
