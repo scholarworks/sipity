@@ -19,6 +19,7 @@ module Sipity
             allow(repository).to receive(:work_attachments).with(work: work).and_return([attachment])
           end
 
+          its(:processing_action_name) { should eq('access_policy') }
           it { should respond_to :accessible_objects_attributes= }
           it { should respond_to :copyright }
           it { should respond_to :representative_attachment_id }
