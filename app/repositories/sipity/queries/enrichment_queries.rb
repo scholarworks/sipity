@@ -1,4 +1,4 @@
-require 'sipity/forms/work_enrichments'
+require 'sipity/forms/work_submissions'
 
 module Sipity
   module Queries

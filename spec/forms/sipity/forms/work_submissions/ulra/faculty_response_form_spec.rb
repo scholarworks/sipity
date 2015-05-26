@@ -185,11 +185,6 @@ module Sipity
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
-              end
-
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(5).and_call_original
                 subject.submit(requested_by: user)
