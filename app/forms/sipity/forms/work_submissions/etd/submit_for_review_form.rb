@@ -25,8 +25,7 @@ module Sipity
             markup << f.input(
               :agree_to_terms_of_deposit,
               as: :boolean,
-              inline_label:
-              deposit_agreement,
+              inline_label: deposit_agreement,
               input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
               label: false,
               wrapper_class: 'checkbox'
