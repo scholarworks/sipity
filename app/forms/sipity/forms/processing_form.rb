@@ -6,7 +6,7 @@ module Sipity
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
       def self.delegate_method_names
-        [:to_processing_entity, :enrichment_type, :to_work_area, :repository, :submit, :processing_action_name]
+        [:to_processing_entity, :enrichment_type, :to_work_area, :repository, :processing_action_name]
       end
 
       def self.private_delegate_method_names
@@ -25,6 +25,9 @@ module Sipity
           self.processing_subject_name = keywords.fetch(:processing_subject_name) do
             base_class.name.sub(/.*::(\w+)::(\w+)\Z/, '\2').underscore
           end
+
+          class_attribute(:processing_action_form_builder, instance_writer: :false) unless respond_to?(:processing_action_form_builder=)
+          self.processing_action_form_builder = keywords.fetch(:processing_action_form_builder) { processing_form_class }
 
           class_attribute :base_class unless respond_to?(:base_class=)
           self.base_class = base_class
@@ -73,7 +76,13 @@ module Sipity
 
       def submit(requested_by:)
         return false unless valid?
-        save(requested_by: requested_by)
+        @registered_action = repository.register_processing_action_taken_on_entity(
+          entity: entity, action: processing_action_name, requested_by: requested_by
+        )
+        repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
+        yield if block_given?
+        repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
+        entity
       end
 
       attr_reader :repository, :processing_action_name, :registered_action
@@ -102,17 +111,6 @@ module Sipity
       attr_writer :repository, :processing_action_name
       attr_reader :form
 
-      def save(requested_by:)
-        @registered_action = repository.register_processing_action_taken_on_entity(
-          entity: entity, action: processing_action_name, requested_by: requested_by
-        )
-        repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
-        form.send(:save, requested_by: requested_by)
-
-        repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
-        entity
-      end
-
       def default_repository
         CommandRepository.new
       end
@@ -121,7 +119,7 @@ module Sipity
       def form=(input)
         guard_interface_expectation!(input, :valid?, :base_class, :entity)
         # I want to use send
-        guard_interface_expectation!(input, :save, include_all: true)
+        guard_interface_expectation!(input, include_all: true)
         @form = input
       end
 

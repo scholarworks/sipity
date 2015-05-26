@@ -4,7 +4,7 @@ module Sipity
   module Forms
     RSpec.describe ProcessingForm do
       let(:entity) { double }
-      let(:form) { double(entity: entity, base_class: Models::Work, valid?: true, save: true, class: double(name: 'StartForm')) }
+      let(:form) { double(entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm')) }
       let(:repository) { CommandRepositoryInterface.new }
       let(:user) { double }
       subject { described_class.new(form: form, repository: repository) }
@@ -21,9 +21,6 @@ module Sipity
             end
 
             def valid?
-              true
-            end
-            def save(*)
               true
             end
           end
@@ -43,7 +40,6 @@ module Sipity
         it { should delegate_method(:enrichment_type).to(:processing_action_form) }
         it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
         it { should delegate_method(:to_work_area).to(:processing_action_form) }
-        it { should delegate_method(:submit).to(:processing_action_form) }
         it { should delegate_method(:processing_action_name).to(:processing_action_form) }
         it 'will delegate repository to processing_action_form' do
           expect(subject.send(:repository)).to eq(subject.send(:processing_action_form).send(:repository))
@@ -82,7 +78,6 @@ module Sipity
         context 'when invalid' do
           before { allow(form).to receive(:valid?).and_return(false) }
           it 'will return false' do
-            expect(subject).to_not receive(:save)
             expect(subject.submit(requested_by: user)).to be_falsey
           end
           it 'will not yield control' do
@@ -96,8 +91,8 @@ module Sipity
             allow(subject).to receive(:to_processing_action).and_return(an_action)
             allow(form).to receive(:valid?).and_return(true)
           end
+
           it 'will return the underlying entity' do
-            expect(form).to receive(:save).with(requested_by: user)
             expect(subject.submit(requested_by: user)).to eq(entity)
           end
 
