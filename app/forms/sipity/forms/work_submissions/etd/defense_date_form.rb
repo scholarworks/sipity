@@ -11,18 +11,20 @@ module Sipity
           include Conversions::ExtractInputDateFromInput
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.defense_date = extract_input_date_from_input(:defense_date, attributes) { defense_date_from_work }
           end
 
           include ActiveModel::Validations
           validates :defense_date, presence: true
 
-          private
-
-          def save(requested_by:)
-            repository.update_work_attribute_values!(work: work, key: 'defense_date', values: defense_date)
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              repository.update_work_attribute_values!(work: work, key: 'defense_date', values: defense_date)
+            end
           end
+
+          private
 
           def defense_date_from_work
             return nil unless work

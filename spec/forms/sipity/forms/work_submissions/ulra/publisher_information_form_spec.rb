@@ -126,12 +126,8 @@ module Sipity
                 described_class.new(work: work, repository: repository, attributes: { publication_name: 'bogus', allow_pre_prints: 'No' })
               end
               before do
-                expect(subject).to receive(:valid?).and_return(true)
-              end
-
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+                allow(subject).to receive(:valid?).and_return(true)
               end
 
               it 'will add additional attributes entries' do

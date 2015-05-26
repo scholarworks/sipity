@@ -57,6 +57,7 @@ module Sipity
 
             before do
               allow(subject).to receive(:valid?).and_return(true)
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
             end
 
             it 'will delete any attachments marked for deletion' do
@@ -180,7 +181,8 @@ module Sipity
               end
 
               before do
-                expect(subject).to receive(:valid?).and_return(true)
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
               it 'will return the work' do

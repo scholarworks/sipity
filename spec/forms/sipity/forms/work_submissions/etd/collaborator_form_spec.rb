@@ -102,6 +102,7 @@ module Sipity
               end
 
               it 'will create a collaborator' do
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
                 expect(repository).to receive(:manage_collaborators_for).
                   with(work: work, collaborators: subject.collaborators_from_input).
                   and_call_original

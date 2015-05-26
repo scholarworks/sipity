@@ -77,6 +77,7 @@ module Sipity
             end
 
             before do
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               allow(subject).to receive(:valid?).and_return(true)
             end
 
@@ -137,12 +138,7 @@ module Sipity
                 )
               end
               before do
-                expect(subject).to receive(:valid?).and_return(true)
-              end
-
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
               it 'will add additional attributes entries' do

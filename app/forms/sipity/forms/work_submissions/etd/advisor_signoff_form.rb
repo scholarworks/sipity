@@ -9,7 +9,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, signoff_service: default_signoff_service, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.signoff_service = signoff_service
             self.agree_to_signoff = attributes[:agree_to_signoff]
           end
@@ -48,7 +48,7 @@ module Sipity
           # on that form submission.
           def submit(requested_by:)
             return false unless valid?
-            save(requested_by: requested_by)
+            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
             work
           end
 
@@ -65,10 +65,6 @@ module Sipity
           attr_accessor :signoff_service
           def default_signoff_service
             Services::AdvisorSignsOff
-          end
-
-          def save(requested_by:)
-            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
           end
         end
       end

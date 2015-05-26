@@ -59,12 +59,8 @@ module Sipity
             context 'with valid data' do
               subject { described_class.new(work: work, defense_date: '2014-10-02', repository: repository) }
               before do
-                expect(subject).to receive(:valid?).and_return(true)
-              end
-
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
               it 'will add additional attributes entries' do

@@ -11,7 +11,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
@@ -39,6 +39,17 @@ module Sipity
           validates :use_of_library_resources, presence: true
           validates :supervising_semester, presence: true
 
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              update_course
+              update_nature_of_supervision
+              update_supervising_semester
+              update_quality_of_research
+              update_use_of_library_resources
+              attach_or_update_files(requested_by: requested_by, predicate_name: "faculty_comments_attachment")
+            end
+          end
+
           private
 
           def initialize_non_attachment_attributes(attributes)
@@ -53,15 +64,6 @@ module Sipity
 
           def supervising_semester=(values)
             @supervising_semester = to_array_without_empty_values(values)
-          end
-
-          def save(requested_by:)
-            update_course
-            update_nature_of_supervision
-            update_supervising_semester
-            update_quality_of_research
-            update_use_of_library_resources
-            attach_or_update_files(requested_by: requested_by, predicate_name: "faculty_comments_attachment")
           end
 
           def update_course

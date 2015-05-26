@@ -11,7 +11,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
@@ -36,18 +36,20 @@ module Sipity
           )
           private(:attach_or_update_files)
 
-          private
-
-          def save(requested_by:)
-            repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
-            attach_or_update_files(requested_by: requested_by)
-            # HACK: This is expanding the knowledge of what action is being
-            #   taken. Instead it is something that should be modeled in the
-            #   underlying database. That is to say: When an action fires what
-            #   actions should be registered and what actions should be
-            #   unregistered.
-            repository.unregister_action_taken_on_entity(work: work, enrichment_type: 'access_policy', requested_by: requested_by)
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
+              attach_or_update_files(requested_by: requested_by)
+              # HACK: This is expanding the knowledge of what action is being
+              #   taken. Instead it is something that should be modeled in the
+              #   underlying database. That is to say: When an action fires what
+              #   actions should be registered and what actions should be
+              #   unregistered.
+              repository.unregister_action_taken_on_entity(work: work, enrichment_type: 'access_policy', requested_by: requested_by)
+            end
           end
+
+          private
 
           def representative_attachment_id_from_work
             repository.representative_attachment_for(work: work).to_param

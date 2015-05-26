@@ -31,7 +31,7 @@ module Sipity
             let(:processing_comment) { double('Processing Comment') }
             let(:an_action) { double }
             before do
-              expect(subject).to receive(:valid?).and_return(true)
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               allow(repository).to receive(:record_processing_comment).and_return(processing_comment)
               allow(subject).to receive(:convert_to_processing_action).and_return(an_action)
             end

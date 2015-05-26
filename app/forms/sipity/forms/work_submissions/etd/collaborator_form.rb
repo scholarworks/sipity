@@ -11,7 +11,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.collaborators_attributes = attributes[:collaborators_attributes]
           end
 
@@ -51,13 +51,15 @@ module Sipity
             @collaborators_attributes = inputs
           end
 
-          private
-
-          def save(*)
-            # Don't try to persist the collaborators, as those are for form rendering
-            # instead lets persist the collaborators that were given as user input.
-            repository.manage_collaborators_for(work: work, collaborators: collaborators_from_input)
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              # Don't try to persist the collaborators, as those are for form rendering
+              # instead lets persist the collaborators that were given as user input.
+              repository.manage_collaborators_for(work: work, collaborators: collaborators_from_input)
+            end
           end
+
+          private
 
           def collaborators_from_work
             return [] unless work

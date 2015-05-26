@@ -91,7 +91,10 @@ module Sipity
                 }
               )
             end
-            before { allow(subject).to receive(:valid?).and_return(true) }
+            before do
+              allow(subject).to receive(:valid?).and_return(true)
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+            end
 
             it 'will representative_attachment_id' do
               expect(repository).to receive(:set_as_representative_attachment).and_call_original

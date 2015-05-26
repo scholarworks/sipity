@@ -26,7 +26,6 @@ module Sipity
 
           it { should_not be_persisted }
           it { should respond_to :work }
-          it { should delegate_method(:submit).to(:processing_action_form) }
           it { should respond_to :expected_graduation_date }
           it { should respond_to :majors }
 
@@ -89,12 +88,8 @@ module Sipity
                 )
               end
               before do
-                expect(subject).to receive(:valid?).and_return(true)
-              end
-
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
               it 'will add additional attributes entries' do

@@ -12,7 +12,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
             self.copyright = attributes.fetch(:copyright) { copyright_from_work }
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
@@ -45,6 +45,16 @@ module Sipity
             repository.work_attachments(work: work)
           end
 
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              repository.apply_access_policies_to(
+                work: work, user: requested_by, access_policies: access_objects_attributes_for_persistence
+              )
+              repository.update_work_attribute_values!(work: work, key: 'copyright', values: copyright)
+              repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
+            end
+          end
+
           private
 
           def at_least_one_attachment?
@@ -64,12 +74,6 @@ module Sipity
           def at_lease_one_accessible_objects_attributes_entry
             return true if accessible_objects_attributes.present?
             errors.add(:base, :presence_of_access_policies_for_objects_required)
-          end
-
-          def save(requested_by:)
-            repository.apply_access_policies_to(work: work, user: requested_by, access_policies: access_objects_attributes_for_persistence)
-            repository.update_work_attribute_values!(work: work, key: 'copyright', values: copyright)
-            repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
           end
 
           def copyright_from_work
@@ -118,57 +122,57 @@ module Sipity
             validates :access_right_code, presence: true, inclusion: { in: :valid_access_right_codes, allow_nil: true }
             validates :release_date, presence: { if: :will_be_under_embargo? }
 
-            def to_hash
-              {
-                entity_id: id.to_s,
-                entity_type: entity_type,
-                access_right_code: access_right_code,
-                release_date: release_date
-              }
-            end
+                                                   def to_hash
+                                                     {
+                                                       entity_id: id.to_s,
+                                                       entity_type: entity_type,
+                                                       access_right_code: access_right_code,
+                                                       release_date: release_date
+                                                     }
+                                                   end
 
-            include Conversions::ConvertToPolymorphicType
-            def entity_type
-              # HACK: It would be nice if the possible objects, however the
-              # collaboration of the objects related to this form are out of
-              # whack.
-              if persisted_object.respond_to?(:entity_type)
-                persisted_object.entity_type
-              else
-                convert_to_polymorphic_type(persisted_object)
-              end
-            end
+                                                   include Conversions::ConvertToPolymorphicType
+                                                   def entity_type
+                                                     # HACK: It would be nice if the possible objects, however the
+                                                     # collaboration of the objects related to this form are out of
+                                                     # whack.
+                                                     if persisted_object.respond_to?(:entity_type)
+                                                       persisted_object.entity_type
+                                                     else
+                                                       convert_to_polymorphic_type(persisted_object)
+                                                     end
+                                                   end
 
-            private
+                                                   private
 
-            attr_accessor :persisted_object
-            attr_writer :access_right_code
+                                                   attr_accessor :persisted_object
+                                                   attr_writer :access_right_code
 
-            include Conversions::ConvertToDate
-            def release_date=(value)
-              if keep_user_input_release_date?
-                @release_date = convert_to_date(value) { nil }
-              else
-                @release_date = nil
-              end
-            end
+                                                   include Conversions::ConvertToDate
+                                                   def release_date=(value)
+                                                     if keep_user_input_release_date?
+                                                       @release_date = convert_to_date(value) { nil }
+                                                     else
+                                                       @release_date = nil
+                                                     end
+                                                   end
 
-            def keep_user_input_release_date?
-              # We don't want to obliterate their input just because they didn't
-              # give us an access_right_code.
-              access_right_code.blank? || will_be_under_embargo?
-            end
+                                                   def keep_user_input_release_date?
+                                                     # We don't want to obliterate their input just because they didn't
+                                                     # give us an access_right_code.
+                                                     access_right_code.blank? || will_be_under_embargo?
+                                                   end
 
-            def will_be_under_embargo?
-              access_right_code == Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-            end
+                                                   def will_be_under_embargo?
+                                                     access_right_code == Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
+                                                   end
 
-            def valid_access_right_codes
-              Models::AccessRight.primative_acccess_right_codes
-            end
-          end
-        end
-      end
-    end
-  end
-end
+                                                   def valid_access_right_codes
+                                                     Models::AccessRight.primative_acccess_right_codes
+                                                   end
+                                                 end
+                                                 end
+                                                 end
+                                                 end
+                                                 end
+                                                 end

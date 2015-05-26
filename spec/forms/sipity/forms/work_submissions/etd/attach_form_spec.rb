@@ -52,6 +52,7 @@ module Sipity
 
             before do
               allow(subject).to receive(:valid?).and_return(true)
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
             end
 
             it 'will delete any attachments marked for deletion' do
@@ -94,12 +95,8 @@ module Sipity
               let(:remove_file) { double('File to delete') }
 
               before do
-                expect(subject).to receive(:valid?).and_return(true)
-              end
-
-              it 'will return the work' do
-                returned_value = subject.submit(requested_by: user)
-                expect(returned_value).to eq(work)
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
               end
 
               it 'will attach each file' do
@@ -109,11 +106,6 @@ module Sipity
 
               it "will unregister that the 'access_policy' action was taken" do
                 expect(repository).to receive(:unregister_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will record the event' do
-                expect(repository).to receive(:log_event!).and_call_original
                 subject.submit(requested_by: user)
               end
 

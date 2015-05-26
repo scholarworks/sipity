@@ -11,7 +11,7 @@ module Sipity
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
-            self.processing_action_form = ProcessingForm.new(form: self, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
@@ -43,6 +43,15 @@ module Sipity
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'citation_style')
           end
 
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
+              repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
+              repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
+              repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
+              attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
+            end
+          end
+
           private
 
           def initialize_non_attachment_attributes(attributes)
@@ -51,13 +60,6 @@ module Sipity
               retrieve_from_work(key: 'other_resource_consulted')
             end
             self.citation_style = attributes.fetch(:citation_style) { retrieve_from_work(key: 'citation_style') }
-          end
-
-          def save(requested_by:)
-            repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
-            repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
-            repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
-            attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
           end
 
           def resource_consulted=(values)
