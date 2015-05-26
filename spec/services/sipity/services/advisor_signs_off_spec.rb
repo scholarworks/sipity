@@ -1,7 +1,9 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action') }
+      let(:form) do
+        double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action', processing_action_name: 'hello', entity: double)
+      end
       let(:on_behalf_of) { double('Collaborator') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
@@ -26,9 +28,11 @@ module Sipity
           expect(repository).to_not receive(:update_processing_state!)
           subject.call
         end
-        it 'will send an email to the creating user' do
+        it 'will log the event, register the action, and send an email to the creating user' do
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+          expect(repository).to receive(:log_event!).
+            with(entity: form, user: requested_by, event_name: form.processing_action_name)
           subject.call
         end
       end
@@ -39,7 +43,7 @@ module Sipity
           expect(repository).to receive(:update_processing_state!).and_call_original
           subject.call
         end
-        it 'will deliver form submission notifications' do
+        it 'will log the event, register the action, and send an email to the creating user' do
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
@@ -69,7 +73,15 @@ module Sipity
       end
 
       context 'default repository' do
-        let(:form) { double('Form', resulting_strategy_state: 'chubacabra', registered_action: 'submit_for_review', work: double) }
+        let(:form) do
+          double(
+            'Form',
+            resulting_strategy_state: 'chubacabra',
+            registered_action: 'submit_for_review',
+            processing_action_name: 'hello',
+            entity: double
+          )
+        end
         subject { described_class.new(form: form, requested_by: requested_by) }
         it 'exposes #collaborators_that_have_taken_the_action_on_the_entity' do
           expect(subject.send(:repository)).to receive(:collaborators_that_have_taken_the_action_on_the_entity)
