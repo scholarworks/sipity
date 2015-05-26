@@ -5,9 +5,10 @@ module Sipity
         # Exposes a means of assigning an access policy to each of the related
         # items.
         class AccessPolicyForm
-          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
-          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
-          private(*ProcessingForm.private_delegate_method_names)
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id, :use_of_library_resources]
+          )
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
@@ -15,22 +16,6 @@ module Sipity
             self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
             self.copyright = attributes.fetch(:copyright) { copyright_from_work }
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
-          end
-
-          private
-
-          attr_accessor :processing_action_form
-          attr_writer :copyright, :representative_attachment_id
-          attr_writer :work
-
-          public
-
-          attr_reader :accessible_objects_attributes, :copyright, :representative_attachment_id
-          attr_reader :work
-          alias_method :entity, :work
-
-          def persisted?
-            false
           end
 
           include ActiveModel::Validations
