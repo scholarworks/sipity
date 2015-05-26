@@ -13,6 +13,37 @@ module Sipity
         [:repository]
       end
 
+      def self.configure(form_class:, attribute_names:, processing_subject_name:)
+        processing_form_class = self
+        form_class.module_exec do
+          class_attribute(:attribute_names, instance_writer: :false) unless respond_to?(:attribute_names=)
+          self.attribute_names = Array.wrap(attribute_names)
+
+          class << form_class
+            private :attribute_names=
+          end
+
+          delegate(*processing_form_class.delegate_method_names, to: :processing_action_form)
+          private(*processing_form_class.private_delegate_method_names)
+
+          private
+
+          attr_accessor :processing_action_form
+          attr_writer(*Array.wrap(attribute_names))
+          attr_writer processing_subject_name
+
+          public
+
+          attr_reader(*Array.wrap(attribute_names))
+          attr_reader processing_subject_name
+          alias_method :entity, processing_subject_name
+
+          def persisted?
+            false
+          end
+        end
+      end
+
       def initialize(form:, repository: default_repository, **keywords)
         self.form = form
         self.repository = repository

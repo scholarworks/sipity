@@ -9,6 +9,43 @@ module Sipity
       let(:user) { double }
       subject { described_class.new(form: form, repository: repository) }
 
+      context '.configure' do
+        let(:form_class) do
+          Class.new do
+            def self.name
+              'Class'
+            end
+
+            def base_class
+              Class
+            end
+
+            def valid?
+              true
+            end
+            def save(*)
+              true
+            end
+          end
+        end
+        subject { form_class.new.tap { |obj| obj.send(:processing_action_form=, described_class.new(form: obj, repository: double)) } }
+        before { described_class.configure(form_class: form_class, base_class: Models::Work, attribute_names: [:title, :job]) }
+        it { should respond_to :work }
+        it { should respond_to :entity }
+        it { should respond_to :title }
+        it { should respond_to :job }
+        its(:attribute_names) { should eq([:title, :job]) }
+        it { should_not be_persisted }
+        it { should delegate_method(:enrichment_type).to(:processing_action_form) }
+        it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
+        it { should delegate_method(:to_work_area).to(:processing_action_form) }
+        it { should delegate_method(:submit).to(:processing_action_form) }
+        it { should delegate_method(:processing_action_name).to(:processing_action_form) }
+        it 'will delegate repository to processing_action_form' do
+          expect(subject.send(:repository)).to eq(subject.send(:processing_action_form).send(:repository))
+        end
+      end
+
       context 'configuration methods' do
         subject { described_class }
         its(:delegate_method_names) { should be_a(Array) }
