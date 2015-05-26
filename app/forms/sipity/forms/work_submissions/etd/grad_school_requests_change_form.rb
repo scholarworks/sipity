@@ -1,7 +1,7 @@
 module Sipity
   module Forms
-    module Etd
-      module WorkSubmissions
+    module WorkSubmissions
+      module Etd
         # Responsible for capturing comments and forwarding them on to the
         # student.
         class GradSchoolRequestsChangeForm

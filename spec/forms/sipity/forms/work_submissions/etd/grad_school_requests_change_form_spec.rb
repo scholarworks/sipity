@@ -2,8 +2,8 @@ require 'spec_helper'
 
 module Sipity
   module Forms
-    module Etd
-      module WorkSubmissions
+    module WorkSubmissions
+      module Etd
         RSpec.describe GradSchoolRequestsChangeForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
