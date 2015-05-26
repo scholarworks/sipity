@@ -2,8 +2,6 @@ module Sipity
   module Conversions
     # @see Sipity::Conversions for conventions regarding a conversion method
     module ConvertToProcessingStrategyId
-      PERMANENT_URI_FORMAT = "https://change.me/show/%s".freeze
-
       # A convenience method so that you don't need to include the conversion
       # module in your base class.
       def self.call(input)
@@ -26,6 +24,11 @@ module Sipity
         when String then return input.to_i
         end
         return input.strategy_id if input.respond_to?(:strategy_id)
+        begin
+          return convert_to_processing_strategy_id(ConvertToProcessingEntity.call(input))
+        rescue Exceptions::ProcessingEntityConversionError
+          nil
+        end
         fail Exceptions::ProcessingStrategyIdConversionError, input
       end
 

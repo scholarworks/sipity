@@ -42,6 +42,16 @@ module Sipity
           end
         end
 
+        it "will convert a processing entity to a strategy" do
+          to_convert = double(to_processing_entity: double(strategy_id: 1))
+          expect(convert_to_processing_strategy_id(to_convert)).to eq(1)
+        end
+
+        it "will fail if the to_processing_entity fails a processing entity to a strategy" do
+          to_convert = double(to_processing_entity: double)
+          expect { convert_to_processing_strategy_id(to_convert) }.to raise_error(Exceptions::ProcessingStrategyIdConversionError)
+        end
+
         it 'will raise an exception if it cannot convert' do
           expect { convert_to_processing_strategy_id(double) }.to raise_error(Exceptions::ProcessingStrategyIdConversionError)
         end
