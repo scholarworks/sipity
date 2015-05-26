@@ -4,9 +4,10 @@ module Sipity
       module Ulra
         # Responsible for capturing and validating information for publisher information
         class PublisherInformationForm
-          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
-          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
-          private(*ProcessingForm.private_delegate_method_names)
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            attribute_names: [:publication_name, :allow_pre_prints]
+          )
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
@@ -14,20 +15,6 @@ module Sipity
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }
             self.allow_pre_prints = attributes.fetch(:allow_pre_prints) { allow_pre_prints_from_work }
           end
-
-          private
-
-          attr_accessor :processing_action_form
-          attr_writer :work, :publication_name
-
-          public
-
-          def persisted?
-            false
-          end
-
-          attr_reader :publication_name, :allow_pre_prints, :work
-          alias_method :entity, :work
 
           include ActiveModel::Validations
           include Hydra::Validations

@@ -4,10 +4,8 @@ module Sipity
       module Ulra
         # Responsible for capturing and validating information for faculty comments
         class FacultyResponseForm
-          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
           ProcessingForm.configure(
-            form_class: self,
-            processing_subject_name: :work,
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
             attribute_names: [:course, :nature_of_supervision, :supervising_semester, :quality_of_research, :use_of_library_resources]
           )
 

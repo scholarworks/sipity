@@ -4,9 +4,10 @@ module Sipity
       module Ulra
         # Responsible for capturing and validating information for research process
         class ResearchProcessForm
-          Configure.form_for_processing_entity(form_class: self, base_class: Models::Work)
-          delegate(*ProcessingForm.delegate_method_names, to: :processing_action_form)
-          private(*ProcessingForm.private_delegate_method_names)
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            attribute_names: [:resource_consulted, :other_resource_consulted, :citation_style]
+          )
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work
@@ -17,18 +18,9 @@ module Sipity
 
           private
 
-          attr_accessor :processing_action_form, :attachments_extension
-          attr_writer :work
-          attr_writer :resource_consulted, :citation_style, :other_resource_consulted
+          attr_accessor :attachments_extension
 
           public
-
-          def persisted?
-            false
-          end
-
-          attr_reader :resource_consulted, :citation_style, :other_resource_consulted, :work
-          alias_method :entity, :work
 
           delegate(
             :attachments,
