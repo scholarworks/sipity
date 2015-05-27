@@ -6,7 +6,7 @@ module Sipity
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
       def self.delegate_method_names
-        [:to_processing_entity, :to_processing_action, :enrichment_type, :to_work_area, :repository, :processing_action_name]
+        [:to_processing_entity, :to_processing_action, :to_work_area, :enrichment_type, :repository, :processing_action_name]
       end
 
       def self.private_delegate_method_names
