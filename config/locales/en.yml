@@ -87,11 +87,6 @@ en:
         hint: 'We need a bit more information to create a DOI for you:'
         title_html: 'Would you like to <b>create</b> a DOI?'
   sipity/works:
-    label:
-      access_rights_answer_html: 'Who can <b>see</b> the completed submission?'
-      attributes_html: 'What is the <b>title</b> of your work?'
-      work_publication_strategy_html: 'Do you have <b>publishing</b> plans?'
-      work_type_html: 'What <b>kind</b> of work is this?'
     action/create:
       failure: 'There is a problem with your submission.'
       success: 'Thank you for answering those questions! Please complete the tasks below.'
@@ -213,27 +208,15 @@ en:
         title_html: "Project Information"
       project_evaluation:
         title_html: "Project Evaluation"
-  sipity/decorators/entitiy_enrichment_actions:
-    access_policy:
-      label: "Set <b>access controls</b> and <b>copyright</b> for this %{entity_type}"
-    attach:
-      label: "<b>Attach</b> files to this %{entity_type}"
-    describe:
-      label: "Further <b>describe</b> your %{entity_type}"
-    collaborators:
-      label: "Identify <b>who is involved</b> with this %{entity_type}"
-    assign_a_doi:
-      label: 'Assign a <b><abbr title="Digital Object Identifier">DOI</abbr></b>'
-    assign_a_citation:
-      label: 'Create a <b>citation</b>'
-    defense_date:
-      label: "Record the <b>defense date</b> for your %{entity_type}"
-    search_terms:
-      label: "Add <b>search terms</b> for your %{entity_type}"
-    degree:
-      label: "Add <b>degree</b> for your %{entity_type}"
-    program_name:
-      label: "Add <b>program name</b> for your %{entity_type}"
+  panel_headings:
+    access_rights_answer:
+      label: 'Who can <b>see</b> the completed submission?'
+    attributes:
+      label: 'What is the <b>title</b> of your work?'
+    work_publication_strategy:
+      label: 'Do you have <b>publishing</b> plans?'
+    work_type:
+      label: 'What <b>kind</b> of work is this?'
   processing_actions:
     access_policy:
       label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
