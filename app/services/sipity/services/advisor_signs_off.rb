@@ -11,17 +11,17 @@ module Sipity
         self.repository = repository
         self.requested_by = requested_by
         self.on_behalf_of = on_behalf_of
+        initialize_calculated_variables
       end
 
       private
 
       attr_writer :repository, :requested_by, :on_behalf_of
+      attr_reader :action
 
       public
 
       attr_reader :form, :repository, :requested_by, :on_behalf_of
-
-      delegate :resulting_strategy_state, :action, to: :form
 
       def call
         log_the_event
@@ -33,9 +33,15 @@ module Sipity
       private
 
       include GuardInterfaceExpectation
+      include Conversions::ConvertToProcessingAction
       def form=(input)
-        guard_interface_expectation!(input, :entity, :processing_action_name)
+        guard_interface_expectation!(input, :entity, :processing_action_name, :to_processing_action)
         @form = input
+      end
+
+      def initialize_calculated_variables
+        @action = form.to_processing_action
+        guard_interface_expectation!(@action, :resulting_strategy_state)
       end
 
       def default_repository
@@ -47,13 +53,11 @@ module Sipity
       end
 
       def send_confirmation_of_advisor_signoff
-        # TODO: Instead of action, prefer form.notification_scope
         repository.deliver_notification_for(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
       end
 
       def handle_last_advisor_signoff
-        # TODO: Instead of resulting_strategy_state, prefer coercion
-        repository.update_processing_state!(entity: form, to: resulting_strategy_state)
+        repository.update_processing_state!(entity: form, to: action.resulting_strategy_state)
       end
 
       def last_advisor_to_signoff?
@@ -65,7 +69,7 @@ module Sipity
       end
 
       def collaborators_that_have_taken_the_action_on_the_entity
-        repository.collaborators_that_have_taken_the_action_on_the_entity(entity: form.entity, action: form.registered_action)
+        repository.collaborators_that_have_taken_the_action_on_the_entity(entity: form.entity, action: action)
       end
     end
   end
