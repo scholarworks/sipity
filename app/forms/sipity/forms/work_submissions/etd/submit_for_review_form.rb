@@ -1,3 +1,4 @@
+require_relative '../../../forms'
 module Sipity
   module Forms
     module WorkSubmissions
@@ -7,7 +8,7 @@ module Sipity
         class SubmitForReviewForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:agree_to_terms_of_deposit]
+            attribute_names: [:agree_to_terms_of_deposit], template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
           def initialize(work:, attributes: {}, **keywords)

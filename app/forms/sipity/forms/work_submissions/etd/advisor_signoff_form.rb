@@ -1,3 +1,4 @@
+require_relative '../../../forms'
 module Sipity
   module Forms
     module WorkSubmissions
@@ -5,7 +6,10 @@ module Sipity
         # Responsible for submitting the associated entity to the advisor
         # for signoff.
         class AdvisorSignoffForm
-          ProcessingForm.configure(form_class: self, base_class: Models::Work, attribute_names: [:agree_to_signoff])
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, attribute_names: [:agree_to_signoff],
+            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+          )
 
           def initialize(work:, attributes: {}, signoff_service: default_signoff_service, **keywords)
             self.work = work

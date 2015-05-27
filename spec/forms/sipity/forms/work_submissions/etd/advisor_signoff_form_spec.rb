@@ -33,6 +33,7 @@ module Sipity
 
           its(:advisor_signoff_legend) { should be_html_safe }
           its(:signoff_agreement) { should be_html_safe }
+          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'validation' do
             it 'will require agreement to the signoff' do
