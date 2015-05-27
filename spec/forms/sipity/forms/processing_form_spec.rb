@@ -6,8 +6,9 @@ module Sipity
       let(:entity) { double }
       let(:form) { double(entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm')) }
       let(:repository) { CommandRepositoryInterface.new }
+      let(:translator) { double(call: true) }
       let(:user) { double }
-      subject { described_class.new(form: form, repository: repository) }
+      subject { described_class.new(form: form, repository: repository, translator: translator) }
 
       context '.configure' do
         let(:form_class) do
@@ -57,7 +58,13 @@ module Sipity
 
       its(:default_repository) { should respond_to :register_processing_action_taken_on_entity }
       its(:default_repository) { should respond_to :log_event! }
+      its(:default_translator) { should respond_to :call }
       it { should respond_to :to_registered_action }
+
+      it 'should delegate translation to the translator' do
+        subject.translate('name', scope: 'panel_headings')
+        expect(translator).to have_received(:call).with(scope: 'panel_headings', object: 'name', predicate: :label, subject: entity)
+      end
 
       it 'should convert the underlying entity to a processing entity' do
         expect(Conversions::ConvertToProcessingEntity).to receive(:call).with(entity).and_return(:converted)

@@ -6,7 +6,7 @@ module Sipity
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
       def self.delegate_method_names
-        [:to_processing_entity, :to_processing_action, :to_work_area, :enrichment_type, :repository, :processing_action_name]
+        [:to_processing_entity, :to_processing_action, :to_work_area, :enrichment_type, :repository, :processing_action_name, :translate]
       end
 
       def self.private_delegate_method_names
@@ -67,16 +67,17 @@ module Sipity
           include GuardInterfaceExpectation
           def processing_action_form=(input)
             guard_interface_expectation!(
-              input, :submit, :repository, :to_work_area, :to_processing_entity, :to_processing_action, :processing_action_name
+              input, :submit, :repository, :to_work_area, :translate, :to_processing_entity, :to_processing_action, :processing_action_name
             )
             @processing_action_form = input
           end
         end
       end
 
-      def initialize(form:, repository: default_repository, **keywords)
+      def initialize(form:, repository: default_repository, translator: default_translator, **keywords)
         self.form = form
         self.repository = repository
+        self.translator = translator
         self.processing_action_name = keywords.fetch(:processing_action_name) { default_processing_action_name }
       end
 
@@ -93,9 +94,11 @@ module Sipity
         entity
       end
 
-      attr_reader :repository, :processing_action_name, :registered_action
+      attr_reader :repository, :processing_action_name, :registered_action, :translator
       alias_method :to_registered_action, :registered_action
       alias_method :enrichment_type, :processing_action_name
+      deprecate registered_action: "This is going away"
+      deprecate to_registered_action: "This is going away"
       deprecate enrichment_type: "Use :processing_action_name instead"
 
       def to_processing_entity
@@ -110,6 +113,10 @@ module Sipity
         Conversions::ConvertToProcessingAction.call(processing_action_name, scope: entity)
       end
 
+      def translate(identifier, scope:, predicate: :label)
+        translator.call(scope: scope, subject: entity, object: identifier, predicate: predicate)
+      end
+
       private
 
       def event_name
@@ -121,6 +128,15 @@ module Sipity
 
       def default_repository
         CommandRepository.new
+      end
+
+      def translator=(input)
+        guard_interface_expectation!(input, :call)
+        @translator = input
+      end
+
+      def default_translator
+        Controllers::TranslationAssistant
       end
 
       include GuardInterfaceExpectation
