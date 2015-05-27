@@ -10,12 +10,6 @@ module Sipity
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
       decorates_association :attachments, with: Decorators::AttachmentDecorator
 
-      def with_form_panel(name, theme = :default, &block)
-        # TODO: Translate name following active record internationalization
-        # conventions.
-        h.render(layout: 'sipity/form_panel', locals: { name: name, theme: theme, object: self }, &block)
-      end
-
       def date_created
         object.created_at.strftime('%a, %d %b %Y')
       end
