@@ -6,7 +6,7 @@
 
   <%= simple_form_for(
     model,
-    url: enrich_work_path(model.work, model.enrichment_type),
+    url: request.path,
     method: :post,
     as: :work,
     html: { class: 'simple-form panel panel-primary with-footer' }
