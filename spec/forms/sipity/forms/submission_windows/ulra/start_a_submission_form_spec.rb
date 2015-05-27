@@ -7,7 +7,7 @@ module Sipity
         RSpec.describe StartASubmissionForm do
           subject { described_class.new(repository: repository, submission_window: submission_window) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area_id: work_area.id, slug: '1234') }
+          let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: '1234') }
           let(:work_area) { Models::WorkArea.new(id: 2, slug: described_class::DEFAULT_WORK_AREA_SLUG) }
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
@@ -16,23 +16,22 @@ module Sipity
 
           context 'its class configuration' do
             subject { described_class }
-            its(:base_class) { should eq(submission_window.class) }
-            its(:model_name) { should eq(submission_window.class.model_name) }
+            its(:base_class) { should eq(Models::Work) }
+            its(:model_name) { should eq(Models::Work.model_name) }
             it 'will delegate human_attribute_name to the base class' do
-              expect(Models::SubmissionWindow).to receive(:human_attribute_name).and_call_original
+              expect(Models::Work).to receive(:human_attribute_name).and_call_original
               expect(subject.human_attribute_name(:title)).to be_a(String)
             end
           end
 
+          its(:policy_enforcer) { should eq Policies::SubmissionWindowPolicy }
+          its(:base_class) { should eq Models::Work }
           its(:default_repository) { should respond_to :create_work! }
           its(:default_repository) { should respond_to :find_submission_window_by }
-          its(:policy_enforcer) { should eq(Policies::SubmissionWindowPolicy) }
-          its(:default_work_type) { should eq(Models::WorkType::ULRA_SUBMISSION) }
+          its(:processing_subject_name) { should eq :submission_window }
+          its(:entity) { should eq submission_window }
           its(:to_work_area) { should eq(work_area) }
-          its(:base_class) { should eq(submission_window.class) }
-          its(:to_key) { should_not be_present }
-          its(:to_param) { should_not be_present }
-          its(:persisted?) { should be_falsey }
+          its(:persisted?) { should eq(false) }
 
           it 'will delegate #to_processing_entity to the submission window' do
             expect(submission_window).to receive(:to_processing_entity)

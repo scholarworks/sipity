@@ -5,11 +5,14 @@ module Sipity
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
         class StartASubmissionForm
-          Forms::Configure.form_for_processing_entity(form_class: self, base_class: Models::SubmissionWindow)
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
+            policy_enforcer: Policies::SubmissionWindowPolicy,
+            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :work_type]
+          )
 
-          def initialize(submission_window:, attributes: {}, **collaborators)
-            self.repository = collaborators.fetch(:repository) { default_repository }
-            self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
+          def initialize(submission_window:, attributes: {}, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
@@ -19,18 +22,13 @@ module Sipity
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
           end
 
-          attr_reader :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-
           private
 
-          attr_accessor :processing_action_name, :repository, :localization_assistant
-          attr_writer :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-          attr_reader :submission_window, :work_area
+          attr_reader :work_area
 
           public
 
-          delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
-          alias_method :to_model, :submission_window
+          delegate :slug, :work_area_slug, to: :submission_window
 
           include ActiveModel::Validations
           validates :title, presence: true
@@ -54,23 +52,7 @@ module Sipity
             end
           end
 
-          # TODO: Extract a work area collaborator; How does that reconcile with
-          #   the submission window.
-          def to_work_area
-            work_area
-          end
-
-          def to_key
-            []
-          end
-
-          def to_param
-            nil
-          end
-
-          def persisted?
-            to_param.nil? ? false : true
-          end
+          alias_method :to_work_area, :work_area
 
           private
 
@@ -123,11 +105,6 @@ module Sipity
 
           def submission_window=(input)
             @submission_window = PowerConverter.convert(input, to: :submission_window, scope: work_area)
-          end
-
-          PROCESSING_ACTION_NAME = 'start_a_submission'.freeze
-          def default_processing_action_name
-            PROCESSING_ACTION_NAME
           end
         end
       end
