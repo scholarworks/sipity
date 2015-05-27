@@ -6,7 +6,7 @@ module Sipity
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
       def self.delegate_method_names
-        [:to_processing_entity, :enrichment_type, :to_work_area, :repository, :processing_action_name]
+        [:to_processing_entity, :to_processing_action, :enrichment_type, :to_work_area, :repository, :processing_action_name]
       end
 
       def self.private_delegate_method_names
@@ -66,7 +66,9 @@ module Sipity
 
           include GuardInterfaceExpectation
           def processing_action_form=(input)
-            guard_interface_expectation!(input, :submit, :repository, :to_work_area, :to_processing_entity, :processing_action_name)
+            guard_interface_expectation!(
+              input, :submit, :repository, :to_work_area, :to_processing_entity, :to_processing_action, :processing_action_name
+            )
             @processing_action_form = input
           end
         end

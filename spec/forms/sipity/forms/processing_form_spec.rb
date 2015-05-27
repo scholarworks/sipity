@@ -39,6 +39,7 @@ module Sipity
         it { should_not be_persisted }
         it { should delegate_method(:enrichment_type).to(:processing_action_form) }
         it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
+        it { should delegate_method(:to_processing_action).to(:processing_action_form) }
         it { should delegate_method(:to_work_area).to(:processing_action_form) }
         it { should delegate_method(:processing_action_name).to(:processing_action_form) }
         it 'will delegate repository to processing_action_form' do
