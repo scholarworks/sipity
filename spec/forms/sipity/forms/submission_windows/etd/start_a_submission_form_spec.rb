@@ -8,21 +8,32 @@ module Sipity
           subject { described_class.new(repository: repository, submission_window: submission_window) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:submission_window) do
-            Models::SubmissionWindow.new(id: 1, work_area_id: work_area.id, slug: 'etd')
+            Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
           end
-          let(:work_area) { Models::WorkArea.new(id: 2, slug: described_class::DEFAULT_WORK_AREA_SLUG) }
+          let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd') }
           before do
             allow(repository).to receive(:find_work_area_by).
               with(slug: work_area.slug).and_return(work_area)
+          end
+
+          context 'its class configuration' do
+            subject { described_class }
+            its(:base_class) { should eq(Models::Work) }
+            its(:model_name) { should eq(Models::Work.model_name) }
+            it 'will delegate human_attribute_name to the base class' do
+              expect(Models::Work).to receive(:human_attribute_name).and_call_original
+              expect(subject.human_attribute_name(:title)).to be_a(String)
+            end
           end
 
           its(:policy_enforcer) { should eq Policies::SubmissionWindowPolicy }
           its(:base_class) { should eq Models::Work }
           its(:default_repository) { should respond_to :create_work! }
           its(:default_repository) { should respond_to :find_submission_window_by }
+          its(:processing_subject_name) { should eq :submission_window }
+          its(:entity) { should eq submission_window }
           its(:to_work_area) { should eq(work_area) }
           its(:form_path) { should be_a(String) }
-          its(:to_key) { should eq([]) }
           its(:persisted?) { should eq(false) }
 
           it 'will have a model name like Work' do
@@ -118,17 +129,7 @@ module Sipity
 
           context '#submit' do
             let(:user) { User.new(id: '123') }
-            # subject do
-            #   described_class.new(
-            #     attributes: {
-            #       title: 'This is my title',
-            #       work_publication_strategy: 'do_not_know',
-            #       access_rights_answer: Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
-            #     },
-            #     submission_window: submission_window
-            #     repository: repository
-            #   )
-            # end
+
             context 'with invalid data' do
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)

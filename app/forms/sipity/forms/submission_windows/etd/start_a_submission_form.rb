@@ -5,13 +5,14 @@ module Sipity
         # Responsible for creating a new work within the ETD work area.
         # What goes into this is more complicated that the entity might allow.
         class StartASubmissionForm
-          Forms::Configure.form_for_processing_entity(
-            form_class: self, base_class: Models::Work, policy_enforcer: Policies::SubmissionWindowPolicy
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
+            policy_enforcer: Policies::SubmissionWindowPolicy,
+            attribute_names: [:title, :work_publication_strategy, :work_type, :access_rights_answer]
           )
 
-          def initialize(submission_window:, attributes: {}, **collaborators)
-            self.repository = collaborators.fetch(:repository) { default_repository }
-            self.processing_action_name = collaborators.fetch(:processing_action_name) { default_processing_action_name }
+          def initialize(submission_window:, attributes: {}, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
@@ -19,9 +20,7 @@ module Sipity
 
           private
 
-          attr_accessor :processing_action_name, :repository
-          attr_writer :title, :work_publication_strategy, :work_type, :access_rights_answer
-          attr_reader :submission_window, :work_area
+          attr_reader :work_area
 
           def initialize_attributes(attributes = {})
             self.title = attributes[:title]
@@ -32,10 +31,9 @@ module Sipity
 
           public
 
-          attr_reader :title, :work_publication_strategy, :work_type, :access_rights_answer
+          alias_method :to_work_area, :work_area
 
-          delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
-          alias_method :to_model, :submission_window
+          delegate :slug, :work_area_slug, to: :submission_window
 
           include ActiveModel::Validations
           validates :title, presence: true
@@ -47,25 +45,7 @@ module Sipity
           # TODO: This is composable method based on the "type" of processing
           # entity I am working with.
           def form_path
-            "/areas/#{work_area.slug}/#{submission_window.slug}/do/#{processing_action_name}"
-          end
-
-          # TODO: Extract a work area collaborator; How does that reconcile with
-          #   the submission window.
-          def to_work_area
-            work_area
-          end
-
-          def to_key
-            []
-          end
-
-          def to_param
-            nil
-          end
-
-          def persisted?
-            to_param.nil? ? false : true
+            "/areas/#{work_area_slug}/#{slug}/do/#{processing_action_name}"
           end
 
           def access_rights_answer_for_select
@@ -145,11 +125,6 @@ module Sipity
 
           def submission_window=(input)
             @submission_window = PowerConverter.convert(input, to: :submission_window, scope: work_area)
-          end
-
-          PROCESSING_ACTION_NAME = 'start_a_submission'.freeze
-          def default_processing_action_name
-            PROCESSING_ACTION_NAME
           end
         end
       end
