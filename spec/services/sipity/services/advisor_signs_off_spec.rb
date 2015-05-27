@@ -1,13 +1,18 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', to_processing_action: action, processing_action_name: 'hello', entity: double) }
-      let(:action) { double('Action', resulting_strategy_state: 'chubacabra') }
+      let(:form) { double('Form', to_processing_action: action, processing_action_name: 'hello', entity: double('Entity', strategy_id: 1)) }
+      let(:action) { double('Action', resulting_strategy_state: 'chubacabra', strategy_id: 1) }
+      let(:another_action) { double('AnotherAction', to_processing_action: double(strategy_id: 1)) }
       let(:on_behalf_of) { double('Collaborator') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
 
-      subject { described_class.new(form: form, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of) }
+      subject do
+        described_class.new(
+          form: form, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of, also_register_as: another_action
+        )
+      end
 
       it 'will default the on_behalf_of to the requested_by if none is given' do
         subject = described_class.new(form: form, repository: repository, requested_by: requested_by)
@@ -31,7 +36,11 @@ module Sipity
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           expect(repository).to receive(:log_event!).
-            with(entity: form, user: requested_by, event_name: form.processing_action_name)
+            with(entity: form.entity, user: requested_by, event_name: form.processing_action_name)
+          expect(repository).to receive(:register_processing_action_taken_on_entity).
+            with(entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+          expect(repository).to receive(:register_processing_action_taken_on_entity).
+            with(entity: form.entity, action: another_action.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end
       end
@@ -45,6 +54,12 @@ module Sipity
         it 'will log the event, register the action, and send an email to the creating user' do
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+          expect(repository).to receive(:log_event!).
+            with(entity: form.entity, user: requested_by, event_name: form.processing_action_name)
+          expect(repository).to receive(:register_processing_action_taken_on_entity).
+            with(entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+          expect(repository).to receive(:register_processing_action_taken_on_entity).
+            with(entity: form.entity, action: another_action.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           subject.call
         end
       end
@@ -73,6 +88,8 @@ module Sipity
 
       its(:default_repository) { should respond_to :collaborators_that_have_taken_the_action_on_the_entity }
       its(:default_repository) { should respond_to :work_collaborators_responsible_for_review }
+      its(:default_action) { should eq(form.to_processing_action) }
+      its(:default_also_register_as) { should be_empty }
     end
   end
 end
