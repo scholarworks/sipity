@@ -18,7 +18,7 @@ module Sipity
         def valid_on_behalf_of_collaborators
           # TODO: This can be consolidated into a singular query
           repository.collaborators_that_can_advance_the_current_state_of(work: work) -
-            repository.collaborators_that_have_taken_the_action_on_the_entity(entity: work, action: action)
+            repository.collaborators_that_have_taken_the_action_on_the_entity(entity: work, actions: action)
         end
 
         def on_behalf_of_collaborator

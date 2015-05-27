@@ -14,7 +14,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def action_registers_subquery_builder(poly_type:, entity:, action:)
+    def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -74,7 +74,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
@@ -198,7 +198,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
@@ -338,7 +338,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def users_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def users_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

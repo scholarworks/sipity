@@ -351,7 +351,7 @@ module Sipity
       end
 
       context '#users_that_have_taken_the_action_on_the_entity' do
-        subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
+        subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
         it "will include permitted strategy_state_actions" do
           user = User.create!(username: 'user')
           other_user = User.create!(username: 'another_user')
@@ -367,7 +367,7 @@ module Sipity
       end
 
       context '#collaborators_that_have_taken_the_action_on_the_entity' do
-        subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, action: action) }
+        subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
         it "will include permitted strategy_state_actions" do
           user = User.create!(username: 'user')
           non_acting_user = User.create!(username: 'non_acting_user')

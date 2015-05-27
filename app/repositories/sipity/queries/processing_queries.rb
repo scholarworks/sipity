@@ -46,21 +46,21 @@ module Sipity
       # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
       #   given the entity
       # @return [ActiveRecord::Relation<User>]
-      def users_that_have_taken_the_action_on_the_entity(entity:, action:)
+      def users_that_have_taken_the_action_on_the_entity(entity:, actions:)
         users = User.arel_table
         group_memberships = Models::GroupMembership.arel_table
 
         User.where(
           users[:id].in(
             action_registers_subquery_builder(
-              poly_type: User, entity: entity, action: action
+              poly_type: User, entity: entity, actions: actions
             )
           ).or(
             users[:id].in(
               group_memberships.project(group_memberships[:user_id]).where(
                 group_memberships[:group_id].in(
                   action_registers_subquery_builder(
-                    poly_type: Sipity::Models::Group, entity: entity, action: action
+                    poly_type: Sipity::Models::Group, entity: entity, actions: actions
                   )
                 )
               )
@@ -69,11 +69,11 @@ module Sipity
         )
       end
 
-      def action_registers_subquery_builder(poly_type:, entity:, action:)
+      def action_registers_subquery_builder(poly_type:, entity:, actions:)
         actors = Models::Processing::Actor.arel_table
         action_registers = Models::Processing::EntityActionRegister.arel_table
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        action = Conversions::ConvertToProcessingAction.call(action, scope: entity)
+        actions = Array.wrap(actions) { |an_action| Conversions::ConvertToProcessingAction.call(an_action, scope: entity) }
         poly_type = Conversions::ConvertToPolymorphicType.call(poly_type)
 
         actors.project(actors[:proxy_for_id]).where(
@@ -81,17 +81,17 @@ module Sipity
         ).join(action_registers).on(
           action_registers[:on_behalf_of_actor_id].eq(actors[:id])
         ).where(
-          action_registers[:strategy_action_id].eq(action.id).
+          action_registers[:strategy_action_id].in(actions.map(&:id)).
           and(action_registers[:entity_id].eq(entity.id))
         )
       end
       private :action_registers_subquery_builder
 
       # @api private
-      def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+      def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
         Models::Collaborator.where(
           Models::Collaborator.arel_table[:id].in(
-            action_registers_subquery_builder(poly_type: Models::Collaborator, entity: entity, action: action)
+            action_registers_subquery_builder(poly_type: Models::Collaborator, entity: entity, actions: actions)
           )
         )
       end
@@ -114,12 +114,12 @@ module Sipity
       # @param action an object that can be covnerted into a Sipity::Models::Processing::Action
       #   given the entity
       # @return [ActiveRecord::Relation<User>]
-      def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+      def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         collaborators = Models::Collaborator.arel_table
         users = User.arel_table
-        users_scope = users_that_have_taken_the_action_on_the_entity(entity: entity, action: action)
-        non_user_collaborator_scope = non_user_collaborators_that_have_taken_the_action_on_the_entity(entity: entity, action: action)
+        users_scope = users_that_have_taken_the_action_on_the_entity(entity: entity, actions: actions)
+        non_user_collaborator_scope = non_user_collaborators_that_have_taken_the_action_on_the_entity(entity: entity, actions: actions)
 
         Models::Collaborator.where(
           collaborators[:netid].in(
