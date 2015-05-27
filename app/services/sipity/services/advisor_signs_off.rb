@@ -41,7 +41,7 @@ module Sipity
 
       include Conversions::ConvertToProcessingAction
       def also_register_as=(input)
-        @also_register_as = Array.wrap(input).map { |action| convert_to_processing_action(input, scope: form.entity) }
+        @also_register_as = Array.wrap(input).map { |an_action| convert_to_processing_action(an_action, scope: form.entity) }
       end
 
       def default_repository

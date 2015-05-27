@@ -33,24 +33,22 @@ module Sipity
             f.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
           end
 
+          # Expose that information in the database; Determine how this relates
+          # to the Sipity::Models::Processing::StrategyActionAnalogue.
+          RELATED_ACTION_FOR_SIGNOFF = 'advisor_signoff'.freeze
           def submit(requested_by:)
             return false unless valid?
-            register_the_actions(requested_by: requested_by)
-            signoff_service.call(form: self, requested_by: requested_by, repository: repository, on_behalf_of: on_behalf_of_collaborator)
+            signoff_service.call(
+              form: self,
+              requested_by: requested_by,
+              repository: repository,
+              on_behalf_of: on_behalf_of_collaborator,
+              also_register_as: RELATED_ACTION_FOR_SIGNOFF
+            )
             work
           end
 
           private
-
-          RELATED_ACTION_FOR_SIGNOFF = 'advisor_signoff'
-          def register_the_actions(requested_by:)
-            repository.register_action_taken_on_entity(
-              work: work, enrichment_type: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
-            )
-            @registered_action = repository.register_action_taken_on_entity(
-              work: work, enrichment_type: RELATED_ACTION_FOR_SIGNOFF, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
-            )
-          end
 
           attr_accessor :on_behalf_of_collaborator_extension, :signoff_service
 
