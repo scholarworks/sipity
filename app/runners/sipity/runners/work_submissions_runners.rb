@@ -34,9 +34,9 @@ module Sipity
         def run(work_id:, processing_action_name:, attributes: {})
           super do |form, work|
             if form.submit(requested_by: current_user)
-              callback(:success, work)
+              callback(:submit_success, work)
             else
-              callback(:failure, form)
+              callback(:submit_failure, form)
             end
           end
         end
