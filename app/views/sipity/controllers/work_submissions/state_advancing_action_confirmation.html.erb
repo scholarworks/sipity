@@ -1,9 +1,9 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
   <div itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-    <link itemprop="url" href="<%= event_trigger_for_work_path(view_object.work, view_object.processing_action_name) %>">
+    <link itemprop="url" href="<%= request.path %>">
     <meta itemprop="name" content="confirm/event_trigger/<%= view_object.processing_action_name %>">
     <div itemscope itemprop="target" itemtype="http://schema.org/EntryPoint">
-      <%= simple_form_for(view_object, url: request.path, method: :post) do |f| %>
+      <%= simple_form_for(view_object, as: view_object.param_key, url: request.path, method: :post) do |f| %>
         <%= f.error_notification %>
         <%= f.error :base, error_method: :to_sentence %>
         <%= view_object.render(f: f) %>

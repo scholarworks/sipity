@@ -47,6 +47,7 @@ module Sipity
 
           delegate(*processing_form_class.delegate_method_names, to: :processing_action_form)
           private(*processing_form_class.private_delegate_method_names)
+          delegate(:param_key, to: :model_name)
 
           private
 
