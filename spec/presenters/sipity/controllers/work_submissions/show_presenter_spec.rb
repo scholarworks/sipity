@@ -84,7 +84,7 @@ module Sipity
           it 'will render the partial' do
             expect(context).to receive(:render).
               with(partial: "/accessible_object_set", object: work_submission)
-            subject.render_additional_attribute_set
+            subject.render_accessible_object_set
           end
         end
 
