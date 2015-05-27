@@ -56,7 +56,11 @@ module Sipity
 
         # TODO: work_type, processing_state should be translated
         delegate :id, to: :work_submission, prefix: :work
-        delegate :title, to: :work_submission
+        delegate :collaborators, to: :work_submission
+
+        def collaborators?
+          collaborators.present?
+        end
 
         def work_type
           TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type, predicate: :label)
@@ -64,6 +68,12 @@ module Sipity
 
         def processing_state
           work_submission.processing_state.to_s
+        end
+
+        def work_publication_strategy
+          TranslationAssistant.call(
+            scope: :work_publication_strategies, subject: work_submission.work_publication_strategy, predicate: :label
+          )
         end
 
         def label(identifier)

@@ -23,6 +23,13 @@ module Sipity
           subject.render_processing_state_notice
         end
 
+        it 'will expose #collaborators?' do
+          expect(work_submission).to receive(:collaborators).and_return([])
+          expect(subject.collaborators?).to be_falsey
+        end
+
+        it { should delegate_method(:collaborators).to(:work_submission) }
+
         context '#render_current_comments' do
           subject { described_class.new(context, work_submission: work_submission, repository: repository) }
           it 'will return nil if there are no comments in the repository' do
@@ -72,6 +79,11 @@ module Sipity
         it 'will expose #work_type and delegate to the TranslationAssistant' do
           expect(TranslationAssistant).to receive(:call)
           subject.work_type
+        end
+
+        it 'will expose #work_publication_strategy and delegate to the TranslationAssistant' do
+          expect(TranslationAssistant).to receive(:call)
+          subject.work_publication_strategy
         end
 
         context '#label' do
