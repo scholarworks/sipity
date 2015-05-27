@@ -28,7 +28,13 @@ module Sipity
           expect(subject.collaborators?).to be_falsey
         end
 
+        it 'will expose #additional_attributes?' do
+          expect(work_submission).to receive(:additional_attributes).and_return([])
+          expect(subject.additional_attributes?).to be_falsey
+        end
+
         it { should delegate_method(:collaborators).to(:work_submission) }
+        it { should delegate_method(:title).to(:work_submission) }
 
         context '#render_current_comments' do
           subject { described_class.new(context, work_submission: work_submission, repository: repository) }

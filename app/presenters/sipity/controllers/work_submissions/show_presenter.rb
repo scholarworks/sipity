@@ -56,10 +56,14 @@ module Sipity
 
         # TODO: work_type, processing_state should be translated
         delegate :id, to: :work_submission, prefix: :work
-        delegate :collaborators, to: :work_submission
+        delegate :collaborators, :title, to: :work_submission
 
         def collaborators?
           collaborators.present?
+        end
+
+        def additional_attributes?
+          work_submission.additional_attributes.present?
         end
 
         def work_type
