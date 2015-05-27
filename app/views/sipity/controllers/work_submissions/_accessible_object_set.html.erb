@@ -1,0 +1,6 @@
+<% if accessible_object_set.accessible_objects.any? %>
+  <dt class="predicate accessible-objects"><%= accessible_object_set.human_attribute_name('access_rights').html_safe %></dt>
+  <dd class="value accessible-objects">
+    <%= render partial: 'sipity/shared/accessible_objects', object: accessible_object_set.accessible_objects %>
+  </dt>
+<% end %>

@@ -53,6 +53,10 @@ module Sipity
           render partial: '/additional_attribute_set', object: object
         end
 
+        def render_accessible_object_set
+          render partial: '/accessible_object_set', object: work_submission
+        end
+
         delegate(
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,

@@ -80,6 +80,14 @@ module Sipity
           end
         end
 
+        context '#render_accessible_object_set' do
+          it 'will render the partial' do
+            expect(context).to receive(:render).
+              with(partial: "/accessible_object_set", object: work_submission)
+            subject.render_additional_attribute_set
+          end
+        end
+
         it 'will expose #section that accepts an identifier' do
           expect(TranslationAssistant).to receive(:call)
           subject.section('overview')
