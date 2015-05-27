@@ -46,6 +46,13 @@ module Sipity
           render partial: "/current_comments", object: object
         end
 
+        def render_additional_attribute_set
+          object = Parameters::EntityWithAdditionalAttributesParameter.new(
+            entity: work_submission, additional_attributes: work_submission.additional_attributes
+          )
+          render partial: '/additional_attribute_set', object: object
+        end
+
         delegate(
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,
@@ -60,10 +67,6 @@ module Sipity
 
         def collaborators?
           collaborators.present?
-        end
-
-        def additional_attributes?
-          work_submission.additional_attributes.present?
         end
 
         def work_type

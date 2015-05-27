@@ -28,11 +28,6 @@ module Sipity
           expect(subject.collaborators?).to be_falsey
         end
 
-        it 'will expose #additional_attributes?' do
-          expect(work_submission).to receive(:additional_attributes).and_return([])
-          expect(subject.additional_attributes?).to be_falsey
-        end
-
         it { should delegate_method(:collaborators).to(:work_submission) }
         it { should delegate_method(:title).to(:work_submission) }
 
@@ -74,6 +69,14 @@ module Sipity
               to receive(:action_set_for).with(name: 'state_advancing_actions').and_return(action_set)
             expect(context).to receive(:render).with(partial: "/state_advancing_action_set", object: action_set)
             subject.render_state_advancing_action_set
+          end
+        end
+
+        context '#render_additional_attribute_set' do
+          it 'will render the partial' do
+            expect(context).to receive(:render).
+              with(partial: "/additional_attribute_set", object: kind_of(Parameters::EntityWithAdditionalAttributesParameter))
+            subject.render_additional_attribute_set
           end
         end
 
