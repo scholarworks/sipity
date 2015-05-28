@@ -45,9 +45,7 @@ module Sipity
 
           def submit(requested_by:)
             return false unless valid?
-            Services::RequestChangesViaCommentService.call(
-              form: self, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
-            )
+            save(requested_by: requested_by)
             work
           end
 
@@ -62,6 +60,12 @@ module Sipity
           end
 
           attr_accessor :on_behalf_of_collaborator_extension
+
+          def save(requested_by:)
+            Services::RequestChangesViaCommentService.call(
+              form: self, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
+            )
+          end
 
           def build_collaborator_extension
             Forms::ComposableElements::OnBehalfOfCollaborator.new(form: self, repository: repository)
