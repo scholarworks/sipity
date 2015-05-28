@@ -113,10 +113,6 @@ module Sipity
 
       private
 
-      def event_name
-        "#{processing_action_name}/submit"
-      end
-
       attr_writer :repository, :processing_action_name
       attr_reader :form
 
