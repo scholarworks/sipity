@@ -72,6 +72,7 @@ module Sipity
                 'advisor_changes_requested',
                 'under_grad_school_review',
                 'grad_school_changes_requested',
+                'under_grad_school_review_with_changes',
                 'ready_for_ingest'
               ].each do |state_name|
                 etd_states[state_name] = find_or_initialize_or_create!(
@@ -98,7 +99,7 @@ module Sipity
                 { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2, allow_repeat_within_current_state: false },
                 { action_name: 'request_change_on_behalf_of', resulting_state_name: 'advisor_changes_requested', seq: 3, allow_repeat_within_current_state: false },
                 { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
-                { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review_with_changes', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: false },
                 { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
@@ -178,7 +179,7 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest', 'under_grad_school_review_with_changes'],
                   ['show'],
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
@@ -206,7 +207,7 @@ module Sipity
                   ['advisor_requests_change'],
                   ['advisor']
                 ],[
-                  ['under_grad_school_review'],
+                  ['under_grad_school_review', 'under_grad_school_review_with_changes'],
                   ['grad_school_requests_change', 'grad_school_signoff'],
                   ['etd_reviewer']
                 ]
