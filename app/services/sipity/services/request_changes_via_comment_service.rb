@@ -15,9 +15,7 @@ module Sipity
       end
 
       def call
-        send_notification_for(processing_comment: record_processing_comment)
-        log_event
-        register_action_taken
+        register_action_taken(processing_comment: record_processing_comment)
         update_processing_state
       end
 
@@ -27,20 +25,12 @@ module Sipity
         )
       end
 
-      def send_notification_for(processing_comment:)
-        repository.deliver_notification_for(
-          the_thing: processing_comment, scope: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of
-        )
-      end
-
-      def register_action_taken
+      def register_action_taken(processing_comment:)
+        # Yes, I want to record the processing comment. We can figure out the entity from the comment, but the
+        # context of message delivery is important.
         repository.register_action_taken_on_entity(
-          entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of
+          entity: processing_comment, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of
         )
-      end
-
-      def log_event
-        repository.log_event!(entity: form.entity, user: requested_by, event_name: event_name)
       end
 
       def update_processing_state

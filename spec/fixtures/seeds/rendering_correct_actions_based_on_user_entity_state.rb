@@ -8,10 +8,10 @@ Sipity::Models::Processing::Entity.create!([
   {proxy_for_id: 1, proxy_for_type: "Sipity::Models::Work", strategy_id: 1, strategy_state_id: "2"}
 ])
 Sipity::Models::Processing::EntityActionRegister.create!([
-  {strategy_action_id: 2, entity_id: 1, requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
-  {strategy_action_id: 4, entity_id: 1, requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
-  {strategy_action_id: 5, entity_id: 1, requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
-  {strategy_action_id: 6, entity_id: 1, requested_by_actor_id: 1, on_behalf_of_actor_id: 2}
+  {strategy_action_id: 2, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
+  {strategy_action_id: 4, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
+  {strategy_action_id: 5, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 1},
+  {strategy_action_id: 6, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 2}
 ])
 Sipity::Models::Processing::EntitySpecificResponsibility.create!([
   {strategy_role_id: 1, entity_id: 1, actor_id: 1}

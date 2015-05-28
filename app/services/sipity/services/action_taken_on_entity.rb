@@ -10,7 +10,10 @@ module Sipity
         new(**keywords).unregister
       end
 
+      # TODO: Subject and entity are redundant. Rename parameter to :subject to
+      #   reflect the more ambiguous nature of the action's response.
       def initialize(entity:, action:, requested_by:, **keywords)
+        self.subject = entity
         self.entity = entity
         self.action = action
         self.requesting_actor = requested_by
@@ -20,7 +23,7 @@ module Sipity
         # TODO: Push this down to the database
         self.also_register_as = keywords.fetch(:also_register_as) { [] }
       end
-      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor, :also_register_as
+      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor, :also_register_as, :subject
 
       def register
         log_the_action
@@ -45,13 +48,16 @@ module Sipity
         also_register_as.each { |action| add_entry_to_the_entity_action_regsistry(action: action) }
       end
 
+      include Conversions::ConvertToPolymorphicType
       def add_entry_to_the_entity_action_regsistry(action:)
         # TODO: Tease apart the requested_by and on_behalf_of
         Models::Processing::EntityActionRegister.create!(
           strategy_action_id: action.id,
           entity_id: entity.id,
           requested_by_actor_id: requesting_actor.id,
-          on_behalf_of_actor_id: on_behalf_of_actor.id
+          on_behalf_of_actor_id: on_behalf_of_actor.id,
+          subject_id: subject.id,
+          subject_type: convert_to_polymorphic_type(subject)
         )
       end
 
@@ -79,6 +85,12 @@ module Sipity
       include Conversions::ConvertToProcessingEntity
       def entity=(entity_like_object)
         @entity = convert_to_processing_entity(entity_like_object)
+      end
+
+      def subject=(input)
+        # Guard!
+        convert_to_polymorphic_type(input)
+        @subject = input
       end
 
       include Conversions::ConvertToProcessingAction
