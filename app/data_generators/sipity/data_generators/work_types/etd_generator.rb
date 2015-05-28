@@ -204,7 +204,7 @@ module Sipity
                 ],[
                   ['under_advisor_review'],
                   ['advisor_requests_change'],
-                  ['etd_reviewer', 'advisor']
+                  ['advisor']
                 ],[
                   ['under_grad_school_review'],
                   ['grad_school_requests_change', 'grad_school_signoff'],
