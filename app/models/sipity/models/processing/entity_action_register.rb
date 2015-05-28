@@ -16,6 +16,7 @@ module Sipity
 
         alias_method :to_processing_action, :strategy_action
         alias_method :to_processing_entity, :entity
+        delegate :proxy_for, to: :entity
       end
     end
   end

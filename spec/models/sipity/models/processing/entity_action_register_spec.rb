@@ -14,6 +14,7 @@ module Sipity
 
         context 'conversions methods' do
           subject { described_class.new }
+          it { should delegate_method(:proxy_for).to(:entity) }
           it { should respond_to :to_processing_action }
           it { should respond_to :to_processing_entity }
         end
