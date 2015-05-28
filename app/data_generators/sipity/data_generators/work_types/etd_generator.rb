@@ -248,16 +248,14 @@ module Sipity
                 named_container: Models::Processing::StrategyAction,
                 name: 'advisor_signoff',
                 emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+                  confirmation_of_advisor_signoff: { to: 'creating_user' },
                 }
               },
               {
                 named_container: Models::Processing::StrategyAction,
                 name: 'signoff_on_behalf_of',
                 emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' },
+                  confirmation_of_advisor_signoff: { to: 'creating_user' },
                 }
               },
               {
