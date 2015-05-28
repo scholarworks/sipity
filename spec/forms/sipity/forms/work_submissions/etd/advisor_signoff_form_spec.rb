@@ -68,7 +68,9 @@ module Sipity
             end
 
             it 'will call the AdvisorSignsOff service' do
-              expect(signoff_service).to receive(:call)
+              expect(signoff_service).to receive(:call).with(
+                form: subject, requested_by: user, repository: repository, also_register_as: described_class::RELATED_ACTION_FOR_SIGNOFF
+              )
               subject.submit(requested_by: user)
             end
           end

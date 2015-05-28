@@ -52,7 +52,7 @@ module Sipity
           # on that form submission.
           def submit(requested_by:)
             return false unless valid?
-            signoff_service.call(form: self, requested_by: requested_by, repository: repository)
+            save(requested_by: requested_by)
             work
           end
 
@@ -64,6 +64,13 @@ module Sipity
 
           def view_context
             Draper::ViewContext.current
+          end
+
+          RELATED_ACTION_FOR_SIGNOFF = 'signoff_on_behalf_of'.freeze
+          def save(requested_by:)
+            signoff_service.call(
+              form: self, requested_by: requested_by, repository: repository, also_register_as: RELATED_ACTION_FOR_SIGNOFF
+            )
           end
 
           attr_accessor :signoff_service
