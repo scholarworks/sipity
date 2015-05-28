@@ -12,6 +12,7 @@ module Sipity
           subject { described_class.new(work: work, repository: repository) }
 
           its(:processing_action_name) { should eq('advisor_requests_change') }
+          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context '#render' do
             let(:f) { double }
