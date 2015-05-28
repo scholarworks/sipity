@@ -35,8 +35,6 @@ module Sipity
         it 'will log the event, register the action, and send an email to the creating user' do
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
-          expect(repository).to receive(:log_event!).
-            with(entity: form.entity, user: requested_by, event_name: form.processing_action_name)
           expect(repository).to receive(:register_processing_action_taken_on_entity).
             with(entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           expect(repository).to receive(:register_processing_action_taken_on_entity).
@@ -54,8 +52,6 @@ module Sipity
         it 'will log the event, register the action, and send an email to the creating user' do
           expect(repository).to receive(:deliver_notification_for).
             with(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
-          expect(repository).to receive(:log_event!).
-            with(entity: form.entity, user: requested_by, event_name: form.processing_action_name)
           expect(repository).to receive(:register_processing_action_taken_on_entity).
             with(entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of)
           expect(repository).to receive(:register_processing_action_taken_on_entity).

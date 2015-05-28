@@ -25,7 +25,6 @@ module Sipity
       attr_reader :form, :repository, :requested_by, :on_behalf_of, :also_register_as
 
       def call
-        log_the_event
         register_the_processing_actions
         send_confirmation_of_advisor_signoff
         handle_last_advisor_signoff if last_advisor_to_signoff?
@@ -56,11 +55,8 @@ module Sipity
         form.to_processing_action
       end
 
-      def log_the_event
-        repository.log_event!(entity: form.entity, user: requested_by, event_name: form.processing_action_name)
-      end
-
       def register_the_processing_actions
+        # Push action and "also_register_as" onto single registry
         [action, also_register_as].flatten.each do |an_action|
           repository.register_processing_action_taken_on_entity(
             entity: form.entity, action: an_action, requested_by: requested_by, on_behalf_of: on_behalf_of

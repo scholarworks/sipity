@@ -17,7 +17,6 @@ module Sipity
           its(:column_names) { should include('allow_repeat_within_current_state') }
         end
 
-        subject { described_class.new }
         it 'will raise an ArgumentError if you provide an invalid action_type' do
           expect { subject.action_type = '__incorrect_type__' }.to raise_error(ArgumentError)
         end

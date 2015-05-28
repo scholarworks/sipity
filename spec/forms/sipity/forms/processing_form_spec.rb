@@ -51,7 +51,6 @@ module Sipity
       it { should delegate_method(:valid?).to(:form) }
 
       its(:default_repository) { should respond_to :register_processing_action_taken_on_entity }
-      its(:default_repository) { should respond_to :log_event! }
       its(:default_translator) { should respond_to :call }
       it { should respond_to :to_registered_action }
 
@@ -110,11 +109,6 @@ module Sipity
           it 'will register the action that was taken' do
             expect(repository).to receive(:update_processing_state!).
               with(entity: entity, to: an_action.resulting_strategy_state).and_call_original
-            subject.submit(requested_by: user)
-          end
-
-          it 'will log the event' do
-            expect(repository).to receive(:log_event!).and_call_original
             subject.submit(requested_by: user)
           end
 

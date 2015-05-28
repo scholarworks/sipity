@@ -82,11 +82,10 @@ module Sipity
 
       def submit(requested_by:)
         return false unless valid?
-        @registered_action = repository.register_processing_action_taken_on_entity(
+        yield if block_given?
+        @registered_action = repository.register_action_taken_on_entity(
           entity: entity, action: to_processing_action, requested_by: requested_by
         )
-        repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
-        yield if block_given?
         repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
         # TODO: Account for on_behalf_of
         repository.deliver_notification_for(scope: to_processing_action, the_thing: entity, requested_by: requested_by)

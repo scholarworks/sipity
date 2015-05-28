@@ -8,8 +8,10 @@ module Sipity
       let(:requested_by) { Models::Processing::Actor.new(id: 4) }
       let(:on_behalf_of) { Models::Processing::Actor.new(id: 5) }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id, name: 'wowza') }
+      let(:repository) { CommandRepositoryInterface.new }
 
-      subject { described_class.new(entity: entity, requested_by: requested_by, action: action) }
+      subject { described_class.new(entity: entity, requested_by: requested_by, action: action, repository: repository) }
+      its(:default_repository) { should respond_to(:log_event!) }
 
       context 'on_behalf_of behavior' do
         it 'will default to the requested_by if none are given' do
@@ -38,6 +40,10 @@ module Sipity
         context 'with a valid action object for the given entity' do
           it 'will increment the registry' do
             expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
+          end
+          it 'will log the event' do
+            expect(repository).to receive(:log_event!).with(entity: entity, user: requested_by, event_name: "#{action.name}/submit")
+            subject.register
           end
         end
       end
