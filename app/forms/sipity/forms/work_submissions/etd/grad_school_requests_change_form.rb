@@ -33,22 +33,26 @@ module Sipity
             view_context.t('etd/grad_school_requests_change', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
           end
 
-          include Conversions::ConvertToProcessingAction
+          # Because the underlying service handles the things that are normally
+          # handled by the composed ProcessingForm.
+          #
+          # @see Sipity::Forms::ProcessingForm#submit
           def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
-              action = convert_to_processing_action(processing_action_form, scope: work)
-
-              processing_comment = repository.record_processing_comment(
-                entity: work, commenter: requested_by, comment: comment, action: action
-              )
-              repository.deliver_notification_for(the_thing: processing_comment, scope: action, requested_by: requested_by)
-            end
+            return false unless valid?
+            save(requested_by: requested_by)
+            work
           end
 
           private
 
           def view_context
             Draper::ViewContext.current
+          end
+
+          def save(requested_by:)
+            Services::RequestChangesViaCommentService.call(
+              form: self, repository: repository, requested_by: requested_by
+            )
           end
         end
       end
