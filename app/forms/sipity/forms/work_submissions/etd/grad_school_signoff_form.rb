@@ -1,3 +1,5 @@
+require_relative '../../../forms'
+
 module Sipity
   module Forms
     module WorkSubmissions
@@ -5,7 +7,8 @@ module Sipity
         # Responsible for submitting the final Grad School approval.
         class GradSchoolSignoffForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::Work, attribute_names: :agree_to_signoff, processing_subject_name: :work
+            form_class: self, base_class: Models::Work, attribute_names: :agree_to_signoff, processing_subject_name: :work,
+            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
           def initialize(work:, attributes: {}, **keywords)
