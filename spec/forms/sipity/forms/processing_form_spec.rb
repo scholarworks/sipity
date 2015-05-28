@@ -112,11 +112,6 @@ module Sipity
             subject.submit(requested_by: user)
           end
 
-          it 'will send relevant emails' do
-            expect(repository).to receive(:deliver_notification_for).and_call_original
-            subject.submit(requested_by: user)
-          end
-
           it 'will set the registered action for future reference' do
             expect(repository).to receive(:register_action_taken_on_entity).and_return(:registered_action)
             expect { subject.submit(requested_by: user) }.to change { subject.registered_action }.from(nil).to(:registered_action)

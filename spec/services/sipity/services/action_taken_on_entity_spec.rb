@@ -12,6 +12,7 @@ module Sipity
 
       subject { described_class.new(entity: entity, requested_by: requested_by, action: action, repository: repository) }
       its(:default_repository) { should respond_to(:log_event!) }
+      its(:default_repository) { should respond_to(:deliver_notification_for) }
 
       context 'on_behalf_of behavior' do
         it 'will default to the requested_by if none are given' do
@@ -37,12 +38,27 @@ module Sipity
       end
 
       context '#register' do
+        subject do
+          described_class.new(
+            entity: entity, requested_by: requested_by, action: action, repository: repository, on_behalf_of: on_behalf_of
+          )
+        end
         context 'with a valid action object for the given entity' do
           it 'will increment the registry' do
             expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
           end
           it 'will log the event' do
-            expect(repository).to receive(:log_event!).with(entity: entity, user: requested_by.proxy_for, event_name: "#{action.name}/submit")
+            expect(repository).to receive(:log_event!).
+              with(entity: entity, user: requested_by.proxy_for, event_name: "#{action.name}/submit")
+            subject.register
+          end
+          it 'will send notifications on the processing comment' do
+            expect(repository).to receive(:deliver_notification_for).with(
+              scope: action,
+              the_thing: kind_of(Models::Processing::EntityActionRegister),
+              requested_by: requested_by,
+              on_behalf_of: on_behalf_of
+            )
             subject.register
           end
         end

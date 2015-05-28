@@ -87,8 +87,6 @@ module Sipity
           entity: entity, action: to_processing_action, requested_by: requested_by
         )
         repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
-        # TODO: Account for on_behalf_of
-        repository.deliver_notification_for(scope: to_processing_action, the_thing: entity, requested_by: requested_by)
         entity
       end
 
