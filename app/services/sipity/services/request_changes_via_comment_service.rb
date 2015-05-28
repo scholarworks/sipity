@@ -50,11 +50,6 @@ module Sipity
         @form = input
       end
 
-      # TODO: This is a duplication of knowledge; Consider a Coercion method?
-      def event_name
-        "#{form.processing_action_name}/submit"
-      end
-
       def default_repository
         CommandRepository.new
       end
