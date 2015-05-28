@@ -33,10 +33,6 @@ module Sipity
     def build_dashboard_view(user:, filter: {})
     end
 
-    # @see ./app/repositories/sipity/queries/enrichment_queries.rb
-    def build_enrichment_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
     def build_submission_window_processing_action_form(submission_window:, processing_action_name:, attributes: {})
     end
