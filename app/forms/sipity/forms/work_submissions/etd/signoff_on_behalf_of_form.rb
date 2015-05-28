@@ -1,3 +1,5 @@
+require_relative '../../../forms'
+
 module Sipity
   module Forms
     module WorkSubmissions
@@ -5,7 +7,10 @@ module Sipity
         # Responsible for exposing ability for someone to signoff on the work
         # on behalf of someone else.
         class SignoffOnBehalfOfForm
-          ProcessingForm.configure(form_class: self, base_class: Models::Work, attribute_names: [:on_behalf_of_collaborator_id])
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, attribute_names: [:on_behalf_of_collaborator_id],
+            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+          )
 
           def initialize(work:, attributes: {}, signoff_service: default_signoff_service, **keywords)
             self.work = work
