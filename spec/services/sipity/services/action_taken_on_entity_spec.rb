@@ -8,6 +8,7 @@ module Sipity
       let(:requested_by) { Models::Processing::Actor.new(id: 4, proxy_for: User.new) }
       let(:on_behalf_of) { Models::Processing::Actor.new(id: 5) }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id, name: 'wowza') }
+      let(:another_action) { Models::Processing::StrategyAction.new(id: 30, strategy_id: strategy.id, name: 'another') }
       let(:repository) { CommandRepositoryInterface.new }
 
       subject { described_class.new(entity: entity, requested_by: requested_by, action: action, repository: repository) }
@@ -40,12 +41,13 @@ module Sipity
       context '#register' do
         subject do
           described_class.new(
-            entity: entity, requested_by: requested_by, action: action, repository: repository, on_behalf_of: on_behalf_of
+            entity: entity, requested_by: requested_by, action: action, repository: repository, on_behalf_of: on_behalf_of,
+            also_register_as: another_action
           )
         end
         context 'with a valid action object for the given entity' do
           it 'will increment the registry' do
-            expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
+            expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(2)
           end
           it 'will log the event' do
             expect(repository).to receive(:log_event!).

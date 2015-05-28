@@ -202,7 +202,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def register_action_taken_on_entity(entity:, action:, requested_by:, on_behalf_of: requested_by)
+    def register_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -298,7 +298,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def unregister_action_taken_on_entity(entity:, action:, requested_by:, on_behalf_of: requested_by)
+    def unregister_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb

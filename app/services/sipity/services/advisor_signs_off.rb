@@ -17,7 +17,7 @@ module Sipity
 
       private
 
-      attr_writer :repository, :requested_by, :on_behalf_of, :action
+      attr_writer :repository, :requested_by, :on_behalf_of, :action, :also_register_as
       attr_reader :action
 
       public
@@ -26,7 +26,6 @@ module Sipity
 
       def call
         register_the_processing_actions
-        send_confirmation_of_advisor_signoff
         handle_last_advisor_signoff if last_advisor_to_signoff?
       end
 
@@ -36,11 +35,6 @@ module Sipity
       def form=(input)
         guard_interface_expectation!(input, :entity, :processing_action_name, :to_processing_action)
         @form = input
-      end
-
-      include Conversions::ConvertToProcessingAction
-      def also_register_as=(input)
-        @also_register_as = Array.wrap(input).map { |an_action| convert_to_processing_action(an_action, scope: form.entity) }
       end
 
       def default_repository
@@ -57,15 +51,9 @@ module Sipity
 
       def register_the_processing_actions
         # Push action and "also_register_as" onto single registry
-        [action, also_register_as].flatten.each do |an_action|
-          repository.register_action_taken_on_entity(
-            entity: form.entity, action: an_action, requested_by: requested_by, on_behalf_of: on_behalf_of
-          )
-        end
-      end
-
-      def send_confirmation_of_advisor_signoff
-        repository.deliver_notification_for(the_thing: form, scope: action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+        repository.register_action_taken_on_entity(
+          entity: form.entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of, also_register_as: also_register_as
+        )
       end
 
       def handle_last_advisor_signoff

@@ -16,12 +16,16 @@ module Sipity
         self.requesting_actor = requested_by
         self.on_behalf_of_actor = keywords.fetch(:on_behalf_of) { requesting_actor }
         self.repository = keywords.fetch(:repository) { default_repository }
+
+        # TODO: Push this down to the database
+        self.also_register_as = keywords.fetch(:also_register_as) { [] }
       end
-      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor
+      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor, :also_register_as
 
       def register
         log_the_action
-        registered_action = add_entry_to_the_entity_action_regsistry
+        registered_action = add_entry_to_the_entity_action_regsistry(action: action)
+        add_actions_that_should_also_be_registered
         deliver_notifications_for(registered_action: registered_action)
       end
 
@@ -37,7 +41,11 @@ module Sipity
 
       private
 
-      def add_entry_to_the_entity_action_regsistry
+      def add_actions_that_should_also_be_registered
+        also_register_as.each { |action| add_entry_to_the_entity_action_regsistry(action: action) }
+      end
+
+      def add_entry_to_the_entity_action_regsistry(action:)
         # TODO: Tease apart the requested_by and on_behalf_of
         Models::Processing::EntityActionRegister.create!(
           strategy_action_id: action.id,
@@ -76,6 +84,10 @@ module Sipity
       include Conversions::ConvertToProcessingAction
       def action=(object)
         @action = convert_to_processing_action(object, scope: entity)
+      end
+
+      def also_register_as=(input)
+        @also_register_as = Array.wrap(input).map { |an_action| convert_to_processing_action(an_action, scope: entity) }
       end
 
       def requesting_actor=(actor_like_object)
