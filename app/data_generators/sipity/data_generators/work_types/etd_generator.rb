@@ -299,14 +299,6 @@ module Sipity
                   advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
                   confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
                 }
-              },
-              {
-                named_container: Models::Processing::StrategyState,
-                name: 'ready_for_ingest',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
-                }
               }
             ].each do |email_config|
               named_container = email_config.fetch(:named_container)
