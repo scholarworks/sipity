@@ -10,7 +10,7 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           subject { described_class.new(work: work, repository: repository) }
 
-          its(:enrichment_type) { should eq('defense_date') }
+          its(:processing_action_name) { should eq('defense_date') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
 
           it { should respond_to :work }

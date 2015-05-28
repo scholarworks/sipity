@@ -10,16 +10,16 @@ module Sipity
         )
       end
 
-      def register_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+      def register_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
         Services::ActionTakenOnEntity.register(
-          entity: work, action: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of
+          entity: work, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of
         )
       end
       deprecate register_action_taken_on_entity: "Use #register_processing_action_taken_on_entity instead"
 
-      def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+      def unregister_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
         Services::ActionTakenOnEntity.unregister(
-          entity: work, action: enrichment_type, requested_by: requested_by, on_behalf_of: on_behalf_of
+          entity: work, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of
         )
       end
 

@@ -38,7 +38,6 @@ module Sipity
         its(:policy_enforcer) { should eq(Policies::WorkPolicy) }
         its(:template) { should eq('hello_world') }
         it { should_not be_persisted }
-        it { should delegate_method(:enrichment_type).to(:processing_action_form) }
         it { should delegate_method(:param_key).to(:model_name) }
         it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
         it { should delegate_method(:to_processing_action).to(:processing_action_form) }
@@ -47,12 +46,6 @@ module Sipity
         it 'will delegate repository to processing_action_form' do
           expect(subject.send(:repository)).to eq(subject.send(:processing_action_form).send(:repository))
         end
-      end
-
-      context 'configuration methods' do
-        subject { described_class }
-        its(:delegate_method_names) { should be_a(Array) }
-        its(:private_delegate_method_names) { should be_a(Array) }
       end
 
       it { should delegate_method(:valid?).to(:form) }

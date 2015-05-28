@@ -52,7 +52,7 @@ module Sipity
           private
 
           def comment_legend
-            view_context.t("etd/#{enrichment_type}", scope: 'sipity/forms.state_advancing_actions.legend').html_safe
+            view_context.t("etd/#{processing_action_name}", scope: 'sipity/forms.state_advancing_actions.legend').html_safe
           end
 
           def view_context

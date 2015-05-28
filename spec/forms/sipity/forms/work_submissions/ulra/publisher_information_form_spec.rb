@@ -11,7 +11,7 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           subject { described_class.new(work: work, repository: repository) }
 
-          its(:enrichment_type) { should eq('publisher_information') }
+          its(:processing_action_name) { should eq('publisher_information') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
 

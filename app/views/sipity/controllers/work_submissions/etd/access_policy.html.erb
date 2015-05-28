@@ -1,5 +1,5 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
 <%= content_tag( :p, description) if description.present? %>
 
 
@@ -11,11 +11,11 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{ model.enrichment_type }.title_html"), class: 'panel-title' %>
+    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{ model.processing_action_name }.title_html"), class: 'panel-title' %>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{ model.enrichment_type }.hint_html"), class: 'panel-hint' %>
+    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{ model.processing_action_name }.hint_html"), class: 'panel-hint' %>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <table class="table">
@@ -83,7 +83,7 @@
     </div>
   </fieldset>
   <div class="panel-footer action-pane">
-    <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
   </div>
 <% end %>
 

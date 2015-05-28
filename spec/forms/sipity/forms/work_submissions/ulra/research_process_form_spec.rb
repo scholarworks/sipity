@@ -12,7 +12,7 @@ module Sipity
           let(:other_resource_consulted) { 'some other value' }
           subject { described_class.new(work: work, repository: repository) }
 
-          its(:enrichment_type) { should eq('research_process') }
+          its(:processing_action_name) { should eq('research_process') }
           its(:base_class) { should eq(Models::Work) }
 
           context 'class configuration' do

@@ -15,7 +15,7 @@ module Sipity
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
 
           it { should respond_to :work }
-          its(:enrichment_type) { should eq('collaborator') }
+          its(:processing_action_name) { should eq('collaborator') }
           its(:collaborators) { should_not be_empty }
 
           it 'will require a work' do

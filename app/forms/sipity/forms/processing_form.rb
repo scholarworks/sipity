@@ -5,14 +5,6 @@ module Sipity
     #
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
-      def self.delegate_method_names
-        [:to_processing_entity, :to_processing_action, :to_work_area, :enrichment_type, :repository, :processing_action_name, :translate]
-      end
-
-      def self.private_delegate_method_names
-        [:repository]
-      end
-
       # Code that writes code; Here is a configuration macro to help ensure we
       # have a common shape to all of our forms.
       def self.configure(form_class:, base_class:, attribute_names:, **keywords)
@@ -45,8 +37,11 @@ module Sipity
             private(:attribute_names=)
           end
 
-          delegate(*processing_form_class.delegate_method_names, to: :processing_action_form)
-          private(*processing_form_class.private_delegate_method_names)
+          delegate(
+            :to_processing_entity, :to_processing_action, :to_work_area, :repository, :processing_action_name, :translate,
+            to: :processing_action_form
+          )
+          private :repository
           delegate :model_name, to: :base_class
           delegate(:param_key, to: :model_name)
 
@@ -100,10 +95,8 @@ module Sipity
 
       attr_reader :repository, :processing_action_name, :registered_action, :translator
       alias_method :to_registered_action, :registered_action
-      alias_method :enrichment_type, :processing_action_name
       deprecate registered_action: "This is going away"
       deprecate to_registered_action: "This is going away"
-      deprecate enrichment_type: "Use :processing_action_name instead"
 
       def to_processing_entity
         Conversions::ConvertToProcessingEntity.call(entity)

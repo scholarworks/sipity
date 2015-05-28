@@ -202,7 +202,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def register_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+    def register_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
@@ -302,7 +302,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+    def unregister_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
