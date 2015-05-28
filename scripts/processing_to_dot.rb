@@ -1,6 +1,27 @@
 #!/usr/bin/env ruby -wU
-
 require 'erb'
+
+def yield_emails_for(sender)
+  sender.notifiable_contexts.includes(email: { recipients: :role }).each do |notifiable_context|
+    data = { reason: notifiable_context.reason_for_notification, template: notifiable_context.email.method_name }
+    recipient_strategies = notifiable_context.email.recipients.group_by(&:recipient_strategy)
+    recipient_strategies.each do |strategy, values|
+      data[strategy.to_sym] = values.map { |value| value.role.name } if values.present?
+    end
+    yield(data)
+  end
+end
+private :yield_emails_for
+
+email_templater = ->(e) do
+  strategies = []
+  text = "#{e.fetch(:template)}("
+  strategies << "to: #{e.fetch(:to).join(', ')}" if e.key?(:to)
+  strategies << "cc: #{e.fetch(:cc).join(', ')}" if e.key?(:cc)
+  strategies << "bcc: #{e.fetch(:bcc).join(', ')}" if e.key?(:bcc)
+  text << strategies.join(" ; ") << ")"
+end
+
 Sipity::Models::Processing::Strategy.all.each do |__strategy|
   strategy = {
     name: __strategy.name,
@@ -11,7 +32,8 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
 
   # Create a diagraph file with correct header information
   __strategy.strategy_states.each do |__state|
-    state = { name: __state.name, enrichments: Set.new }
+    state = { name: __state.name, enrichments: Set.new, emails: Set.new }
+    yield_emails_for(__state) { |email| state[:emails] << email }
     __state.originating_strategy_state_actions.includes(:strategy_action, :strategy_state_action_permissions).each do |state_action|
       next if state_action.strategy_action.resulting_strategy_state_id
       state[:enrichments] << {
@@ -25,13 +47,16 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
 
   __strategy.strategy_actions.includes(:resulting_strategy_state).each do |__action|
     if __action.resulting_strategy_state.present?
-      strategy[:actions] << {
+      config = {
         name: __action.name,
         next_state: __action.resulting_strategy_state.name,
         roles: __action.strategy_state_actions.map do |ssa|
           ssa.strategy_state_action_permissions.map { |perm| perm.strategy_role.role.name }
-        end.flatten.compact.uniq
+        end.flatten.compact.uniq,
+        emails: Set.new
       }
+      yield_emails_for(__action) { |email| config[:emails] << email }
+      strategy[:actions] << config
     end
   end
 
