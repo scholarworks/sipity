@@ -21,25 +21,27 @@ module Sipity
           its(:input_legend) { should be_html_safe }
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
+          context 'without valid data' do
+            it 'will not save the form' do
+              expect(subject).to receive(:valid?).and_return(false)
+              expect(subject).to_not receive(:save)
+              expect(subject.submit(requested_by: user)).to eq(false)
+            end
+          end
+
           context 'with valid data' do
-            let(:an_action) { double }
-            let(:a_processing_comment) { double }
             before do
-              allow(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
-              allow(subject).to receive(:convert_to_processing_action).and_return(an_action)
-              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+              expect(subject).to receive(:valid?).and_return(true)
+              allow(Services::RequestChangesViaCommentService).to receive(:call)
             end
 
-            it 'will send creating user a note that the advisor has requested changes' do
-              expect(repository).to receive(:deliver_notification_for).
-                with(scope: an_action, the_thing: a_processing_comment, requested_by: user).
-                and_call_original
+            it 'will delegate to Services::RequestChangesViaCommentService' do
+              expect(Services::RequestChangesViaCommentService).to receive(:call)
               subject.submit(requested_by: user)
             end
 
-            it 'will record the processing comment' do
-              expect(repository).to receive(:record_processing_comment).and_return(a_processing_comment)
-              subject.submit(requested_by: user)
+            it 'will return the work' do
+              expect(subject.submit(requested_by: user)).to eq(work)
             end
           end
         end
