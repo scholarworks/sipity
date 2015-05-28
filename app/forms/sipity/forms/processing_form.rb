@@ -47,6 +47,7 @@ module Sipity
 
           delegate(*processing_form_class.delegate_method_names, to: :processing_action_form)
           private(*processing_form_class.private_delegate_method_names)
+          delegate :model_name, to: :base_class
           delegate(:param_key, to: :model_name)
 
           private
@@ -87,11 +88,13 @@ module Sipity
       def submit(requested_by:)
         return false unless valid?
         @registered_action = repository.register_processing_action_taken_on_entity(
-          entity: entity, action: processing_action_name, requested_by: requested_by
+          entity: entity, action: to_processing_action, requested_by: requested_by
         )
         repository.log_event!(entity: entity, user: requested_by, event_name: event_name)
         yield if block_given?
         repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
+        # TODO: Account for on_behalf_of
+        repository.deliver_notification_for(scope: to_processing_action, the_thing: entity, requested_by: requested_by)
         entity
       end
 
