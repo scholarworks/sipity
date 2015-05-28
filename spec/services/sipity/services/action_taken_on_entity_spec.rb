@@ -5,7 +5,7 @@ module Sipity
     RSpec.describe ActionTakenOnEntity do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
-      let(:requested_by) { Models::Processing::Actor.new(id: 4) }
+      let(:requested_by) { Models::Processing::Actor.new(id: 4, proxy_for: User.new) }
       let(:on_behalf_of) { Models::Processing::Actor.new(id: 5) }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id, name: 'wowza') }
       let(:repository) { CommandRepositoryInterface.new }
@@ -42,7 +42,7 @@ module Sipity
             expect { subject.register }.to change { Models::Processing::EntityActionRegister.count }.by(1)
           end
           it 'will log the event' do
-            expect(repository).to receive(:log_event!).with(entity: entity, user: requested_by, event_name: "#{action.name}/submit")
+            expect(repository).to receive(:log_event!).with(entity: entity, user: requested_by.proxy_for, event_name: "#{action.name}/submit")
             subject.register
           end
         end

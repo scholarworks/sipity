@@ -58,7 +58,7 @@ module Sipity
       def register_the_processing_actions
         # Push action and "also_register_as" onto single registry
         [action, also_register_as].flatten.each do |an_action|
-          repository.register_processing_action_taken_on_entity(
+          repository.register_action_taken_on_entity(
             entity: form.entity, action: an_action, requested_by: requested_by, on_behalf_of: on_behalf_of
           )
         end

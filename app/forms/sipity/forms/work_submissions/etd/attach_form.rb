@@ -45,7 +45,7 @@ module Sipity
               #   underlying database. That is to say: When an action fires what
               #   actions should be registered and what actions should be
               #   unregistered.
-              repository.unregister_action_taken_on_entity(work: work, action: 'access_policy', requested_by: requested_by)
+              repository.unregister_action_taken_on_entity(entity: work, action: 'access_policy', requested_by: requested_by)
             end
           end
 

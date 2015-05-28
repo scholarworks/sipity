@@ -10,15 +10,7 @@ module Sipity
         let(:existing_action) { 'describe' }
         it "will call the underlying service object" do
           expect(Services::ActionTakenOnEntity).to receive(:register)
-          test_repository.register_action_taken_on_entity(work: work, action: existing_action, requested_by: user)
-        end
-      end
-
-      context '#register_processing_action_taken_on_entity' do
-        let(:existing_action) { 'describe' }
-        it "will call the underlying service object" do
-          expect(Services::ActionTakenOnEntity).to receive(:register)
-          test_repository.register_processing_action_taken_on_entity(entity: work, action: existing_action, requested_by: user)
+          test_repository.register_action_taken_on_entity(entity: work, action: existing_action, requested_by: user)
         end
       end
 
@@ -26,7 +18,7 @@ module Sipity
         let(:existing_action) { 'describe' }
         it "will call the underlying service object" do
           expect(Services::ActionTakenOnEntity).to receive(:unregister)
-          test_repository.unregister_action_taken_on_entity(work: work, action: existing_action, requested_by: user)
+          test_repository.unregister_action_taken_on_entity(entity: work, action: existing_action, requested_by: user)
         end
       end
 

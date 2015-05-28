@@ -4,22 +4,15 @@ module Sipity
     # Responsible for interaction with the todo list.
     # TODO: Rename to ProcessingCommands
     module TodoListCommands
-      def register_processing_action_taken_on_entity(entity:, action:, requested_by:, on_behalf_of: requested_by)
+      def register_action_taken_on_entity(entity:, action:, requested_by:, on_behalf_of: requested_by)
         Services::ActionTakenOnEntity.register(
           entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of, repository: self
         )
       end
 
-      def register_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
-        Services::ActionTakenOnEntity.register(
-          entity: work, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of, repository: self
-        )
-      end
-      deprecate register_action_taken_on_entity: "Use #register_processing_action_taken_on_entity instead"
-
-      def unregister_action_taken_on_entity(work:, action:, requested_by:, on_behalf_of: requested_by)
+      def unregister_action_taken_on_entity(entity:, action:, requested_by:, on_behalf_of: requested_by)
         Services::ActionTakenOnEntity.unregister(
-          entity: work, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of, repository: self
+          entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of, repository: self
         )
       end
 

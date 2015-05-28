@@ -34,7 +34,7 @@ module Sipity
       end
 
       def register_action_taken
-        repository.register_processing_action_taken_on_entity(
+        repository.register_action_taken_on_entity(
           entity: form.entity, action: form.to_processing_action, requested_by: requested_by, on_behalf_of: on_behalf_of
         )
       end
