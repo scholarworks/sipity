@@ -2,12 +2,12 @@ digraph "G" {
   compound=true;
   node[color="grey15" margin="0.15, 0.125"];
   subgraph cluster_0 {
-    label="Sipity::Models::WorkArea processing (2015-05-28)"
+    label="Submission Window etd start processing (2015-05-28)"
     node[style=filled fillcolor=white color="seashell4"]
     subgraph 0 {
       label="States";
       node[shape="record" fillcolor="seashell1" penwidth=5]
-      state_new [label="{ STATE: New | ALLOWED_ACTIONS: | Show: work_area_manager, work_area_viewer | Create Submission Window: work_area_manager | EMAILS: |  }"]
+      state_new [label="{ STATE: New | ALLOWED_ACTIONS: | Show: work_submitter | Start A Submission: work_submitter | EMAILS: |  }"]
     }
     subgraph 1 {
       label="Actions"
