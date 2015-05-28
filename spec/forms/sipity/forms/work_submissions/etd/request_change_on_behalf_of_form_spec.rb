@@ -34,6 +34,7 @@ module Sipity
           end
 
           its(:comment_legend) { should be_html_safe }
+          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'validations' do
             it 'will require a comment' do
