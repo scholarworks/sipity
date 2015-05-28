@@ -1,3 +1,5 @@
+require_relative '../../../forms'
+
 module Sipity
   module Forms
     module WorkSubmissions
@@ -5,7 +7,10 @@ module Sipity
         # Responsible for capturing comments and forwarding them on to the
         # student.
         class GradSchoolRequestsChangeForm
-          ProcessingForm.configure(form_class: self, base_class: Models::Work, attribute_names: :comment, processing_subject_name: :work)
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, attribute_names: :comment, processing_subject_name: :work,
+            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+          )
 
           def initialize(work:, attributes: {}, **keywords)
             self.work = work

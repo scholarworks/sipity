@@ -11,6 +11,8 @@ module Sipity
           subject { described_class.new(work: work, repository: repository) }
 
           its(:processing_action_name) { should eq('grad_school_requests_change') }
+          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+
           it { should_not be_persisted }
 
           it 'will validate the presence of the :comment' do
