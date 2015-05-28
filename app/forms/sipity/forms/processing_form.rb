@@ -83,17 +83,12 @@ module Sipity
       def submit(requested_by:)
         return false unless valid?
         yield if block_given?
-        @registered_action = repository.register_action_taken_on_entity(
-          entity: entity, action: to_processing_action, requested_by: requested_by
-        )
+        repository.register_action_taken_on_entity(entity: entity, action: to_processing_action, requested_by: requested_by)
         repository.update_processing_state!(entity: entity, to: to_processing_action.resulting_strategy_state)
         entity
       end
 
-      attr_reader :repository, :processing_action_name, :registered_action, :translator
-      alias_method :to_registered_action, :registered_action
-      deprecate registered_action: "This is going away"
-      deprecate to_registered_action: "This is going away"
+      attr_reader :repository, :processing_action_name, :translator
 
       def to_processing_entity
         Conversions::ConvertToProcessingEntity.call(entity)

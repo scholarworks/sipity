@@ -52,7 +52,6 @@ module Sipity
 
       its(:default_repository) { should respond_to :register_action_taken_on_entity }
       its(:default_translator) { should respond_to :call }
-      it { should respond_to :to_registered_action }
 
       it 'should delegate translation to the translator' do
         subject.translate('name', scope: 'panel_headings')
@@ -110,11 +109,6 @@ module Sipity
             expect(repository).to receive(:update_processing_state!).
               with(entity: entity, to: an_action.resulting_strategy_state).and_call_original
             subject.submit(requested_by: user)
-          end
-
-          it 'will set the registered action for future reference' do
-            expect(repository).to receive(:register_action_taken_on_entity).and_return(:registered_action)
-            expect { subject.submit(requested_by: user) }.to change { subject.registered_action }.from(nil).to(:registered_action)
           end
         end
       end
