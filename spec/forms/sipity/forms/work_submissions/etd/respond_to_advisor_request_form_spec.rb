@@ -23,6 +23,7 @@ module Sipity
           end
 
           its(:input_legend) { should be_html_safe }
+          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'with valid data' do
             let(:a_processing_comment) { double }
