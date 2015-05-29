@@ -13,9 +13,16 @@ module Sipity
         belongs_to :strategy_action
         belongs_to :requested_by_actor, class_name: 'Sipity::Models::Processing::Actor'
         belongs_to :on_behalf_of_actor, class_name: 'Sipity::Models::Processing::Actor'
+        belongs_to :subject, polymorphic: true
+
+        # Lazy validation. All objects going forward will require this. And I'll
+        # move that requirement into the database after we have a migration.
+        validates :subject_id, presence: true
+        validates :subject_type, presence: true
 
         alias_method :to_processing_action, :strategy_action
         alias_method :to_processing_entity, :entity
+        delegate :proxy_for, to: :entity
       end
     end
   end

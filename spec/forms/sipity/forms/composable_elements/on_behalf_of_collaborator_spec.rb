@@ -2,16 +2,13 @@ module Sipity
   module Forms
     module ComposableElements
       RSpec.describe OnBehalfOfCollaborator do
-        let(:form) { double(action: 'an action', work: 'a work', on_behalf_of_collaborator_id: 'an_id') }
+        let(:form) { double(to_processing_action: 'an action', entity: 'a work', on_behalf_of_collaborator_id: 'an_id') }
         let(:repository) { QueryRepositoryInterface.new }
         let(:someone) { double(id: 'one') }
         let(:sometwo) { double(id: 'two') }
         let(:somethree) { double(id: 'three') }
 
         subject { described_class.new(form: form, repository: repository) }
-
-        its(:action) { should eq(form.action) }
-        its(:work) { should eq(form.work) }
 
         it { should respond_to(:on_behalf_of_collaborator_id) }
         it { should respond_to(:on_behalf_of_collaborator_id=) }

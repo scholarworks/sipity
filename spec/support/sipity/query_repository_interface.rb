@@ -14,7 +14,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def action_registers_subquery_builder(poly_type:, entity:, action:)
+    def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -31,14 +31,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def build_dashboard_view(user:, filter: {})
-    end
-
-    # @see ./app/repositories/sipity/queries/enrichment_queries.rb
-    def build_enrichment_form(attributes = {})
-    end
-
-    # @see ./app/repositories/sipity/queries/event_trigger_queries.rb
-    def build_event_trigger_form(attributes = {})
     end
 
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
@@ -58,7 +50,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/notification_queries.rb
@@ -114,7 +106,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
@@ -202,7 +194,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def users_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def users_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

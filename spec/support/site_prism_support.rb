@@ -63,7 +63,7 @@ module SitePrism
     end
 
     class NewWorkPage < SitePrism::Page
-      PARAM_NAME_CONTAINER = 'work'.freeze
+      PARAM_NAME_CONTAINER = 'submission_window'.freeze
 
       element :form, "form"
       element :input_title, "form [name='#{PARAM_NAME_CONTAINER}[title]']"

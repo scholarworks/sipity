@@ -14,7 +14,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def action_registers_subquery_builder(poly_type:, entity:, action:)
+    def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -49,14 +49,6 @@ module Sipity
     def build_dashboard_view(user:, filter: {})
     end
 
-    # @see ./app/repositories/sipity/queries/enrichment_queries.rb
-    def build_enrichment_form(attributes = {})
-    end
-
-    # @see ./app/repositories/sipity/queries/event_trigger_queries.rb
-    def build_event_trigger_form(attributes = {})
-    end
-
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
     def build_submission_window_processing_action_form(submission_window:, processing_action_name:, attributes: {})
     end
@@ -78,7 +70,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
@@ -202,7 +194,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
@@ -210,7 +202,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def register_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+    def register_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -306,7 +298,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
-    def unregister_action_taken_on_entity(work:, enrichment_type:, requested_by:, on_behalf_of: requested_by)
+    def unregister_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -338,7 +330,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def users_that_have_taken_the_action_on_the_entity(entity:, action:)
+    def users_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

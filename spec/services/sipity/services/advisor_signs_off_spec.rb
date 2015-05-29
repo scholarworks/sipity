@@ -1,12 +1,23 @@
 module Sipity
   module Services
     RSpec.describe AdvisorSignsOff do
-      let(:form) { double('Form', resulting_strategy_state: 'chubacabra', action: 'an_action', on_behalf_of_collaborator: on_behalf_of) }
+      let(:form) { double('Form', to_processing_action: action, processing_action_name: 'hello', entity: double('Entity', strategy_id: 1)) }
+      let(:action) { double('Action', resulting_strategy_state: 'chubacabra', strategy_id: 1) }
+      let(:another_action) { double('AnotherAction', to_processing_action: double(strategy_id: 1)) }
       let(:on_behalf_of) { double('Collaborator') }
       let(:repository) { CommandRepositoryInterface.new }
       let(:requested_by) { double('User') }
 
-      subject { described_class.new(form: form, repository: repository, requested_by: requested_by) }
+      subject do
+        described_class.new(
+          form: form, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of, also_register_as: another_action
+        )
+      end
+
+      it 'will default the on_behalf_of to the requested_by if none is given' do
+        subject = described_class.new(form: form, repository: repository, requested_by: requested_by)
+        expect(subject.on_behalf_of).to eq(requested_by)
+      end
 
       context '.call' do
         it 'is a wrapper' do
@@ -21,9 +32,15 @@ module Sipity
           expect(repository).to_not receive(:update_processing_state!)
           subject.call
         end
-        it 'will send an email to the creating user' do
-          expect(repository).to receive(:deliver_notification_for).
-            with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+        it 'will log the event, register the action, and send an email to the creating user' do
+          expect(repository).to receive(:register_action_taken_on_entity).
+            with(
+              entity: form.entity,
+              action: form.to_processing_action,
+              requested_by: requested_by,
+              on_behalf_of: on_behalf_of,
+              also_register_as: another_action
+            )
           subject.call
         end
       end
@@ -34,9 +51,15 @@ module Sipity
           expect(repository).to receive(:update_processing_state!).and_call_original
           subject.call
         end
-        it 'will deliver form submission notifications' do
-          expect(repository).to receive(:deliver_notification_for).
-            with(the_thing: form, scope: form.action, requested_by: requested_by, on_behalf_of: on_behalf_of)
+        it 'will log the event, register the action, and send an email to the creating user' do
+          expect(repository).to receive(:register_action_taken_on_entity).
+            with(
+              entity: form.entity,
+              action: form.to_processing_action,
+              requested_by: requested_by,
+              on_behalf_of: on_behalf_of,
+              also_register_as: another_action
+            )
           subject.call
         end
       end
@@ -54,28 +77,19 @@ module Sipity
           { reviewers: ['bob'], already_reviewed: [], expected: false }
         ].each_with_index do |example, index|
           it "will handle #{example.inspect} (Scenario ##{index})" do
-            expect(subject).to receive(:work_collaborators_responsible_for_review).
+            expect(repository).to receive(:work_collaborators_responsible_for_review).
               and_return(example.fetch(:reviewers))
-            expect(subject).to receive(:collaborators_that_have_taken_the_action_on_the_entity).
+            expect(repository).to receive(:collaborators_that_have_taken_the_action_on_the_entity).
               and_return(example.fetch(:already_reviewed))
             expect(subject.send(:last_advisor_to_signoff?)).to eq(example.fetch(:expected))
           end
         end
       end
 
-      context 'default repository' do
-        let(:form) { double('Form', resulting_strategy_state: 'chubacabra', registered_action: 'submit_for_review', work: double) }
-        subject { described_class.new(form: form, requested_by: requested_by) }
-        it 'exposes #collaborators_that_have_taken_the_action_on_the_entity' do
-          expect(subject.send(:repository)).to receive(:collaborators_that_have_taken_the_action_on_the_entity)
-          subject.send(:collaborators_that_have_taken_the_action_on_the_entity)
-        end
-
-        it 'exposes #work_collaborators_responsible_for_review' do
-          expect(subject.send(:repository)).to receive(:work_collaborators_responsible_for_review)
-          subject.send(:work_collaborators_responsible_for_review)
-        end
-      end
+      its(:default_repository) { should respond_to :collaborators_that_have_taken_the_action_on_the_entity }
+      its(:default_repository) { should respond_to :work_collaborators_responsible_for_review }
+      its(:default_action) { should eq(form.to_processing_action) }
+      its(:default_also_register_as) { should be_empty }
     end
   end
 end

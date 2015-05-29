@@ -1,26 +1,9 @@
 Rails.application.routes.draw do
   scope module: :sipity do
     scope module: :controllers do
-      resources :works do
+      resources :works, only: [:show] do
         resources :comments, only: :index
       end
-
-      # TODO: There is the concept of valid enrichments; extract those
-      enrichment_constraint = lambda do |request|
-        enrichment_type = request.params.fetch(:enrichment_type)
-        # REVIEW: Magic strings! There is a canonical enrichment question; And
-        #   the valid enrichments may not be available for all work ids
-        %(attach describe collaborators defense_date degree access_policy search_terms).include?(enrichment_type)
-      end
-      get 'works/:work_id/:enrichment_type', to: 'work_enrichments#edit', as: 'enrich_work', constraints: enrichment_constraint
-      post 'works/:work_id/:enrichment_type', to: 'work_enrichments#update', constraints: enrichment_constraint
-
-      get 'works/:id/trigger/update', to: 'works#edit'
-      get 'works/:id/trigger/show', to: 'works#show'
-
-      # # Are there constraints?
-      get 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#new', as: 'event_trigger_for_work'
-      post 'works/:work_id/trigger/:processing_action_name', to: 'work_event_triggers#create'
 
       #Account profile Managament
       get 'account', to: 'account_profiles#edit', as: 'account'
@@ -33,7 +16,9 @@ Rails.application.routes.draw do
   devise_for :users #, only: :sessions
   devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
-  get 'start', to: redirect('/works/new'), as: 'start'
+
+  # This route should considered deprecated
+  get 'start', to: redirect('/areas/etd/start', status: 301), as: 'start'
 
   get(
     'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { processing_action_name: 'show' }

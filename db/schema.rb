@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150506153407) do
+ActiveRecord::Schema.define(version: 20150528195849) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -205,17 +205,20 @@ ActiveRecord::Schema.define(version: 20150506153407) do
   add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", using: :btree
 
   create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
-    t.integer  "strategy_action_id",    limit: 4,  null: false
-    t.string   "entity_id",             limit: 32, null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
-    t.integer  "requested_by_actor_id", limit: 4,  null: false
-    t.integer  "on_behalf_of_actor_id", limit: 4,  null: false
+    t.integer  "strategy_action_id",    limit: 4,   null: false
+    t.string   "entity_id",             limit: 32,  null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "requested_by_actor_id", limit: 4,   null: false
+    t.integer  "on_behalf_of_actor_id", limit: 4,   null: false
+    t.integer  "subject_id",            limit: 4
+    t.string   "subject_type",          limit: 255
   end
 
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "on_behalf_of_actor_id"], name: "sipity_processing_entity_action_registers_on_behalf", using: :btree
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "requested_by_actor_id"], name: "sipity_processing_entity_action_registers_requested", using: :btree
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate", using: :btree
+  add_index "sipity_processing_entity_action_registers", ["subject_id", "subject_type"], name: "sipity_processing_entity_action_registers_subject", using: :btree
 
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
     t.integer  "strategy_role_id", limit: 4,  null: false

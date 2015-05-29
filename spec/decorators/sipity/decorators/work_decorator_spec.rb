@@ -25,16 +25,6 @@ module Sipity
         end
       end
 
-      context '#with_form_panel' do
-        it 'wrap the results of the block inside a panel' do
-          rendered = subject.with_form_panel('attributes') { 'hello' }
-          expect(rendered).to have_tag('.panel') do
-            with_tag('.panel-heading .panel-title')
-            with_tag('.panel-body', text: /hello/)
-          end
-        end
-      end
-
       it 'shares .object_class with Models::Work' do
         expect(WorkDecorator.object_class).to eq(Models::Work)
       end

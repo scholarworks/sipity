@@ -4,15 +4,26 @@ module Sipity
       # Responsible for encapsulating the processing actions and their
       # corresponding type for the given user and entity.
       class ProcessingActionsComposer
-        def initialize(user:, entity:, repository: default_repository)
+        # @note I am making an assumption that will later come back to haunt me;
+        #   Namely that I want to skip certain processing actions. By default
+        #   this is actions named 'show'; The present arrangement is that the
+        #   "privileged" show action is the jumping off point for the other
+        #   actions.
+        def initialize(user:, entity:, repository: default_repository, action_names_to_skip: default_action_names_to_skip)
           self.entity = entity
           self.user = user
           self.repository = repository
+          self.action_names_to_skip = action_names_to_skip
         end
 
         private
 
         attr_accessor :repository, :user, :entity
+        attr_reader :action_names_to_skip
+
+        def action_names_to_skip=(input)
+          @action_names_to_skip = Array.wrap(input)
+        end
 
         public
 
@@ -66,7 +77,7 @@ module Sipity
         def processing_actions
           @processing_actions ||= Array.wrap(
             repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity)
-          )
+          ).reject { |processing_action| action_names_to_skip.include?(processing_action.name) }
         end
 
         def action_ids_that_are_prerequisites
@@ -83,6 +94,11 @@ module Sipity
 
         def default_repository
           QueryRepository.new
+        end
+
+        DEFAULT_ACTION_NAMES_TO_SKIP = ['show'].freeze
+        def default_action_names_to_skip
+          DEFAULT_ACTION_NAMES_TO_SKIP
         end
       end
     end

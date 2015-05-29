@@ -22,7 +22,7 @@ module Sipity
             end
           end
           context 'for an ETD' do
-            let(:controller) { double('Controller') }
+            let(:controller) { double('Controller', :view_object= => true) }
             let(:context) { PresenterHelper::Context.new(current_user: current_user, controller: controller) }
             let(:submission_window) do
               double(slug: 'the-slug', work_area_slug: 'etd', work_area_partial_suffix: 'etd', processing_action_name: 'hello')
@@ -31,14 +31,16 @@ module Sipity
             let(:decorated_form) { double }
 
             it 'will render the current behavior of the ETD submissions' do
-              expect(Runners::WorkRunners::New).to receive(:run).
-                with(controller, attributes: {}).and_return([:status, etd_form])
-              expect(Decorators::WorkDecorator).to receive(:decorate).
-                with(etd_form).
-                and_return(decorated_form)
+              expect(Runners::SubmissionWindowRunners::QueryAction).to receive(:run).with(
+                controller,
+                attributes: {},
+                processing_action_name: 'start_a_submission',
+                work_area_slug: submission_window.work_area_slug,
+                submission_window_slug: submission_window.slug
+              ).and_return([:status, etd_form])
+              expect(controller).to receive(:view_object=).with(etd_form)
               expect(subject).to receive(:render).
-                with(template: 'sipity/controllers/works/new', locals: { model: decorated_form }).
-                and_return(decorated_form)
+                with(template: 'sipity/controllers/submission_windows/etd/start_a_submission', locals: { model: etd_form })
               subject.render_submission_window
             end
           end

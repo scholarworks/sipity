@@ -1,12 +1,12 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
   <div itemprop="potentialAction" itemscope itemtype="http://schema.org/Action">
-    <link itemprop="url" href="<%= event_trigger_for_work_path(model.work, model.processing_action_name) %>">
-    <meta itemprop="name" content="confirm/event_trigger/<%= model.processing_action_name %>">
+    <link itemprop="url" href="<%= event_trigger_for_work_path(view_object.work, view_object.processing_action_name) %>">
+    <meta itemprop="name" content="confirm/event_trigger/<%= view_object.processing_action_name %>">
     <div itemscope itemprop="target" itemtype="http://schema.org/EntryPoint">
-      <%= simple_form_for(model, url: event_trigger_for_work_path(model.work, model.processing_action_name), method: :post) do |f| %>
+      <%= simple_form_for(view_object, url: request.path, method: :post) do |f| %>
         <%= f.error_notification %>
         <%= f.error :base, error_method: :to_sentence %>
-        <%= model.render(f: f) %>
+        <%= view_object.render(f: f) %>
         <div class="action-pane state-advancing-action">
           <%= submit_tag("Submit", itemprop: 'name', autofocus: true, class: 'btn btn-primary') %>
         </div>

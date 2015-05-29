@@ -7,4 +7,4 @@ $stdout.puts "Finding or creating group for 'Graduate School Reviewers'"
 graduate_school = Sipity::Models::Group.find_or_create_by!(name: 'Graduate School Reviewers')
 
 $stdout.puts "Associating #{user.username} with #{graduate_school.name}"
-graduate_school.group_memberships.create(user: user) unless graduate_school.group_memberships.where(user: user)
+graduate_school.group_memberships.find_or_create_by(user: user)

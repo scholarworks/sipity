@@ -24,7 +24,7 @@ module Sipity
         fail NotImplementedError
       end
 
-      def action_availability_state
+      def availability_state
         STATE_AVAILABLE
       end
 
@@ -34,7 +34,7 @@ module Sipity
       STATE_AVAILABLE = 'available'
 
       def available?
-        action_availability_state == STATE_AVAILABLE
+        availability_state == STATE_AVAILABLE
       end
 
       def render_available_inner_html_entry_point

@@ -1,0 +1,119 @@
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
+<%= content_tag( :p, description) if description.present? %>
+
+<%= simple_form_for(
+  model,
+  url: request.path,
+  method: :post,
+  as: :work,
+  html: { class: 'simple-form panel panel-primary with-footer' }
+) do |f| %>
+  <legend class="panel-heading">
+    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.collaborators.title_html"), class: 'panel-title' %>
+  </legend>
+
+  <fieldset class="panel-body">
+    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+
+    <table class="table expandible collaborators">
+      <thead>
+        <tr>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.name') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.role') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.responsible_for_review') %>
+          <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.contact_information') %>
+          <th class="row-controls"></th>
+        </tr>
+      </thead>
+      <tfoot>
+        <td colspan="5" class="table-controls">
+        </td>
+      </tfoot>
+      <tbody>
+        <%= f.fields_for :collaborators do |collaborator_form| %>
+          <tr class='repeat'>
+            <td class="name">
+              <%= collaborator_form.input :name,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td class="role">
+              <%= collaborator_form.input :role,
+                as: :select,
+                collection: collaborator_form.object.possible_roles,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td class="review">
+              <%= collaborator_form.input :responsible_for_review,
+                as: :select,
+                label: false,
+                wrapper: false,
+                input_html: {
+                  class: 'form-control'
+                }
+              %>
+            </td>
+            <td class="js-hidden contact-information form-inline">
+              <span class="form-group">
+                <%= content_tag :span,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.institution_label'),
+                  class: 'netid scope'
+                %>
+                <%= collaborator_form.input :netid,
+                  label: false,
+                  wrapper: false,
+                  input_html: {
+                    class: 'form-control',
+                    placeholder: t('activerecord.attributes.sipity/models/collaborator.netid')
+                  }
+                %>
+              </span>
+              <span class="choice">
+                <%= content_tag :strong,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.choice')
+                %>
+              </span>
+              <span class="form-group">
+                <%= content_tag :span,
+                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.email_contact_group_label'),
+                  class: 'email scope'
+                %>
+                <%= collaborator_form.input :email,
+                  as: :email,
+                  label: false,
+                  wrapper: false,
+                  input_html: {
+                    class: 'form-control',
+                    placeholder: t('activerecord.attributes.sipity/models/collaborator.email')
+                  }
+                %>
+              </span>
+            </td>
+            <td class="row-controls">
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </fieldset>
+
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>

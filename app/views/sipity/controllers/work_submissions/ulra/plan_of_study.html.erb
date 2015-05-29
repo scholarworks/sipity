@@ -1,12 +1,12 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.enrichment_type}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.enrichment_type}") %>
+<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
+<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
 <%= content_tag( :p, description) if description.present? %>
 
 <div class="panel-tiles">
 
   <%= simple_form_for(
     model,
-    url: enrich_work_path(model.work, model.enrichment_type),
+    url: request.path,
     method: :post,
     as: :work,
     html: { class: 'simple-form panel panel-primary with-footer' }
@@ -24,7 +24,7 @@
     </fieldset>
 
     <div class="panel-footer action-pane">
-      <%= f.submit nil, name: "form/#{model.enrichment_type}/submit" %>
+      <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
     </div>
   <% end %>
 </div>

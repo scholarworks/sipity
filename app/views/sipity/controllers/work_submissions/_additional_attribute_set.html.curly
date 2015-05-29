@@ -1,0 +1,27 @@
+{{*additional_attributes}}
+  <dt class="predicate {{key}}">{{label}}</dt>
+  <dd class="value">
+    {{render_list_of_values}}
+  </dd>
+{{/additional_attributes}}
+
+<!--
+            <% if model.additional_attributes.any? %>
+              <% model.additional_attributes.group_by(&:key).each do |key, attributes| %>
+                <dt class="predicate <%=key%>"><%= model.human_attribute_name(key) %></dt>
+                <dd class="value">
+                  <ul class="occurances">
+                  <% attributes.each do |attribute| next unless attribute.value.present? %>
+                    <li class="occurance <%=key%>">
+                      <% if key == "copyright" %>
+                        <%= model.selected_copyright(attribute.value) %>
+                      <% else %>
+                        <%= attribute.value.html_safe %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                  </ul>
+                </dd>
+              <% end %>
+            <% end %>
+-->

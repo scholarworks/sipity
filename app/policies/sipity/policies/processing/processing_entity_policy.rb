@@ -50,7 +50,7 @@ module Sipity
         def normalize_action_name(action)
           # HACK: This is a shim because many of the forms are asking permission
           #   on the :submit?
-          return work.enrichment_type if action == :submit?
+          return work.processing_action_name if action == :submit?
           action
         end
 

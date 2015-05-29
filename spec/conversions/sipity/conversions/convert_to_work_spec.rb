@@ -36,6 +36,13 @@ module Sipity
           expect(convert_to_work(object)).to eq(object)
         end
 
+        it 'will convert a registered action to a Models::Work' do
+          work = Models::Work.new
+          entity = Models::Processing::Entity.new(proxy_for: work)
+          object = Models::Processing::EntityActionRegister.new(entity: entity)
+          expect(convert_to_work(object)).to eq(work)
+        end
+
         it 'will attempt to convert the proxied object' do
           work = Models::Work.new
           proxy = double(proxy_for: work)

@@ -46,6 +46,17 @@ module Sipity
           render partial: "/current_comments", object: object
         end
 
+        def render_additional_attribute_set
+          object = Parameters::EntityWithAdditionalAttributesParameter.new(
+            entity: work_submission, additional_attributes: work_submission.additional_attributes
+          )
+          render partial: '/additional_attribute_set', object: object
+        end
+
+        def render_accessible_object_set
+          render partial: '/accessible_object_set', object: work_submission
+        end
+
         delegate(
           :resourceful_actions, :resourceful_actions?,
           :enrichment_actions, :enrichment_actions?,
@@ -56,10 +67,24 @@ module Sipity
 
         # TODO: work_type, processing_state should be translated
         delegate :id, to: :work_submission, prefix: :work
-        delegate :title, :work_type, to: :work_submission
+        delegate :collaborators, :title, to: :work_submission
+
+        def collaborators?
+          collaborators.present?
+        end
+
+        def work_type
+          TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type, predicate: :label)
+        end
 
         def processing_state
           work_submission.processing_state.to_s
+        end
+
+        def work_publication_strategy
+          TranslationAssistant.call(
+            scope: :work_publication_strategies, subject: work_submission.work_publication_strategy, predicate: :label
+          )
         end
 
         def label(identifier)
@@ -68,15 +93,12 @@ module Sipity
         end
 
         def section(identifier)
-          I18n.t("sipity/works.processing_action_names.#{processing_action_name}.#{identifier}")
+          TranslationAssistant.call(
+            scope: :sections, subject: work_submission, object: identifier, predicate: :label
+          )
         end
 
         private
-
-        def processing_action_name
-          # TODO: Magic string here!
-          'show'
-        end
 
         attr_reader :work_submission
 

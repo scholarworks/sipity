@@ -24,6 +24,8 @@ module Sipity
         Models::Processing::EntityActionRegister.create!(
           entity_id: entity.id,
           strategy_action_id: strategy_action.id,
+          subject_id: entity.id,
+          subject_type: "Sipity::Models::Processing::Entity",
           requested_by_actor_id: 999,
           on_behalf_of_actor_id: 999
         )

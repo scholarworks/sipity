@@ -2,32 +2,34 @@ module Sipity
   module Services
     # Service object that handles the business logic of granting permission.
     class ActionTakenOnEntity
-      include Conversions::ConvertToProcessingEntity
-      include Conversions::ConvertToProcessingActor
-      def self.register(entity:, action:, requested_by:, on_behalf_of: requested_by)
-        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).register
+      def self.register(**keywords)
+        new(**keywords).register
       end
 
-      def self.unregister(entity:, action:, requested_by:, on_behalf_of: requested_by)
-        new(entity: entity, action: action, requested_by: requested_by, on_behalf_of: on_behalf_of).unregister
+      def self.unregister(**keywords)
+        new(**keywords).unregister
       end
 
-      def initialize(entity:, action:, requested_by:, on_behalf_of: requested_by)
+      # TODO: Subject and entity are redundant. Rename parameter to :subject to
+      #   reflect the more ambiguous nature of the action's response.
+      def initialize(entity:, action:, requested_by:, **keywords)
+        self.subject = entity
         self.entity = entity
         self.action = action
         self.requesting_actor = requested_by
-        self.on_behalf_of_actor = on_behalf_of
+        self.on_behalf_of_actor = keywords.fetch(:on_behalf_of) { requesting_actor }
+        self.repository = keywords.fetch(:repository) { default_repository }
+
+        # TODO: Push this down to the database
+        self.also_register_as = keywords.fetch(:also_register_as) { [] }
       end
-      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor
+      attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor, :also_register_as, :subject
 
       def register
-        # TODO: Tease apart the requested_by and on_behalf_of
-        Models::Processing::EntityActionRegister.create!(
-          strategy_action_id: action.id,
-          entity_id: entity.id,
-          requested_by_actor_id: requesting_actor.id,
-          on_behalf_of_actor_id: on_behalf_of_actor.id
-        )
+        log_the_action
+        registered_action = add_entry_to_the_entity_action_regsistry(action: action)
+        add_actions_that_should_also_be_registered
+        deliver_notifications_for(registered_action: registered_action)
       end
 
       def unregister
@@ -42,8 +44,53 @@ module Sipity
 
       private
 
+      def add_actions_that_should_also_be_registered
+        also_register_as.each { |action| add_entry_to_the_entity_action_regsistry(action: action) }
+      end
+
+      include Conversions::ConvertToPolymorphicType
+      def add_entry_to_the_entity_action_regsistry(action:)
+        # TODO: Tease apart the requested_by and on_behalf_of
+        Models::Processing::EntityActionRegister.create!(
+          strategy_action_id: action.id,
+          entity_id: entity.id,
+          requested_by_actor_id: requesting_actor.id,
+          on_behalf_of_actor_id: on_behalf_of_actor.id,
+          subject_id: subject.id,
+          subject_type: convert_to_polymorphic_type(subject)
+        )
+      end
+
+      def log_the_action
+        # TODO: This is a cheat, in that I am assuming the request actor is a user.
+        repository.log_event!(entity: entity, user: requesting_actor.proxy_for, event_name: event_name)
+      end
+
+      def deliver_notifications_for(registered_action:)
+        repository.deliver_notification_for(
+          scope: action, the_thing: registered_action, requested_by: requesting_actor, on_behalf_of: on_behalf_of_actor
+        )
+      end
+
+      def event_name
+        "#{action.name}/submit"
+      end
+
+      attr_accessor :repository
+
+      def default_repository
+        CommandRepository.new
+      end
+
+      include Conversions::ConvertToProcessingEntity
       def entity=(entity_like_object)
         @entity = convert_to_processing_entity(entity_like_object)
+      end
+
+      def subject=(input)
+        # Guard!
+        convert_to_polymorphic_type(input)
+        @subject = input
       end
 
       include Conversions::ConvertToProcessingAction
@@ -51,10 +98,15 @@ module Sipity
         @action = convert_to_processing_action(object, scope: entity)
       end
 
+      def also_register_as=(input)
+        @also_register_as = Array.wrap(input).map { |an_action| convert_to_processing_action(an_action, scope: entity) }
+      end
+
       def requesting_actor=(actor_like_object)
         @requesting_actor = convert_to_processing_actor(actor_like_object)
       end
 
+      include Conversions::ConvertToProcessingActor
       def on_behalf_of_actor=(actor_like_object)
         @on_behalf_of_actor = convert_to_processing_actor(actor_like_object)
       end

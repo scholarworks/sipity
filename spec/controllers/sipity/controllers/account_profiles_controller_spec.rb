@@ -55,9 +55,9 @@ module Sipity
             expect(response).to redirect_to(dashboard_path)
           end
           it 'will redirect to the specified user_return_to if given' do
-            controller.session['user_return_to'] = new_work_path
+            controller.session['user_return_to'] = '/hello/world'
             post 'update', account: attributes
-            expect(response).to redirect_to(new_work_path)
+            expect(response).to redirect_to('/hello/world')
           end
         end
         context 'on failure' do

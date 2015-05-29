@@ -5,9 +5,11 @@ module Sipity
         let(:user) { double }
         let(:entity) { double(processing_state: 'hello') }
         let(:repository) { QueryRepositoryInterface.new }
-        let(:resourceful_action) { double(resourceful_action?: true, enrichment_action?: false, state_advancing_action?: false) }
-        let(:enrichment_action) { double(resourceful_action?: false, enrichment_action?: true, state_advancing_action?: false) }
-        let(:state_advancing_action) { double(resourceful_action?: false, enrichment_action?: false, state_advancing_action?: true) }
+        let(:resourceful_action) { double(name: 'a', resourceful_action?: true, enrichment_action?: false, state_advancing_action?: false) }
+        let(:enrichment_action) { double(name: 'b', resourceful_action?: false, enrichment_action?: true, state_advancing_action?: false) }
+        let(:state_advancing_action) do
+          double(name: 'c', resourceful_action?: false, enrichment_action?: false, state_advancing_action?: true)
+        end
         let(:processing_actions) { [resourceful_action, enrichment_action, state_advancing_action] }
 
         subject { described_class.new(user: user, entity: entity, repository: repository) }
@@ -15,6 +17,15 @@ module Sipity
         its(:default_repository) { should respond_to :scope_permitted_entity_strategy_actions_for_current_state }
         its(:default_repository) { should respond_to :scope_strategy_actions_that_are_prerequisites }
         its(:default_repository) { should respond_to :scope_strategy_actions_with_incomplete_prerequisites }
+        its(:default_action_names_to_skip) { should eq(['show']) }
+
+        it 'will omit the skipped action names' do
+          subject = described_class.new(
+            user: user, entity: entity, repository: repository, action_names_to_skip: processing_actions.map(&:name)
+          )
+          allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)
+          expect(subject.send(:processing_actions)).to eq([])
+        end
 
         it 'exposes resourceful_actions' do
           allow(repository).to receive(:scope_permitted_entity_strategy_actions_for_current_state).and_return(processing_actions)

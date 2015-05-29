@@ -6,7 +6,8 @@ module Sipity
         #
         # @note This is the result of changing the WorkAreas controller
         #   to be two actions.
-        class ShowForm < Decorators::ComparableDelegateClass(Models::WorkArea)
+        class ShowForm < Decorators::ComparableSimpleDelegator
+          self.base_class = Models::WorkArea
           class_attribute :policy_enforcer
           self.policy_enforcer = Sipity::Policies::WorkAreaPolicy
 

@@ -18,7 +18,7 @@
   <div class="row">
     {{#enrichment_actions?}}
       <aside class="col-md-6 work-tasks">
-        <h2 class="task-heading">{{ section.todo.heading }}</h2>
+        <h2 class="task-heading">{{ section.todo }}</h2>
         <div class="todo">
           {{render_enrichment_action_set.required}}
           {{render_enrichment_action_set.optional}}
@@ -29,7 +29,7 @@
     <div class={{#enrichment_actions?}}"col-md-6"{{/enrichment_actions?}}{{^enrichment_actions?}}"col-md-8"{{/enrichment_actions?}}>
       <article class="panel panel-default work-description">
         <div class="panel-heading">
-          <h3 class="panel-title">{{ section.overview.heading }}</h3>
+          <h3 class="panel-title">{{ section.overview }}</h3>
         </div>
         <div class="panel-body">
           <dl class="work attribute-listing">
@@ -37,7 +37,27 @@
             <dd class="value title">{{ title }}</dd>
             <dt class="predicate work-type">{{label.work_type}}</dt>
             <dd class="value work-type">{{work_type}}</dd>
-            <!--TODO Add attributes -->
+            <dt class="predicate work_publication_strategy">{{label.work_publication_strategy}}</dt>
+            <dd class="value work_publication_strategy">{{work_publication_strategy}}</dt>
+            {{#collaborators?}}
+              <dt class="predicate collaborators">{{label.collaborators}}</dt>
+              <dd class="value collaborators">
+                <ul class="nested-attributes-list">
+                  {{*collaborators}}
+                    <li class="nested-attribute-list">
+                      <dl class="nested-attribute-definition">
+                        <dt class="predicate name">{{label.name}}</dt>
+                        <dd class="value name">{{name}}</dd>
+                        <dt class="predicate role">{{label.role}}</dt>
+                        <dd class="value role">{{role}}</dd>
+                      </dl>
+                    </li>
+                  {{/collaborators}}
+                </ul>
+              </dd>
+            {{/collaborators?}}
+            {{render_additional_attribute_set}}
+            {{render_accessible_object_set}}
           </dl>
         </div>
         {{#resourceful_actions?}}
@@ -48,7 +68,7 @@
                 <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
                   <meta itemprop="name" content="event_trigger/{{action_name}}" />
                   {{render_entry_point}}
-                  <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
+                  <span itemprop="actionStatus" class="visuallyhidden">{{availability_state}}</span>
                 </li>
               {{/resourceful_actions}}
             </ul>

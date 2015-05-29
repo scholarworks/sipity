@@ -4,18 +4,15 @@ module Sipity
       module Ulra
         # Responsible for creating a new work within the ULRA work area.
         # What goes into this is more complicated that the entity might allow.
-        class StartASubmissionForm < BaseForm
-          # Because creating a new work is enforced by the container in which the
-          # work is to be created.
-          self.policy_enforcer = Policies::SubmissionWindowPolicy
+        class StartASubmissionForm
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
+            policy_enforcer: Policies::SubmissionWindowPolicy,
+            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :work_type]
+          )
 
-          def self.model_name
-            Models::Work.model_name
-          end
-
-          def initialize(submission_window:, attributes: {}, repository: default_repository, processing_action_name: 'start_a_submission')
-            self.repository = repository
-            self.processing_action_name = processing_action_name
+          def initialize(submission_window:, attributes: {}, **keywords)
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
@@ -25,19 +22,15 @@ module Sipity
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
           end
 
-          attr_reader :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-
           private
 
-          attr_accessor :processing_action_name, :repository
-          attr_writer :repository, :title, :award_category, :work_publication_strategy, :advisor_netid, :work_type
-          attr_reader :submission_window, :work_area
+          attr_reader :work_area
 
           public
 
-          delegate :to_processing_entity, :slug, :work_area_slug, to: :submission_window
-          alias_method :to_model, :submission_window
+          delegate :slug, :work_area_slug, to: :submission_window
 
+          include ActiveModel::Validations
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
@@ -55,20 +48,11 @@ module Sipity
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-
-              # TODO: See https://github.com/ndlib/sipity/issues/506
-              repository.send_notification_for_entity_trigger(
-                notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
-              )
               repository.log_event!(entity: work, user: requested_by, event_name: event_name)
             end
           end
 
-          # TODO: Extract a work area collaborator; How does that reconcile with
-          #   the submission window.
-          def to_work_area
-            work_area
-          end
+          alias_method :to_work_area, :work_area
 
           private
 
@@ -107,7 +91,7 @@ module Sipity
           end
 
           def event_name
-            File.join(self.class.to_s.demodulize.underscore, 'submit')
+            File.join(processing_action_name, 'submit')
           end
 
           def default_repository

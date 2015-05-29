@@ -3,27 +3,35 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for plan_of_study.
-        class PlanOfStudyForm < Forms::WorkEnrichmentForm
-          def initialize(attributes = {})
-            super
-            self.expected_graduation_date = attributes.fetch(:expected_graduation_date) { expected_graduation_date_from_work }
+        class PlanOfStudyForm
+          ProcessingForm.configure(
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            attribute_names: [:expected_graduation_date, :majors]
+          )
+
+          include Conversions::ExtractInputDateFromInput
+          def initialize(work:, attributes: {}, **keywords)
+            self.work = work
+            self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
+            self.expected_graduation_date = extract_input_date_from_input(:expected_graduation_date, attributes) do
+              expected_graduation_date_from_work
+            end
             self.majors = attributes.fetch(:majors) { majors_from_work }
           end
 
-          attr_reader :expected_graduation_date, :majors
-
+          include ActiveModel::Validations
           include Hydra::Validations
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
 
-          private
-
-          def save(requested_by:)
-            super do
+          def submit(requested_by:)
+            processing_action_form.submit(requested_by: requested_by) do
               repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
               repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
             end
           end
+
+          private
 
           def expected_graduation_date_from_work
             repository.work_attribute_values_for(work: work, key: 'expected_graduation_date')

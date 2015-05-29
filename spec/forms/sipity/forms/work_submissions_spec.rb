@@ -32,6 +32,15 @@ module Sipity
         let(:work) { Models::Work.new }
         let(:processing_action_name) { 'do_fun_thing' }
         before { expect(work).to receive(:work_area).and_return(work_area) }
+
+        it 'will classify the action name' do
+          expect(
+            described_class.build_the_form(
+              work: work, processing_action_name: 'do_fun_things', attributes: {}, repository: double
+            )
+          ).to be_a(Forms::WorkSubmissions::MockEtd::DoFunThingForm)
+        end
+
         it 'will use the work area and action name to find the correct object' do
           expect(
             described_class.build_the_form(

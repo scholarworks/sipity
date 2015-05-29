@@ -24,12 +24,17 @@ module Sipity
       #   @return [Symbol]
       attr_reader :status
 
-      # @!attribute [r] template
-      #   The name of the template that we "may" render.
-      #   @return [Object]
-      #   @note I chose :template instead of :template_name as Rails convention
-      #     for rendering a named template is `render template: 'show'`
-      attr_reader :template
+      # The name of the template that we "may" render.
+      # @return [Object]
+      # @note I chose :template instead of :template_name as Rails convention
+      #   for rendering a named template is `render template: 'show'`
+      def template
+        if object.respond_to?(:template)
+          object.template
+        else
+          @template
+        end
+      end
 
       def with_each_additional_view_path_slug
         yield('') # Important if we want to degrade to a fall-back.

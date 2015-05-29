@@ -10,12 +10,6 @@ module Sipity
       decorates_association :collaborators, with: Decorators::CollaboratorDecorator
       decorates_association :attachments, with: Decorators::AttachmentDecorator
 
-      def with_form_panel(name, theme = :default, &block)
-        # TODO: Translate name following active record internationalization
-        # conventions.
-        h.render(layout: 'sipity/form_panel', locals: { name: name, theme: theme, object: self }, &block)
-      end
-
       def date_created
         object.created_at.strftime('%a, %d %b %Y')
       end
@@ -49,21 +43,6 @@ module Sipity
         repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
       end
 
-      delegate :state_advancing_actions, :resourceful_actions, to: :processing_actions
-
-      def enrichment_actions
-        processing_actions.enrichment_actions.each_with_object({}) do |action, mem|
-          mem['required'] ||= []
-          mem['optional'] ||= []
-          if action.is_a_prerequisite?
-            mem['required'] << action
-          else
-            mem['optional'] << action
-          end
-          mem
-        end
-      end
-
       def comments(decorator: default_comment_decorator)
         @comments ||= repository.find_comments_for(entity: self).map do|comment|
           decorator.decorate(comment)
@@ -85,10 +64,6 @@ module Sipity
 
       def default_comment_decorator
         Decorators::Processing::ProcessingCommentDecorator
-      end
-
-      def processing_actions
-        @processing_actions ||= ProcessingActions.new(user: h.current_user, entity: self)
       end
     end
   end

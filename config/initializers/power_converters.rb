@@ -8,23 +8,41 @@ PowerConverter.define_conversion_for(:boolean) do |input|
   end
 end
 
-PowerConverter.define_conversion_for(:strategy_state) do |input, strategy|
+PowerConverter.define_conversion_for(:demodulized_class_name) do |input|
   case input
-  when Sipity::Models::Processing::StrategyState
-    input
   when Symbol, String
-    Sipity::Models::Processing::StrategyState.where(strategy_id: strategy.id, name: input).first
+    input.to_s.gsub(/\W+/, '_').classify
+  when NilClass
+    ''
   end
 end
 
-PowerConverter.define_conversion_for(:slug) do |input|
+PowerConverter.define_conversion_for(:file_system_safe_file_name) do |input|
   case input
   when Symbol, String, NilClass
     input.to_s.gsub(/\W+/, '_').underscore.gsub(/_+/, '-').downcase
   end
 end
 
-PowerConverter.define_alias(:file_system_safe_file_name, is_alias_of: :slug)
+PowerConverter.define_conversion_for(:processing_comment) do |input|
+  case input
+  when Sipity::Models::Processing::Comment
+    input
+  when Sipity::Models::Processing::EntityActionRegister
+    PowerConverter.convert_to_processing_comment(input.subject)
+  end
+end
+
+PowerConverter.define_conversion_for(:processing_action_root_path) do |input|
+  case input
+  when Sipity::Models::WorkArea
+    "/areas/#{input.slug}/do"
+  when Sipity::Models::SubmissionWindow
+    "/areas/#{input.work_area_slug}/#{input.slug}/do"
+  when Sipity::Models::Work
+    "/work_submissions/#{input.id}/do"
+  end
+end
 
 PowerConverter.define_conversion_for(:safe_for_method_name) do |input|
   case input
@@ -39,25 +57,27 @@ PowerConverter.define_conversion_for(:safe_for_method_name) do |input|
   end
 end
 
-PowerConverter.define_conversion_for(:demodulized_class_name) do |input|
+PowerConverter.define_conversion_for(:strategy_state) do |input, strategy|
   case input
+  when Sipity::Models::Processing::StrategyState
+    input
   when Symbol, String
-    input.to_s.gsub(/\W+/, '_').classify
-  when NilClass
-    ''
+    Sipity::Models::Processing::StrategyState.where(strategy_id: strategy.id, name: input).first
   end
 end
 
-PowerConverter.define_conversion_for(:work_type) do |input|
+PowerConverter.define_alias(:slug, is_alias_of: :file_system_safe_file_name)
+
+PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
   case input
-  when Symbol, String
-    begin
-      Sipity::Models::WorkType.find_or_create_by!(name: input.to_s)
-    rescue ArgumentError
-      nil
+  when Sipity::Models::Work
+    input.submission_window
+  when Sipity::Models::SubmissionWindow
+    if work_area
+      input if input.work_area_id == work_area.id
+    else
+      input
     end
-  when Sipity::Models::WorkType
-    input
   end
 end
 
@@ -73,26 +93,15 @@ PowerConverter.define_conversion_for(:work_area) do |input|
   end
 end
 
-PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
+PowerConverter.define_conversion_for(:work_type) do |input|
   case input
-  when Sipity::Models::Work
-    input.submission_window
-  when Sipity::Models::SubmissionWindow
-    if work_area
-      input if input.work_area_id == work_area.id
-    else
-      input
+  when Symbol, String
+    begin
+      Sipity::Models::WorkType.find_or_create_by!(name: input.to_s)
+    rescue ArgumentError
+      nil
     end
-  end
-end
-
-PowerConverter.define_conversion_for(:processing_action_root_path) do |input|
-  case input
-  when Sipity::Models::WorkArea
-    "/areas/#{input.slug}/do"
-  when Sipity::Models::SubmissionWindow
-    "/areas/#{input.work_area_slug}/#{input.slug}/do"
-  when Sipity::Models::Work
-    "/work_submissions/#{input.id}/do"
+  when Sipity::Models::WorkType
+    input
   end
 end

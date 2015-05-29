@@ -8,9 +8,6 @@ module Sipity
           self.processing_comment = processing_comment
         end
 
-        attr_accessor :processing_comment
-        private :processing_comment=, :processing_comment
-
         def work_type
           work.work_type.titleize
         end
@@ -37,6 +34,12 @@ module Sipity
         end
 
         private
+
+        attr_reader :processing_comment
+
+        def processing_comment=(input)
+          @processing_comment = PowerConverter.convert(input, to: :processing_comment)
+        end
 
         def work
           entity.proxy_for

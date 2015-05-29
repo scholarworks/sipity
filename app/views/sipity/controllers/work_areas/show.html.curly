@@ -22,7 +22,7 @@
         <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
           <meta itemprop="name" content="event_trigger/{{action_name}}" />
           {{render_entry_point}}
-          <span itemprop="actionStatus" class="visuallyhidden">{{action_availability_state}}</span>
+          <span itemprop="actionStatus" class="visuallyhidden">{{availability_state}}</span>
         </li>
       {{/resourceful_actions}}
     </ul>
