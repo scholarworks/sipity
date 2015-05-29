@@ -7,7 +7,8 @@ module Sipity
       let(:form) do
         double(
           entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'),
-          model_name: true, param_key: true, processing_action_name: true, translate: true
+          model_name: true, param_key: true, processing_action_name: true, translate: true,
+          to_processing_entity: true, to_processing_action: true, to_work_area: true
         )
       end
       let(:repository) { CommandRepositoryInterface.new }
