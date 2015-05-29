@@ -30,7 +30,7 @@ module Sipity
     end
 
     RSpec.describe InterfaceExpectationError do
-      subject { described_class.new(object: 'hello', expectation: :fly) }
+      subject { described_class.new(object: 'hello', expectations: :fly) }
       its(:message) { should be_a(String) }
     end
 
