@@ -35,11 +35,6 @@ module Sipity
         it 'will requester the given policy question' do
           expect(subject.class.registered_action_to_authorizes.to_a).to eq([:create?, :update?])
         end
-
-        it 'will expose available_actions_by_policy' do
-          allow(entity).to receive(:persisted?).and_return(true)
-          expect(subject.available_actions_by_policy).to eq([:update?])
-        end
       end
     end
   end

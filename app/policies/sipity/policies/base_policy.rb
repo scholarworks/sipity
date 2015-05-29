@@ -36,13 +36,6 @@ module Sipity
       end
       attr_accessor :user, :entity
       private :user, :user=, :entity=, :entity
-
-      def available_actions_by_policy
-        registered_action_to_authorizes.each_with_object([]) do |question, mem|
-          mem << question if public_send(question)
-          mem
-        end
-      end
     end
   end
 end
