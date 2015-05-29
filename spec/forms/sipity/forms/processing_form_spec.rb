@@ -4,7 +4,12 @@ module Sipity
   module Forms
     RSpec.describe ProcessingForm do
       let(:entity) { double }
-      let(:form) { double(entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm')) }
+      let(:form) do
+        double(
+          entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'),
+          model_name: true, param_key: true, processing_action_name: true, translate: true
+        )
+      end
       let(:repository) { CommandRepositoryInterface.new }
       let(:translator) { double(call: true) }
       let(:user) { double }

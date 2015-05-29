@@ -6,7 +6,36 @@ module Sipity
     # Its my effort to break the inheritance cycle.
     class ProcessingForm
       # Code that writes code; Here is a configuration macro to help ensure we
-      # have a common shape to all of our forms.
+      # have a common shape to all of our forms. Of particular note, it creates
+      # some contract enforcement.
+      #
+      # @param form_class [Object] The class that we are going to use as a form
+      #   for processing and validating user input.
+      # @param base_class [ActiveRecord::Base] What is the underlying "concept"
+      #   that this form is working on (i.e. Models::Work,
+      #   Models::SubmissionWindow, etc.)
+      # @param attribute_names [Array<Symbol>, Symbol] A convenience method for
+      #   creating public reader/private writer methods for each of the named
+      #   attributes.
+      # @param keywords [Hash{Sybmol=>Object}] Additional keywords that can be
+      #   used to overwrite.
+      # @option keywords [Symbol] :processing_subject_name the name that we will
+      #   be using to store the instance of underlying "concept". Another way to
+      #   to think of it; When you go to submit the attributes via a web form,
+      #   what is the hash key of the attributes (i.e. `work: { title: 'Mine'}`)
+      # @option keywords [Class] :policy_enforcer the name of the Policy class
+      #   responsible for enforcement. If none is given, one is derived from the
+      #   other configuration options (see implementation)
+      # @option keywords [String] :template the name of the template that will
+      #   be used to render the web form. If none is given, one is derived from
+      #   the other configuration options (see implementation)
+      # @option keywords [Class] :processing_action_form_builder the form
+      #   builder that you want to use. By default it is this class (i.e.
+      #   Sipity::Forms::ProcessingForm). Included for dependency injection and
+      #   future considerations.
+      #
+      # @note This method builds the interface and provides the interface
+      #   validations via the GuardInterfaceExpectation module
       def self.configure(form_class:, base_class:, attribute_names:, **keywords)
         processing_form_class = self
         form_class.module_exec do
