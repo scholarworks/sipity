@@ -39,10 +39,6 @@ module Sipity
         @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
       end
 
-      def authors(decorator: Decorators::CollaboratorDecorator)
-        repository.work_collaborators_for(work: object, role: 'author').map { |obj| decorator.decorate(obj) }
-      end
-
       def comments(decorator: default_comment_decorator)
         @comments ||= repository.find_comments_for(entity: self).map do|comment|
           decorator.decorate(comment)

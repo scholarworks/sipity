@@ -29,14 +29,6 @@ module Sipity
         expect(WorkDecorator.object_class).to eq(Models::Work)
       end
 
-      let(:authors) { [double('Author')] }
-      it 'will have #authors' do
-        expect(repository).to receive(:work_collaborators_for).
-          with(work: work, role: 'author').and_return(authors)
-        allow(CollaboratorDecorator).to receive(:decorate).with(authors[0])
-        subject.authors
-      end
-
       it 'will have a #human_attribute_name' do
         expect(subject.human_attribute_name(:title)).to eq('Title')
       end
