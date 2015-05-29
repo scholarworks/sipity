@@ -16,6 +16,8 @@ module Sipity
               with(slug: work_area.slug).and_return(work_area)
           end
 
+          it { should implement_processing_form_interface }
+
           context 'its class configuration' do
             subject { described_class }
             its(:base_class) { should eq(Models::Work) }

@@ -17,8 +17,10 @@ require 'rspec-given'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rspec-html-matchers'
+require_relative './support/sipity/rspec_matchers'
 RSpec.configure do |config|
   config.include RSpecHtmlMatchers
+  config.include Sipity::RSpecMatchers
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest

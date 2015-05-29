@@ -93,7 +93,7 @@ module Sipity
           include GuardInterfaceExpectation
           def processing_action_form=(input)
             guard_interface_expectation!(
-              input, :submit, :repository, :to_work_area, :translate, :to_processing_entity, :to_processing_action, :processing_action_name
+              input, :submit, :repository, :translate, :to_processing_entity, :to_processing_action, :processing_action_name, :to_work_area
             )
             @processing_action_form = input
           end
@@ -153,11 +153,15 @@ module Sipity
         Controllers::TranslationAssistant
       end
 
+      FORM_METHOD_NAMES_FOR_INTERFACE = [
+        :valid?, :errors, :base_class, :entity, :model_name, :param_key, :processing_action_name, :translate, :template
+      ].freeze
+      FORM_METHOD_NAMES_FOR_COERCION = [:to_processing_entity, :to_processing_action, :to_work_area].freeze
+
       include GuardInterfaceExpectation
       def form=(input)
-        guard_interface_expectation!(input, :valid?, :base_class, :entity)
-        # I want to use send
-        guard_interface_expectation!(input, include_all: true)
+        guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_INTERFACE)
+        guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_COERCION, include_all: true)
         @form = input
       end
 
