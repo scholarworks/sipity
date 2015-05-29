@@ -48,13 +48,6 @@ module Sipity
         end
       end
 
-      context '#build_create_work_form' do
-        it 'will build an ETD based form (note this may be delegated to a generalized form builder)' do
-          expect(Forms::Etd::StartASubmissionForm).to receive(:new).with(repository: test_repository, title: 'title')
-          test_repository.build_create_work_form(attributes: { title: 'title' })
-        end
-      end
-
       context '#build_dashboard_view' do
         let(:user) { double }
         let(:filter) { double }

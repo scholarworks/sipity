@@ -33,10 +33,6 @@ module Sipity
       def work_access_right_codes(work:)
         work.access_rights.pluck(:access_right_code)
       end
-
-      def build_create_work_form(attributes: {})
-        Forms::Etd::StartASubmissionForm.new(attributes.merge(repository: self))
-      end
     end
   end
 end

@@ -42,10 +42,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_create_work_form(attributes: {})
-    end
-
-    # @see ./app/repositories/sipity/queries/work_queries.rb
     def build_dashboard_view(user:, filter: {})
     end
 
