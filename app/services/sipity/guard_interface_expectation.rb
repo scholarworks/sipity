@@ -5,7 +5,7 @@ module Sipity
 
     def guard_interface_expectation!(input, *expectations, include_all: false)
       missing_methods = []
-      expectations.each do |expectation|
+      Array.wrap(expectations).flatten.each do |expectation|
         next if input.respond_to?(expectation, include_all)
         missing_methods << expectation
       end

@@ -6,9 +6,9 @@ module Sipity
       let(:entity) { double }
       let(:form) do
         double(
-          entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'),
+          entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'), errors: true,
           model_name: true, param_key: true, processing_action_name: true, translate: true,
-          to_processing_entity: true, to_processing_action: true, to_work_area: true
+          to_processing_entity: true, to_processing_action: true, to_work_area: true, template: true
         )
       end
       let(:repository) { CommandRepositoryInterface.new }
@@ -26,10 +26,7 @@ module Sipity
             def base_class
               Class
             end
-
-            def valid?
-              true
-            end
+            include ActiveModel::Validations
           end
         end
         subject { form_class.new.tap { |obj| obj.send(:processing_action_form=, described_class.new(form: obj, repository: double)) } }

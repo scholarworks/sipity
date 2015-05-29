@@ -153,10 +153,15 @@ module Sipity
         Controllers::TranslationAssistant
       end
 
+      FORM_METHOD_NAMES_FOR_INTERFACE = [
+        :valid?, :errors, :base_class, :entity, :model_name, :param_key, :processing_action_name, :translate, :template
+      ].freeze
+      FORM_METHOD_NAMES_FOR_COERCION = [:to_processing_entity, :to_processing_action, :to_work_area].freeze
+
       include GuardInterfaceExpectation
       def form=(input)
-        guard_interface_expectation!(input, :valid?, :base_class, :entity, :model_name, :param_key, :processing_action_name, :translate)
-        guard_interface_expectation!(input, :to_processing_entity, :to_processing_action, :to_work_area, include_all: true)
+        guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_INTERFACE)
+        guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_COERCION, include_all: true)
         @form = input
       end
 
