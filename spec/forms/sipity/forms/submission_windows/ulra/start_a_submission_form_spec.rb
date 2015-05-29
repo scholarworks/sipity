@@ -14,6 +14,8 @@ module Sipity
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
           end
 
+          it { should implement_processing_form_interface }
+
           context 'its class configuration' do
             subject { described_class }
             its(:base_class) { should eq(Models::Work) }
