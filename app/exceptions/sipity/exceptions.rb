@@ -31,8 +31,19 @@ module Sipity
 
     # The object did not implement the expected interface.
     class InterfaceExpectationError < RuntimeError
-      def initialize(object:, expectation:)
-        super("Expected #{object} to implement ##{expectation}")
+      def initialize(object:, expectations:)
+        self.expectations = expectations
+        super("Expected #{object} to implement #{expected_methods}")
+      end
+
+      private
+
+      def expected_methods
+        @expectations.map { |e| "##{e}" }.inspect
+      end
+
+      def expectations=(input)
+        @expectations = Array.wrap(input)
       end
     end
 

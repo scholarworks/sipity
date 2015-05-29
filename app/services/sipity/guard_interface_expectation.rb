@@ -4,10 +4,12 @@ module Sipity
     private
 
     def guard_interface_expectation!(input, *expectations, include_all: false)
+      missing_methods = []
       expectations.each do |expectation|
         next if input.respond_to?(expectation, include_all)
-        fail(Exceptions::InterfaceExpectationError, object: input, expectation: expectation)
+        missing_methods << expectation
       end
+      fail(Exceptions::InterfaceExpectationError, object: input, expectations: missing_methods) if missing_methods.present?
     end
   end
 end
