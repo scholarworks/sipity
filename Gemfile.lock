@@ -269,7 +269,7 @@ GEM
       yard (~> 0.8.7.5)
     interception (0.5)
     ipaddress (0.8.0)
-    jbuilder (2.2.13)
+    jbuilder (2.2.16)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (4.0.3)
