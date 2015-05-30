@@ -14,7 +14,7 @@ WHITELIST_PATH = ENV.fetch('WHITELIST_PATH') { File.join(REPOSITORY_PATH, 'artif
 
 if ARGV.grep(/^-+h(elp)?$/i).size > 0
   $stdout.puts ""
-  $stdout.puts "Before you run: `gem install debride; gem install debride-erb`"
+  $stdout.puts "Before you run: `gem install debride; gem install debride-curly`"
   $stdout.puts ""
   $stdout.puts "$ ./scripts/#{File.basename(__FILE__)}"
   $stdout.puts ""
@@ -48,6 +48,7 @@ end
 #
 #   skipping path/to/file.rb: unrecognized RUBY_VERSION 2.2.2
 require 'debride'
+require 'debride_curly'
 require 'csv'
 
 # Guard that we have a clean working directory
