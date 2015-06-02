@@ -73,9 +73,9 @@ module Sipity
             create_the_work do |work|
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
-              repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
-              repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-              repository.update_work_attribute_values!(work: work, key: work_patent_strategy_predicate_name, values: work_patent_strategy)
+              persist_access_rights_answer(work: work)
+              persist_work_patent_strategy(work: work)
+              grant_creating_user_permission(work: work, requested_by: requested_by)
 
               # TODO: See https://github.com/ndlib/sipity/issues/506
               repository.send_notification_for_entity_trigger(
@@ -86,6 +86,18 @@ module Sipity
           end
 
           private
+
+          def persist_work_patent_strategy(work:)
+            repository.update_work_attribute_values!(work: work, key: work_patent_strategy_predicate_name, values: work_patent_strategy)
+          end
+
+          def persist_access_rights_answer(work:)
+            repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
+          end
+
+          def grant_creating_user_permission(work:, requested_by:)
+            repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+          end
 
           include Conversions::SanitizeHtml
           def title=(value)
