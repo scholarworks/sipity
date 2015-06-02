@@ -5,7 +5,9 @@ module Sipity
     module SubmissionWindows
       module Etd
         RSpec.describe StartASubmissionForm do
-          subject { described_class.new(repository: repository, submission_window: submission_window) }
+          let(:keywords) { { repository: repository, submission_window: submission_window, attributes: attributes } }
+          let(:attributes) { {} }
+          subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:submission_window) do
             Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
@@ -43,15 +45,13 @@ module Sipity
           end
 
           it 'will have a default #access_rights_answer' do
-            expect(described_class.new(repository: repository, submission_window: submission_window).access_rights_answer).to be_present
+            expect(described_class.new(keywords).access_rights_answer).to be_present
           end
 
           context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
             it 'will have #access_rights_answer_for_select' do
               expect(
-                described_class.new(
-                  repository: repository, submission_window: submission_window
-                ).access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }
+                described_class.new(keywords).access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }
               ).to be_truthy
             end
 
@@ -66,7 +66,7 @@ module Sipity
 
           context 'validations for' do
             let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
-            subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
+            subject { described_class.new(keywords) }
             context '#title' do
               it 'must be present' do
                 subject.valid?
@@ -75,8 +75,7 @@ module Sipity
             end
             context '#submission_window' do
               it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(repository: repository, submission_window: nil, attributes: attributes) }.
-                  to raise_error(PowerConverter::ConversionError)
+                expect { described_class.new(keywords.merge(submission_window: nil)) }.to raise_error(PowerConverter::ConversionError)
               end
             end
             context '#access_rights_answer' do
@@ -85,9 +84,7 @@ module Sipity
                 expect(subject.errors[:access_rights_answer]).to be_present
               end
               it 'must be in the given list' do
-                subject = described_class.new(
-                  repository: repository, submission_window: submission_window, attributes: { access_rights_answer: '__not_found__' }
-                )
+                subject = described_class.new(keywords.merge(attributes: { access_rights_answer: '__not_found__' }))
                 subject.valid?
                 expect(subject.errors[:access_rights_answer]).to be_present
               end
@@ -104,9 +101,7 @@ module Sipity
                 expect(subject.errors[:work_publication_strategy]).to be_present
               end
               it 'must be from the approved list' do
-                subject = described_class.new(
-                  repository: repository, submission_window: submission_window, attributes: { work_publication_strategy: '__not_found__' }
-                )
+                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
                 subject.valid?
                 expect(subject.errors[:work_publication_strategy]).to be_present
               end
@@ -115,7 +110,7 @@ module Sipity
 
           context 'Sanitizing HTML title' do
             let(:attributes) { { title: title, access_rights_answer: nil, work_publication_strategy: nil } }
-            subject { described_class.new(repository: repository, attributes: attributes, submission_window: submission_window) }
+            subject { described_class.new(keywords) }
             context 'removes script tags' do
               let(:title) { "<script>alert('Like this');</script>" }
               it { expect(subject.title).to_not have_tag('script') }
