@@ -36,7 +36,6 @@ group :doc do
 end
 
 group :development do
-  gem 'mysql2'
   gem 'better_errors'
   gem 'binding_of_caller', platforms: [:mri_21]
   gem 'capistrano', '~> 3.1'
@@ -102,13 +101,16 @@ group :test do
 end
 
 group :production, :pre_production, :staging do
-  gem 'mysql2'
   gem 'dragonfly-s3_data_store'
   gem 'rack-cache', require: 'rack/cache'
   gem 'rb-readline'
 end
 source 'https://rails-assets.org' do
   gem 'rails-assets-readmore'
+end
+
+group :production, :pre_production, :staging, :development do
+  gem 'mysql2'
 end
 
 # Removing until I have a non-pro license
