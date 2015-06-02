@@ -1,14 +1,9 @@
 MethodName,Filename
 access_right_object,app/models/sipity/models/access_right_facade.rb
-at_lease_one_accessible_objects_attributes_entry,app/forms/sipity/forms/work_submissions/etd/access_policy_form.rb
-at_least_one_collaborator_must_be_responsible_for_review,app/forms/sipity/forms/work_submissions/etd/collaborator_form.rb
-at_least_one_file_must_be_attached,app/forms/sipity/forms/work_submissions/etd/attach_form.rb
 command_action,app/controllers/sipity/controllers/submission_windows_controller.rb
 command_action,app/controllers/sipity/controllers/work_areas_controller.rb
 command_action,app/controllers/sipity/controllers/work_submissions_controller.rb
 destroy_a_work,app/repositories/sipity/commands/work_commands.rb
-each_accessible_objects_attributes_are_valid,app/forms/sipity/forms/work_submissions/etd/access_policy_form.rb
-each_collaborator_from_input_must_be_valid,app/forms/sipity/forms/work_submissions/etd/collaborator_form.rb
 edit,app/controllers/sipity/controllers/account_profiles_controller.rb
 enrichment_actions_that_are_optional,app/presenters/sipity/controllers/composable_elements/processing_actions_composer.rb
 enrichment_actions_that_are_required,app/presenters/sipity/controllers/composable_elements/processing_actions_composer.rb
@@ -28,7 +23,6 @@ render_submission_window_for_etd,app/presenters/sipity/controllers/submission_wi
 search_path,app/decorators/sipity/decorators/dashboard_view.rb
 sequence_of_events_for,app/repositories/sipity/queries/event_log_queries.rb
 show,app/controllers/sipity/controllers/works_controller.rb
-strategy_action_and_analog_cannot_be_the_same,app/models/sipity/models/processing/strategy_action_analogue.rb
 to_hash,app/forms/sipity/forms/work_submissions/etd/access_policy_form.rb
 to_key,app/forms/sipity/forms/base_form.rb
 to_work_area,app/forms/sipity/forms/etd/start_a_submission_form.rb
@@ -39,8 +33,6 @@ valid_names,app/models/sipity/models/role.rb
 valid_names,app/models/sipity/models/work_type.rb
 valid_on_behalf_of_collaborator_ids,app/forms/sipity/forms/composable_elements/on_behalf_of_collaborator.rb
 validate_each,app/validators/net_id_validator.rb
-validate_required_information_if_responsible_for_review,app/models/sipity/models/collaborator.rb
-without_authorization_to_attachment,app/services/sipity/services/authorization_layer.rb
 work_access_right_codes,app/repositories/sipity/queries/work_queries.rb
 work_attribute_key_value_pairs,app/repositories/sipity/queries/additional_attribute_queries.rb
 work_collaborator_names_for,app/repositories/sipity/queries/collaborator_queries.rb

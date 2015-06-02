@@ -58,7 +58,7 @@ if `cd #{REPOSITORY_PATH} && git status --porcelain`.strip.size > 0
 end
 
 begin
-  command = "cd #{REPOSITORY_PATH} && debride -r lib app --whitelist #{WHITELIST_PATH} > #{OUTPUT_FILENAME}.tmp"
+  command = "cd #{REPOSITORY_PATH} && debride -r lib app config --whitelist #{WHITELIST_PATH} > #{OUTPUT_FILENAME}.tmp"
   unless system(command)
     $stderr.puts "Error encountered running `#{command}'"
     exit!(2)
