@@ -1,5 +1,18 @@
 require 'power_converter'
 
+PowerConverter.define_conversion_for(:access_url) do |input|
+  case input
+  when Sipity::Models::Attachment
+    input.file_url
+  when Sipity::Models::WorkArea
+    File.join(Figaro.env.url_host, "areas/#{input.slug}")
+  when Sipity::Models::SubmissionWindow
+    File.join(Figaro.env.url_host, "areas/#{input.work_area_slug}/#{input.slug}")
+  when Sipity::Models::Work
+    File.join(Figaro.env.url_host, "work_submissions/#{input.id}")
+  end
+end
+
 PowerConverter.define_conversion_for(:boolean) do |input|
   case input
   when false, 0, '0', 'false', 'no', nil then false

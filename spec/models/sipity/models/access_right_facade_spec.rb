@@ -18,7 +18,6 @@ module Sipity
       its(:entity_type) { should eq(Sipity::Models::Work) }
       its(:access_right_code) { should eq(access_right.access_right_code) }
       its(:release_date) { should eq(access_right.release_date) }
-      it { should respond_to :access_url }
 
       its(:model_name) { should eq(work.class.model_name) }
       its(:human_model_name) { should eq(work.class.model_name.human) }
@@ -61,7 +60,7 @@ module Sipity
         it 'will be a resolve polymorphic path for a Models::Work' do
           allow(object).to receive(:persisted?).and_return(true)
           subject = described_class.new(object, work: work)
-          expect(subject.access_url).to match(%r{^https?://[^/]*/works/#{object.id}$})
+          expect(subject.access_url).to match(%r{^https?://[^/]*/work_submissions/#{object.id}$})
         end
       end
     end

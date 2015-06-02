@@ -32,13 +32,8 @@ module Sipity
         model_name.human
       end
 
-      def access_url(template: view_context)
-        if accessible_object.respond_to?(:file_url)
-          accessible_object.file_url
-        else
-          # REVIEW: I may not be able to rely on polymorphic URL
-          template.polymorphic_url(accessible_object)
-        end
+      def access_url
+        PowerConverter.convert_to_access_url(accessible_object)
       end
 
       private
@@ -68,10 +63,6 @@ module Sipity
         access_right.access_right_code = work_access_right.access_right_code
         access_right.release_date = work_access_right.release_date
         access_right
-      end
-
-      def view_context
-        Draper::ViewContext.current
       end
     end
   end
