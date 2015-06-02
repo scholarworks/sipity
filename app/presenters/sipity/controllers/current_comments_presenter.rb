@@ -5,8 +5,7 @@ module Sipity
       presents :current_comments
 
       def path_to_all_comments
-        # TODO: Fix this to be the general case.
-        work_comments_path(current_comments.entity)
+        work_comments_path(work_id: current_comments.entity)
       end
 
       delegate :comments, to: :current_comments
