@@ -72,5 +72,14 @@ describe 'work area routing spec' do
         )
       )
     end
+
+    include Rails.application.routes.url_helpers
+    it 'will preserve #work_path' do
+      expect(work_path('1')).to eq('/works/1')
+    end
+
+    it 'will preserve #work_comments_path' do
+      expect(work_comments_path(work_id: '1')).to eq('/work_submissions/1/comments')
+    end
   end
 end

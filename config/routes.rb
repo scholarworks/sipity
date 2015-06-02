@@ -1,25 +1,18 @@
 Rails.application.routes.draw do
-  scope module: :sipity do
-    scope module: :controllers do
-      resources :works, only: [:show] do
-        resources :comments, only: :index
-      end
-
-      #Account profile Managament
-      get 'account', to: 'account_profiles#edit', as: 'account'
-      post 'account', to: 'account_profiles#update'
-    end
-  end
-
   root to: 'visitors#index'
 
+  ##############################################################################
+  # Begin Account related things
+  ##############################################################################
   devise_for :users #, only: :sessions
   devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
+  get 'account', to: 'sipity/controllers/account_profiles#edit', as: 'account'
+  post 'account', to: 'sipity/controllers/account_profiles#update'
   get 'dashboard', to: 'sipity/controllers/dashboards#index', as: "dashboard"
 
-  # This route should considered deprecated
-  get 'start', to: redirect('/areas/etd/start', status: 301), as: 'start'
-
+  ##############################################################################
+  # Begin Work Area
+  ##############################################################################
   get(
     'areas/:work_area_slug', as: 'work_area', to: 'sipity/controllers/work_areas#query_action', defaults: { processing_action_name: 'show' }
   )
@@ -29,6 +22,9 @@ Rails.application.routes.draw do
     send(http_verb_name, 'areas/:work_area_slug/do/:processing_action_name', to: 'sipity/controllers/work_areas#command_action')
   end
 
+  ##############################################################################
+  # Begin Submission Window
+  ##############################################################################
   get(
     'areas/:work_area_slug/:submission_window_slug',
     as: 'submission_window',
@@ -50,6 +46,12 @@ Rails.application.routes.draw do
     )
   end
 
+  # This route should considered deprecated
+  get 'start', to: redirect('/areas/etd/start', status: 301), as: 'start'
+
+  ##############################################################################
+  # Begin Work Submission
+  ##############################################################################
   get(
     'work_submissions/:work_id',
     as: 'work_submission',
@@ -64,6 +66,13 @@ Rails.application.routes.draw do
   [:post, :put, :patch, :delete].each do |http_verb_name|
     send(http_verb_name, 'work_submissions/:work_id/do/:processing_action_name', to: 'sipity/controllers/work_submissions#command_action')
   end
+
+  get '/work_submissions/:work_id/comments', to: 'sipity/controllers/comments#index', as: 'work_comments'
+  get '/works/:work_id', to: redirect('/work_submissions/%{work_id}', status: 301), as: 'work'
+
+  ##############################################################################
+  # Begin Attachments
+  ##############################################################################
 
   # I need parentheses or `{ }` for the block, because of when the blocks are
   # bound.
