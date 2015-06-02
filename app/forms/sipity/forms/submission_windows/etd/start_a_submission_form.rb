@@ -8,7 +8,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :work_type, :access_rights_answer]
+            attribute_names: [:title, :work_publication_strategy, :work_patent_strategy, :work_type, :access_rights_answer]
           )
 
           def initialize(submission_window:, attributes: {}, **keywords)
@@ -25,6 +25,7 @@ module Sipity
           def initialize_attributes(attributes = {})
             self.title = attributes[:title]
             self.work_publication_strategy = attributes[:work_publication_strategy]
+            self.work_patent_strategy = attributes[:work_patent_strategy]
             self.work_type = attributes[:work_type]
             self.access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
           end
@@ -32,20 +33,20 @@ module Sipity
           public
 
           alias_method :to_work_area, :work_area
+          public :to_work_area
 
           delegate :slug, :work_area_slug, to: :submission_window
 
           include ActiveModel::Validations
           validates :title, presence: true
+          validates :work_patent_strategy, presence: true, inclusion: { in: :possible_work_patent_strategies }
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
           validates :submission_window, presence: true
 
-          # TODO: This is composable method based on the "type" of processing
-          # entity I am working with.
           def form_path
-            "/areas/#{work_area_slug}/#{slug}/do/#{processing_action_name}"
+            File.join(PowerConverter.convert_to_processing_action_root_path(submission_window), processing_action_name)
           end
 
           def access_rights_answer_for_select
@@ -53,7 +54,12 @@ module Sipity
           end
 
           def work_publication_strategies_for_select
+            # Because we have an Array / Hash
             possible_work_publication_strategies.map { |elem| elem.first.to_sym }
+          end
+
+          def work_patent_strategies_for_select
+            possible_work_patent_strategies.map(&:to_sym)
           end
 
           # Convert string to to_sym since simple_forn require sym to
@@ -69,6 +75,7 @@ module Sipity
               # Consider pushing some of the behavior down into the repository.
               repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+              repository.update_work_attribute_values!(work: work, key: work_patent_strategy_predicate_name, values: work_patent_strategy)
 
               # TODO: See https://github.com/ndlib/sipity/issues/506
               repository.send_notification_for_entity_trigger(
@@ -98,6 +105,10 @@ module Sipity
             DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
           end
 
+          def possible_work_patent_strategies
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: work_patent_strategy_predicate_name)
+          end
+
           def possible_work_publication_strategies
             Models::Work.work_publication_strategies
           end
@@ -116,6 +127,10 @@ module Sipity
 
           def default_repository
             CommandRepository.new
+          end
+
+          def work_patent_strategy_predicate_name
+            Models::AdditionalAttribute::WORK_PATENT_STRATEGY
           end
 
           DEFAULT_WORK_AREA_SLUG = 'etd'.freeze

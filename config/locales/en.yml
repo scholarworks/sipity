@@ -42,6 +42,7 @@ en:
         collaborators: 'People involved'
         publicationDate: 'Publication date'
         work_publication_strategy: 'Publication intent'
+        work_patent_strategy: 'Patent intent'
   application:
     navigation:
       dashboard: 'Dashboard'
@@ -215,6 +216,8 @@ en:
       label: 'What is the <b>title</b> of your work?'
     work_publication_strategy:
       label: 'Do you have <b>publishing</b> plans?'
+    work_patent_strategy:
+      label: 'Are there plans to <b>patent</b>?'
     work_type:
       label: 'What <b>kind</b> of work is this?'
   processing_actions:
@@ -312,8 +315,13 @@ en:
             access_changes_over_time_html: 'It will <b>change over time</b> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
         work_publication_strategy:
           will_not_publish_html: 'I have <i>no plans to publish</i> this work in the future.'
-          already_published: 'I have already published portions of this work..'
+          already_published_html: 'I have <i>already published</i> portions of this work.'
           going_to_publish_html: 'I am <i>planning on publishing</i> this work in the future.'
+          do_not_know: 'I don’t know.'
+        work_patent_strategy:
+          will_not_patent_html: 'There are <i>no plans to patent</i> this work.'
+          already_patented_html: 'Portions of this work have <i>already been patented</i>.'
+          going_to_patent_html: 'There are <i>plans to patent</i> this work in the future.'
           do_not_know: 'I don’t know.'
         work_type:
           doctoral_dissertation: 'Doctoral Dissertation'

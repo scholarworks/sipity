@@ -20,7 +20,11 @@ $stdout.puts 'Creating controlled vocabularies'
   ['citation_style', 'Modern Language Association', 'MLA'],
   ['award_category', 'Senior/Honors Thesis'],
   ['award_category', '2000–4000 Level Papers'],
-  ['award_category', '10000 Level Papers']
+  ['award_category', '10000 Level Papers'],
+  ['work_patent_strategy', 'already_patented'],
+  ['work_patent_strategy', 'will_not_patent'],
+  ['work_patent_strategy', 'going_to_patent'],
+  ['work_patent_strategy', 'do_not_know']
 ].each do |predicate_name, term_label, term_uri|
   Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
   predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)

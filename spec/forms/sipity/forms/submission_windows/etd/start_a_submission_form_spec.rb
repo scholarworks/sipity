@@ -14,8 +14,9 @@ module Sipity
           end
           let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd') }
           before do
-            allow(repository).to receive(:find_work_area_by).
-              with(slug: work_area.slug).and_return(work_area)
+            allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
+            allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_patent_strategy').
+              and_return(['already_patented'])
           end
 
           it { should implement_processing_form_interface }
@@ -59,6 +60,10 @@ module Sipity
               expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
             end
 
+            it 'will have #work_patent_strategies_for_select' do
+              expect(subject.work_patent_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
+            end
+
             it 'will have #work_types_for_select' do
               expect(subject.work_types_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
             end
@@ -87,6 +92,26 @@ module Sipity
                 subject = described_class.new(keywords.merge(attributes: { access_rights_answer: '__not_found__' }))
                 subject.valid?
                 expect(subject.errors[:access_rights_answer]).to be_present
+              end
+            end
+            context '#work_patent_strategy' do
+              before do
+                expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_patent_strategy').
+                  and_return(['already_patented'])
+              end
+              it 'invalid if not present' do
+                subject.valid?
+                expect(subject.errors[:work_patent_strategy]).to be_present
+              end
+              it 'will be invalid be if its not within the given list' do
+                subject = described_class.new(keywords.merge(attributes: { work_patent_strategy: '__not_found__' }))
+                subject.valid?
+                expect(subject.errors[:work_patent_strategy]).to be_present
+              end
+              it 'will be valid if within the given list' do
+                subject = described_class.new(keywords.merge(attributes: { work_patent_strategy: 'already_patented' }))
+                subject.valid?
+                expect(subject.errors[:work_patent_strategy]).to_not be_present
               end
             end
             context '#work_type' do
@@ -126,6 +151,7 @@ module Sipity
 
           context '#submit' do
             let(:user) { User.new(id: '123') }
+            let(:attributes) { { work_patent_strategy: 'do_not_know' } }
 
             context 'with invalid data' do
               it 'will not create a a work' do
@@ -143,6 +169,7 @@ module Sipity
               let(:work) { double }
               before do
                 expect(subject).to receive(:valid?).and_return(true)
+                allow(repository).to receive(:create_work!).and_return(work)
               end
               it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
@@ -158,6 +185,14 @@ module Sipity
 
               it 'will grant creating user permission for' do
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
+                subject.submit(requested_by: user)
+              end
+
+              it 'will grant creating user permission for' do
+                expect(repository).to receive(:update_work_attribute_values!).
+                  with(
+                    work: work, key: subject.send(:work_patent_strategy_predicate_name), values: attributes.fetch(:work_patent_strategy)
+                  ).and_call_original
                 subject.submit(requested_by: user)
               end
 

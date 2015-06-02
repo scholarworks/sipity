@@ -6,6 +6,7 @@ feature 'Enriching a Work', :devise, :feature do
     Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd') do |work_area|
       Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: work_area)
     end
+    Sipity::SpecSupport.load_database_seeds!(seeds_path: 'db/seeds/controlled_vocabularies_seeds.rb')
     Warden.test_mode!
   end
   let(:user) { Sipity::Factories.create_user }
@@ -17,6 +18,7 @@ feature 'Enriching a Work', :devise, :feature do
       the_page.fill_in(:title, with: options.fetch(:title, 'Hello World'))
       the_page.select(options.fetch(:work_type, 'doctoral_dissertation'), from: :work_type)
       the_page.choose(:work_publication_strategy, with: options.fetch(:work_publication_strategy, 'do_not_know'))
+      the_page.choose(:work_patent_strategy, with: options.fetch(:work_patent_strategy, 'do_not_know'))
       the_page.submit_button.click
     end
   end
