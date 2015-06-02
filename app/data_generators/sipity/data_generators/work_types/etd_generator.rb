@@ -127,11 +127,6 @@ module Sipity
                       action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
                     )
                   end
-                else
-                  action.presentation_sequence = structure.fetch(:seq)
-                  action.resulting_strategy_state = resulting_state
-                  action.action_type = action.default_action_type
-                  action.allow_repeat_within_current_state = structure.fetch(:allow_repeat_within_current_state, true)
                 end
                 etd_actions[action_name] = action
               end
