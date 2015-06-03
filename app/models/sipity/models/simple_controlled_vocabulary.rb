@@ -21,7 +21,8 @@ module Sipity
           AdditionalAttribute::RESOURCE_CONSULTED_NAME => AdditionalAttribute::RESOURCE_CONSULTED_NAME,
           AdditionalAttribute::CITATION_STYLE_NAME => AdditionalAttribute::CITATION_STYLE_NAME,
           AdditionalAttribute::AWARD_CATEGORY => AdditionalAttribute::AWARD_CATEGORY,
-          AdditionalAttribute::WORK_PATENT_STRATEGY => AdditionalAttribute::WORK_PATENT_STRATEGY
+          AdditionalAttribute::WORK_PATENT_STRATEGY => AdditionalAttribute::WORK_PATENT_STRATEGY,
+          AdditionalAttribute::WORK_PUBLICATION_STRATEGY => AdditionalAttribute::WORK_PUBLICATION_STRATEGY
         }
       )
     end

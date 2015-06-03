@@ -25,6 +25,7 @@ module Sipity
       EXPECTED_GRADUATION_DATE = 'expected_graduation_date'.freeze
       MAJORS = 'majors'.freeze
       WORK_PATENT_STRATEGY = 'work_patent_strategy'.freeze
+      WORK_PUBLICATION_STRATEGY = 'work_publication_strategy'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -51,7 +52,8 @@ module Sipity
           AWARD_CATEGORY => AWARD_CATEGORY,
           EXPECTED_GRADUATION_DATE => EXPECTED_GRADUATION_DATE,
           MAJORS => MAJORS,
-          WORK_PATENT_STRATEGY => WORK_PATENT_STRATEGY
+          WORK_PATENT_STRATEGY => WORK_PATENT_STRATEGY,
+          WORK_PUBLICATION_STRATEGY => WORK_PUBLICATION_STRATEGY
         }
       )
     end
