@@ -221,6 +221,8 @@ en:
     work_type:
       label: 'What <b>kind</b> of work is this?'
   processing_actions:
+    publishing_and_patenting_intent:
+      label: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
     access_policy:
       label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
     attach:
