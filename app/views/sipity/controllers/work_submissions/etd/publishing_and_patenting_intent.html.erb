@@ -1,6 +1,5 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1 class='centered with-bottom-padding'><%= model.translate(:call_to_action, predicate: :heading) %></h1>
+<p><%= model.translate(:call_to_action, predicate: :description) %></p>
 
 <div class="panel-tiles">
 
@@ -12,11 +11,11 @@
     html: { class: 'simple-form panel panel-primary with-footer' }
   ) do |f| %>
     <legend class="panel-heading">
-      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.publishing_and_patenting.title_html"), class: 'panel-title' %>
+      <h3 class="panel-title"><%= model.translate(:panel, predicate: :title) %></h3>
     </legend>
 
     <fieldset class="panel-body">
-      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.publishing_and_patenting.hint_html"), class: 'panel-hint' %>
+      <h3 class="panel-hint"><%= model.translate(:panel, predicate: :hint) %></h3>
       <%= f.error_notification %>
       <%= f.error :base, error_method: :to_sentence %>
       <%= f.input :work_publication_strategy, as: :radio_buttons, collection: view_object.work_publication_strategies_for_select %>

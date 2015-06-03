@@ -223,6 +223,11 @@ en:
   processing_actions:
     publishing_and_patenting_intent:
       label: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
+      call_to_action:
+        heading: "Publishing and Patenting Intent"
+        description: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
+      panel:
+        title: "Publishing and Patenting Intent"
     access_policy:
       label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
     attach:

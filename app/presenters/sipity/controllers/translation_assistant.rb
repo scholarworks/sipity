@@ -15,7 +15,7 @@ module Sipity
       # 3. :<scope>.<object>.<predicate>
       # 4. <object.to_s.humanize>
       def call(scope:, subject:, object: subject, predicate:)
-        scope = scope.to_s.pluralize
+        scope = scope.to_s
         defaults = [:"#{object}.#{predicate}", object.to_s.humanize]
         options = { scope: scope, default: defaults }
 

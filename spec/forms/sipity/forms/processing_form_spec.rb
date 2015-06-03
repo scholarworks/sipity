@@ -62,9 +62,9 @@ module Sipity
           expect(translator).to have_received(:call).with(scope: 'panel_headings', object: 'name', predicate: :label, subject: entity)
         end
         it 'will default the identifier to the processing_action_name' do
-          subject.translate(scope: 'panel_headings')
+          subject.translate('name')
           expect(translator).to have_received(:call).
-            with(scope: 'panel_headings', object: subject.processing_action_name, predicate: :label, subject: entity)
+            with(scope: "processing_actions.#{subject.processing_action_name}", object: 'name', predicate: :label, subject: entity)
         end
       end
 
