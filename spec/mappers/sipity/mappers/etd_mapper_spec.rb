@@ -7,6 +7,8 @@ module Sipity
       let(:work) { double }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
+      let(:title) { 'Title of the work' }
+      let(:batch_user) { 'curate_batch_user' }
 
       subject { described_class.new(work, repository: repository) }
 
@@ -23,9 +25,12 @@ module Sipity
         expect(repository).to receive(:scope_users_for_entity_and_roles).
           with(entity: work, roles: 'creating_user').and_return(creators)
         expect(work).to receive(:id).and_return('a_id')
+        expect(work).to receive(:title).and_return(title)
         expected_json = JSON.parse(subject.call)
         expect(expected_json["pid"]).to eq("und:a_id")
-        expect(expected_json["rights"]).to eq([{"read" => [['Hello']]}])
+        expect(expected_json["pid"]).to eq("und:a_id")
+        expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
+        expect(expected_json["metadata"]["dc:title"]).to eq(title)
         expect(expected_json["metadata"]["dc:language"]).to eq('eng')
       end
 
@@ -36,8 +41,9 @@ module Sipity
           expect(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
+          expect(work).to receive(:title).and_return(title)
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq([{"read-groups"=> ["public"], "read" => [['Hello']]}])
+          expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
         end
 
         it 'have restricted access rights' do
@@ -46,32 +52,39 @@ module Sipity
           expect(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
+          expect(work).to receive(:title).and_return(title)
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq([{"read-groups"=> ["restricted"], "read" => [['Hello']]}])
+          expect(expected_json["rights"]).to eq("read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user])
         end
 
         context 'will add embargo date to rights metadata' do
           let(:embargo_date) { "2022-12-01" }
           it 'return embargo date' do
-            access_rights = Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today, transition_date: embargo_date)
-            expect(repository).to receive(:work_access_right_codes).with(work: work).and_return([access_rights.access_right_code])
+            access_rights = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
+                                                    release_date: Time.zone.today, transition_date: embargo_date)
+            expect(repository).to receive(:work_access_right_codes).with(work: work).
+              and_return([access_rights.access_right_code])
             expect(repository).to receive(:scope_users_for_entity_and_roles).
               with(entity: work, roles: 'creating_user').and_return(creators)
             expect(work).to receive(:access_rights).and_return([access_rights])
             expect(work).to receive(:id).and_return('a_id')
+            expect(work).to receive(:title).and_return(title)
             expected_json = JSON.parse(subject.call)
-            expect(expected_json["rights"]).to eq([{"embargo-date"=> [embargo_date], "read" => [['Hello']]}])
+            expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
+                                                  "read" => ['Hello'], "edit" => [batch_user])
           end
 
           it 'have public access rights with embargo date' do
             access_right = ['embargo_then_open_access']
             expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
-            expect(subject).to receive(:embargo_date).and_return([embargo_date])
+            expect(subject).to receive(:embargo_date).and_return(embargo_date)
             expect(repository).to receive(:scope_users_for_entity_and_roles).
-             with(entity: work, roles: 'creating_user').and_return(creators)
+              with(entity: work, roles: 'creating_user').and_return(creators)
             expect(work).to receive(:id).and_return('a_id')
+            expect(work).to receive(:title).and_return(title)
             expected_json = JSON.parse(subject.call)
-            expect(expected_json["rights"]).to eq([{"embargo-date"=> [embargo_date], "read" => [['Hello']]}])
+            expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
+                                                  "read" => ['Hello'], "edit" => [batch_user])
           end
         end
       end

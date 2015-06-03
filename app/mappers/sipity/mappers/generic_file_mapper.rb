@@ -15,16 +15,27 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
-      ACCESS_RIGHTS_KEY = 'rights'.freeze
+      # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
-      RELS_EXT_KEY = 'rels-ext'.freeze
-      PREDICATE_KEY = 'isPartOf'.freeze
+      # Access Rights keys
+      ACCESS_RIGHTS_KEY = 'rights'.freeze
       PUBLIC_ACCESS = 'public'.freeze
       ND_ONLY_ACCESS = 'restricted'.freeze
       READ_KEY = 'read'.freeze
+      EDIT_KEY = 'edit'.freeze
       READ_GROUP_KEY = 'read-groups'.freeze
       EMBARGO_KEY = 'embargo-date'.freeze
+      # RELS-EXT KEYS
+      RELS_EXT_KEY = 'rels-ext'.freeze
+      RELS_EXT_URI = {
+        "hydramata-rel":  "http://projecthydra.org/ns/relations#"
+      }.freeze
+      PARENT_PREDICATE_KEY = 'isPartOf'.freeze
+      EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
+      EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
+      CURATE_BATCH_USER_PID = "und:4j03cz30t6k"
+      CURATE_BATCH_GROUP_PID = 'und:p2676t05p31'
 
       def self.call(attachment)
         new(attachment).call
@@ -90,6 +101,7 @@ module Sipity
         json.set!(TYPE_KEY, "fobject")
         json.set!(PID_KEY, append_namespace_to_id(file.pid))
         json.set!(AF_MODEL_KEY, CONTENT_MODEL_NAME)
+        json
       end
 
       def transform_attributes_to_metadata(json)
@@ -114,8 +126,13 @@ module Sipity
       end
 
       def rels_ext_datastream(json)
-        json.set! 'rels-ext'.to_sym do
-          json.set!(PREDICATE_KEY, [append_namespace_to_id(work.id)])
+        json.set! RELS_EXT_KEY do
+          json.set! CONTEXT_KEY do
+            RELS_EXT_URI.each { |key, uri|   json.set!(key, uri) }
+          end
+          json.set!(EDITOR_PREDICATE_KEY, [CURATE_BATCH_USER_PID])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [CURATE_BATCH_GROUP_PID])
+          json.set!(PARENT_PREDICATE_KEY, [append_namespace_to_id(work.id)])
         end
       end
 
@@ -124,7 +141,7 @@ module Sipity
           json.set!('mime-type', mime_type)
           json.set!('label', file.file_name)
         end
-        json.set!('content-file', file.file_uid)
+        json.set!('content-file', file.file_path)
       end
 
       def mime_type
@@ -133,27 +150,30 @@ module Sipity
 
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
+        decoded_access_rights = { READ_KEY => creators,  EDIT_KEY => [BATCH_USER] }
         access_rights.each do |access_right|
           case access_right
           when Models::AccessRight::OPEN_ACCESS
-            return [ {READ_GROUP_KEY => [PUBLIC_ACCESS], READ_KEY => [creators]} ]
+            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
           when Models::AccessRight::RESTRICTED_ACCESS
-            return [ {READ_GROUP_KEY => [ND_ONLY_ACCESS], READ_KEY => [creators]} ]
+            decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
           when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-             return [ {EMBARGO_KEY => embargo_date, READ_KEY => [creators]} ]
+            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+            decoded_access_rights[EMBARGO_KEY] = embargo_date
           when Models::AccessRight::PRIVATE_ACCESS
-            return [ { READ_KEY => [creators] }]
           end
         end
+        decoded_access_rights
       end
 
       def embargo_date
         if file_access_rights.empty?
-          embargo_dates = work.access_rights.pluck(:transition_date)
+          embargo_dates = work.access_rights.map(&:transition_date)
         else
-          embargo_dates = file.access_rights.pluck(:transition_date)
+          embargo_dates = file.access_rights.map(&:transition_date)
         end
-        embargo_dates.map { |dt| dt.strftime('%Y-%m-%d') if dt.present? }
+        embargo_dates.map { |dt| dt.strftime('%Y-%m-%d') }
+        embargo_dates.to_sentence
       end
 
       def extract_name_for(attribute)

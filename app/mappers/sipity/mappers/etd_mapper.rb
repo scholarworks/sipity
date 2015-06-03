@@ -23,8 +23,19 @@ module Sipity
       PUBLIC_ACCESS = 'public'.freeze
       ND_ONLY_ACCESS = 'restricted'.freeze
       READ_KEY = 'read'.freeze
+      EDIT_KEY = 'edit'.freeze
       READ_GROUP_KEY = 'read-groups'.freeze
       EMBARGO_KEY = 'embargo-date'.freeze
+
+      # RELS-EXT KEYS
+      RELS_EXT_KEY = 'rels-ext'.freeze
+      RELS_EXT_URI = {
+        "hydramata-rel":  "http://projecthydra.org/ns/relations#"
+      }.freeze
+      EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
+      EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
+      CURATE_BATCH_USER_PID = "und:4j03cz30t6k"
+      CURATE_BATCH_GROUP_PID = 'und:p2676t05p31'
 
       def self.call(work)
         new(work).call
@@ -44,6 +55,7 @@ module Sipity
           gather_work_metadata(json)
           json.set!(ACCESS_RIGHTS_KEY, decode_access_rights)
           transform_attributes_to_metadata(json)
+          rels_ext_datastream(json)
           json.set! PROPERTIES_METADATA_KEY.to_sym do
             json.set!('mime-type', 'text/xml')
           end
@@ -61,6 +73,12 @@ module Sipity
 
       def attributes
         @attributes ||= repository.work_attribute_key_value_pairs(work: work).to_h
+      end
+
+      def metadata
+        metadata =  attributes
+        metadata['title'] = work.title
+        metadata
       end
 
       def access_rights
@@ -82,25 +100,35 @@ module Sipity
           json.set! CONTEXT_KEY do
             TERM_URI.each { |key, uri|   json.set!(key, uri) }
           end
-          attributes.each do |key, value|
+          metadata.each do |key, value|
             json.set!(extract_name_for(key), value)
           end
         end
       end
 
+      def rels_ext_datastream(json)
+        json.set! RELS_EXT_KEY do
+          json.set! CONTEXT_KEY do
+            RELS_EXT_URI.each { |key, uri|   json.set!(key, uri) }
+          end
+          json.set!(EDITOR_PREDICATE_KEY, [CURATE_BATCH_USER_PID])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [CURATE_BATCH_GROUP_PID])
+        end
+      end
+
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
-        decoded_access_rights = []
+        decoded_access_rights = { READ_KEY => creators,  EDIT_KEY => [BATCH_USER] }
         access_rights.each do |access_right|
           case access_right
           when Models::AccessRight::OPEN_ACCESS
-            decoded_access_rights << { READ_GROUP_KEY => [PUBLIC_ACCESS], READ_KEY => [creators] }
+            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
           when Models::AccessRight::RESTRICTED_ACCESS
-            decoded_access_rights << { READ_GROUP_KEY => [ND_ONLY_ACCESS], READ_KEY => [creators] }
+            decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
           when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-            decoded_access_rights << { EMBARGO_KEY => embargo_date, READ_KEY => [creators] }
+            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+            decoded_access_rights[EMBARGO_KEY] = embargo_date
           when Models::AccessRight::PRIVATE_ACCESS
-            decoded_access_rights << { READ_KEY => [creators] }
           end
         end
         decoded_access_rights
@@ -109,6 +137,7 @@ module Sipity
       def embargo_date
         embargo_dates = work.access_rights.map(&:transition_date)
         embargo_dates.map { |dt| dt.strftime('%Y-%m-%d') }
+        embargo_dates.to_sentence
       end
 
       def extract_name_for(attribute)
