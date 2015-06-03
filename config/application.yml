@@ -25,6 +25,9 @@ noid_server: 'noidserver.com'
 protocol: 'http'
 airbrake_api_key: 'this-makes-no-sense'
 airbrake_host: 'errbit.library.nd.edu'
+fedora_user: fedoraAdmin
+fedora_password: fedoraAdmin
+fedora_url: "http://127.0.0.1:8983/fedora"
 
 development:
   domain_name: "localhost:3000"
