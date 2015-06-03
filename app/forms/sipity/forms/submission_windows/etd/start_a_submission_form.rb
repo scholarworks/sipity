@@ -22,26 +22,16 @@ module Sipity
           end
 
           delegate(
-            :work_patent_strategy,
-            :work_patent_strategy=,
-            :work_patent_strategies_for_select,
-            :possible_work_patent_strategies,
+            :work_patent_strategy, :work_patent_strategy=, :work_patent_strategies_for_select, :possible_work_patent_strategies,
             :persist_work_patent_strategy,
-            :work_publication_strategy,
-            :work_publication_strategy=,
-            :work_publication_strategies_for_select,
-            :possible_work_publication_strategies,
-            :persist_work_publication_strategy,
+            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
+            :possible_work_publication_strategies, :persist_work_publication_strategy,
             to: :publication_and_patenting_intent_extension
           )
 
           private(
-            :work_patent_strategy=,
-            :possible_work_patent_strategies,
-            :persist_work_patent_strategy,
-            :work_publication_strategy=,
-            :possible_work_publication_strategies,
-            :persist_work_publication_strategy
+            :work_patent_strategy=, :possible_work_patent_strategies, :persist_work_patent_strategy,
+            :work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy
           )
 
           private
@@ -93,13 +83,19 @@ module Sipity
 
           def submit(requested_by:)
             return false unless valid?
+            save(requested_by: requested_by)
+          end
+
+          private
+
+          def save(requested_by:)
             create_the_work do |work|
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
-              persist_access_rights_answer(work: work)
+              repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
               persist_work_patent_strategy
               persist_work_publication_strategy
-              grant_creating_user_permission(work: work, requested_by: requested_by)
+              repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
 
               # TODO: See https://github.com/ndlib/sipity/issues/506
               repository.send_notification_for_entity_trigger(
@@ -109,25 +105,13 @@ module Sipity
             end
           end
 
-          private
-
-          def persist_access_rights_answer(work:)
-            repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
-          end
-
-          def grant_creating_user_permission(work:, requested_by:)
-            repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-          end
-
           include Conversions::SanitizeHtml
           def title=(value)
             @title = sanitize_html(value)
           end
 
           def create_the_work
-            @work = repository.create_work!(
-              submission_window: submission_window, title: title, work_publication_strategy: work_publication_strategy, work_type: work_type
-            )
+            @work = repository.create_work!(submission_window: submission_window, title: title, work_type: work_type)
             yield(@work)
             @work
           end
