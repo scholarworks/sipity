@@ -93,6 +93,7 @@ module Sipity
                 { action_name: 'search_terms', seq: 5 },
                 { action_name: 'degree', seq: 6 },
                 { action_name: 'access_policy', seq: 7 },
+                { action_name: 'publishing_and_patenting_intent', seq: 8 },
                 { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: true },
@@ -183,7 +184,7 @@ module Sipity
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
                   ['new', 'advisor_changes_requested'],
-                  ['defense_date','degree', 'access_policy', 'describe','search_terms', 'attach', 'collaborators'],
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
                   ['creating_user', 'etd_reviewer']
                 ],[
                   ['new'],
