@@ -56,9 +56,16 @@ module Sipity
       its(:default_repository) { should respond_to :register_action_taken_on_entity }
       its(:default_translator) { should respond_to :call }
 
-      it 'should delegate translation to the translator' do
-        subject.translate('name', scope: 'panel_headings')
-        expect(translator).to have_received(:call).with(scope: 'panel_headings', object: 'name', predicate: :label, subject: entity)
+      context '#translate' do
+        it 'should delegate translation to the translator' do
+          subject.translate('name', scope: 'panel_headings')
+          expect(translator).to have_received(:call).with(scope: 'panel_headings', object: 'name', predicate: :label, subject: entity)
+        end
+        it 'will default the identifier to the processing_action_name' do
+          subject.translate(scope: 'panel_headings')
+          expect(translator).to have_received(:call).
+            with(scope: 'panel_headings', object: subject.processing_action_name, predicate: :label, subject: entity)
+        end
       end
 
       it 'should convert the underlying entity to a processing entity' do

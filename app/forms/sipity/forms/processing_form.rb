@@ -131,7 +131,7 @@ module Sipity
         Conversions::ConvertToProcessingAction.call(processing_action_name, scope: entity)
       end
 
-      def translate(identifier, scope:, predicate: :label)
+      def translate(identifier = processing_action_name, scope:, predicate: :label)
         translator.call(scope: scope, subject: entity, object: identifier, predicate: predicate)
       end
 
