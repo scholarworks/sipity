@@ -30,6 +30,7 @@ module Sipity
       end
 
       delegate :url, to: :file, prefix: :file, allow_nil: true
+      delegate :path, to: :file, prefix: :file, allow_nil: true
     end
   end
 end
