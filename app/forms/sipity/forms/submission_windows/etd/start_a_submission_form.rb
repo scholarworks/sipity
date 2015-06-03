@@ -13,14 +13,45 @@ module Sipity
 
           def initialize(submission_window:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
+            self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
+              form: self, repository: repository
+            )
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
           end
 
+          delegate(
+            :work_patent_strategy,
+            :work_patent_strategy=,
+            :work_patent_strategies_for_select,
+            :possible_work_patent_strategies,
+            :persist_work_patent_strategy,
+            :work_publication_strategy,
+            :work_publication_strategy=,
+            :work_publication_strategies_for_select,
+            :possible_work_publication_strategies,
+            :persist_work_publication_strategy,
+            to: :publication_and_patenting_intent_extension
+          )
+
+          private(
+            :work_patent_strategy=,
+            :possible_work_patent_strategies,
+            :persist_work_patent_strategy,
+            :work_publication_strategy=,
+            :possible_work_publication_strategies,
+            :persist_work_publication_strategy
+          )
+
           private
 
           attr_reader :work_area
+          attr_accessor :publication_and_patenting_intent_extension
+
+          def publication_and_patenting_intent_extension_builder
+            Forms::ComposableElements::PublishingAndPatentingIntentExtension
+          end
 
           def initialize_attributes(attributes = {})
             self.title = attributes[:title]
@@ -32,6 +63,7 @@ module Sipity
 
           public
 
+          attr_reader :work
           alias_method :to_work_area, :work_area
           public :to_work_area
 
@@ -53,15 +85,6 @@ module Sipity
             possible_access_right_answers.map(&:to_sym)
           end
 
-          def work_publication_strategies_for_select
-            # Because we have an Array / Hash
-            possible_work_publication_strategies.map { |elem| elem.first.to_sym }
-          end
-
-          def work_patent_strategies_for_select
-            possible_work_patent_strategies.map(&:to_sym)
-          end
-
           # Convert string to to_sym since simple_forn require sym to
           # look_up 18n translation for work_type
           def work_types_for_select
@@ -74,7 +97,8 @@ module Sipity
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               persist_access_rights_answer(work: work)
-              persist_work_patent_strategy(work: work)
+              persist_work_patent_strategy
+              persist_work_publication_strategy
               grant_creating_user_permission(work: work, requested_by: requested_by)
 
               # TODO: See https://github.com/ndlib/sipity/issues/506
@@ -86,10 +110,6 @@ module Sipity
           end
 
           private
-
-          def persist_work_patent_strategy(work:)
-            repository.update_work_attribute_values!(work: work, key: work_patent_strategy_predicate_name, values: work_patent_strategy)
-          end
 
           def persist_access_rights_answer(work:)
             repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
@@ -105,24 +125,16 @@ module Sipity
           end
 
           def create_the_work
-            work = repository.create_work!(
+            @work = repository.create_work!(
               submission_window: submission_window, title: title, work_publication_strategy: work_publication_strategy, work_type: work_type
             )
-            yield(work)
-            work
+            yield(@work)
+            @work
           end
 
           def possible_work_types
             # Yikes?
             DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
-          end
-
-          def possible_work_patent_strategies
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: work_patent_strategy_predicate_name)
-          end
-
-          def possible_work_publication_strategies
-            Models::Work.work_publication_strategies
           end
 
           def possible_access_right_answers
@@ -139,10 +151,6 @@ module Sipity
 
           def default_repository
             CommandRepository.new
-          end
-
-          def work_patent_strategy_predicate_name
-            Models::AdditionalAttribute::WORK_PATENT_STRATEGY
           end
 
           DEFAULT_WORK_AREA_SLUG = 'etd'.freeze

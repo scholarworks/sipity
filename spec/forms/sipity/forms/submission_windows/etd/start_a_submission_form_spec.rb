@@ -15,8 +15,8 @@ module Sipity
           let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd') }
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
-            allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_patent_strategy').
-              and_return(['already_patented'])
+            allow_any_instance_of(described_class).to receive(:possible_work_patent_strategies).and_return(['already_patented'])
+            allow_any_instance_of(described_class).to receive(:possible_work_publication_strategies).and_return(['already_published'])
           end
 
           it { should implement_processing_form_interface }
@@ -49,19 +49,16 @@ module Sipity
             expect(described_class.new(keywords).access_rights_answer).to be_present
           end
 
+          it { should delegate_method(:work_patent_strategy).to(:publication_and_patenting_intent_extension) }
+          it { should delegate_method(:work_patent_strategies_for_select).to(:publication_and_patenting_intent_extension) }
+          it { should delegate_method(:work_publication_strategy).to(:publication_and_patenting_intent_extension) }
+          it { should delegate_method(:work_publication_strategies_for_select).to(:publication_and_patenting_intent_extension) }
+
           context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
             it 'will have #access_rights_answer_for_select' do
               expect(
                 described_class.new(keywords).access_rights_answer_for_select.all? { |element| element.is_a?(Symbol) }
               ).to be_truthy
-            end
-
-            it 'will have #work_publication_strategies_for_select' do
-              expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
-            end
-
-            it 'will have #work_patent_strategies_for_select' do
-              expect(subject.work_patent_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
             end
 
             it 'will have #work_types_for_select' do
@@ -95,10 +92,6 @@ module Sipity
               end
             end
             context '#work_patent_strategy' do
-              before do
-                expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_patent_strategy').
-                  and_return(['already_patented'])
-              end
               it 'invalid if not present' do
                 subject.valid?
                 expect(subject.errors[:work_patent_strategy]).to be_present
@@ -171,6 +164,9 @@ module Sipity
                 expect(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
               end
+              it 'will assign the work attribute on submit' do
+                expect { subject.submit(requested_by: user) }.to change(subject, :work).from(nil).to(work)
+              end
               it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
                 expect(repository).to receive(:create_work!).and_return(work)
@@ -188,11 +184,13 @@ module Sipity
                 subject.submit(requested_by: user)
               end
 
-              it 'will grant creating user permission for' do
-                expect(repository).to receive(:update_work_attribute_values!).
-                  with(
-                    work: work, key: subject.send(:work_patent_strategy_predicate_name), values: attributes.fetch(:work_patent_strategy)
-                  ).and_call_original
+              it 'will persist the work patent strategy' do
+                expect(subject).to receive(:persist_work_patent_strategy).and_call_original
+                subject.submit(requested_by: user)
+              end
+
+              it 'will persist the work work_publication_strategy strategy' do
+                expect(subject).to receive(:persist_work_publication_strategy).and_call_original
                 subject.submit(requested_by: user)
               end
 
