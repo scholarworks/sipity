@@ -8,52 +8,71 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :work_type, :access_rights_answer]
+            attribute_names: [:title, :work_publication_strategy, :work_patent_strategy, :work_type, :access_rights_answer]
           )
 
           def initialize(submission_window:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
+            self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
+              form: self, repository: repository
+            )
             initialize_work_area!
             self.submission_window = submission_window
             initialize_attributes(attributes)
           end
 
+          delegate(
+            :work_patent_strategy, :work_patent_strategy=, :work_patent_strategies_for_select, :possible_work_patent_strategies,
+            :persist_work_patent_strategy,
+            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
+            :possible_work_publication_strategies, :persist_work_publication_strategy,
+            to: :publication_and_patenting_intent_extension
+          )
+
+          private(
+            :work_patent_strategy=, :possible_work_patent_strategies, :persist_work_patent_strategy,
+            :work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy
+          )
+
           private
 
           attr_reader :work_area
+          attr_accessor :publication_and_patenting_intent_extension
+
+          def publication_and_patenting_intent_extension_builder
+            Forms::ComposableElements::PublishingAndPatentingIntentExtension
+          end
 
           def initialize_attributes(attributes = {})
             self.title = attributes[:title]
             self.work_publication_strategy = attributes[:work_publication_strategy]
+            self.work_patent_strategy = attributes[:work_patent_strategy]
             self.work_type = attributes[:work_type]
             self.access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
           end
 
           public
 
+          attr_reader :work
           alias_method :to_work_area, :work_area
+          public :to_work_area
 
           delegate :slug, :work_area_slug, to: :submission_window
 
           include ActiveModel::Validations
           validates :title, presence: true
+          validates :work_patent_strategy, presence: true, inclusion: { in: :possible_work_patent_strategies }
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
           validates :submission_window, presence: true
 
-          # TODO: This is composable method based on the "type" of processing
-          # entity I am working with.
           def form_path
-            "/areas/#{work_area_slug}/#{slug}/do/#{processing_action_name}"
+            File.join(PowerConverter.convert_to_processing_action_root_path(submission_window), processing_action_name)
           end
 
           def access_rights_answer_for_select
             possible_access_right_answers.map(&:to_sym)
-          end
-
-          def work_publication_strategies_for_select
-            possible_work_publication_strategies.map { |elem| elem.first.to_sym }
           end
 
           # Convert string to to_sym since simple_forn require sym to
@@ -64,10 +83,18 @@ module Sipity
 
           def submit(requested_by:)
             return false unless valid?
+            save(requested_by: requested_by)
+          end
+
+          private
+
+          def save(requested_by:)
             create_the_work do |work|
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
+              persist_work_patent_strategy
+              persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
 
               # TODO: See https://github.com/ndlib/sipity/issues/506
@@ -78,28 +105,20 @@ module Sipity
             end
           end
 
-          private
-
           include Conversions::SanitizeHtml
           def title=(value)
             @title = sanitize_html(value)
           end
 
           def create_the_work
-            work = repository.create_work!(
-              submission_window: submission_window, title: title, work_publication_strategy: work_publication_strategy, work_type: work_type
-            )
-            yield(work)
-            work
+            @work = repository.create_work!(submission_window: submission_window, title: title, work_type: work_type)
+            yield(@work)
+            @work
           end
 
           def possible_work_types
             # Yikes?
             DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
-          end
-
-          def possible_work_publication_strategies
-            Models::Work.work_publication_strategies
           end
 
           def possible_access_right_answers
