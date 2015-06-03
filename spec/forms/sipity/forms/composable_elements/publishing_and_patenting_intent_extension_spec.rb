@@ -8,6 +8,7 @@ module Sipity
 
         its(:default_repository) { should respond_to :update_work_attribute_values! }
         its(:default_repository) { should respond_to :get_controlled_vocabulary_values_for_predicate_name }
+        its(:default_repository) { should respond_to :update_work_publication_strategy! }
 
         it 'guards that the form has a work' do
           expect { described_class.new(form: double, repository: repository) }.to raise_error(Exceptions::InterfaceExpectationError)
@@ -34,6 +35,8 @@ module Sipity
             subject.work_publication_strategy = double
             expect(repository).to receive(:update_work_attribute_values!).
               with(work: form.work, key: subject.send(:work_publication_strategy_predicate_name), values: subject.work_publication_strategy)
+            expect(repository).to receive(:update_work_publication_strategy!).
+              with(work: form.work, work_publication_strategy: subject.work_publication_strategy)
             subject.persist_work_publication_strategy
           end
         end

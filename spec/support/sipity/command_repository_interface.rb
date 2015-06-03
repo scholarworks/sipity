@@ -314,6 +314,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
+    def update_work_publication_strategy!(work:, work_publication_strategy:)
+    end
+
+    # @see ./app/repositories/sipity/commands/work_commands.rb
     def update_work_title!(work:, title:)
     end
 
