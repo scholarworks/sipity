@@ -20,13 +20,13 @@ module Sipity
           @form = input
         end
 
-        public
-
         [
           [:work_patent_strategy, :work_patent_strategies],
           [:work_publication_strategy, :work_publication_strategies]
         ].each do |singular_name, plural_name|
           module_exec do
+            public
+
             attr_accessor singular_name, plural_name
 
             define_method "#{plural_name}_for_select" do
@@ -52,6 +52,8 @@ module Sipity
             end
           end
         end
+
+        public
 
         def persist_work_publication_strategy
           repository.update_work_attribute_values!(
