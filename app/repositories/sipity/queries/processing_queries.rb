@@ -35,7 +35,10 @@ module Sipity
 
         actors = Models::Processing::Actor.arel_table
 
-        actors_select_manager = actors.project(:*, Arel.sql("'entity_specific'").as('actor_processing_relationship')).where(
+        actors_select_manager = actors.project(
+          :*,
+          Arel.sql("'#{Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP}'").as('actor_processing_relationship')
+        ).where(
           actors[:id].in(
             entity_responsibilities.project(entity_responsibilities[:actor_id]).join(strategy_roles).on(
               strategy_roles[:id].eq(entity_responsibilities[:strategy_role_id])
@@ -46,7 +49,10 @@ module Sipity
             )
           )
         ).union(
-          actors.project(:*, Arel.sql("'strategy_specific'").as('actor_processing_relationship')).where(
+          actors.project(
+            :*,
+            Arel.sql("'#{Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP}'").as('actor_processing_relationship')
+          ).where(
             actors[:id].in(
               strategy_responsibilities.project(strategy_responsibilities[:actor_id]).join(strategy_roles).on(
                 strategy_roles[:id].eq(strategy_responsibilities[:strategy_role_id])

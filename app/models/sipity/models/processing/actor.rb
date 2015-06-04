@@ -13,6 +13,9 @@ module Sipity
       class Actor < ActiveRecord::Base
         self.table_name = 'sipity_processing_actors'
 
+        ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP = 'entity_level'.freeze
+        STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP = 'strategy_level'.freeze
+
         belongs_to :proxy_for, polymorphic: true
         has_many :strategy_responsibilities, dependent: :destroy
         has_many :entity_specific_responsibilities, dependent: :destroy
