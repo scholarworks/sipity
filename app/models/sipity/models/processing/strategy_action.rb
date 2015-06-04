@@ -68,7 +68,7 @@ module Sipity
 
         after_initialize :set_action_type, if: :new_record?
 
-        RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy).freeze
+        RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy debug).freeze
 
         include Conversions::ConvertToProcessingActionName
         def name=(value)

@@ -17,6 +17,10 @@ module Sipity
           its(:column_names) { should include('allow_repeat_within_current_state') }
         end
 
+        it 'will include debug as resourceful' do
+          expect(described_class::RESOURCEFUL_ACTION_NAMES).to include('debug')
+        end
+
         it 'will raise an ArgumentError if you provide an invalid action_type' do
           expect { subject.action_type = '__incorrect_type__' }.to raise_error(ArgumentError)
         end
