@@ -242,7 +242,7 @@ module Sipity
                 name: 'submit_for_review',
                 emails: {
                   confirmation_of_submit_for_review: { to: 'creating_user' },
-                  submit_for_review: { to: ['advisor', 'etd_reviewer'] }
+                  submit_for_review: { to: ['advisor'] }
                 }
               },
               {
