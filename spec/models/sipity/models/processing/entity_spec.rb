@@ -12,9 +12,10 @@ module Sipity
 
         context 'an instance' do
           subject { described_class.new }
-          it { should respond_to(:strategy_state_name) }
           it { should respond_to(:processing_state) }
           it { should respond_to(:processing_strategy) }
+          it { shoulde delegate_method(:strategy_state_name).to(:strategy_state).as(:name) }
+          it { shoulde delegate_method(:strategy_name).to(:strategy).as(:name) }
         end
       end
     end
