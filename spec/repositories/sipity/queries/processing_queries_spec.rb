@@ -66,8 +66,10 @@ module Sipity
           )
           returned_value = subject
           expect(returned_value.count).to eq(2)
-          expect(returned_value.first.actor_processing_relationship).to eq(Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
-          expect(returned_value.last.actor_processing_relationship).to eq(Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
+          expect(returned_value.first.actor_processing_relationship).
+            to eq(Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
+          expect(returned_value.last.actor_processing_relationship).
+            to eq(Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
         end
       end
 
