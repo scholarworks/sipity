@@ -26,7 +26,7 @@ module Sipity
         rof_file.flush
         rof_file.close
         # Ingest into fedora
-        ROF::CLI.ingest_file(rof_file, ["."], STDOUT, fedora_connection)
+        ROF::CLI.ingest_file(rof_file, ["."], STDOUT, fedora_info)
       end
 
       def export_to_json
@@ -47,7 +47,7 @@ module Sipity
         QueryRepository.new
       end
 
-      def fedora_connection
+      def fedora_info
         return @fedora_info if @fedora_info.present?
         @fedora_info = {}
         @fedora_info[:url] = Figaro.env.fedora_url!
