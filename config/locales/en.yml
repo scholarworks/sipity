@@ -253,6 +253,7 @@ en:
       show: 'Show'
       edit: 'Edit'
       destroy: 'Delete'
+      debug: 'Debug'
     confirm:
       destroy: 'Are you sure you want to delete this submission? This action cannot be undone. You will have to start the process over from the beginning.'
   sipity/decorators/recommendations/doi_recommendation:
