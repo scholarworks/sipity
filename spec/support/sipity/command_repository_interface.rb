@@ -250,6 +250,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_roles_associated_with_the_given_entity(entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_statetegy_actions_that_have_occurred(entity:, pluck: nil)
     end
 

@@ -20,6 +20,23 @@ module Sipity
     module ProcessingQueries
       # @api public
       #
+      # Roles associated with the given :entity
+      # @param entity [Object] that can be converted into a Sipity::Models::Processing::Entity
+      # @return [ActiveRecord::Relation<Role>]
+      def scope_roles_associated_with_the_given_entity(entity:)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        Models::Role.where(
+          Models::Role.arel_table[:id].in(
+            strategy_roles.project(strategy_roles[:role_id]).where(
+              strategy_roles[:strategy_id].eq(entity.strategy_id)
+            )
+          )
+        )
+      end
+
+      # @api public
+      #
       # Is the user authorized to take the processing action on the given
       # entity?
       #

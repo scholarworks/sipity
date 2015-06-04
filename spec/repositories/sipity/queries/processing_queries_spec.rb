@@ -69,6 +69,14 @@ module Sipity
         end
       end
 
+      context '#scope_roles_associated_with_the_given_entity' do
+        subject { test_repository.scope_roles_associated_with_the_given_entity(entity: entity) }
+        it 'will return an array' do
+          strategy_role # Setting up the data
+          expect(subject).to eq([role])
+        end
+      end
+
       context '#scope_processing_actors_for' do
         subject { test_repository.scope_processing_actors_for(user: user) }
         it 'will return an empty enumerable if the user is nil' do
