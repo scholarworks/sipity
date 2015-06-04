@@ -20,6 +20,66 @@ module Sipity
     module ProcessingQueries
       # @api public
       #
+      # Actors associated with the given :entity and how they are associated
+      # with the given.
+      #
+      # @param entity [Object] that can be converted into a Sipity::Models::Processing::Entity
+      # @param role [Object] that can be converted into a Sipity::Models::Role
+      # @return [ActiveRecord::Relation<Actor>] augmented with
+      def scope_actors_associated_with_entity_and_role(entity:, role:)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        role = Conversions::ConvertToRole.call(role)
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+
+        actors = Models::Processing::Actor.arel_table
+
+        actors_select_manager = actors.project(:*, Arel.sql("'entity_specific'").as('actor_processing_relationship')).where(
+          actors[:id].in(
+            entity_responsibilities.project(entity_responsibilities[:actor_id]).join(strategy_roles).on(
+              strategy_roles[:id].eq(entity_responsibilities[:strategy_role_id])
+            ).where(
+              entity_responsibilities[:entity_id].eq(entity.id).and(
+                strategy_roles[:role_id].eq(role.id)
+              )
+            )
+          )
+        ).union(
+          actors.project(:*, Arel.sql("'strategy_specific'").as('actor_processing_relationship')).where(
+            actors[:id].in(
+              strategy_responsibilities.project(strategy_responsibilities[:actor_id]).join(strategy_roles).on(
+                strategy_roles[:id].eq(strategy_responsibilities[:strategy_role_id])
+              ).where(
+                strategy_roles[:strategy_id].eq(entity.strategy_id).and(
+                  strategy_roles[:role_id].eq(role.id)
+                )
+              )
+            )
+          )
+        )
+        # I would love to use the following:
+        #  `Models::Processing::Actor.find_by_sql(actors_select_manager.to_sql)`
+        #
+        # However AREL is adding an opening and closing parenthesis to the query
+        # statement. So I needed to massage that output, as follows:
+        #
+        # ```ruby
+        #  Models::Processing::Actor.find_by_sql(
+        #    actors_select_manager.to_sql.sub(/\A\s*\(\s*(.*)\s*\)\s*\Z/,'\1')
+        #  )
+        # ```
+        #
+        # Instead I'm taking an example from:
+        # https://github.com/danshultz/mastering_active_record_sample_code/blob/a656c60ca7a2e27b5cd1aadbdf3bdc1814c37000/app/models/beer.rb#L77-L81
+        #
+        # Note, I'm making a dynamic query with a result the same as the table
+        # name of the model that I'm using.
+        Models::Processing::Actor.from(actors.create_table_alias(actors_select_manager, actors.table_name)).all
+      end
+
+      # @api public
+      #
       # Roles associated with the given :entity
       # @param entity [Object] that can be converted into a Sipity::Models::Processing::Entity
       # @return [ActiveRecord::Relation<Role>]

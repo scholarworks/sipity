@@ -210,6 +210,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_actors_associated_with_entity_and_role(entity:, role:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
     end
 
