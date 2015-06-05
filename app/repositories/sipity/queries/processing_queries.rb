@@ -329,21 +329,21 @@ module Sipity
       # @return [ActiveRecord::Relation<proxy_for_types>]
       def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
-        processing_entities_scope = scope_processing_entities_for_the_user_and_proxy_for_type(
+        scope = scope_processing_entities_for_the_user_and_proxy_for_type(
           user: user, proxy_for_type: proxy_for_type, filter: filter
         )
 
         unfiltered = proxy_for_type.where(
-          proxy_for_type.arel_table[proxy_for_type.primary_key].in(
-            processing_entities_scope.arel_table.project(:proxy_for_id).
-            where(
-              processing_entities_scope.arel.constraints.reduce
-            )
+          proxy_for_type.arel_table[proxy_for_type.primary_key].in(scope.entity).or(
+            proxy_for_type.arel_table[proxy_for_type.primary_key].in(scope.strategy)
           )
         )
         return unfiltered unless where.present?
         unfiltered.where(where)
       end
+
+      PermissionScope = Struct.new(:entity, :strategy)
+      private_constant :PermissionScope
 
       # @api private
       #
@@ -367,7 +367,6 @@ module Sipity
       # @option filter [String] :processing_state - Limit the returned objects
       #   to those objects that are in the named :processing_state
       #
-      #
       # @return [ActiveRecord::Relation<Models::Processing::Entity>]
       def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
@@ -376,7 +375,6 @@ module Sipity
         strategy_state_actions = Models::Processing::StrategyStateAction.arel_table
         strategy_states = Models::Processing::StrategyState.arel_table
         strategy_state_action_permissions = Models::Processing::StrategyStateActionPermission.arel_table
-        strategy_roles = Models::Processing::StrategyRole.arel_table
         strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
         entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
 
@@ -385,50 +383,48 @@ module Sipity
           user_actor_scope.arel_table[:id]
         ).where(user_actor_scope.arel.constraints)
 
-        available_strategy_state_subqueries = strategy_state_actions.project(
-          strategy_state_actions[:originating_strategy_state_id]
-        ).join(strategy_state_action_permissions).on(
-          strategy_state_action_permissions[:strategy_state_action_id].eq(strategy_state_actions[:id])
-        ).join(strategy_states).on(
-          strategy_states[:id].eq(strategy_state_actions[:originating_strategy_state_id])
-        ).join(strategy_roles).on(
-          strategy_roles[:id].eq(strategy_state_action_permissions[:strategy_role_id])
-        ).where(
-          strategy_state_action_permissions[:strategy_role_id].in(
-            strategy_responsibilities.project(
-              strategy_responsibilities[:strategy_role_id]
-            ).where(
-              strategy_responsibilities[:actor_id].in(user_actor_contraints)
+        join_builder = lambda do |responsibility|
+          entities.project(
+            entities[:proxy_for_id]
+          ).join(strategy_state_actions).on(
+            strategy_state_actions[:originating_strategy_state_id].eq(entities[:strategy_state_id])
+          ).join(strategy_state_action_permissions).on(
+            strategy_state_action_permissions[:strategy_state_action_id].eq(strategy_state_actions[:id])
+          ).join(strategy_states).on(
+            strategy_states[:id].eq(strategy_state_actions[:originating_strategy_state_id])
+          ).join(responsibility).on(
+            responsibility[:strategy_role_id].eq(strategy_state_action_permissions[:strategy_role_id])
+          )
+        end
+
+        where_builder = lambda do |responsibility|
+          returning = entities[:proxy_for_type].eq(proxy_for_type).and(
+            responsibility[:actor_id].in(user_actor_contraints)
+          )
+          processing_state = filter[:processing_state]
+          if processing_state.present?
+            returning = returning.and(
+              entities[:strategy_state_id].in(
+                strategy_states.project(strategy_states[:id]).where(
+                  strategy_states[:name].eq(processing_state)
+                )
+              )
             )
-          )
-        )
+          end
+          returning
+        end
 
-        availble_entity_specific_subqueries = entity_responsibilities.project(
-          entity_responsibilities[:entity_id]
-        ).join(strategy_state_action_permissions).on(
-          strategy_state_action_permissions[:strategy_role_id].eq(entity_responsibilities[:strategy_role_id])
-        ).where(
-          strategy_state_action_permissions[:strategy_role_id].in(
-            entity_responsibilities.project(
-              entity_responsibilities[:strategy_role_id]
-            ).where(entity_responsibilities[:actor_id].in(user_actor_contraints))
-          )
-        )
+        entity_specific_joins = join_builder.call(entity_responsibilities)
+        strategy_specific_joins = join_builder.call(strategy_responsibilities)
 
-        unfiltered_scope = Models::Processing::Entity.where(proxy_for_type: proxy_for_type).where(
-          entities[:strategy_state_id].in(available_strategy_state_subqueries).or(
-            entities[:id].in(availble_entity_specific_subqueries)
-          )
+        entity_specific_where = where_builder.call(entity_responsibilities).and(
+          entities[:id].eq(entity_responsibilities[:entity_id])
         )
-        processing_state = filter[:processing_state]
-        return unfiltered_scope unless processing_state.present?
+        strategy_specific_where = where_builder.call(strategy_responsibilities)
 
-        unfiltered_scope.where(
-          entities[:strategy_state_id].in(
-            strategy_states.project(strategy_states[:id]).where(
-              strategy_states[:name].eq(processing_state)
-            )
-          )
+        PermissionScope.new(
+          entity_specific_joins.where(entity_specific_where),
+          strategy_specific_joins.where(strategy_specific_where)
         )
       end
       private :scope_processing_entities_for_the_user_and_proxy_for_type

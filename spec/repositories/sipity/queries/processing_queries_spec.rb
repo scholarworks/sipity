@@ -115,9 +115,19 @@ module Sipity
             work_type: 'doctoral_dissertation',
             work_publication_strategy: 'will_not_publish'
           )
+          work_three = commands.create_work!(
+            submission_window: submission_window,
+            title: 'Book',
+            work_type: 'doctoral_dissertation',
+            work_publication_strategy: 'will_not_publish'
+          )
 
           commands.grant_creating_user_permission_for!(entity: work_one, user: user)
           commands.grant_creating_user_permission_for!(entity: work_two, user: user)
+          # I need two users that have created something; Prior to fixing
+          # https://github.com/ndlib/sipity/issues/671, if any user a creating
+          # user they were treated as always having access to the object.
+          commands.grant_creating_user_permission_for!(entity: work_three, user: advisor)
 
           commands.grant_processing_permission_for!(entity: work_one, actor: advisor, role: 'advisor')
 
@@ -137,8 +147,8 @@ module Sipity
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
               user: user, proxy_for_type: Sipity::Models::Work, where: { id: work_one.id }, filter: { processing_state: 'new' }
-            ).sort(&sorter)
-          ).to eq([work_one].sort(&sorter))
+            )
+          ).to eq([work_one])
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
@@ -147,8 +157,10 @@ module Sipity
           ).to eq([])
 
           expect(
-            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: advisor, proxy_for_type: Sipity::Models::Work)
-          ).to eq([work_one])
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: advisor, proxy_for_type: Sipity::Models::Work
+            ).sort(&sorter)
+          ).to eq([work_one, work_three].sort(&sorter))
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: no_access, proxy_for_type: Sipity::Models::Work)
