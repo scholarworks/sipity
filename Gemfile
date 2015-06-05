@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+# Free 20% RAM by not loading ALL mime-types
+gem 'mime-types', '~> 2.6.1', require: 'mime/types/columnar'
 gem 'rails', '~> 4.2'
 
 gem 'airbrake'
