@@ -60,6 +60,9 @@ module Sipity
       # This may look ridiculous, but I'd like to isolate the destruction so
       # that I can associate any other actions with it (i.e. logging, emails, etc.)
       def destroy_a_work(work:)
+        # Because I could not get the dependent: :destroy imperative working
+        # on the has_one relationship.
+        Models::WorkSubmission.where(work: work).destroy
         work.destroy
       end
 

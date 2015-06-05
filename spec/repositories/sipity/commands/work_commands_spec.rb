@@ -12,6 +12,7 @@ module Sipity
         let(:work) { Models::Work.new(id: '1') }
         it 'will destroy the work in question' do
           work.save! # so it is persisted
+          expect(Models::WorkSubmission).to receive_message_chain(:where, :destroy)
           expect { test_repository.destroy_a_work(work: work) }.
             to change { Models::Work.count }.by(-1)
           expect { work.reload }.to raise_error(ActiveRecord::RecordNotFound)
