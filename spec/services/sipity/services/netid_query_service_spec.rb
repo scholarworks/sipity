@@ -23,6 +23,19 @@ module Sipity
         end
       end
 
+      it 'will assume an empty netid is invalid and not call the remote service' do
+        subject = described_class.new(" ")
+        expect(subject).to_not receive(:open)
+        expect(subject.valid_netid?).to eq(false)
+      end
+
+      it 'gracefully handles a netid with a space in it' do
+        # https://errbit.library.nd.edu/apps/55280e706a6f68a6d2090000/problems/5571ba3b6a6f685aa1141200
+        subject = described_class.new(" #{netid}")
+        expect(subject).to receive(:open).and_return(StringIO.new(valid_response_with_netid))
+        expect(subject.valid_netid?).to eq('a_netid')
+      end
+
       context 'preferred_name' do
         it 'will return false when the request returns a 404 status' do
           expect(subject).to receive(:open).and_raise(OpenURI::HTTPError.new('', ''))

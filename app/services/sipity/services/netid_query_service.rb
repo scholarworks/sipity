@@ -14,8 +14,16 @@ module Sipity
       def initialize(netid)
         self.netid = netid
       end
-      attr_accessor :netid
-      private(:netid=)
+
+      attr_reader :netid
+
+      private
+
+      def netid=(input)
+        @netid = input.to_s.strip
+      end
+
+      public
 
       # @return [netid] if the input is not a valid NetID
       # @return [String] if the input is a valid NetID
@@ -36,6 +44,7 @@ module Sipity
       private
 
       def person
+        return {} unless netid.present?
         parse
       rescue OpenURI::HTTPError
         {}
