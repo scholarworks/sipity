@@ -61,11 +61,14 @@ group :development do
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-inotify', require: false
-  gem 'seed_dump'
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'terminal-notifier'
   gem 'terminal-notifier-guard', '~> 1.6.4'
+end
+
+group :development, :staging do
+  gem 'seed_dump'
 end
 
 group :development, :test do
