@@ -148,7 +148,7 @@ module Sipity
               end
 
               pre_requisite_states =       {
-                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
+                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent']
               }
 
               if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
