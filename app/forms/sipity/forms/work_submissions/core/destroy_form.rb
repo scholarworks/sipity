@@ -19,7 +19,7 @@ module Sipity
           include ActiveModel::Validations
           validates :confirm_destroy, acceptance: { accept: true }
 
-          def submit(requested_by:)
+          def submit(*)
             return false unless valid?
             repository.destroy_a_work(work: work)
             submission_window # Because we won't have a work

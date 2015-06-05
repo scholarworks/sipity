@@ -12,19 +12,19 @@ module Sipity
           subject { described_class.new(keywords) }
 
           context 'validations' do
-            it 'will be invalid without confirm destroy' do
+            it 'will be invalid without confirm_destroy' do
               subject.valid?
-              expect(subject.errors[:confirm destroy]).to be_present
+              expect(subject.errors[:confirm_destroy]).to be_present
             end
 
             it 'will be invalid if you said "no"' do
-              subject = described_class.new(keywords.merge(attributes: { confirm destroy: false }))
+              subject = described_class.new(keywords.merge(attributes: { confirm_destroy: false }))
               subject.valid?
-              expect(subject.errors[:confirm destroy]).to be_present
+              expect(subject.errors[:confirm_destroy]).to be_present
             end
 
             it 'will be valid if you say yes' do
-              subject = described_class.new(keywords.merge(attributes: { confirm destroy: true }))
+              subject = described_class.new(keywords.merge(attributes: { confirm_destroy: true }))
               expect(subject.valid?).to eq(true)
             end
           end
