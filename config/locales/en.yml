@@ -234,6 +234,16 @@ en:
       label: "<b>Attach</b> files to this %{work_type}"
     describe:
       label: "Further <b>describe</b> your %{work_type}"
+    destroy:
+      confirm_destroy:
+        label: "I am sure that I want to delete this %{work_type}?"
+      cancel:
+        button: "Return without deleting"
+      delete:
+        button: "Delete"
+      panel:
+        heading: "Confirm Delete"
+        hint: "Once deleted this %{work_type} will be gone forever."
     collaborators:
       label: "Identify <b>who is involved</b> with this %{work_type}"
     assign_a_doi:

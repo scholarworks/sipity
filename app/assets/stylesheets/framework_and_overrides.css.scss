@@ -75,6 +75,12 @@ section {
   @extend .btn-primary;
 }
 
+// Dangerous Form Action
+.action-pane .btn-danger[type="submit"] {
+  @extend .btn;
+  @extend .btn-danger;
+}
+
 .action-pane.state-advancing-action {
   padding-top: 1em;
 }

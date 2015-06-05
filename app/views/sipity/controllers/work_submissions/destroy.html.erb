@@ -1,0 +1,37 @@
+<div class="panel-tiles">
+  <%= simple_form_for(
+    view_object,
+    url: request.path,
+    method: :post,
+    as: :work,
+    html: { class: 'simple-form panel panel-primary with-footer' }
+  ) do |f| %>
+    <legend class="panel-heading">
+      <%= view_object.translate('panel', predicate: 'heading') %>
+    </legend>
+
+    <fieldset class="panel-body">
+      <%= f.error_notification %>
+      <%= f.error :base, error_method: :to_sentence %>
+      <p class="panel-hint"><%= view_object.translate('panel', predicate: 'hint') %></p>
+      <%= f.input(
+          :confirm_destroy,
+          as: :boolean,
+          wrapper_class: 'checkbox',
+          input_html: { required: 'required' },
+          inline_label: view_object.translate('confirm_destroy'),
+          label: false
+        )
+      %>
+    </fieldset>
+
+    <div class="panel-footer action-pane">
+      <%= f.submit view_object.translate('delete', predicate: 'button'), class: 'btn btn-danger' %>
+    </div>
+  <% end %>
+
+</div>
+
+<div class="action-pane">
+  <%= link_to view_object.translate('cancel', predicate: 'button'), work_path(model.work), class: 'btn btn-default' %>
+</div>
