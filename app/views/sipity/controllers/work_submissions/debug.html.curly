@@ -1,0 +1,42 @@
+<dl>
+  <dt>Object Name</dt>
+  <dd>{{object_name}}</dd>
+  <dt>Processing Entity ID</dt>
+  <dd>{{processing_entity_id}}</dd>
+  <dt>Strategy</dt>
+  <dd>{{processing_entity_strategy_name}} (ID={{processing_entity_strategy_id}})</dd>
+  <dt>Strategy State</dt>
+  <dd>{{processing_entity_strategy_state_name}} (ID={{processing_entity_strategy_state_id}})</dd>
+  <dt>Roles</dt>
+  <dd>
+    <ul>
+      {{*debug_roles}}
+        <li>
+          <dl>
+            <dt>Name</dt>
+            <dd>{{name}} (ID={{role_id}})</dd>
+            <dt>Actors</dt>
+            <dd>
+              <ul>
+                {{*debug_actors}}
+                  <li>
+                    <dl>
+                      <dt>Actor ID</dt>
+                      <dd>{{actor_id}}</dd>
+                      <dt>Name</dt>
+                      <dd>{{name}}</dd>
+                      <dt>Proxy For</dt>
+                      <dd>{{proxy_for_type}} (ID={{proxy_for_id}})</dd>
+                      <dt>Actor Entity Relation</dt>
+                      <dd>{{actor_processing_relationship}}<dd>
+                    </dl>
+                  </li>
+                {{/debug_actors}}
+              </ul>
+            </dd>
+          </dl>
+        </li>
+      {{/debug_roles}}
+    </ul>
+  </dd>
+</dl>

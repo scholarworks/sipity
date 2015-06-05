@@ -86,6 +86,7 @@ module Sipity
               [
                 { action_name: 'show', seq: 1 },
                 { action_name: 'destroy', seq: 2 },
+                { action_name: 'debug', seq: 3 },
                 { action_name: 'describe', seq: 1 },
                 { action_name: 'collaborators', seq: 2 },
                 { action_name: 'attach', seq: 3 },
@@ -197,6 +198,10 @@ module Sipity
                 ],[
                   ['under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested'],
                   ['destroy'],
+                  ['etd_reviewer']
+                ],[
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'under_grad_school_review_with_changes', 'ready_for_ingest'],
+                  ['debug'],
                   ['etd_reviewer']
                 ],[
                   ['under_advisor_review'],

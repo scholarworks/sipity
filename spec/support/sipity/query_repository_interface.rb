@@ -110,6 +110,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_actors_associated_with_entity_and_role(entity:, role:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
     end
 
@@ -147,6 +151,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_roles_associated_with_the_given_entity(entity:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
