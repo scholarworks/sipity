@@ -13,8 +13,7 @@ module Sipity
       # We have a successful form submission.
       module SubmitSuccessResponder
         def self.call(handler:)
-          # Do I need to include the response_object
-          handler.redirect_to(handler.work_submission_path(work_id: handler.response_object.id))
+          handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
         end
       end
 
