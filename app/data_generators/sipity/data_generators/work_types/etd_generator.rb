@@ -187,6 +187,10 @@ module Sipity
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
                   ['creating_user', 'etd_reviewer']
                 ],[
+                  ['under_grad_school_review_with_changes'],
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
+                  ['etd_reviewer']
+                ],[
                   ['new'],
                   ['destroy'],
                   ['creating_user', 'etd_reviewer']
