@@ -76,7 +76,10 @@ namespace :deploy do
   task :reset_the_dog_and_pony_show do
     on roles(:app) do
       within release_path do
-        with rails_env: 'staging' do
+        # TODO: Making this task available for all environments; This should be
+        #   a temporary change as we don't want to db:drop nor db:schema:load
+        #   against a production environment that has live data.
+        with rails_env: fetch(:rails_env) do
           execute :rake, "db:drop db:create db:schema:load db:seed sipity:environment_bootstrapper"
         end
       end
