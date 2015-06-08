@@ -25,4 +25,9 @@ module PresenterHelper
     attr_reader :attributes
     attr_accessor :output_buffer
   end
+
+  class ContextWithForm < Context
+    include ActionView::Helpers::FormTagHelper
+    include ActionView::Helpers::FormOptionsHelper
+  end
 end

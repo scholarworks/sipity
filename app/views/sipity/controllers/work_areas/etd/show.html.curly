@@ -5,15 +5,46 @@
     </div>
   </div>
 
+
   <div class="row">
-    <ul>
-      <li><a href="{{start_a_submission_path}}" class="btn btn-primary">{{ translate.start_a_submission }}</a></li>
-      <li><a href="{{view_submitted_etds_url}}" class="btn btn-primary">{{ translate.view_submitted_etds }}</a></li>
-    </ul>
+    <a href="{{start_a_submission_path}}" class="btn btn-primary">{{ translate.start_a_submission }}</a>
+    <a href="{{view_submitted_etds_url}}" class="btn btn-primary">{{ translate.view_submitted_etds }}</a>
+  </div>
+  <div class="row dashboard-actions">
+    <div class="col-xs-12">
+      {{@filter_form}}
+        <fieldset class="form-group">
+          {{select_tag_for_processing_state}}
+        </fieldset>
+        {{submit_button}}
+      {{/filter_form}}
+    </div>
   </div>
 
   <div class="row">
-    <p>This is where the dashboard should go</p>
+    <div class="col-xs-12 work-listing">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Creator(s)</th>
+            <th>Processing State</th>
+            <th>Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{*works}}
+            <tr>
+              <td><a href="{{path}}">{{title}}</td>
+              <td>{{work_type}}</td>
+              <td>{{creator_names_to_sentence}}</td>
+              <td>{{processing_state}}</td>
+              <td>{{date_created}}</td>
+            </tr>
+          {{/works}}
+      </table>
+    </div>
   </div>
 
   {{#resourceful_actions?}}
