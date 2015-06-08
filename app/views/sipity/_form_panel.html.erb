@@ -3,7 +3,7 @@
 <fieldset class="<%= dom_class(object, name) %> panel <%= "panel-#{theme}" %>">
   <legend class="panel-heading">
     <%# TODO: make the translation generic e.g. based on the action %>
-    <%= content_tag :h3, object.translate(name, scope: 'panel_heading'), class: 'panel-title' %>
+    <%= content_tag :h3, object.translate(name, scope: 'panel_headings'), class: 'panel-title' %>
   </legend>
   <div class="panel-body">
     <%= yield %>
