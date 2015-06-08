@@ -210,15 +210,15 @@ en:
         title_html: "Project Evaluation"
   panel_headings:
     access_rights_answer:
-      label: 'Who can <b>see</b> the completed submission?'
-    attributes:
+      label: 'Who should have <b>access</b> to this work after it is deposited?'
+    title:
       label: 'What is the <b>title</b> of your work?'
     work_publication_strategy:
-      label: 'Do you have <b>publishing</b> plans?'
+      label: 'Do you plan to <b>publish</b> this work?'
     work_patent_strategy:
-      label: 'Are there plans to <b>patent</b>?'
+      label: 'Do you plan to <b>patent</b> this work?'
     work_type:
-      label: 'What <b>kind</b> of work is this?'
+      label: 'What <b>type</b> of work is this?'
   processing_actions:
     publishing_and_patenting_intent:
       label: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
@@ -326,28 +326,28 @@ en:
       defaults:
         new:
           access_rights_answer:
-            open_access_html: '<b>Open Access:</b> freely viewable to the world'
-            restricted_access_html: '<b>Restricted:</b> only specific groups or people can see it'
-            private_access_html: '<b>Private:</b> Only viewable to the depositor and content reviewers'
-            access_changes_over_time_html: 'It will <b>change over time</b> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
+            open_access_html: '<b>Public</b> — Freely viewable to the world'
+            restricted_access_html: '<b>Restricted</b> — Only groups you specifiy have access'
+            private_access_html: '<b>Private</b> — Only you and the reviewers you designate'
+            access_changes_over_time_html: '<b>Embargoed</b> — will <i>Private</i> now but <i>Public</i> after 3 years'
         work_publication_strategy:
-          will_not_publish_html: 'I have <i>no plans to publish</i> this work in the future.'
-          already_published_html: 'I have <i>already published</i> portions of this work.'
-          going_to_publish_html: 'I am <i>planning on publishing</i> this work in the future.'
-          do_not_know: 'I don’t know.'
+          going_to_publish: 'Yes'
+          will_not_publish: 'No'
+          already_published_html: 'I have <i>already published</i> portions of this work'
+          do_not_know: 'Undecided'
         work_patent_strategy:
-          will_not_patent_html: 'There are <i>no plans to patent</i> this work.'
-          already_patented_html: 'Portions of this work have <i>already been patented</i>.'
-          going_to_patent_html: 'There are <i>plans to patent</i> this work in the future.'
-          do_not_know: 'I don’t know.'
+          going_to_patent: 'Yes'
+          will_not_patent: 'No'
+          already_patented_html: 'Portions of this work have <i>already been patented</i>'
+          do_not_know: 'Undecided'
         work_type:
           doctoral_dissertation: 'Doctoral Dissertation'
           master_thesis: "Master’s Thesis"
         access_rights_answer:
-          open_access_html: '<b>Open Access:</b> freely viewable to the world'
-          restricted_access_html: '<b>Restricted:</b> only specific groups or people can see it'
-          private_access_html: '<b>Private:</b> Only viewable to the depositor and content reviewers'
-          access_changes_over_time_html: 'It will <b>change over time</b> e.g. <i>Private</i> now and <i>Open Access</i> in 3 years.'
+          open_access_html: '<b>Public</b> — Freely viewable to the world'
+          restricted_access_html: '<b>Restricted</b> — Only groups you specifiy have access'
+          private_access_html: '<b>Private</b> — Only you and the reviewers you designate'
+          access_changes_over_time_html: '<b>Embargoed</b> — <i>Private</i> now but <i>Public</i> after 3 years'
     labels:
       doi:
         identifier: 'Existing DOI'

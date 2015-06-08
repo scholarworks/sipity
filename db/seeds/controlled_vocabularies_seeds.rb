@@ -21,13 +21,13 @@ $stdout.puts 'Creating controlled vocabularies'
   ['award_category', 'Senior/Honors Thesis'],
   ['award_category', '2000–4000 Level Papers'],
   ['award_category', '10000 Level Papers'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'already_patented'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'will_not_patent'],
   [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'going_to_patent'],
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'will_not_patent'],
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'already_patented'],
   [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'do_not_know'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'already_published'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'will_not_publish'],
   [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'going_to_publish'],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'will_not_publish'],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'already_published'],
   [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'do_not_know']
 ].each do |predicate_name, term_label, term_uri|
   Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
