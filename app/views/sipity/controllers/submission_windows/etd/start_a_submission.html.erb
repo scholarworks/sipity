@@ -3,7 +3,7 @@
   <%= f.error :base, error_method: :to_sentence %>
   <div class="panel-tiles">
     <%= render(layout: 'sipity/form_panel', locals: { name: 'title', theme: :primary, object: view_object }) do %>
-      <%= f.input :title, as: :text, input_html: { class: 'sipity_redactor form-control' }, label: false %>
+      <%= f.input :title, as: :text, input_html: { class: 'redactor-input form-control' }, label: false %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'work_type', theme: :primary, object: view_object }) do %>
       <%= f.input :work_type, as: :select, collection: view_object.work_types_for_select, input_html: { class: 'form-control' }, label: false %>

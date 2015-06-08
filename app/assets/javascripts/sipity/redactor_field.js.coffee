@@ -1,4 +1,16 @@
-class RedactorField
+class RedactorTextInput
+  constructor: (@fieldElement) ->
+    if @fieldElement.length > 0
+      @setupField()
+
+  setupField: ->
+    @fieldElement.redactor({
+      buttonSource: true
+      focus: true
+      buttons: ['bold', 'italic']
+    })
+
+class RedactorTextArea
   constructor: (@fieldElement) ->
     if @fieldElement.length > 0
       @setupField()
@@ -13,13 +25,19 @@ class RedactorField
 
 jQuery ($) ->
 
-  setupRedactor = () ->
-    field = $(".sipity_redactor")
+  setupRedactorTextInputs = () ->
+    field = $(".redactor-input")
     if field.size() > 0
-      new RedactorField(field)
+      new RedactorTextInput(field)
+
+  setupRedactorTextAreas = () ->
+    field = $(".redactor-area")
+    if field.size() > 0
+      new RedactorTextArea(field)
 
   ready = ->
-    setupRedactor()
+    setupRedactorTextInputs()
+    setupRedactorTextAreas()
 
   $(document).ready(ready)
   $(document).on('page:load', ready)
