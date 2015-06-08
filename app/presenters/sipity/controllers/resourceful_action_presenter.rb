@@ -51,13 +51,7 @@ module Sipity
       end
 
       def entry_point_attributes
-        attributes = { itemprop: 'url', class: "btn #{button_class}" }
-        if action_name == DESTROY_ACTION_NAME
-          attributes[:data] = { confirm: I18n.t('sipity/decorators/resourceful_actions.confirm.destroy') }
-          attributes[:method] = :delete
-          attributes[:rel] = 'nofollow'
-        end
-        attributes
+        { itemprop: 'url', class: "btn #{button_class}" }
       end
 
       def entry_point_text

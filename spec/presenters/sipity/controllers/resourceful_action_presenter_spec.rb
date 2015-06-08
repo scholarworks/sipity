@@ -24,16 +24,7 @@ module Sipity
         end
 
         context '#render_entry_point' do
-          context 'for :destroy action' do
-            let(:resourceful_action) { double(name: 'destroy') }
-            it 'will render an entry point with data-method="delete"' do
-              expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do
-                with_tag("a[data-method='delete'][href='#{subject.path}']")
-              end
-            end
-          end
-
-          context 'for an available (non :destroy) action' do
+          context 'for an available action' do
             let(:resourceful_action) { double(name: 'edit') }
             it 'will render an entry point link for an available action' do
               expect(subject.render_entry_point).to have_tag('.action[itemprop="target"][itemtype="http://schema.org/EntryPoint"]') do

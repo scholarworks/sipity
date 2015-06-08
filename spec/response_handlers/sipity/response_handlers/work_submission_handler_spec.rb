@@ -14,12 +14,12 @@ module Sipity
       end
 
       RSpec.describe SubmitSuccessResponder do
-        let(:handler) { double(redirect_to: true, response_object: double(id: '123'), work_submission_path: true) }
+        let(:handler) { double(redirect_to: true, response_object: double(id: '123')) }
 
         it 'will coordinate the rendering of the template' do
-          expect(handler).to receive(:work_submission_path).with(work_id: handler.response_object.id).and_return(:path)
+          expect(PowerConverter).to receive(:convert_to_access_path).and_return('/hello/world')
           described_class.call(handler: handler)
-          expect(handler).to have_received(:redirect_to).with(:path)
+          expect(handler).to have_received(:redirect_to).with('/hello/world')
         end
       end
 

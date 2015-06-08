@@ -1,15 +1,22 @@
 require 'power_converter'
 
+PowerConverter.define_conversion_for(:access_path) do |input|
+  case input
+  when Sipity::Models::WorkArea
+    "/areas/#{input.slug}"
+  when Sipity::Models::SubmissionWindow
+    "/areas/#{input.work_area_slug}/#{input.slug}"
+  when Sipity::Models::Work
+    "/work_submissions/#{input.id}"
+  end
+end
+
 PowerConverter.define_conversion_for(:access_url) do |input|
   case input
   when Sipity::Models::Attachment
     input.file_url
-  when Sipity::Models::WorkArea
-    File.join(Figaro.env.url_host, "areas/#{input.slug}")
-  when Sipity::Models::SubmissionWindow
-    File.join(Figaro.env.url_host, "areas/#{input.work_area_slug}/#{input.slug}")
-  when Sipity::Models::Work
-    File.join(Figaro.env.url_host, "work_submissions/#{input.id}")
+  else
+    File.join(Figaro.env.url_host, PowerConverter.convert_to_access_path(input))
   end
 end
 
@@ -47,14 +54,7 @@ PowerConverter.define_conversion_for(:processing_comment) do |input|
 end
 
 PowerConverter.define_conversion_for(:processing_action_root_path) do |input|
-  case input
-  when Sipity::Models::WorkArea
-    "/areas/#{input.slug}/do"
-  when Sipity::Models::SubmissionWindow
-    "/areas/#{input.work_area_slug}/#{input.slug}/do"
-  when Sipity::Models::Work
-    "/work_submissions/#{input.id}/do"
-  end
+  File.join(PowerConverter.convert_to_access_path(input), 'do')
 end
 
 PowerConverter.define_conversion_for(:role) do |input|

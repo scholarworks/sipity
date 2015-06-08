@@ -32,10 +32,11 @@ module Sipity
       # The general handler for all command actions
       class CommandAction < CommandQueryAction
         def run(work_id:, processing_action_name:, attributes: {})
-          super do |form, work|
+          super do |form, _work|
             ActiveRecord::Base.transaction do
-              if form.submit(requested_by: current_user)
-                callback(:submit_success, work)
+              response = form.submit(requested_by: current_user)
+              if response
+                callback(:submit_success, response)
               else
                 callback(:submit_failure, form)
               end

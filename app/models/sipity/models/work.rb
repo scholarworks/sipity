@@ -13,7 +13,7 @@ module Sipity
       has_many :access_rights, as: :entity, dependent: :destroy
       has_many :transient_answers, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
-      has_one :work_submission, dependent: :destroy
+      has_one :work_submission
 
       delegate :submission_window, :work_area, to: :work_submission, allow_nil: true
 
