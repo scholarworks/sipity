@@ -1,0 +1,32 @@
+<section>
+  <div class="row">
+    <div class="col-xs-12 page-header">
+      <h1>{{name}}</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <ul>
+      <li><a href="{{start_a_submission_path}}" class="btn btn-primary">{{ translate.start_a_submission }}</a></li>
+      <li><a href="{{view_submitted_etds_url}}" class="btn btn-primary">{{ translate.view_submitted_etds }}</a></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <p>This is where the dashboard should go</p>
+  </div>
+
+  {{#resourceful_actions?}}
+    <div class="row panel-footer">
+      <ul class="action-listing">
+        {{*resourceful_actions}}
+          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+            <meta itemprop="name" content="event_trigger/{{action_name}}" />
+            {{render_entry_point}}
+            <span itemprop="actionStatus" class="visuallyhidden">{{availability_state}}</span>
+          </li>
+        {{/resourceful_actions}}
+      </ul>
+    </div>
+  {{/resourceful_actions?}}
+</section>
