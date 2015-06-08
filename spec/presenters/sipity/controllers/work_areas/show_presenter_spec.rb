@@ -39,35 +39,13 @@ module Sipity
           subject
         end
 
-        it 'exposes resourceful_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:resourceful_actions)
-          subject.resourceful_actions
-        end
-
-        it 'exposes resourceful_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:resourceful_actions?)
-          subject.resourceful_actions?
-        end
-
-        it 'exposes state_advancing_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:state_advancing_actions)
-          subject.state_advancing_actions
-        end
-
-        it 'exposes state_advancing_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:state_advancing_actions?)
-          subject.state_advancing_actions?
-        end
-
-        it 'exposes enrichment_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:enrichment_actions)
-          subject.enrichment_actions
-        end
-
-        it 'exposes enrichment_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:enrichment_actions?)
-          subject.enrichment_actions?
-        end
+        it { should delegate_method(:name).to(:work_area) }
+        it { should delegate_method(:resourceful_actions).to(:processing_actions) }
+        it { should delegate_method(:resourceful_actions?).to(:processing_actions) }
+        it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+        it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+        it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+        it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
       end
     end
   end
