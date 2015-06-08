@@ -59,7 +59,7 @@ module Sipity
         @processing_strategy ||= Models::Processing::Strategy.find_or_create_by!(name: "#{work_area.class} processing")
       end
 
-      PERMITTED_WORK_MANAGER_ACTIONS = ['show', 'create_submission_window'].freeze
+      PERMITTED_WORK_MANAGER_ACTIONS = ['show', 'debug', 'create_submission_window'].freeze
       def generate_general_work_area_permissions!
         PermissionGenerator.call(
           actors: work_area_managers,
