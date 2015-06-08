@@ -55,6 +55,23 @@ module Sipity
         )
       end
 
+      context '#processing_state_names_for_select_within_work_area' do
+        before { Sipity::SpecSupport.load_database_seeds!(seeds_path: 'db/seeds/etd_work_area_seeds.rb') }
+        let(:work_area) { Models::WorkArea.first! }
+        subject { test_repository.processing_state_names_for_select_within_work_area(work_area: work_area) }
+
+        it 'will return actions associated with the work area' do
+          # This is a fragile test based on the state of data; However it
+          # demonstrates what's working
+          expect(subject).to eq(
+            [
+              "advisor_changes_requested", "grad_school_changes_requested", "new", "ready_for_ingest", "under_advisor_review",
+              "under_grad_school_review", "under_grad_school_review_with_changes"
+            ]
+          )
+        end
+      end
+
       context '#scope_actors_associated_with_entity_and_role' do
         subject { test_repository.scope_actors_associated_with_entity_and_role(role: role, entity: entity) }
         it 'will return an array' do

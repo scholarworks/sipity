@@ -9,11 +9,28 @@ module Sipity
         let(:current_user) { double('Current User') }
         let(:work_area) { Models::WorkArea.new(slug: 'the-slug') }
         let(:repository) { QueryRepositoryInterface.new }
-        subject { described_class.new(context, work_area: work_area, repository: repository) }
+        let(:translator) { double(call: true) }
+        subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
 
         its(:default_repository) { should respond_to :scope_proxied_objects_for_the_user_and_proxy_for_type }
+        its(:default_translator) { should respond_to :call }
 
         it 'exposes submission_windows that are available to the user' do
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
+            with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
+          subject.submission_windows
+        end
+
+        context '#translate' do
+          it 'will delegate to the translator' do
+            identifier = double
+            expect(translator).to receive(:call).
+              with(scope: "processing_actions.show", subject: work_area, object: identifier, predicate: :label)
+            subject.translate(identifier)
+          end
+        end
+
+        it 'exposes submission_windows' do
           expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
             with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
           subject.submission_windows
@@ -39,35 +56,13 @@ module Sipity
           subject
         end
 
-        it 'exposes resourceful_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:resourceful_actions)
-          subject.resourceful_actions
-        end
-
-        it 'exposes resourceful_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:resourceful_actions?)
-          subject.resourceful_actions?
-        end
-
-        it 'exposes state_advancing_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:state_advancing_actions)
-          subject.state_advancing_actions
-        end
-
-        it 'exposes state_advancing_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:state_advancing_actions?)
-          subject.state_advancing_actions?
-        end
-
-        it 'exposes enrichment_actions' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:enrichment_actions)
-          subject.enrichment_actions
-        end
-
-        it 'exposes enrichment_actions?' do
-          expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:enrichment_actions?)
-          subject.enrichment_actions?
-        end
+        it { should delegate_method(:name).to(:work_area) }
+        it { should delegate_method(:resourceful_actions).to(:processing_actions) }
+        it { should delegate_method(:resourceful_actions?).to(:processing_actions) }
+        it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+        it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+        it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+        it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
       end
     end
   end

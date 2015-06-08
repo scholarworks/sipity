@@ -20,6 +20,47 @@ module Sipity
     module ProcessingQueries
       # @api public
       #
+      # This query returns a unique set of state names that are associated
+      # with one or more object (of usage_type) for the given work area.
+      #
+      # @example
+      #   Given work area WA
+      #   And given work type WT1 and WT2 are in WA.
+      #   And WT1 has strategy states with names SS1, SS2, SS3
+      #   And WT2 has strategy states with names SS1, SS2, SS4
+      #   When we call #processing_state_names_for_select_within_work_area(work_area: WA)
+      #   Then we will get back action names: [SS1, SS2, SS3, SS4]
+      #
+      # @param work_area [Object] that can be converted into a Sipity::Models::WorkArea
+      # @param usage_type [Object] the polymorphic type for database storage
+      #
+      # @return [Array<String>] name of actions available
+      def processing_state_names_for_select_within_work_area(work_area:, usage_type: Sipity::Models::WorkType)
+        work_area = PowerConverter.convert(work_area, to: :work_area)
+        usage_type = Conversions::ConvertToPolymorphicType.call(usage_type)
+
+        strategy_states = Models::Processing::StrategyState.arel_table
+        strategy_usages = Models::Processing::StrategyUsage.arel_table
+        submission_window_work_types = Models::SubmissionWindowWorkType.arel_table
+        submission_windows = Models::SubmissionWindow.arel_table
+
+        select_manager = strategy_states.project(strategy_states[:name]).order(strategy_states[:name]).distinct.join(strategy_usages).on(
+          strategy_usages[:strategy_id].eq(strategy_states[:strategy_id]).and(
+            strategy_usages[:usage_type].eq(usage_type)
+          )
+        ).join(submission_window_work_types).on(
+          submission_window_work_types[:work_type_id].eq(strategy_usages[:usage_id])
+        ).join(submission_windows).on(
+          submission_windows[:id].eq(submission_window_work_types[:submission_window_id]).and(
+            submission_windows[:work_area_id].eq(work_area.id)
+          )
+        )
+
+        Models::Processing::StrategyState.from(strategy_states.create_table_alias(select_manager, strategy_states.table_name)).pluck(:name)
+      end
+
+      # @api public
+      #
       # Actors associated with the given :entity and how they are associated
       # with the given.
       #

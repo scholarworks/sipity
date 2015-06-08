@@ -1,0 +1,63 @@
+<section>
+  <div class="row">
+    <div class="col-xs-12 page-header">
+      <h1>{{name}}</h1>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <a href="{{start_a_submission_path}}" class="btn btn-primary">{{ translate.start_a_submission }}</a>
+    <a href="{{view_submitted_etds_url}}" class="btn btn-primary">{{ translate.view_submitted_etds }}</a>
+  </div>
+  <div class="row dashboard-actions">
+    <div class="col-xs-12">
+      {{@filter_form}}
+        <fieldset class="form-group">
+          {{select_tag_for_processing_state}}
+        </fieldset>
+        {{submit_button}}
+      {{/filter_form}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 work-listing">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Type</th>
+            <th>Creator(s)</th>
+            <th>Processing State</th>
+            <th>Date Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{*works}}
+            <tr>
+              <td><a href="{{path}}">{{title}}</td>
+              <td>{{work_type}}</td>
+              <td>{{creator_names_to_sentence}}</td>
+              <td>{{processing_state}}</td>
+              <td>{{date_created}}</td>
+            </tr>
+          {{/works}}
+      </table>
+    </div>
+  </div>
+
+  {{#resourceful_actions?}}
+    <div class="row panel-footer">
+      <ul class="action-listing">
+        {{*resourceful_actions}}
+          <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="action-wrapper">
+            <meta itemprop="name" content="event_trigger/{{action_name}}" />
+            {{render_entry_point}}
+            <span itemprop="actionStatus" class="visuallyhidden">{{availability_state}}</span>
+          </li>
+        {{/resourceful_actions}}
+      </ul>
+    </div>
+  {{/resourceful_actions?}}
+</section>

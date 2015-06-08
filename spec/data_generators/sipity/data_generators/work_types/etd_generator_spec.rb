@@ -16,9 +16,11 @@ module Sipity
           # However this test is much more of a bare-bones sanity check.
           expect do
             expect do
-              subject.call(work_area: work_area, submission_window: submission_window)
-            end.to change { Models::WorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
-          end.to change { Models::Processing::Strategy.count }.by(described_class::WORK_TYPE_NAMES.count)
+              expect do
+                subject.call(work_area: work_area, submission_window: submission_window)
+              end.to change { Models::WorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
+            end.to change { Models::Processing::Strategy.count }.by(described_class::WORK_TYPE_NAMES.count)
+          end.to change { Models::SubmissionWindowWorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
 
           # And it can be called multiple times without changes.
           [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|

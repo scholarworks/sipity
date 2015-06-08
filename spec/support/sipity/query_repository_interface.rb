@@ -105,6 +105,10 @@ module Sipity
     def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def processing_state_names_for_select_within_work_area(work_area:, usage_type: Sipity::Models::WorkType)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def representative_attachment_for(work:)
     end
