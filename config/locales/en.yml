@@ -46,7 +46,6 @@ en:
   application:
     navigation:
       dashboard: 'Dashboard'
-      about: 'About'
       sign_in: 'Sign in'
       sign_out: 'Sign out'
     actions:

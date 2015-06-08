@@ -6,22 +6,6 @@ en:
     title: 'Repository Deposit Interface'
     footer: '<p class="centered">Powered by <a href="https://github.com/ndlib/sipity">Sipity</a></p>'
   pages:
-    about:
-      page_title: 'About'
-      title_html: 'Mediated Deposit for <a href="https://curate.nd.edu/">CurateND</a>'
-      body_html: >
-        <p>
-          This site is the best way to get content that needs official review into <a href="https://curate.nd.edu">CurateND</a>,
-          the institutional digital repository of the <a href="http://www.nd.edu">University of Notre Dame</a>.
-        </p>
-        <p>
-          It supports the deposit of electronic theses and dissertations (ETDs).
-          There will be additional offerings in the future.
-        </p>
-        <p>
-          For technical support call <a href="tel:5746316258">(574) 631-6258</a> or
-          email <a href="mailto:curate@nd.edu?subject=Question about deposit.library.nd.edu">curate@nd.edu</a>.
-        </p>
     welcome:
       title_html: 'Deposit Your Work'
       call_to_action: 'Get Started'
