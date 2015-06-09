@@ -19,7 +19,7 @@ module Sipity
           end
 
           def view_submitted_etds_url
-            "https://curate.nd.edu"
+            Figaro.env.curate_nd_url_for_etds!
           end
 
           def filter_form(dom_class: 'form-inline', method: 'get', &block)
