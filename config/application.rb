@@ -21,6 +21,7 @@ module Sipity
 
     [
       'conversions',
+      'constraints',
       'data_generators',
       'forms',
       'jobs',

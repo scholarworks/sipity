@@ -1,0 +1,12 @@
+<section>
+  <div class="row">
+    <div class="col-xs-12 page-header">
+      <h1><%= view_object.name %></h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <a href="<%= view_object.start_a_submission_path %>" class="btn btn-primary"><%= view_object.translate('start_a_submission') %></a>
+    <a href="<%= view_object.view_submitted_etds_url %>" class="btn btn-primary"><%= view_object.translate('view_submitted_etds') %></a>
+  </div>
+</section>
