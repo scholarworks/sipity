@@ -9,9 +9,9 @@ module Sipity
       end
 
       def render_list_of_values
-        text = "<ul class='occurances'>\n"
+        text = "<ul class='occurrences'>\n"
         Array.wrap(values).each_with_object(text) do |value, mem|
-          mem << "\n" << content_tag('li', value.html_safe, class: "occurrance #{key}")
+          mem << "\n" << content_tag('li', value.html_safe, class: "occurrence #{key}")
         end
         text << "\n</ul>"
         text.html_safe
