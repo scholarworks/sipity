@@ -20,7 +20,13 @@ module Sipity
       end
 
       it 'will map additional attributes, right and pid' do
-        expect(repository).to receive(:work_attribute_key_value_pairs).with(work: work).and_return([['language', 'eng']])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'language').and_return(['eng'])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'alternate_title').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'subject').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'abstract').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return([])
         expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
         expect(repository).to receive(:scope_users_for_entity_and_roles).
           with(entity: work, roles: 'creating_user').and_return(creators)
@@ -31,7 +37,7 @@ module Sipity
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
         expect(expected_json["metadata"]["dc:title"]).to eq(title)
-        expect(expected_json["metadata"]["dc:language"]).to eq('eng')
+        expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
       end
 
       context 'will have be able to map correct access_right' do

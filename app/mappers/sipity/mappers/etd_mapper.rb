@@ -12,6 +12,8 @@ module Sipity
         ms: 'http://www.ndltd.org/standards/metadata/etdms/1.1/',
         ths: 'http://id.loc.gov/vocabulary/relators/'
       }.freeze
+
+      WORK_ATTRIBUTES = ['alternate_title', 'subject', 'abstract', 'copyright', 'language']
       PID_KEY = 'pid'.freeze
       TYPE_KEY = 'type'.freeze
       CONTEXT_KEY = '@context'.freeze
@@ -34,8 +36,6 @@ module Sipity
       }.freeze
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
       EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
-      CURATE_BATCH_USER_PID = "und:4j03cz30t6k"
-      CURATE_BATCH_GROUP_PID = 'und:p2676t05p31'
 
       def self.call(work)
         new(work).call
@@ -72,13 +72,24 @@ module Sipity
       end
 
       def attributes
-        @attributes ||= repository.work_attribute_key_value_pairs(work: work).to_h
+        @attributes = {}
+        WORK_ATTRIBUTES.each do |k|
+          @attributes[k] = repository.work_attribute_values_for(work: work, key: k)
+        end
+        @attributes
       end
 
       def metadata
         metadata =  attributes
         metadata['title'] = work.title
+        metadata['degree'] = degree_info
         metadata
+      end
+
+      def degree_info
+        { extract_name_for('degree_name') => repository.work_attribute_values_for(work: work, key: 'degree'),
+          extract_name_for('program_name') => repository.work_attribute_values_for(work: work, key: 'program_name')
+        }
       end
 
       def access_rights
@@ -111,8 +122,8 @@ module Sipity
           json.set! CONTEXT_KEY do
             RELS_EXT_URI.each { |key, uri|   json.set!(key, uri) }
           end
-          json.set!(EDITOR_PREDICATE_KEY, [CURATE_BATCH_USER_PID])
-          json.set!(EDITOR_GROUP_PREDICATE_KEY, [CURATE_BATCH_GROUP_PID])
+          json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
         end
       end
 
