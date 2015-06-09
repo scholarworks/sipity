@@ -15,6 +15,7 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
+      MNT_PATH = Figaro.env.curate_batch_mnt_path!
       # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
@@ -34,8 +35,6 @@ module Sipity
       PARENT_PREDICATE_KEY = 'isPartOf'.freeze
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
       EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
-      CURATE_BATCH_USER_PID = "und:4j03cz30t6k"
-      CURATE_BATCH_GROUP_PID = 'und:p2676t05p31'
 
       def self.call(attachment)
         new(attachment).call
@@ -78,7 +77,8 @@ module Sipity
       end
 
       def attributes
-        { title: file.file_name, creator: creators, date_uploaded: file.created_at, date_modified: file.updated_at }
+        { title: file.file_name, creator: creators, date_uploaded: date_convert(file.created_at),
+          date_modified: date_convert(file.updated_at) }
       end
 
       def file_access_rights
@@ -130,22 +130,46 @@ module Sipity
           json.set! CONTEXT_KEY do
             RELS_EXT_URI.each { |key, uri|   json.set!(key, uri) }
           end
-          json.set!(EDITOR_PREDICATE_KEY, [CURATE_BATCH_USER_PID])
-          json.set!(EDITOR_GROUP_PREDICATE_KEY, [CURATE_BATCH_GROUP_PID])
+          json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
           json.set!(PARENT_PREDICATE_KEY, [append_namespace_to_id(work.id)])
         end
       end
 
       def content_datastream(json)
+        file_name = create_content_from_attachment
         json.set! 'content-meta'.to_sym do
           json.set!('mime-type', mime_type)
           json.set!('label', file.file_name)
         end
-        json.set!('content-file', file.file_path)
+        json.set!('content-file', file_name)
+      end
+
+      def create_content_from_attachment
+        content_file = File.join(MNT_PATH, file_name_to_create)
+        FileUtils.mkdir_p(MNT_PATH) unless File.directory?(MNT_PATH)
+        create_content_in(content_file)
+        File.basename content_file
       end
 
       def mime_type
         file.file.mime_type
+      end
+
+      def date_convert(sql_date)
+        if sql_date.present?
+          return sql_date.to_date.strftime('%FZ')
+        else
+          return sql_date
+        end
+      end
+
+      def create_content_in(content_file_path)
+        file.file.to_file(content_file_path)
+      end
+
+      def file_name_to_create
+        return file.pid + '-' + file.file_name
       end
 
       def decode_access_rights

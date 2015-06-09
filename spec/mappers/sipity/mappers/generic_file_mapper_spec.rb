@@ -4,12 +4,11 @@ module Sipity
   module Mappers
     RSpec.describe GenericFileMapper do
       let(:access_right) { ['private_access'] }
-      let(:work) { double }
+      let(:work) { double(id: 'work_id') }
       let(:file) do
         double(work: work,
                predicate_name: "attachment",
                pid: "a_pid",
-               file: double(mime_type: "a_mime_type"),
                file_uid: "file_relative_path",
                file_name: "file_name",
                file_path: "file_path",
@@ -19,12 +18,17 @@ module Sipity
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
       let(:batch_user) { 'curate_batch_user' }
-      let(:batch_user_pid) { 'und:4j03cz30t6k' }
-      let(:batch_group_pid) { 'und:p2676t05p31' }
+      let(:sample_file) { File.new(__FILE__) }
+      let(:fedora_date) { Time.zone.today.strftime('%FZ') }
 
       subject { described_class.new(file, repository: repository) }
 
       its(:default_repository) { should respond_to :attachment_access_right_codes }
+
+      before do
+        allow(file).to receive_message_chain("file.to_file") { sample_file }
+        allow(file).to receive_message_chain("file.mime_type") { "a_mime_type" }
+      end
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
@@ -41,6 +45,21 @@ module Sipity
         expect(expected_json["pid"]).to eq("und:a_pid")
         expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
         expect(expected_json["metadata"]["dc:title"]).to eq(file.file_name)
+        expect(expected_json["metadata"]["dc:dateSubmitted"]).to eq(fedora_date)
+        expect(expected_json["metadata"]["dc:modified"]).to eq(fedora_date)
+      end
+
+      it 'verify if dates are mapped to nil if not available in database' do
+        expect(file).to receive(:created_at).and_return(nil)
+        expect(file).to receive(:updated_at).and_return(nil)
+        expect(repository).to receive(:scope_users_for_entity_and_roles).
+          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:attachment_access_right_codes).with(attachment: file).and_return([])
+        expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
+        expect(work).to receive(:id).and_return('a_work_id')
+        expected_json = JSON.parse(subject.call)
+        expect(expected_json["metadata"]["dc:dateSubmitted"]).to eq(nil)
+        expect(expected_json["metadata"]["dc:modified"]).to eq(nil)
       end
 
       it 'verify rels-ext attributes' do
@@ -52,8 +71,8 @@ module Sipity
         expected_json = JSON.parse(subject.call)
         expect(expected_json["rels-ext"]["@context"]).to eq("hydramata-rel" =>  "http://projecthydra.org/ns/relations#")
         expect(expected_json["rels-ext"]["isPartOf"]).to eq(["und:a_work_id"])
-        expect(expected_json["rels-ext"]["hydramata-rel:hasEditor"]).to eq([batch_user_pid])
-        expect(expected_json["rels-ext"]["hydramata-rel:hasEditorGroup"]).to eq([batch_group_pid])
+        expect(expected_json["rels-ext"]["hydramata-rel:hasEditor"]).to eq(['batch_user_pid'])
+        expect(expected_json["rels-ext"]["hydramata-rel:hasEditorGroup"]).to eq(['batch_group_pid'])
       end
 
       it 'verify content datastream attributes' do
@@ -62,9 +81,10 @@ module Sipity
         expect(repository).to receive(:attachment_access_right_codes).with(attachment: file).and_return([])
         expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
+        expect(subject).to receive(:file_name_to_create).and_return(File.basename __FILE__)
         expected_json = JSON.parse(subject.call)
         expect(expected_json["content-meta"]).to eq("mime-type" => file.file.mime_type, "label" => file.file_name)
-        expect(expected_json["content-file"]).to eq(file.file_path)
+        expect(expected_json["content-file"]).to eq(File.basename __FILE__)
       end
 
       context 'will have be able to map correct access_right' do
