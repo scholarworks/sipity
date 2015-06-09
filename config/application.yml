@@ -25,16 +25,19 @@ noid_server: 'noidserver.com'
 protocol: 'http'
 airbrake_api_key: 'this-makes-no-sense'
 airbrake_host: 'errbit.library.nd.edu'
-fedora_user: fedoraAdmin
-fedora_password: fedoraAdmin
-fedora_url: "http://127.0.0.1:8983/fedora"
 
 development:
   domain_name: "localhost:3000"
   url_host: "http://localhost:3000"
   secret_key_base: 'bd6953190e19dabc215af75a5c856f584dca49a3ab729696946a80ec50f46094d4643d908b88b07011f898f5c6748f2ffa832c96bae409e5462f2cf3055f1ee7'
+  curate_batch_user_pid: "und:ms35t724s57"
+  curate_batch_group_pid: "und:mw22v40826x"
+  curate_batch_mnt_path: "local/mnt/path"
 
 test:
   domain_name: "localhost:3000"
   url_host: "http://localhost:3000"
   secret_key_base: 'bd6953190e19dabc215af75a5c856f584dca49a3ab729696946a80ec50f46094d4643d908b88b07011f898f5c6748f2ffa832c96bae409e5462f2cf3055f1ee7'
+  curate_batch_user_pid: "batch_user_pid"
+  curate_batch_group_pid: "batch_group_pid"
+  curate_batch_mnt_path: "tmp"
