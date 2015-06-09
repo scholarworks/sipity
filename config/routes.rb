@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  root to: 'visitors#index'
+  root to: redirect('/areas/etd')
+
+  constraints Sipity::Constraints::UnauthenticatedConstraint do
+    get 'areas/etd', to: 'sipity/controllers/visitors#areas_etd'
+  end
 
   ##############################################################################
   # Begin Account related things

@@ -137,7 +137,7 @@ module Sipity
             CommandRepository.new
           end
 
-          DEFAULT_WORK_AREA_SLUG = 'etd'.freeze
+          DEFAULT_WORK_AREA_SLUG = DataGenerators::WorkAreas::EtdGenerator::SLUG
           def initialize_work_area!
             @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
           end
