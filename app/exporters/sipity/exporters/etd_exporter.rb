@@ -1,4 +1,3 @@
-require 'rof'
 require 'optparse'
 module Sipity
   # :nodoc:
@@ -6,8 +5,9 @@ module Sipity
     # Export work from Sipity to Curate, create ROF file and download attachments
     # and bundle them to directory
     class EtdExporter
-      ROF_FILE_NAME = 'etd_rof.json'.freeze
-
+      ROF_FILE_PREFIX = 'metadata-'.freeze
+      ROF_FILE_EXTN = '.rof'.freeze
+      MNT_PATH = Figaro.env.curate_batch_mnt_path
       def self.call(work)
         new(work).call
       end
@@ -16,17 +16,16 @@ module Sipity
         self.work = work
         self.repository = repository
         self.attachments = repository.work_attachments(work: work)
-        self.rof_file = File.new(File.join(Rails.root, 'tmp', ROF_FILE_NAME), 'w')
       end
 
       def call
         # Create rof etd file to be ingested
-        etd_data = '[' + export_to_json.join(',') + ']'
-        rof_file.puts etd_data
+        file_name = ROF_FILE_PREFIX + work.id + ROF_FILE_EXTN
+        FileUtils.mkdir_p(MNT_PATH) unless File.directory?(MNT_PATH)
+        rof_file = File.new(File.join(MNT_PATH, file_name), 'w')
+        rof_file.puts '[' + export_to_json.join(',') + ']'
         rof_file.flush
         rof_file.close
-        # Ingest into fedora
-        ROF::CLI.ingest_file(rof_file, ["."], STDOUT, fedora_info)
       end
 
       def export_to_json
@@ -41,19 +40,10 @@ module Sipity
 
       private
 
-      attr_accessor :repository, :work, :attachments, :rof_file
+      attr_accessor :repository, :work, :attachments
 
       def default_repository
         QueryRepository.new
-      end
-
-      def fedora_info
-        return @fedora_info if @fedora_info.present?
-        @fedora_info = {}
-        @fedora_info[:url] = Figaro.env.fedora_url!
-        @fedora_info[:user] = Figaro.env.fedora_user!
-        @fedora_info[:password] = Figaro.env.fedora_password!
-        @fedora_info
       end
     end
   end
