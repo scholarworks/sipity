@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150610170005) do
+ActiveRecord::Schema.define(version: 20150610193426) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
