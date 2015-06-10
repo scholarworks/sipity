@@ -30,6 +30,12 @@ module Sipity
         "#{RENDER_METHOD_PREFIX}#{PowerConverter.convert_to_safe_for_method_name(key)}"
       end
 
+      def render_titleized_value(value)
+        value.to_s.titleize
+      end
+      alias_method :render_value_for_work_patent_strategy, :render_titleized_value
+      alias_method :render_value_for_work_publication_strategy, :render_titleized_value
+
       def method_missing(method_name, *args, &block)
         match = RENDER_METHOD_REGEXP.match(method_name)
         if match
