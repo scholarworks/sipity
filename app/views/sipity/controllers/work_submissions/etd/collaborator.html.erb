@@ -18,7 +18,7 @@
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
-    <table class="table expandible collaborators">
+    <table class="table expandible collaborators" data-manage_sections-label="Add another Person">
       <thead>
         <tr>
           <%= content_tag :th, t('activerecord.attributes.sipity/models/collaborator.name') %>
