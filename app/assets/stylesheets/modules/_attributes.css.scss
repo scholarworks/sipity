@@ -5,10 +5,11 @@
     content: ':';
   }
 
-  .occurances {
+  .occurrences {
     margin-bottom: 0;
+    padding-left: 0;
 
-    > .occurance {
+    > .occurrence {
       list-style-type: none;
     }
   }
