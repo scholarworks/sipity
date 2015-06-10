@@ -347,7 +347,7 @@ en:
           open_access_html: '<b>Public</b> — Freely viewable to the world'
           restricted_access_html: '<b>Restricted</b> — Only groups you specifiy have access'
           private_access_html: '<b>Private</b> — Only you and the reviewers you designate'
-          access_changes_over_time_html: '<b>Embargoed</b> — <i>Private</i> now but <i>Public</i> after 3 years'
+          embargo_then_open_access_html: '<b>Embargoed</b> — <i>Private</i> now but <i>Public</i> on the date you specify'
     labels:
       doi:
         identifier: 'Existing DOI'

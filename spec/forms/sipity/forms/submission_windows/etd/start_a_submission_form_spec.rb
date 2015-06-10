@@ -40,6 +40,8 @@ module Sipity
           its(:to_work_area) { should eq(work_area) }
           its(:form_path) { should be_a(String) }
           its(:persisted?) { should eq(false) }
+          its(:possible_access_right_codes) { should be_a(Array) }
+          its(:access_rights_answer_for_select) { should be_a(Array) }
 
           it 'will have a model name like Work' do
             expect(described_class.model_name).to be_a(ActiveModel::Name)

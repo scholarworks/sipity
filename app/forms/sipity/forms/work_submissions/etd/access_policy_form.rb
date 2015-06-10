@@ -168,7 +168,7 @@ module Sipity
             end
 
             def valid_access_right_codes
-              Models::AccessRight.primative_acccess_right_codes
+              Models::AccessRight.valid_access_right_codes
             end
           end
         end

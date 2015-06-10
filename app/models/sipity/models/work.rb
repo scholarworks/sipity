@@ -25,7 +25,6 @@ module Sipity
       Processing.configure_as_a_processible_entity(self)
       alias_attribute :processing_status, :processing_state
 
-      # TODO: Extract to TransientAnswer
       ALREADY_PUBLISHED = 'already_published'.freeze
       WILL_NOT_PUBLISH = 'will_not_publish'.freeze
       GOING_TO_PUBLISH = 'going_to_publish'.freeze
