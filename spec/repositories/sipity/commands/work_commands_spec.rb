@@ -119,6 +119,11 @@ module Sipity
             to change { User.count }.by(1)
           expect(User.last.email).to be_present
         end
+        it 'will not create multiple times' do
+          user = Factories.create_user
+          expect { test_repository.create_sipity_user_from(netid: user.username) }.
+            to_not change { User.count }
+        end
         it 'will skip user creation of the netID exists' do
           test_repository.create_sipity_user_from(netid: 'helloworld')
 
