@@ -2,7 +2,7 @@
 <%# https://developers.google.com/gmail/markup/ %>
 <div itemscope itemtype="http://schema.org/EmailMessage">
   <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
-    <link itemprop="url" href="<%= action_in_the_inbox.email_message_action_url %>" />
+    <link itemprop="target" href="<%= action_in_the_inbox.email_message_action_url %>" />
     <meta itemprop="name" content="<%= action_in_the_inbox.email_message_action_name %>" />
   </div>
   <meta itemprop="description" content="<%= action_in_the_inbox.email_message_action_description %>" />
