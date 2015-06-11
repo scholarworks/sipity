@@ -89,14 +89,15 @@ module Sipity
                 { action_name: 'show', seq: 1 },
                 { action_name: 'destroy', seq: 2 },
                 { action_name: 'debug', seq: 3 },
-                { action_name: 'describe', seq: 1 },
-                { action_name: 'collaborators', seq: 2 },
-                { action_name: 'attach', seq: 3 },
-                { action_name: 'defense_date', seq: 4 },
-                { action_name: 'search_terms', seq: 5 },
-                { action_name: 'degree', seq: 6 },
-                { action_name: 'access_policy', seq: 7 },
-                { action_name: 'publishing_and_patenting_intent', seq: 8 },
+                { action_name: 'start_a_submission', seq: 0, resulting_state_name: 'new', allow_repeat_within_current_state: false }, # A bit of a misnomer
+                { action_name: 'publishing_and_patenting_intent', seq: 1 },
+                { action_name: 'describe', seq: 2 },
+                { action_name: 'collaborators', seq: 3 },
+                { action_name: 'attach', seq: 4 },
+                { action_name: 'defense_date', seq: 5 },
+                { action_name: 'search_terms', seq: 6 },
+                { action_name: 'degree', seq: 7 },
+                { action_name: 'access_policy', seq: 8 },
                 { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: true },
@@ -247,6 +248,13 @@ module Sipity
 
               # Define associated emails by a named thing
               [
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'start_a_submission',
+                  emails: {
+                    confirmation_of_work_created: { to: 'creating_user' }
+                  }
+                },
                 {
                   named_container: Models::Processing::StrategyAction,
                   name: 'submit_for_review',
