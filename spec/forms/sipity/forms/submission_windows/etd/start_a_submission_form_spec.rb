@@ -163,6 +163,7 @@ module Sipity
               before do
                 expect(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
+                allow(repository).to receive(:register_action_taken_on_entity)
               end
               it 'will assign the work attribute on submit' do
                 expect { subject.submit(requested_by: user) }.to change(subject, :work).from(nil).to(work)
@@ -174,8 +175,19 @@ module Sipity
                 expect(response).to eq(work)
               end
 
-              it 'will log the event' do
-                expect(repository).to receive(:log_event!).and_call_original
+              it 'will register the action on the submission window' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit(requested_by: user)
+              end
+
+              it 'will also register the action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(
+                    entity: work, action: subject.processing_action_name, requested_by: user,
+                    also_register_as: described_class::ALSO_REGISTER_WORK_ACTION_NAME
+                  ).and_call_original
                 subject.submit(requested_by: user)
               end
 
@@ -191,14 +203,6 @@ module Sipity
 
               it 'will persist the work work_publication_strategy strategy' do
                 expect(subject).to receive(:persist_work_publication_strategy).and_call_original
-                subject.submit(requested_by: user)
-              end
-
-              it 'will send emails to the creating user' do
-                expect(repository).to receive(:create_work!).and_return(work)
-                expect(repository).to receive(:send_notification_for_entity_trigger).
-                  with(notification: 'confirmation_of_work_created', entity: work, acting_as: 'creating_user').
-                  and_call_original
                 subject.submit(requested_by: user)
               end
             end
