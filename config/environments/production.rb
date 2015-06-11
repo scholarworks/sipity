@@ -65,7 +65,7 @@ Rails.application.configure do
   config.i18n.fallbacks = true
 
   # ActionMailer Config
-  config.action_mailer.default_url_options = { host:  Figaro.env.domain_name }
+  config.action_mailer.default_url_options = { protocol: Figaro.env.protocol, host:  Figaro.env.domain_name }
   config.action_mailer.delivery_method = :sendmail
   config.action_mailer.raise_delivery_errors = true
   # Send email in development mode?
