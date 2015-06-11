@@ -31,7 +31,6 @@ feature 'Enriching a Work', :devise, :feature do
       # There are two because it is listed as a top-level attribute and as part
       # of the access rights.
       expect(the_page.text_for('title')).to eq(['Hello World', 'Hello World'])
-      expect(the_page.text_for('work_publication_strategy')).to eq(['Do not know']) # NOTE: weak match on default I18n
       the_page.click_todo_item('enrichment/required/describe')
     end
 
