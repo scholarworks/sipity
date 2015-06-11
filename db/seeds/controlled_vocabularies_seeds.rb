@@ -21,17 +21,21 @@ $stdout.puts 'Creating controlled vocabularies'
   ['award_category', 'Senior/Honors Thesis'],
   ['award_category', '2000–4000 Level Papers'],
   ['award_category', '10000 Level Papers'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'going_to_patent'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'will_not_patent'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'already_patented'],
-  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'do_not_know'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'going_to_publish'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'will_not_publish'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'already_published'],
-  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'do_not_know']
-].each do |predicate_name, term_label, term_uri|
-  Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
-  predicate_name: predicate_name, term_label: term_label, term_uri: term_uri)
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'going_to_patent', nil, 1],
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'will_not_patent', nil, 2],
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'already_patented', nil, 3],
+  [Sipity::Models::AdditionalAttribute::WORK_PATENT_STRATEGY, 'do_not_know', nil, 4],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'going_to_publish', nil, 1],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'will_not_publish', nil, 2],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'already_published', nil, 3],
+  [Sipity::Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY, 'do_not_know', nil, 4]
+].each do |predicate_name, term_label, term_uri, presentation_sequence|
+  controlled_vocabulary = Sipity::Models::SimpleControlledVocabulary.find_or_create_by!(
+    predicate_name: predicate_name, term_label: term_label, term_uri: term_uri
+  )
+  if controlled_vocabulary.default_presentation_sequence != presentation_sequence
+    controlled_vocabulary.update(default_presentation_sequence: presentation_sequence)
+  end
 end
 
 $stdout.puts 'Creating degree names...'
@@ -86,7 +90,7 @@ $stdout.puts 'Creating degree names...'
   ['program_name', 'Sociology', 'SOC'],
   ['program_name', 'Theology', 'THEO']
 ].each do |predicate_name, term_label, subject_searchable_terms|
-    # NOTICE: Swallowing the subject search terms and nullifying term_uri
+  # NOTICE: Swallowing the subject search terms and nullifying term_uri
   if vocab = Sipity::Models::SimpleControlledVocabulary.find_by(predicate_name: predicate_name, term_label: term_label)
     if vocab.term_uri !~ %r{\A\w+://\w}
       vocab.update(term_uri: nil)

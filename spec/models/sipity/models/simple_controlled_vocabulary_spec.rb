@@ -8,6 +8,7 @@ module Sipity
         its(:column_names) { should include('predicate_name') }
         its(:column_names) { should include('term_label') }
         its(:column_names) { should include('term_uri') }
+        its(:column_names) { should include('default_presentation_sequence') }
       end
 
       subject { described_class.new }
