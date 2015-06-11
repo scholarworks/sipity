@@ -13,8 +13,7 @@ module Sipity
 
           def initialize(submission_window:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            initialize_work_area!
-            self.submission_window = submission_window
+            initialize_work_area_and_submission_window!(submission_window: submission_window)
             initialize_attributes(attributes)
           end
 
@@ -99,8 +98,9 @@ module Sipity
           end
 
           DEFAULT_WORK_AREA_SLUG = 'ulra'.freeze
-          def initialize_work_area!
+          def initialize_work_area_and_submission_window!(submission_window:)
             @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
+            self.submission_window = submission_window
           end
 
           def submission_window=(input)
