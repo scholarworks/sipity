@@ -89,14 +89,15 @@ module Sipity
                 { action_name: 'show', seq: 1 },
                 { action_name: 'destroy', seq: 2 },
                 { action_name: 'debug', seq: 3 },
-                { action_name: 'describe', seq: 1 },
-                { action_name: 'collaborators', seq: 2 },
-                { action_name: 'attach', seq: 3 },
-                { action_name: 'defense_date', seq: 4 },
-                { action_name: 'search_terms', seq: 5 },
-                { action_name: 'degree', seq: 6 },
-                { action_name: 'access_policy', seq: 7 },
-                { action_name: 'publishing_and_patenting_intent', seq: 8 },
+                { action_name: 'start_a_submission', seq: 0, resulting_state_name: 'new', allow_repeat_within_current_state: false }, # A bit of a misnomer
+                { action_name: 'publishing_and_patenting_intent', seq: 1 },
+                { action_name: 'describe', seq: 2 },
+                { action_name: 'collaborators', seq: 3 },
+                { action_name: 'attach', seq: 4 },
+                { action_name: 'defense_date', seq: 5 },
+                { action_name: 'search_terms', seq: 6 },
+                { action_name: 'degree', seq: 7 },
+                { action_name: 'access_policy', seq: 8 },
                 { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: true },
@@ -126,7 +127,7 @@ module Sipity
                   }
                   # No sense making changes if none are needed
                   if expected_attributes.any? { |key, value| action.attributes[key.to_s] != value }
-                      action.update(
+                    action.update(
                       presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
                       action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
                     )
@@ -148,7 +149,7 @@ module Sipity
               end
 
               pre_requisite_states =       {
-                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy']
+                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent']
               }
 
               if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
@@ -244,104 +245,111 @@ module Sipity
                   end
                 end
               end
-            end
 
-            # Define associated emails by a named thing
-            [
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'submit_for_review',
-                emails: {
-                  confirmation_of_submit_for_review: { to: 'creating_user' },
-                  submit_for_review: { to: ['advisor'] }
+              # Define associated emails by a named thing
+              [
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'start_a_submission',
+                  emails: {
+                    confirmation_of_work_created: { to: 'creating_user' }
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'submit_for_review',
+                  emails: {
+                    confirmation_of_submit_for_review: { to: 'creating_user' },
+                    submit_for_review: { to: ['advisor'] }
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'advisor_signoff',
+                  emails: {
+                    confirmation_of_advisor_signoff: { to: 'creating_user' },
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'signoff_on_behalf_of',
+                  emails: {
+                    confirmation_of_advisor_signoff: { to: 'creating_user' },
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'advisor_requests_change',
+                  emails: {
+                    advisor_requests_change: { to: 'creating_user' }
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'request_change_on_behalf_of',
+                  emails: {
+                    request_change_on_behalf_of: { to: 'creating_user' }
+                  }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'respond_to_advisor_request',
+                  emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'respond_to_grad_school_request',
+                  emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'grad_school_requests_change',
+                  emails: { grad_school_requests_change: { to: 'creating_user' } }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'grad_school_signoff',
+                  emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
+                },
+                {
+                  named_container: Models::Processing::StrategyState,
+                  name: 'under_grad_school_review',
+                  emails: {
+                    advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
+                    confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
+                  }
                 }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'advisor_signoff',
-                emails: {
-                  confirmation_of_advisor_signoff: { to: 'creating_user' },
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'signoff_on_behalf_of',
-                emails: {
-                  confirmation_of_advisor_signoff: { to: 'creating_user' },
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'advisor_requests_change',
-                emails: {
-                  advisor_requests_change: { to: 'creating_user' }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'request_change_on_behalf_of',
-                emails: {
-                  request_change_on_behalf_of: { to: 'creating_user' }
-                }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'respond_to_advisor_request',
-                emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'respond_to_grad_school_request',
-                emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'grad_school_requests_change',
-                emails: { grad_school_requests_change: { to: 'creating_user' } }
-              },
-              {
-                named_container: Models::Processing::StrategyAction,
-                name: 'grad_school_signoff',
-                emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
-              },
-              {
-                named_container: Models::Processing::StrategyState,
-                name: 'under_grad_school_review',
-                emails: {
-                  advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
-                  confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
-                }
-              }
-            ].each do |email_config|
-              named_container = email_config.fetch(:named_container)
-              name = email_config.fetch(:name)
-              named_container.where(name: name).each do |named_thing|
-                email_config.fetch(:emails).each do |email_name, recipients|
-                  the_email = Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
-                    recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
-                      Array.wrap(recipient_roles).each do |recipient_role|
-                        find_or_initialize_or_create!(
-                          context: email,
-                          receiver: email.recipients,
-                          role: Models::Role.find_by!(name: recipient_role),
-                          recipient_strategy: recipient_strategy.to_s
-                        )
+              ].each do |email_config|
+                named_container = email_config.fetch(:named_container)
+                name = email_config.fetch(:name)
+                named_container.where(name: name, strategy: etd_strategy).each do |named_thing|
+                  email_config.fetch(:emails).each do |email_name, recipients|
+                    the_email = Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
+                      recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
+                        Array.wrap(recipient_roles).each do |recipient_role|
+                          find_or_initialize_or_create!(
+                            context: email,
+                            receiver: email.recipients,
+                            role: Models::Role.find_by!(name: recipient_role),
+                            recipient_strategy: recipient_strategy.to_s
+                          )
+                        end
                       end
                     end
-                  end
-                  reason_for_notification = begin
-                    case named_thing
-                    when Models::Processing::StrategyAction
-                      Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
-                    when Models::Processing::StrategyState
-                      Parameters::NotificationContextParameter::REASON_ENTERED_STATE
+                    reason_for_notification = begin
+                      case named_thing
+                      when Models::Processing::StrategyAction
+                        Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
+                      when Models::Processing::StrategyState
+                        Parameters::NotificationContextParameter::REASON_ENTERED_STATE
+                      end
                     end
+                    Models::Notification::NotifiableContext.find_or_create_by!(
+                      scope_for_notification: named_thing,
+                      reason_for_notification: reason_for_notification,
+                      email: the_email
+                    )
                   end
-                  Models::Notification::NotifiableContext.find_or_create_by!(
-                    scope_for_notification: named_thing,
-                    reason_for_notification: reason_for_notification,
-                    email: the_email
-                  )
                 end
               end
             end

@@ -16,8 +16,7 @@ module Sipity
             self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
               form: self, repository: repository
             )
-            initialize_work_area!
-            self.submission_window = submission_window
+            initialize_work_area_and_submission_window!(submission_window: submission_window)
             initialize_attributes(attributes)
           end
 
@@ -96,14 +95,25 @@ module Sipity
               persist_work_patent_strategy
               persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-
-              # TODO: See https://github.com/ndlib/sipity/issues/506
-              repository.send_notification_for_entity_trigger(
-                notification: "confirmation_of_work_created", entity: work, acting_as: 'creating_user'
-              )
-              repository.log_event!(entity: work, user: requested_by, event_name: event_name)
+              register_actions(requested_by: requested_by)
             end
           end
+
+          def register_actions(requested_by:)
+            # Your read that right, register actions on both the work and submission window.
+            # This form crosses a conceptual boundary. I need permission within
+            # the submission window to create a work. However, I want to
+            # notify the creating user of the work of the action they've taken.
+            repository.register_action_taken_on_entity(
+              entity: work, action: processing_action_name, requested_by: requested_by, also_register_as: ALSO_REGISTER_WORK_ACTION_NAME
+            )
+            repository.register_action_taken_on_entity(
+              entity: submission_window, action: processing_action_name, requested_by: requested_by
+            )
+          end
+
+          # TODO: Extract these concepts to a database
+          ALSO_REGISTER_WORK_ACTION_NAME = 'publishing_and_patenting_intent'.freeze
 
           include Conversions::SanitizeHtml
           def title=(value)
@@ -117,7 +127,6 @@ module Sipity
           end
 
           def possible_work_types
-            # Yikes?
             DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
           end
 
@@ -129,17 +138,13 @@ module Sipity
             Models::AccessRight::PRIVATE_ACCESS
           end
 
-          def event_name
-            File.join(processing_action_name, 'submit')
-          end
-
           def default_repository
             CommandRepository.new
           end
 
-          DEFAULT_WORK_AREA_SLUG = DataGenerators::WorkAreas::EtdGenerator::SLUG
-          def initialize_work_area!
-            @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
+          def initialize_work_area_and_submission_window!(submission_window:)
+            @work_area = repository.find_work_area_by(slug: DataGenerators::WorkAreas::EtdGenerator::SLUG)
+            self.submission_window = submission_window
           end
 
           def submission_window=(input)
