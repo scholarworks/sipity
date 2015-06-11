@@ -91,10 +91,11 @@ module Sipity
       end
 
       def set_as_representative_attachment(work:, pid:)
-        attachment = Models::Attachment.find_by(pid: pid)
+        attachment = Models::Attachment.find_by(work_id: work.id, pid: pid)
         return true unless attachment.present?
-        Models::Attachment.where(work_id: work.id, is_representative_file: true).update_all(is_representative_file: false)
-        attachment.update(is_representative_file: true)
+        Models::Attachment.where(work_id: work.id, is_representative_file: true).where.not(pid: attachment.pid).
+          update_all(is_representative_file: false)
+        Models::Attachment.where(work_id: work.id, pid: attachment.pid).update_all(is_representative_file: true)
       end
 
       def create_sipity_user_from(netid:, email: nil)
