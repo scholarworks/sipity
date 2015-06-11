@@ -5,8 +5,7 @@
       <li itemprop="potentialAction" itemscope itemtype="http://schema.org/Action" class="todo-item {{state}}">
         <meta itemprop="name" content="enrichment/{{identifier}}/{{action_name}}" />
         <div itemprop='target' itemscope itemtype="http://schema.org/EntryPoint">
-          <span class="circle"></span>
-          {{completion_mark_if_applicable}}
+          {{todo_checkbox_element}}
           <span itemprop="name" class="item-name">{{label}}</span>
           <span class="visuallyhidden">is <span itemprop="actionStatus">{{state}}</span></span>
           <a itemprop="url" href="{{path}}" class="todo-item-trigger btn {{button_class}}">Go</a>

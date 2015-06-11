@@ -54,6 +54,12 @@ module Sipity
         )
       end
 
+      def todo_checkbox_element
+        todo_circle + completion_mark_if_applicable
+      end
+
+      private
+
       def completion_mark_if_applicable
         return ''.html_safe unless complete?
         %(
@@ -63,7 +69,9 @@ module Sipity
         ).html_safe
       end
 
-      private
+      def todo_circle
+        "<span class='circle #{state}'></span>".html_safe
+      end
 
       attr_accessor :repository
       attr_reader :enrichment_action_set
