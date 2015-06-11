@@ -4,12 +4,12 @@
 {
   "@context": "http://schema.org",
   "@type": "EmailMessage",
-  "action": {
+  "potentialAction": {
     "@type": "ViewAction",
-    "url": "<%= action_in_the_inbox.email_message_action_url %>",
+    "target": "<%= action_in_the_inbox.email_message_action_url %>",
     "name": "<%= action_in_the_inbox.email_message_action_name %>"
   },
-  "description": "<%= action_in_the_inbox.email_message_action_description %>"
+  "description": "<%= action_in_the_inbox.email_message_action_name %>"
 }
 </script>
 <% end %>
