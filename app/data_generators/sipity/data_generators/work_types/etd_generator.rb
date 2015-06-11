@@ -126,7 +126,7 @@ module Sipity
                   }
                   # No sense making changes if none are needed
                   if expected_attributes.any? { |key, value| action.attributes[key.to_s] != value }
-                      action.update(
+                    action.update(
                       presentation_sequence: structure.fetch(:seq), resulting_strategy_state: resulting_state,
                       action_type: action.default_action_type, allow_repeat_within_current_state: structure.fetch(:allow_repeat_within_current_state, true)
                     )
