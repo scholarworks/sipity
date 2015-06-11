@@ -11,7 +11,6 @@ module Sipity
       has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy
       has_many :attachments, foreign_key: :work_id, dependent: :destroy
       has_many :access_rights, as: :entity, dependent: :destroy
-      has_many :transient_answers, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       has_one :work_submission, dependent: :destroy
 
@@ -25,7 +24,6 @@ module Sipity
       Processing.configure_as_a_processible_entity(self)
       alias_attribute :processing_status, :processing_state
 
-      # TODO: Extract to TransientAnswer
       ALREADY_PUBLISHED = 'already_published'.freeze
       WILL_NOT_PUBLISH = 'will_not_publish'.freeze
       GOING_TO_PUBLISH = 'going_to_publish'.freeze

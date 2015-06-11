@@ -153,9 +153,6 @@ Sipity::Models::Role.create!([
   {name: "etd_reviewer", description: nil},
   {name: "advisor", description: nil}
 ])
-Sipity::Models::TransientAnswer.create!([
-  {entity_id: 1, entity_type: "Sipity::Models::Work", question_code: "access_rights", answer_code: "private_access"}
-])
 Sipity::Models::Work.create!([
   {id: '1', work_publication_strategy: "will_not_publish", title: "Hello", work_type: "doctoral_dissertation"}
 ])

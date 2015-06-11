@@ -20,7 +20,7 @@ module Sipity
       EMBARGO_THEN_OPEN_ACCESS = 'embargo_then_open_access'.freeze
 
       enum(
-        acccess_right_code: {
+        access_right_code: {
           OPEN_ACCESS => OPEN_ACCESS,
           RESTRICTED_ACCESS => RESTRICTED_ACCESS,
           PRIVATE_ACCESS => PRIVATE_ACCESS,
@@ -36,8 +36,18 @@ module Sipity
       # we are capturing and persisting. There are others (e.g.
       # EMBARGO_THEN_OPEN_ACCESS) that require additional logic to define how
       # the corresponding data is persisted.
-      def self.primative_acccess_right_codes
-        acccess_right_codes.keys
+      def self.valid_access_right_codes
+        access_right_codes.keys
+      end
+
+      before_save :conditionally_assign_release_date
+
+      private
+
+      def conditionally_assign_release_date
+        return true unless embargo_then_open_access?
+        return true if release_date?
+        self.release_date = 16.months.from_now
       end
     end
   end

@@ -64,7 +64,7 @@ module Sipity
           validates :work_patent_strategy, presence: true, inclusion: { in: :possible_work_patent_strategies }
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
-          validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_answers }
+          validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_codes }
           validates :submission_window, presence: true
 
           def form_path
@@ -72,7 +72,7 @@ module Sipity
           end
 
           def access_rights_answer_for_select
-            possible_access_right_answers.map(&:to_sym)
+            possible_access_right_codes.map(&:to_sym)
           end
 
           # Convert string to to_sym since simple_forn require sym to
@@ -121,12 +121,12 @@ module Sipity
             DataGenerators::WorkTypes::EtdGenerator::WORK_TYPE_NAMES
           end
 
-          def possible_access_right_answers
-            Models::TransientAnswer.access_rights_questions
+          def possible_access_right_codes
+            Models::AccessRight.valid_access_right_codes
           end
 
           def default_access_rights_answer
-            Models::TransientAnswer::ACCESS_RIGHTS_PRIVATE
+            Models::AccessRight::PRIVATE_ACCESS
           end
 
           def event_name

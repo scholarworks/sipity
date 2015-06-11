@@ -8,7 +8,15 @@ module Sipity
       its(:column_names) { should include('entity_type') }
       its(:column_names) { should include('access_right_code') }
       its(:column_names) { should include('transition_date') }
-      its(:primative_acccess_right_codes) { should be_a(Array) }
+      its(:valid_access_right_codes) { should be_a(Array) }
+
+      context 'conditionally assign release date' do
+        subject { described_class.new(entity_id: 1) }
+        it 'will assign the release date if the object is embargo_then_open_access and no release date is assigned' do
+          subject.access_right_code = described_class::EMBARGO_THEN_OPEN_ACCESS
+          expect { subject.send(:conditionally_assign_release_date) }.to change(subject, :release_date).from(nil)
+        end
+      end
     end
   end
 end

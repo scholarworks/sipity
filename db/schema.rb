@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150610170005) do
+ActiveRecord::Schema.define(version: 20150610193426) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -379,18 +379,6 @@ ActiveRecord::Schema.define(version: 20150610170005) do
   add_index "sipity_submission_windows", ["slug"], name: "index_sipity_submission_windows_on_slug", using: :btree
   add_index "sipity_submission_windows", ["work_area_id", "slug"], name: "index_sipity_submission_windows_on_work_area_id_and_slug", unique: true, using: :btree
   add_index "sipity_submission_windows", ["work_area_id"], name: "index_sipity_submission_windows_on_work_area_id", using: :btree
-
-  create_table "sipity_transient_answers", force: :cascade do |t|
-    t.string   "entity_id",     limit: 32,  null: false
-    t.string   "entity_type",   limit: 255, null: false
-    t.string   "question_code", limit: 255, null: false
-    t.string   "answer_code",   limit: 255, null: false
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
-  end
-
-  add_index "sipity_transient_answers", ["entity_id", "entity_type", "question_code"], name: "sipity_transient_entity_answers", unique: true, using: :btree
-  add_index "sipity_transient_answers", ["entity_id", "entity_type"], name: "index_sipity_transient_answers_on_entity_id_and_entity_type", using: :btree
 
   create_table "sipity_work_areas", force: :cascade do |t|
     t.string   "slug",                          limit: 255, null: false
