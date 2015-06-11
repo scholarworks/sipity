@@ -50,6 +50,8 @@
                         <dd class="value name">{{name}}</dd>
                         <dt class="predicate role">{{label.role}}</dt>
                         <dd class="value role">{{role}}</dd>
+                        <dt class="predicate collaborator-identifier">{{label.collaborator_identifier}}</dt>
+                        <dd class="value collaborator-identifier">{{collaborator_identifier}}</dd>
                       </dl>
                     </li>
                   {{/collaborators}}
