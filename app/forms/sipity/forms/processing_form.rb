@@ -86,12 +86,12 @@ module Sipity
           attr_reader processing_subject_name
           alias_method :entity, processing_subject_name
 
-          def persisted?
+          define_method :persisted? do
             false
           end
 
           include GuardInterfaceExpectation
-          def processing_action_form=(input)
+          define_method :processing_action_form= do |input|
             guard_interface_expectation!(
               input, :submit, :repository, :translate, :to_processing_entity, :to_processing_action, :processing_action_name, :to_work_area
             )
