@@ -15,7 +15,12 @@
     _create: function() {
       this.element.addClass("managed");
       $('.repeat', this.element).addClass("input-append");
-      this.adder = $("<button class=\"btn btn-success add\" id=\"section_add_button\"><i class=\"icon-white icon-plus\"></i><span>Add</span></button>");
+      if( this.element.data('manage_sections-label') ){
+        this.label_text = this.element.data('manage_sections-label');
+      } else {
+        this.label_text = "Add";
+      }
+      this.adder = $("<button class=\"btn btn-success add\" id=\"section_add_button\"><i class=\"icon-white icon-plus\"></i><span>" + this.label_text + "</span></button>");
       this.remover = $("<button class=\"btn btn-danger remove\"><i class=\"icon-white icon-minus\"></i><span>Remove</span></button>");
       this.tableControls = $('.table-controls', this.element);
       this.cannotAddNotification = $('<div class="alert alert-warning warning">You cannot add multiple empty entries.</div>');
