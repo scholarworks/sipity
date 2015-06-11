@@ -13,22 +13,39 @@ module Sipity
 
           def initialize(submission_window:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            initialize_work_area!
-            self.submission_window = submission_window
+            self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
+              form: self, repository: repository
+            )
+            initialize_work_area_and_submission_window!(submission_window: submission_window)
             initialize_attributes(attributes)
           end
+
+          delegate(
+            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
+            :possible_work_publication_strategies, :persist_work_publication_strategy,
+            to: :publication_and_patenting_intent_extension
+          )
+
+          private(:work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy)
+
+          private
+
+          attr_reader :work_area
+          attr_accessor :publication_and_patenting_intent_extension
+
+          def publication_and_patenting_intent_extension_builder
+            Forms::ComposableElements::PublishingAndPatentingIntentExtension
+          end
+
+          public
 
           def award_categories_for_select
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
           end
 
-          private
-
-          attr_reader :work_area
-
-          public
-
           delegate :slug, :work_area_slug, to: :submission_window
+
+          attr_reader :work
 
           include ActiveModel::Validations
           validates :title, presence: true
@@ -38,13 +55,10 @@ module Sipity
           validates :work_type, presence: true
           validates :submission_window, presence: true
 
-          def work_publication_strategies_for_select
-            possible_work_publication_strategies.map { |elem| elem.first.to_sym }
-          end
-
           def submit(requested_by:)
             return false unless valid?
             create_the_work do |work|
+              persist_work_publication_strategy
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
@@ -70,24 +84,19 @@ module Sipity
           end
 
           def create_the_work
-            work = repository.create_work!(
+            @work = repository.create_work!(
               submission_window: submission_window,
               title: title,
               advisor_netid: advisor_netid,
               award_category: award_category,
-              work_publication_strategy: work_publication_strategy,
               work_type: work_type
             )
-            yield(work)
-            work
+            yield(@work)
+            @work
           end
 
           def default_work_type
             Models::WorkType::ULRA_SUBMISSION
-          end
-
-          def possible_work_publication_strategies
-            Models::Work.work_publication_strategies
           end
 
           def event_name
@@ -99,8 +108,9 @@ module Sipity
           end
 
           DEFAULT_WORK_AREA_SLUG = 'ulra'.freeze
-          def initialize_work_area!
+          def initialize_work_area_and_submission_window!(submission_window:)
             @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
+            self.submission_window = submission_window
           end
 
           def submission_window=(input)

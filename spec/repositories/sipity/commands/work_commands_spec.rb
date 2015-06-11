@@ -99,14 +99,6 @@ module Sipity
         end
       end
 
-      context '#update_work_publication_strategy!' do
-        it 'will update work_publication_strategy of the work object' do
-          work = Models::Work.create!(id: '12', title: 'bogus', work_publication_strategy: 'do_not_know')
-          expect { test_repository.update_work_publication_strategy!(work: work, work_publication_strategy: 'already_published') }.
-            to change(work, :work_publication_strategy).from('do_not_know').to('already_published')
-        end
-      end
-
       context '#default_pid_minter' do
         subject { test_repository.default_pid_minter }
         it { should respond_to(:call) }

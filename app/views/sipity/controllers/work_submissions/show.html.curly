@@ -37,8 +37,6 @@
             <dd class="value title">{{ title }}</dd>
             <dt class="predicate work-type">{{label.work_type}}</dt>
             <dd class="value work-type">{{work_type}}</dd>
-            <dt class="predicate work_publication_strategy">{{label.work_publication_strategy}}</dt>
-            <dd class="value work_publication_strategy">{{work_publication_strategy}}</dt>
             {{#collaborators?}}
               <dt class="predicate collaborators">{{label.collaborators}}</dt>
               <dd class="value collaborators">

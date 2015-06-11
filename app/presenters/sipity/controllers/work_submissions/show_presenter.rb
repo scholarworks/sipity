@@ -81,12 +81,6 @@ module Sipity
           work_submission.processing_state.to_s
         end
 
-        def work_publication_strategy
-          TranslationAssistant.call(
-            scope: :work_publication_strategies, subject: work_submission.work_publication_strategy, predicate: :label
-          )
-        end
-
         def label(identifier)
           # TODO: Is there a better way to namespace this?
           Models::Work.human_attribute_name(identifier)

@@ -53,15 +53,6 @@ module Sipity
           end
         end
 
-        public
-
-        def persist_work_publication_strategy
-          repository.update_work_attribute_values!(
-            work: form.work, key: work_publication_strategy_predicate_name, values: work_publication_strategy
-          )
-          repository.update_work_publication_strategy!(work: form.work, work_publication_strategy: work_publication_strategy)
-        end
-
         private
 
         def default_repository

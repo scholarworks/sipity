@@ -8,7 +8,7 @@ module Sipity
       context 'database columns' do
         subject { Work }
         its(:column_names) { should include('work_type') }
-        its(:column_names) { should include('work_publication_strategy') }
+        its(:column_names) { should_not include('work_publication_strategy') }
         its(:column_names) { should include('title') }
       end
 
@@ -48,17 +48,6 @@ module Sipity
         it 'will not accept "ETD" as it is case sensitive' do
           expect { subject.work_type = 'ETD' }.to raise_error(ArgumentError)
         end
-      end
-
-      context '.work_publication_strategies' do
-        it 'is a Hash of keys that equal their values' do
-          expect(Work.work_publication_strategies.keys).
-            to eq(Work.work_publication_strategies.values)
-        end
-      end
-
-      it 'will raise an ArgumentError if you provide an invalid work_publication_strategy' do
-        expect { subject.work_publication_strategy = '__incorrect_strategy__' }.to raise_error(ArgumentError)
       end
 
       it 'has many :additional_attributes' do
