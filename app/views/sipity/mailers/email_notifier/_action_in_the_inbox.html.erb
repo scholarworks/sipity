@@ -1,7 +1,7 @@
 <% if [:email_message_action_url, :email_message_action_name, :email_message_action_description].all? {|method_name| action_in_the_inbox.respond_to?(method_name) } %>
 <%# https://developers.google.com/gmail/markup/ %>
 <div itemscope itemtype="http://schema.org/EmailMessage">
-  <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+  <div itemprop="potentialAction" itemscope itemtype="http://schema.org/ViewAction">
     <link itemprop="target" href="<%= action_in_the_inbox.email_message_action_url %>" />
     <meta itemprop="name" content="<%= action_in_the_inbox.email_message_action_name %>" />
   </div>
