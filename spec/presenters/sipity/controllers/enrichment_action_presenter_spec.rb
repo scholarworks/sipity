@@ -54,6 +54,9 @@ module Sipity
 
         its(:completion_mark_if_applicable) { should be_present }
         its(:completion_mark_if_applicable) { should be_html_safe }
+        its(:todo_checkbox_element) { should be_html_safe }
+        its(:todo_checkbox_element) { should have_tag('span.circle.done') }
+        its(:todo_checkbox_element) { should have_tag('svg') }
         its(:state) { should eq('done') }
         its(:complete?) { should be_truthy }
       end
@@ -67,6 +70,9 @@ module Sipity
 
         its(:completion_mark_if_applicable) { should_not be_present }
         its(:completion_mark_if_applicable) { should be_html_safe }
+        its(:todo_checkbox_element) { should be_html_safe }
+        its(:todo_checkbox_element) { should have_tag('span.circle.incomplete') }
+        its(:todo_checkbox_element) { should_not have_tag('svg') }
         its(:state) { should eq('incomplete') }
         its(:complete?) { should be_falsey }
       end
