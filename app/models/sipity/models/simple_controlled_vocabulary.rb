@@ -13,6 +13,8 @@ module Sipity
     class SimpleControlledVocabulary < ActiveRecord::Base
       self.table_name = 'sipity_simple_controlled_vocabularies'
 
+      default_scope { order(:predicate_name, :default_presentation_sequence, :term_label) }
+
       enum(
         predicate_name: {
           AdditionalAttribute::DEGREE_PREDICATE_NAME => AdditionalAttribute::DEGREE_PREDICATE_NAME,
