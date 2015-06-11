@@ -7,6 +7,7 @@ Figaro.require_keys(
   'domain_name',
   'hesburgh_api_auth_token',
   'hesburgh_api_host',
+  'protocol',
   'noid_pool',
   'noid_port',
   'noid_server',

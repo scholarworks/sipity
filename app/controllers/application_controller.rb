@@ -9,6 +9,8 @@ class ApplicationController < ActionController::Base
   include Hesburgh::Lib::ControllerWithRunner
   before_action :filter_notify
 
+  force_ssl if: :ssl_configured?
+
   # So you can easily invoke the public repository of Sipity.
   # It is the repository that indicates what the application can and is doing.
   def repository
@@ -38,5 +40,9 @@ class ApplicationController < ActionController::Base
     end
     flash[:alert] = nil unless flash[:alert].present?
     true
+  end
+
+  def ssl_configured?
+    Figaro.env.protocol == 'https'
   end
 end
