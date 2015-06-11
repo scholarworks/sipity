@@ -48,7 +48,7 @@ module Sipity
         CommandRepository.new
       end
 
-      WORK_ATTRIBUTES_FOR_CREATE = [:title, :work_publication_strategy, :work_type].freeze
+      WORK_ATTRIBUTES_FOR_CREATE = [:title, :work_type].freeze
 
       def attributes=(input)
         @attributes = input.slice(*WORK_ATTRIBUTES_FOR_CREATE).merge(id: pid_minter.call)

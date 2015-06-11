@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150610193426) do
+ActiveRecord::Schema.define(version: 20150611170421) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -414,17 +414,15 @@ ActiveRecord::Schema.define(version: 20150610193426) do
   add_index "sipity_work_types", ["name"], name: "index_sipity_work_types_on_name", unique: true, using: :btree
 
   create_table "sipity_works", id: false, force: :cascade do |t|
-    t.string   "id",                        limit: 32,    null: false
-    t.string   "work_publication_strategy", limit: 255
-    t.text     "title",                     limit: 65535
+    t.string   "id",         limit: 32,    null: false
+    t.text     "title",      limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "work_type",                 limit: 255,   null: false
+    t.string   "work_type",  limit: 255,   null: false
   end
 
   add_index "sipity_works", ["id"], name: "index_sipity_works_on_id", unique: true, using: :btree
   add_index "sipity_works", ["title"], name: "index_sipity_works_on_title", length: {"title"=>64}, using: :btree
-  add_index "sipity_works", ["work_publication_strategy"], name: "index_sipity_works_on_work_publication_strategy", using: :btree
   add_index "sipity_works", ["work_type"], name: "index_sipity_works_on_work_type", using: :btree
 
   create_table "users", force: :cascade do |t|

@@ -154,7 +154,7 @@ Sipity::Models::Role.create!([
   {name: "advisor", description: nil}
 ])
 Sipity::Models::Work.create!([
-  {id: '1', work_publication_strategy: "will_not_publish", title: "Hello", work_type: "doctoral_dissertation"}
+  {id: '1', title: "Hello", work_type: "doctoral_dissertation"}
 ])
 Sipity::Models::WorkType.create!([
   {name: "doctoral_dissertation", description: nil}

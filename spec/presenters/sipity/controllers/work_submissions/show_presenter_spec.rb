@@ -98,11 +98,6 @@ module Sipity
           subject.work_type
         end
 
-        it 'will expose #work_publication_strategy and delegate to the TranslationAssistant' do
-          expect(TranslationAssistant).to receive(:call)
-          subject.work_publication_strategy
-        end
-
         context '#label' do
           it "will delegate to the work_submission's human_attribute_name" do
             expect(subject.label(:title)).to eq('Title')

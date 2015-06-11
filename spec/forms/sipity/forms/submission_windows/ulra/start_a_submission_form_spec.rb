@@ -12,6 +12,8 @@ module Sipity
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
+            allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_publication_strategy').
+              and_return(['valid_work_publication_strategy'])
           end
 
           it { should implement_processing_form_interface }
@@ -100,6 +102,15 @@ module Sipity
                 )
                 subject.valid?
                 expect(subject.errors[:work_publication_strategy]).to be_present
+              end
+              it 'will be valid if from approved list' do
+                subject = described_class.new(
+                  repository: repository, submission_window: submission_window, attributes: {
+                    work_publication_strategy: 'valid_work_publication_strategy'
+                  }
+                )
+                subject.valid?
+                expect(subject.errors[:work_publication_strategy]).to_not be_present
               end
             end
           end
