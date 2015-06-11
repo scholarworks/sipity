@@ -16,8 +16,7 @@ module Sipity
             self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
               form: self, repository: repository
             )
-            initialize_work_area!
-            self.submission_window = submission_window
+            initialize_work_area_and_submission_window!(submission_window: submission_window)
             initialize_attributes(attributes)
           end
 
@@ -137,9 +136,9 @@ module Sipity
             CommandRepository.new
           end
 
-          DEFAULT_WORK_AREA_SLUG = DataGenerators::WorkAreas::EtdGenerator::SLUG
-          def initialize_work_area!
-            @work_area = repository.find_work_area_by(slug: DEFAULT_WORK_AREA_SLUG)
+          def initialize_work_area_and_submission_window!(submission_window:)
+            @work_area = repository.find_work_area_by(slug: DataGenerators::WorkAreas::EtdGenerator::SLUG)
+            self.submission_window = submission_window
           end
 
           def submission_window=(input)
