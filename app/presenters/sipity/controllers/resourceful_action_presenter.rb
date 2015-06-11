@@ -45,7 +45,7 @@ module Sipity
         (
           content_tag('meta', '', itemprop: 'name', content: action_name) +
           content_tag('span', class: 'btn btn-default disabled') do
-            I18n.t("sipity/works.resourceful_actions.label.#{ action_name }")
+            I18n.t("sipity/works.resourceful_actions.label.#{action_name}")
           end
         ).html_safe
       end
@@ -55,7 +55,7 @@ module Sipity
       end
 
       def entry_point_text
-        text = I18n.t("sipity/decorators/resourceful_actions.label.#{ action_name }")
+        text = I18n.t("sipity/decorators/resourceful_actions.label.#{action_name}")
         text << %(<meta itemprop="name" content="#{action_name}" />)
         text.html_safe
       end
