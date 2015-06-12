@@ -259,7 +259,7 @@ en:
       label: "Add <b>program name</b> for your %{work_type}"
     show:
       view_submitted_etds:
-        label: "View Submitted ETD's"
+        label: "View Submitted ETDs"
       start_a_submission:
         label: "Start an ETD Submission"
   sipity/decorators/resourceful_actions:
