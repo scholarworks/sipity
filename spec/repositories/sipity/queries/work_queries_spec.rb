@@ -16,6 +16,17 @@ module Sipity
         end
       end
 
+      context '#find_works_via_search' do
+        let(:repository) { QueryRepositoryInterface.new }
+        let(:criteria) { double(user: double, processing_state: double, proxy_for_type: double, repository: repository) }
+        it 'will leverage the underlying scope_proxied_objects_for_the_user_and_proxy_for_type method' do
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
+            with(user: criteria.user, proxy_for_type: criteria.proxy_for_type, filter: { processing_state: criteria.processing_state }).
+            and_call_original
+          test_repository.find_works_via_search(criteria: criteria)
+        end
+      end
+
       context '#find_work' do
         it 'raises an exception if nothing is found' do
           expect { test_repository.find_work('8675309') }.to raise_error
