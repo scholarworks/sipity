@@ -69,10 +69,6 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
-    # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def convert_recipient_roles_to_email(entity:, roles:, repository: self)
-    end
-
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def create_sipity_user_from(netid:, email: nil)
     end
@@ -291,10 +287,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_users_for_entity_and_roles(entity:, roles:)
-    end
-
-    # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def send_notification_for_entity_trigger(notification:, entity:, repository: self, **roles_for_recipients)
     end
 
     # @see ./app/repositories/sipity/queries/event_log_queries.rb

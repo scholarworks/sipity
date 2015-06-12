@@ -10,21 +10,6 @@ module Sipity
           test_repository.deliver_notification_for(parameters)
         end
       end
-      context '#send_notification_for_entity_trigger' do
-        let(:entity) { double }
-        let(:notification) { double }
-        let(:acting_as) { double }
-        let(:emails) { ['test@hello.com'] }
-        let(:repository) { QueryRepositoryInterface.new }
-
-        it 'is a placeholder' do
-          expect(repository).to receive(:user_emails_for_entity_and_roles).and_return(emails)
-          allow(Services::Notifier).to receive(:deliver).with(notification: notification, to: emails, entity: entity, bcc: [], cc: [])
-          test_repository.send_notification_for_entity_trigger(
-            notification: notification, entity: entity, repository: repository, acting_as: acting_as
-          )
-        end
-      end
     end
   end
 end
