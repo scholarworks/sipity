@@ -37,7 +37,7 @@ module Sipity
         end
         it 'will destroy collaborators not passed in' do
           collaborator.save!
-          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [])
+          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [], repository: test_repository)
           expect { test_repository.manage_collaborators_for(work: work, collaborators: []) }.
             to change { Models::Collaborator.count }.by(-1)
         end
@@ -45,7 +45,7 @@ module Sipity
         it 'will destroy the collaborator processing actor' do
           collaborator.save!
           collaborator.to_processing_actor
-          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [])
+          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [], repository: test_repository)
           expect { test_repository.manage_collaborators_for(work: work, collaborators: []) }.
             to change { Models::Processing::Actor.count }.by(-1)
         end
@@ -53,6 +53,7 @@ module Sipity
 
       context '#assign_collaborators_to' do
         let(:work) { Models::Work.new(id: 123) }
+        let(:repository) { CommandRepositoryInterface.new }
         let(:collaborator) do
           Models::Collaborator.new(
             responsible_for_review: is_responsible_for_review?, name: 'Jeremy', role: 'Research Director', netid: 'somebody'
@@ -63,7 +64,7 @@ module Sipity
           it 'will create a collaborator but not a user nor permission' do
             expect do
               expect do
-                test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+                test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
               end.to change(Models::Collaborator, :count).by(1)
             end.to_not change(User, :count)
           end
@@ -72,9 +73,10 @@ module Sipity
         context 'when a collaborator is responsible_for_review' do
           let(:is_responsible_for_review?) { true }
           it 'will create a collaborator, user, and permission' do
+            expect(repository).to receive(:grant_permission_for!).and_call_original
             expect do
               expect do
-                test_repository.assign_collaborators_to(work: work, collaborators: collaborator)
+                test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
               end.to change(Models::Collaborator, :count).by(1)
             end.to change(User, :count).by(1)
           end

@@ -5,7 +5,7 @@ module Sipity
     module WorkCommands
       # Responsible for adding collaborators to the work and removing anyone
       # else.
-      def manage_collaborators_for(work:, collaborators:)
+      def manage_collaborators_for(work:, collaborators:, repository: self)
         collaborators_table = Models::Collaborator.arel_table
         Models::Collaborator.where(
           collaborators_table[:work_id].eq(work.id).and(
@@ -13,11 +13,11 @@ module Sipity
           )
         ).destroy_all
 
-        assign_collaborators_to(work: work, collaborators: collaborators)
+        assign_collaborators_to(work: work, collaborators: collaborators, repository: repository)
       end
 
       # Responsible for assigning collaborators to a work.
-      def assign_collaborators_to(work:, collaborators:)
+      def assign_collaborators_to(work:, collaborators:, repository: self)
         # TODO: Encapsulate this is a Service Object as there is enough logic
         # to warrant this behavior.
         Array.wrap(collaborators).each do |collaborator|
@@ -26,7 +26,7 @@ module Sipity
           next unless collaborator.responsible_for_review?
           create_sipity_user_from(netid: collaborator.netid, email: collaborator.email) do |user|
             change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user)
-            PermissionCommands.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
+            repository.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
           end
         end
       end

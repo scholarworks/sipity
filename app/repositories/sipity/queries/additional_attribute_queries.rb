@@ -7,16 +7,12 @@ module Sipity
       def work_attribute_values_for(work:, key:)
         Models::AdditionalAttribute.where(work: work, key: key).pluck(:value)
       end
-      module_function :work_attribute_values_for
-      public :work_attribute_values_for
 
       def work_attribute_key_value_pairs(work:, keys: [])
         query = Models::AdditionalAttribute.where(work: work).order(:work_id, :key)
         query = query.where(key: keys) if keys.present?
         query.pluck(:key, :value)
       end
-      module_function :work_attribute_key_value_pairs
-      public :work_attribute_key_value_pairs
     end
   end
 end

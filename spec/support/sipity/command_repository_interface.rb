@@ -26,7 +26,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def assign_collaborators_to(work:, collaborators:)
+    def assign_collaborators_to(work:, collaborators:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -70,7 +70,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def convert_recipient_roles_to_email(entity:, roles:)
+    def convert_recipient_roles_to_email(entity:, roles:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -94,7 +94,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def deliver_notification_for(scope:, the_thing:, **keywords)
+    def deliver_notification_for(scope:, the_thing:, repository: self, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -186,7 +186,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def manage_collaborators_for(work:, collaborators:)
+    def manage_collaborators_for(work:, collaborators:, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -294,7 +294,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def send_notification_for_entity_trigger(notification:, entity:, **roles_for_recipients)
+    def send_notification_for_entity_trigger(notification:, entity:, repository: self, **roles_for_recipients)
     end
 
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
@@ -318,7 +318,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
-    def update_work_attribute_values!(work:, key:, values:)
+    def update_work_attribute_values!(work:, key:, values:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
