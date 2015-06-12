@@ -24,7 +24,15 @@ module Sipity
 
       private
 
-      attr_writer :user, :processing_state, :order_by, :proxy_for_type
+      attr_writer :user, :processing_state, :proxy_for_type
+
+      def order=(input)
+        if ORDER_BY_OPTIONS.include?(input)
+          @order = input
+        else
+          @order = default_order
+        end
+      end
 
       def default_user
         nil

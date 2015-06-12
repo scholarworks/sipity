@@ -17,6 +17,11 @@ module Sipity
         it { should respond_to(:order) }
         it { should respond_to(:proxy_for_type) }
       end
+
+      it 'will fallback on default order if an invalid order is given' do
+        subject = described_class.new(order: 'chicken-sandwich')
+        expect(subject.order).to eq(subject.send(:default_order))
+      end
     end
   end
 end
