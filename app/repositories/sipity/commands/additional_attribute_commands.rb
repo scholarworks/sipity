@@ -3,15 +3,6 @@ module Sipity
   module Commands
     # Commands
     module AdditionalAttributeCommands
-      def update_work_publication_date!(work:, publication_date:)
-        return true unless publication_date.present?
-        update_work_attribute_values!(
-          work: work, key: Models::AdditionalAttribute::PUBLICATION_DATE_PREDICATE_NAME, values: publication_date
-        )
-      end
-      module_function :update_work_publication_date!
-      public :update_work_publication_date!
-
       def update_work_attribute_values!(work:, key:, values:)
         input_values = Array.wrap(values)
         existing_values = Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: key)
