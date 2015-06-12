@@ -15,7 +15,6 @@ module Sipity
         it { should respond_to(:user) }
         it { should respond_to(:processing_state) }
         it { should respond_to(:order_by) }
-        it { should respond_to(:repository) }
         it { should respond_to(:proxy_for_type) }
       end
     end

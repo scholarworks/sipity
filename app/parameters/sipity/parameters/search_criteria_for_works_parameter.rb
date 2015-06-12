@@ -18,14 +18,13 @@ module Sipity
         self.processing_state = keywords[:processing_state] || default_processing_state
         self.order_by = keywords[:order_by] || default_order_by
         self.proxy_for_type = keywords[:proxy_for_type] || default_proxy_for_type
-        self.repository = keywords.fetch(:repository) { default_repository }
       end
 
-      attr_reader :user, :processing_state, :order_by, :proxy_for_type, :repository
+      attr_reader :user, :processing_state, :order_by, :proxy_for_type
 
       private
 
-      attr_writer :user, :processing_state, :order_by, :proxy_for_type, :repository
+      attr_writer :user, :processing_state, :order_by, :proxy_for_type
 
       def default_user
         nil
@@ -41,10 +40,6 @@ module Sipity
 
       def default_proxy_for_type
         Models::Work
-      end
-
-      def default_repository
-        QueryRepository.new
       end
     end
   end

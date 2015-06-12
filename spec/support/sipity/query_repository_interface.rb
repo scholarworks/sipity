@@ -90,7 +90,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_via_search(criteria:)
+    def find_works_via_search(criteria:, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb

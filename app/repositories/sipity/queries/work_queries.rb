@@ -33,10 +33,9 @@ module Sipity
         )
       end
 
-      def find_works_via_search(criteria:)
-        find_works_for(
-          user: criteria.user, processing_state: criteria.processing_state, proxy_for_type: criteria.proxy_for_type,
-          repository: criteria.repository
+      def find_works_via_search(criteria:, repository: self)
+        repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+          user: criteria.user, proxy_for_type: criteria.proxy_for_type, filter: { processing_state: criteria.processing_state }
         )
       end
 
