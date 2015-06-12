@@ -1,14 +1,16 @@
 <section itemscope itemtype="http://schema.org/CreativeWork">
   {{ render_processing_state_notice }}
   <div class="row">
-    <div class="col-xs-12 work-show page-header">
-      <h1 class="work-title">
-        <span itemprop="name">{{ title }}</span>
-      </h1>
-      <p class="work-status">
-        <span class="work-type">{{ work_type }}</span> &bull;
-        <span class="work-processing-state">{{ processing_state }}</span>
-      </p>
+    <div class="col-xs-12 work-show">
+      <div class="page-header">
+        <h1 class="work-title">
+          <span itemprop="name">{{ title }}</span>
+        </h1>
+        <p class="work-status">
+          <span class="work-type">{{ work_type }}</span> &bull;
+          <span class="work-processing-state">{{ processing_state }}</span>
+        </p>
+      </div>
     </div>
   </div>
   {{render_current_comments}}
