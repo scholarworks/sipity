@@ -4,10 +4,15 @@ module Sipity
   module Queries
     RSpec.describe WorkQueries, type: :isolated_repository_module do
       context '#find_works_for' do
-        it 'will delegate to Policies::WorkPolicy::Scope' do
-          user = double
-          expect(Policies::WorkPolicy::Scope).to receive(:resolve)
-          test_repository.find_works_for(user: user)
+        let(:repository) { QueryRepositoryInterface.new }
+        let(:user) { double }
+        let(:processing_state) { double }
+
+        it 'will leverage the underlying scope_proxied_objects_for_the_user_and_proxy_for_type method' do
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
+            with(user: user, proxy_for_type: Models::Work, filter: { processing_state: processing_state }).
+            and_call_original
+          test_repository.find_works_for(user: user, processing_state: processing_state, repository: repository)
         end
       end
 

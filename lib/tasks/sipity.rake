@@ -94,6 +94,7 @@ namespace :sipity do
       name = type.pluralize.capitalize
       ::STATS_DIRECTORIES << [name, dir] unless ::STATS_DIRECTORIES.find { |array| array[0] == name }
     end
+    ::STATS_DIRECTORIES.reject! { |name, dir| dir =~ /javascripts\/?/ }
     ::STATS_DIRECTORIES.sort!
   end
 end

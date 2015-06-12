@@ -24,14 +24,10 @@ module Sipity
           grant_processing_permission_for!(entity: entity, actor: an_actor, role: acting_as)
         end
       end
-      module_function :grant_permission_for!
-      public :grant_permission_for!
 
       def grant_processing_permission_for!(entity:, actor:, role:)
         Services::GrantProcessingPermission.call(entity: entity, actor: actor, role: role)
       end
-      module_function :grant_processing_permission_for!
-      public :grant_processing_permission_for!
     end
   end
 end

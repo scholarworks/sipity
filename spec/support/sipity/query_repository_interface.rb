@@ -26,7 +26,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_dashboard_view(user:, filter: {})
+    def build_dashboard_view(user:, filter: {}, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
@@ -38,7 +38,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {})
+    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {}, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
@@ -86,7 +86,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_for(user:, processing_state: nil)
+    def find_works_for(user:, processing_state: nil, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb

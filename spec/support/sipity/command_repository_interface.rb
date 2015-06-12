@@ -26,7 +26,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def assign_collaborators_to(work:, collaborators:)
+    def assign_collaborators_to(work:, collaborators:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -42,7 +42,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_dashboard_view(user:, filter: {})
+    def build_dashboard_view(user:, filter: {}, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
@@ -54,7 +54,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {})
+    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {}, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -67,10 +67,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
-    end
-
-    # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def convert_recipient_roles_to_email(entity:, roles:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -94,7 +90,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def deliver_notification_for(scope:, the_thing:, **keywords)
+    def deliver_notification_for(scope:, the_thing:, repository: self, **keywords)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -150,7 +146,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_for(user:, processing_state: nil)
+    def find_works_for(user:, processing_state: nil, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
@@ -186,7 +182,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def manage_collaborators_for(work:, collaborators:)
+    def manage_collaborators_for(work:, collaborators:, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -293,10 +289,6 @@ module Sipity
     def scope_users_for_entity_and_roles(entity:, roles:)
     end
 
-    # @see ./app/repositories/sipity/commands/notification_commands.rb
-    def send_notification_for_entity_trigger(notification:, entity:, **roles_for_recipients)
-    end
-
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
     end
@@ -318,11 +310,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
-    def update_work_attribute_values!(work:, key:, values:)
-    end
-
-    # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
-    def update_work_publication_date!(work:, publication_date:)
+    def update_work_attribute_values!(work:, key:, values:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
