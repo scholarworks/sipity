@@ -8,7 +8,7 @@ module Sipity
         RSpec.describe ShowPresenter do
           let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/hello')) }
           let(:current_user) { double('Current User') }
-          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', work_processing_state: 'new') }
+          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', work_processing_state: 'new', sort_by: 'title') }
           let(:repository) { QueryRepositoryInterface.new }
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
@@ -50,7 +50,7 @@ module Sipity
 
           it 'exposes works as an enumerable' do
             expect(repository).to receive(:find_works_for).
-              with(user: current_user, processing_state: work_area.work_processing_state).and_call_original
+              with(user: current_user, processing_state: work_area.work_processing_state, sort_by: work_area.sort_by).and_call_original
             subject.works
           end
         end

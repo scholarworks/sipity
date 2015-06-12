@@ -27,7 +27,11 @@ module Sipity
           end
 
           def works
-            Array.wrap(repository.find_works_for(user: current_user, processing_state: work_area.work_processing_state))
+            Array.wrap(
+              repository.find_works_for(
+                user: current_user, processing_state: work_area.work_processing_state, sort_by: work_area.sort_by
+              )
+            )
           end
 
           private
@@ -59,6 +63,17 @@ module Sipity
                 work_area.input_name_for_select_work_processing_state,
                 options_from_collection_for_select(
                   work_area.work_processing_states_for_select, :to_s, :humanize, work_area.work_processing_state
+                ),
+                include_blank: true,
+                class: 'form-control'
+              ).html_safe
+            end
+
+            def select_tag_for_sort_order
+              select_tag(
+                work_area.input_name_for_select_sort_order,
+                options_from_collection_for_select(
+                  work_area.sort_by_options_for_select, :to_s, :humanize, work_area.sort_by
                 ),
                 include_blank: true,
                 class: 'form-control'
