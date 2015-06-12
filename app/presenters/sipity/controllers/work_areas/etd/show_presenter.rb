@@ -12,6 +12,7 @@ module Sipity
           def initialize(*args)
             super
             initialize_etd_variables!
+            initialize_search_criteria!
           end
 
           def start_a_submission_path
@@ -27,11 +28,7 @@ module Sipity
           end
 
           def works
-            Array.wrap(
-              repository.find_works_for(
-                user: current_user, processing_state: work_area.work_processing_state, sort_by: work_area.sort_by
-              )
-            )
+            repository.find_works_via_search(criteria: search_criteria)
           end
 
           private
@@ -51,6 +48,16 @@ module Sipity
             self.start_a_submission_action = convert_to_processing_action(ACTION_NAME_THAT_IS_HARD_CODED, scope: submission_window)
           end
 
+          def initialize_search_criteria!
+            @search_criteria = Parameters::SearchCriteriaForWorksParameter.new(
+              user: current_user,
+              processing_state: work_area.processing_state,
+              order_by: work_area.order_by,
+              repository: repository
+            )
+          end
+
+          attr_reader :search_criteria
           attr_accessor :submission_window, :start_a_submission_action
 
           # Responsible for rendering the form for filtering out the various
@@ -60,9 +67,9 @@ module Sipity
 
             def select_tag_for_processing_state
               select_tag(
-                work_area.input_name_for_select_work_processing_state,
+                work_area.input_name_for_select_processing_state,
                 options_from_collection_for_select(
-                  work_area.work_processing_states_for_select, :to_s, :humanize, work_area.work_processing_state
+                  work_area.processing_states_for_select, :to_s, :humanize, work_area.processing_state
                 ),
                 include_blank: true,
                 class: 'form-control'
@@ -73,7 +80,7 @@ module Sipity
               select_tag(
                 work_area.input_name_for_select_sort_order,
                 options_from_collection_for_select(
-                  work_area.sort_by_options_for_select, :to_s, :humanize, work_area.sort_by
+                  work_area.order_by_options_for_select, :to_s, :humanize, work_area.order_by
                 ),
                 include_blank: true,
                 class: 'form-control'

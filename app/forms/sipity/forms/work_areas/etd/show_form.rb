@@ -5,31 +5,34 @@ module Sipity
         # Responsible for "showing" an ETD Work Area.
         class ShowForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::WorkArea, attribute_names: [:work_processing_state, :sort_by]
+            form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order_by]
           )
 
           def initialize(work_area:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.work_area = work_area
-            self.work_processing_state = attributes[:work_processing_state]
-            self.sort_by = attributes.fetch(:sort_by) { default_sort_by }
+            self.processing_state = attributes[:processing_state]
+            self.order_by = attributes.fetch(:order_by) { default_order_by }
           end
 
-          # The form convention is that parameters are wrapped in the param_key
-          def input_name_for_select_work_processing_state
-            "#{model_name.param_key}[work_processing_state]"
+          # @note There is a correlation to the Parameters::SearchCriteriaForWorksParameter
+          #   object
+          def input_name_for_select_processing_state
+            "#{model_name.param_key}[processing_state]"
           end
 
+          # @note There is a correlation to the Parameters::SearchCriteriaForWorksParameter
+          #   object
           def input_name_for_select_sort_order
-            "#{model_name.param_key}[sort_by]"
+            "#{model_name.param_key}[order_by]"
           end
 
-          def work_processing_states_for_select
+          def processing_states_for_select
             repository.processing_state_names_for_select_within_work_area(work_area: work_area)
           end
 
-          def sort_by_options_for_select
-            ['title', 'created_at', 'updated_at']
+          def order_by_options_for_select
+            Parameters::SearchCriteriaForWorksParameter.order_by_options_for_select
           end
 
           include ActiveModel::Validations
@@ -44,8 +47,8 @@ module Sipity
             @work_area = input
           end
 
-          def default_sort_by
-            'title'
+          def default_order_by
+            Parameters::SearchCriteriaForWorksParameter.default_order_by
           end
         end
       end

@@ -8,7 +8,7 @@ module Sipity
         RSpec.describe ShowPresenter do
           let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/hello')) }
           let(:current_user) { double('Current User') }
-          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', work_processing_state: 'new', sort_by: 'title') }
+          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order_by: 'title') }
           let(:repository) { QueryRepositoryInterface.new }
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
@@ -49,8 +49,8 @@ module Sipity
           end
 
           it 'exposes works as an enumerable' do
-            expect(repository).to receive(:find_works_for).
-              with(user: current_user, processing_state: work_area.work_processing_state, sort_by: work_area.sort_by).and_call_original
+            expect(repository).to receive(:find_works_via_search).with(criteria: kind_of(Parameters::SearchCriteriaForWorksParameter)).
+              and_call_original
             subject.works
           end
         end
@@ -59,9 +59,12 @@ module Sipity
           let(:context) { PresenterHelper::ContextWithForm.new }
           let(:work_area) do
             double(
-              input_name_for_select_work_processing_state: 'hello[world]',
-              work_processing_state: 'new',
-              work_processing_states_for_select: ['say']
+              input_name_for_select_processing_state: 'hello[world]',
+              processing_state: 'new',
+              processing_states_for_select: ['new', 'say'],
+              input_name_for_select_sort_order: 'name[sort_order]',
+              order_by_options_for_select: ['title', 'created_at'],
+              order_by: 'title'
             )
           end
 
@@ -73,7 +76,16 @@ module Sipity
           it 'will expose select_tag_for_processing_state' do
             expect(subject.select_tag_for_processing_state).to have_tag('select[name="hello[world]"]') do
               with_tag("option[value='']", text: '')
+              with_tag("option[value='new'][selected='selected']", text: 'New')
               with_tag("option[value='say']", text: 'Say')
+            end
+          end
+
+          it 'will expose select_tag_for_sort_order' do
+            expect(subject.select_tag_for_sort_order).to have_tag('select[name="name[sort_order]"]') do
+              with_tag("option[value='']", text: '')
+              with_tag("option[value='title'][selected='selected']", text: 'Title')
+              with_tag("option[value='created_at']", text: 'Created at')
             end
           end
 

@@ -17,12 +17,13 @@ module Sipity
           it { should delegate_method(:name).to(:work_area) }
           it { should delegate_method(:slug).to(:work_area) }
 
-          its(:input_name_for_select_work_processing_state) { should eq('work_area[work_processing_state]') }
-          its(:input_name_for_select_sort_order) { should eq('work_area[sort_by]') }
+          its(:order_by_options_for_select) { should be_a(Array) }
+          its(:input_name_for_select_processing_state) { should eq('work_area[processing_state]') }
+          its(:input_name_for_select_sort_order) { should eq('work_area[order_by]') }
 
-          it 'will expose #work_processing_states_for_select' do
+          it 'will expose #processing_states_for_select' do
             expect(repository).to receive(:processing_state_names_for_select_within_work_area).with(work_area: work_area).and_call_original
-            subject.work_processing_states_for_select
+            subject.processing_states_for_select
           end
         end
       end
