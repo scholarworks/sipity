@@ -3,9 +3,9 @@ module Sipity
   module Commands
     # Commands
     module AdditionalAttributeCommands
-      def update_work_attribute_values!(work:, key:, values:)
+      def update_work_attribute_values!(work:, key:, values:, repository: self)
         input_values = Array.wrap(values)
-        existing_values = Queries::AdditionalAttributeQueries.work_attribute_values_for(work: work, key: key)
+        existing_values = repository.work_attribute_values_for(work: work, key: key)
         create_work_attribute_values!(work: work, key: key, values: (input_values - existing_values))
         destroy_work_attribute_values!(work: work, key: key, values: (existing_values - input_values))
       end
