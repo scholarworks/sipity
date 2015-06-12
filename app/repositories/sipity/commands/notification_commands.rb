@@ -16,9 +16,6 @@ module Sipity
         Services::DeliverFormSubmissionNotificationsService.call(notification_context: notification_context, repository: repository)
       end
 
-      alias_method :deliver_form_submission_notifications_for, :deliver_notification_for
-      deprecate :deliver_form_submission_notifications_for
-
       # Responsible for delivering notifications (i.e., email)
       # @param notification [String] Name of the notification
       # @param roles_for_recipients [Hash]
