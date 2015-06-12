@@ -52,7 +52,7 @@ module Sipity
             @search_criteria = Parameters::SearchCriteriaForWorksParameter.new(
               user: current_user,
               processing_state: work_area.processing_state,
-              order_by: work_area.order_by,
+              order: work_area.order,
               repository: repository
             )
           end
@@ -80,7 +80,7 @@ module Sipity
               select_tag(
                 work_area.input_name_for_select_sort_order,
                 options_from_collection_for_select(
-                  work_area.order_by_options_for_select, :to_s, :humanize, work_area.order_by
+                  work_area.order_options_for_select, :to_s, :humanize, work_area.order
                 ),
                 include_blank: true,
                 class: 'form-control'

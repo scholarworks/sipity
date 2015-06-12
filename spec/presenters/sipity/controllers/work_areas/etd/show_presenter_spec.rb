@@ -8,7 +8,7 @@ module Sipity
         RSpec.describe ShowPresenter do
           let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/hello')) }
           let(:current_user) { double('Current User') }
-          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order_by: 'title') }
+          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order: 'title') }
           let(:repository) { QueryRepositoryInterface.new }
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
@@ -63,8 +63,8 @@ module Sipity
               processing_state: 'new',
               processing_states_for_select: ['new', 'say'],
               input_name_for_select_sort_order: 'name[sort_order]',
-              order_by_options_for_select: ['title', 'created_at'],
-              order_by: 'title'
+              order_options_for_select: ['title', 'created_at'],
+              order: 'title'
             )
           end
 

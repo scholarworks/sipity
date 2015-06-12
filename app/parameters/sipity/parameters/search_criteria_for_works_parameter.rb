@@ -5,22 +5,22 @@ module Sipity
       DEFAULT_ORDER_BY = 'title'.freeze
       ORDER_BY_OPTIONS = [DEFAULT_ORDER_BY, 'created_at', 'updated_at'].freeze
 
-      def self.order_by_options_for_select
+      def self.order_options_for_select
         ORDER_BY_OPTIONS
       end
 
-      def self.default_order_by
+      def self.default_order
         DEFAULT_ORDER_BY
       end
 
       def initialize(**keywords)
         self.user = keywords[:user] || default_user
         self.processing_state = keywords[:processing_state] || default_processing_state
-        self.order_by = keywords[:order_by] || default_order_by
+        self.order = keywords[:order] || default_order
         self.proxy_for_type = keywords[:proxy_for_type] || default_proxy_for_type
       end
 
-      attr_reader :user, :processing_state, :order_by, :proxy_for_type
+      attr_reader :user, :processing_state, :order, :proxy_for_type
 
       private
 
@@ -30,7 +30,7 @@ module Sipity
         nil
       end
 
-      def default_order_by
+      def default_order
         DEFAULT_ORDER_BY
       end
 

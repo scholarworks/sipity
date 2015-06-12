@@ -5,14 +5,14 @@ module Sipity
         # Responsible for "showing" an ETD Work Area.
         class ShowForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order_by]
+            form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order]
           )
 
           def initialize(work_area:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.work_area = work_area
             self.processing_state = attributes[:processing_state]
-            self.order_by = attributes.fetch(:order_by) { default_order_by }
+            self.order = attributes.fetch(:order) { default_order }
           end
 
           # @note There is a correlation to the Parameters::SearchCriteriaForWorksParameter
@@ -24,15 +24,15 @@ module Sipity
           # @note There is a correlation to the Parameters::SearchCriteriaForWorksParameter
           #   object
           def input_name_for_select_sort_order
-            "#{model_name.param_key}[order_by]"
+            "#{model_name.param_key}[order]"
           end
 
           def processing_states_for_select
             repository.processing_state_names_for_select_within_work_area(work_area: work_area)
           end
 
-          def order_by_options_for_select
-            Parameters::SearchCriteriaForWorksParameter.order_by_options_for_select
+          def order_options_for_select
+            Parameters::SearchCriteriaForWorksParameter.order_options_for_select
           end
 
           include ActiveModel::Validations
@@ -47,8 +47,8 @@ module Sipity
             @work_area = input
           end
 
-          def default_order_by
-            Parameters::SearchCriteriaForWorksParameter.default_order_by
+          def default_order
+            Parameters::SearchCriteriaForWorksParameter.default_order
           end
         end
       end
