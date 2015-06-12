@@ -30,23 +30,5 @@ module Sipity
         end
       end
     end
-
-    RSpec.describe WorkPolicy::Scope do
-      let(:user) { User.new(id: 1234) }
-      let(:entity) { Models::Work.new(id: 5678) }
-      let(:repository) { QueryRepository.new }
-      subject { described_class.new(user, entity.class) }
-      its(:default_repository) { should respond_to :scope_proxied_objects_for_the_user_and_proxy_for_type }
-      context '.resolve' do
-        it 'will use the #scope_proxied_objects_for_the_user_and_proxy_for_type' do
-          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).and_call_original
-          described_class.resolve(user: user, repository: repository)
-        end
-
-        it 'will handle a processing_state' do
-          described_class.resolve(user: user, repository: repository, processing_state: 'new').first
-        end
-      end
-    end
   end
 end
