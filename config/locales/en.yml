@@ -184,11 +184,11 @@ en:
         choice: 'OR'
         email_contact_group_label: 'Non-ND:'
       degree:
-        title_html: 'Please choose a <b>degree</b> of your work'
-        hint_html: 'You must have choose a degree for your work'
+        title_html: 'Please choose a <b>degree</b> for this work'
+        hint_html: 'Select the degree for which you are submitting this work'
       program_name:
-        title_html: 'Please choose a <b>program name</b> of your work'
-        hint: 'You must have choose a program name for your work'
+        title_html: 'Please choose a <b>program name</b> for this work'
+        hint: 'Select the program name for which you are submitting this work'
       search_terms:
         title_html: 'Provide additional <b>search terms</b> for your item'
         hint: 'The more richly you describe your work the better we can promote it.'
