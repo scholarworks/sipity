@@ -70,9 +70,7 @@ module Sipity
                 work_area.input_name_for_select_processing_state,
                 options_from_collection_for_select(
                   work_area.processing_states_for_select, :to_s, :humanize, work_area.processing_state
-                ),
-                include_blank: true,
-                class: 'form-control'
+                ), include_blank: true, class: 'form-control'
               ).html_safe
             end
 
@@ -81,9 +79,7 @@ module Sipity
                 work_area.input_name_for_select_sort_order,
                 options_from_collection_for_select(
                   work_area.order_options_for_select, :to_s, :humanize, work_area.order
-                ),
-                include_blank: true,
-                class: 'form-control'
+                ), include_blank: true, class: 'form-control'
               ).html_safe
             end
 
