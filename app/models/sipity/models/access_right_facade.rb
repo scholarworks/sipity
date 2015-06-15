@@ -8,9 +8,10 @@ module Sipity
     # find_by_sql or some such thing that joins multiple models but pushes it
     # onto a single ActiveRecord object). But that could be confusing.
     class AccessRightFacade
-      def initialize(accessible_object, work:)
+      def initialize(accessible_object, work:, translator: default_translator)
         self.accessible_object = accessible_object
         self.work = work
+        self.translator = translator
       end
 
       delegate :to_param, :id, :persisted?, :to_s, to: :@accessible_object
@@ -20,8 +21,8 @@ module Sipity
       attr_reader :accessible_object, :work
       private :accessible_object, :work
 
-      def human_attribute_name(name)
-        accessible_object.class.human_attribute_name(name)
+      def translate(object, scope: default_translation_scope, subject: accessible_object, predicate: 'label')
+        translator.call(scope: scope, subject: subject, object: object, predicate: predicate)
       end
 
       delegate :model_name, to: :entity_type
@@ -35,6 +36,16 @@ module Sipity
       end
 
       private
+
+      attr_accessor :translator
+
+      def default_translation_scope
+        'access_rights'
+      end
+
+      def default_translator
+        Controllers::TranslationAssistantForPolymorphicType
+      end
 
       include Conversions::ConvertToPolymorphicType
       def accessible_object=(object)

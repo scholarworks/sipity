@@ -276,6 +276,13 @@ en:
       label: "Master’s Thesis"
     doctoral_dissertation:
       label: "Doctoral Dissertation"
+  access_rights:
+    models/attachment:
+      title:
+        label: 'File name'
+    models/work:
+      title:
+        label: 'Title'
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'
