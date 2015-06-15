@@ -451,19 +451,25 @@ module Sipity
       # @param [Hash] where - A where clause to evaluate against the ActiveRecord::Relation
       #
       # @return [ActiveRecord::Relation<proxy_for_types>]
-      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
+      def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, **query_criteria)
         proxy_for_type = Conversions::ConvertToPolymorphicType.call(proxy_for_type)
         scope = scope_processing_entities_for_the_user_and_proxy_for_type(
           user: user, proxy_for_type: proxy_for_type, filter: filter
         )
 
-        unfiltered = proxy_for_type.where(
+        scope = proxy_for_type.where(
           proxy_for_type.arel_table[proxy_for_type.primary_key].in(scope.entity).or(
             proxy_for_type.arel_table[proxy_for_type.primary_key].in(scope.strategy)
           )
         )
-        return unfiltered unless where.present?
-        unfiltered.where(where)
+        if query_criteria.key?(:where)
+          scope = scope.where(query_criteria.fetch(:where))
+        end
+
+        if query_criteria.key?(:order)
+          scope = scope.order(query_criteria.fetch(:order))
+        end
+        scope
       end
 
       PermissionScope = Struct.new(:entity, :strategy)

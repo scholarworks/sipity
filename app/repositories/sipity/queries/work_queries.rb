@@ -27,9 +27,16 @@ module Sipity
       end
 
       # @todo: Is there a Parameter Object that makes more sense?
-      def find_works_for(user:, processing_state: nil, repository: self)
+      def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work)
         repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-          user: user, proxy_for_type: Models::Work, filter: { processing_state: processing_state }
+          user: user, proxy_for_type: proxy_for_type, filter: { processing_state: processing_state }
+        )
+      end
+
+      def find_works_via_search(criteria:, repository: self)
+        repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+          user: criteria.user, proxy_for_type: criteria.proxy_for_type, filter: { processing_state: criteria.processing_state },
+          order: criteria.order
         )
       end
 

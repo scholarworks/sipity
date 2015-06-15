@@ -146,7 +146,11 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_for(user:, processing_state: nil, repository: self)
+    def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work)
+    end
+
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def find_works_via_search(criteria:, repository: self)
     end
 
     # @see ./app/repositories/sipity/queries/simple_controlled_vocabulary_queries.rb
@@ -250,7 +254,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, where: {})
+    def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, **query_criteria)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

@@ -19,6 +19,7 @@
       {{@filter_form}}
         <fieldset class="form-group">
           {{select_tag_for_processing_state}}
+          {{select_tag_for_sort_order}}
         </fieldset>
         {{submit_button}}
       {{/filter_form}}

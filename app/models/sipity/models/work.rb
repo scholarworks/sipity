@@ -5,8 +5,6 @@ module Sipity
       self.table_name = 'sipity_works'
       self.primary_key = :id
 
-      default_scope { order(:title) }
-
       has_many :collaborators, foreign_key: :work_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy
       has_many :attachments, foreign_key: :work_id, dependent: :destroy

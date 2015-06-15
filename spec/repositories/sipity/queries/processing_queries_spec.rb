@@ -148,19 +148,19 @@ module Sipity
         it "will resolve to an array of entities" do
           work_one = commands.create_work!(
             submission_window: submission_window,
-            title: 'Book',
+            title: 'One',
             work_type: 'doctoral_dissertation',
             work_publication_strategy: 'will_not_publish'
           )
           work_two = commands.create_work!(
             submission_window: submission_window,
-            title: 'Book',
+            title: 'Two',
             work_type: 'doctoral_dissertation',
             work_publication_strategy: 'will_not_publish'
           )
           work_three = commands.create_work!(
             submission_window: submission_window,
-            title: 'Book',
+            title: 'Three',
             work_type: 'doctoral_dissertation',
             work_publication_strategy: 'will_not_publish'
           )
@@ -186,6 +186,12 @@ module Sipity
               user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'new' }
             ).sort(&sorter)
           ).to eq([work_one, work_two].sort(&sorter))
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'new' }, order: 'title DESC'
+            )
+          ).to eq([work_two, work_one])
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
