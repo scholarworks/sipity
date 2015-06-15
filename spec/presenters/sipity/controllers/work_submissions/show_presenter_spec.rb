@@ -98,6 +98,11 @@ module Sipity
           subject.work_type
         end
 
+        it 'will expose human_readable_processing_state' do
+          allow(I18n).to receive(:t).and_return('Human readable')
+          expect(subject.human_readable_processing_state).to eq('Human readable')
+        end
+
         context '#label' do
           it "will delegate to the work_submission's human_attribute_name" do
             expect(subject.label(:title)).to eq('Title')
