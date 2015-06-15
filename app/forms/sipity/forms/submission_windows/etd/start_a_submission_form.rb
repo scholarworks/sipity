@@ -135,7 +135,7 @@ module Sipity
           end
 
           def default_access_rights_answer
-            Models::AccessRight::PRIVATE_ACCESS
+            Models::AccessRight::OPEN_ACCESS
           end
 
           def default_repository
