@@ -12,6 +12,7 @@
       <%= f.input :work_publication_strategy, as: :radio_buttons, collection: view_object.work_publication_strategies_for_select, label: false %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'work_patent_strategy', theme: :primary, object: view_object }) do %>
+      <p><%= view_object.translate('work_patent_strategy', scope: 'panel_headings', predicate: 'description') %></p>
       <%= f.input :work_patent_strategy, as: :radio_buttons, collection: view_object.work_patent_strategies_for_select, label: false %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'access_rights_answer', theme: :primary, object: view_object }) do %>

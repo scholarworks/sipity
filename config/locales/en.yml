@@ -221,7 +221,8 @@ en:
     work_publication_strategy:
       label: 'Do you plan to <b>publish</b> this work?'
     work_patent_strategy:
-      label: 'Do you plan to <b>patent</b> this work?'
+      label: 'What is the <b>patent</b> intent of this work?'
+      description: "Does this work contain the first public disclosure of material being considered for patent protection?"
     work_type:
       label: 'What <b>type</b> of work is this?'
   sections:
