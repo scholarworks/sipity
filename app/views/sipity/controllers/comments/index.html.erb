@@ -14,13 +14,13 @@
       </div>
     </div>
   </div>
-  <div class="row">
-    <% @model.comments.each do |comment| %>
-      <div class="alert alert-warning feedback-notice">
-        <p><strong>Feedback from <%= comment.name_of_commentor %></strong>:</p>
-        <p><%= comment.comment %></p>
-      </div>
-    <% end %>
+  <div class="feedback-notice">
+  <% @model.comments.each do |comment| %>
+    <div class="alert alert-warning">
+      <p><strong>Feedback from <%= comment.name_of_commentor %> on <%= comment.created_date %></strong>:</p>
+      <p><%= comment.comment %></p>
+    </div>
+  <% end %>
   </div>
   <%= link_to "Back to #{@model.work_type.humanize}", work_path(id: @model.id) %>
 </section>
