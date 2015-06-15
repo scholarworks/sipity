@@ -5,14 +5,16 @@ module Sipity
         # Responsible for "showing" an ETD Work Area.
         class ShowForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order]
+            form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order, :page]
           )
 
           def initialize(work_area:, attributes: {}, **keywords)
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
+            self.search_criteria_config = keywords.fetch(:search_criteria_config) { default_search_criteria_config }
             self.work_area = work_area
             self.processing_state = attributes[:processing_state]
             self.order = attributes.fetch(:order) { default_order }
+            self.page = attributes.fetch(:page) { default_page }
           end
 
           # @note There is a correlation to the Parameters::SearchCriteriaForWorksParameter
@@ -31,15 +33,14 @@ module Sipity
             repository.processing_state_names_for_select_within_work_area(work_area: work_area)
           end
 
-          def order_options_for_select
-            Parameters::SearchCriteriaForWorksParameter.order_options_for_select
-          end
-
           include ActiveModel::Validations
 
           delegate :name, :slug, to: :work_area
 
           private
+
+          delegate :default_order, :default_page, :order_options_for_select, to: :search_criteria_config
+          attr_accessor :search_criteria_config
 
           include GuardInterfaceExpectation
           def work_area=(input)
@@ -47,8 +48,8 @@ module Sipity
             @work_area = input
           end
 
-          def default_order
-            Parameters::SearchCriteriaForWorksParameter.default_order
+          def default_search_criteria_config
+            Parameters::SearchCriteriaForWorksParameter
           end
         end
       end
