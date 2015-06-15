@@ -36,7 +36,7 @@ module Sipity
       def find_works_via_search(criteria:, repository: self)
         repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
           user: criteria.user, proxy_for_type: criteria.proxy_for_type, filter: { processing_state: criteria.processing_state },
-          order: criteria.order
+          order: criteria.order, page: criteria.page
         )
       end
 

@@ -177,7 +177,7 @@ module Sipity
           sorter = ->(a, b) { a.id <=> b.id } # Because IDs may not be sorted
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-              user: user, proxy_for_type: Sipity::Models::Work
+              user: user, proxy_for_type: Sipity::Models::Work, page: 1
             ).sort(&sorter)
           ).to eq([work_one, work_two].sort(&sorter))
 

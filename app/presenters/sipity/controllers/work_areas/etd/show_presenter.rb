@@ -27,8 +27,14 @@ module Sipity
           end
 
           def works
-            initialize_search_criteria!
-            repository.find_works_via_search(criteria: search_criteria)
+            @works ||= begin
+              initialize_search_criteria!
+              repository.find_works_via_search(criteria: search_criteria)
+            end
+          end
+
+          def paginate_works
+            paginate(works)
           end
 
           private
@@ -52,6 +58,7 @@ module Sipity
             @search_criteria = Parameters::SearchCriteriaForWorksParameter.new(
               user: current_user,
               processing_state: work_area.processing_state,
+              page: work_area.page,
               order: work_area.order,
               repository: repository
             )
@@ -70,9 +77,7 @@ module Sipity
                 work_area.input_name_for_select_processing_state,
                 options_from_collection_for_select(
                   work_area.processing_states_for_select, :to_s, :humanize, work_area.processing_state
-                ),
-                include_blank: true,
-                class: 'form-control'
+                ), include_blank: true, class: 'form-control'
               ).html_safe
             end
 
@@ -81,9 +86,7 @@ module Sipity
                 work_area.input_name_for_select_sort_order,
                 options_from_collection_for_select(
                   work_area.order_options_for_select, :to_s, :humanize, work_area.order
-                ),
-                include_blank: true,
-                class: 'form-control'
+                ), include_blank: true, class: 'form-control'
               ).html_safe
             end
 

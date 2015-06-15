@@ -39,7 +39,11 @@ module Sipity
       end
 
       def query_or_command_attributes
-        params.fetch(:work_area) { HashWithIndifferentAccess.new }
+        # Munging pagination into the work area attributes. This is a concession
+        # for having a common handler for the query_action.
+        params.fetch(:work_area) { HashWithIndifferentAccess.new }.tap do |work_area|
+          work_area[:page] = params[Kaminari.config.param_name] if params.key?(Kaminari.config.param_name) && !work_area.key?(:page)
+        end
       end
     end
   end
