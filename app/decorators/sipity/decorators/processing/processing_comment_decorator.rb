@@ -12,7 +12,11 @@ module Sipity
           work.work_type.titleize
         end
 
-        delegate :comment, :entity, :name_of_commentor, to: :processing_comment
+        def created_date
+          created_at.strftime('%d %b %Y')
+        end
+
+        delegate :comment, :entity, :name_of_commentor, :created_at, to: :processing_comment
         private :entity
 
         private

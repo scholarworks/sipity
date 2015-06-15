@@ -8,10 +8,18 @@ module Sipity
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
         let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
         let(:entity) { Models::Processing::Entity.new(proxy_for: work) }
-        let(:processing_comment) { Models::Processing::Comment.new(comment: 'hello', actor: actor, entity: entity) }
+        let(:processing_comment) do
+          Models::Processing::Comment.new(
+            actor: actor,
+            comment: 'hello',
+            created_at: Time.zone.local('2015'),
+            entity: entity
+          )
+        end
         subject { described_class.new(processing_comment) }
 
         its(:comment) { should eq processing_comment.comment }
+        its(:created_date) { should match(/2015/) }
         its(:name_of_commentor) { should eq(user.name) }
         its(:work_type) { should eq('Doctoral Dissertation') }
       end

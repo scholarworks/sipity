@@ -39,7 +39,7 @@ module Sipity
 
         def render_current_comments
           # I'm keeping these as one method as its all rather interrelated
-          # Plus, I'd prefer to no memoize comments
+          # Plus, I'd prefer to not memoize comments
           current_comments = repository.find_current_comments_for(entity: work_submission)
           return unless current_comments.any?
           object = Parameters::EntityWithCommentsParameter.new(comments: current_comments, entity: work_submission)
@@ -79,6 +79,10 @@ module Sipity
 
         def processing_state
           work_submission.processing_state.to_s
+        end
+
+        def human_readable_processing_state
+          I18n.t("sipity/works.processing_state.label.#{processing_state}")
         end
 
         def label(identifier)
