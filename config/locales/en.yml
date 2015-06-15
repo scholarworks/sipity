@@ -224,6 +224,9 @@ en:
       label: 'Do you plan to <b>patent</b> this work?'
     work_type:
       label: 'What <b>type</b> of work is this?'
+  sections:
+    todo:
+      label: 'To-do'
   processing_actions:
     publishing_and_patenting_intent:
       label: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
