@@ -448,7 +448,13 @@ module Sipity
       # @param [Hash] filter
       # @option filter [String] :processing_state - Limit the returned objects
       #   to those objects that are in the named :processing_state
-      # @param [Hash] where - A where clause to evaluate against the ActiveRecord::Relation
+      # @param [Hash] query_criteria
+      # @option query_criteria [Hash] :where - A where clause to evaluate against
+      #   the ActiveRecord::Relation
+      # @option query_criteria [String,Array] :order - An order clause to evaluate against
+      #   the ActiveRecord::Relation
+      # @option query_criteria [Integer] :page - A page value to apply pagination
+      #   to the query
       #
       # @return [ActiveRecord::Relation<proxy_for_types>]
       def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, **query_criteria)
@@ -468,6 +474,10 @@ module Sipity
 
         if query_criteria.key?(:order)
           scope = scope.order(query_criteria.fetch(:order))
+        end
+
+        if query_criteria.key?(:page)
+          scope = scope.page(query_criteria.fetch(:page))
         end
         scope
       end
