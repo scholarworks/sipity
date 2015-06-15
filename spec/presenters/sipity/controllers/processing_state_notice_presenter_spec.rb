@@ -13,11 +13,17 @@ module Sipity
       its(:can_advance_processing_state?) { should eq(processing_state_notice.can_advance_processing_state?) }
       its(:processing_state) { should eq(processing_state_notice.processing_state) }
 
+      it 'exposes message?' do
+        expect(I18n).to receive(:t).and_return('')
+        expect(subject.message?).to eq(false)
+      end
+
       context 'when you can advance the processing state' do
         let(:processing_state_notice) { double(processing_state: 'hello', can_advance_processing_state?: true) }
         its(:notice_dom_class) { should eq('alert-success') }
         its(:message) { should be_a(String) }
         its(:message) { should be_html_safe }
+
       end
 
       context 'when you cannote advance the processing state' do
