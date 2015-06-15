@@ -6,9 +6,9 @@ module Sipity
     module WorkAreas
       module Etd
         RSpec.describe ShowPresenter do
-          let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/hello')) }
+          let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/path'), paginate: true) }
           let(:current_user) { double('Current User') }
-          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order: 'title') }
+          let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order: 'title', page: 1) }
           let(:repository) { QueryRepositoryInterface.new }
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
@@ -52,6 +52,13 @@ module Sipity
             expect(repository).to receive(:find_works_via_search).with(criteria: kind_of(Parameters::SearchCriteriaForWorksParameter)).
               and_call_original
             subject.works
+          end
+
+          it 'will paginate the works' do
+            works = double
+            allow(repository).to receive(:find_works_via_search).and_return(works)
+            expect(context).to receive(:paginate).with(works)
+            subject.paginate_works
           end
         end
 

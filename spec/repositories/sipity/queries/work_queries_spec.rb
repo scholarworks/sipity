@@ -18,11 +18,11 @@ module Sipity
 
       context '#find_works_via_search' do
         let(:repository) { QueryRepositoryInterface.new }
-        let(:criteria) { double(user: double, processing_state: double, proxy_for_type: double, order: double) }
+        let(:criteria) { double(user: double, processing_state: double, proxy_for_type: double, order: double, page: double) }
         it 'will leverage the underlying scope_proxied_objects_for_the_user_and_proxy_for_type method' do
           expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).with(
             user: criteria.user, proxy_for_type: criteria.proxy_for_type,
-            filter: { processing_state: criteria.processing_state }, order: criteria.order
+            filter: { processing_state: criteria.processing_state }, order: criteria.order, page: criteria.page
           ).and_call_original
           test_repository.find_works_via_search(criteria: criteria, repository: repository)
         end
