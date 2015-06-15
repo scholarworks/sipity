@@ -273,6 +273,8 @@ en:
   work_types:
     master_thesis:
       label: "Master’s Thesis"
+    doctoral_dissertation:
+      label: "Doctoral Dissertation"
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'
