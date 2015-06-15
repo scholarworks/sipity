@@ -23,7 +23,9 @@ module Sipity
       its(:human_model_name) { should eq(work.class.model_name.human) }
 
       it 'will leverage the access right to translate human_attribute_name' do
-        expect(subject.human_attribute_name(:title)).to eq('Title')
+        expect(subject.send(:translator)).
+          to receive(:call).with(scope: 'access_rights', object: :title, subject: object, predicate: 'label')
+        subject.translate(:title)
       end
 
       context 'with prepopulation of access right information' do
