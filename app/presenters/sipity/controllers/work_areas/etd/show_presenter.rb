@@ -12,7 +12,6 @@ module Sipity
           def initialize(*args)
             super
             initialize_etd_variables!
-            initialize_search_criteria!
           end
 
           def start_a_submission_path
@@ -28,6 +27,7 @@ module Sipity
           end
 
           def works
+            initialize_search_criteria!
             repository.find_works_via_search(criteria: search_criteria)
           end
 
