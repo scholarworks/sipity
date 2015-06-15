@@ -208,6 +208,11 @@ en:
         title_html: "Project Information"
       project_evaluation:
         title_html: "Project Evaluation"
+  attributes:
+    work_patent_strategy:
+      label: 'Patent Intent'
+    work_publication_strategy:
+      label: 'Publication Intent'
   panel_headings:
     access_rights_answer:
       label: 'Who should have <b>access</b> to this work after it is deposited?'

@@ -4,8 +4,14 @@ module Sipity
     class AdditionalAttributePresenter < Curly::Presenter
       presents :additional_attribute
 
+      include GuardInterfaceExpectation
+      def initialize(*args)
+        super
+        guard_interface_expectation!(additional_attribute, :entity, :key, :values)
+      end
+
       def label
-        key.titleize
+        TranslationAssistant.call(scope: 'attributes', subject: additional_attribute.entity, object: key, predicate: 'label')
       end
 
       def render_list_of_values
