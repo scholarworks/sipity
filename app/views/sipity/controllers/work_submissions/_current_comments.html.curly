@@ -1,9 +1,13 @@
 <div class="row">
-  <div class="col-md-6 alert alert-warning feedback-notice">
+  <div class="col-md-6 feedback-notice">
+    <div class="alert alert-warning">
     {{*comments}}
       <p><strong>Feedback from {{name_of_commentor}}</strong>:</p>
       <p>{{message}}</p>
     {{/comments}}
+    </div>
+    {{#multiple_comments?}}
+      <p><a href="{{path_to_all_comments}}" class="btn btn-link">Show all comments</a></p>
+    {{/multiple_comments?}}
   </div>
-  <p><a href="{{path_to_all_comments}}">Show all comments</a></p>
 </div>

@@ -8,6 +8,10 @@ module Sipity
         work_comments_path(work_id: current_comments.entity)
       end
 
+      def multiple_comments?
+        current_comments.comments.count > 1
+      end
+
       delegate :comments, to: :current_comments
 
       private
