@@ -367,7 +367,7 @@ en:
       citation:
         type: 'Citation format'
       work:
-        representative_attachment_id: 'Please select which file is your manuscript'
+        representative_attachment_id: 'Please select the manuscript file'
         files: 'Select files to upload'
   errors:
     attributes:
