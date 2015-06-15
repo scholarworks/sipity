@@ -12,6 +12,23 @@ module Sipity
         its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkAreaHandler) }
       end
 
+      context '#query_or_command_attributes' do
+        it 'will merge the :page attribute if the work area does not already have one' do
+          allow(controller).to receive(:params).and_return(work_area: { chicken: 'nugget' }, page: 1)
+          expect(controller.send(:query_or_command_attributes)).to eq(chicken: 'nugget', page: 1)
+        end
+
+        it 'will not add the :page attribute if the work area has one' do
+          allow(controller).to receive(:params).and_return(work_area: { chicken: 'nugget', page: 'hello' }, page: 1)
+          expect(controller.send(:query_or_command_attributes)).to eq(chicken: 'nugget', page: 'hello')
+        end
+
+        it 'will not append :page attribute if none is present' do
+          allow(controller).to receive(:params).and_return(work_area: { chicken: 'nugget' })
+          expect(controller.send(:query_or_command_attributes)).to eq(chicken: 'nugget')
+        end
+      end
+
       context 'GET #query_action' do
         let(:processing_action_name) { 'fun_things' }
         it 'will will collaborate with the processing action composer' do
