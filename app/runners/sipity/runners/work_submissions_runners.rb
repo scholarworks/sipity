@@ -10,7 +10,7 @@ module Sipity
         def run(work_id:, processing_action_name:, attributes: {})
           work = repository.find_work_by(id: work_id)
           form = repository.build_work_submission_processing_action_form(
-            work: work, processing_action_name: processing_action_name, attributes: attributes
+            work: work, processing_action_name: processing_action_name, attributes: attributes, requested_by: current_user
           )
           authorization_layer.enforce!(processing_action_name => form) do
             yield(form, work)
@@ -34,7 +34,7 @@ module Sipity
         def run(work_id:, processing_action_name:, attributes: {})
           super do |form, _work|
             ActiveRecord::Base.transaction do
-              response = form.submit(requested_by: current_user)
+              response = form.submit
               if response
                 callback(:submit_success, response)
               else
