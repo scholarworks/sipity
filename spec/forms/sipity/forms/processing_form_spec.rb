@@ -6,11 +6,10 @@ module Sipity
       let(:entity) { double }
       let(:form) do
         double(
-          'Form', {
-            entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'), errors: true,
-            model_name: true, param_key: true, processing_action_name: true, translate: true,
-            to_processing_entity: true, to_processing_action: true, to_work_area: true, template: true, requested_by: user
-          }
+          'Form',
+          entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'), errors: true,
+          model_name: true, param_key: true, processing_action_name: true, translate: true,
+          to_processing_entity: true, to_processing_action: true, to_work_area: true, template: true, requested_by: user
         )
       end
       let(:repository) { CommandRepositoryInterface.new }
@@ -67,9 +66,10 @@ module Sipity
         end
         it 'will default the identifier to the processing_action_name' do
           subject.translate('name')
-          expect(translator).to have_received(:call).
-            with(scope: "processing_actions.#{subject.processing_action_name}", object: 'name', predicate: :label, subject: entity)
-            end
+          expect(translator).to have_received(:call).with(
+            scope: "processing_actions.#{subject.processing_action_name}", object: 'name', predicate: :label, subject: entity
+          )
+        end
       end
 
       it 'should convert the underlying entity to a processing entity' do

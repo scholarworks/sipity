@@ -14,7 +14,7 @@ module Sipity
           its(:processing_action_name) { should eq('grad_school_requests_change') }
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
-            it { should_not be_persisted }
+          it { should_not be_persisted }
           it { should implement_processing_form_interface }
 
           it 'will validate the presence of the :comment' do
