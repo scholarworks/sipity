@@ -21,11 +21,8 @@ module Sipity
           end
 
           delegate(
-            :valid_on_behalf_of_collaborators,
-            :on_behalf_of_collaborator,
-            :on_behalf_of_collaborator_id,
-            :on_behalf_of_collaborator_id=,
-            :valid_on_behalf_of_collaborator_ids,
+            :valid_on_behalf_of_collaborators, :on_behalf_of_collaborator, :on_behalf_of_collaborator_id,
+            :on_behalf_of_collaborator_id=, :valid_on_behalf_of_collaborator_ids,
             to: :on_behalf_of_collaborator_extension
           )
           private(:on_behalf_of_collaborator_id=)
