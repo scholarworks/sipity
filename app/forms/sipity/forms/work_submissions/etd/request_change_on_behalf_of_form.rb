@@ -12,8 +12,9 @@ module Sipity
             template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.comment = attributes[:comment]
             self.on_behalf_of_collaborator_extension = build_collaborator_extension
@@ -40,9 +41,9 @@ module Sipity
             markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
           end
 
-          def submit(requested_by:)
+          def submit
             return false unless valid?
-            save(requested_by: requested_by)
+            save
             work
           end
 
@@ -58,7 +59,7 @@ module Sipity
 
           attr_accessor :on_behalf_of_collaborator_extension
 
-          def save(requested_by:)
+          def save
             Services::RequestChangesViaCommentService.call(
               form: self, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of_collaborator
             )

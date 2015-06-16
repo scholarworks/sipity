@@ -8,9 +8,9 @@ module Sipity
           let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
           let(:work) { double('Work', to_processing_entity: processing_entity) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'hello') }
-          let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:user) { double }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          subject { described_class.new(keywords) }
 
           before do
             allow_any_instance_of(Forms::ComposableElements::OnBehalfOfCollaborator).
@@ -38,21 +38,19 @@ module Sipity
 
           context 'validations' do
             it 'will require a comment' do
-              subject = described_class.new(work: work, repository: repository, attributes: { comment: nil })
+              subject = described_class.new(keywords.merge(attributes: { comment: nil }))
               subject.valid?
               expect(subject.errors[:comment]).to be_present
             end
 
             it 'will require an on_behalf_of_collaborator_id' do
-              subject = described_class.new(work: work, repository: repository, attributes: { on_behalf_of_collaborator_id: nil })
+              subject = described_class.new(keywords.merge(attributes: { on_behalf_of_collaborator_id: nil }))
               subject.valid?
               expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
             end
 
             it 'will requires a valid on_behalf_of_collaborator_id' do
-              subject = described_class.new(
-                work: work, repository: repository, attributes: { on_behalf_of_collaborator_id: someone.id * 2 }
-              )
+              subject = described_class.new(keywords.merge(attributes: { on_behalf_of_collaborator_id: someone.id * 2 }))
               subject.valid?
               expect(subject.errors[:on_behalf_of_collaborator_id]).to be_present
             end
@@ -60,9 +58,7 @@ module Sipity
 
           context 'with valid data' do
             subject do
-              described_class.new(
-                work: work, repository: repository, attributes: { comment: 'Comments!', on_behalf_of_collaborator_id: someone.id }
-              )
+              described_class.new(keywords.merge(attributes: { comment: 'Comments!', on_behalf_of_collaborator_id: someone.id }))
             end
             let(:a_processing_comment) { double }
             before do
@@ -71,7 +67,17 @@ module Sipity
 
             it 'will delegate to Services::RequestChangesViaCommentService' do
               expect(Services::RequestChangesViaCommentService).to receive(:call)
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
+            end
+          end
+
+          context 'with invalid data' do
+            subject { described_class.new(keywords) }
+            before { expect(subject).to receive(:valid?).and_return(false) }
+
+            it 'will not call Services::RequestChangesViaCommentService' do
+              expect(Services::RequestChangesViaCommentService).to_not receive(:call)
+              expect(subject.submit).to eq(false)
             end
           end
         end
