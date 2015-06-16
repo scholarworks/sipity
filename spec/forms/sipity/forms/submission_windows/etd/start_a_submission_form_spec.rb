@@ -185,8 +185,7 @@ module Sipity
               end
 
               it 'will also register the action on the work' do
-                expect(repository).to receive(:register_action_taken_on_entity).
-                with(
+                expect(repository).to receive(:register_action_taken_on_entity).with(
                   entity: work, action: subject.processing_action_name, requested_by: user,
                   also_register_as: described_class::ALSO_REGISTER_WORK_ACTION_NAME
                 ).and_call_original
