@@ -21,29 +21,16 @@ module Sipity
           end
 
           delegate(
-            :work_patent_strategy,
-            :work_patent_strategy=,
-            :work_patent_strategy_from_work,
-            :work_patent_strategies_for_select,
-            :possible_work_patent_strategies,
-            :persist_work_patent_strategy,
-            :work_publication_strategy,
-            :work_publication_strategy=,
-            :work_publication_strategy_from_work,
-            :work_publication_strategies_for_select,
-            :possible_work_publication_strategies,
-            :persist_work_publication_strategy,
+            :work_patent_strategy, :work_patent_strategy=, :work_patent_strategy_from_work, :work_patent_strategies_for_select,
+            :possible_work_patent_strategies, :persist_work_patent_strategy,
+            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategy_from_work,
+            :work_publication_strategies_for_select, :possible_work_publication_strategies, :persist_work_publication_strategy,
             to: :publication_and_patenting_intent_extension
           )
 
           private(
-            :work_patent_strategy=,
-            :work_patent_strategy_from_work,
-            :possible_work_patent_strategies,
-            :persist_work_patent_strategy,
-            :work_publication_strategy=,
-            :work_publication_strategy_from_work,
-            :possible_work_publication_strategies,
+            :work_patent_strategy=, :work_patent_strategy_from_work, :possible_work_patent_strategies, :persist_work_patent_strategy,
+            :work_publication_strategy=, :work_publication_strategy_from_work, :possible_work_publication_strategies,
             :persist_work_publication_strategy
           )
 
