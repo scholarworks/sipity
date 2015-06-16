@@ -7,8 +7,9 @@ module Sipity
         RSpec.describe RespondToGradSchoolRequestForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:user) { double('User') }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          subject { described_class.new(keywords) }
 
           context '#render' do
             let(:f) { double }
@@ -24,8 +25,8 @@ module Sipity
           context 'without valid data' do
             it 'will not save the form' do
               expect(subject).to receive(:valid?).and_return(false)
-              expect(subject).to_not receive(:save)
-              expect(subject.submit(requested_by: user)).to eq(false)
+              expect(Services::RequestChangesViaCommentService).to_not receive(:call)
+              expect(subject.submit).to eq(false)
             end
           end
 
@@ -37,11 +38,11 @@ module Sipity
 
             it 'will delegate to Services::RequestChangesViaCommentService' do
               expect(Services::RequestChangesViaCommentService).to receive(:call)
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will return the work' do
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
             end
           end
         end
