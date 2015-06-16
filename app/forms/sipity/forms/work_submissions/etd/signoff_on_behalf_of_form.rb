@@ -24,11 +24,8 @@ module Sipity
           validates :on_behalf_of_collaborator_id, presence: true, inclusion: { in: :valid_on_behalf_of_collaborator_ids }
 
           delegate(
-            :valid_on_behalf_of_collaborators,
-            :on_behalf_of_collaborator,
-            :on_behalf_of_collaborator_id,
-            :on_behalf_of_collaborator_id=,
-            :valid_on_behalf_of_collaborator_ids,
+            :valid_on_behalf_of_collaborators, :on_behalf_of_collaborator, :on_behalf_of_collaborator_id,
+            :on_behalf_of_collaborator_id=, :valid_on_behalf_of_collaborator_ids,
             to: :on_behalf_of_collaborator_extension
           )
 
