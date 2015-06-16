@@ -11,13 +11,19 @@ module Sipity
           let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'advisor_signoff') }
           let(:user) { User.new(id: 1) }
           let(:signoff_service) { double('Signoff Service', call: true) }
-          subject do
-            described_class.new(work: work, processing_action_name: action, signoff_service: signoff_service, repository: repository)
+          let(:attributes) { {} }
+          let(:keywords) do
+            {
+              work: work, repository: repository, requested_by: user, signoff_service: signoff_service, attributes: attributes,
+              processing_action_name: action
+            }
           end
+          subject { described_class.new(keywords) }
 
           context 'the default signoff service' do
             it 'will respond to :call' do
-              expect(described_class.new(work: work, processing_action_name: action).send(:default_signoff_service)).to respond_to(:call)
+              expect(described_class.new(work: work, requested_by: user, processing_action_name: action).send(:default_signoff_service)).
+                to respond_to(:call)
             end
           end
 
@@ -37,7 +43,7 @@ module Sipity
 
           context 'validation' do
             it 'will require agreement to the signoff' do
-              subject = described_class.new(work: work, processing_action_name: action, repository: repository)
+              subject = described_class.new(keywords)
               subject.valid?
               expect(subject.errors[:agree_to_signoff]).to be_present
             end
@@ -49,7 +55,7 @@ module Sipity
               expect(signoff_service).to_not receive(:call)
             end
             it 'will return the false' do
-              expect(subject.submit(requested_by: user)).to eq(false)
+              expect(subject.submit).to eq(false)
             end
           end
 
@@ -60,18 +66,18 @@ module Sipity
 
             it 'will not call the processing_action_form\'s submit' do
               expect_any_instance_of(ProcessingForm).to_not receive(:submit)
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will return the given work' do
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
             end
 
             it 'will call the AdvisorSignsOff service' do
               expect(signoff_service).to receive(:call).with(
                 form: subject, requested_by: user, repository: repository, also_register_as: described_class::RELATED_ACTION_FOR_SIGNOFF
               )
-              subject.submit(requested_by: user)
+              subject.submit
             end
           end
         end
