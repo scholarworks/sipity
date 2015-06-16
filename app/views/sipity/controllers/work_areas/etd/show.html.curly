@@ -67,3 +67,7 @@
     </div>
   {{/resourceful_actions?}}
 </section>
+
+<section>
+  {{ translate.landing_page_greeting_help_html }}
+</section>
