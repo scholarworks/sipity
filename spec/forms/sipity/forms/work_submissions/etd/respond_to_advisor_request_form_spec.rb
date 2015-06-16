@@ -5,14 +5,11 @@ module Sipity
     module WorkSubmissions
       module Etd
         RSpec.describe RespondToAdvisorRequestForm do
-          let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
-          let(:work) { double('Work', to_processing_entity: processing_entity) }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:action) do
-            Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'respond_to_advisor_request')
-          end
-          let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, processing_action_name: action, repository: repository) }
+          let(:user) { double('User') }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          subject { described_class.new(keywords) }
 
           context '#render' do
             let(:f) { double }
@@ -24,11 +21,9 @@ module Sipity
 
           its(:input_legend) { should be_html_safe }
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          it { should implement_processing_form_interface }
 
           context 'with valid data' do
-            let(:a_processing_comment) { double }
-            let(:an_action) { double(resulting_strategy_state: double) }
-
             before do
               expect(subject).to receive(:valid?).and_return(true)
               allow(Services::RequestChangesViaCommentService).to receive(:call)
@@ -36,11 +31,11 @@ module Sipity
 
             it 'will delegate to Services::RequestChangesViaCommentService' do
               expect(Services::RequestChangesViaCommentService).to receive(:call)
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will return the work' do
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
             end
           end
         end
