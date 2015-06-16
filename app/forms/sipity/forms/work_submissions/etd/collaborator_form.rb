@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:collaborators_attributes]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.collaborators_attributes = attributes[:collaborators_attributes]
           end
@@ -21,6 +22,7 @@ module Sipity
           validate :each_collaborator_from_input_must_be_valid
           validate :at_least_one_collaborator_must_be_responsible_for_review
           validates :work, presence: true
+          validates :requested_by, presence: true
 
           # When the form is being rendered, the fields_for :collaborators drive
           # on this method, as such this is a read only method.
@@ -51,8 +53,8 @@ module Sipity
             @collaborators_attributes = inputs
           end
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               # Don't try to persist the collaborators, as those are for form rendering
               # instead lets persist the collaborators that were given as user input.
               repository.manage_collaborators_for(work: work, collaborators: collaborators_from_input)
