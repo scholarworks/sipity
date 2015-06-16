@@ -10,8 +10,9 @@ module Sipity
             attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id, :use_of_library_resources]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.accessible_objects_attributes = attributes.fetch(:accessible_objects_attributes) { {} }
             self.copyright = attributes.fetch(:copyright) { copyright_from_work }
@@ -22,6 +23,7 @@ module Sipity
           validate :each_accessible_objects_attributes_are_valid
           validate :at_lease_one_accessible_objects_attributes_entry
           validates :copyright, presence: true
+          validates :requested_by, presence: true
           validates :representative_attachment_id, presence: true, if: :at_least_one_attachment?
 
           # Because I am using `#fields_for` for rendering
@@ -45,7 +47,7 @@ module Sipity
             repository.work_attachments(work: work)
           end
 
-          def submit(requested_by:)
+          def submit
             processing_action_form.submit(requested_by: requested_by) do
               repository.apply_access_policies_to(
                 work: work, user: requested_by, access_policies: access_objects_attributes_for_persistence

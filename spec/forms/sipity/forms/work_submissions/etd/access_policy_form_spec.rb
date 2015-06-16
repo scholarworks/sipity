@@ -7,10 +7,12 @@ module Sipity
           let(:work) { Models::Work.new(id: 1) }
           let(:attachment) { Models::Attachment.new(id: 2) }
           let(:repository) { CommandRepositoryInterface.new }
+          let(:attributes) { {} }
+          let(:keywords) { { work: work, requested_by: user, repository: repository, attributes: attributes } }
           let(:copyrights) do
             [double(predicate_name: 'name', term_label: 'value', term_uri: 'code'), double]
           end
-          subject { described_class.new(work: work, repository: repository) }
+          subject { described_class.new(keywords) }
 
           before do
             allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
@@ -36,35 +38,33 @@ module Sipity
 
           it 'will validate that a copyright is given' do
             expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
-            subject = described_class.new(work: work, repository: repository)
+            subject = described_class.new(keywords)
             subject.valid?
             expect(subject.errors[:copyright]).to be_present
           end
 
           it 'will validate the presence of accessible_objects_attributes' do
-            subject = described_class.new(work: work, repository: repository, attributes: { accessible_objects_attributes: {} })
+            subject = described_class.new(keywords.merge(attributes: { accessible_objects_attributes: {} }))
             subject.valid?
             expect(subject.errors[:base]).to be_present
           end
 
           it 'will validate the presence of a representative attachment' do
-            subject = described_class.new(work: work, repository: repository, attributes: { representative_attachment_id: '' })
+            subject = described_class.new(keywords.merge(attributes: { representative_attachment_id: '' }))
             subject.valid?
             expect(subject.errors[:representative_attachment_id]).to be_present
           end
 
           it 'will not validate the presence of a representative attachment if there are no attachments' do
             expect(repository).to receive(:work_attachments).with(work: work).and_return([])
-            subject = described_class.new(work: work, repository: repository, attributes: { representative_attachment_id: '' })
+            subject = described_class.new(keywords.merge(attributes: { representative_attachment_id: '' }))
             subject.valid?
             expect(subject.errors[:representative_attachment_id]).to_not be_present
           end
 
           it 'will validate each of the given attributes' do
             invalid_attributes = { "0" => { id: work.to_param, access_right_code: 'chici chici parm parm' } }
-            subject = described_class.new(
-              work: work, repository: repository, attributes: { accessible_objects_attributes: invalid_attributes }
-            )
+            subject = described_class.new(keywords.merge(attributes: { accessible_objects_attributes: invalid_attributes }))
             subject.valid?
             expect(subject.errors[:accessible_objects_attributes]).to be_present
           end
@@ -79,18 +79,17 @@ module Sipity
             let(:rights) { 'All rights reserved' }
             let(:attributes) do
               {
+                rights: rights, accessible_objects_attributes: accessible_objects_attributes,
+                representative_attachment_id: attachment.to_param
+              }
+            end
+            let(:accessible_objects_attributes) do
+              {
                 "0" => { "id" => work.to_param, "access_right_code" => 'open_access', "release_date" => "" },
                 "1" => { "id" => attachment.to_param, "access_right_code" => 'embargo_then_open_access', "release_date" => "2032-12-01" }
               }
             end
-            subject do
-              described_class.new(
-                work: work, repository: repository, attributes: {
-                  accessible_objects_attributes: attributes, copyright: rights,
-                  representative_attachment_id: attachment.to_param
-                }
-              )
-            end
+            subject { described_class.new(keywords) }
             before do
               allow(subject).to receive(:valid?).and_return(true)
               allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
@@ -98,12 +97,12 @@ module Sipity
 
             it 'will representative_attachment_id' do
               expect(repository).to receive(:set_as_representative_attachment).and_call_original
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will update_work_attribute_values!' do
               expect(repository).to receive(:update_work_attribute_values!).and_call_original
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will capture accessible_objects_attributes' do
@@ -123,7 +122,7 @@ module Sipity
                   }
                 ]
               )
-              subject.submit(requested_by: user)
+              subject.submit
             end
           end
         end
