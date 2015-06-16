@@ -23,10 +23,7 @@ module Sipity
           public
 
           delegate(
-            :attachments,
-            :attach_or_update_files,
-            :attachments_attributes=,
-            :files,
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
             to: :attachments_extension
           )
           private(:attach_or_update_files)
