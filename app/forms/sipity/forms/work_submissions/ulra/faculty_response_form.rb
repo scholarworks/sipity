@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:course, :nature_of_supervision, :supervising_semester, :quality_of_research, :use_of_library_resources]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
@@ -36,8 +37,8 @@ module Sipity
           validates :use_of_library_resources, presence: true
           validates :supervising_semester, presence: true
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               update_course
               update_nature_of_supervision
               update_supervising_semester
