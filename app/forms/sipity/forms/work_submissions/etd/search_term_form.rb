@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:subject, :language, :temporal_coverage, :spatial_coverage]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.subject = attributes.fetch(:subject) { subject_from_work }
             self.language = attributes.fetch(:language) { language_from_work }
@@ -18,8 +19,8 @@ module Sipity
             self.spatial_coverage = attributes.fetch(:spatial_coverage) { spatial_coverage_from_work }
           end
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               update_attribute_values('subject')
               update_attribute_values('language')
               update_attribute_values('temporal_coverage')
