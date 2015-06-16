@@ -79,11 +79,13 @@ module Sipity
           attr_reader :processing_action_form
           attr_writer(*Array.wrap(attribute_names))
           attr_writer processing_subject_name
+          attr_writer :requested_by
 
           public
 
           attr_reader(*Array.wrap(attribute_names))
           attr_reader processing_subject_name
+          attr_reader :requested_by
           alias_method :entity, processing_subject_name
 
           define_method :persisted? do
@@ -109,7 +111,7 @@ module Sipity
 
       delegate :valid?, :entity, to: :form
 
-      def submit(requested_by:)
+      def submit(requested_by: form.requested_by)
         return false unless valid?
         yield if block_given?
         repository.register_action_taken_on_entity(entity: entity, action: to_processing_action, requested_by: requested_by)
