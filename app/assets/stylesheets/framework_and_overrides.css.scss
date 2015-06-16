@@ -143,6 +143,10 @@ section {
 }
 
 // Aligning SimpleForm behavior with Bootstrap's expectations
+.control-group {
+  margin-bottom: 1em;
+}
+
 .form-inline .control-group,
 .form-inline .controls {
   display: inline-block;
