@@ -5,11 +5,11 @@ module Sipity
     module WorkSubmissions
       module Ulra
         RSpec.describe PublisherInformationForm do
-          let(:work) { Models::Work.new(id: '1234') }
-          let(:publication_name) { 'publication_name' }
-          let(:allow_pre_prints) { 'Yes' }
+          let(:work) { double('Work') }
+          let(:user) { double('User') }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:keywords) { { requested_by: user, work: work, repository: repository } }
+          subject { described_class.new(keywords) }
 
           its(:processing_action_name) { should eq('publisher_information') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
@@ -39,44 +39,38 @@ module Sipity
           end
 
           it 'with valid allow_pre_prints' do
-            form_obj = described_class.new(
-              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: "Yes" }
-            )
+            form_obj = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: "Yes" }))
             form_obj.valid?
             expect(form_obj.errors[:allow_pre_prints]).not_to be_present
           end
 
           it 'with invalid allow_pre_prints' do
-            form_obj = described_class.new(
-              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: "dummy" }
-            )
+            form_obj = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: "dummy" }))
             form_obj.valid?
             expect(form_obj.errors[:allow_pre_prints]).to be_present
           end
 
           it 'will require at least one non-blank allow_pre_prints' do
-            subject = described_class.new(
-              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: ["", ""] }
-            )
+            subject = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: ["", ""] }))
             subject.valid?
             expect(subject.errors[:allow_pre_prints]).to be_present
           end
 
           it 'will require at least one non-blank allow_pre_prints' do
             subject = described_class.new(
-              work: work, repository: repository, attributes: { publication_name: "dummy", allow_pre_prints: ["I do not know", ""] }
+              keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: ["I do not know", ""] })
             )
             subject.valid?
             expect(subject.errors[:allow_pre_prints]).to_not be_present
           end
 
           it 'will only keep publication entries that are "present?"' do
-            subject = described_class.new(work: work, repository: repository, attributes: { publication_name: publication_name })
-            expect(subject.publication_name).to eq(publication_name)
+            subject = described_class.new(keywords.merge(attributes: { publication_name: 'something' }))
+            expect(subject.publication_name).to eq('something')
           end
 
           it 'will only keep allow_pre_printss entries that are "present?"' do
-            subject = described_class.new(work: work, repository: repository, attributes: { allow_pre_prints: ['Yes'] })
+            subject = described_class.new(keywords.merge(attributes: { allow_pre_prints: ['Yes'] }))
             expect(subject.allow_pre_prints).to eq(['Yes'])
           end
 
@@ -85,12 +79,12 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { publication_name: 'test' })
+              subject = described_class.new(keywords.merge(attributes: { publication_name: 'test' }))
               expect(subject.publication_name).to eq 'test'
             end
             it 'will fall back on #publication information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'publication_name').and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.publication_name).to eq('hello')
             end
           end
@@ -100,30 +94,29 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { allow_pre_prints: ['Yes'] })
+              subject = described_class.new(keywords.merge(attributes: { allow_pre_prints: ['Yes'] }))
               expect(subject.allow_pre_prints).to eq ['Yes']
             end
             it 'will fall back on #allow_pre_prints information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'allow_pre_prints').and_return('Yes')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.allow_pre_prints).to eq(['Yes'])
             end
           end
 
           context '#submit' do
-            let(:user) { double('User') }
             context 'with invalid data' do
               before do
                 expect(subject).to receive(:valid?).and_return(false)
               end
               it 'will return false if not valid' do
-                expect(subject.submit(requested_by: user))
+                expect(subject.submit)
               end
             end
 
             context 'with valid data' do
               subject do
-                described_class.new(work: work, repository: repository, attributes: { publication_name: 'bogus', allow_pre_prints: 'No' })
+                described_class.new(keywords.merge(attributes: { publication_name: 'bogus', allow_pre_prints: 'No' }))
               end
               before do
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
@@ -132,7 +125,7 @@ module Sipity
 
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

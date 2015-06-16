@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:publication_name, :allow_pre_prints]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }
             self.allow_pre_prints = attributes.fetch(:allow_pre_prints) { allow_pre_prints_from_work }
@@ -23,8 +24,8 @@ module Sipity
           VALID_VALUES_FOR_ALLOW_PRE_PRINTS = ["Yes", "No", "I do not know"].freeze
           validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
               repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
             end
