@@ -10,8 +10,9 @@ module Sipity
             attribute_names: [:work_publication_strategy, :work_patent_strategy]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
               form: self, repository: repository
@@ -38,9 +39,10 @@ module Sipity
           validates :work_patent_strategy, presence: true, inclusion: { in: :possible_work_patent_strategies }
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work, presence: true
+          validates :requested_by, presence: true
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               persist_work_publication_strategy
               persist_work_patent_strategy
             end
