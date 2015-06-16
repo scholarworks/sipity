@@ -382,6 +382,9 @@ en:
       work:
         representative_attachment_id: 'Please select the manuscript file'
         files: 'Select files to upload'
+    hints:
+      work:
+        program_name_html: 'To choose multiple programs, press the CTRL key and select the appropriate programs'
   errors:
     attributes:
       defense_date:
