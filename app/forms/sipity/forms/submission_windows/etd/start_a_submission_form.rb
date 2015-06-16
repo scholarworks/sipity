@@ -11,7 +11,8 @@ module Sipity
             attribute_names: [:title, :work_publication_strategy, :work_patent_strategy, :work_type, :access_rights_answer]
           )
 
-          def initialize(submission_window:, attributes: {}, **keywords)
+          def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
               form: self, repository: repository
@@ -22,8 +23,7 @@ module Sipity
 
           delegate(
             :work_patent_strategy, :work_patent_strategy=, :work_patent_strategies_for_select, :possible_work_patent_strategies,
-            :persist_work_patent_strategy,
-            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
+            :persist_work_patent_strategy, :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
             :possible_work_publication_strategies, :persist_work_publication_strategy,
             to: :publication_and_patenting_intent_extension
           )
@@ -65,6 +65,7 @@ module Sipity
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_codes }
           validates :submission_window, presence: true
+          validates :requested_by, presence: true
 
           def form_path
             File.join(PowerConverter.convert_to_processing_action_root_path(submission_window), processing_action_name)
@@ -80,14 +81,14 @@ module Sipity
             possible_work_types.map(&:to_sym)
           end
 
-          def submit(requested_by:)
+          def submit
             return false unless valid?
-            save(requested_by: requested_by)
+            save
           end
 
           private
 
-          def save(requested_by:)
+          def save
             create_the_work do |work|
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
@@ -95,11 +96,11 @@ module Sipity
               persist_work_patent_strategy
               persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-              register_actions(requested_by: requested_by)
+              register_actions
             end
           end
 
-          def register_actions(requested_by:)
+          def register_actions
             # Your read that right, register actions on both the work and submission window.
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to
