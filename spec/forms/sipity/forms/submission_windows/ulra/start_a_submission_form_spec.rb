@@ -5,7 +5,10 @@ module Sipity
     module SubmissionWindows
       module Ulra
         RSpec.describe StartASubmissionForm do
-          subject { described_class.new(repository: repository, submission_window: submission_window) }
+          let(:keywords) { { repository: repository, submission_window: submission_window, requested_by: user, attributes: attributes } }
+          let(:attributes) { {} }
+          let(:user) { double('User') }
+          subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: '1234') }
           let(:work_area) { Models::WorkArea.new(id: 2, slug: described_class::DEFAULT_WORK_AREA_SLUG) }
@@ -60,7 +63,7 @@ module Sipity
 
           context 'validations for' do
             let(:attributes) { { title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-            subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
+            subject { described_class.new(keywords) }
             context '#title' do
               it 'must be present' do
                 subject.valid?
@@ -81,12 +84,13 @@ module Sipity
             end
             context '#submission_window' do
               it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(repository: repository, attributes: attributes) }.to raise_error(ArgumentError)
+                expect { described_class.new(requested_by: user, repository: repository, attributes: attributes) }.
+                  to raise_error(ArgumentError)
               end
             end
             context '#work_type' do
               it 'must be present' do
-                subject = described_class.new(submission_window: submission_window, repository: repository, attributes: { work_type: nil })
+                subject = described_class.new(keywords.merge(attributes: { work_type: nil }))
                 subject.valid?
                 expect(subject.errors[:work_type]).to be_present
               end
@@ -97,18 +101,12 @@ module Sipity
                 expect(subject.errors[:work_publication_strategy]).to be_present
               end
               it 'must be from the approved list' do
-                subject = described_class.new(
-                  repository: repository, submission_window: submission_window, attributes: { work_publication_strategy: '__not_found__' }
-                )
+                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
                 subject.valid?
                 expect(subject.errors[:work_publication_strategy]).to be_present
               end
               it 'will be valid if from approved list' do
-                subject = described_class.new(
-                  repository: repository, submission_window: submission_window, attributes: {
-                    work_publication_strategy: 'valid_work_publication_strategy'
-                  }
-                )
+                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: 'valid_work_publication_strategy' }))
                 subject.valid?
                 expect(subject.errors[:work_publication_strategy]).to_not be_present
               end
@@ -117,7 +115,7 @@ module Sipity
 
           context 'Sanitizing HTML title' do
             let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-            subject { described_class.new(repository: repository, submission_window: submission_window, attributes: attributes) }
+            subject { described_class.new(keywords) }
             context 'removes script tags' do
               let(:title) { "<script>alert('Like this');</script>" }
               it { expect(subject.title).to_not have_tag('script') }
@@ -132,28 +130,24 @@ module Sipity
           end
 
           context '#submit' do
-            let(:user) { User.new(id: '123') }
-            subject do
-              described_class.new(
-                repository: repository,
-                submission_window: submission_window,
-                attributes: {
-                  title: 'This is my title',
-                  work_publication_strategy: 'do_not_know',
-                  advisor_net_id: 'dummy_id',
-                  award_category: 'some_category'
-                }
-              )
+            let(:attributes) do
+              {
+                title: "This is my title",
+                work_publication_strategy: 'do_not_know',
+                advisor_net_id: 'dummy_id',
+                award_category: 'some_category'
+              }
             end
+            subject { described_class.new(keywords) }
             context 'with invalid data' do
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
-                expect { subject.submit(requested_by: user) }.
+                expect { subject.submit }.
                   to_not change { Models::Work.count }
               end
               it 'will return false' do
                 allow(subject).to receive(:valid?).and_return(false)
-                expect(subject.submit(requested_by: user)).to eq(false)
+                expect(subject.submit).to eq(false)
               end
             end
             context 'with valid data' do
@@ -165,18 +159,18 @@ module Sipity
               it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
                 expect(repository).to receive(:create_work!).and_return(work)
-                response = subject.submit(requested_by: user)
+                response = subject.submit
                 expect(response).to eq(work)
               end
 
               it 'will log the event' do
                 expect(repository).to receive(:log_event!).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will grant creating user permission for' do
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end
