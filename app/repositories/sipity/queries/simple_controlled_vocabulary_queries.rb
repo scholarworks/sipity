@@ -7,7 +7,7 @@ module Sipity
       end
 
       def get_controlled_vocabulary_entries_for_predicate_name(name:)
-        Models::SimpleControlledVocabulary.where(predicate_name: name).order(:term_label)
+        Models::SimpleControlledVocabulary.where(predicate_name: name)
       end
 
       def get_controlled_vocabulary_value_for(name:, term_uri:)
