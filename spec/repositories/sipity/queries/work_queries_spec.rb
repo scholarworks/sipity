@@ -30,7 +30,7 @@ module Sipity
 
       context '#find_work' do
         it 'raises an exception if nothing is found' do
-          expect { test_repository.find_work('8675309') }.to raise_error
+          expect { test_repository.find_work('8675309') }.to raise_error(ActiveRecord::RecordNotFound)
         end
         it 'returns the Work when the object is found' do
           work = Models::Work.create!(id: '8675309', title: "Hello")
@@ -40,7 +40,7 @@ module Sipity
 
       context '#find_work_by' do
         it 'raises an exception if nothing is found' do
-          expect { test_repository.find_work_by(id: '8675309') }.to raise_error
+          expect { test_repository.find_work_by(id: '8675309') }.to raise_error(ActiveRecord::RecordNotFound)
         end
         it 'returns the Work when the object is found' do
           work = Models::Work.create!(id: '8675309', title: "Hello")
