@@ -11,7 +11,8 @@ module Sipity
             attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :work_type]
           )
 
-          def initialize(submission_window:, attributes: {}, **keywords)
+          def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
               form: self, repository: repository
@@ -55,7 +56,7 @@ module Sipity
           validates :work_type, presence: true
           validates :submission_window, presence: true
 
-          def submit(requested_by:)
+          def submit
             return false unless valid?
             create_the_work do |work|
               persist_work_publication_strategy

@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:title, :abstract, :alternate_title]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.title = attributes.fetch(:title) { title_from_work }
             self.abstract = attributes.fetch(:abstract) { abstract_from_work }
@@ -21,9 +22,10 @@ module Sipity
           validates :title, presence: true
           validates :abstract, presence: true
           validates :work, presence: true
+          validates :requested_by, presence: true
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.update_work_title!(work: work, title: title)
               repository.update_work_attribute_values!(work: work, key: 'abstract', values: abstract)
               repository.update_work_attribute_values!(work: work, key: 'alternate_title', values: alternate_title)

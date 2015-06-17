@@ -4,16 +4,14 @@ module Sipity
     module WorkSubmissions
       module Etd
         RSpec.describe PublishingAndPatentingIntentForm do
-          let(:keywords) { { repository: repository, work: work, attributes: attributes } }
+          let(:keywords) { { repository: repository, work: work, attributes: attributes, requested_by: user } }
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:work) { Models::Work.new(id: 1) }
           let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd') }
           let(:user) { double }
-          before do
-            allow(work).to receive(:work_area).and_return(work_area)
-          end
+          before { allow(work).to receive(:work_area).and_return(work_area) }
 
           it { should implement_processing_form_interface }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
@@ -69,11 +67,11 @@ module Sipity
           context 'submit an invalid form' do
             before { allow(subject).to receive(:valid?).and_return(false) }
             it 'will return false' do
-              expect(subject.submit(requested_by: user)).to eq(false)
+              expect(subject.submit).to eq(false)
             end
             it 'will not yield control to the form' do
-              expect(subject.send(:processing_action_form)).to receive(:submit).with(requested_by: user)
-              subject.submit(requested_by: user)
+              expect(subject.send(:processing_action_form)).to receive(:submit)
+              subject.submit
             end
           end
 
@@ -81,11 +79,11 @@ module Sipity
             before { allow(subject.send(:processing_action_form)).to receive(:submit).and_yield }
             it 'will persist_work_publication_strategy' do
               expect(subject).to receive(:persist_work_publication_strategy)
-              subject.submit(requested_by: user)
+              subject.submit
             end
             it 'will persist_work_patent_strategy' do
               expect(subject).to receive(:persist_work_patent_strategy)
-              subject.submit(requested_by: user)
+              subject.submit
             end
           end
         end

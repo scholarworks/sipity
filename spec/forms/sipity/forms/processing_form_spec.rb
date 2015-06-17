@@ -6,9 +6,10 @@ module Sipity
       let(:entity) { double }
       let(:form) do
         double(
+          'Form',
           entity: entity, base_class: Models::Work, valid?: true, class: double(name: 'StartForm'), errors: true,
           model_name: true, param_key: true, processing_action_name: true, translate: true,
-          to_processing_entity: true, to_processing_action: true, to_work_area: true, template: true
+          to_processing_entity: true, to_processing_action: true, to_work_area: true, template: true, requested_by: user
         )
       end
       let(:repository) { CommandRepositoryInterface.new }
@@ -26,6 +27,7 @@ module Sipity
             def base_class
               Class
             end
+
             include ActiveModel::Validations
           end
         end
@@ -35,6 +37,7 @@ module Sipity
         it { should respond_to :entity }
         it { should respond_to :title }
         it { should respond_to :job }
+        it { should respond_to :requested_by }
         its(:processing_subject_name) { should eq('work') }
         its(:attribute_names) { should eq([:title, :job]) }
         its(:base_class) { should eq(Models::Work) }
@@ -63,8 +66,9 @@ module Sipity
         end
         it 'will default the identifier to the processing_action_name' do
           subject.translate('name')
-          expect(translator).to have_received(:call).
-            with(scope: "processing_actions.#{subject.processing_action_name}", object: 'name', predicate: :label, subject: entity)
+          expect(translator).to have_received(:call).with(
+            scope: "processing_actions.#{subject.processing_action_name}", object: 'name', predicate: :label, subject: entity
+          )
         end
       end
 
@@ -88,10 +92,10 @@ module Sipity
         context 'when invalid' do
           before { allow(form).to receive(:valid?).and_return(false) }
           it 'will return false' do
-            expect(subject.submit(requested_by: user)).to be_falsey
+            expect(subject.submit).to be_falsey
           end
           it 'will not yield control' do
-            expect { |b| subject.submit(requested_by: user, &b) }.to_not yield_control
+            expect { |b| subject.submit(&b) }.to_not yield_control
           end
         end
 
@@ -103,22 +107,22 @@ module Sipity
           end
 
           it 'will return the underlying entity' do
-            expect(subject.submit(requested_by: user)).to eq(entity)
+            expect(subject.submit).to eq(entity)
           end
 
           it 'will yield with the repository' do
-            expect { |b| subject.submit(requested_by: user, &b) }.to yield_with_no_args
+            expect { |b| subject.submit(&b) }.to yield_with_no_args
           end
 
           it 'will register the action that was taken' do
             expect(repository).to receive(:register_action_taken_on_entity).and_call_original
-            subject.submit(requested_by: user)
+            subject.submit
           end
 
           it 'will register the action that was taken' do
             expect(repository).to receive(:update_processing_state!).
               with(entity: entity, to: an_action.resulting_strategy_state).and_call_original
-            subject.submit(requested_by: user)
+            subject.submit
           end
         end
       end

@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:degree, :program_name]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.degree = attributes.fetch(:degree) { degree_from_work }
             self.program_name = attributes.fetch(:program_name) { program_name_from_work }
@@ -28,8 +29,8 @@ module Sipity
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'program_name')
           end
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'degree', values: degree)
               repository.update_work_attribute_values!(work: work, key: 'program_name', values: program_name)
             end

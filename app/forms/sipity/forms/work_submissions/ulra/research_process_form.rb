@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:resource_consulted, :other_resource_consulted, :citation_style]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             initialize_non_attachment_attributes(attributes)
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
@@ -23,10 +24,7 @@ module Sipity
           public
 
           delegate(
-            :attachments,
-            :attach_or_update_files,
-            :attachments_attributes=,
-            :files,
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
             to: :attachments_extension
           )
 
@@ -43,8 +41,8 @@ module Sipity
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'citation_style')
           end
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)

@@ -32,7 +32,7 @@ module Sipity
       end
 
       context '#build_submission_window_processing_action_form' do
-        let(:parameters) { { submission_window: double, processing_action_name: double, attributes: double } }
+        let(:parameters) { { submission_window: double, processing_action_name: double, attributes: double, requested_by: double } }
         let(:form) { double }
         it 'will delegate the heavy lifting to a builder' do
           expect(Forms::SubmissionWindows).to receive(:build_the_form).with(**parameters, repository: test_repository).and_return(form)

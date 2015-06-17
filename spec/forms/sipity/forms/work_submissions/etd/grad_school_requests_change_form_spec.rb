@@ -8,12 +8,14 @@ module Sipity
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          subject { described_class.new(keywords) }
 
           its(:processing_action_name) { should eq('grad_school_requests_change') }
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           it { should_not be_persisted }
+          it { should implement_processing_form_interface }
 
           it 'will validate the presence of the :comment' do
             subject.valid?
@@ -33,7 +35,7 @@ module Sipity
             it 'will not save the form' do
               expect(subject).to receive(:valid?).and_return(false)
               expect(subject).to_not receive(:save)
-              expect(subject.submit(requested_by: user)).to eq(false)
+              expect(subject.submit).to eq(false)
             end
           end
 
@@ -45,11 +47,11 @@ module Sipity
 
             it 'will delegate to Services::RequestChangesViaCommentService' do
               expect(Services::RequestChangesViaCommentService).to receive(:call)
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will return the work' do
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
             end
           end
         end

@@ -15,14 +15,14 @@ module Sipity
       end
 
       # TODO: Rename this method; Keeping it separate for now.
-      def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {}, repository: self)
+      def build_work_submission_processing_action_form(work:, processing_action_name:, **keywords)
         # Leveraging an obvious inflection point, namely each work area may well
         # have its own form module.
         Forms::WorkSubmissions.build_the_form(
           work: work,
           processing_action_name: processing_action_name,
-          attributes: attributes,
-          repository: repository
+          repository: self,
+          **keywords
         )
       end
 

@@ -10,8 +10,9 @@ module Sipity
           )
 
           include Conversions::ExtractInputDateFromInput
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.expected_graduation_date = extract_input_date_from_input(:expected_graduation_date, attributes) do
               expected_graduation_date_from_work
@@ -24,8 +25,8 @@ module Sipity
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
               repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
             end

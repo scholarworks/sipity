@@ -11,14 +11,16 @@ module Sipity
             template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.comment = attributes[:comment]
           end
 
           include ActiveModel::Validations
           validates :comment, presence: true
+          validates :requested_by, presence: true
 
           # @param f SimpleFormBuilder
           #
@@ -32,9 +34,9 @@ module Sipity
           # handled by the composed ProcessingForm.
           #
           # @see Sipity::Forms::ProcessingForm#submit
-          def submit(requested_by:)
+          def submit
             return false unless valid?
-            save(requested_by: requested_by)
+            save
             work
           end
 
@@ -49,10 +51,8 @@ module Sipity
             Draper::ViewContext.current
           end
 
-          def save(requested_by:)
-            Services::RequestChangesViaCommentService.call(
-              form: self, repository: repository, requested_by: requested_by
-            )
+          def save
+            Services::RequestChangesViaCommentService.call(form: self, repository: repository, requested_by: requested_by)
           end
         end
       end

@@ -7,7 +7,8 @@ module Sipity
         RSpec.describe DescribeForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:keywords) { { work: work, requested_by: double, repository: repository } }
+          subject { described_class.new(keywords) }
 
           before do
             allow(repository).to receive(:work_attribute_values_for).and_return([])
@@ -33,16 +34,22 @@ module Sipity
             end
 
             it 'will require a work' do
-              subject = described_class.new(work: nil)
+              subject = described_class.new(keywords.merge(work: nil))
               subject.valid?
               expect(subject.errors[:work]).to_not be_empty
+            end
+
+            it 'will require a requested_by' do
+              subject = described_class.new(keywords.merge(requested_by: nil))
+              subject.valid?
+              expect(subject.errors[:requested_by]).to_not be_empty
             end
           end
 
           context 'retrieving values from the repository' do
             let(:abstract) { ['Hello Dolly'] }
             let(:title) { 'My Work title' }
-            subject { described_class.new(work: work, repository: repository) }
+            subject { described_class.new(keywords) }
             it 'will return the abstract of the work' do
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: work, key: 'alternate_title').and_return("")
@@ -56,17 +63,13 @@ module Sipity
           it 'will retrieve the title from the work' do
             title = 'This is a title'
             expect(work).to receive(:title).and_return(title)
-            subject = described_class.new(work: work, repository: repository)
+            subject = described_class.new(keywords)
             expect(subject.title).to eq title
           end
 
           context 'Sanitizing HTML within attributes' do
             subject do
-              described_class.new(
-                work: work, repository: repository, attributes: {
-                  title: title, alternate_title: alternate_title, abstract: abstract
-                }
-              )
+              described_class.new(keywords.merge(attributes: { title: title, alternate_title: alternate_title, abstract: abstract }))
             end
             context 'removes script tags' do
               let(:title) { "<script>alert('Like this');</script>" }
@@ -85,22 +88,21 @@ module Sipity
           end
 
           context '#submit' do
-            let(:user) { double('User') }
             context 'with invalid data' do
               before do
                 expect(subject).to receive(:valid?).and_return(false)
               end
               it 'will return false if not valid' do
-                expect(subject.submit(requested_by: user))
+                expect(subject.submit)
               end
               it 'will not create create any additional attributes entries' do
-                expect { subject.submit(requested_by: user) }.
+                expect { subject.submit }.
                   to_not change { Models::AdditionalAttribute.count }
               end
             end
 
             context 'with valid data' do
-              subject { described_class.new(work: work, abstract: 'Hello Dolly', repository: repository) }
+              subject { described_class.new(keywords.merge(attributes: { abstract: 'Hello Dolly', repository: repository })) }
               before do
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
@@ -108,12 +110,12 @@ module Sipity
 
               it 'will update title of the work' do
                 expect(repository).to receive(:update_work_title!).exactly(1).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

@@ -7,7 +7,10 @@ module Sipity
         RSpec.describe AttachForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:user) { double }
+          let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: attributes } }
+          let(:attributes) { {} }
+          subject { described_class.new(keywords) }
 
           its(:policy_enforcer) { should be_present }
           its(:processing_action_name) { should eq('attach') }
@@ -18,7 +21,7 @@ module Sipity
 
           context 'validations' do
             it 'will require a work' do
-              subject = described_class.new(work: nil, repository: repository)
+              subject = described_class.new(keywords.merge(work: nil))
               subject.valid?
               expect(subject.errors[:work]).to_not be_empty
             end
@@ -39,15 +42,15 @@ module Sipity
 
           context 'assigning attachments attributes' do
             let(:user) { double('User') }
-            let(:attachments_attributes) do
+            let(:attributes) do
               {
-                "0" => { "name" => "code4lib.pdf", "delete" => "1", "id" => "i8tnddObffbIfNgylX7zSA==" },
-                "1" => { "name" => "hotel.pdf", "delete" => "0", "id" => "y5Fm8YK9-ekjEwUMKeeutw==" },
-                "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
+                attachments_attributes:
+                {
+                  "0" => { "name" => "code4lib.pdf", "delete" => "1", "id" => "i8tnddObffbIfNgylX7zSA==" },
+                  "1" => { "name" => "hotel.pdf", "delete" => "0", "id" => "y5Fm8YK9-ekjEwUMKeeutw==" },
+                  "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
+                }
               }
-            end
-            subject do
-              described_class.new(work: work, repository: repository, attributes: { attachments_attributes: attachments_attributes })
             end
 
             before do
@@ -57,7 +60,7 @@ module Sipity
 
             it 'will delete any attachments marked for deletion' do
               expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will amend any attachment metadata' do
@@ -67,7 +70,7 @@ module Sipity
                   "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }
                 }
               )
-              subject.submit(requested_by: user)
+              subject.submit
             end
           end
 
@@ -78,19 +81,16 @@ module Sipity
                 expect(subject).to receive(:valid?).and_return(false)
               end
               it 'will return false if not valid' do
-                expect(subject.submit(requested_by: user))
+                expect(subject.submit)
               end
               it 'will not create any attachments' do
-                expect { subject.submit(requested_by: user) }.
+                expect { subject.submit }.
                   to_not change { Models::Attachment.count }
               end
             end
 
             context 'with valid data' do
-              subject do
-                described_class.new(work: work, repository: repository, attributes: { files: [file], remove_files: [remove_file] })
-              end
-
+              let(:attributes) { { files: [file], remove_files: [remove_file] } }
               let(:file) { double('A File') }
               let(:remove_file) { double('File to delete') }
 
@@ -101,17 +101,17 @@ module Sipity
 
               it 'will attach each file' do
                 expect(repository).to receive(:attach_files_to).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it "will unregister that the 'access_policy' action was taken" do
                 expect(repository).to receive(:unregister_action_taken_on_entity).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will mark a file as representative' do
                 expect(repository).to receive(:set_as_representative_attachment).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

@@ -63,14 +63,14 @@ module Sipity
         end
 
         it 'issues the :success callback when form is submitted' do
-          expect(form).to receive(:submit).with(requested_by: user).and_return(true)
+          expect(form).to receive(:submit).and_return(true)
           response = subject.run(work_area_slug: 'a_work_area', processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("SUCCESS", work_area)
           expect(response).to eq([:success, work_area])
         end
 
         it 'issues the :failure callback when form fails to submit' do
-          expect(form).to receive(:submit).with(requested_by: user).and_return(false)
+          expect(form).to receive(:submit).and_return(false)
           response = subject.run(work_area_slug: 'a_work_area', processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
           expect(response).to eq([:failure, form])

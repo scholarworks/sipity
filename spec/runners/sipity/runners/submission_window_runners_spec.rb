@@ -70,7 +70,7 @@ module Sipity
         end
 
         it 'issues the :submit_success callback when form is submitted' do
-          expect(form).to receive(:submit).with(requested_by: user).and_return(submission_window)
+          expect(form).to receive(:submit).and_return(submission_window)
           response = subject.run(
             work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
           )
@@ -79,7 +79,7 @@ module Sipity
         end
 
         it 'issues the :submit_failure callback when form fails to submit' do
-          expect(form).to receive(:submit).with(requested_by: user).and_return(false)
+          expect(form).to receive(:submit).and_return(false)
           response = subject.run(
             work_area_slug: 'a_work_area', submission_window_slug: 'a_submission_window', processing_action_name: 'a_funny'
           )

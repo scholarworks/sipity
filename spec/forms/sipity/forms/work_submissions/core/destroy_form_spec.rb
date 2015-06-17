@@ -3,7 +3,7 @@ module Sipity
     module WorkSubmissions
       module Core
         RSpec.describe DestroyForm do
-          let(:keywords) { { work: work, repository: repository, attributes: attributes } }
+          let(:keywords) { { work: work, repository: repository, attributes: attributes, requested_by: user } }
           let(:user) { double('User') }
           let(:work) { double('Work', to_submission_window: submission_window) }
           let(:submission_window) { double('Submission Window') }
@@ -33,11 +33,11 @@ module Sipity
             context 'when invalid' do
               before { allow(subject).to receive(:valid?).and_return(false) }
               it 'will return false' do
-                expect(subject.submit(requested_by: user)).to be_falsey
+                expect(subject.submit).to be_falsey
               end
               it 'will not destroy the work' do
                 expect(repository).to_not receive(:destroy_a_work)
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
 
@@ -45,10 +45,10 @@ module Sipity
               before { allow(subject).to receive(:valid?).and_return(true) }
               it 'will destroy the object' do
                 expect(repository).to receive(:destroy_a_work).with(work: work).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
               it 'will return the associated submission window' do
-                expect(subject.submit(requested_by: user)).to eq(submission_window)
+                expect(subject.submit).to eq(submission_window)
               end
             end
           end

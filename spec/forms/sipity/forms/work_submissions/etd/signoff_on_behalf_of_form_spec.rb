@@ -5,11 +5,10 @@ module Sipity
     module WorkSubmissions
       module Etd
         RSpec.describe SignoffOnBehalfOfForm do
-          let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
-          let(:work) { double('Work', to_processing_entity: processing_entity) }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id) }
-          let(:base_options) { { work: work, processing_action_name: action, repository: repository } }
+          let(:user) { double('User') }
+          let(:base_options) { { work: work, repository: repository, requested_by: user } }
 
           subject { described_class.new(base_options) }
 
@@ -49,14 +48,15 @@ module Sipity
           end
 
           context 'valid submission' do
-            let(:user) { double('User') }
             let(:signoff_service) { double('Signoff Service', call: true) }
             let(:on_behalf_of_collaborator) { double('Collaborator') }
             subject do
               described_class.new(
-                work: work, repository: repository, signoff_service: signoff_service, attributes: {
-                  on_behalf_of_collaborator_id: 'someone_valid'
-                }
+                base_options.merge(
+                  signoff_service: signoff_service, attributes: {
+                    on_behalf_of_collaborator_id: 'someone_valid'
+                  }
+                )
               )
             end
             before do
@@ -65,19 +65,18 @@ module Sipity
             end
 
             it 'will call the signoff_service (because the logic is complicated)' do
-              expect(signoff_service).to receive(:call).
-                with(
-                  form: subject,
-                  requested_by: user,
-                  repository: repository,
-                  on_behalf_of: on_behalf_of_collaborator,
-                  also_register_as: described_class::RELATED_ACTION_FOR_SIGNOFF
-                )
-              subject.submit(requested_by: user)
+              expect(signoff_service).to receive(:call).with(
+                form: subject,
+                requested_by: user,
+                repository: repository,
+                on_behalf_of: on_behalf_of_collaborator,
+                also_register_as: described_class::RELATED_ACTION_FOR_SIGNOFF
+              )
+              subject.submit
             end
 
             it 'will return the work' do
-              expect(subject.submit(requested_by: user)).to eq(work)
+              expect(subject.submit).to eq(work)
             end
           end
         end

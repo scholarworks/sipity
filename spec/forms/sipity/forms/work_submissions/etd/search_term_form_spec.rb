@@ -5,9 +5,10 @@ module Sipity
     module WorkSubmissions
       module Etd
         RSpec.describe SearchTermForm do
-          let(:work) { Models::Work.new(id: '1234') }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:keywords) { { work: work, repository: repository, requested_by: double('User') } }
+          subject { described_class.new(keywords) }
 
           it { should respond_to :work }
           it { should respond_to :subject }
@@ -36,9 +37,11 @@ module Sipity
             context 'with valid data' do
               subject do
                 described_class.new(
-                  work: work, repository: repository, attributes: {
-                    subject: subject_attr, language: language, temporal_coverage: temporal_coverage, spatial_coverage: spatial_coverage
-                  }
+                  keywords.merge(
+                    attributes: {
+                      subject: subject_attr, language: language, temporal_coverage: temporal_coverage, spatial_coverage: spatial_coverage
+                    }
+                  )
                 )
               end
               before do
@@ -48,7 +51,7 @@ module Sipity
 
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(4).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

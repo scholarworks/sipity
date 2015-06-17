@@ -22,7 +22,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
-    def build_account_profile_form(user:, attributes:)
+    def build_account_profile_form(requested_by:, attributes:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
@@ -30,15 +30,15 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
-    def build_submission_window_processing_action_form(submission_window:, processing_action_name:, attributes: {})
+    def build_submission_window_processing_action_form(submission_window:, processing_action_name:, **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
-    def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
+    def build_work_area_processing_action_form(work_area:, processing_action_name:, **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_work_submission_processing_action_form(work:, processing_action_name:, attributes: {}, repository: self)
+    def build_work_submission_processing_action_form(work:, processing_action_name:, **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

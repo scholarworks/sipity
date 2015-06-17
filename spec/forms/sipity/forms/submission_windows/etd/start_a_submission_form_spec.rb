@@ -5,10 +5,11 @@ module Sipity
     module SubmissionWindows
       module Etd
         RSpec.describe StartASubmissionForm do
-          let(:keywords) { { repository: repository, submission_window: submission_window, attributes: attributes } }
+          let(:keywords) { { requested_by: user, repository: repository, submission_window: submission_window, attributes: attributes } }
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
+          let(:user) { User.new(id: '123') }
           let(:submission_window) do
             Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
           end
@@ -145,18 +146,17 @@ module Sipity
           end
 
           context '#submit' do
-            let(:user) { User.new(id: '123') }
             let(:attributes) { { work_patent_strategy: 'do_not_know' } }
 
             context 'with invalid data' do
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
-                expect { subject.submit(requested_by: user) }.
+                expect { subject.submit }.
                   to_not change { Models::Work.count }
               end
               it 'will return false' do
                 allow(subject).to receive(:valid?).and_return(false)
-                expect(subject.submit(requested_by: user)).to eq(false)
+                expect(subject.submit).to eq(false)
               end
             end
             context 'with valid data' do
@@ -168,12 +168,12 @@ module Sipity
                 allow(repository).to receive(:register_action_taken_on_entity)
               end
               it 'will assign the work attribute on submit' do
-                expect { subject.submit(requested_by: user) }.to change(subject, :work).from(nil).to(work)
+                expect { subject.submit }.to change(subject, :work).from(nil).to(work)
               end
               it 'will return the work having created the work, added the attributes,
               assigned collaborators, assigned permission, and loggged the event' do
                 expect(repository).to receive(:create_work!).and_return(work)
-                response = subject.submit(requested_by: user)
+                response = subject.submit
                 expect(response).to eq(work)
               end
 
@@ -181,31 +181,30 @@ module Sipity
                 expect(repository).to receive(:register_action_taken_on_entity).
                   with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
                   and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will also register the action on the work' do
-                expect(repository).to receive(:register_action_taken_on_entity).
-                  with(
-                    entity: work, action: subject.processing_action_name, requested_by: user,
-                    also_register_as: described_class::ALSO_REGISTER_WORK_ACTION_NAME
-                  ).and_call_original
-                subject.submit(requested_by: user)
+                expect(repository).to receive(:register_action_taken_on_entity).with(
+                  entity: work, action: subject.processing_action_name, requested_by: user,
+                  also_register_as: described_class::ALSO_REGISTER_WORK_ACTION_NAME
+                ).and_call_original
+                subject.submit
               end
 
               it 'will grant creating user permission for' do
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will persist the work patent strategy' do
                 expect(subject).to receive(:persist_work_patent_strategy).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
 
               it 'will persist the work work_publication_strategy strategy' do
                 expect(subject).to receive(:persist_work_publication_strategy).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

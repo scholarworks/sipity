@@ -5,9 +5,11 @@ module Sipity
     module WorkSubmissions
       module Ulra
         RSpec.describe FacultyResponseForm do
-          let(:work) { Models::Work.new(id: '1234') }
+          let(:work) { double }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          let(:user) { double('User') }
+          subject { described_class.new(keywords) }
 
           its(:processing_action_name) { should eq('faculty_response') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
@@ -43,7 +45,6 @@ module Sipity
           end
 
           context 'assigning attachments attributes' do
-            let(:user) { double('User') }
             let(:attachments_attributes) do
               {
                 "0" => { "name" => "code4lib.pdf", "delete" => "1", "id" => "i8tnddObffbIfNgylX7zSA==" },
@@ -52,7 +53,7 @@ module Sipity
               }
             end
             subject do
-              described_class.new(work: work, repository: repository, attributes: { attachments_attributes: attachments_attributes })
+              described_class.new(keywords.merge(attributes: { attachments_attributes: attachments_attributes }))
             end
 
             before do
@@ -62,7 +63,7 @@ module Sipity
 
             it 'will delete any attachments marked for deletion' do
               expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
-              subject.submit(requested_by: user)
+              subject.submit
             end
 
             it 'will amend any attachment metadata' do
@@ -72,7 +73,7 @@ module Sipity
                   "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }
                 }
               )
-              subject.submit(requested_by: user)
+              subject.submit
             end
           end
 
@@ -81,12 +82,12 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { course: 'test' })
+              subject = described_class.new(keywords.merge(attributes: { course: 'test' }))
               expect(subject.course).to eq 'test'
             end
             it 'will fall back on #course information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'course').and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.course).to eq('hello')
             end
           end
@@ -96,14 +97,14 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { nature_of_supervision: 'test' })
+              subject = described_class.new(keywords.merge(attributes: { nature_of_supervision: 'test' }))
               expect(subject.nature_of_supervision).to eq 'test'
             end
             it 'will fall back on #nature_of_supervision information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'nature_of_supervision'
               ).and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.nature_of_supervision).to eq('hello')
             end
           end
@@ -113,14 +114,14 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { supervising_semester: ['bogus', 'test'] })
+              subject = described_class.new(keywords.merge(attributes: { supervising_semester: ['bogus', 'test'] }))
               expect(subject.supervising_semester).to eq ['bogus', 'test']
             end
             it 'will fall back on #supervising_semester information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'supervising_semester'
               ).and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.supervising_semester).to eq(['hello'])
             end
           end
@@ -130,14 +131,14 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { quality_of_research: 'bogus' })
+              subject = described_class.new(keywords.merge(attributes: { quality_of_research: 'bogus' }))
               expect(subject.quality_of_research).to eq 'bogus'
             end
             it 'will fall back on #quality_of_research information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'quality_of_research'
               ).and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.quality_of_research).to eq('hello')
             end
           end
@@ -147,36 +148,37 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(work: work, repository: repository, attributes: { use_of_library_resources: 'test' })
+              subject = described_class.new(keywords.merge(attributes: { use_of_library_resources: 'test' }))
               expect(subject.use_of_library_resources).to eq 'test'
             end
             it 'will fall back on #use_of_library_resources information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'use_of_library_resources'
               ).and_return('hello')
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               expect(subject.use_of_library_resources).to eq('hello')
             end
           end
 
           context '#submit' do
-            let(:user) { double('User') }
             context 'with invalid data' do
               before do
                 expect(subject).to receive(:valid?).and_return(false)
               end
               it 'will return false if not valid' do
-                expect(subject.submit(requested_by: user))
+                expect(subject.submit).to eq(false)
               end
             end
 
             context 'with valid data' do
               subject do
                 described_class.new(
-                  work: work, repository: repository, attributes: {
-                    course: 'bogus', nature_of_supervision: 'nature of supervision', supervising_semester: ["bogus", "test"],
-                    quality_of_research: 'test', use_of_library_resources: 'books'
-                  }
+                  keywords.merge(
+                    attributes: {
+                      course: 'bogus', nature_of_supervision: 'nature of supervision', supervising_semester: ["bogus", "test"],
+                      quality_of_research: 'test', use_of_library_resources: 'books'
+                    }
+                  )
                 )
               end
 
@@ -187,7 +189,7 @@ module Sipity
 
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).exactly(5).and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

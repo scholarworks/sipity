@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:files, :attachments_attributes, :representative_attachment_id]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
@@ -25,6 +26,7 @@ module Sipity
           include ActiveModel::Validations
           validate :at_least_one_file_must_be_attached
           validates :work, presence: true
+          validates :requested_by, presence: true
 
           delegate(
             :attachments,
@@ -36,8 +38,8 @@ module Sipity
           )
           private(:attach_or_update_files)
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
               attach_or_update_files(requested_by: requested_by)
               # HACK: This is expanding the knowledge of what action is being

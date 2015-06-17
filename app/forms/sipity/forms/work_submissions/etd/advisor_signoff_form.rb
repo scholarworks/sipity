@@ -11,15 +11,17 @@ module Sipity
             template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
-          def initialize(work:, attributes: {}, signoff_service: default_signoff_service, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.signoff_service = signoff_service
+            self.signoff_service = keywords.fetch(:signoff_service) { default_signoff_service }
             self.agree_to_signoff = attributes[:agree_to_signoff]
           end
 
           include ActiveModel::Validations
           validates :agree_to_signoff, acceptance: { accept: true }
+          validates :requested_by, presence: true
 
           # @param f SimpleFormBuilder
           #
@@ -50,9 +52,9 @@ module Sipity
           # Instead of the processing action form's submit, I want to use the
           # underlying submit service, because so many things may be happening
           # on that form submission.
-          def submit(requested_by:)
+          def submit
             return false unless valid?
-            save(requested_by: requested_by)
+            save
             work
           end
 
@@ -67,7 +69,7 @@ module Sipity
           end
 
           RELATED_ACTION_FOR_SIGNOFF = 'signoff_on_behalf_of'.freeze
-          def save(requested_by:)
+          def save
             signoff_service.call(
               form: self, requested_by: requested_by, repository: repository, also_register_as: RELATED_ACTION_FOR_SIGNOFF
             )

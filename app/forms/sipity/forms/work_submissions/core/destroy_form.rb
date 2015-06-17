@@ -9,8 +9,9 @@ module Sipity
             attribute_names: [:confirm_destroy]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.confirm_destroy = attributes[:confirm_destroy]
             initialize_submission_window!
@@ -18,8 +19,9 @@ module Sipity
 
           include ActiveModel::Validations
           validates :confirm_destroy, acceptance: { accept: true }
+          validates :requested_by, presence: true
 
-          def submit(*)
+          def submit
             return false unless valid?
             repository.destroy_a_work(work: work)
             submission_window # Because we won't have a work

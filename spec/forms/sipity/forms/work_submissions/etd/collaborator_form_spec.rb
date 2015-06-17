@@ -7,7 +7,10 @@ module Sipity
         RSpec.describe CollaboratorForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
-          subject { described_class.new(work: work, repository: repository) }
+          let(:attributes) { {} }
+          let(:user) { double }
+          let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: attributes } }
+          subject { described_class.new(keywords) }
           before do
             allow(repository).to receive(:find_or_initialize_collaborators_by).and_return(Models::Collaborator.new)
           end
@@ -19,17 +22,18 @@ module Sipity
           its(:collaborators) { should_not be_empty }
 
           it 'will require a work' do
-            subject = described_class.new(work: nil, repository: repository)
+            subject = described_class.new(keywords.merge(work: nil))
             subject.valid?
             expect(subject.errors[:work]).to_not be_empty
           end
 
           context 'responsibility for review' do
-            subject do
-              described_class.new(work: work, repository: repository, attributes: { collaborators_attributes: collaborators_attributes })
-            end
-            let(:collaborators_attributes) do
-              { __sequence: { name: "Jeremy", role: "Committee Member", netid: "", email: "", responsible_for_review: "false", id: 11 } }
+            let(:attributes) do
+              {
+                collaborators_attributes: {
+                  __sequence: { name: "Jeremy", role: "Committee Member", netid: "", email: "", responsible_for_review: "false", id: 11 }
+                }
+              }
             end
 
             it 'will validate that at least one collaborator must be responsible for review' do
@@ -40,7 +44,7 @@ module Sipity
 
           context 'when no collaborator attributes are passed and the form is submitted' do
             let(:collaborator) { double('Collaborator', valid?: true) }
-            subject { described_class.new(work: work, repository: repository) }
+            subject { described_class.new(keywords) }
             it 'will not fall back to the persisted collaborators for validation' do
               expect(work).to_not receive(:collaborators)
               expect(subject.valid?).to be_falsey
@@ -55,13 +59,13 @@ module Sipity
               end
 
               it 'will return false if not valid' do
-                expect(subject.submit(requested_by: user))
+                expect(subject.submit)
               end
             end
 
             context 'with nested validation' do
               subject do
-                described_class.new(work: work, repository: repository, attributes: { collaborators_attributes: collaborators_attributes })
+                described_class.new(keywords.merge(attributes: { collaborators_attributes: collaborators_attributes }))
               end
               context 'with a missing role' do
                 let(:collaborators_attributes) do
@@ -90,13 +94,12 @@ module Sipity
             end
 
             context 'with valid data' do
-              subject do
-                described_class.new(work: work, repository: repository, attributes: { collaborators_attributes: collaborators_attributes })
-              end
-              let(:collaborators_attributes) do
+              let(:attributes) do
                 {
-                  __sequence: {
-                    name: "Jeremy", role: "Research Director", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11
+                  collaborators_attributes: {
+                    __sequence: {
+                      name: "Jeremy", role: "Research Director", netid: "jeremyf", email: "", responsible_for_review: "true", id: 11
+                    }
                   }
                 }
               end
@@ -106,7 +109,7 @@ module Sipity
                 expect(repository).to receive(:manage_collaborators_for).
                   with(work: work, collaborators: subject.collaborators_from_input).
                   and_call_original
-                subject.submit(requested_by: user)
+                subject.submit
               end
             end
           end

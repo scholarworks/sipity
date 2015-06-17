@@ -6,14 +6,14 @@ module Sipity
         Models::WorkArea.find_by!(slug: slug)
       end
 
-      def build_work_area_processing_action_form(work_area:, processing_action_name:, attributes: {})
+      def build_work_area_processing_action_form(work_area:, processing_action_name:, **keywords)
         # Leveraging an obvious inflection point, namely each work area may well
         # have its own form module.
         Forms::WorkAreas.build_the_form(
           work_area: work_area,
           processing_action_name: processing_action_name,
           repository: self,
-          attributes: attributes
+          **keywords
         )
       end
     end

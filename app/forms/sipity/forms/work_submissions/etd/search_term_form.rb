@@ -9,17 +9,15 @@ module Sipity
             attribute_names: [:subject, :language, :temporal_coverage, :spatial_coverage]
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.subject = attributes.fetch(:subject) { subject_from_work }
-            self.language = attributes.fetch(:language) { language_from_work }
-            self.temporal_coverage = attributes.fetch(:temporal_coverage) { temporal_coverage_from_work }
-            self.spatial_coverage = attributes.fetch(:spatial_coverage) { spatial_coverage_from_work }
+            initialize_attributes(attributes)
           end
 
-          def submit(requested_by:)
-            processing_action_form.submit(requested_by: requested_by) do
+          def submit
+            processing_action_form.submit do
               update_attribute_values('subject')
               update_attribute_values('language')
               update_attribute_values('temporal_coverage')
@@ -30,6 +28,13 @@ module Sipity
           include ActiveModel::Validations
 
           private
+
+          def initialize_attributes(attributes)
+            self.subject = attributes.fetch(:subject) { subject_from_work }
+            self.language = attributes.fetch(:language) { language_from_work }
+            self.temporal_coverage = attributes.fetch(:temporal_coverage) { temporal_coverage_from_work }
+            self.spatial_coverage = attributes.fetch(:spatial_coverage) { spatial_coverage_from_work }
+          end
 
           def update_attribute_values(key)
             repository.update_work_attribute_values!(work: work, key: key, values: send(key))
