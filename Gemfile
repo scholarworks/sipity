@@ -30,6 +30,7 @@ gem 'hydra-validations', github: 'projecthydra-labs/hydra-validations', branch: 
 gem 'power_converter'
 gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
+gem 'locabulary', github: 'ndlib/locabulary'
 
 group :doc do
   gem 'inch', require: false
