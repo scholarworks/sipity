@@ -34,13 +34,6 @@ GIT
     hesburgh-lib (0.0.1)
 
 GIT
-  remote: git://github.com/ndlib/locabulary.git
-  revision: 657830ceac64acc2fe94b44565526df72e76bcf6
-  specs:
-    locabulary (0.1.0)
-      json (~> 1.8)
-
-GIT
   remote: git://github.com/ndlib/noids_client
   revision: 7081fab70968d7c47ca3d1db8a74553082517507
   specs:
@@ -299,6 +292,8 @@ GEM
       celluloid (~> 0.16.0)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
+    locabulary (0.1.1)
+      json (~> 1.8)
     loofah (2.0.2)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.9)
@@ -583,7 +578,7 @@ DEPENDENCIES
   kaminari
   launchy
   letter_opener
-  locabulary!
+  locabulary
   meta_request
   mime-types (~> 2.6.1)
   mysql2
