@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618125612) do
+ActiveRecord::Schema.define(version: 20150618170010) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -48,6 +48,22 @@ ActiveRecord::Schema.define(version: 20150618125612) do
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
+
+  create_table "sipity_agents", force: :cascade do |t|
+    t.string   "name",                 limit: 255,   null: false
+    t.text     "description",          limit: 65535
+    t.string   "authentication_token", limit: 255,   null: false
+    t.integer  "sign_in_count",        limit: 4,     default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",   limit: 255
+    t.string   "last_sign_in_ip",      limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+  end
+
+  add_index "sipity_agents", ["authentication_token"], name: "index_sipity_agents_on_authentication_token", unique: true, using: :btree
+  add_index "sipity_agents", ["name"], name: "index_sipity_agents_on_name", unique: true, using: :btree
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.string   "work_id",                limit: 32,                  null: false
