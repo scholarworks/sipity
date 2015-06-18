@@ -20,6 +20,11 @@ module Sipity
       context '.configure' do
         let(:form_class) do
           Class.new do
+            attr_accessor :requested_by
+            def initialize(requested_by:)
+              self.requested_by = requested_by
+            end
+
             def self.name
               'HelloWorld'
             end
@@ -31,7 +36,11 @@ module Sipity
             include ActiveModel::Validations
           end
         end
-        subject { form_class.new.tap { |obj| obj.send(:processing_action_form=, described_class.new(form: obj, repository: double)) } }
+        subject do
+          form_class.new(requested_by: user).tap do |obj|
+            obj.send(:processing_action_form=, described_class.new(form: obj, repository: double))
+          end
+        end
         before { described_class.configure(form_class: form_class, base_class: Models::Work, attribute_names: [:title, :job]) }
         it { should respond_to :work }
         it { should respond_to :entity }
