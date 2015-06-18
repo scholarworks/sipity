@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150611182218) do
+ActiveRecord::Schema.define(version: 20150618125612) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -345,20 +345,6 @@ ActiveRecord::Schema.define(version: 20150611182218) do
   end
 
   add_index "sipity_roles", ["name"], name: "index_sipity_roles_on_name", unique: true, using: :btree
-
-  create_table "sipity_simple_controlled_vocabularies", force: :cascade do |t|
-    t.string   "predicate_name",                limit: 255, null: false
-    t.string   "term_label",                    limit: 255, null: false
-    t.datetime "created_at",                                null: false
-    t.datetime "updated_at",                                null: false
-    t.string   "term_uri",                      limit: 255
-    t.integer  "default_presentation_sequence", limit: 4
-  end
-
-  add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "default_presentation_sequence", "term_label"], name: "index_sipity_simple_controlled_vocabularies_order", using: :btree
-  add_index "sipity_simple_controlled_vocabularies", ["predicate_name", "term_label"], name: "index_sipity_simple_controlled_vocabularies_unique", unique: true, using: :btree
-  add_index "sipity_simple_controlled_vocabularies", ["predicate_name"], name: "index_sipity_simple_controlled_vocabularies_on_predicate_name", using: :btree
-  add_index "sipity_simple_controlled_vocabularies", ["term_uri"], name: "sipity_simple_controlled_vocabularies_term_uri", unique: true, using: :btree
 
   create_table "sipity_submission_window_work_types", force: :cascade do |t|
     t.integer  "submission_window_id", limit: 4, null: false

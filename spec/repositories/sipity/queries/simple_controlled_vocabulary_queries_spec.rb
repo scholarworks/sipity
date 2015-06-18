@@ -4,32 +4,34 @@ module Sipity
   module Queries
     RSpec.describe SimpleControlledVocabularyQueries, type: :isolated_repository_module do
       context '#get_controlled_vocabulary_values_for_predicate_name' do
-        let(:name) { 'program_name' }
-        let(:value) { 'A value' }
-        let(:vocab) do
-          Models::SimpleControlledVocabulary.create!(
-            predicate_name: name,
-            term_label: value,
-            term_uri: 'A code')
-        end
-
         it 'will get all the values associated with predicate_name' do
-          vocab
-          expect(test_repository.get_controlled_vocabulary_values_for_predicate_name(name: name)).to eq([value])
-        end
+          response = test_repository.get_controlled_vocabulary_values_for_predicate_name(name: 'program_name')
+          expect(response).to be_a(Enumerable)
+          expect(response).to be_present
 
+          expect(response.all? { |obj| obj.is_a?(String) }).to be_truthy
+        end
+      end
+
+      context '#get_controlled_vocabulary_entries_for_predicate_name' do
         it 'will get records associated with predicate_name' do
-          vocab
-          expect(test_repository.get_controlled_vocabulary_entries_for_predicate_name(name: name)).to eq([vocab])
+          response = test_repository.get_controlled_vocabulary_entries_for_predicate_name(name: 'program_name')
+          expect(response).to be_a(Enumerable)
+          expect(response).to be_present
+          expect(response.all? { |obj| obj.respond_to?(:term_uri) && obj.respond_to?(:term_label) }).to be_truthy
+        end
+      end
+
+      context '#get_controlled_vocabulary_value_for' do
+        it 'will get controlled vocabulary label for the predicate and uri' do
+          uri = 'http://creativecommons.org/licenses/by/3.0/us/'
+          label = "Attribution 3.0 United States"
+          expect(test_repository.get_controlled_vocabulary_value_for(name: 'copyright', term_uri: uri)).to eq(label)
         end
 
-        it 'will get controlled vocabulary value for the predicate and code' do
-          vocab
-          expect(test_repository.get_controlled_vocabulary_value_for(name: name, term_uri: 'A code')).to eq(value)
-        end
-
-        it 'will default to the given code if nothing is found' do
-          expect(test_repository.get_controlled_vocabulary_value_for(name: name, term_uri: 'A code')).to eq('A code')
+        it 'will default to the given uri if nothing is found' do
+          uri = 'http://test.com'
+          expect(test_repository.get_controlled_vocabulary_value_for(name: 'copyright', term_uri: uri)).to eq(uri)
         end
       end
     end
