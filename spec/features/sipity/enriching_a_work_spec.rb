@@ -6,7 +6,6 @@ feature 'Enriching a Work', :devise, :feature do
     Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd') do |work_area|
       Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: work_area)
     end
-    Sipity::SpecSupport.load_database_seeds!(seeds_path: 'db/seeds/controlled_vocabularies_seeds.rb')
     Warden.test_mode!
   end
   let(:user) { Sipity::Factories.create_user }

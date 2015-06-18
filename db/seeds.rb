@@ -11,7 +11,6 @@ ActiveRecord::Base.transaction do
   # Order is important
   [
     'groups_and_roles',
-    'controlled_vocabularies',
     'etd_work_area',
     'ulra_work_area'
   ].each do |seed_filename|
