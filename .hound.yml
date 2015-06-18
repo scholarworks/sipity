@@ -62,6 +62,7 @@ MethodLength:
     - 'app/repositories/sipity/queries/processing_queries.rb'
     - 'app/repositories/sipity/commands/processing_commands.rb'
     - 'spec/support/site_prism_support.rb'
+    - 'app/services/sipity/guard_interface_expectation.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
