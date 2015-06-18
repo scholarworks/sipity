@@ -40,9 +40,8 @@ module Sipity
             end
 
             it 'will require a requested_by' do
-              subject = described_class.new(keywords.merge(requested_by: nil))
-              subject.valid?
-              expect(subject.errors[:requested_by]).to_not be_empty
+              expect { described_class.new(keywords.merge(requested_by: nil)) }.
+                to raise_error(Exceptions::InterfaceCollaboratorExpectationError)
             end
           end
 

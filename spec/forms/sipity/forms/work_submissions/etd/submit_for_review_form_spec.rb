@@ -5,15 +5,14 @@ module Sipity
     module WorkSubmissions
       module Etd
         RSpec.describe SubmitForReviewForm do
-          let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
-          let(:work) { double('Work', to_processing_entity: processing_entity) }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id) }
-          let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, processing_action_name: action, repository: repository) }
+          let(:user) { double('User') }
+          let(:keywords) { { work: work, requested_by: user, repository: repository } }
+          subject { described_class.new(keywords) }
 
           it 'validates the aggreement to the submission terms' do
-            subject = described_class.new(work: work, processing_action_name: action, repository: repository)
+            subject = described_class.new(keywords)
             subject.valid?
             expect(subject.errors[:agree_to_terms_of_deposit]).to be_present
           end

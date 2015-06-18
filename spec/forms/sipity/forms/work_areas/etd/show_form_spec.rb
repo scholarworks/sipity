@@ -6,13 +6,13 @@ module Sipity
     module WorkAreas
       module Etd
         RSpec.describe ShowForm do
-          let(:processing_action_name) { 'show' }
           let(:work_area) { double(name: 'Hello Name', slug: 'hello-world') }
           let(:repository) { QueryRepositoryInterface.new }
-          subject { described_class.new(work_area: work_area, processing_action_name: processing_action_name, repository: repository) }
+          let(:user) { double }
+          subject { described_class.new(work_area: work_area, requested_by: user, repository: repository) }
 
           its(:policy_enforcer) { should eq Sipity::Policies::WorkAreaPolicy }
-          its(:processing_action_name) { should eq processing_action_name }
+          its(:processing_action_name) { should eq('show') }
           it { should implement_processing_form_interface }
           it { should delegate_method(:name).to(:work_area) }
           it { should delegate_method(:slug).to(:work_area) }

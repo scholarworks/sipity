@@ -11,8 +11,9 @@ module Sipity
             attribute_names: [:agree_to_terms_of_deposit], template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
-          def initialize(work:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.agree_to_terms_of_deposit = attributes[:agree_to_terms_of_deposit]
           end

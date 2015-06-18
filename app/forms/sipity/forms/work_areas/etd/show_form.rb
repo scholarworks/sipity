@@ -8,10 +8,11 @@ module Sipity
             form_class: self, base_class: Models::WorkArea, attribute_names: [:processing_state, :order, :page]
           )
 
-          def initialize(work_area:, attributes: {}, **keywords)
+          def initialize(work_area:, requested_by:, attributes: {}, **keywords)
+            self.work_area = work_area
+            self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.search_criteria_config = keywords.fetch(:search_criteria_config) { default_search_criteria_config }
-            self.work_area = work_area
             self.processing_state = attributes[:processing_state]
             self.order = attributes.fetch(:order) { default_order }
             self.page = attributes.fetch(:page) { default_page }

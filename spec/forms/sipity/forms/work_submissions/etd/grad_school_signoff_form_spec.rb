@@ -7,12 +7,13 @@ module Sipity
         RSpec.describe GradSchoolSignoffForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: 1) }
-          subject { described_class.new(work: work, repository: repository, attributes: { agree_to_signoff: true }) }
+          let(:user) { double('User') }
+          let(:keywords) { { work: work, repository: repository, requested_by: user } }
+          subject { described_class.new(keywords.merge(attributes: { agree_to_signoff: true })) }
 
           context 'validation' do
             it 'will require agreement to the signoff' do
-              subject = described_class.new(work: work, repository: repository)
+              subject = described_class.new(keywords)
               subject.valid?
               expect(subject.errors[:agree_to_signoff]).to be_present
             end
