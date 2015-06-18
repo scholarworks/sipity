@@ -114,7 +114,7 @@ RSpec.describe 'power converters' do
     end
   end
 
-  [:slug, :file_system_safe_file_name].each do |named_converter|
+  [:slug].each do |named_converter|
     context "#{named_converter}" do
       [
         { to_convert: 'Hello World', expected: 'hello-world' },
@@ -128,7 +128,7 @@ RSpec.describe 'power converters' do
     end
   end
 
-  [:safe_for_method_name].each do |named_converter|
+  [:safe_for_method_name, :file_system_safe_file_name].each do |named_converter|
     context "#{named_converter}" do
       [
         { to_convert: 'Hello World', expected: 'hello_world' },

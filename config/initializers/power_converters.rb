@@ -40,7 +40,7 @@ end
 PowerConverter.define_conversion_for(:file_system_safe_file_name) do |input|
   case input
   when Symbol, String, NilClass
-    input.to_s.gsub(/\W+/, '_').underscore.gsub(/_+/, '-').downcase
+    input.to_s.gsub(/\W+/, '_').underscore.downcase
   end
 end
 
@@ -92,7 +92,12 @@ PowerConverter.define_conversion_for(:strategy_state) do |input, strategy|
   end
 end
 
-PowerConverter.define_alias(:slug, is_alias_of: :file_system_safe_file_name)
+PowerConverter.define_conversion_for(:slug) do |input|
+  case input
+  when Symbol, String, NilClass
+    input.to_s.gsub(/\W+/, '_').underscore.gsub(/_+/, '-').downcase
+  end
+end
 
 PowerConverter.define_conversion_for(:submission_window) do |input, work_area|
   case input
