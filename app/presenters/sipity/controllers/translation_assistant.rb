@@ -14,7 +14,7 @@ module Sipity
       # 2. :<scope>.work_type/<work_type>.<object>.<predicate>
       # 3. :<scope>.<object>.<predicate>
       # 4. <object.to_s.humanize>
-      def call(scope:, subject:, object: subject, predicate:)
+      def call(scope:, subject:, object: subject, predicate: :label)
         scope = scope.to_s
         defaults = [:"#{object}.#{predicate}", object.to_s.humanize]
         options = { scope: scope, default: defaults }

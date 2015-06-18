@@ -99,8 +99,8 @@ module Sipity
         end
 
         it 'will expose human_readable_processing_state' do
-          allow(I18n).to receive(:t).and_return('Human readable')
-          expect(subject.human_readable_processing_state).to eq('Human readable')
+          expect(TranslationAssistant).to receive(:call)
+          subject.human_readable_processing_state
         end
 
         context '#label' do

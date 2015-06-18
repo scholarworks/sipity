@@ -6,6 +6,11 @@ module Sipity
       let(:work_area) { Models::WorkArea.new(slug: 'fake', name: 'hello_world') }
       let(:something) { double(work_type: 'master_thesis', to_work_area: work_area, title: 'the_book') }
 
+      it 'needs only a scope and a subject' do
+        expect(described_class.call(scope: :processing_actions, subject: work_area)).
+          to eq('Hello world')
+      end
+
       it 'gracefully handles work_areas' do
         expect(described_class.call(scope: :processing_actions, subject: work_area, object: work_area, predicate: :label)).
           to eq('Hello world')
