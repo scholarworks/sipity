@@ -47,6 +47,24 @@ module Sipity
       end
     end
 
+    # The object did not implement the expected interface.
+    class InterfaceCollaboratorExpectationError < RuntimeError
+      def initialize(object:, collaborator_expectations:)
+        self.collaborator_expectations = collaborator_expectations
+        super("Expected #{object} to collaborate #{expected_methods}")
+      end
+
+      private
+
+      def expected_methods
+        @collaborator_expectations.map(&:inspect).inspect
+      end
+
+      def collaborator_expectations=(input)
+        @collaborator_expectations = Array.wrap(input)
+      end
+    end
+
     # Indicates that the returned value from the runner was incorrectly built.
     class InvalidHandledResponseStatus < RuntimeError
       def initialize(input, expected_class: Symbol)

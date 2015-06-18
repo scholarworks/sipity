@@ -34,6 +34,11 @@ module Sipity
       its(:message) { should be_a(String) }
     end
 
+    RSpec.describe InterfaceCollaboratorExpectationError do
+      subject { described_class.new(object: 'hello', collaborator_expectations: { fly: :guy }) }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe AuthorizationFailureError do
       let(:user) { double }
       let(:action) { double }

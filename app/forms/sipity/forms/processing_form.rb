@@ -160,7 +160,7 @@ module Sipity
       end
 
       FORM_METHOD_NAMES_FOR_INTERFACE = [
-        :valid?, :errors, :base_class, :entity, :model_name, :param_key, :processing_action_name, :translate, :template
+        :valid?, :errors, :base_class, :requested_by, :entity, :model_name, :param_key, :processing_action_name, :translate, :template
       ].freeze
       FORM_METHOD_NAMES_FOR_COERCION = [:to_processing_entity, :to_processing_action, :to_work_area].freeze
 
@@ -168,6 +168,7 @@ module Sipity
       def form=(input)
         guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_INTERFACE)
         guard_interface_expectation!(input, FORM_METHOD_NAMES_FOR_COERCION, include_all: true)
+        guard_interface_collaborator_expectations!(input, requested_by: :present?)
         @form = input
       end
 
