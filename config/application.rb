@@ -10,6 +10,9 @@ module Sipity
   class Application < Rails::Application
 
     config.generators do |g|
+      g.assets = false
+      g.helper = false
+
       g.test_framework :rspec,
         fixtures: false,
         view_specs: false,
@@ -18,6 +21,8 @@ module Sipity
         controller_specs: false,
         request_specs: false
     end
+
+    config.action_controller.include_all_helpers = false
 
     [
       'conversions',
