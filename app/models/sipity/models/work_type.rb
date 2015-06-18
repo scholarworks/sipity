@@ -13,11 +13,13 @@ module Sipity
       DOCTORAL_DISSERTATION = 'doctoral_dissertation'.freeze
       MASTER_THESIS = 'master_thesis'.freeze
       ULRA_SUBMISSION = 'ulra_submission'.freeze
+      DOCUMENT = 'document'.freeze
 
       NAMED_WORK_TYPES_FOR_ENUM = {
         DOCTORAL_DISSERTATION => DOCTORAL_DISSERTATION,
         MASTER_THESIS => MASTER_THESIS,
-        ULRA_SUBMISSION => ULRA_SUBMISSION
+        ULRA_SUBMISSION => ULRA_SUBMISSION,
+        DOCUMENT => DOCUMENT
       }.freeze
 
       has_many :submission_window_work_types, dependent: :destroy
