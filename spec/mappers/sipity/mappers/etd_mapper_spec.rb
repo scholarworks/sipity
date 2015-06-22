@@ -7,6 +7,9 @@ module Sipity
       let(:work) { double }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
+      let(:collaborators) { [double(name: 'Hello', role:'role')] }
+      let(:contributor_map) { {'dc:contributor' => 'Hello', 'ms:role' =>'role'} }
+      let(:degree_map) { {"ms:name"=>["a degree_name"], "ms:discipline"=>["a program_name"]} }
       let(:title) { 'Title of the work' }
       let(:batch_user) { 'curate_batch_user' }
 
@@ -25,19 +28,24 @@ module Sipity
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'subject').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'abstract').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
-        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return([])
-        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return(['a degree_name'])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'defense_date').and_return([])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return(['a program_name'])
         expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
         expect(repository).to receive(:scope_users_for_entity_and_roles).
           with(entity: work, roles: 'creating_user').and_return(creators)
         expect(work).to receive(:id).and_return('a_id')
         expect(work).to receive(:title).and_return(title)
+        expect(work).to receive(:collaborators).and_return(collaborators)
         expected_json = JSON.parse(subject.call)
+        puts "Json: #{expected_json.inspect}"
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
         expect(expected_json["metadata"]["dc:title"]).to eq(title)
         expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
+        expect(expected_json["metadata"]["dc:contributor"]).to eq([contributor_map])
+        expect(expected_json["metadata"]["ms:degree"]).to eq(degree_map)
       end
 
       context 'will have be able to map correct access_right' do
@@ -48,6 +56,7 @@ module Sipity
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
           expect(work).to receive(:title).and_return(title)
+          expect(work).to receive(:collaborators).and_return(collaborators)
           expected_json = JSON.parse(subject.call)
           expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
         end
@@ -59,6 +68,7 @@ module Sipity
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
           expect(work).to receive(:title).and_return(title)
+          expect(work).to receive(:collaborators).and_return(collaborators)
           expected_json = JSON.parse(subject.call)
           expect(expected_json["rights"]).to eq("read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user])
         end
@@ -75,6 +85,7 @@ module Sipity
             expect(work).to receive(:access_rights).and_return([access_rights])
             expect(work).to receive(:id).and_return('a_id')
             expect(work).to receive(:title).and_return(title)
+            expect(work).to receive(:collaborators).and_return(collaborators)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
                                                   "read" => ['Hello'], "edit" => [batch_user])
@@ -88,6 +99,7 @@ module Sipity
               with(entity: work, roles: 'creating_user').and_return(creators)
             expect(work).to receive(:id).and_return('a_id')
             expect(work).to receive(:title).and_return(title)
+            expect(work).to receive(:collaborators).and_return(collaborators)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
                                                   "read" => ['Hello'], "edit" => [batch_user])

@@ -13,7 +13,7 @@ module Sipity
         ths: 'http://id.loc.gov/vocabulary/relators/'
       }.freeze
 
-      WORK_ATTRIBUTES = ['alternate_title', 'subject', 'abstract', 'copyright', 'language']
+      WORK_ATTRIBUTES = ['alternate_title', 'subject', 'abstract', 'copyright', 'language', 'defense_date']
       PID_KEY = 'pid'.freeze
       TYPE_KEY = 'type'.freeze
       CONTEXT_KEY = '@context'.freeze
@@ -82,6 +82,7 @@ module Sipity
       def metadata
         metadata =  attributes
         metadata['title'] = work.title
+        metadata['contributor'] = collaborators_name_and_title
         metadata['degree'] = degree_info
         metadata
       end
@@ -90,6 +91,21 @@ module Sipity
         { extract_name_for('degree_name') => repository.work_attribute_values_for(work: work, key: 'degree'),
           extract_name_for('program_name') => repository.work_attribute_values_for(work: work, key: 'program_name')
         }
+      end
+      
+      def collaborators
+        work.collaborators
+      end
+
+      def collaborators_name_and_title
+        test = []
+        collaborators.map do |collaborator|
+          name_and_title_hash = {}
+          name_and_title_hash[extract_name_for('contributor')] = collaborator.name
+          name_and_title_hash[extract_name_for('contributor_role')] = collaborator.role
+          test << name_and_title_hash
+        end
+        test
       end
 
       def access_rights
