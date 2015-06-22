@@ -10,7 +10,7 @@ module Sipity
         let(:submission_window) { Models::SubmissionWindow.new(id: 2, slug: 'start', work_area_id: work_area.id) }
         subject { described_class }
 
-        it "will generate the state diagram for a ULRA submission" do
+        it "will generate the state diagram for a Self-Deposit submission" do
           # Consider running this code and checking against the output state machine
           # This was how I visually validated the changes.
           #
