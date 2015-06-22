@@ -74,7 +74,7 @@ module Sipity
         end
 
         def work_type
-          TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type, predicate: :label)
+          TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type)
         end
 
         def processing_state
@@ -82,7 +82,7 @@ module Sipity
         end
 
         def human_readable_processing_state
-          I18n.t("sipity/works.processing_state.label.#{processing_state}")
+          TranslationAssistant.call(scope: :processing_states, subject: work_submission, object: processing_state)
         end
 
         def label(identifier)
@@ -91,9 +91,7 @@ module Sipity
         end
 
         def section(identifier)
-          TranslationAssistant.call(
-            scope: :sections, subject: work_submission, object: identifier, predicate: :label
-          )
+          TranslationAssistant.call(scope: :sections, subject: work_submission, object: identifier)
         end
 
         private

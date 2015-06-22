@@ -4,4 +4,10 @@ module Sipity
   def self.table_name_prefix
     'sipity_'
   end
+
+  module_function
+
+  def t(*args)
+    Controllers::TranslationAssistant.call(*args)
+  end
 end

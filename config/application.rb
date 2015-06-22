@@ -6,6 +6,8 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require File.expand_path('../../app/models/sipity', __FILE__)
+
 module Sipity
   class Application < Rails::Application
 

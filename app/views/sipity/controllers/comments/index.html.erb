@@ -1,6 +1,4 @@
 <section itemscope itemtype="http://schema.org/CreativeWork">
-  <% state_notice = t("sipity/works.processing_state.#{@model.processing_state}") %>
-
   <div class="row">
     <div class="col-xs-12 work-show">
       <div class="page-header">
@@ -8,8 +6,8 @@
           <span itemprop="name"><%= @model.title %></span>
         </h1>
         <p class="work-status">
-          <%= content_tag :span, t("simple_form.options.defaults.work_type.#{@model.work_type}"), class: 'work-type' %> &bull;
-          <%= content_tag :span, t("sipity/works.processing_state.label.#{@model.processing_state}"), class: 'work-processing-state' %>
+          <%= content_tag :span, ::Sipity.t(scope: :work_types, subject: @model.work_type), class: 'work-type' %> &bull;
+          <%= content_tag :span, ::Sipity.t(scope: :processing_states, subject: @model, object: @model.processing_state), class: 'work-processing-state' %>
         </p>
       </div>
     </div>
@@ -22,5 +20,5 @@
     </div>
   <% end %>
   </div>
-  <%= link_to "Back to #{@model.work_type.humanize}", work_path(id: @model.id) %>
+  <%= link_to "Back to #{::Sipity.t(scope: :work_types, subject: @model.work_type)}", work_path(id: @model.id) %>
 </section>
