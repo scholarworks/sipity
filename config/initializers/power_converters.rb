@@ -92,6 +92,12 @@ PowerConverter.define_conversion_for(:strategy_state) do |input, strategy|
   end
 end
 
+# Slugs should be human and machine readable
+#
+# > We recommend that you use hyphens (-) instead of underscores (_) in your
+# > URLs.
+#
+# https://support.google.com/webmasters/answer/76329?hl=en
 PowerConverter.define_conversion_for(:slug) do |input|
   case input
   when Symbol, String, NilClass

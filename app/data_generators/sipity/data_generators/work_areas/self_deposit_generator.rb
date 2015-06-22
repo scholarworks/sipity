@@ -3,7 +3,7 @@ module Sipity
     module WorkAreas
       # Responsible for generating the self deposit work area
       class SelfDepositGenerator < BaseGenerator
-        SLUG = 'self_deposit'.freeze
+        SLUG = 'self-deposit'.freeze
       end
     end
   end
