@@ -119,6 +119,7 @@ RSpec.describe 'power converters' do
       [
         { to_convert: 'Hello World', expected: 'hello-world' },
         { to_convert: 'HelloWorld', expected: 'hello-world' },
+        { to_convert: '', expected: '' },
         { to_convert: nil, expected: '' }
       ].each do |scenario|
         it "will convert #{scenario.fetch(:to_convert)} to #{scenario.fetch(:expected)}" do
@@ -128,7 +129,22 @@ RSpec.describe 'power converters' do
     end
   end
 
-  [:safe_for_method_name, :file_system_safe_file_name].each do |named_converter|
+  [:file_system_safe_file_name].each do |named_converter|
+    context "#{named_converter}" do
+      [
+        { to_convert: 'Hello World', expected: 'hello_world' },
+        { to_convert: 'HelloWorld', expected: 'hello_world' },
+        { to_convert: '', expected: '' },
+        { to_convert: nil, expected: '' }
+      ].each do |scenario|
+        it "will convert #{scenario.fetch(:to_convert)} to #{scenario.fetch(:expected)}" do
+          expect(PowerConverter.convert(scenario.fetch(:to_convert), to: named_converter)).to eq(scenario.fetch(:expected))
+        end
+      end
+    end
+  end
+
+  [:safe_for_method_name].each do |named_converter|
     context "#{named_converter}" do
       [
         { to_convert: 'Hello World', expected: 'hello_world' },
