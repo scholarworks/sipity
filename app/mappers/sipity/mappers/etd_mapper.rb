@@ -32,7 +32,7 @@ module Sipity
       # RELS-EXT KEYS
       RELS_EXT_KEY = 'rels-ext'.freeze
       RELS_EXT_URI = {
-        "hydramata-rel":  "http://projecthydra.org/ns/relations#"
+        "hydramata-rel" => "http://projecthydra.org/ns/relations#"
       }.freeze
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
       EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
@@ -88,24 +88,25 @@ module Sipity
       end
 
       def degree_info
-        { extract_name_for('degree_name') => repository.work_attribute_values_for(work: work, key: 'degree'),
-          extract_name_for('program_name') => repository.work_attribute_values_for(work: work, key: 'program_name')
-        }
+        degree_info = {}
+        degree_info[extract_name_for('degree_name')] = repository.work_attribute_values_for(work: work, key: 'degree')
+        degree_info[extract_name_for('program_name')] = repository.work_attribute_values_for(work: work, key: 'program_name')
+        degree_info
       end
-      
+
       def collaborators
         work.collaborators
       end
 
       def collaborators_name_and_title
-        test = []
+        collaborators_name_and_title = []
         collaborators.map do |collaborator|
           name_and_title_hash = {}
           name_and_title_hash[extract_name_for('contributor')] = collaborator.name
           name_and_title_hash[extract_name_for('contributor_role')] = collaborator.role
-          test << name_and_title_hash
+          collaborators_name_and_title << name_and_title_hash
         end
-        test
+        collaborators_name_and_title
       end
 
       def access_rights

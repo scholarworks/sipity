@@ -7,9 +7,9 @@ module Sipity
       let(:work) { double }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
-      let(:collaborators) { [double(name: 'Hello', role:'role')] }
-      let(:contributor_map) { {'dc:contributor' => 'Hello', 'ms:role' =>'role'} }
-      let(:degree_map) { {"ms:name"=>["a degree_name"], "ms:discipline"=>["a program_name"]} }
+      let(:collaborators) { [double(name: 'Hello', role: 'role')] }
+      let(:contributor_map) { { 'dc:contributor' => 'Hello', 'ms:role' => 'role' } }
+      let(:degree_map) { { "ms:name" => ["a degree_name"], "ms:discipline" => ["a program_name"] } }
       let(:title) { 'Title of the work' }
       let(:batch_user) { 'curate_batch_user' }
 

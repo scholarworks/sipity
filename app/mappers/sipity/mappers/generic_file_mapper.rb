@@ -30,7 +30,7 @@ module Sipity
       # RELS-EXT KEYS
       RELS_EXT_KEY = 'rels-ext'.freeze
       RELS_EXT_URI = {
-        "hydramata-rel":  "http://projecthydra.org/ns/relations#"
+        "hydramata-rel" => "http://projecthydra.org/ns/relations#"
       }.freeze
       PARENT_PREDICATE_KEY = 'isPartOf'.freeze
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
