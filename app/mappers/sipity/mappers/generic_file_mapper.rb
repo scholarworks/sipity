@@ -50,6 +50,12 @@ module Sipity
         build_json
       end
 
+      private
+
+      attr_accessor :file, :repository, :work
+
+      attr_reader :work_area
+
       def build_json
         Jbuilder.encode do |json|
           gather_attachment_metadata(json)
@@ -62,17 +68,11 @@ module Sipity
         end
       end
 
-      private
-
-      attr_accessor :file, :repository, :work
-
-      attr_reader :work_area
-
       def default_repository
         QueryRepository.new
       end
 
-      def append_namespace_to_id(id)
+      def namespaced_pid(id)
         NAMESPACE + id
       end
 
@@ -99,7 +99,7 @@ module Sipity
 
       def gather_attachment_metadata(json)
         json.set!(TYPE_KEY, "fobject")
-        json.set!(PID_KEY, append_namespace_to_id(file.pid))
+        json.set!(PID_KEY, namespaced_pid(file.pid))
         json.set!(AF_MODEL_KEY, CONTENT_MODEL_NAME)
         json
       end
@@ -132,7 +132,7 @@ module Sipity
           end
           json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
           json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
-          json.set!(PARENT_PREDICATE_KEY, [append_namespace_to_id(work.id)])
+          json.set!(PARENT_PREDICATE_KEY, [namespaced_pid(work.id)])
         end
       end
 
@@ -201,7 +201,7 @@ module Sipity
       end
 
       def extract_name_for(attribute)
-        ETD_ATTRIBUTES[attribute.to_s]
+        Exporters::EtdExporter.etd_attributes[attribute.to_sym]
       end
     end
   end

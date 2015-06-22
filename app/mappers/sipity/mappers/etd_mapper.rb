@@ -50,6 +50,10 @@ module Sipity
         build_json
       end
 
+      private
+
+      attr_accessor :work, :repository
+
       def build_json
         Jbuilder.encode do |json|
           gather_work_metadata(json)
@@ -63,20 +67,16 @@ module Sipity
         end
       end
 
-      private
-
-      attr_accessor :work, :repository
-
-      def append_namespace_to_id
+      def namespaced_pid
         NAMESPACE + work.id
       end
 
       def attributes
-        @attributes = {}
+        attributes = {}
         WORK_ATTRIBUTES.each do |k|
-          @attributes[k] = repository.work_attribute_values_for(work: work, key: k)
+          attributes[k] = repository.work_attribute_values_for(work: work, key: k)
         end
-        @attributes
+        attributes
       end
 
       def metadata
@@ -119,7 +119,7 @@ module Sipity
 
       def gather_work_metadata(json)
         json.set!(TYPE_KEY, "fobject")
-        json.set!(PID_KEY, append_namespace_to_id)
+        json.set!(PID_KEY, namespaced_pid)
         json.set!(AF_MODEL_KEY, CONTENT_MODEL_NAME)
       end
 
@@ -169,7 +169,7 @@ module Sipity
       end
 
       def extract_name_for(attribute)
-        ETD_ATTRIBUTES[attribute]
+        Exporters::EtdExporter.etd_attributes[attribute.to_sym]
       end
 
       def default_repository

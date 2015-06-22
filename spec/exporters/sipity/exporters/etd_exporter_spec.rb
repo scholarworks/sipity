@@ -11,6 +11,14 @@ module Sipity
       let(:batch_user) { 'curate_batch_user' }
       let(:file) { double }
       let(:json_array) { ["etd_to_json", "attachment_to_json"] }
+      let(:etd_mapping_hash) do
+        {
+          creator: "dc:creator",
+          title: "dc:title",
+          alternate_title: "dc:title#alternate",
+          subject: "dc:subject"
+        }
+      end
 
       subject { described_class.new(work, repository: repository) }
 
@@ -19,6 +27,20 @@ module Sipity
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
         described_class.call(work)
+      end
+
+      context '.etd_attributes' do
+        it 'will be a Hash of etd attributes' do
+          expect(described_class.etd_attributes).to be_a(Hash)
+        end
+      end
+
+      context 'etd mapping constants' do
+        it "will expose ETD mapping" do
+          etd_mapping_hash.each do |key, value|
+            expect(described_class.etd_attributes[key]).to eq(value)
+          end
+        end
       end
 
       context 'export_to_json' do

@@ -1,1 +1,0 @@
-ETD_ATTRIBUTES = YAML.load( File.open( Rails.root.join( 'config/etd_mapper.yml' ) ) ).freeze

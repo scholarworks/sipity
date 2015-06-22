@@ -38,7 +38,6 @@ module Sipity
         expect(work).to receive(:title).and_return(title)
         expect(work).to receive(:collaborators).and_return(collaborators)
         expected_json = JSON.parse(subject.call)
-        puts "Json: #{expected_json.inspect}"
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
