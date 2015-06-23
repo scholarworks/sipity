@@ -407,6 +407,7 @@ en:
       at_least_one_attachment_required: 'At least one file must be attached'
   sipity/mailers/email_notifier:
     email_name:
+      submit_for_review: "Submitted to research director(s) for review and approval"
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'
