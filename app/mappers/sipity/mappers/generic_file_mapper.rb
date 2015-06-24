@@ -146,10 +146,15 @@ module Sipity
       end
 
       def create_content_from_attachment
-        content_file = File.join(MNT_PATH, file_name_to_create)
-        FileUtils.mkdir_p(MNT_PATH) unless File.directory?(MNT_PATH)
+        content_file = File.join(curate_batch_directory, file_name_to_create)
         create_content_in(content_file)
         File.basename content_file
+      end
+
+      def curate_batch_directory
+        batch_directory = MNT_PATH + '/' + "sipity-#{work.id}"
+        FileUtils.mkdir_p(batch_directory) unless File.directory?(batch_directory)
+        batch_directory
       end
 
       def mime_type

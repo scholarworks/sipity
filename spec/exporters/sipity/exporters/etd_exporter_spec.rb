@@ -56,7 +56,7 @@ module Sipity
 
       context 'call' do
         it 'will send ROF JSON to ROF api to ingest into configured fedora' do
-          expect(work).to receive(:id).and_return('a_id')
+          allow(work).to receive(:id).and_return('a_id')
           expect(repository).to receive(:work_attachments).with(work: work).and_return([file])
           expect(subject).to receive(:export_to_json).
             and_return(["rof json array"])

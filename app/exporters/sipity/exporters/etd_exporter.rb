@@ -54,8 +54,8 @@ module Sipity
       def call
         # Create rof etd file to be ingested
         file_name = ROF_FILE_PREFIX + work.id + ROF_FILE_EXTN
-        FileUtils.mkdir_p(MNT_PATH) unless File.directory?(MNT_PATH)
-        File.open(File.join(MNT_PATH, file_name), 'w+') do |rof_file|
+        metadata_file = File.join(curate_batch_directory, file_name)
+        File.open(metadata_file, 'w+') do |rof_file|
           rof_file.puts '[' + export_to_json.join(',') + ']'
         end
       end
@@ -73,6 +73,12 @@ module Sipity
       private
 
       attr_accessor :repository, :work, :attachments
+
+      def curate_batch_directory
+        batch_directory = MNT_PATH + '/' + "sipity-#{work.id}"
+        FileUtils.mkdir_p(batch_directory) unless File.directory?(batch_directory)
+        batch_directory
+      end
 
       def default_repository
         QueryRepository.new
