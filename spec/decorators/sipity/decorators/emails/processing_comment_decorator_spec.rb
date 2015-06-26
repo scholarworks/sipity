@@ -13,7 +13,7 @@ module Sipity
 
         its(:comment) { should eq processing_comment.comment }
         its(:name_of_commentor) { should eq(user.name) }
-        its(:work_type) { should eq('Doctoral Dissertation') }
+        its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }
         its(:email_message_action_description) { should eq("Review comments for “#{work.title}”") }
         its(:email_message_action_name) { should eq("Review comments") }
