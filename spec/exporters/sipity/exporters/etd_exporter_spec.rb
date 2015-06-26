@@ -60,6 +60,7 @@ module Sipity
           expect(repository).to receive(:work_attachments).with(work: work).and_return([file])
           expect(subject).to receive(:export_to_json).
             and_return(["rof json array"])
+          expect(FileUtils).to receive(:mv)
           subject.call
         end
       end

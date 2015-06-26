@@ -15,7 +15,8 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
-      MNT_PATH = Figaro.env.curate_batch_mnt_path!
+      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_mnt_path) + "../../data/sipity"
+      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_mnt_path!}/queue"
       # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
@@ -146,15 +147,19 @@ module Sipity
       end
 
       def create_content_from_attachment
-        content_file = File.join(curate_batch_directory, file_name_to_create)
+        create_directory(curate_data_directory)
+        content_file = File.join(curate_data_directory, file_name_to_create)
         create_content_in(content_file)
         File.basename content_file
       end
 
-      def curate_batch_directory
-        batch_directory = MNT_PATH + '/' + "sipity-#{work.id}"
-        FileUtils.mkdir_p(batch_directory) unless File.directory?(batch_directory)
-        batch_directory
+      def curate_data_directory
+        "#{MNT_DATA_PATH}/sipity-#{work.id}"
+      end
+
+      def create_directory(directory)
+        FileUtils.mkdir_p(directory) unless File.directory?(directory)
+        directory
       end
 
       def mime_type
