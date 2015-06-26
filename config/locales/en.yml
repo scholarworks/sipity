@@ -407,6 +407,7 @@ en:
       at_least_one_attachment_required: 'At least one file must be attached'
   sipity/mailers/email_notifier:
     email_name:
+      confirmation_of_advisor_signoff: "Confirmation of research director's approval"
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'
