@@ -32,6 +32,7 @@ gem 'power_converter'
 gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
 gem 'locabulary'
+gem 'data_migrator', github: 'jeremyf/data-migrator'
 
 group :doc do
   gem 'inch', require: false
