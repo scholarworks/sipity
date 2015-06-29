@@ -10,7 +10,7 @@ module Sipity
 
       alias_attribute :name, :file_name
 
-      has_many :access_rights, as: :entity, dependent: :destroy
+      has_one :access_right, as: :entity, dependent: :destroy
 
       def to_s
         file_name
@@ -29,7 +29,7 @@ module Sipity
         end
       end
 
-      delegate :url, to: :file, prefix: :file, allow_nil: true
+      delegate :url, :path, to: :file, prefix: :file, allow_nil: true
     end
   end
 end

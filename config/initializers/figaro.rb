@@ -12,5 +12,8 @@ Figaro.require_keys(
   'noid_port',
   'noid_server',
   'secret_key_base',
-  'url_host'
+  'url_host',
+  'curate_batch_user_pid',
+  'curate_batch_group_pid',
+  'curate_batch_mnt_path'
 )

@@ -17,6 +17,10 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def attachment_access_right_code(attachment:)
+    end
+
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def authorized_for_processing?(user:, entity:, action:)
     end
@@ -210,7 +214,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def work_access_right_codes(work:)
+    def work_access_right_code(work:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb

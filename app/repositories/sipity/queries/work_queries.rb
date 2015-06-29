@@ -40,8 +40,8 @@ module Sipity
         )
       end
 
-      def work_access_right_codes(work:)
-        work.access_rights.pluck(:access_right_code)
+      def work_access_right_code(work:)
+        work.access_right.access_right_code
       end
     end
   end
