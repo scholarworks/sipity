@@ -24,10 +24,10 @@ module Sipity
             with(work: work).and_return(reviewers)
         end
 
-        its(:work_type) { should eq('Doctoral Dissertation') }
+        its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }
-        its(:email_message_action_description) { should eq("Review Doctoral Dissertation “#{work.title}”") }
-        its(:email_message_action_name) { should eq("Review Doctoral Dissertation") }
+        its(:email_message_action_description) { should eq("Review Doctoral dissertation “#{work.title}”") }
+        its(:email_message_action_name) { should eq("Review Doctoral dissertation") }
         its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
         its(:collaborators) { should eq(collaborators) }
         its(:reviewers) { should eq(reviewers) }

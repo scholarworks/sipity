@@ -20,10 +20,10 @@ module Sipity
         let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(registered_action, repository: repository) }
 
-        its(:work_type) { should eq('Doctoral Dissertation') }
+        its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }
-        its(:email_message_action_description) { should eq("Go to Doctoral Dissertation “#{work.title}”") }
-        its(:email_message_action_name) { should eq("Go to Doctoral Dissertation") }
+        its(:email_message_action_description) { should eq("Go to Doctoral dissertation “#{work.title}”") }
+        its(:email_message_action_name) { should eq("Go to Doctoral dissertation") }
         its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
         its(:action_taken_at) { should eq registered_action.created_at }
         its(:requested_by) { should eq requesting_user }

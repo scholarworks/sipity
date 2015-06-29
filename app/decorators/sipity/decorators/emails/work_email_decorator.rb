@@ -15,7 +15,7 @@ module Sipity
         end
 
         def work_type
-          work.work_type.titleize
+          Sipity::Controllers::TranslationAssistant.call(scope: :work_types, subject: work.work_type)
         end
 
         def collaborators
