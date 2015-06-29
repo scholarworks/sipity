@@ -18,7 +18,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def attachment_access_right_codes(attachment:)
+    def attachment_access_right_code(attachment:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -214,7 +214,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def work_access_right_codes(work:)
+    def work_access_right_code(work:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb

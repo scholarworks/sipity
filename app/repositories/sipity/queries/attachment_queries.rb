@@ -6,8 +6,8 @@ module Sipity
         Models::Attachment.includes(:work).where(work_id: work.id)
       end
 
-      def attachment_access_right_codes(attachment:)
-        attachment.access_rights.pluck(:access_right_code)
+      def attachment_access_right_code(attachment:)
+        attachment.access_right.access_right_code
       end
 
       def accessible_objects(work:)

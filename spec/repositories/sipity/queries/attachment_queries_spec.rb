@@ -54,7 +54,7 @@ module Sipity
         it 'will expose access_right_code of the underlying attachment' do
           attachment = Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment', file: file)
           Models::AccessRight.create!(entity: attachment, access_right_code: 'private_access')
-          expect(test_repository.attachment_access_right_codes(attachment: attachment)).to eq(['private_access'])
+          expect(test_repository.attachment_access_right_code(attachment: attachment)).to eq('private_access')
         end
       end
     end
