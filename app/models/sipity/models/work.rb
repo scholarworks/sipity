@@ -8,7 +8,7 @@ module Sipity
       has_many :collaborators, foreign_key: :work_id, dependent: :destroy
       has_many :additional_attributes, foreign_key: :work_id, dependent: :destroy
       has_many :attachments, foreign_key: :work_id, dependent: :destroy
-      has_many :access_rights, as: :entity, dependent: :destroy
+      has_one :access_right, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       has_one :work_submission, dependent: :destroy
 
