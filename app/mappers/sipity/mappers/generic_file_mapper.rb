@@ -82,16 +82,16 @@ module Sipity
           date_modified: date_convert(file.updated_at) }
       end
 
-      def file_access_rights
-        @file_access_rights ||= repository.attachment_access_right_codes(attachment: file)
+      def file_access_right
+        @file_access_right ||= repository.attachment_access_right_code(attachment: file)
       end
 
-      def work_access_rights
-        @work_access_rights ||= repository.work_access_right_codes(work: work)
+      def work_access_right
+        @work_access_right ||= repository.work_access_right_code(work: work)
       end
 
-      def access_rights
-        @access_rights =  file_access_rights.empty? ? work_access_rights : file_access_rights
+      def access_right
+        @access_right =  file_access_right.present? ? file_access_right : work_access_right
       end
 
       def creators
@@ -185,29 +185,22 @@ module Sipity
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
         decoded_access_rights = { READ_KEY => creators,  EDIT_KEY => [BATCH_USER] }
-        access_rights.each do |access_right|
-          case access_right
-          when Models::AccessRight::OPEN_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
-          when Models::AccessRight::RESTRICTED_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
-          when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
-            decoded_access_rights[EMBARGO_KEY] = embargo_date
-          when Models::AccessRight::PRIVATE_ACCESS
-          end
+        case access_right
+        when Models::AccessRight::OPEN_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+        when Models::AccessRight::RESTRICTED_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
+        when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+          decoded_access_rights[EMBARGO_KEY] = embargo_date
+        when Models::AccessRight::PRIVATE_ACCESS
         end
         decoded_access_rights
       end
 
       def embargo_date
-        if file_access_rights.empty?
-          embargo_dates = work.access_rights.map(&:transition_date)
-        else
-          embargo_dates = file.access_rights.map(&:transition_date)
-        end
-        embargo_dates.map { |dt| dt.strftime('%Y-%m-%d') }
-        embargo_dates.to_sentence
+        embargo_dt = file_access_right.present? ? file.access_right.transition_date : work.access_right.transition_date
+        embargo_dt.strftime('%Y-%m-%d')
       end
 
       def extract_name_for(attribute)

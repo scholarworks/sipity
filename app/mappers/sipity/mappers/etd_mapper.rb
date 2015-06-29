@@ -57,7 +57,7 @@ module Sipity
       def build_json
         Jbuilder.encode do |json|
           gather_work_metadata(json)
-          json.set!(ACCESS_RIGHTS_KEY, decode_access_rights)
+          json.set!(ACCESS_RIGHTS_KEY, decode_access_right)
           transform_attributes_to_metadata(json)
           rels_ext_datastream(json)
           json.set! PROPERTIES_METADATA_KEY.to_sym do
@@ -109,8 +109,8 @@ module Sipity
         collaborators_name_and_title
       end
 
-      def access_rights
-        @access_rights ||= repository.work_access_right_codes(work: work)
+      def access_right
+        @access_right ||= repository.work_access_right_code(work: work)
       end
 
       def creators
@@ -144,28 +144,25 @@ module Sipity
         end
       end
 
-      def decode_access_rights
+      def decode_access_right
         # determine and add Public, Private, Embargo and ND only rights
         decoded_access_rights = { READ_KEY => creators,  EDIT_KEY => [BATCH_USER] }
-        access_rights.each do |access_right|
-          case access_right
-          when Models::AccessRight::OPEN_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
-          when Models::AccessRight::RESTRICTED_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
-          when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-            decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
-            decoded_access_rights[EMBARGO_KEY] = embargo_date
-          when Models::AccessRight::PRIVATE_ACCESS
-          end
+        case access_right
+        when Models::AccessRight::OPEN_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+        when Models::AccessRight::RESTRICTED_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
+        when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
+          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+          decoded_access_rights[EMBARGO_KEY] = embargo_date
+        when Models::AccessRight::PRIVATE_ACCESS
         end
         decoded_access_rights
       end
 
       def embargo_date
-        embargo_dates = work.access_rights.map(&:transition_date)
-        embargo_dates.map { |dt| dt.strftime('%Y-%m-%d') }
-        embargo_dates.to_sentence
+        embargo_dt = work.access_right.transition_date
+        embargo_dt.strftime('%Y-%m-%d')
       end
 
       def extract_name_for(attribute)

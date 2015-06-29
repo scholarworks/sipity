@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Mappers
     RSpec.describe EtdMapper do
-      let(:access_right) { ['private_access'] }
+      let(:access_right) { 'private_access' }
       let(:work) { double }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
@@ -31,7 +31,7 @@ module Sipity
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return(['a degree_name'])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'defense_date').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return(['a program_name'])
-        expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
+        expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(repository).to receive(:scope_users_for_entity_and_roles).
           with(entity: work, roles: 'creating_user').and_return(creators)
         expect(work).to receive(:id).and_return('a_id')
@@ -49,8 +49,8 @@ module Sipity
 
       context 'will have be able to map correct access_right' do
         it 'have public access rights' do
-          access_right = ['open_access']
-          expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
+          access_right = 'open_access'
+          expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
           expect(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
@@ -61,8 +61,8 @@ module Sipity
         end
 
         it 'have restricted access rights' do
-          access_right = ['restricted_access']
-          expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
+          access_right = 'restricted_access'
+          expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
           expect(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
@@ -75,13 +75,13 @@ module Sipity
         context 'will add embargo date to rights metadata' do
           let(:embargo_date) { "2022-12-01" }
           it 'return embargo date' do
-            access_rights = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
-                                                    release_date: Time.zone.today, transition_date: embargo_date)
-            expect(repository).to receive(:work_access_right_codes).with(work: work).
-              and_return([access_rights.access_right_code])
+            access_right = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
+                                                   release_date: Time.zone.today, transition_date: embargo_date)
+            expect(repository).to receive(:work_access_right_code).with(work: work).
+              and_return(access_right.access_right_code)
             expect(repository).to receive(:scope_users_for_entity_and_roles).
               with(entity: work, roles: 'creating_user').and_return(creators)
-            expect(work).to receive(:access_rights).and_return([access_rights])
+            expect(work).to receive(:access_right).and_return(access_right)
             expect(work).to receive(:id).and_return('a_id')
             expect(work).to receive(:title).and_return(title)
             expect(work).to receive(:collaborators).and_return(collaborators)
@@ -91,8 +91,8 @@ module Sipity
           end
 
           it 'have public access rights with embargo date' do
-            access_right = ['embargo_then_open_access']
-            expect(repository).to receive(:work_access_right_codes).with(work: work).and_return(access_right)
+            access_right = 'embargo_then_open_access'
+            expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
             expect(subject).to receive(:embargo_date).and_return(embargo_date)
             expect(repository).to receive(:scope_users_for_entity_and_roles).
               with(entity: work, roles: 'creating_user').and_return(creators)
