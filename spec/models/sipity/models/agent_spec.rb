@@ -9,6 +9,8 @@ module Sipity
         its(:column_names) { should include('description') }
         its(:column_names) { should include('authentication_token') }
       end
+
+      it { should have_one(:processing_actor) }
     end
   end
 end
