@@ -21,6 +21,7 @@ module Sipity
 
       has_many :group_memberships, dependent: :destroy
       has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
+      has_many :event_logs, class_name: 'Sipity::Models::EventLog', as: :requested_by
 
       delegate :to_s, to: :name
     end

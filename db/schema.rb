@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618170010) do
+ActiveRecord::Schema.define(version: 20150629142734) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -107,18 +107,21 @@ ActiveRecord::Schema.define(version: 20150618170010) do
   add_index "sipity_doi_creation_requests", ["work_id"], name: "index_sipity_doi_creation_requests_on_work_id", unique: true, using: :btree
 
   create_table "sipity_event_logs", force: :cascade do |t|
-    t.integer  "user_id",     limit: 4,   null: false
-    t.string   "entity_id",   limit: 32,  null: false
-    t.string   "entity_type", limit: 64,  null: false
-    t.string   "event_name",  limit: 255, null: false
+    t.integer  "user_id",           limit: 4,   null: false
+    t.string   "entity_id",         limit: 32,  null: false
+    t.string   "entity_type",       limit: 64,  null: false
+    t.string   "event_name",        limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "requested_by_id",   limit: 4
+    t.string   "requested_by_type", limit: 255
   end
 
   add_index "sipity_event_logs", ["created_at"], name: "index_sipity_event_logs_on_created_at", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type", "event_name"], name: "sipity_event_logs_entity_action_name", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type"], name: "sipity_event_logs_subject", using: :btree
   add_index "sipity_event_logs", ["event_name"], name: "index_sipity_event_logs_on_event_name", using: :btree
+  add_index "sipity_event_logs", ["requested_by_type", "requested_by_id"], name: "idx_sipity_event_logs_on_requested_by", using: :btree
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at", using: :btree
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject", using: :btree
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name", using: :btree

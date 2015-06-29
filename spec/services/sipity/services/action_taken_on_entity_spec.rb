@@ -51,7 +51,7 @@ module Sipity
           end
           it 'will log the event' do
             expect(repository).to receive(:log_event!).
-              with(entity: entity, user: requested_by.proxy_for, event_name: "#{action.name}/submit")
+              with(entity: entity, requested_by: requested_by.proxy_for, event_name: "#{action.name}/submit")
             subject.register
           end
           it 'will send notifications on the processing comment' do

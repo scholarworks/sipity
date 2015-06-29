@@ -8,16 +8,15 @@ module Sipity
       #
       # @param [Entity] entity - The entity on which the given user has performed the
       #   named event
-      # @param [User] user
+      # @param [ActiveRecord::Base] requested_by
       # @param [String] event_name
       #
       # @return void
       #
       # @note This is both a module function and an instance function.
       # @see The underlying spec defines the behavior; Do not access
-      def log_event!(entity:, user:, event_name:)
-        # TODO: Consider switching this to polymorphic in nature
-        Models::EventLog.create!(entity: entity, user_id: user.id, event_name: event_name)
+      def log_event!(entity:, requested_by:, event_name:)
+        Models::EventLog.create!(entity: entity, user_id: requested_by.id, requested_by: requested_by, event_name: event_name)
       end
     end
   end
