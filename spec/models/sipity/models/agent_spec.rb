@@ -11,6 +11,7 @@ module Sipity
       end
 
       it { should have_one(:processing_actor) }
+      it { should have_many(:event_logs) }
     end
   end
 end
