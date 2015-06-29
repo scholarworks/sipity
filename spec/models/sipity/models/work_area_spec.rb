@@ -53,7 +53,7 @@ module Sipity
       context '#partial_suffix' do
         it 'will transform the partial_suffix to a file system safe string' do
           subject.partial_suffix = 'Hello World'
-          expect(subject.partial_suffix).to eq('hello-world')
+          expect(subject.partial_suffix).to eq('hello_world')
         end
       end
 

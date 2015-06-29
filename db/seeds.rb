@@ -12,7 +12,8 @@ ActiveRecord::Base.transaction do
   [
     'groups_and_roles',
     'etd_work_area',
-    'ulra_work_area'
+    'ulra_work_area',
+    'self_deposit_work_area'
   ].each do |seed_filename|
     load File.expand_path("../seeds/#{seed_filename}_seeds.rb", __FILE__)
   end
