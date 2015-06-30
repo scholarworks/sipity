@@ -14,7 +14,7 @@ module Sipity
 
         include Conversions::SanitizeHtml
         def title
-          sanitize_html(work.title)
+          work.to_s
         end
 
         delegate :comment, :entity, :name_of_commentor, to: :processing_comment

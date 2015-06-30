@@ -29,6 +29,16 @@ module Sipity
         Sanitize.clean(input.to_s, Sanitize::Config::RELAXED).html_safe
       end
 
+      def remove_para_tag(string)
+        Sanitize.fragment(
+          string,
+          Sanitize::Config.merge(Sanitize::Config::BASIC,
+                                 elements: Sanitize::Config::BASIC[:elements] - ['p'],
+                                 remove_contents: false
+                                )
+        )
+      end
+
       module_function :sanitize_html
       private_class_method :sanitize_html
       private :sanitize_html

@@ -11,7 +11,7 @@ module Sipity
 
         include Conversions::SanitizeHtml
         def title
-          sanitize_html(work.title)
+          work.to_s
         end
 
         def work_type
