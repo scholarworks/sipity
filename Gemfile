@@ -34,7 +34,7 @@ gem 'hydra-validations', github: 'projecthydra-labs/hydra-validations', branch: 
 gem 'power_converter'
 gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
-gem 'locabulary'
+gem 'locabulary', github: 'ndlib/locabulary', branch: 'master'
 gem 'data_migrator', github: 'jeremyf/data-migrator'
 
 group :doc do

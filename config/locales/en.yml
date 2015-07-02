@@ -113,6 +113,9 @@ en:
       under_advisor_review:
         can_advance: "This submission is waiting for advisor approval."
         cannot_advance: "Your work has been submitted for review. You will be notified when it is approved or if the reviewers request any changes."
+      under_review:
+        can_advance: "This submission is waiting for approval."
+        cannot_advance: "Your work has been submitted for review. You will be notified when it is approved or if the reviewers request any changes."
       advisor_changes_requested:
         can_advance: '' # Is this message helpful?
         cannot_advance: 'Please make the requested changes and resubmit your work.'
