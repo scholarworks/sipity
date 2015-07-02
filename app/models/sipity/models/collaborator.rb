@@ -13,7 +13,7 @@ module Sipity
       COMMITTEE_MEMBER_ROLE =  'Committee Member'.freeze
 
       def self.build_default
-        new(role: DEFAULT_ROLE, responsible_for_review: true)
+        new
       end
 
       belongs_to :work, foreign_key: 'work_id'

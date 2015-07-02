@@ -31,15 +31,21 @@ module Sipity
             let(:attributes) do
               {
                 collaborators_attributes: {
-                  __sequence: { name: "Jeremy", role: "Committee Member", netid: "", email: "", responsible_for_review: "false", id: 11 }
+                  __sequence: { name: "Jeremy", role: "Committee Member", netid: "", email: "", id: 11 }
                 }
               }
             end
 
-            it 'will validate that at least one collaborator must be responsible for review' do
+            it 'will validate that at least one collaborator must be research director' do
               expect(subject).to_not be_valid
               expect(subject.errors[:base]).to_not be_empty
             end
+
+            it 'will assign responsibility for review based on role' do
+              expect(subject).to_not be_valid
+              expect(subject.collaborators_from_input.first.responsible_for_review).to be_falsey
+            end
+
           end
 
           context 'when no collaborator attributes are passed and the form is submitted' do
