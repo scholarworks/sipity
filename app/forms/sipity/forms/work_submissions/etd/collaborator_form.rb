@@ -20,7 +20,7 @@ module Sipity
 
           include ActiveModel::Validations
           validate :each_collaborator_from_input_must_be_valid
-          validate :at_least_one_collaborator_must_be_responsible_for_review
+          validate :at_least_one_collaborator_must_be_research_director
           validates :work, presence: true
           validates :requested_by, presence: true
 
@@ -74,6 +74,7 @@ module Sipity
             return if reject_because_an_empty_row_was_submitted_via_user_input?(attributes)
             collaborator = repository.find_or_initialize_collaborators_by(work: work, id: attributes[:id])
             collaborator.attributes = extract_collaborator_attributes(attributes)
+            collaborator.responsible_for_review = determine_if_role_is_responsible_for_review(attributes[:role])
             collection << collaborator
           end
 
@@ -82,7 +83,7 @@ module Sipity
           end
 
           def extract_collaborator_attributes(attributes)
-            permitted_attributes = attributes.slice(:name, :role, :netid, :email, :responsible_for_review)
+            permitted_attributes = attributes.slice(:name, :role, :netid, :email)
             # Because Rails strong parameters may or may not be in play.
             permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
             permitted_attributes
@@ -97,9 +98,14 @@ module Sipity
             errors.add(:collaborators_attributes, :are_incomplete)
           end
 
-          def at_least_one_collaborator_must_be_responsible_for_review
-            return true unless Array.wrap(collaborators_from_input).none?(&:responsible_for_review?)
-            errors.add(:base, :at_least_one_collaborator_must_be_responsible_for_review)
+          def at_least_one_collaborator_must_be_research_director
+            return true unless Array.wrap(collaborators_from_input).none? { |role| role == Models::Collaborator::RESEARCH_DIRECTOR_ROLE }
+            errors.add(:base, :at_least_one_collaborator_must_be_research_director)
+          end
+
+          def determine_if_role_is_responsible_for_review(role)
+            return true if role == Models::Collaborator::RESEARCH_DIRECTOR_ROLE
+            return false
           end
         end
       end
