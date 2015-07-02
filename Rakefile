@@ -5,56 +5,6 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-begin
-  require 'jshintrb/jshinttask'
-  Jshintrb::JshintTask.new :jshint do |t|
-    t.pattern = 'app/assets/**/*.js'
-    t.exclude_pattern = 'app/assets/javascripts/vendor/*.js'
-    t.options = JSON.parse(IO.read('.jshintrc'))
-  end
-rescue LoadError
-  puts "Unable to load JSHint. Who will enforce your JavaScript styleguide now?"
-end
-
-begin
-  require 'scss_lint/rake_task'
-  SCSSLint::RakeTask.new('scss-lint') do |t|
-    t.config = File.expand_path('../.scss-lint.yml', __FILE__)
-    t.files = [] # Rely instead on the above configuration
-  end
-rescue LoadError
-  puts "Unable to load SCSS Lint. Who will enforce your SCSS styleguide now?"
-end
-
-begin
-  require 'rubocop/rake_task'
-  RuboCop::RakeTask.new do |t|
-    t.options << '--config=./.hound.yml'
-  end
-rescue LoadError
-  puts "Unable to load RuboCop. Who will enforce your Ruby styleguide now?"
-end
-
-namespace :brakeman do
-  task scan: :environment do
-    require 'brakeman'
-    Brakeman.run app_path: '.', output_files: [Rails.root.join('.tmp.brakeman.json').to_s], print_report: true
-  end
-
-  desc 'Ensure that brakeman has not detected any vulnerabilities'
-  task(guard_against_deteced_vulnerabilities: [:environment, 'brakeman:scan']) do
-    json_document = Rails.root.join('.tmp.brakeman.json').read
-    json = JSON.parse(json_document)
-    errors = []
-    ['errors', 'warnings', 'ignored_warnings'].each do |key|
-      errors += Array.wrap(json.fetch(key))
-    end
-    if errors.any?
-      abort("Brakeman Vulnerabilities Detected:\n\n\t" << errors.join("\n\t"))
-    end
-  end
-end
-
 namespace :db do
   task prepare: :environment do
     abort("Run this only in test or development") unless Rails.env.test? || Rails.env.development?
@@ -121,18 +71,21 @@ if defined?(RSpec)
     end
   end
 
+  # BEGIN `commitment:install` generator
+  # This was added via commitment:install generator. You are free to change this.
   Rake::Task["default"].clear
   task(
     default: [
-      'db:prepare',
-      'rubocop',
-      'jshint',
-      'scss-lint',
+      'commitment:rubocop',
+      'commitment:jshint',
+      'commitment:scss_lint',
+      'commitment:configure_test_for_code_coverage',
       'spec:all',
-      'spec:validate_coverage_goals',
-      'brakeman:guard_against_deteced_vulnerabilities'
+      'commitment:code_coverage',
+      'commitment:brakeman'
     ]
   )
+  # END `commitment:install` generator
   task spec: ['sipity:rebuild_interfaces']
   task stats: ['sipity:stats_setup']
 end
