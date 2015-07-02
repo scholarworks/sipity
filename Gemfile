@@ -3,7 +3,10 @@ source 'https://rubygems.org'
 gem 'mime-types', '~> 2.6.1', require: 'mime/types/columnar'
 gem 'rails', '~> 4.2'
 
-gem 'airbrake'
+# This is part of the v4.3.0 API
+# Once the following pull request is merged (or similar solution), then we
+# can hopefully use the Airbrake maintained gem. https://github.com/airbrake/airbrake/pull/397
+gem 'airbrake', github: 'jeremyf/airbrake'
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails', '~> 4.0'
