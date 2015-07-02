@@ -81,13 +81,6 @@ group :development, :test do
   gem 'pry-stack_explorer', require: false
   gem 'rspec-its'
   gem 'rspec-rails'
-  gem 'rubocop', require: false
-  gem 'jshintrb', require: false
-  gem 'brakeman', require: false
-  # Reported on https://github.com/seattlerb/ruby_parser/issues/183
-  # v3.6.6 introduces a parse error
-  gem 'ruby_parser', require: false
-  gem 'scss-lint'
 end
 
 group :test do
@@ -102,9 +95,9 @@ group :test do
   gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers'
-  gem 'simplecov', require: false
   gem 'site_prism'
   gem 'sqlite3'
+  gem 'commitment'
 end
 
 group :production, :pre_production, :staging do
