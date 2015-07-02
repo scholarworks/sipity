@@ -16,7 +16,7 @@ module Sipity
 
       include Conversions::SanitizeHtml
       def to_s
-        sanitize_html(title)
+        remove_para_tag(sanitize_html(title))
       end
 
       Processing.configure_as_a_processible_entity(self)

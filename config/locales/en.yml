@@ -416,6 +416,7 @@ en:
       respond_to_advisor_request: "Author response to advisor's change request(s)"
       respond_to_grad_school_request: "Author response to Graduate School's change request(s)"
       advisor_requests_change: "Your research director has requested changes to your submission"
+      confirmation_of_submit_for_review: "Confirmation of submission for review"
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'

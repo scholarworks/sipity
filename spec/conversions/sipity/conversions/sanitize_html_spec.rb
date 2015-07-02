@@ -59,6 +59,12 @@ module Sipity
           end
         end
       end
+      context '#remove_para_tag' do
+        it 'should remove html paragraph tags' do
+          input = "<p><em>Hello</em></p>"
+          expect(remove_para_tag(input)).to_not have_tag("p")
+        end
+      end
     end
   end
 end

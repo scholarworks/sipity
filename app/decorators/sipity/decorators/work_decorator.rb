@@ -28,7 +28,8 @@ module Sipity
       end
 
       def to_s
-        title
+        return if title.nil?
+        remove_para_tag(title)
       end
 
       def human_attribute_name(name)
