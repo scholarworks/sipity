@@ -86,6 +86,7 @@ group :development, :test do
   gem 'pry-stack_explorer', require: false
   gem 'rspec-its'
   gem 'rspec-rails'
+  gem 'commitment'
 end
 
 group :test do
@@ -102,7 +103,6 @@ group :test do
   gem 'shoulda-matchers'
   gem 'site_prism'
   gem 'sqlite3'
-  gem 'commitment'
 end
 
 group :production, :pre_production, :staging do
