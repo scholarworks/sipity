@@ -173,7 +173,7 @@ GEM
     coffee-script-source (1.9.1.1)
     colorize (0.7.7)
     columnize (0.9.0)
-    commitment (0.1.1)
+    commitment (0.1.2)
       brakeman
       codeclimate-test-reporter
       jshintrb
