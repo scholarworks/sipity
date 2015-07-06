@@ -21,10 +21,11 @@ module Sipity
 
       THUMBNAIL_HEIGHT = THUMBNAIL_WIDTH = '64'.freeze
       def thumbnail_url(width: THUMBNAIL_WIDTH, height: THUMBNAIL_HEIGHT)
+        # `if file.image?` is the slow line; It fires up a command shell that runs identify
         if file.image?
           file.thumb("#{width}x#{height}#").url
         else
-          extname = File.extname(file.name).sub(/^\./, '') + '.png'
+          extname = File.extname(file_name).sub(/^\./, '') + '.png'
           File.join(Dragonfly.app.server.url_host, 'extname_thumbnails', width, height, extname)
         end
       end
