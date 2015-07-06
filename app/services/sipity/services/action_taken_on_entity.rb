@@ -63,7 +63,7 @@ module Sipity
 
       def log_the_action
         # TODO: This is a cheat, in that I am assuming the request actor is a user.
-        repository.log_event!(entity: entity, user: requesting_actor.proxy_for, event_name: event_name)
+        repository.log_event!(entity: entity, requested_by: requesting_actor.proxy_for, event_name: event_name)
       end
 
       def deliver_notifications_for(registered_action:)

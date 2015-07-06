@@ -12,6 +12,7 @@ gem 'bootstrap-sass'
 gem 'coffee-rails', '~> 4.0'
 gem 'devise'
 gem 'devise_cas_authenticatable'
+gem 'devise-token_authenticatable'
 gem 'dragonfly', '~> 1.0.7'
 gem 'draper'
 gem 'execjs'
@@ -34,6 +35,7 @@ gem 'power_converter'
 gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
 gem 'locabulary'
+gem 'data_migrator', github: 'jeremyf/data-migrator'
 
 group :doc do
   gem 'inch', require: false

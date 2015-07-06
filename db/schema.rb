@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150618125612) do
+ActiveRecord::Schema.define(version: 20150629162800) do
+
+  create_table "data_migrations", id: false, force: :cascade do |t|
+    t.string "version", limit: 255, null: false
+  end
+
+  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -48,6 +54,22 @@ ActiveRecord::Schema.define(version: 20150618125612) do
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
+
+  create_table "sipity_agents", force: :cascade do |t|
+    t.string   "name",                 limit: 255,   null: false
+    t.text     "description",          limit: 65535
+    t.string   "authentication_token", limit: 255,   null: false
+    t.integer  "sign_in_count",        limit: 4,     default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip",   limit: 255
+    t.string   "last_sign_in_ip",      limit: 255
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+  end
+
+  add_index "sipity_agents", ["authentication_token"], name: "index_sipity_agents_on_authentication_token", unique: true, using: :btree
+  add_index "sipity_agents", ["name"], name: "index_sipity_agents_on_name", unique: true, using: :btree
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.string   "work_id",                limit: 32,                  null: false
@@ -91,18 +113,21 @@ ActiveRecord::Schema.define(version: 20150618125612) do
   add_index "sipity_doi_creation_requests", ["work_id"], name: "index_sipity_doi_creation_requests_on_work_id", unique: true, using: :btree
 
   create_table "sipity_event_logs", force: :cascade do |t|
-    t.integer  "user_id",     limit: 4,   null: false
-    t.string   "entity_id",   limit: 32,  null: false
-    t.string   "entity_type", limit: 64,  null: false
-    t.string   "event_name",  limit: 255, null: false
+    t.integer  "user_id",           limit: 4,   null: false
+    t.string   "entity_id",         limit: 32,  null: false
+    t.string   "entity_type",       limit: 64,  null: false
+    t.string   "event_name",        limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "requested_by_id",   limit: 4
+    t.string   "requested_by_type", limit: 255
   end
 
   add_index "sipity_event_logs", ["created_at"], name: "index_sipity_event_logs_on_created_at", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type", "event_name"], name: "sipity_event_logs_entity_action_name", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type"], name: "sipity_event_logs_subject", using: :btree
   add_index "sipity_event_logs", ["event_name"], name: "index_sipity_event_logs_on_event_name", using: :btree
+  add_index "sipity_event_logs", ["requested_by_type", "requested_by_id"], name: "idx_sipity_event_logs_on_requested_by", using: :btree
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at", using: :btree
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject", using: :btree
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name", using: :btree

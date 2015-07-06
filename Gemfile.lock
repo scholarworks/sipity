@@ -21,6 +21,12 @@ GIT
       actionpack (>= 3.1, < 5.0)
 
 GIT
+  remote: git://github.com/jeremyf/data-migrator.git
+  revision: 65bf22799c6c9914fb35ef96891f438f0ffa84fe
+  specs:
+    data_migrator (0.9.0)
+
+GIT
   remote: git://github.com/jeremyf/railroady.git
   revision: dbd542542b1853f0a100a875c085652654ff1df7
   branch: allowing-namespaced-models
@@ -185,6 +191,8 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise-token_authenticatable (0.4.0)
+      devise (~> 3.5.0)
     devise_cas_authenticatable (1.4.0)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
@@ -558,8 +566,10 @@ DEPENDENCIES
   coffee-rails (~> 4.0)
   commitment
   curly-templates!
+  data_migrator!
   database_cleaner
   devise
+  devise-token_authenticatable
   devise_cas_authenticatable
   dragonfly (~> 1.0.7)
   dragonfly-s3_data_store

@@ -186,7 +186,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/event_log_commands.rb
-    def log_event!(entity:, user:, event_name:)
+    def log_event!(entity:, requested_by:, event_name:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
