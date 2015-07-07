@@ -380,6 +380,8 @@ en:
           will_not_patent: 'No'
           already_patented_html: 'Portions of this work have <i>already been patented</i>'
           do_not_know: 'Undecided'
+          non_provisional_patent_filed: 'Non-provisional patent filed'
+          material_already_published: 'Material already published'
         work_type:
           doctoral_dissertation: 'Doctoral Dissertation'
           master_thesis: "Master’s Thesis"
