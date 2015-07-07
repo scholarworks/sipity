@@ -36,9 +36,20 @@ module Sipity
               }
             end
 
-            it 'will validate that at least one collaborator must be research director' do
+            it 'will be invalid if none of the collaborators is a research director' do
               expect(subject).to_not be_valid
               expect(subject.errors[:base]).to_not be_empty
+            end
+
+            it 'will be valid if one of the collaborators is a research director' do
+              attributes = {
+                collaborators_attributes: {
+                  __sequence: { name: "Jeremy", role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE, netid: "a_net_id", email: "", id: 11 }
+                }
+              }
+              subject = described_class.new(keywords.merge(attributes: attributes))
+              expect(subject).to be_valid
+              expect(subject.errors[:base]).to be_empty
             end
 
             it 'will assign responsibility for review based on role' do
