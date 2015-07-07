@@ -99,7 +99,9 @@ module Sipity
           end
 
           def at_least_one_collaborator_must_be_research_director
-            return true unless Array.wrap(collaborators_from_input).none? { |role| role == Models::Collaborator::RESEARCH_DIRECTOR_ROLE }
+            return true unless Array.wrap(collaborators_from_input).none? do |collaborator|
+              determine_if_role_is_responsible_for_review(collaborator.role)
+            end
             errors.add(:base, :at_least_one_collaborator_must_be_research_director)
           end
 
