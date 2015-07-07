@@ -66,7 +66,7 @@ module Sipity
           expect(subject).to eq(
             [
               "advisor_changes_requested", "grad_school_changes_requested", "new", "ready_for_ingest", "under_advisor_review",
-              "under_grad_school_review", "under_grad_school_review_with_changes"
+              "under_grad_school_review"
             ]
           )
         end

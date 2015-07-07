@@ -74,7 +74,6 @@ module Sipity
                 'advisor_changes_requested',
                 'under_grad_school_review',
                 'grad_school_changes_requested',
-                'under_grad_school_review_with_changes',
                 'ready_for_ingest'
               ].each do |state_name|
                 etd_states[state_name] = find_or_initialize_or_create!(
@@ -104,8 +103,8 @@ module Sipity
                 { action_name: 'advisor_requests_change', resulting_state_name: 'advisor_changes_requested', seq: 2, allow_repeat_within_current_state: false },
                 { action_name: 'request_change_on_behalf_of', resulting_state_name: 'advisor_changes_requested', seq: 3, allow_repeat_within_current_state: false },
                 { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
-                { action_name: 'respond_to_grad_school_request', resulting_state_name: 'under_grad_school_review_with_changes', seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: false },
+                { action_name: 'respond_to_grad_school_request', resulting_state_name: 'grad_school_changes_requested', seq: 1, allow_repeat_within_current_state: true },
+                { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
                 action_name = structure.fetch(:action_name)
@@ -183,7 +182,7 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest', 'under_grad_school_review_with_changes'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
                   ['show'],
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
@@ -191,7 +190,7 @@ module Sipity
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
                   ['creating_user', 'etd_reviewer']
                 ],[
-                  ['under_grad_school_review_with_changes', 'under_grad_school_review'],
+                  ['grad_school_changes_requested', 'under_grad_school_review'],
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
                   ['etd_reviewer']
                 ],[
@@ -203,7 +202,7 @@ module Sipity
                   ['destroy'],
                   ['etd_reviewer']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'under_grad_school_review_with_changes', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
                   ['debug'],
                   ['etd_reviewer']
                 ],[
@@ -219,7 +218,7 @@ module Sipity
                   ['advisor_requests_change'],
                   ['advisor']
                 ],[
-                  ['under_grad_school_review', 'under_grad_school_review_with_changes'],
+                  ['under_grad_school_review', 'grad_school_changes_requested'],
                   ['grad_school_requests_change', 'grad_school_signoff'],
                   ['etd_reviewer']
                 ]
