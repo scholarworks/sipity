@@ -49,10 +49,10 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 08c1b32b0affe3773e26dbde94b681a24b53a4ad
+  revision: 7f446b6f39c27ab60e852b188d282d058ab3ce81
   branch: master
   specs:
-    locabulary (0.1.1)
+    locabulary (0.1.2)
       json (~> 1.8)
 
 GIT
