@@ -22,16 +22,12 @@ module Sipity
           end
 
           delegate(
-            :work_patent_strategy, :work_patent_strategy=, :work_patent_strategies_for_select, :possible_work_patent_strategies,
-            :persist_work_patent_strategy, :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
+            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
             :possible_work_publication_strategies, :persist_work_publication_strategy,
             to: :publication_and_patenting_intent_extension
           )
 
-          private(
-            :work_patent_strategy=, :possible_work_patent_strategies, :persist_work_patent_strategy,
-            :work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy
-          )
+          private(:work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy)
 
           private
 
@@ -45,7 +41,6 @@ module Sipity
           def initialize_attributes(attributes = {})
             self.title = attributes[:title]
             self.work_publication_strategy = attributes[:work_publication_strategy]
-            self.work_patent_strategy = attributes[:work_patent_strategy]
             self.work_type = attributes[:work_type]
             self.access_rights_answer = attributes.fetch(:access_rights_answer) { default_access_rights_answer }
           end
@@ -60,7 +55,6 @@ module Sipity
 
           include ActiveModel::Validations
           validates :title, presence: true
-          validates :work_patent_strategy, presence: true, inclusion: { in: :possible_work_patent_strategies }
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_codes }
@@ -93,7 +87,6 @@ module Sipity
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
-              persist_work_patent_strategy
               persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
               register_actions
@@ -105,16 +98,11 @@ module Sipity
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to
             # notify the creating user of the work of the action they've taken.
-            repository.register_action_taken_on_entity(
-              entity: work, action: processing_action_name, requested_by: requested_by, also_register_as: ALSO_REGISTER_WORK_ACTION_NAME
-            )
+            repository.register_action_taken_on_entity(entity: work, action: processing_action_name, requested_by: requested_by)
             repository.register_action_taken_on_entity(
               entity: submission_window, action: processing_action_name, requested_by: requested_by
             )
           end
-
-          # TODO: Extract these concepts to a database
-          ALSO_REGISTER_WORK_ACTION_NAME = 'publishing_and_patenting_intent'.freeze
 
           include Conversions::SanitizeHtml
           def title=(value)
