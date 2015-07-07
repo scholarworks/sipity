@@ -16,7 +16,6 @@ module Sipity
           let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd') }
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
-            allow_any_instance_of(described_class).to receive(:possible_work_patent_strategies).and_return(['already_patented'])
             allow_any_instance_of(described_class).to receive(:possible_work_publication_strategies).and_return(['already_published'])
           end
 
@@ -52,8 +51,6 @@ module Sipity
             expect(described_class.new(keywords).access_rights_answer).to be_present
           end
 
-          it { should delegate_method(:work_patent_strategy).to(:publication_and_patenting_intent_extension) }
-          it { should delegate_method(:work_patent_strategies_for_select).to(:publication_and_patenting_intent_extension) }
           it { should delegate_method(:work_publication_strategy).to(:publication_and_patenting_intent_extension) }
           it { should delegate_method(:work_publication_strategies_for_select).to(:publication_and_patenting_intent_extension) }
 
@@ -94,22 +91,6 @@ module Sipity
                 expect(subject.errors[:access_rights_answer]).to be_present
               end
             end
-            context '#work_patent_strategy' do
-              it 'invalid if not present' do
-                subject.valid?
-                expect(subject.errors[:work_patent_strategy]).to be_present
-              end
-              it 'will be invalid be if its not within the given list' do
-                subject = described_class.new(keywords.merge(attributes: { work_patent_strategy: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:work_patent_strategy]).to be_present
-              end
-              it 'will be valid if within the given list' do
-                subject = described_class.new(keywords.merge(attributes: { work_patent_strategy: 'already_patented' }))
-                subject.valid?
-                expect(subject.errors[:work_patent_strategy]).to_not be_present
-              end
-            end
             context '#work_type' do
               it 'must be present' do
                 subject.valid?
@@ -146,7 +127,7 @@ module Sipity
           end
 
           context '#submit' do
-            let(:attributes) { { work_patent_strategy: 'do_not_know' } }
+            let(:attributes) { { work_publication_strategy: 'do_not_know' } }
 
             context 'with invalid data' do
               it 'will not create a a work' do
@@ -186,8 +167,7 @@ module Sipity
 
               it 'will also register the action on the work' do
                 expect(repository).to receive(:register_action_taken_on_entity).with(
-                  entity: work, action: subject.processing_action_name, requested_by: user,
-                  also_register_as: described_class::ALSO_REGISTER_WORK_ACTION_NAME
+                  entity: work, action: subject.processing_action_name, requested_by: user
                 ).and_call_original
                 subject.submit
               end
@@ -198,7 +178,8 @@ module Sipity
               end
 
               it 'will persist the work patent strategy' do
-                expect(subject).to receive(:persist_work_patent_strategy).and_call_original
+                expect_any_instance_of(subject.send(:publication_and_patenting_intent_extension_builder)).
+                  to_not receive(:persist_work_patent_strategy)
                 subject.submit
               end
 
