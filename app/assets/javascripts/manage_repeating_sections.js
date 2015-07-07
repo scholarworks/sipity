@@ -126,14 +126,25 @@
 
     remove_from_list: function( event ) {
       event.preventDefault();
-
       this.tableControls
         .children('.warning')
         .remove();
 
-      $(event.target)
-        .parents('.repeat')
-        .remove();
+      var parent = $(event.target).parents('.repeat');
+      var parent_sibling = $(parent.next());
+
+      // In the case of fields_for, a hidden input field is added that allows for
+      // passing the object identifier as part of the form submission. This also
+      // needs to be removed when we remove the repeating field.
+      //
+      // This is a kludge type hack in that what is really needed is to look at the
+      // input fields of the parent, find its DOM-ID prefix (i.e. For work_0_name, the
+      // prefix would be work_0). Then find the corresponding inputs with that same prefix
+      // and _id (i.e. work_0_id); We would then delete those elements.
+      if( parent_sibling.prop('type') === 'hidden' ) {
+        parent_sibling.remove();
+      }
+      parent.remove();
 
       this._trigger("remove");
     },
