@@ -41,6 +41,12 @@ module Sipity
 
         def generate_state_diagram(processing_strategy:, initial_state:)
           {
+            start_a_submission: {
+              states: {
+                initial_state.name.to_sym => { roles: ['creating_user'] }
+              },
+              transition_to: :new
+            },
             show: {
               states: {
                 initial_state.name.to_sym => { roles: ['creating_user'] },
@@ -50,12 +56,27 @@ module Sipity
             describe: {
               states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
             },
+            collaborators: {
+              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+            },
+            attach: {
+              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+            },
+            access_policy: {
+              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+            },
+            affiliation: {
+              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+            },
+            search_terms: {
+              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+            },
             submit_for_review: {
               states: {
                 initial_state.name.to_sym => { roles: ['creating_user'] }
               },
               transition_to: :under_review,
-              required_actions: [:describe]
+              required_actions: [:describe, :attach, :affiliation, :access_policy]
             }
           }.each do |action_name, action_config|
             action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: action_name.to_s)
