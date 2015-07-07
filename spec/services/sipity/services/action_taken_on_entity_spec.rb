@@ -14,6 +14,7 @@ module Sipity
       subject { described_class.new(entity: entity, requested_by: requested_by, action: action, repository: repository) }
       its(:default_repository) { should respond_to(:log_event!) }
       its(:default_repository) { should respond_to(:deliver_notification_for) }
+      its(:default_action_processing_hook_service) { should respond_to(:call) }
 
       context 'on_behalf_of behavior' do
         it 'will default to the requested_by if none are given' do
@@ -39,10 +40,11 @@ module Sipity
       end
 
       context '#register' do
+        let(:action_processing_hook_service) { ->(**_keywords) {} }
         subject do
           described_class.new(
             entity: entity, requested_by: requested_by, action: action, repository: repository, on_behalf_of: on_behalf_of,
-            also_register_as: another_action
+            also_register_as: another_action, action_processing_hook_service: action_processing_hook_service
           )
         end
         context 'with a valid action object for the given entity' do
@@ -61,6 +63,15 @@ module Sipity
               requested_by: requested_by,
               on_behalf_of: on_behalf_of
             )
+            subject.register
+          end
+          it "will call the action_processing_hook_service for both the action and also registered action" do
+            expect(action_processing_hook_service).to receive(:call).with(
+              action: action, entity: entity, on_behalf_of: on_behalf_of, requested_by: requested_by, repository: repository
+            ).and_call_original
+            expect(action_processing_hook_service).to receive(:call).with(
+              action: another_action, entity: entity, on_behalf_of: on_behalf_of, requested_by: requested_by, repository: repository
+            ).and_call_original
             subject.register
           end
         end

@@ -19,15 +19,16 @@ module Sipity
         self.requesting_actor = requested_by
         self.on_behalf_of_actor = keywords.fetch(:on_behalf_of) { requesting_actor }
         self.repository = keywords.fetch(:repository) { default_repository }
+        self.action_processing_hook_service = keywords.fetch(:action_processing_hook_service) { default_action_processing_hook_service }
 
-        # TODO: Push this down to the database
+        # TODO: Push this down to the database?
         self.also_register_as = keywords.fetch(:also_register_as) { [] }
       end
       attr_reader :entity, :action, :requesting_actor, :on_behalf_of_actor, :also_register_as, :subject
 
       def register
         log_the_action
-        registered_action = add_entry_to_the_entity_action_regsistry(action: action)
+        registered_action = register_action_on_entity(action: action)
         add_actions_that_should_also_be_registered
         deliver_notifications_for(registered_action: registered_action)
       end
@@ -45,11 +46,18 @@ module Sipity
       private
 
       def add_actions_that_should_also_be_registered
-        also_register_as.each { |action| add_entry_to_the_entity_action_regsistry(action: action) }
+        also_register_as.each { |action| register_action_on_entity(action: action) }
+      end
+
+      def register_action_on_entity(action:)
+        action_processing_hook_service.call(
+          action: action, requested_by: requesting_actor, on_behalf_of: on_behalf_of_actor, entity: entity, repository: repository
+        )
+        create_entity_action_registry_entry!(action: action)
       end
 
       include Conversions::ConvertToPolymorphicType
-      def add_entry_to_the_entity_action_regsistry(action:)
+      def create_entity_action_registry_entry!(action:)
         # TODO: Tease apart the requested_by and on_behalf_of
         Models::Processing::EntityActionRegister.create!(
           strategy_action_id: action.id,
@@ -80,6 +88,11 @@ module Sipity
 
       def default_repository
         CommandRepository.new
+      end
+
+      attr_accessor :action_processing_hook_service
+      def default_action_processing_hook_service
+        ProcessingHooks
       end
 
       include Conversions::ConvertToProcessingEntity
