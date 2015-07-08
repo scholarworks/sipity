@@ -43,7 +43,7 @@ module Sipity
       it 'will leverage the fallback hook' do
         action = Models::Processing::StrategyAction.new(id: 3, strategy_id: entity.strategy_id, name: 'good_bye')
         fallback_hook = double(call: true)
-        keywords = { action: action, entity: entity, requested_by: actor, fallback_hook: fallback_hook }
+        keywords = { action: action, entity: entity, requested_by: actor, fallback_hook: fallback_hook, bogus_karg: 'bogus' }
         subject.call(keywords)
         expect(fallback_hook).to have_received(:call).with(keywords)
       end

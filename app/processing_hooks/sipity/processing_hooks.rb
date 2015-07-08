@@ -25,7 +25,7 @@ module Sipity
     end
 
     # @api private
-    def find_the_hook(action:, entity:, fallback_hook: default_fallback_hook)
+    def find_the_hook(action:, entity:, fallback_hook: default_fallback_hook, **_keywords)
       work_area = PowerConverter.convert(entity, to: :work_area)
       namespace = "#{work_area.demodulized_class_prefix_name}::#{entity.proxy_for_type.demodulize.pluralize}"
       hook_name = "#{PowerConverter.convert(action.name, to: :demodulized_class_name)}ProcessingHook"
