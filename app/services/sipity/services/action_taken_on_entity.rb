@@ -19,7 +19,7 @@ module Sipity
         self.requesting_actor = requested_by
         self.on_behalf_of_actor = keywords.fetch(:on_behalf_of) { requesting_actor }
         self.repository = keywords.fetch(:repository) { default_repository }
-        self.action_processing_hook_service = keywords.fetch(:action_processing_hook_service) { default_action_processing_hook_service }
+        self.processing_hooks = keywords.fetch(:processing_hooks) { default_processing_hooks }
 
         # TODO: Push this down to the database?
         self.also_register_as = keywords.fetch(:also_register_as) { [] }
@@ -50,7 +50,7 @@ module Sipity
       end
 
       def register_action_on_entity(action:)
-        action_processing_hook_service.call(
+        processing_hooks.call(
           action: action, requested_by: requesting_actor, on_behalf_of: on_behalf_of_actor, entity: entity, repository: repository
         )
         create_entity_action_registry_entry!(action: action)
@@ -90,8 +90,8 @@ module Sipity
         CommandRepository.new
       end
 
-      attr_accessor :action_processing_hook_service
-      def default_action_processing_hook_service
+      attr_accessor :processing_hooks
+      def default_processing_hooks
         ProcessingHooks
       end
 
