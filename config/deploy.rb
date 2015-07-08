@@ -41,21 +41,12 @@ namespace :deploy do
     end
   end
 
-  task :db_migrate do
+  desc 'Perform data migrations via db/data'
+  task :data_migrate do
     on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
-          execute :rake, "db:migrate"
-        end
-      end
-    end
-  end
-
-  task :precompile_assets do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, "assets:precompile"
+          execute :rake, "db:data:migrate"
         end
       end
     end
@@ -116,6 +107,11 @@ namespace :configuration do
     end
   end
 end
+
+require 'capistrano/rails'
+before 'deploy:migrate', 'configuration:copy_secrets'
+after 'deploy:migrate', 'deploy:db_seed'
+after 'deploy:db_seed', 'deploy:data_migrate'
 
 require './config/boot'
 require 'airbrake/capistrano3'

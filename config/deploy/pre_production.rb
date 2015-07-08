@@ -23,11 +23,6 @@ set :shared_directories,  %w(log)
 set :shared_files, %w()
 set :linked_files, ['config/database.yml']
 server fetch(:domain), user: fetch(:user), roles: %w{web app db}
-before 'deploy:db_migrate', 'configuration:copy_secrets'
-after 'deploy', 'deploy:db_migrate'
-after 'deploy:db_migrate', 'deploy:precompile_assets'
-after 'deploy', 'deploy:cleanup'
-after 'deploy', 'deploy:restart'
 
 
 # Custom SSH Options
