@@ -15,6 +15,6 @@ ActiveRecord::Base.transaction do
     'ulra_work_area',
     'self_deposit_work_area'
   ].each do |seed_filename|
-    load File.expand_path("../seeds/#{seed_filename}_seeds.rb", __FILE__)
+    load Rails.root.join("db/seeds/#{seed_filename}_seeds.rb").to_s
   end
 end
