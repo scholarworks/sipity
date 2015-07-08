@@ -36,6 +36,7 @@ module Sipity
       'mappers',
       'policies',
       'presenters',
+      'processing_hooks',
       'response_handlers',
       'runners',
       'services'

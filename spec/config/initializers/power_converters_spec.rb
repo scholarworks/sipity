@@ -255,6 +255,8 @@ RSpec.describe 'power converters' do
       work = Sipity::Models::Work.new
       allow(work).to receive(:work_area).and_return(work_area)
       expect(PowerConverter.convert_to_work_area(work)).to eq(work_area)
+      entity = Sipity::Models::Processing::Entity.new(proxy_for: work)
+      expect(PowerConverter.convert_to_work_area(entity)).to eq(work_area)
 
       [
         'The Missing Name'

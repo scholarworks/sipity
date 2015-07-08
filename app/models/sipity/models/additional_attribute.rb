@@ -3,6 +3,10 @@ module Sipity
     # A rudimentary container for all (as of now string based) attributes
     # associated with the Sipity::Work
     class AdditionalAttribute < ActiveRecord::Base
+      # The format in which we will persist "well-formed" dates into
+      # the additional attribute table.
+      DATE_FORMAT = '%Y-%m-%d'.freeze
+
       # TODO: Create a map for input name to key and vice versa
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
       CITATION_PREDICATE_NAME = 'citation'.freeze
@@ -29,6 +33,7 @@ module Sipity
       AFFILIATION_PREDICATE_NAME = 'affiliation'.freeze
       ORGANIZATION_PREDICATE_NAME = 'organization'.freeze
       COLLABORATOR_PREDICATE_NAME = 'collaborator'.freeze
+      ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -59,7 +64,8 @@ module Sipity
           WORK_PUBLICATION_STRATEGY => WORK_PUBLICATION_STRATEGY,
           AFFILIATION_PREDICATE_NAME => AFFILIATION_PREDICATE_NAME,
           ORGANIZATION_PREDICATE_NAME => ORGANIZATION_PREDICATE_NAME,
-          COLLABORATOR_PREDICATE_NAME => COLLABORATOR_PREDICATE_NAME
+          COLLABORATOR_PREDICATE_NAME => COLLABORATOR_PREDICATE_NAME,
+          ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE
         }
       )
     end

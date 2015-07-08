@@ -125,6 +125,8 @@ PowerConverter.define_conversion_for(:work_area) do |input|
     input
   when Sipity::Models::SubmissionWindow, Sipity::Models::Work
     input.work_area
+  when Sipity::Models::Processing::Entity
+    PowerConverter.convert(input.proxy_for, to: :work_area)
   when Symbol, String
     Sipity::Models::WorkArea.find_by(name: input.to_s) || Sipity::Models::WorkArea.find_by(slug: input.to_s)
   end

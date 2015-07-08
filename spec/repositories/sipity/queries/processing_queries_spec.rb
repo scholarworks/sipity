@@ -24,9 +24,15 @@ module Sipity
       let(:role) { Models::Role.find_or_create_by!(name: Models::Role.valid_names.first) }
       let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy') }
       let(:entity) do
-        Models::Processing::Entity.find_or_create_by!(
-          proxy_for_id: 1, proxy_for_type: 'AnEntity', strategy: strategy, strategy_state: originating_state
-        )
+        Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
+      end
+      let(:work_area) do
+        Models::WorkArea.find_or_create_by!(name: 'ETD', slug: 'etd', partial_suffix: 'etd', demodulized_class_prefix_name: 'etd')
+      end
+      let(:work) do
+        Models::Work.find_or_create_by!(id: 'abc', title: 'Hello', work_type: 'doctoral_dissertation').tap do |the_work|
+          allow(the_work).to receive(:work_area).and_return(work_area)
+        end
       end
       let(:user_processing_actor) do
         Models::Processing::Actor.find_or_create_by!(proxy_for: user)
