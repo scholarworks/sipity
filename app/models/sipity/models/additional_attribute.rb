@@ -3,6 +3,10 @@ module Sipity
     # A rudimentary container for all (as of now string based) attributes
     # associated with the Sipity::Work
     class AdditionalAttribute < ActiveRecord::Base
+      # The format in which we will persist "well-formed" dates into
+      # the additional attribute table.
+      DATE_FORMAT = '%Y-%m-%d'.freeze
+
       # TODO: Create a map for input name to key and vice versa
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
       CITATION_PREDICATE_NAME = 'citation'.freeze
