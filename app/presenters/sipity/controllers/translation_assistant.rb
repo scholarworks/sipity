@@ -14,6 +14,15 @@ module Sipity
       # 2. :<scope>.work_type/<work_type>.<object>.<predicate>
       # 3. :<scope>.<object>.<predicate>
       # 4. <object.to_s.humanize>
+      #
+      # @param scope [#to_s] The top-level translation namespace; Disambiguate between `form` concerns
+      #   or `button` concerns
+      # @param subject [Object] Provides the context of what we are translating. It is used to
+      #   extract additional keys that are passed to the translation service for interpolation.
+      # @param object [Object] the thing we will fall back on for translation
+      # @param predicate [String,Symbol] the "property" of the given object that we want to translate
+      #
+      # @note It is possible the subject and object will be merged in the future (to :subject)
       def call(scope:, subject:, object: subject, predicate: :label)
         scope = scope.to_s
         defaults = [:"#{object}.#{predicate}", object.to_s.humanize]
