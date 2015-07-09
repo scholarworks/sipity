@@ -52,6 +52,17 @@ namespace :deploy do
     end
   end
 
+  desc 'Perform db migrations via db/migrate'
+  task :db_migrate do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "db:migrate"
+        end
+      end
+    end
+  end
+
   desc 'Seed the database'
   task :db_seed do
     on roles(:app) do
@@ -62,6 +73,17 @@ namespace :deploy do
       end
     end
   end
+
+  desc 'Precompile assets as we are not checking in a version'
+  task :precompile_assets do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, "assets:precompile"
+         end
+       end
+     end
+   end
 
   desc 'Prepare for a dog and pony show on the staging server'
   task :reset_the_dog_and_pony_show do
@@ -108,10 +130,11 @@ namespace :configuration do
   end
 end
 
-require 'capistrano/rails'
-before 'deploy:migrate', 'configuration:copy_secrets'
-after 'deploy:migrate', 'deploy:db_seed'
-after 'deploy:db_seed', 'deploy:data_migrate'
+before 'deploy:db_migrate', 'configuration:copy_secrets'
+after 'deploy', 'deploy:db_migrate'
+after 'deploy:db_migrate', 'deploy:precompile_assets'
+after 'deploy', 'deploy:cleanup'
+after 'deploy', 'deploy:restart'
 
 require './config/boot'
 require 'airbrake/capistrano3'
