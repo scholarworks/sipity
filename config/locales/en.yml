@@ -128,9 +128,6 @@ en:
       abstract:
         title_html: 'Please provide an <b>abstract</b> of your work'
         hint: 'Please keep your abstract to around 300 words.'
-      attach:
-        title_html: 'Please <b>attach</b> the pertinent files'
-        hint: 'If you have more than one file please select one as the principle manuscript.'
       defense_date:
         title_html: "Please select the <b>date</b> of your defense"
         hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
