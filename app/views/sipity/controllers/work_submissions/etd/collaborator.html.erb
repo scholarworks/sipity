@@ -13,6 +13,12 @@
 
   <fieldset class="panel-body">
     <p class="panel-hint">You must have at least one person Research Director assigned for your submission.</p>
+    <p class="panel-hint">
+      Request for approval emails will only be sent to Research Directors who are added by NetID.
+      If you have a co-director who does not have a NetID,
+      please add them by email and ask them to contact <%= mail_to 'dteditor@nd.edu' %> to approve this work for submission to the Graduate School.
+      Once we have their permission, the Graduate School editor will sign-off on their behalf.
+    </p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
