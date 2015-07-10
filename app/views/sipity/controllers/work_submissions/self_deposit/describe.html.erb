@@ -1,6 +1,4 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1>Finish Describing Your Work</h1>
 
 <%= simple_form_for(
   model,
@@ -10,11 +8,11 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.abstract.title_html"), class: 'panel-title' %>
+    <h3 class="panel-title">Please provide an <b>abstract</b> of your work</h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.abstract.hint"), class: 'panel-hint' %>
+    <p class="panel-hint">Please keep your abstract to around 300 words.</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <%= f.input :title, as: :text, input_html: { class: 'redactor-input form-control' }  %>

@@ -1,6 +1,4 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1>Attach Files</h1>
 
 <%= simple_form_for(
   model,
@@ -10,11 +8,11 @@
   html: { class: 'simple-form panel panel-primary with-footer attachements-form' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.attach.title_html"), class: 'panel-title' %>
+    <h3 class="pannel-title">Please <b>attach</b> the pertinent files</h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.attach.hint"), class: 'panel-hint' %>
+    <p class="panel-hint">If you have more than one file please select one as the principle manuscript.</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 

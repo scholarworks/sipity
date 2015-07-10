@@ -1,6 +1,4 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1><%= model.translate(:call_to_action, predicate: :heading) %></h1>
 
 <div class="panel-tiles">
 

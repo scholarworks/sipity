@@ -54,55 +54,12 @@ en:
     submit:
       account:
         create: 'Continue'
-      citation:
-        create: 'Create a citation'
-      doi:
-        create: 'Assign a DOI'
       work:
         create: 'Save and continue'
         update: 'Update'
-  sipity/citations:
-    action/show:
-      call_to_action: 'Create a Citation'
-      cancel: 'Return without creating a citation'
-      description_html: 'A well-formed citation is crucial for tracking how your work is cited by others.'
-      citation_not_assigned: 'We recommend providing a citation for %{title}.'
-    panels:
-      new_citation:
-        hint: 'Please provide a citation properly formatted for the type you select.'
-        title_html: 'How would you like your work to be <b>cited</b>?'
-  sipity/dois:
-    action/show:
-      call_to_action: 'DOI Assignment'
-      cancel: 'Return without assigning a DOI'
-      description_html: 'A <a href="http://simple.wikipedia.org/wiki/Digital_Object_Identifier">Digital Object Identifier</a> is the best way to cite an online work (like this one) in academic publications.'
-      doi_already_assigned: 'A DOI has already been assigned to %{title}.'
-      doi_not_assigned: 'We recommend assigning a DOI to %{title}.'
-      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
-    panels:
-      existing_doi:
-        hint: 'If you published this work elsewhere you may already have a DOI.'
-        title_html: 'Do you <b>already have</b> a DOI?'
-      new_doi:
-        hint: 'We need a bit more information to create a DOI for you:'
-        title_html: 'Would you like to <b>create</b> a DOI?'
   sipity/works:
-    action/create:
-      failure: 'There is a problem with your submission.'
-      success: 'Thank you for answering those questions! Please complete the tasks below.'
-    action/show:
-      label:
-        overview_section: 'Submission Overview'
-        recommended_actions: 'Recommended'
-        todo_section: 'Submission ToDo List'
-    action/update:
-      failure: 'That update could not be made.'
-      success: 'Update successful!'
-    action/destroy:
-      success: '"%{title}" has been deleted.'
     processing_state:
       label:
-        new: 'Not Submitted'
         under_advisor_review: 'Under Advisor Review'
         advisor_changes_requested: 'Changes Requested'
         under_grad_school_review: 'Under Graduate School Review'
@@ -152,49 +109,11 @@ en:
       terms_of_service:
         title_html: 'Terms of Service'
   sipity/decorators/entitiy_enrichments:
-    call_to_action:
-      access_policy: 'Set access controls'
-      attach: 'Attach files'
-      defense_date: 'Defense date'
-      describe: 'Finish describing your work'
-      collaborators: 'People Involved'
     cancel: 'Return without saving'
-    description:
-      access_policy: ''
-      attach: ''
-      collaborators: ''
-      defense_date: ''
-      degree: ''
-      describe: ''
-      search_terms: ''
     panels:
-      abstract:
-        title_html: 'Please provide an <b>abstract</b> of your work'
-        hint: 'Please keep your abstract to around 300 words.'
-      access_policy:
-        title_html: 'Please choose the <b>release options</b> for your work'
-        hint_html: 'Please choose the <i>access controls</i> for the record of your work and its attachments. The access controls determine who will be able to see the material when the submission process is complete. The <i>copyright release</i> applies to the work itself as well as the attached files.'
-      attach:
-        title_html: 'Please <b>attach</b> the pertinent files'
-        hint: 'If you have more than one file please select one as the principle manuscript.'
-      defense_date:
-        title_html: "Please select the <b>date</b> of your defense"
-        hint_html: "This date <em>should</em> be in the past (or you’re getting ahead of yourself)."
-      collaborators:
-        title_html: 'Please identify the members of the <b>advisory committee</b>'
-        hint: 'You must have at least one person review your submission.'
-        institution_label: 'ND:'
-        choice: 'OR'
-        email_contact_group_label: 'Non-ND:'
-      degree:
-        title_html: 'Please choose a <b>degree</b> for this work'
-        hint_html: 'Select the degree for which you are submitting this work'
       program_name:
         title_html: 'Please choose a <b>program name</b> for this work'
         hint: 'Select the program name for which you are submitting this work'
-      search_terms:
-        title_html: 'Provide additional <b>search terms</b> for your item'
-        hint: 'The more richly you describe your work the better we can promote it.'
       publication_name:
         title_html: 'Please provide a <b>publication name</b> of your work'
       course:
@@ -231,6 +150,9 @@ en:
   sections:
     todo:
       label: 'To-do'
+  processing_states:
+    new:
+      label: 'Not Submitted'
   processing_actions:
     publishing_and_patenting_intent:
       label: "Tell us about your <b>publishing</b> and <b>patenting</b> intent for this %{work_type}"
@@ -308,17 +230,6 @@ en:
       debug: 'Debug'
     confirm:
       destroy: 'Are you sure you want to delete this submission? This action cannot be undone. You will have to start the process over from the beginning.'
-  sipity/decorators/recommendations/doi_recommendation:
-    state:
-      doi_already_assigned: 'DOI Already Assigned'
-      doi_not_assigned: 'DOI Not Yet Assigned'
-      doi_request_is_pending: 'A request for a DOI is pending for %{title}.'
-    name: 'DOI'
-  sipity/decorators/recommendations/citation_recommendation:
-    state:
-      citation_already_assigned: 'Citation Already Assigned'
-      citation_not_assigned: 'Citation Not Yet Assigned'
-    name: 'Citation'
   activemodel:
     errors:
       models:
