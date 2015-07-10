@@ -128,9 +128,6 @@ en:
       program_name:
         title_html: 'Please choose a <b>program name</b> for this work'
         hint: 'Select the program name for which you are submitting this work'
-      search_terms:
-        title_html: 'Provide additional <b>search terms</b> for your item'
-        hint: 'The more richly you describe your work the better we can promote it.'
       publication_name:
         title_html: 'Please provide a <b>publication name</b> of your work'
       course:
