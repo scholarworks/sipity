@@ -14,6 +14,7 @@ module Sipity
       end
 
       def message
+        # TODO: Push this into a translation assistant.
         @message ||= begin
           if can_advance_processing_state?
             I18n.t("sipity/works.processing_state.#{processing_state}.can_advance").html_safe
