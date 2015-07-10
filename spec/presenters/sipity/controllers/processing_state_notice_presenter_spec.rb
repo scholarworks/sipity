@@ -14,7 +14,7 @@ module Sipity
       its(:processing_state) { should eq(processing_state_notice.processing_state) }
 
       it 'exposes message?' do
-        expect(I18n).to receive(:t).and_return('')
+        expect(I18n).to receive(:t).with(kind_of(String), default: '').and_return('')
         expect(subject.message?).to eq(false)
       end
 

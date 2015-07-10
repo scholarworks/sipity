@@ -16,9 +16,9 @@ module Sipity
       def message
         @message ||= begin
           if can_advance_processing_state?
-            I18n.t("sipity/works.processing_state.#{processing_state}.can_advance").html_safe
+            I18n.t("sipity/works.processing_state.#{processing_state}.can_advance", default: '').html_safe
           else
-            I18n.t("sipity/works.processing_state.#{processing_state}.cannot_advance").html_safe
+            I18n.t("sipity/works.processing_state.#{processing_state}.cannot_advance", default: '').html_safe
           end
         end
       end
