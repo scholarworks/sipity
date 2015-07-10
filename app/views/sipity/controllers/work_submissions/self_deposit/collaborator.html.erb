@@ -8,11 +8,11 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.collaborators.title_html"), class: 'panel-title' %>
+    <h3 class ='panel-title'>Please identify the members of the <b>advisory committee</b></h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
+    <p class="panel-hint">You must have at least one person review your submission.</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
@@ -54,10 +54,7 @@
             </td>
             <td class="js-hidden contact-information form-inline">
               <span class="form-group">
-                <%= content_tag :span,
-                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.institution_label'),
-                  class: 'netid scope'
-                %>
+                <span class="netid scope">ND:</span>
                 <%= collaborator_form.input :netid,
                   label: false,
                   wrapper: false,
@@ -68,15 +65,10 @@
                 %>
               </span>
               <span class="choice">
-                <%= content_tag :strong,
-                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.choice')
-                %>
+                <strong>OR</strong>
               </span>
               <span class="form-group">
-                <%= content_tag :span,
-                  t('sipity/decorators/entitiy_enrichments.panels.collaborators.email_contact_group_label'),
-                  class: 'email scope'
-                %>
+                <span class="email scope">Non-ND:</span>
                 <%= collaborator_form.input :email,
                   as: :email,
                   label: false,
