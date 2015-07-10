@@ -125,9 +125,6 @@ en:
   sipity/decorators/entitiy_enrichments:
     cancel: 'Return without saving'
     panels:
-      abstract:
-        title_html: 'Please provide an <b>abstract</b> of your work'
-        hint: 'Please keep your abstract to around 300 words.'
       program_name:
         title_html: 'Please choose a <b>program name</b> for this work'
         hint: 'Select the program name for which you are submitting this work'
