@@ -8,11 +8,10 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.affiliation.title_html"), class: 'panel-title' %>
+    <h3 class="panel-title">Affiliation</h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.affiliation.hint_html"), class: 'panel-hint' %>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <%= f.input :affiliation, collection: model.available_affiliations, input_html: { class: 'form-control', selected: model.affiliation } %>
