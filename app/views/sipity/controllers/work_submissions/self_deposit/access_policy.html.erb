@@ -8,11 +8,13 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{ model.processing_action_name }.title_html"), class: 'panel-title' %>
+    <h3 class="panel-title">
+      Please choose the <b>release options</b> for your work
+    </h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.#{ model.processing_action_name }.hint_html"), class: 'panel-hint' %>
+    <p class="panel-hint">Please choose the <i>access controls</i> for the record of your work and its attachments. The access controls determine who will be able to see the material when the submission process is complete. The <i>copyright release</i> applies to the work itself as well as the attached files.</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <table class="table">
