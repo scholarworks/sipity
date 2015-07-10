@@ -8,11 +8,11 @@
   html: { class: 'simple-form panel panel-primary with-footer' }
 ) do |f| %>
   <legend class="panel-heading">
-    <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.defense_date.title_html"), class: 'panel-title' %>
+    <h3 class="panel-title">Please select the <b>date</b> of your defense</h3>
   </legend>
 
   <fieldset class="panel-body">
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.defense_date.hint_html"), class: 'panel-hint' %>
+    <p class="panel-hint">This date <em>should</em> be in the past (or you’re getting ahead of yourself).</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
