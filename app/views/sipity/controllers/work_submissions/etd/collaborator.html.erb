@@ -13,7 +13,6 @@
 
   <fieldset class="panel-body">
     <p class="panel-hint">You must have at least one person Research Director assigned for your submission.</p>
-    <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.collaborators.hint"), class: 'panel-hint' %>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
