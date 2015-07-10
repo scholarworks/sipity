@@ -1,6 +1,4 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% describe = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, describe) if describe.present? %>
+<h1>Additional Search Terms</h1>
 
 <%= simple_form_for(
   model,

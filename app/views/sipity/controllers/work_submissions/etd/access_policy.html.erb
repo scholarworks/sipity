@@ -1,15 +1,6 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1>Set Access Controls</h1>
 
-
-<%= simple_form_for(
-  model,
-  url: request.path,
-  method: :post,
-  as: :work,
-  html: { class: 'simple-form panel panel-primary with-footer' }
-) do |f| %>
+<%= simple_form_for(model, url: request.path, method: :post, as: :work, html: { class: 'simple-form panel panel-primary with-footer' }) do |f| %>
   <legend class="panel-heading">
     <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.#{ model.processing_action_name }.title_html"), class: 'panel-title' %>
   </legend>

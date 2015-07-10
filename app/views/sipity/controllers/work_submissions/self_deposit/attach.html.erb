@@ -1,6 +1,4 @@
-<%= content_tag :h1, t("sipity/decorators/entitiy_enrichments.call_to_action.#{model.processing_action_name}") %>
-<% description = t("sipity/decorators/entitiy_enrichments.description.#{model.processing_action_name}") %>
-<%= content_tag( :p, description) if description.present? %>
+<h1>Attach Files</h1>
 
 <%= simple_form_for(
   model,
