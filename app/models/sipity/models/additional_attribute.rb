@@ -34,6 +34,7 @@ module Sipity
       ORGANIZATION_PREDICATE_NAME = 'organization'.freeze
       COLLABORATOR_PREDICATE_NAME = 'collaborator'.freeze
       ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
+      ETD_REVIEWER_SIGNOFF_DATE = 'ETD_REVIEWER_SIGNOFF_DATE'.freeze
 
       self.table_name = 'sipity_additional_attributes'
       belongs_to :work, foreign_key: 'work_id'
@@ -65,7 +66,8 @@ module Sipity
           AFFILIATION_PREDICATE_NAME => AFFILIATION_PREDICATE_NAME,
           ORGANIZATION_PREDICATE_NAME => ORGANIZATION_PREDICATE_NAME,
           COLLABORATOR_PREDICATE_NAME => COLLABORATOR_PREDICATE_NAME,
-          ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE
+          ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE,
+          ETD_REVIEWER_SIGNOFF_DATE => ETD_REVIEWER_SIGNOFF_DATE
         }
       )
     end
