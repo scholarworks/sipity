@@ -315,6 +315,8 @@ en:
     hints:
       work:
         program_name_html: 'To choose multiple programs, press the CTRL key and select the appropriate programs'
+      defaults:
+        copyright_html: For more information on copyright options please see <a href="http://www.nd.edu/copyright/">nd.edu/copyright</a>.
   errors:
     attributes:
       defense_date:
