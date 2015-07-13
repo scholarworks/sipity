@@ -97,6 +97,14 @@ module Sipity
                 its(:collaborators) { should_not be_empty }
                 its(:collaborators_from_input) { should be_empty }
               end
+              context 'with empty strings' do
+                let(:collaborators_attributes) do
+                  { __sequence: { name: "", role: "Research Director", netid: "jfriesen", email: "", responsible_for_review: "0" } }
+                end
+                it 'will nil-ify the value' do
+                  expect(subject.collaborators_from_input.first.email).to be_nil
+                end
+              end
             end
           end
         end
