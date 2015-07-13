@@ -63,6 +63,8 @@ module Sipity
         it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
         it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
         it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+
+        its(:to_work_area) { should eq(subject.send(:work_area)) }
       end
     end
   end

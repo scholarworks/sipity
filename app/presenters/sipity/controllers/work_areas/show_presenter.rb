@@ -28,6 +28,10 @@ module Sipity
 
         delegate :name, to: :work_area
 
+        def to_work_area
+          work_area
+        end
+
         def submission_windows
           @submission_windows ||= repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
             user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area }

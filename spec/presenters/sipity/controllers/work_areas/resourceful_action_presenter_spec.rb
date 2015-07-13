@@ -19,6 +19,7 @@ module Sipity
         end
 
         its(:work_area_slug) { should eq(work_area.slug) }
+        its(:to_work_area) { should eq(work_area) }
       end
     end
   end
