@@ -73,6 +73,17 @@ module Sipity
       def possible_roles
         self.class.roles
       end
+
+      before_save :nilify_blank_values
+
+      private
+
+      def nilify_blank_values
+        # TODO: I really dislike callbacks; Lets not use them in the future.
+        # However, for now, they are needed until I can do a data migration.
+        self.netid = nil unless netid.present?
+        self.email = nil unless email.present?
+      end
     end
   end
 end

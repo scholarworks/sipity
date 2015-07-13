@@ -91,6 +91,13 @@ module Sipity
       it 'will raise an ArgumentError if you provide an invalid role' do
         expect { subject.role = '__incorrect_role__' }.to raise_error(ArgumentError)
       end
+
+      it 'will nullify the email and netid' do
+        subject = described_class.new(netid: '', email: '')
+        subject.send(:nilify_blank_values)
+        expect(subject.email).to be_nil
+        expect(subject.netid).to be_nil
+      end
     end
   end
 end
