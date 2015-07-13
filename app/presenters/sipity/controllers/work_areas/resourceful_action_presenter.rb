@@ -11,6 +11,10 @@ module Sipity
 
         delegate :slug, to: :work_area, prefix: :work_area
 
+        def to_work_area
+          work_area
+        end
+
         def path
           work_area_action_path(work_area_slug: work_area_slug, processing_action_name: action_name)
         end

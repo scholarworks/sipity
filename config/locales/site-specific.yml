@@ -4,7 +4,12 @@ en:
     description: 'Welcome to the deposit interface of our digital repository.'
     name: 'Siptiy'
     title: 'Repository Deposit Interface'
-    footer: '<p class="centered">Powered by <a href="https://github.com/ndlib/sipity">Sipity</a></p>'
+    footer: >
+      <div class="row">
+        %{support_statement_container_html}
+        <p>Powered by <a href="https://github.com/ndlib/sipity">Sipity</a></p>
+      </div>
+    support_statement_container_html: <p>For Technical Support submit an issue to <a href="https://github.com/ndlib/sipity/issues".>Sipity's Development Team</a></p>
   pages:
     welcome:
       title_html: 'Deposit Your Work'
