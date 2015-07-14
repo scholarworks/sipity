@@ -77,7 +77,7 @@ module Sipity
           end
 
           def extract_collaborator_attributes(attributes)
-            permitted_attributes = attributes.slice(:name, :role, :netid, :email)
+            permitted_attributes = attributes.slice(:name, :role, :netid, :email).reject { |_key, value| value.empty? }
             # Because Rails strong parameters may or may not be in play.
             permitted_attributes.permit! if permitted_attributes.respond_to?(:permit!)
             permitted_attributes

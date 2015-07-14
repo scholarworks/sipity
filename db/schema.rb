@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629162800) do
+ActiveRecord::Schema.define(version: 20150713172107) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -56,16 +56,16 @@ ActiveRecord::Schema.define(version: 20150629162800) do
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
 
   create_table "sipity_agents", force: :cascade do |t|
-    t.string   "name",                 limit: 255,   null: false
+    t.string   "name",                 limit: 255,               null: false
     t.text     "description",          limit: 65535
-    t.string   "authentication_token", limit: 255,   null: false
-    t.integer  "sign_in_count",        limit: 4,     default: 0,  null: false
+    t.string   "authentication_token", limit: 255,               null: false
+    t.integer  "sign_in_count",        limit: 4,     default: 0, null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",   limit: 255
     t.string   "last_sign_in_ip",      limit: 255
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
   end
 
   add_index "sipity_agents", ["authentication_token"], name: "index_sipity_agents_on_authentication_token", unique: true, using: :btree
@@ -79,7 +79,7 @@ ActiveRecord::Schema.define(version: 20150629162800) do
     t.string   "file_name",              limit: 255,                 null: false
     t.datetime "created_at",                                         null: false
     t.datetime "updated_at",                                         null: false
-    t.boolean  "is_representative_file", limit: 1,   default: false
+    t.boolean  "is_representative_file",             default: false
   end
 
   add_index "sipity_attachments", ["pid"], name: "index_sipity_attachments_on_pid", unique: true, using: :btree
@@ -94,11 +94,11 @@ ActiveRecord::Schema.define(version: 20150629162800) do
     t.datetime "updated_at"
     t.string   "netid",                  limit: 255
     t.string   "email",                  limit: 255
-    t.boolean  "responsible_for_review", limit: 1,   default: false
+    t.boolean  "responsible_for_review",             default: false
   end
 
-  add_index "sipity_collaborators", ["email"], name: "index_sipity_collaborators_on_email", using: :btree
-  add_index "sipity_collaborators", ["netid"], name: "index_sipity_collaborators_on_netid", using: :btree
+  add_index "sipity_collaborators", ["work_id", "email"], name: "index_sipity_collaborators_on_work_id_and_email", unique: true, using: :btree
+  add_index "sipity_collaborators", ["work_id", "netid"], name: "index_sipity_collaborators_on_work_id_and_netid", unique: true, using: :btree
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence", using: :btree
 
   create_table "sipity_doi_creation_requests", force: :cascade do |t|
@@ -207,7 +207,7 @@ ActiveRecord::Schema.define(version: 20150629162800) do
     t.integer  "originating_strategy_state_id",  limit: 4,                     null: false
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
-    t.boolean  "stale",                          limit: 1,     default: false
+    t.boolean  "stale",                                        default: false
   end
 
   add_index "sipity_processing_comments", ["actor_id"], name: "index_sipity_processing_comments_on_actor_id", using: :btree
@@ -292,12 +292,12 @@ ActiveRecord::Schema.define(version: 20150629162800) do
     t.integer  "resulting_strategy_state_id",       limit: 4
     t.string   "name",                              limit: 255,                 null: false
     t.string   "form_class_name",                   limit: 255
-    t.boolean  "completion_required",               limit: 1,   default: false
+    t.boolean  "completion_required",                           default: false
     t.datetime "created_at",                                                    null: false
     t.datetime "updated_at",                                                    null: false
     t.string   "action_type",                       limit: 255,                 null: false
     t.integer  "presentation_sequence",             limit: 4
-    t.boolean  "allow_repeat_within_current_state", limit: 1,   default: true,  null: false
+    t.boolean  "allow_repeat_within_current_state",             default: true,  null: false
   end
 
   add_index "sipity_processing_strategy_actions", ["action_type"], name: "index_sipity_processing_strategy_actions_on_action_type", using: :btree
@@ -451,7 +451,7 @@ ActiveRecord::Schema.define(version: 20150629162800) do
     t.string   "name",                       limit: 255
     t.integer  "role",                       limit: 4
     t.string   "username",                   limit: 255,                 null: false
-    t.boolean  "agreed_to_terms_of_service", limit: 1,   default: false
+    t.boolean  "agreed_to_terms_of_service",             default: false
   end
 
   add_index "users", ["agreed_to_terms_of_service"], name: "index_users_on_agreed_to_terms_of_service", using: :btree
