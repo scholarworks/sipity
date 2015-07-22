@@ -40,11 +40,17 @@
     }
   };
 
+	var disableSubmitOnClick = function(){
+		var submitButton = $(":input[type='submit']");
+		submitButton.attr('data-disable-with', 'Please wait...');
+	};
+
   var ready = function(){
     $('.table.collaborators').manage_sections();
     $('.multi-value.control-group').manage_fields();
     adjustRequiredCollaborators();
     adjustRequiredAttachements();
+		disableSubmitOnClick();
     $('.help-icon').tooltip();
 		$('.abstract').readmore({
 			speed: 75,
