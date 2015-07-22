@@ -282,7 +282,7 @@ GEM
       rubocop (~> 0.20)
     haml (4.0.6)
       tilt
-    high_voltage (2.3.0)
+    high_voltage (2.4.0)
     highline (1.6.21)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
