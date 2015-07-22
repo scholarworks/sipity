@@ -150,6 +150,8 @@ en:
   sections:
     todo:
       label: 'To-do'
+    repository_url:
+      label: 'URL in CurateND'
   processing_states:
     new:
       label: 'Not Submitted'

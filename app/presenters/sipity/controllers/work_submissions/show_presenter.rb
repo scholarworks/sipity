@@ -94,6 +94,14 @@ module Sipity
           TranslationAssistant.call(scope: :sections, subject: work_submission, object: identifier)
         end
 
+        def repository_url_label
+          TranslationAssistant.call(scope: :sections, subject: work_submission, object: 'repository_url')
+        end
+
+        def repository_url_for_work
+          File.join(Figaro.env.curate_nd_url!, work_submission.id)
+        end
+
         private
 
         attr_reader :work_submission

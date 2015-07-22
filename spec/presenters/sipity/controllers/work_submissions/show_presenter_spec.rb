@@ -149,6 +149,18 @@ module Sipity
           expect_any_instance_of(ComposableElements::ProcessingActionsComposer).to receive(:can_advance_processing_state?)
           subject.can_advance_processing_state?
         end
+
+        context '#repository_url' do
+          it 'will expose label for repository_url' do
+            expect(TranslationAssistant).to receive(:call)
+            subject.repository_url_label
+          end
+
+          it 'exposes link to repository_url for given work' do
+            expect(subject.repository_url_for_work).to match(%r{\Ahttps://curate.nd.edu/show/})
+          end
+        end
+
       end
     end
   end

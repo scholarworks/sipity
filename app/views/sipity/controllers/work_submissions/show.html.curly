@@ -60,6 +60,8 @@
             {{/collaborators?}}
             {{render_additional_attribute_set}}
             {{render_accessible_object_set}}
+            <dt class="predicate repository_url">{{repository_url_label}}</dt>
+            <dd class="value repository_url"><a href="{{repository_url_for_work}}" target="_blank">{{ repository_url_for_work }}</a></dd>
           </dl>
         </div>
         {{#resourceful_actions?}}
