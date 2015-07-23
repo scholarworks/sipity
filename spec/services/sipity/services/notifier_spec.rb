@@ -23,6 +23,11 @@ module Sipity
 
           expect(mail_object).to have_received(:deliver_now)
         end
+
+        it 'will not attempt deliver email notifier if sender not exists' do
+          described_class.deliver(entity: entity, notification: existing_notification, to: [])
+          expect(mail_object).to_not have_received(:deliver_now)
+        end
       end
     end
   end
