@@ -75,5 +75,10 @@ module Sipity
         its(:message) { should be_a(String) }
       end
     end
+
+    RSpec.describe SenderNotFoundError do
+      subject { described_class.new('hello') }
+      its(:message) { should be_a(String) }
+    end
   end
 end
