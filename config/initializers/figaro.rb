@@ -2,6 +2,7 @@ Figaro.require_keys(
   'airbrake_api_key',
   'airbrake_host',
   'curate_nd_url_for_etds',
+  'curate_nd_url_show_prefix_url',
   'default_email_from',
   'default_email_return_path',
   'domain_name',

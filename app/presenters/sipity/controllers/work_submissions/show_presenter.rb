@@ -99,7 +99,7 @@ module Sipity
         end
 
         def repository_url_for_work
-          File.join(Figaro.env.curate_nd_url!, work_submission.id)
+          File.join(Figaro.env.curate_nd_url_show_prefix_url!, work_submission.id)
         end
 
         private
