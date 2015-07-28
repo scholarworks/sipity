@@ -41,7 +41,7 @@ module Sipity
               expect(subject.errors[:base]).to_not be_empty
             end
 
-            it 'will be valid if one of the collaborators is a research director' do
+            it 'will be valid if one of the collaborators is a research director with netid' do
               attributes = {
                 collaborators_attributes: {
                   __sequence: { name: "Jeremy", role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE, netid: "a_net_id", email: "", id: 11 }
@@ -115,6 +115,15 @@ module Sipity
                 it 'will nil-ify the value' do
                   expect(subject.collaborators_from_input.first.email).to be_nil
                 end
+              end
+
+              context 'with missing netid' do
+                let(:collaborators_attributes) do
+                  { __sequence: { name: "", role: "Research Director", netid: "", email: "test@test.com", responsible_for_review: "0" } }
+                end
+                its(:valid?) { should be_falsey }
+                its(:collaborators) { should_not be_empty }
+                its(:collaborators_from_input) { should_not be_empty }
               end
             end
 

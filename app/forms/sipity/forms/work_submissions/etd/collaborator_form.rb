@@ -20,7 +20,7 @@ module Sipity
 
           include ActiveModel::Validations
           validate :each_collaborator_from_input_must_be_valid
-          validate :at_least_one_collaborator_must_be_research_director
+          validate :at_least_one_collaborator_must_be_research_director_with_netid
           validates :work, presence: true
           validates :requested_by, presence: true
 
@@ -98,15 +98,20 @@ module Sipity
             errors.add(:collaborators_attributes, :are_incomplete)
           end
 
-          def at_least_one_collaborator_must_be_research_director
+          def at_least_one_collaborator_must_be_research_director_with_netid
             return true unless Array.wrap(collaborators_from_input).none? do |collaborator|
-              determine_if_role_is_responsible_for_review(collaborator.role)
+              determine_if_role_is_responsible_for_review_with_netid(collaborator)
             end
-            errors.add(:base, :at_least_one_collaborator_must_be_research_director)
+            errors.add(:base, :at_least_one_collaborator_must_be_research_director_with_netid)
           end
 
           def determine_if_role_is_responsible_for_review(role)
             return true if role == Models::Collaborator::RESEARCH_DIRECTOR_ROLE
+            return false
+          end
+
+          def determine_if_role_is_responsible_for_review_with_netid(collaborator)
+            return true if collaborator.role == Models::Collaborator::RESEARCH_DIRECTOR_ROLE && collaborator.netid.present?
             return false
           end
         end
