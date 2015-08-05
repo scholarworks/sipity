@@ -40,13 +40,11 @@ module Sipity
         'btn-info'
       end
 
-      def complete?
-        @complete
-      end
+      attr_reader :complete
+      alias_method :complete?, :complete
 
-      def a_prerequisite?
-        @a_prerequisite
-      end
+      attr_reader :a_prerequisite
+      alias_method :a_prerequisite?, :a_prerequisite
 
       def label
         TranslationAssistant.call(

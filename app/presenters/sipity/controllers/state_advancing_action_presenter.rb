@@ -20,9 +20,8 @@ module Sipity
         initialize_state_variables_for_interrogation!
       end
 
-      def available?
-        @available
-      end
+      attr_reader :available
+      alias_method :available?, :available
 
       def availability_state
         available? ? STATE_AVAILABLE : STATE_PREREQUISITES_NOT_MET
