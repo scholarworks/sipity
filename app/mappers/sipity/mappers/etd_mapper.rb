@@ -80,7 +80,7 @@ module Sipity
       end
 
       def metadata
-        metadata =  attributes
+        metadata = attributes
         metadata['title'] = work.title
         metadata['contributor'] = collaborators_name_and_title
         metadata['degree'] = degree_info
@@ -126,7 +126,7 @@ module Sipity
       def transform_attributes_to_metadata(json)
         json.set! DESC_METADATA_KEY do
           json.set! CONTEXT_KEY do
-            TERM_URI.each { |key, uri|   json.set!(key, uri) }
+            TERM_URI.each { |key, uri| json.set!(key, uri) }
           end
           metadata.each do |key, value|
             json.set!(extract_name_for(key), value)
@@ -137,7 +137,7 @@ module Sipity
       def rels_ext_datastream(json)
         json.set! RELS_EXT_KEY do
           json.set! CONTEXT_KEY do
-            RELS_EXT_URI.each { |key, uri|   json.set!(key, uri) }
+            RELS_EXT_URI.each { |key, uri| json.set!(key, uri) }
           end
           json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
           json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
@@ -146,14 +146,14 @@ module Sipity
 
       def decode_access_right
         # determine and add Public, Private, Embargo and ND only rights
-        decoded_access_rights = { READ_KEY => creators,  EDIT_KEY => [BATCH_USER] }
+        decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
         case access_right
         when Models::AccessRight::OPEN_ACCESS
-          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+          decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
         when Models::AccessRight::RESTRICTED_ACCESS
-          decoded_access_rights[READ_GROUP_KEY] =  [ND_ONLY_ACCESS]
+          decoded_access_rights[READ_GROUP_KEY] = [ND_ONLY_ACCESS]
         when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
-          decoded_access_rights[READ_GROUP_KEY] =  [PUBLIC_ACCESS]
+          decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
           decoded_access_rights[EMBARGO_KEY] = embargo_date
         when Models::AccessRight::PRIVATE_ACCESS
         end

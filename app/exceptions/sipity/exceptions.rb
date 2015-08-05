@@ -208,7 +208,7 @@ module Sipity
       def initialize(user:, action_to_authorize:, entity:)
         @user = user
         @action_to_authorize = action_to_authorize
-        @entity  = entity
+        @entity = entity
         super("#{user} not allowed to #{action_to_authorize} this #{entity}")
       end
     end

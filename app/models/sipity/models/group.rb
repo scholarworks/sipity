@@ -8,7 +8,7 @@ module Sipity
     class Group < ActiveRecord::Base
       self.table_name = 'sipity_groups'
 
-      ALL_REGISTERED_USERS =  'All Registered Users'.freeze
+      ALL_REGISTERED_USERS = 'All Registered Users'.freeze
 
       def self.all_registered_users
         find_or_create_by!(name: ALL_REGISTERED_USERS)

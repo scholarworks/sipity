@@ -20,7 +20,7 @@ module Sipity
       end
 
       def state
-        return  'done' if complete?
+        return 'done' if complete?
         'incomplete'
       end
 

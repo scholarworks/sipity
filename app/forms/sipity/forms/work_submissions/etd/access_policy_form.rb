@@ -94,7 +94,7 @@ module Sipity
             from_persistence = accessible_objects_from_repository
             values.map do |(_key, attrs)|
               attributes = attrs.with_indifferent_access
-              persisted_object = from_persistence.find { |obj| obj.id.to_s == attributes.fetch('id')  }
+              persisted_object = from_persistence.find { |obj| obj.id.to_s == attributes.fetch('id') }
               AccessibleObjectFromInput.new(persisted_object, attributes)
             end
           end
