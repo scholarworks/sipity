@@ -22,7 +22,7 @@ describe NetIdValidator do
   its(:default_netid_remote_validator) { should respond_to :call }
 
   context '#validate_each' do
-    let(:a_netid) { 'a_netid'  }
+    let(:a_netid) { 'a_netid' }
 
     it 'will add an error to the given attribute if the remote validator returns false' do
       record = validatable.new

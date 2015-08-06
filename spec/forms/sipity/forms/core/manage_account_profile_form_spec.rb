@@ -3,7 +3,7 @@ require 'spec_helper'
 module Sipity
   module Forms
     module Core
-      RSpec.describe ManageAccountProfileForm  do
+      RSpec.describe ManageAccountProfileForm do
         let(:user) { User.new(id: 1) }
         let(:repository) { CommandRepositoryInterface.new }
         let(:attributes) { { agreed_to_terms_of_service: '1', preferred_name: 'Billy Joe Armstrong' } }

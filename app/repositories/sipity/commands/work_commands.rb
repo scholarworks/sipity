@@ -63,7 +63,7 @@ module Sipity
       def attach_files_to(work:, files:, predicate_name: 'attachment', **keywords)
         # I know I want the user, but I'm not certain what we are doing with it
         # just yet.
-        pid_minter =  keywords.fetch(:pid_minter) { default_pid_minter }
+        pid_minter = keywords.fetch(:pid_minter) { default_pid_minter }
         Array.wrap(files).each do |file|
           pid = pid_minter.call
           Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: predicate_name)

@@ -13,7 +13,7 @@ module Sipity
           __send__("label_for_#{COLLABORATOR_IDENTIFIER_PREDICATE}")
         else
           # TODO: Internationalize this?
-          identifier.to_s.gsub('.', ' ').titleize
+          identifier.to_s.tr('.', ' ').titleize
         end
       end
 

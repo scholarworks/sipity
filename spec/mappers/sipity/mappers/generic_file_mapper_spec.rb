@@ -69,7 +69,7 @@ module Sipity
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
         expected_json = JSON.parse(subject.call)
-        expect(expected_json["rels-ext"]["@context"]).to eq("hydramata-rel" =>  "http://projecthydra.org/ns/relations#")
+        expect(expected_json["rels-ext"]["@context"]).to eq("hydramata-rel" => "http://projecthydra.org/ns/relations#")
         expect(expected_json["rels-ext"]["isPartOf"]).to eq(["und:a_work_id"])
         expect(expected_json["rels-ext"]["hydramata-rel:hasEditor"]).to eq(['batch_user_pid'])
         expect(expected_json["rels-ext"]["hydramata-rel:hasEditorGroup"]).to eq(['batch_group_pid'])

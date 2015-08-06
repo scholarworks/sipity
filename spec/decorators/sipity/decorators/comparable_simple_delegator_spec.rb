@@ -2,7 +2,7 @@ require 'spec_helper'
 module Sipity
   module Decorators
     RSpec.describe ComparableSimpleDelegator do
-      let(:decorating_class) { Class.new(described_class) {  self.base_class = Models::Work } }
+      let(:decorating_class) { Class.new(described_class) { self.base_class = Models::Work } }
       let(:underlying_object) { double }
       subject { decorating_class.new(underlying_object) }
       its(:model_name) { should eq(decorating_class.base_class.model_name) }
