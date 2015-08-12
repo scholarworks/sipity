@@ -270,7 +270,7 @@ GEM
     guard-jshintrb (1.1.1)
       guard (~> 2.0)
       jshintrb
-    guard-rails (0.7.1)
+    guard-rails (0.7.2)
       guard (~> 2.11)
       guard-compat (~> 1.0)
     guard-rspec (4.6.4)
