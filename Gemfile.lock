@@ -72,6 +72,12 @@ GIT
     hydra-validations (0.4.0)
       activemodel (~> 4.0)
 
+PATH
+  remote: ../cogitate
+  specs:
+    cogitate (0.0.1)
+      contracts (~> 0.1)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -197,6 +203,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
+    contracts (0.11.0)
     crass (1.0.2)
     database_cleaner (1.5.1)
     debug_inspector (0.0.2)
@@ -607,6 +614,7 @@ DEPENDENCIES
   capybara-accessible
   codeclimate-test-reporter
   coffee-rails (~> 4.0)
+  cogitate!
   commitment
   curly-templates!
   data_migrator!
