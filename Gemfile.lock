@@ -80,6 +80,12 @@ GIT
     hydra-validations (0.4.0)
       activemodel (~> 4.0)
 
+PATH
+  remote: ../cogitate
+  specs:
+    cogitate (0.0.1)
+      contracts (~> 0.1)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
