@@ -5,6 +5,13 @@
 # development.
 #
 # They are included so we can share what the keys should be.
+
+cogitate_services_tokenizer_encryption_type: 'RS256'
+cogitate_services_tokenizer_public_password: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuZYpQKfFJ2CfdyPTMj7b\nQBALe58cWAN+B6tyLBPozDRe7OcJPs/PnOtaPcvdk0RQcTxCtTkgb3Z1bTeQam+l\n3Hy5byCXcojCQPbQes+jGQ62W59aC6li/v0QakO68kCr/HAI49HBhMp59LOVNWUQ\nZNIgnbQxWT3N/0guLPbN2d+qTSW906YRjanVE4daKQ0TNZKa8Py1PP8ey0h2ipoW\nkr0WAz24AgdXUkQ4Y1RdeEs71On5exx8WtrUBMluNIG4neJwvkiaXWMDS2eQU2Oy\nV/L1dkNUrpnNuUb3vhlfyTKEsYUpt0ZoMVyddL1Vzuw/GmGuc4a1y+P6rmHXxQJR\n7wIDAQAB\n-----END PUBLIC KEY-----\n"
+cogitate_services_tokenizer_issuer_claim: "https://library.nd.edu"
+cogitate_services_remote_server_base_url: "http://localhost:3001"
+cogitate_services_after_authentication_callback_url: 'http://localhost:3000/after_cogitate_authorization'
+
 curate_nd_url_for_etds: "https://curate.nd.edu/catalog?utf8=%E2%9C%93&search_field=all_fields&q=etd"
 curate_nd_url_show_prefix_url: "https://curate.nd.edu/show/"
 default_email_from: 'sipity-development@nd.edu'
