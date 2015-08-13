@@ -21,7 +21,23 @@ The goal is to replace identity related information with using the Cogitate serv
 
 ## Migration Plan
 
-* Install a public key for the "base" Cogitate URL
-* Switch authentication URL to `Cogitate.configuration.url_for_authentication`
-* Incorporate session storage of JSON Web Token
-  * What do we need to store in the user session? Identifiers? Emails?
+Below is a sequence of steps to take. It should not be considered final.
+**NOTE:** These have been posted as issues on Sipity's issue tracker for the [Cogitate Milestone](https://github.com/ndlib/sipity/milestones/Cogitate%20Integration).
+
+1. ~~Install local reference to Cogitate for development~~
+1. ~~Configure Cogitate~~
+1. Create Cogitate mock user scenarios for testing
+  * Verified user and groups
+  * Unverified user and groups
+1. Rework user authentication to leverage Cogitate's JWT authentication
+  1. Add `Sipity::Controllers::SessionController#new`
+    * This action redirects to Cogitate
+  1. Add `Sipity::Controllers::SessionController#create`
+    * This action receive's Cogitate's response and sets the session information
+  1. Adjust `current_user` to find the user in the current `users` table based on the Cogitate::AuthenticatedToken.
+  1. Remove Devise usage!!!
+1. Move email processing to Asynchronous
+  * With querying email addresses against a remote API, I don't want to lock the request loop.
+1. Deploy Cogitate to Staging, PreProduction, Production environment
+1. Migrate `Sipity::Models::Processing::Actor#proxy_for` to Cogitate key structure
+  1. Convert Sipity groups to Cogitate groups
