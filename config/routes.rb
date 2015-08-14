@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     get 'areas/etd', to: 'sipity/controllers/visitors#areas_etd'
   end
 
+  get 'authenticate', to: 'sipity/controllers/sessions#new', as: 'authentication'
+  get 'after_authentication', to: 'sipity/controllers/sessions#create', as: 'after_authentication'
+
   ##############################################################################
   # Begin Account related things
   ##############################################################################
