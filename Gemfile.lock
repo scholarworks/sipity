@@ -287,8 +287,8 @@ GEM
     http-cookie (1.0.2)
       domain_name (~> 0.5)
     i18n (0.7.0)
-    i18n-debug (1.0.0)
-      i18n (~> 0.0)
+    i18n-debug (1.1.0)
+      i18n (< 1)
     inch (0.6.4)
       pry
       sparkr (>= 0.2.0)
