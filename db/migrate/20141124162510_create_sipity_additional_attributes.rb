@@ -5,7 +5,7 @@ class CreateSipityAdditionalAttributes < ActiveRecord::Migration
       t.string :key, null: false
       t.string :value
 
-      t.timestamps
+      t.timestamps null: false
     end
   end
 end

@@ -5,7 +5,7 @@ class CreateSipityWorks < ActiveRecord::Migration
       t.string :work_publication_strategy
       t.string :title
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :sipity_works, :id, unique: true
     add_index :sipity_works, :title

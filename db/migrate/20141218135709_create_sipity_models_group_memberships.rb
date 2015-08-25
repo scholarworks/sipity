@@ -5,7 +5,7 @@ class CreateSipityModelsGroupMemberships < ActiveRecord::Migration
       t.integer :group_id
       t.string :membership_role
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :sipity_group_memberships, :user_id

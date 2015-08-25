@@ -5,7 +5,7 @@ class CreateSipityCollaborators < ActiveRecord::Migration
       t.integer :sequence
       t.string :name
       t.string :role
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :sipity_collaborators, [:work_id, :sequence]

@@ -6,7 +6,7 @@ class CreateSipityAccountPlaceholders < ActiveRecord::Migration
       t.string :identifier_type, limit: 32
       t.string :state, limit: 32, default: 'created'
 
-      t.timestamps
+      t.timestamps null: false
     end
     add_index :sipity_account_placeholders, :identifier
     add_index :sipity_account_placeholders, [:identifier, :identifier_type], unique: true, name: 'sipity_account_placeholders_id_and_type'

@@ -6,7 +6,7 @@ class CreateSipityEventLogs < ActiveRecord::Migration
       t.string :entity_type, limit: 64
       t.string :event_name, index: true
 
-      t.timestamps
+      t.timestamps null: false
     end
 
     add_index :sipity_event_logs, [:user_id, :entity_id, :entity_type], name: :sipity_event_logs_user_subject
