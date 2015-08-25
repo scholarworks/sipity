@@ -30,7 +30,7 @@ module Sipity
         end
 
         def default_work_submitters
-          Models::Group.all_registered_users
+          Models::Group.all_verified_netid_users
         end
 
         def submission_window=(input)

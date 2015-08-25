@@ -11,8 +11,8 @@ module Sipity
 
       it { should have_many(:event_logs) }
 
-      it 'will have a Group.all_registered_users' do
-        expect(described_class.all_registered_users).to be_persisted
+      it 'will have a Group.all_verified_netid_users' do
+        expect(described_class.all_verified_netid_users).to be_persisted
       end
     end
   end

@@ -15,10 +15,10 @@ module Sipity
 
       context 'add new user to all_registered user group' do
         let(:user) { Sipity::Factories.create_user }
-        let(:all_registered_users_group) { Sipity::Models::Group.find_by(name: Models::Group::ALL_REGISTERED_USERS) }
+        let(:all_verified_netid_users_group) { Sipity::Models::Group.find_by(name: Models::Group::ALL_VERIFIED_NETID_USERS) }
         it 'user will be part of all_registered user group' do
           described_class.call(user)
-          expect(all_registered_users_group.group_memberships.where(user: user).count).to eq(1)
+          expect(all_verified_netid_users_group.group_memberships.where(user: user).count).to eq(1)
         end
       end
 

@@ -5,7 +5,7 @@ Sipity::Conversions::ConvertToProcessingActor.call(
 )
 
 $stdout.puts 'Add existing users to All Registered Users Groups...'
-Sipity::Models::Group.find_or_create_by!(name: Sipity::Models::Group::ALL_REGISTERED_USERS)
+Sipity::Models::Group.find_or_create_by!(name: Sipity::Models::Group::ALL_VERIFIED_NETID_USERS)
 
 $stdout.puts 'Creating Valid Roles...'
 Sipity::Models::Role.valid_names.each do |name|

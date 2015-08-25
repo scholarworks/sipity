@@ -28,7 +28,7 @@ module Sipity
         end
 
         def default_work_area_viewers
-          Models::Group.all_registered_users
+          Models::Group.all_verified_netid_users
         end
 
         PERMITTED_WORK_AREA_VIEWER_ACTIONS = ['show'].freeze

@@ -14,7 +14,7 @@ module Sipity
           Models::Role::ETD_REVIEWER,
           Models::Role::ADVISOR
         ]
-        GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
+        GRADUATE_SCHOOL_REVIEWERS = 'Graduate School ETD Reviewers'
 
         def self.call(**keywords)
           new(**keywords).call

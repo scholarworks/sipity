@@ -8,10 +8,10 @@ module Sipity
     class Group < ActiveRecord::Base
       self.table_name = 'sipity_groups'
 
-      ALL_REGISTERED_USERS = 'All Verified "netid" Users'.freeze
+      ALL_VERIFIED_NETID_USERS = 'All Verified "netid" Users'.freeze
 
-      def self.all_registered_users
-        find_or_create_by!(name: ALL_REGISTERED_USERS)
+      def self.all_verified_netid_users
+        find_or_create_by!(name: ALL_VERIFIED_NETID_USERS)
       end
 
       # Why are there validations here and not on other models? Because I'm
