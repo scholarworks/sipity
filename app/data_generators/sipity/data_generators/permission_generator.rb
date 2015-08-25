@@ -85,17 +85,19 @@ module Sipity
 
       def associate_strategy_role_at_strategy_level(strategy_role)
         return if entity
-        # TODO: What if we don't have an entity? If that is the case then we want to associate the
-        #   actor at the strategy level.
-        actors.each { |actor| Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: actor) }
+        actors.each do |actor|
+          Models::Processing::StrategyResponsibility.find_or_create_by!(
+            strategy_role: strategy_role, actor: actor, identifier_id: PowerConverter.convert(actor, to: :identifier_id)
+          )
+        end
       end
 
       def associate_strategy_role_at_entity_level(strategy_role)
         return unless entity
-        # TODO: What if we don't have an entity? If that is the case then we want to associate the
-        #   actor at the strategy level.
         actors.each do |actor|
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(strategy_role: strategy_role, entity: entity, actor: actor)
+          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
+            strategy_role: strategy_role, entity: entity, actor: actor, identifier_id: PowerConverter.convert(actor, to: :identifier_id)
+          )
         end
       end
     end

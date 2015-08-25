@@ -63,10 +63,12 @@ module Sipity
 
               etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
 
+              gs_actor = Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
               find_or_initialize_or_create!(
                 context: etd_reviewer,
                 receiver: etd_reviewer.strategy_responsibilities,
-                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
+                actor: gs_actor,
+                identifier_id: PowerConverter.convert(gs_actor, to: :identifier_id)
               )
 
               etd_states = {}
