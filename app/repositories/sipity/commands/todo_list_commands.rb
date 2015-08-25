@@ -35,10 +35,10 @@ module Sipity
         # Opting for IDs because I want my unit tests to not require all of the
         # collaborating models to be built.
         Models::Processing::Comment.create!(
-          entity_id: entity.id,
-          actor_id: actor.id,
+          entity_id: entity.id, actor_id: actor.id,
           originating_strategy_action_id: action.id,
           originating_strategy_state_id: entity.strategy_state.id,
+          identifier_id: PowerConverter.convert(actor, to: :identifier_id),
           comment: comment
         )
       end

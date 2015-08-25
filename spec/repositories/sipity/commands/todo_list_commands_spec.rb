@@ -25,7 +25,7 @@ module Sipity
 
       context '#record_processing_comment' do
         let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy_state_id: state.id, strategy_state: state) }
-        let(:actor) { Models::Processing::Actor.new(id: 2) }
+        let(:actor) { Models::Processing::Actor.new(id: 2, proxy_for: User.new(username: '123')) }
         let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id) }
         let(:strategy) { Models::Processing::Strategy.new(id: 4) }
         let(:state) { Models::Processing::StrategyState.new(id: 5) }
