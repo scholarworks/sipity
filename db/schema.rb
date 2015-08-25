@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150713172107) do
+ActiveRecord::Schema.define(version: 20150825132813) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -29,20 +29,6 @@ ActiveRecord::Schema.define(version: 20150713172107) do
   end
 
   add_index "sipity_access_rights", ["entity_id", "entity_type"], name: "index_sipity_access_rights_on_entity_id_and_entity_type", unique: true, using: :btree
-
-  create_table "sipity_account_placeholders", force: :cascade do |t|
-    t.string   "identifier",      limit: 255,                     null: false
-    t.string   "name",            limit: 255
-    t.string   "identifier_type", limit: 32,                      null: false
-    t.string   "state",           limit: 32,  default: "created", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_account_placeholders", ["identifier", "identifier_type"], name: "sipity_account_placeholders_id_and_type", unique: true, using: :btree
-  add_index "sipity_account_placeholders", ["identifier"], name: "index_sipity_account_placeholders_on_identifier", using: :btree
-  add_index "sipity_account_placeholders", ["name"], name: "index_sipity_account_placeholders_on_name", using: :btree
-  add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state", using: :btree
 
   create_table "sipity_additional_attributes", force: :cascade do |t|
     t.string   "work_id",    limit: 32,    null: false
@@ -101,25 +87,14 @@ ActiveRecord::Schema.define(version: 20150713172107) do
   add_index "sipity_collaborators", ["work_id", "netid"], name: "index_sipity_collaborators_on_work_id_and_netid", unique: true, using: :btree
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence", using: :btree
 
-  create_table "sipity_doi_creation_requests", force: :cascade do |t|
-    t.string   "work_id",          limit: 32,                                        null: false
-    t.string   "state",            limit: 255, default: "request_not_yet_submitted", null: false
-    t.string   "response_message", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state", using: :btree
-  add_index "sipity_doi_creation_requests", ["work_id"], name: "index_sipity_doi_creation_requests_on_work_id", unique: true, using: :btree
-
   create_table "sipity_event_logs", force: :cascade do |t|
-    t.integer  "user_id",           limit: 4,   null: false
+    t.string   "user_id",           limit: 255, null: false
     t.string   "entity_id",         limit: 32,  null: false
     t.string   "entity_type",       limit: 64,  null: false
     t.string   "event_name",        limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "requested_by_id",   limit: 4
+    t.string   "requested_by_id",   limit: 255
     t.string   "requested_by_type", limit: 255
   end
 
@@ -134,8 +109,8 @@ ActiveRecord::Schema.define(version: 20150713172107) do
   add_index "sipity_event_logs", ["user_id"], name: "index_sipity_event_logs_on_user_id", using: :btree
 
   create_table "sipity_group_memberships", force: :cascade do |t|
-    t.integer  "user_id",         limit: 4,   null: false
-    t.integer  "group_id",        limit: 4,   null: false
+    t.string   "user_id",         limit: 255, null: false
+    t.string   "group_id",        limit: 255, null: false
     t.string   "membership_role", limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -190,7 +165,7 @@ ActiveRecord::Schema.define(version: 20150713172107) do
   add_index "sipity_notification_notifiable_contexts", ["scope_for_notification_id", "scope_for_notification_type"], name: "idx_sipity_notification_notifiable_contexts_concern", using: :btree
 
   create_table "sipity_processing_actors", force: :cascade do |t|
-    t.string   "proxy_for_id",   limit: 32,  null: false
+    t.string   "proxy_for_id",   limit: 255, null: false
     t.string   "proxy_for_type", limit: 255, null: false
     t.string   "name_of_proxy",  limit: 255
     t.datetime "created_at",                 null: false
