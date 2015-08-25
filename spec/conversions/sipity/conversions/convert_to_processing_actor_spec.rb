@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/conversions/convert_to_processing_actor'
+require 'cogitate/models/agent'
 
 module Sipity
   module Conversions
@@ -44,6 +45,15 @@ module Sipity
             let(:object) { Models::Group.new }
             it 'will raise an exception' do
               expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
+            end
+          end
+        end
+
+        context 'for a Cogitate::Models::Agent' do
+          context 'that is NOT persisted' do
+            let(:object) { Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: '123') }
+            it 'will find or create the associated Processing::Actor' do
+              expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
             end
           end
         end
