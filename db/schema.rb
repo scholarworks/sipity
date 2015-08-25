@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825164743) do
+ActiveRecord::Schema.define(version: 20150825171836) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -91,12 +91,17 @@ ActiveRecord::Schema.define(version: 20150825164743) do
     t.datetime "updated_at"
     t.string   "requested_by_id",   limit: 255
     t.string   "requested_by_type", limit: 255
+    t.string   "identifier_id",     limit: 255
   end
 
   add_index "sipity_event_logs", ["created_at"], name: "index_sipity_event_logs_on_created_at", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type", "event_name"], name: "sipity_event_logs_entity_action_name", using: :btree
   add_index "sipity_event_logs", ["entity_id", "entity_type"], name: "sipity_event_logs_subject", using: :btree
   add_index "sipity_event_logs", ["event_name"], name: "index_sipity_event_logs_on_event_name", using: :btree
+  add_index "sipity_event_logs", ["identifier_id", "created_at"], name: "index_sipity_event_logs_on_identifier_id_and_created_at", using: :btree
+  add_index "sipity_event_logs", ["identifier_id", "entity_id", "entity_type"], name: "sipity_event_logs_identifier_subject", using: :btree
+  add_index "sipity_event_logs", ["identifier_id", "event_name"], name: "sipity_event_logs_identifier_event_name", using: :btree
+  add_index "sipity_event_logs", ["identifier_id"], name: "index_sipity_event_logs_on_identifier_id", using: :btree
   add_index "sipity_event_logs", ["requested_by_type", "requested_by_id"], name: "idx_sipity_event_logs_on_requested_by", using: :btree
   add_index "sipity_event_logs", ["user_id", "created_at"], name: "index_sipity_event_logs_on_user_id_and_created_at", using: :btree
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject", using: :btree
@@ -172,8 +177,10 @@ ActiveRecord::Schema.define(version: 20150825164743) do
     t.string   "name_of_proxy",  limit: 255
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.string   "identifier_id",  limit: 255
   end
 
+  add_index "sipity_processing_actors", ["identifier_id"], name: "sipity_processing_actors_identifier", unique: true, using: :btree
   add_index "sipity_processing_actors", ["proxy_for_id", "proxy_for_type"], name: "sipity_processing_actors_proxy_for", unique: true, using: :btree
 
   create_table "sipity_processing_comments", force: :cascade do |t|
@@ -185,11 +192,13 @@ ActiveRecord::Schema.define(version: 20150825164743) do
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
     t.boolean  "stale",                                        default: false
+    t.string   "identifier_id",                  limit: 255
   end
 
   add_index "sipity_processing_comments", ["actor_id"], name: "index_sipity_processing_comments_on_actor_id", using: :btree
   add_index "sipity_processing_comments", ["created_at"], name: "index_sipity_processing_comments_on_created_at", using: :btree
   add_index "sipity_processing_comments", ["entity_id"], name: "index_sipity_processing_comments_on_entity_id", using: :btree
+  add_index "sipity_processing_comments", ["identifier_id"], name: "index_sipity_processing_comments_on_identifier", using: :btree
   add_index "sipity_processing_comments", ["originating_strategy_action_id"], name: "sipity_processing_comments_action_index", using: :btree
   add_index "sipity_processing_comments", ["originating_strategy_state_id"], name: "sipity_processing_comments_state_index", using: :btree
 
@@ -207,31 +216,37 @@ ActiveRecord::Schema.define(version: 20150825164743) do
   add_index "sipity_processing_entities", ["strategy_state_id"], name: "index_sipity_processing_entities_on_strategy_state_id", using: :btree
 
   create_table "sipity_processing_entity_action_registers", force: :cascade do |t|
-    t.integer  "strategy_action_id",    limit: 4,   null: false
-    t.string   "entity_id",             limit: 32,  null: false
-    t.datetime "created_at",                        null: false
-    t.datetime "updated_at",                        null: false
-    t.integer  "requested_by_actor_id", limit: 4,   null: false
-    t.integer  "on_behalf_of_actor_id", limit: 4,   null: false
-    t.integer  "subject_id",            limit: 4
-    t.string   "subject_type",          limit: 255
+    t.integer  "strategy_action_id",         limit: 4,   null: false
+    t.string   "entity_id",                  limit: 32,  null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.integer  "requested_by_actor_id",      limit: 4,   null: false
+    t.integer  "on_behalf_of_actor_id",      limit: 4,   null: false
+    t.integer  "subject_id",                 limit: 4
+    t.string   "subject_type",               limit: 255
+    t.string   "requested_by_identifier_id", limit: 255
+    t.string   "on_behalf_of_identifier_id", limit: 255
   end
 
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "on_behalf_of_actor_id"], name: "sipity_processing_entity_action_registers_on_behalf", using: :btree
+  add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "on_behalf_of_identifier_id"], name: "sipity_processing_entity_action_registers_on_behalf_id", using: :btree
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "requested_by_actor_id"], name: "sipity_processing_entity_action_registers_requested", using: :btree
+  add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "requested_by_identifier_id"], name: "sipity_processing_entity_action_registers_requested_id", using: :btree
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id"], name: "sipity_processing_entity_action_registers_aggregate", using: :btree
   add_index "sipity_processing_entity_action_registers", ["subject_id", "subject_type"], name: "sipity_processing_entity_action_registers_subject", using: :btree
 
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
-    t.integer  "strategy_role_id", limit: 4,  null: false
-    t.string   "entity_id",        limit: 32, null: false
-    t.integer  "actor_id",         limit: 4,  null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.integer  "strategy_role_id", limit: 4,   null: false
+    t.string   "entity_id",        limit: 32,  null: false
+    t.integer  "actor_id",         limit: 4,   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "identifier_id",    limit: 255
   end
 
   add_index "sipity_processing_entity_specific_responsibilities", ["actor_id"], name: "sipity_processing_entity_specific_responsibilities_actor", using: :btree
   add_index "sipity_processing_entity_specific_responsibilities", ["entity_id"], name: "sipity_processing_entity_specific_responsibilities_entity", using: :btree
+  add_index "sipity_processing_entity_specific_responsibilities", ["identifier_id"], name: "sipity_processing_entity_specific_responsibilities_identifier", using: :btree
   add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id", "entity_id", "actor_id"], name: "sipity_processing_entity_specific_responsibilities_aggregate", unique: true, using: :btree
   add_index "sipity_processing_entity_specific_responsibilities", ["strategy_role_id"], name: "sipity_processing_entity_specific_responsibilities_role", using: :btree
 
@@ -283,13 +298,15 @@ ActiveRecord::Schema.define(version: 20150825164743) do
   add_index "sipity_processing_strategy_actions", ["strategy_id", "presentation_sequence"], name: "sipity_processing_strategy_actions_sequence", using: :btree
 
   create_table "sipity_processing_strategy_responsibilities", force: :cascade do |t|
-    t.integer  "actor_id",         limit: 4, null: false
-    t.integer  "strategy_role_id", limit: 4, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.integer  "actor_id",         limit: 4,   null: false
+    t.integer  "strategy_role_id", limit: 4,   null: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.string   "identifier_id",    limit: 255
   end
 
   add_index "sipity_processing_strategy_responsibilities", ["actor_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_aggregate", unique: true, using: :btree
+  add_index "sipity_processing_strategy_responsibilities", ["identifier_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_identifier_aggregate", unique: true, using: :btree
 
   create_table "sipity_processing_strategy_roles", force: :cascade do |t|
     t.integer  "strategy_id", limit: 4, null: false
