@@ -17,12 +17,17 @@ module Sipity
 
       context 'GET :create' do
         let(:ticket) { '123-456' }
-        let(:agent) { { 'hello' => 'world' } }
-        before { allow(Cogitate::Client::RetrieveAgentFromTicket).to receive(:call).with(ticket: ticket).and_return(agent) }
+        let(:cogitate_token) { 'The Token' }
+        before { allow(Cogitate::Client::TicketToTokenCoercer).to receive(:call).with(ticket: ticket).and_return(cogitate_token) }
 
         it 'will retrieve an agent from a ticket' do
-          expect(Cogitate::Client::RetrieveAgentFromTicket).to receive(:call).with(ticket: ticket).and_return(agent)
+          expect(Cogitate::Client::TicketToTokenCoercer).to receive(:call).with(ticket: ticket).and_return(cogitate_token)
           get :create, ticket: ticket
+        end
+
+        it 'will set the :cogitate_token session' do
+          get :create, ticket: ticket
+          expect(session[:cogitate_token]).to eq(cogitate_token)
         end
 
         it 'will redirect to the before_authentication_location if one exists' do

@@ -1,4 +1,4 @@
-require 'cogitate/client/retrieve_agent_from_ticket'
+require 'cogitate/client/ticket_to_token_coercer'
 
 module Sipity
   module Controllers
@@ -10,17 +10,9 @@ module Sipity
       end
 
       def create
-        # Convert the Ticket into an Agent
-        # Sessionize the Agent
-        # Redirect to the appropriate location
-        agent = Cogitate::Client::RetrieveAgentFromTicket.call(ticket: params.fetch(:ticket))
-        session[:agent] = agent.as_json
+        session[:cogitate_token] = Cogitate::Client::TicketToTokenCoercer.call(ticket: params.fetch(:ticket))
         before_authentication_location = session.delete(:before_authentication_location)
-        if before_authentication_location
-          redirect_to before_authentication_location
-        else
-          redirect_to '/'
-        end
+        redirect_to(before_authentication_location || '/')
       end
     end
   end
