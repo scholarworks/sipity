@@ -1,4 +1,7 @@
 require 'power_converter'
+require 'cogitate/client'
+require 'cogitate/models/identifier'
+require 'cogitate/models/agent'
 
 PowerConverter.define_conversion_for(:access_path) do |input|
   case input
@@ -41,6 +44,26 @@ PowerConverter.define_conversion_for(:file_system_safe_file_name) do |input|
   case input
   when Symbol, String, NilClass
     input.to_s.gsub(/\W+/, '_').underscore.downcase
+  end
+end
+
+PowerConverter.define_conversion_for(:identifier_id) do |input|
+  case input
+  when Cogitate::Models::Identifier, Cogitate::Models::Agent
+    input.id
+  when User
+    Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: input.username) if input.username.present?
+  when Sipity::Models::Group
+    name_map = {
+      'Graduate School Reviewers' => 'Graduate School ETD Reviewers',
+      'All Registered Users' => 'All Verified "netid" Users'
+    }
+    group_name = name_map.fetch(input.name, input.name)
+    Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: group_name) if group_name.present?
+  when Sipity::Models::Collaborator
+    Cogitate::Client.encoded_identifier_for(strategy: 'email', identifying_value: input.email) if input.email.present?
+  when Sipity::Models::Processing::Actor
+    PowerConverter.convert(input.proxy_for, to: :identifier_id)
   end
 end
 

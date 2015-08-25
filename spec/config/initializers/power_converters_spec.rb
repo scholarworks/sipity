@@ -71,6 +71,45 @@ RSpec.describe 'power converters' do
     end
   end
 
+  context ':identifier_id' do
+    it 'will convert a Processing::Actor' do
+      actor = Sipity::Models::Processing::Actor.new(proxy_for: User.new(username: 'hello'))
+      expect(PowerConverter.convert(actor, to: :identifier_id)).to be_a(String)
+    end
+    it 'will convert a user with a username' do
+      user = User.new(username: 'hello')
+      expect(PowerConverter.convert(user, to: :identifier_id)).to be_a(String)
+    end
+    it 'will not convert a user with a username' do
+      user = User.new
+      expect { PowerConverter.convert(user, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
+    end
+    it 'will convert a group with a name' do
+      group = Sipity::Models::Group.new(name: 'hello')
+      expect(PowerConverter.convert(group, to: :identifier_id)).to be_a(String)
+    end
+    it 'will not convert a group without a name' do
+      group = Sipity::Models::Group.new
+      expect { PowerConverter.convert(group, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
+    end
+    it 'will convert a collaborator with an email' do
+      collaborator = Sipity::Models::Collaborator.new(email: 'hello')
+      expect(PowerConverter.convert(collaborator, to: :identifier_id)).to be_a(String)
+    end
+    it 'will not convert a collaborator without an email' do
+      collaborator = Sipity::Models::Collaborator.new
+      expect { PowerConverter.convert(collaborator, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
+    end
+    it 'will convert a Cogitate::Models::Agent' do
+      agent = Cogitate::Models::Agent.build_with_identifying_information(strategy: 'group', identifying_value: '123')
+      expect(PowerConverter.convert(agent, to: :identifier_id)).to be_a(String)
+    end
+    it 'will convert a Cogitate::Models::Identifier' do
+      identifier = Cogitate::Models::Identifier.new(strategy: 'group', identifying_value: '123')
+      expect(PowerConverter.convert(identifier, to: :identifier_id)).to be_a(String)
+    end
+  end
+
   context 'strategy_state' do
     let(:strategy_state) { Sipity::Models::Processing::StrategyState.new(id: 1, name: 'hello') }
     let(:strategy) { Sipity::Models::Processing::Strategy.new(id: 2, name: 'strategy') }

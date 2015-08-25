@@ -2,12 +2,8 @@ class MigrateActorToIdentifier < ActiveRecord::Migration
   def self.up
     require 'cogitate/models/identifier'
     Sipity::Models::EventLog.find_each do |event_log|
-      if event_log.requested_by_type.to_s == 'User'
-        encoded_id = Cogitate::Models::Identifier.new(identifying_value: event_log.requested_by.username, strategy: 'netid').id
-        event_log.update_columns(identifier_id: encoded_id)
-      else
-        fail "Expecting #{event_log} to be modified by a user"
-      end
+      identifier_id = PowerConverter.convert(event_log.requested_by, to: :identifier_id)
+      event_log.update_columns(identifier_id: identifier_id)
     end
     Sipity::Models::Processing::Comment.find_each do |comment|
       comment.update_columns(identifier_id: comment.actor.identifier_id)
