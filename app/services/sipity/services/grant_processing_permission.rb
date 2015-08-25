@@ -32,8 +32,12 @@ module Sipity
 
       def create_entity_specific_responsibility(strategy_role:)
         Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-          strategy_role_id: strategy_role.id, entity_id: entity.id, actor_id: actor.id
+          strategy_role_id: strategy_role.id, entity_id: entity.id, actor_id: actor.id, identifier_id: identifier_id
         )
+      end
+
+      def identifier_id
+        PowerConverter.convert_to_identifier_id(actor)
       end
 
       def strategy_role_responsibility_exists?

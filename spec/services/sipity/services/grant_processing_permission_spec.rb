@@ -26,6 +26,7 @@ module Sipity
       context '#call' do
         let(:fake_relation) { double(first!: strategy_role) }
         before do
+          allow(PowerConverter).to receive(:convert_to_identifier_id).with(actor).and_return('an identifier')
         end
         it 'will raise an exception if the role is not valid for the strategy' do
           expect { subject.call }.to raise_error Exceptions::ValidProcessingStrategyRoleNotFoundError
