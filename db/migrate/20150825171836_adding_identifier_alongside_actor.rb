@@ -22,6 +22,6 @@ class AddingIdentifierAlongsideActor < ActiveRecord::Migration
     add_index "sipity_processing_entity_specific_responsibilities", ["identifier_id"], name: "sipity_processing_entity_specific_responsibilities_identifier"
 
     add_column :sipity_processing_strategy_responsibilities, :identifier_id, :string
-    add_index "sipity_processing_strategy_responsibilities", ["identifier_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_identifier_aggregate", unique: true
+    add_index "sipity_processing_strategy_responsibilities", ["identifier_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_id_aggregate", unique: true
   end
 end

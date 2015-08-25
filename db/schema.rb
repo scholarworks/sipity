@@ -11,13 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825172451) do
-
-  create_table "data_migrations", id: false, force: :cascade do |t|
-    t.string "version", limit: 255, null: false
-  end
-
-  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
+ActiveRecord::Schema.define(version: 20150825171836) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -299,7 +293,7 @@ ActiveRecord::Schema.define(version: 20150825172451) do
   end
 
   add_index "sipity_processing_strategy_responsibilities", ["actor_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_aggregate", unique: true, using: :btree
-  add_index "sipity_processing_strategy_responsibilities", ["identifier_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_identifier_aggregate", unique: true, using: :btree
+  add_index "sipity_processing_strategy_responsibilities", ["identifier_id", "strategy_role_id"], name: "sipity_processing_strategy_responsibilities_id_aggregate", unique: true, using: :btree
 
   create_table "sipity_processing_strategy_roles", force: :cascade do |t|
     t.integer  "strategy_id", limit: 4, null: false
