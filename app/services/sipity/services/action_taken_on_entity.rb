@@ -65,7 +65,9 @@ module Sipity
           strategy_action_id: action.id,
           entity_id: entity.id,
           requested_by_actor_id: requesting_actor.id,
+          requested_by_identifier_id: PowerConverter.convert(requesting_actor, to: :identifier_id),
           on_behalf_of_actor_id: on_behalf_of_actor.id,
+          on_behalf_of_identifier_id: PowerConverter.convert(on_behalf_of_actor, to: :identifier_id),
           subject_id: subject.id,
           subject_type: convert_to_polymorphic_type(subject)
         )
