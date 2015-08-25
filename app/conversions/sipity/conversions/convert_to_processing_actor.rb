@@ -16,8 +16,6 @@ module Sipity
           # thinking that I would prefer the option of tests not quite building
           # up the whole world.
           return Models::Processing::Actor.find_or_create_by!(proxy_for: input) if input.id.present?
-        when Cogitate::Models::Agent then
-          return Models::Processing::Actor.find_or_create_by!(proxy_for_id: input.id, proxy_for_type: 'Cogitate::Models::Agent')
         end
         fail Exceptions::ProcessingActorConversionError, input
       end
