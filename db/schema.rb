@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825144833) do
+ActiveRecord::Schema.define(version: 20150825164841) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(version: 20150825144833) do
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
+
+  create_table "sipity_agreed_to_terms_of_services", id: false, force: :cascade do |t|
+    t.string   "identifier_id", limit: 255, null: false
+    t.datetime "agreed_at",                 null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "sipity_agreed_to_terms_of_services", ["identifier_id"], name: "index_sipity_agreed_to_terms_of_services_on_identifier_id", unique: true, using: :btree
 
   create_table "sipity_attachments", id: false, force: :cascade do |t|
     t.string   "work_id",                limit: 32,                  null: false
@@ -108,6 +117,13 @@ ActiveRecord::Schema.define(version: 20150825144833) do
   end
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
+
+  create_table "sipity_models_agreed_to_terms_of_services", id: false, force: :cascade do |t|
+    t.string   "agent_id",   limit: 255, null: false
+    t.datetime "agreed_at",              null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
 
   create_table "sipity_notification_email_recipients", force: :cascade do |t|
     t.integer  "email_id",           limit: 4,   null: false
