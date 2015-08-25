@@ -84,7 +84,7 @@ group :development, :staging do
 end
 
 group :development, :test do
-  gem 'cogitate', path: '../cogitate'
+  gem 'cogitate', github: 'ndlib/cogitate'
   gem 'faker'
   gem 'pry-rescue', require: false
   gem 'pry-stack_explorer', require: false

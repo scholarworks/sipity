@@ -34,6 +34,15 @@ GIT
     railroady (1.3.0)
 
 GIT
+  remote: git://github.com/ndlib/cogitate.git
+  revision: 850e03f42aa472f768b03dffabf1bb8ccb9dc96f
+  specs:
+    cogitate (0.0.1)
+      contracts (~> 0.1)
+      jwt (~> 1.5)
+      rest-client (~> 1.8)
+
+GIT
   remote: git://github.com/ndlib/guard-scss-lint.git
   revision: 6d9e3b87599db44d24f2409d55ba61c8afc4ac85
   specs:
@@ -71,14 +80,6 @@ GIT
   specs:
     hydra-validations (0.4.0)
       activemodel (~> 4.0)
-
-PATH
-  remote: ../cogitate
-  specs:
-    cogitate (0.0.1)
-      contracts (~> 0.1)
-      jwt (~> 1.5)
-      rest-client (~> 1.8)
 
 GEM
   remote: https://rubygems.org/
