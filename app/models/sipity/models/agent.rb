@@ -1,7 +1,13 @@
+require 'sipity/interfaces'
+
 module Sipity
   module Models
     # The "current user" of application.
     class Agent
+      include Contracts
+      Contract(
+        KeywordArgs[token: String, token_decoder: Optional[RespondTo[:call]]] => Sipity::Interfaces::AgentInterface
+      )
       def self.new_from_cogitate_token(token:, token_decoder: default_token_decoder)
         cogitate_agent = token_decoder.call(token: token)
         new(cogitate_agent)

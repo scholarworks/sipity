@@ -11,7 +11,7 @@ module Sipity
         its(:private_methods) { should include(:new) }
       end
       context '.new_from_cogitate_token' do
-        let(:token) { double("Token - because relying on a Token generated via Cogitate and its configuration may be painful") }
+        let(:token) { 'A "Token" because relying on a Token generated via Cogitate and its configuration may be painful' }
         let(:token_decoder) { double('Token Decoder', call: agent) }
         let(:agent) do
           Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'hworld') do |the_agent|
