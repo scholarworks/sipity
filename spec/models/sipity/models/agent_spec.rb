@@ -1,23 +1,28 @@
-require 'rails_helper'
-require 'sipity/models/agent'
+require 'spec_helper'
+require 'cogitate/models/agent'
 
 module Sipity
   module Models
-    RSpec.describe Agent, type: :model do
+    RSpec.describe Agent do
       context 'class configuration' do
         subject { described_class }
-        its(:column_names) { should include('name') }
-        its(:column_names) { should include('description') }
-        its(:column_names) { should include('authentication_token') }
+        its(:default_token_decoder) { should respond_to(:call) }
+        its(:public_methods) { should_not include(:new) }
+        its(:private_methods) { should include(:new) }
       end
-
-      it { should have_one(:processing_actor) }
-      it { should have_many(:event_logs) }
-
-      context '.create_a_named_agent!' do
-        it 'creates a named agent and assigns an authentication_token' do
-          expect { described_class.create_a_named_agent!(name: 'Hello') }.to change(described_class, :count).by(1)
+      context '.new_from_cogitate_token' do
+        let(:token) { double("Token - because relying on a Token generated via Cogitate and its configuration may be painful") }
+        let(:token_decoder) { double('Token Decoder', call: agent) }
+        let(:agent) do
+          Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'hworld') do |the_agent|
+            the_agent.add_email('hworld@nd.edu')
+          end
         end
+
+        subject { Agent.new_from_cogitate_token(token: token, token_decoder: token_decoder) }
+        its(:email) { should eq('hworld@nd.edu') }
+        it { should delegate_method(:ids).to(:cogitate_agent) }
+        it { should delegate_method(:name).to(:cogitate_agent) }
       end
     end
   end
