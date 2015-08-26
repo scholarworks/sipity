@@ -620,6 +620,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0)
   cogitate!
   commitment
+  contracts
   curly-templates!
   data_migrator!
   database_cleaner
