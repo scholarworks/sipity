@@ -47,6 +47,9 @@ module Sipity
           Sipity::Models::Agent.new_from_cogitate_token(token: session[:cogitate_token])
         elsif session.key?(:validated_resource_id)
           Sipity::Models::Agent.new_from_user_id(user_id: session[:validated_resource_id])
+        elsif session.key?('warden.user.user.key')
+          user_id = session['warden.user.user.key'].first.first
+          Sipity::Models::Agent.new_from_user_id(user_id: user_id)
         else
           Sipity::Models::Agent.new_null_agent
         end

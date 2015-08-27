@@ -42,4 +42,10 @@ RSpec.describe ApplicationController do
       expect { subject.send(:filter_notify) }.to change { subject.flash[:alert] }.to(nil)
     end
   end
+
+  it { should delegate_method(:user_signed_in?).to(:current_user) }
+  its(:public_methods) { should include(:current_user) }
+  its(:public_methods) { should include(:user_signed_in?) }
+  its(:public_methods) { should_not include(:current_user=) }
+  its(:private_methods) { should include(:current_user=) }
 end
