@@ -24,6 +24,11 @@ module Sipity
         new(context: context).authenticate_user!
       end
 
+      # @api public
+      def self.authenticate_user_with_disregard_for_approval_of_terms_of_service!(context:)
+        new(context: context).authenticate_user_with_disregard_for_approval_of_terms_of_service!
+      end
+
       def initialize(context:)
         self.context = context
       end
@@ -36,6 +41,15 @@ module Sipity
 
       # @api private
       def authenticate_user!
+        set_current_user
+        return current_user if current_user.user_signed_in?
+        # Warden leverages halt imperatives to ensure that redirection is more appropriately handled.
+        context.redirect_to('/authenticate')
+        return false
+      end
+
+      # @api private
+      def authenticate_user_with_disregard_for_approval_of_terms_of_service!
         set_current_user
         return current_user if current_user.user_signed_in?
         # Warden leverages halt imperatives to ensure that redirection is more appropriately handled.
