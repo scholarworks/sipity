@@ -16,6 +16,12 @@ module Sipity
           # thinking that I would prefer the option of tests not quite building
           # up the whole world.
           return Models::Processing::Actor.find_or_create_by!(proxy_for: input) if input.id.present?
+        when Sipity::Models::Agent then
+          user = User.where(username: input.netid).first
+          return convert_to_processing_actor(user) if user
+        when Sipity::Models::Agent::DeviseBackedAgent then
+          user = User.where(id: input.user_id).first
+          return convert_to_processing_actor(user) if user
         end
         fail Exceptions::ProcessingActorConversionError, input
       end
