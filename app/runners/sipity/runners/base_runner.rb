@@ -100,7 +100,7 @@ module Sipity
 
       def authentication_layer_that_uses_context_authentication
         # Devise provides helpful authentication options; I'm using those.
-        ->(context) { context.authenticate_user! }
+        ->(context) { Services::AuthenticationLayer.authenticate_user!(context: context) }
       end
 
       def enforce_authentication!

@@ -24,6 +24,13 @@ class ApplicationController < ActionController::Base
   end
   helper_method :repository
 
+  attr_accessor :current_user
+  private :current_user=
+  helper_method :current_user
+
+  delegate :user_signed_in?, to: :current_user, allow_nil: true
+  helper_method :user_signed_in?
+
   private
 
   def message_for(key, options = {})
