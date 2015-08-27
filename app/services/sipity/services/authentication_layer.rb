@@ -3,11 +3,24 @@ module Sipity
   module Services
     # Responsible for assisting in the negotiation of Authentication
     class AuthenticationLayer
+      # @api public
+      #
+      # The public interface for authentication when none is required.
+      def self.none!(**)
+        return true
+      end
 
       # @api public
       #
       # The public interface for authenticating a user
       def self.authenticate_user!(context:)
+        new(context: context).authenticate_user!
+      end
+
+      # @api public
+      #
+      # The default public interface for authenticating a user
+      def self.default!(context:)
         new(context: context).authenticate_user!
       end
 
@@ -34,7 +47,7 @@ module Sipity
 
       def set_current_user
         @current_user = current_user_from_session
-        context.current_user = @current_user
+        context.send(:current_user=, @current_user)
         @current_user
       end
 

@@ -18,7 +18,16 @@ module Sipity
 
       it 'will expose .authenticate_user! as a convenience method' do
         expect_any_instance_of(described_class).to receive(:authenticate_user!)
-        described_class.authenticate_user!(context: context)
+        described_class.authenticate_user!(context: controller)
+      end
+
+      it 'will expose .default! as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:authenticate_user!)
+        described_class.default!(context: controller)
+      end
+
+      it 'will expose .none! as a convenience method' do
+        expect(described_class.none!(context: controller)).to eq(true)
       end
 
       context '#authenticate_user!' do
@@ -54,6 +63,24 @@ module Sipity
           let(:user_id) { 123 }
           before do
             session[:validated_resource_id] = user_id
+            allow(user).to receive(:user_signed_in?).and_return(true)
+            allow(Sipity::Models::Agent).to receive(:new_from_user_id).with(user_id: user_id).and_return(user)
+          end
+
+          it "will reify the token and set the controller's current_user" do
+            subject.authenticate_user!
+            expect(controller).to have_received(:current_user=).with(user)
+          end
+
+          it 'will not redirect' do
+            expect(controller).to_not have_received(:redirect_to)
+          end
+        end
+
+        context 'when a warden.user.user.key from devise is set' do
+          let(:user_id) { 123 }
+          before do
+            session['warden.user.user.key'] = [[user_id], nil]
             allow(user).to receive(:user_signed_in?).and_return(true)
             allow(Sipity::Models::Agent).to receive(:new_from_user_id).with(user_id: user_id).and_return(user)
           end
