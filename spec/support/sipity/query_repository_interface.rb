@@ -17,6 +17,10 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/account_profile_queries.rb
+    def agreed_to_application_terms_of_service?(identifier_id:)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def attachment_access_right_code(attachment:)
     end
