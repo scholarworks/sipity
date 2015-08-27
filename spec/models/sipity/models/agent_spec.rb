@@ -42,7 +42,9 @@ module Sipity
         its(:name) { should eq(user.to_s) }
         its(:ids) { should eq([Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: user.username)]) }
         its(:user_id) { should eq(user.id) }
+        its(:id) { should eq(user.id) }
         its(:user_signed_in?) { should eq(true) }
+        its(:to_polymorphic_type) { should eq('User') }
       end
 
       context '.new_null_agent' do

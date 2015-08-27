@@ -9,6 +9,11 @@ module Sipity
         def user_signed_in?
           true
         end
+
+        def to_polymorphic_type
+          'User'
+        end
+        alias_method :id, :user_id
       end
 
       NullAgent = Struct.new(:name, :email, :ids) do
