@@ -3,6 +3,14 @@ module Sipity
   module Services
     # Responsible for assisting in the negotiation of Authentication
     class AuthenticationLayer
+
+      # @api public
+      #
+      # The public interface for authenticating a user
+      def self.authenticate_user!(context:)
+        new(context: context).authenticate_user!
+      end
+
       def initialize(context:)
         self.context = context
       end
@@ -13,6 +21,7 @@ module Sipity
         session[:cogitate_token] = token
       end
 
+      # @api private
       def authenticate_user!
         set_current_user
         return current_user if current_user.user_signed_in?

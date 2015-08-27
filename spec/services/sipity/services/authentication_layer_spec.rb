@@ -16,6 +16,11 @@ module Sipity
         expect { subject.capture_cogitate_token(token: token) }.to change { session[:cogitate_token] }.from(nil).to(token)
       end
 
+      it 'will expose .authenticate_user! as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:authenticate_user!)
+        described_class.authenticate_user!(context: context)
+      end
+
       context '#authenticate_user!' do
         context 'when the session has no user related information' do
           it 'will redirect to the /authenticate path' do
