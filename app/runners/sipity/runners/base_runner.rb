@@ -89,7 +89,7 @@ module Sipity
           when :none, false, nil then authentication_layer_that_authenticates_anything
           when :default, true then authentication_layer_that_uses_context_authentication
           else
-            fail Exceptions::FailedToBuildAuthenticationLayerError
+            fail Exceptions::FailedToBuildAuthenticationLayerError, uncoerced_layer
           end
         end
       end

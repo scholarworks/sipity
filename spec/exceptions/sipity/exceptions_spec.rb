@@ -56,6 +56,11 @@ module Sipity
       its(:message) { should be_a(String) }
     end
 
+    RSpec.describe FailedToBuildAuthenticationLayerError do
+      subject { described_class.new(:hello) }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe InvalidStateError do
       let(:entity) { '"Entity"' }
       let(:actual) { '"actual"' }

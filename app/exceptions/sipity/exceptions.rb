@@ -198,6 +198,9 @@ module Sipity
 
     # The authentication layer failed to build. Probably need to explain why.
     class FailedToBuildAuthenticationLayerError < RuntimeError
+      def initialize(layer)
+        super("Unable to build authentication layer #{layer.inspect}")
+      end
     end
 
     # The authorization layer failed to build. Probably need to explain why.
