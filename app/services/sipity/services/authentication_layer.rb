@@ -6,26 +6,26 @@ module Sipity
       # @api public
       #
       # The public interface for authentication when none is required.
-      def self.none!(**)
+      def self.none!(*)
         return true
       end
 
       # @api public
       #
       # The public interface for authenticating a user
-      def self.authenticate_user!(context:, **keywords)
+      def self.authenticate_user!(context, **keywords)
         new(context: context, **keywords).authenticate_user!
       end
 
       # @api public
       #
       # The default public interface for authenticating a user
-      def self.default!(context:, **keywords)
+      def self.default!(context, **keywords)
         new(context: context, **keywords).authenticate_user!
       end
 
       # @api public
-      def self.authenticate_user_with_disregard_for_approval_of_terms_of_service!(context:, **keywords)
+      def self.authenticate_user_with_disregard_for_approval_of_terms_of_service!(context, **keywords)
         new(context: context, **keywords).authenticate_user_with_disregard_for_approval_of_terms_of_service!
       end
 

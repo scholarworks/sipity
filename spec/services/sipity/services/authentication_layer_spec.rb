@@ -16,16 +16,21 @@ module Sipity
 
       it 'will expose .authenticate_user! as a convenience method' do
         expect_any_instance_of(described_class).to receive(:authenticate_user!)
-        described_class.authenticate_user!(context: controller)
+        described_class.authenticate_user!(controller)
+      end
+
+      it 'will expose .authenticate_user_with_disregard_for_approval_of_terms_of_service! as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:authenticate_user_with_disregard_for_approval_of_terms_of_service!)
+        described_class.authenticate_user_with_disregard_for_approval_of_terms_of_service!(controller)
       end
 
       it 'will expose .default! as a convenience method' do
         expect_any_instance_of(described_class).to receive(:authenticate_user!)
-        described_class.default!(context: controller)
+        described_class.default!(controller)
       end
 
       it 'will expose .none! as a convenience method' do
-        expect(described_class.none!(context: controller)).to eq(true)
+        expect(described_class.none!(controller)).to eq(true)
       end
 
       context '#authenticate_user!' do

@@ -31,7 +31,7 @@ module Sipity
       context 'authentication layer coordination' do
         context 'with the :default authentication layer' do
           it 'will delegate authentication to the given context (because Devise)' do
-            expect(Services::AuthenticationLayer).to receive(:authenticate_user!).with(context: context).and_return(true)
+            expect(Services::AuthenticationLayer).to receive(:authenticate_user!).with(context).and_return(true)
             BaseRunner.new(context, authentication_layer: :default)
           end
         end
