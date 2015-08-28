@@ -1,6 +1,6 @@
 module Sipity
   module Models
-    class Agent
+    module Agent
       # Responsible for negotiating the devise provided user and a Sipity agent.
       class FromDevise
         def initialize(user:, repository: default_repository)

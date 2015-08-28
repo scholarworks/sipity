@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    class Agent
+    module Agent
       RSpec.describe NullAgent do
         subject { described_class.new }
         its(:name) { should eq('anonymous') }
@@ -12,7 +12,7 @@ module Sipity
         its(:agreed_to_application_terms_of_service?) { should eq(false) }
 
         it 'will adhear to the AgentInterface' do
-          Contract.valid?(subject, Sipity::Interfaces::AgentInterface)
+          expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true)
         end
       end
     end

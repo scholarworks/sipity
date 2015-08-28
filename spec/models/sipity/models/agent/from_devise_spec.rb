@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Sipity
   module Models
-    class Agent
+    module Agent
       RSpec.describe FromDevise do
         let(:user) { User.new(username: 'hello', id: 123) }
         let(:repository) { QueryRepositoryInterface.new }
