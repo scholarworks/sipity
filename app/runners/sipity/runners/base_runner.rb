@@ -83,24 +83,13 @@ module Sipity
 
       # @todo Tease out a builder object
       def authentication_layer=(uncoerced_layer)
+        return @authentication_layer = Services::AuthenticationLayer.method("none!") unless uncoerced_layer
         return @authentication_layer = uncoerced_layer if uncoerced_layer.respond_to?(:call)
-        @authentication_layer = begin
-          case uncoerced_layer
-          when :none, false, nil then authentication_layer_that_authenticates_anything
-          when :default, true then authentication_layer_that_uses_context_authentication
-          else
-            fail Exceptions::FailedToBuildAuthenticationLayerError, uncoerced_layer
-          end
+        begin
+          @authentication_layer = Services::AuthenticationLayer.method("#{uncoerced_layer}!")
+        rescue NameError
+          raise Exceptions::FailedToBuildAuthenticationLayerError, uncoerced_layer
         end
-      end
-
-      def authentication_layer_that_authenticates_anything
-        -> (*) { true }
-      end
-
-      def authentication_layer_that_uses_context_authentication
-        # Devise provides helpful authentication options; I'm using those.
-        ->(context) { Services::AuthenticationLayer.authenticate_user!(context) }
       end
 
       def enforce_authentication!

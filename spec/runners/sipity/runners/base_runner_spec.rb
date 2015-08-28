@@ -29,11 +29,22 @@ module Sipity
       end
 
       context 'authentication layer coordination' do
-        context 'with the :default authentication layer' do
-          it 'will delegate authentication to the given context (because Devise)' do
-            expect(Services::AuthenticationLayer).to receive(:authenticate_user!).with(context).and_return(true)
-            BaseRunner.new(context, authentication_layer: :default)
-          end
+        it 'will build the corresponding authentication layer' do
+          authenticator = double(call: true)
+          expect(Services::AuthenticationLayer).to receive(:method).with('chicken_taco!').and_return(authenticator)
+          expect(authenticator).to receive(:call).with(context).and_return(true)
+          BaseRunner.new(context, authentication_layer: :chicken_taco)
+        end
+
+        it 'will raise an exception if the authentication layer method does not exist' do
+          expect { BaseRunner.new(context, authentication_layer: :bogus) }.to(
+            raise_error(Sipity::Exceptions::FailedToBuildAuthenticationLayerError)
+          )
+        end
+
+        it 'will build a "none" authentication layer if none is given' do
+          runner = BaseRunner.new(context, authentication_layer: false)
+          expect(runner.send(:authentication_layer)).to respond_to(:call)
         end
 
         context 'when authentication is called' do
