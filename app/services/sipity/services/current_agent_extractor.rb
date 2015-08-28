@@ -3,6 +3,12 @@ module Sipity
   module Services
     # Responsible for extracting an agent from the given session
     module CurrentAgentFromSessionExtractor
+      extend Contracts
+
+      Contract(
+        Contracts::KeywordArgs[session: Contracts::RespondTo[:key?, :[]]] =>
+        Contracts::RespondTo[:user_signed_in?, :agreed_to_application_terms_of_service?]
+      )
       def self.call(session:)
         if session.key?(:cogitate_token)
           Sipity::Models::Agent.new_from_cogitate_token(token: session[:cogitate_token])

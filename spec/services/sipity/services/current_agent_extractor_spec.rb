@@ -13,7 +13,7 @@ RSpec.describe Sipity::Services::CurrentAgentFromSessionExtractor do
     { session: {}, method_name: :new_null_agent }
   ].each do |test_case|
     it "will use Sipity::Models::Agent.#{test_case.fetch(:method_name)} for session = #{test_case.fetch(:session).inspect}" do
-      expect(Sipity::Models::Agent).to receive(test_case.fetch(:method_name))
+      expect(Sipity::Models::Agent).to receive(test_case.fetch(:method_name)).and_return(agent)
       described_class.call(session: test_case.fetch(:session))
     end
   end

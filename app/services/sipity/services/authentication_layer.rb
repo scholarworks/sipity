@@ -63,34 +63,18 @@ module Sipity
       private
 
       def set_current_user
-        @current_user = current_user_extractor.call(context: context)
+        @current_user = current_user_extractor.call(session: context.session)
         context.send(:current_user=, @current_user)
         @current_user
       end
 
       attr_reader :current_user
 
-      include Contracts
-      Contract(KeywordArgs[context: RespondTo[:session]] => RespondTo[:user_signed_in?, :agreed_to_application_terms_of_service?])
-      # @todo Extract this method to the Sipity::Models::Agent.extract_from_session(session: context.session)
-      def current_user_from_session(context:)
-        if context.session.key?(:cogitate_token)
-          Sipity::Models::Agent.new_from_cogitate_token(token: context.session[:cogitate_token])
-        elsif context.session.key?(:validated_resource_id)
-          Sipity::Models::Agent.new_from_user_id(user_id: context.session[:validated_resource_id])
-        elsif context.session.key?('warden.user.user.key')
-          # We have something that looks like `[[1], nil]` in the session
-          user_id = context.session['warden.user.user.key'].first.first
-          Sipity::Models::Agent.new_from_user_id(user_id: user_id)
-        else
-          Sipity::Models::Agent.new_null_agent
-        end
-      end
-
       attr_accessor :context, :current_user_extractor
 
       def default_current_user_extractor
-        method(:current_user_from_session)
+        require 'sipity/services/current_agent_from_session_extractor' unless defined?(CurrentAgentFromSessionExtractor)
+        CurrentAgentFromSessionExtractor
       end
     end
   end
