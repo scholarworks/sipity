@@ -6,11 +6,9 @@ module Sipity
       let(:controller) { double(redirect_to: true, session: session, :current_user= => true) }
       let(:session) { {} }
       let(:token) { 'A Cogitate Token' }
-      let(:user) { double('Current User', user_signed_in?: false) }
+      let(:user) { double('Current User', user_signed_in?: false, agreed_to_application_terms_of_service?: false) }
 
       subject { described_class.new(context: controller) }
-
-      it { should delegate_method(:session).to(:context) }
 
       it 'will capture the cogitate_token in the session' do
         expect { subject.capture_cogitate_token(token: token) }.to change { session[:cogitate_token] }.from(nil).to(token)

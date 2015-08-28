@@ -6,6 +6,6 @@ module Sipity
   # @see https://github.com/egonSchiele/contracts.ruby
   module Interfaces
     include Contracts
-    AgentInterface = RespondTo[:email, :ids, :name, :user_signed_in?]
+    AgentInterface = RespondTo[:email, :ids, :name, :user_signed_in?, :agreed_to_application_terms_of_service?]
   end
 end
