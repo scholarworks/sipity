@@ -53,14 +53,14 @@ module Sipity
           context 'that has a persisted user' do
             let(:user) { User.create!(username: 'hello') }
             let(:agent) { Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: user.username) }
-            let(:object) { Sipity::Models::Agent.send(:new, agent) }
+            let(:object) { Sipity::Models::Agent::FromCogitate.new(cogitate_agent: agent) }
             it 'will find or create the associated Processing::Actor' do
               expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
             end
           end
           context 'that is NOT persisted' do
             let(:agent) { Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'somewhere') }
-            let(:object) { Sipity::Models::Agent.send(:new, agent) }
+            let(:object) { Sipity::Models::Agent::FromCogitate.new(cogitate_agent: agent) }
             it 'will raise an exception' do
               expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
             end
@@ -70,13 +70,14 @@ module Sipity
         context 'for a Models::Agent::DeviseBackedAgent' do
           context 'that has a persisted user' do
             let(:user) { User.create!(username: 'hello') }
-            let(:object) { Sipity::Models::Agent::DeviseBackedAgent.new.tap { |obj| obj.user_id = user.id } }
+            let(:object) { Sipity::Models::Agent::FromDevise.new(user: user) }
             it 'will find or create the associated Processing::Actor' do
               expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
             end
           end
           context 'that is NOT persisted' do
-            let(:object) { Sipity::Models::Agent::DeviseBackedAgent.new.tap { |obj| obj.user_id = 8_675_309 } }
+            let(:user) { User.new }
+            let(:object) { Sipity::Models::Agent::FromDevise.new(user: user) }
             it 'will raise an exception' do
               expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
             end
