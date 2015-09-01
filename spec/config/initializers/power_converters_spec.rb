@@ -59,9 +59,14 @@ RSpec.describe 'power converters' do
       expect(PowerConverter.convert(object, to: :agent)).to eq(object)
     end
 
+    it 'will convert a persisted User to an Agent' do
+      user = User.new(username: 'hello')
+      expect(PowerConverter.convert(user, to: :agent)).to be_a(Sipity::Models::Agent::FromDevise)
+    end
+
     it 'will not convert any old object' do
       object = double('An object')
-      expect { PowerConverter.convert(object, to: :agent)  }.
+      expect { PowerConverter.convert(object, to: :agent) }.
         to raise_error(PowerConverter::ConversionError)
     end
   end
