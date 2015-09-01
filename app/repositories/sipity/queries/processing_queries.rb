@@ -314,7 +314,7 @@ module Sipity
         action_scope = scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state(user: user, entity: entity)
 
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        actor = Conversions::ConvertToProcessingActor.call(user)
+        agent = PowerConverter.convert(user, to: :agent)
         registers = Models::Processing::EntityActionRegister.arel_table
         analogues = Models::Processing::StrategyActionAnalogue.arel_table
 
@@ -324,7 +324,7 @@ module Sipity
           registers, Arel::Nodes::OuterJoin
         ).on(
           registers[:entity_id].eq(entity.id).and(
-            registers[:on_behalf_of_actor_id].eq(actor.id)
+            registers[:on_behalf_of_identifier_id].in(agent.ids)
           ).and(
             registers[:strategy_action_id].eq(action_scope.arel_table[:id])
           )
@@ -520,10 +520,7 @@ module Sipity
         strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
         entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
 
-        user_actor_scope = scope_processing_actors_for(user: user)
-        user_actor_contraints = user_actor_scope.arel_table.project(
-          user_actor_scope.arel_table[:id]
-        ).where(user_actor_scope.arel.constraints)
+        agent = PowerConverter.convert(user, to: :agent)
 
         join_builder = lambda do |responsibility|
           entities.project(
@@ -541,7 +538,7 @@ module Sipity
 
         where_builder = lambda do |responsibility|
           returning = entities[:proxy_for_type].eq(proxy_for_type).and(
-            responsibility[:actor_id].in(user_actor_contraints)
+            responsibility[:identifier_id].in(agent.ids)
           )
           processing_state = filter[:processing_state]
           if processing_state.present?
@@ -583,6 +580,8 @@ module Sipity
       # @param roles [Sipity::Models::Role]
       # @param entity an object that can be converted into a Sipity::Models::Processing::Entity
       # @return [ActiveRecord::Relation<User>]
+      #
+      # @todo Replace with query against Cogitate
       def scope_users_for_entity_and_roles(entity:, roles:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
         role_ids = Array.wrap(roles).map { |role| Conversions::ConvertToRole.call(role).id }
@@ -669,15 +668,11 @@ module Sipity
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
-        actor_constraints = scope_processing_actors_for(user: user)
+        agent = PowerConverter.convert(user, to: :agent)
         strategy_role_subquery = strategy_role_table[:id].in(
           responsibility_table.project(responsibility_table[:strategy_role_id]).
           where(
-            responsibility_table[:actor_id].in(
-              actor_constraints.arel_table.project(
-                actor_constraints.arel_table[:id]
-              ).where(actor_constraints.arel.constraints)
-            )
+            responsibility_table[:identifier_id].in(agent.ids)
           )
         )
 
@@ -697,7 +692,7 @@ module Sipity
       # @return [ActiveRecord::Relation<Models::Processing::StrategyRole>]
       def scope_processing_strategy_roles_for_user_and_entity_specific(user:, entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        actor_scope = scope_processing_actors_for(user: user)
+        agent = PowerConverter.convert(user, to: :agent)
         specific_resp_table = Models::Processing::EntitySpecificResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
@@ -705,13 +700,7 @@ module Sipity
           strategy_role_table[:id].in(
             specific_resp_table.project(specific_resp_table[:strategy_role_id]).
             where(
-              specific_resp_table[:actor_id].in(
-                actor_scope.arel_table.project(
-                  actor_scope.arel_table[:id]
-                ).where(
-                  actor_scope.arel.constraints.reduce.and(specific_resp_table[:entity_id].eq(entity.id))
-                )
-              )
+              specific_resp_table[:identifier_id].in(agent.ids).and(specific_resp_table[:entity_id].eq(entity.id))
             )
           )
         )

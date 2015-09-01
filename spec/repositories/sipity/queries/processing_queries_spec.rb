@@ -43,11 +43,15 @@ module Sipity
       end
       let(:strategy_role) { Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy) }
       let(:user_strategy_responsibility) do
-        Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_processing_actor)
+        Models::Processing::StrategyResponsibility.find_or_create_by!(
+          strategy_role: strategy_role, actor: user_processing_actor,
+          identifier_id: PowerConverter.convert(user_processing_actor, to: :identifier_id)
+        )
       end
       let(:entity_specific_responsibility) do
         Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-          strategy_role: strategy_role, actor: user_processing_actor, entity: entity
+          strategy_role: strategy_role, actor: user_processing_actor, entity: entity,
+          identifier_id: PowerConverter.convert(user_processing_actor, to: :identifier_id)
         )
       end
       let(:action) { Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: 'complete') }
@@ -231,6 +235,7 @@ module Sipity
         let(:strategy) { Models::Processing::Strategy.first! }
         let(:originating_state) { Models::Processing::StrategyState.first! }
         let(:user) { User.create!(username: 'user') }
+        let(:commands) { CommandRepository.new }
         subject do
           test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
         end
@@ -238,11 +243,7 @@ module Sipity
         it "will resolve to an array of entities" do
           work = Models::Work.create!(id: 1)
           entity = Models::Processing::Entity.find_or_create_by!(proxy_for: work, strategy: strategy, strategy_state: originating_state)
-          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: user_actor, entity: entity
-          )
-          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
+          commands.grant_creating_user_permission_for!(entity: entity, user: user)
 
           expect(subject).to eq([work])
         end
