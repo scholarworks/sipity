@@ -42,13 +42,26 @@ RSpec.describe 'power converters' do
       }
     ].each do |scenario|
       it "will convert #{scenario.fetch(:to_convert).inspect} to '#{scenario.fetch(:expected)}'" do
-        expect(PowerConverter.convert(scenario.fetch(:to_convert), to: :access_url)).to match(scenario.fetch(:expected))
+        expect(PowerConverter.convert(scenario.fetch(:to_convert), to: :access_path)).to match(scenario.fetch(:expected))
       end
     end
 
     it 'will not convert an attachment' do
       object = Sipity::Models::Attachment.create!(file: File.new(__FILE__), work_id: 1, pid: 2, predicate_name: 'attachment')
       expect { PowerConverter.convert(object, to: :access_path) }.
+        to raise_error(PowerConverter::ConversionError)
+    end
+  end
+
+  context 'agent' do
+    it 'will convert an object that adhears to the AgentInterface' do
+      object = double(email: true, ids: [], name: 'hello', user_signed_in?: true, agreed_to_application_terms_of_service?: true)
+      expect(PowerConverter.convert(object, to: :agent)).to eq(object)
+    end
+
+    it 'will not convert any old object' do
+      object = double('An object')
+      expect { PowerConverter.convert(object, to: :agent)  }.
         to raise_error(PowerConverter::ConversionError)
     end
   end

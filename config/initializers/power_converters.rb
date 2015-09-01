@@ -1,4 +1,5 @@
 require 'power_converter'
+require 'cogitate/interfaces'
 require 'cogitate/client'
 require 'cogitate/models/identifier'
 require 'cogitate/models/agent'
@@ -21,6 +22,10 @@ PowerConverter.define_conversion_for(:access_url) do |input|
   else
     File.join(Figaro.env.url_host, PowerConverter.convert_to_access_path(input))
   end
+end
+
+PowerConverter.define_conversion_for(:agent) do |input|
+  input if Contract.valid?(input, Sipity::Interfaces::AgentInterface)
 end
 
 PowerConverter.define_conversion_for(:boolean) do |input|
