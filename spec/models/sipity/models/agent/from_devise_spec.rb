@@ -9,7 +9,7 @@ module Sipity
         its(:default_repository) { should respond_to(:agreed_to_application_terms_of_service?) }
         its(:email) { should eq(user.email) }
         its(:name) { should eq(user.to_s) }
-        its(:ids) { should eq([subject.identifier_id]) }
+        its(:ids) { should eq([subject.identifier_id, subject.send(:all_verified_netid_users_group_identifier_id)]) }
         its(:user_id) { should eq(user.id) }
         its(:id) { should eq(user.id) }
         its(:user_signed_in?) { should eq(true) }

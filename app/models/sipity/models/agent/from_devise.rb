@@ -28,7 +28,7 @@ module Sipity
         end
 
         def ids
-          [identifier_id]
+          [identifier_id, all_verified_netid_users_group_identifier_id]
         end
 
         def netid
@@ -40,6 +40,10 @@ module Sipity
         private
 
         attr_accessor :user, :repository
+
+        def all_verified_netid_users_group_identifier_id
+          Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: Models::Group::ALL_VERIFIED_NETID_USERS)
+        end
 
         def set_identifier_id!
           @identifier_id = Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: netid)
