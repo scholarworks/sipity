@@ -18,10 +18,10 @@ module Sipity
       context 'GET :create' do
         let(:ticket) { '123-456' }
         let(:cogitate_token) { 'The Token' }
-        before { allow(Cogitate::Client::TicketToTokenCoercer).to receive(:call).with(ticket: ticket).and_return(cogitate_token) }
+        before { allow(Cogitate::Client).to receive(:retrieve_token_from).with(ticket: ticket).and_return(cogitate_token) }
 
         it 'will retrieve an agent from a ticket' do
-          expect(Cogitate::Client::TicketToTokenCoercer).to receive(:call).with(ticket: ticket).and_return(cogitate_token)
+          expect(Cogitate::Client).to receive(:retrieve_token_from).with(ticket: ticket).and_return(cogitate_token)
           get :create, ticket: ticket
         end
 

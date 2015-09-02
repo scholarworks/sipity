@@ -12,7 +12,7 @@ module Sipity
       def create
         # TODO: Switch to the immediate following line
         # Sipity::Services::AuthenticationLayer.receive_cogitate_ticket(ticket: params.fetch(:ticket))
-        session[:cogitate_token] = Cogitate::Client::TicketToTokenCoercer.call(ticket: params.fetch(:ticket))
+        session[:cogitate_token] = Cogitate::Client.retrieve_token_from(ticket: params.fetch(:ticket))
         before_authentication_location = session.delete(:before_authentication_location)
         redirect_to(before_authentication_location || '/')
       end
