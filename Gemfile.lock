@@ -35,7 +35,7 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/cogitate.git
-  revision: de9c6a908116e939a8fdc9b35ffd0b4bc94ba8e1
+  revision: d740836153968cae5fa69b5028252bd6b32aa1bd
   specs:
     cogitate (0.0.1)
       contracts (~> 0.1)
