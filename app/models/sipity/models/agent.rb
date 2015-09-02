@@ -24,8 +24,7 @@ module Sipity
       end
 
       def self.default_token_decoder
-        require 'cogitate/client/token_to_object_coercer' unless defined?(Cogitate::Client::TokenToObjectCoercer)
-        Cogitate::Client::TokenToObjectCoercer
+        Cogitate::Client.method(:extract_agent_from)
       end
       private_class_method :default_token_decoder
     end
