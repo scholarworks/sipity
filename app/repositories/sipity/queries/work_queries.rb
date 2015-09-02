@@ -10,8 +10,8 @@ module Sipity
         Models::Work.includes(:processing_entity, work_submission: [:work_area, :submission_window]).find(id)
       end
 
-      def build_dashboard_view(user:, filter: {}, repository: self)
-        Decorators::DashboardView.new(repository: repository, user: user, filter: filter)
+      def build_dashboard_view(user:, filter: {}, repository: self, page:)
+        Decorators::DashboardView.new(repository: repository, user: user, filter: filter, page: page)
       end
 
       # TODO: Rename this method; Keeping it separate for now.
@@ -27,10 +27,12 @@ module Sipity
       end
 
       # @todo: Is there a Parameter Object that makes more sense?
-      def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work)
-        repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+      def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work, page: nil)
+        scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
           user: user, proxy_for_type: proxy_for_type, filter: { processing_state: processing_state }
         )
+        return scope unless page
+        scope.page(page).per(15)
       end
 
       def find_works_via_search(criteria:, repository: self)

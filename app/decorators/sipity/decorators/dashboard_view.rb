@@ -3,13 +3,14 @@ module Sipity
     # Responsible for collecting the logic related to rendering a user's
     # dashboard.
     class DashboardView
-      def initialize(repository: default_repository, user:, filter: {})
+      def initialize(repository: default_repository, user:, filter: {}, page:)
         self.repository = repository
         self.filter = filter
         self.user = user
+        self.page = page || 1
       end
 
-      attr_accessor :repository, :user, :filter
+      attr_accessor :repository, :user, :filter, :page
       private :repository=, :user=, :filter=
 
       def search_path
@@ -23,10 +24,12 @@ module Sipity
         Models::Processing::StrategyState.all.pluck(:name).uniq.sort
       end
 
+      def works_scope
+        repository.find_works_for(user: user, processing_state: processing_state, page: page)
+      end
+
       def works(decorator: WorkDecorator)
-        repository.find_works_for(user: user, processing_state: processing_state).map do |work|
-          decorator.new(work)
-        end
+        works_scope.map { |work| decorator.new(work) }
       end
 
       def processing_state

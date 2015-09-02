@@ -8,7 +8,7 @@ module Sipity
         before { controller.runner = runner }
         let(:runner) do
           Hesburgh::Lib::MockRunner.new(
-            yields: view_object, callback_name: callback_name, run_with: { processing_state: 'hello' }, context: controller
+            yields: view_object, callback_name: callback_name, run_with: { processing_state: 'hello', page: nil }, context: controller
           )
         end
         let(:view_object) { double }

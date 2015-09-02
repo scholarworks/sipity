@@ -8,7 +8,7 @@ module Sipity
       self.runner_container = Sipity::Runners::DashboardRunners
 
       def index
-        _status, @view = run(processing_state: processing_state)
+        _status, @view = run(processing_state: processing_state, page: params[:page])
         respond_with(@view)
       end
       attr_reader :view

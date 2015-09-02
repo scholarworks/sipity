@@ -7,8 +7,8 @@ module Sipity
         self.authentication_layer = :default
         self.authorization_layer = :none
 
-        def run(processing_state: nil)
-          dashboard_view = repository.build_dashboard_view(user: current_user, filter: { processing_state: processing_state })
+        def run(processing_state: nil, page: 1)
+          dashboard_view = repository.build_dashboard_view(user: current_user, filter: { processing_state: processing_state }, page: page)
           callback(:success, dashboard_view)
         end
       end
