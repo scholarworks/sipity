@@ -24,7 +24,9 @@ module Sipity
 
         it 'issues the :success callback' do
           view_object = double
-          expect(context.repository).to receive(:build_dashboard_view).with(user: user, filter: { processing_state: :hello_dolly }).
+          expect(context.repository).
+            to receive(:build_dashboard_view).
+            with(user: user, filter: { processing_state: :hello_dolly }, page: 1).
             and_return(view_object)
           response = subject.run(processing_state: :hello_dolly)
           expect(context.handler).to have_received(:invoked).with("SUCCESS", view_object)

@@ -30,7 +30,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def build_dashboard_view(user:, filter: {}, repository: self)
+    def build_dashboard_view(user:, filter: {}, repository: self, page:)
     end
 
     # @see ./app/repositories/sipity/queries/submission_window_queries.rb
@@ -90,7 +90,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work)
+    def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work, page: nil)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

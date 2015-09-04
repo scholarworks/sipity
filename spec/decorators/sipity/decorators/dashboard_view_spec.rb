@@ -4,7 +4,7 @@ module Sipity
       let(:repository) { double('Repository') }
       let(:filter) { { processing_state: 'chicken' } }
       let(:user) { double('User') }
-      subject { described_class.new(repository: repository, filter: filter, user: user) }
+      subject { described_class.new(repository: repository, filter: filter, user: user, page: 1) }
       it 'will have a #search_path' do
         expect(subject.search_path).to be_a(String)
       end
@@ -17,7 +17,7 @@ module Sipity
         expect(repository).to receive(:find_works_for).and_return(works)
         allow(decorator).to receive(:new).with(works[0]).and_return(works[0])
         allow(decorator).to receive(:new).with(works[1]).and_return(works[1])
-        expect(subject.works(decorator: decorator)).to eq(works)
+        expect(subject.works).to eq(works)
       end
 
       its(:default_repository) { should respond_to(:find_works_for) }

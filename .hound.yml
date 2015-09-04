@@ -154,6 +154,7 @@ ParameterLists:
   Max: 4
   Exclude:
   - app/data_generators/sipity/data_generators/permission_generator.rb
+  - app/repositories/sipity/queries/work_queries.rb
 
 PercentLiteralDelimiters:
   Description: 'Use `%`-literal delimiters consistently'
