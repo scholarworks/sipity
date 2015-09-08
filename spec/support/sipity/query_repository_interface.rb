@@ -114,6 +114,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def identifier_ids_associated_with_entity_and_role(entity:, role:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 

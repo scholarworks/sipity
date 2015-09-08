@@ -189,6 +189,10 @@ module Sipity
     def handle_transient_access_rights_answer(entity:, answer:)
     end
 
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def identifier_ids_associated_with_entity_and_role(entity:, role:)
+    end
+
     # @see ./app/repositories/sipity/commands/event_log_commands.rb
     def log_event!(entity:, requested_by:, event_name:)
     end

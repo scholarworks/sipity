@@ -63,6 +63,44 @@ module Sipity
 
       # @api public
       #
+      # Identifier associated with the given :entity and how they are associated with the given enitity.
+      #
+      # @param entity [Object] that can be converted into a Sipity::Models::Processing::Entity
+      # @param role [Object] that can be converted into a Sipity::Models::Role
+      # @return [Array<#identifier_id, #permission_grant_level>]
+      def identifier_ids_associated_with_entity_and_role(entity:, role:)
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
+        role = Conversions::ConvertToRole.call(role)
+        strategy_roles = Models::Processing::StrategyRole.arel_table
+        strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+        entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+
+        entity_sql = entity_responsibilities.project(
+          entity_responsibilities[:identifier_id],
+          Arel.sql("'#{Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP}'").as('permission_grant_level')
+        ).join(strategy_roles).on(
+          strategy_roles[:id].eq(entity_responsibilities[:strategy_role_id])
+        ).where(
+          entity_responsibilities[:entity_id].eq(entity.id).and(strategy_roles[:role_id].eq(role.id))
+        )
+
+        strategy_sql = strategy_responsibilities.project(
+          strategy_responsibilities[:identifier_id],
+          Arel.sql("'#{Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP}'").as('permission_grant_level')
+        ).join(strategy_roles).on(
+          strategy_roles[:id].eq(strategy_responsibilities[:strategy_role_id])
+        ).where(
+          strategy_roles[:strategy_id].eq(entity.strategy_id).and(
+            strategy_roles[:role_id].eq(role.id)
+          )
+        )
+
+        Models::Processing::EntitySpecificResponsibility.find_by_sql(entity_sql) +
+          Models::Processing::StrategyResponsibility.find_by_sql(strategy_sql)
+      end
+
+      # @api public
+      #
       # Actors associated with the given :entity and how they are associated
       # with the given.
       #
@@ -273,6 +311,7 @@ module Sipity
           )
         )
       end
+      deprecate :collaborators_that_have_taken_the_action_on_the_entity
 
       # @api public
       #
@@ -296,7 +335,6 @@ module Sipity
           )
         )
       end
-      deprecate :collaborators_that_have_taken_the_action_on_the_entity
 
       # @api public
       #
