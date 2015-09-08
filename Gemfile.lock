@@ -333,7 +333,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.8.0)
     multi_json (1.11.2)
-    mysql2 (0.4.0)
+    mysql2 (0.3.20)
     nenv (0.2.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -610,7 +610,7 @@ DEPENDENCIES
   locabulary!
   meta_request
   mime-types (~> 2.6.1)
-  mysql2
+  mysql2 (~> 0.3.13)
   noids_client!
   poltergeist
   power_converter
