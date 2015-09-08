@@ -126,6 +126,7 @@ module Sipity
         # name of the model that I'm using.
         Models::Processing::Actor.from(actors.create_table_alias(actors_select_manager, actors.table_name)).all
       end
+      deprecate :scope_actors_associated_with_entity_and_role
 
       # @api public
       #
@@ -194,6 +195,7 @@ module Sipity
           )
         )
       end
+      deprecate :users_that_have_taken_the_action_on_the_entity
 
       def action_registers_subquery_builder(poly_type:, entity:, actions:)
         actors = Models::Processing::Actor.arel_table
@@ -212,6 +214,7 @@ module Sipity
         )
       end
       private :action_registers_subquery_builder
+      deprecate :action_registers_subquery_builder
 
       # @api private
       def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
@@ -222,6 +225,7 @@ module Sipity
         )
       end
       private :non_user_collaborators_that_have_taken_the_action_on_the_entity
+      deprecate :non_user_collaborators_that_have_taken_the_action_on_the_entity
 
       # @api public
       #
@@ -292,6 +296,7 @@ module Sipity
           )
         )
       end
+      deprecate :collaborators_that_have_taken_the_action_on_the_entity
 
       # @api public
       #
@@ -597,10 +602,12 @@ module Sipity
           or(user_table[:id].in(sub_query_for_user_via_group))
         )
       end
+      deprecate :scope_users_for_entity_and_roles
 
       def user_emails_for_entity_and_roles(entity:, roles:)
         scope_users_for_entity_and_roles(entity: entity, roles: roles).pluck(:email)
       end
+      deprecate :user_emails_for_entity_and_roles
 
       # @api public
       #
