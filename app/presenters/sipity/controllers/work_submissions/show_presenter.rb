@@ -27,6 +27,7 @@ module Sipity
           object = action_set_for(name: 'enrichment_actions', identifier: identifier)
           render partial: "/enrichment_action_set", object: object if object.present?
         end
+
         # NOTICE THE DUPLICATION ABOVE AND BELOW
         def render_state_advancing_action_set
           object = action_set_for(name: 'state_advancing_actions')
