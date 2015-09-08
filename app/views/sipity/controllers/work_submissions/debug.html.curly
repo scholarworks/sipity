@@ -15,23 +15,21 @@
           <dl>
             <dt>Name</dt>
             <dd>{{name}} (ID={{role_id}})</dd>
-            <dt>Actors</dt>
+            <dt>Identifiers</dt>
             <dd>
               <ul>
-                {{*debug_actors}}
+                {{*debug_identifiers}}
                   <li>
                     <dl>
-                      <dt>Actor ID</dt>
-                      <dd>{{actor_id}}</dd>
-                      <dt>Name</dt>
-                      <dd>{{name}}</dd>
-                      <dt>Proxy For</dt>
-                      <dd>{{proxy_for_type}} (ID={{proxy_for_id}})</dd>
-                      <dt>Actor Entity Relation</dt>
-                      <dd>{{actor_processing_relationship}}<dd>
+                      <dt>{{strategy}}</dt>
+                      <dd>{{identifying_value}}</dd>
+                      <dt>Permission Granted via</dt>
+                      <dd>{{permission_grant_level}}<dd>
+                      <dt>Encoded Identifier</dt>
+                      <dd>{{identifier_id}}</dd>
                     </dl>
                   </li>
-                {{/debug_actors}}
+                {{/debug_identifiers}}
               </ul>
             </dd>
           </dl>
