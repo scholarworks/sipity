@@ -23,20 +23,6 @@ module Sipity
         expect { described_class.new(context, debug_role: double) }.to raise_error(Exceptions::InterfaceExpectationError)
       end
 
-      context '#debug_actors' do
-        let(:actor) { double }
-        it 'will delegate to the repository' do
-          expect(repository).to receive(:scope_actors_associated_with_entity_and_role).
-            with(entity: processing_entity, role: role).and_call_original
-          subject.debug_actors
-        end
-
-        it 'will be an enumerable' do
-          allow(repository).to receive(:scope_actors_associated_with_entity_and_role).and_return(actor)
-          expect(subject.debug_actors).to eq([actor])
-        end
-      end
-
       context '#debug_identifiers' do
         let(:identifier) { double }
         it 'will delegate to the repository' do

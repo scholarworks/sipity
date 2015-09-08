@@ -15,10 +15,6 @@ module Sipity
         guard!
       end
 
-      def debug_actors
-        Array.wrap(repository.scope_actors_associated_with_entity_and_role(entity: to_processing_entity, role: debug_role))
-      end
-
       def debug_identifiers
         Array.wrap(repository.identifier_ids_associated_with_entity_and_role(entity: to_processing_entity, role: debug_role))
       end

@@ -102,24 +102,6 @@ module Sipity
         end
       end
 
-      context '#scope_actors_associated_with_entity_and_role' do
-        subject { test_repository.scope_actors_associated_with_entity_and_role(role: role, entity: entity) }
-        it 'will return an array' do
-          user_processing_actor
-          group_processing_actor
-          user_strategy_responsibility
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: group_processing_actor, entity: entity
-          )
-          returned_value = subject
-          expect(returned_value.count).to eq(2)
-          expect(returned_value.first.actor_processing_relationship).
-            to eq(Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
-          expect(returned_value.last.actor_processing_relationship).
-            to eq(Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
-        end
-      end
-
       context '#scope_processing_strategy_roles_for_user_and_entity' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity) }
         it "will include the strategy specific roles for the given user" do
