@@ -398,40 +398,6 @@ module Sipity
 
       # @api public
       #
-      # An ActiveRecord::Relation scope that meets the following criteria:
-      #
-      # * All of the Processing Actors directly associated with the given :user
-      # * All of the Processing Actors indirectly associated with the given
-      #   :user through the user's group membership.
-      #
-      # @param user [User]
-      # @return [ActiveRecord::Relation<Models::Processing::Actor>]
-      def scope_processing_actors_for(user:)
-        return Models::Processing::Actor.where('1 = 0') unless user.present?
-
-        memb_table = Models::GroupMembership.arel_table
-        actor_table = Models::Processing::Actor.arel_table
-
-        group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
-        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(user)
-
-        user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).and(actor_table[:proxy_for_id].eq(user.id))
-
-        group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).and(
-          actor_table[:proxy_for_id].in(
-            memb_table.project(memb_table[:group_id]).where(
-              memb_table[:user_id].eq(user.id)
-            )
-          )
-        )
-
-        # Because AND takes precedence over OR, this query works.
-        # WHERE (a AND b OR c AND d) == WHERE (a AND b) OR (c AND d)
-        Models::Processing::Actor.where(user_constraints.or(group_constraints))
-      end
-
-      # @api public
-      #
       # This method crosses the boundary out of the processing subsystem to
       # return an ActiveRecord::Relation scope of the objects that are proxied
       # by the processing system. The returned scope will returng objects that

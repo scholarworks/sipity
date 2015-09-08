@@ -146,10 +146,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_processing_actors_for(user:)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_processing_entities_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {})
     end
 

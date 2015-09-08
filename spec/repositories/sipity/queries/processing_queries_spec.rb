@@ -123,24 +123,6 @@ module Sipity
         end
       end
 
-      context '#scope_processing_actors_for' do
-        subject { test_repository.scope_processing_actors_for(user: user) }
-        it 'will return an empty enumerable if the user is nil' do
-          user_processing_actor
-          group_processing_actor
-          Models::GroupMembership.create(user_id: user.id, group_id: group.id)
-          subject = test_repository.scope_processing_actors_for(user: nil)
-          expect(subject).to eq([])
-          expect(subject).to be_a(ActiveRecord::Relation)
-        end
-        it 'will return an enumerable of both user and group' do
-          user_processing_actor
-          group_processing_actor
-          Models::GroupMembership.create(user_id: user.id, group_id: group.id)
-          expect(subject).to eq([user_processing_actor, group_processing_actor])
-        end
-      end
-
       context '#scope_processing_entities_for_the_user_and_proxy_for_type' do
         before do
           Sipity::SpecSupport.load_database_seeds!(
