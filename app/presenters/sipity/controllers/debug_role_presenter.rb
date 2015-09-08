@@ -19,6 +19,10 @@ module Sipity
         Array.wrap(repository.scope_actors_associated_with_entity_and_role(entity: to_processing_entity, role: debug_role))
       end
 
+      def debug_identifiers
+        Array.wrap(repository.identifier_ids_associated_with_entity_and_role(entity: to_processing_entity, role: debug_role))
+      end
+
       private
 
       attr_reader :debug_role

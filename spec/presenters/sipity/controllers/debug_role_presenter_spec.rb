@@ -36,6 +36,20 @@ module Sipity
           expect(subject.debug_actors).to eq([actor])
         end
       end
+
+      context '#debug_identifiers' do
+        let(:identifier) { double }
+        it 'will delegate to the repository' do
+          expect(repository).to receive(:identifier_ids_associated_with_entity_and_role).
+            with(entity: processing_entity, role: role).and_call_original
+          subject.debug_identifiers
+        end
+
+        it 'will be an enumerable' do
+          allow(repository).to receive(:identifier_ids_associated_with_entity_and_role).and_return(identifier)
+          expect(subject.debug_identifiers).to eq([identifier])
+        end
+      end
     end
   end
 end
