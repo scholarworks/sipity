@@ -23,7 +23,7 @@ module Sipity
 
         def aggregated_data
           role_and_identifier_ids = find_all_roles_and_associated_identifiers
-          agents = agents_finder.call(identifier_ids: role_and_identifier_ids.map(&:identifier_id))
+          agents = agents_finder.call(identifiers: role_and_identifier_ids.map(&:identifier_id))
           aggregator.call(role_and_identifier_ids: role_and_identifier_ids, agents: agents)
         end
 

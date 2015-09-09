@@ -28,7 +28,7 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity do
     it 'will request the agents for the given identifier_ids' do
       subject.each { |*| }
       expect(agents_finder).to have_received(:call).with(
-        identifier_ids: [role_identifier_1.identifier_id, role_identifier_2.identifier_id]
+        identifiers: [role_identifier_1.identifier_id, role_identifier_2.identifier_id]
       )
     end
 
