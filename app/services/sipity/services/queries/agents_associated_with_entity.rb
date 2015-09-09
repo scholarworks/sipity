@@ -43,7 +43,8 @@ module Sipity
 
         attr_accessor :agents_finder
         def default_agents_finder
-          AgentsFinder.method(:find)
+          require 'cogitate/client' unless defined?(Cogiate::Client)
+          Cogitate::Client.method(:request)
         end
 
         attr_accessor :aggregator
