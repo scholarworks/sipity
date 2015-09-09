@@ -48,16 +48,16 @@ module Sipity
           Aggregator.method(:aggregate)
         end
 
-        # @todo This looks like ProcessingQuery#identifier_ids_associated_with_entity_and_role
+        # @todo Extract to a proper first class finder
         module RoleIdentifierFinder
-          def self.all_for(entity:)
+          def self.all_for(entity:, role: nil)
             entity = Conversions::ConvertToProcessingEntity.call(entity)
             strategy_roles = Models::Processing::StrategyRole.arel_table
             entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
             strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
 
             entity_specific_select_manager = strategy_role_projection_for(
-              entity: entity, arel_table: entity_responsibilities,
+              entity: entity, arel_table: entity_responsibilities, role: role,
               permission_grant_level: Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
             ).join(entity_responsibilities).on(
               entity_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
@@ -66,7 +66,7 @@ module Sipity
             )
 
             strategy_specific_select_manager = strategy_role_projection_for(
-              entity: entity, arel_table: strategy_responsibilities,
+              entity: entity, arel_table: strategy_responsibilities, role: role,
               permission_grant_level: Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
             ).join(strategy_responsibilities).on(
               strategy_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
@@ -81,11 +81,11 @@ module Sipity
             ).all
           end
 
-          def self.strategy_role_projection_for(entity:, arel_table:, permission_grant_level:)
+          def self.strategy_role_projection_for(entity:, arel_table:, permission_grant_level:, role: nil)
             strategy_roles = Models::Processing::StrategyRole.arel_table
             roles = Models::Role.arel_table
 
-            strategy_roles.project(
+            select_manager = strategy_roles.project(
               strategy_roles[:role_id].as('role_id'),
               roles[:name].as('role_name'),
               arel_table[:identifier_id],
@@ -94,6 +94,9 @@ module Sipity
             ).join(roles).on(
               strategy_roles[:role_id].eq(roles[:id])
             )
+            return select_manager if role.nil?
+            role = Conversions::ConvertToRole.call(role)
+            select_manager.where(roles[:id].eq(role.id))
           end
           private_class_method :strategy_role_projection_for
         end
