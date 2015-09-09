@@ -48,26 +48,67 @@ module Sipity
           Aggregator.method(:aggregate)
         end
 
-        # :nodoc:
+        # @todo This looks like ProcessingQuery#identifier_ids_associated_with_entity_and_role
         module RoleIdentifierFinder
-          def self.all_for(*)
+          def self.all_for(entity:)
+            entity = Conversions::ConvertToProcessingEntity.call(entity)
+            strategy_roles = Models::Processing::StrategyRole.arel_table
+            entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
+            strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
+
+            entity_specific_select_manager = strategy_role_projection_for(
+              entity: entity, arel_table: entity_responsibilities,
+              permission_grant_level: Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
+            ).join(entity_responsibilities).on(
+              entity_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
+            ).where(
+              entity_responsibilities[:entity_id].eq(entity.id)
+            )
+
+            strategy_specific_select_manager = strategy_role_projection_for(
+              entity: entity, arel_table: strategy_responsibilities,
+              permission_grant_level: Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
+            ).join(strategy_responsibilities).on(
+              strategy_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
+            ).where(
+              strategy_roles[:strategy_id].eq(entity.strategy_id)
+            )
+
+            strategy_roles_select_manager = entity_specific_select_manager.union(strategy_specific_select_manager)
+
+            Models::Processing::StrategyRole.from(
+              strategy_roles.create_table_alias(strategy_roles_select_manager, strategy_roles.table_name)
+            ).all
           end
+
+          def self.strategy_role_projection_for(entity:, arel_table:, permission_grant_level:)
+            strategy_roles = Models::Processing::StrategyRole.arel_table
+            roles = Models::Role.arel_table
+
+            strategy_roles.project(
+              strategy_roles[:role_id].as('role_id'),
+              roles[:name].as('role_name'),
+              arel_table[:identifier_id],
+              Arel.sql(entity.id.to_s).as("entity_id"),
+              Arel.sql("'#{permission_grant_level}'").as('permission_grant_level')
+            ).join(roles).on(
+              strategy_roles[:role_id].eq(roles[:id])
+            )
+          end
+          private_class_method :strategy_role_projection_for
         end
-        private_constant :RoleIdentifierFinder
 
         # :nodoc:
         module AgentsFinder
           def self.find(*)
           end
         end
-        private_constant :AgentsFinder
 
         # :nodoc:
         module Aggregator
           def self.aggregate(*)
           end
         end
-        private_constant :Aggregator
       end
     end
   end
