@@ -15,7 +15,7 @@ module Sipity
       end
 
       def creators
-        @creators ||= repository.scope_users_for_entity_and_roles(entity: object, roles: Models::Role::CREATING_USER)
+        @creators ||= repository.scope_creating_users_for_entity(entity: object)
       end
 
       def creator_names

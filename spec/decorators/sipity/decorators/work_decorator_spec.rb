@@ -17,11 +17,11 @@ module Sipity
       context '#creators and #creator_names' do
         let(:creators) { [double(name: 'Hello')] }
         it 'will retrieve them from the underlying repository' do
-          expect(repository).to receive(:scope_users_for_entity_and_roles).and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).and_return(creators)
           expect(subject.creators).to eq(creators)
         end
         it 'will retrieve them from the underlying repository' do
-          expect(repository).to receive(:scope_users_for_entity_and_roles).and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).and_return(creators)
           expect(subject.creator_names).to eq(['Hello'])
         end
       end

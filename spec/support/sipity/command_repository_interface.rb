@@ -226,6 +226,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def scope_creating_users_for_entity(entity:, role: Models::Role::CREATING_USER)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def scope_permitted_entity_strategy_actions_for_current_state(user:, entity:)
     end
 

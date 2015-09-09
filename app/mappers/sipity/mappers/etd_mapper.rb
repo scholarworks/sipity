@@ -114,7 +114,7 @@ module Sipity
       end
 
       def creators
-        @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)
+        @creators ||= repository.scope_creating_users_for_entity(entity: work).map(&:username)
       end
 
       def gather_work_metadata(json)

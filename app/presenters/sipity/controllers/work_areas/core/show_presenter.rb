@@ -132,7 +132,7 @@ module Sipity
             attr_reader :work
             def creators
               # The repository comes from the underlying context; Which is likely a controller.
-              @creators ||= Array.wrap(repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER))
+              @creators ||= Array.wrap(repository.scope_creating_users_for_entity(entity: work))
             end
           end
         end

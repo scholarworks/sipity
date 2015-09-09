@@ -33,8 +33,7 @@ module Sipity
         subject { described_class.new(work, repository: repository) }
 
         before do
-          allow(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          allow(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           allow(repository).to receive(:access_rights_for_accessible_objects_of).
             with(work: work).and_return(accessible_objects)
           allow(repository).to receive(:work_collaborators_for).

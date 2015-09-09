@@ -37,8 +37,7 @@ module Sipity
       end
 
       it 'verify if maps additional attributes, right and pid' do
-        expect(repository).to receive(:scope_users_for_entity_and_roles).
-          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
         allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
@@ -53,8 +52,7 @@ module Sipity
       it 'verify if dates are mapped to nil if not available in database' do
         expect(file).to receive(:created_at).and_return(nil)
         expect(file).to receive(:updated_at).and_return(nil)
-        expect(repository).to receive(:scope_users_for_entity_and_roles).
-          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
         expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
@@ -64,8 +62,7 @@ module Sipity
       end
 
       it 'verify rels-ext attributes' do
-        expect(repository).to receive(:scope_users_for_entity_and_roles).
-          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
         allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
@@ -77,8 +74,7 @@ module Sipity
       end
 
       it 'verify content datastream attributes' do
-        expect(repository).to receive(:scope_users_for_entity_and_roles).
-          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
         allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
@@ -91,8 +87,7 @@ module Sipity
       context 'will have be able to map correct access_right' do
         it 'have public access rights' do
           access_right = 'open_access'
-          expect(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
@@ -100,8 +95,7 @@ module Sipity
         end
 
         it 'have work access_right when file have no access rights ' do
-          expect(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
           expect(repository).to receive(:work_access_right_code).with(work: work).and_return('open_access')
           expect(work).to receive(:id).and_return('a_work_id')
@@ -110,8 +104,7 @@ module Sipity
         end
 
         it 'will use attachment access_right when available' do
-          expect(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return("restricted_access")
           allow(repository).to receive(:work_access_right_code).and_return("open_access")
           expect(work).to receive(:id).and_return('a_work_id')
@@ -125,8 +118,7 @@ module Sipity
             access_right = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
                                                    release_date: Time.zone.today, transition_date: embargo_date)
             expect(work).to receive(:id).and_return('a_id')
-            expect(repository).to receive(:scope_users_for_entity_and_roles).
-              with(entity: work, roles: 'creating_user').and_return(creators)
+            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             allow(repository).to receive(:attachment_access_right_code).with(attachment: file).
               and_return(access_right.access_right_code)
             expect(file).to receive(:access_right).and_return(access_right)
@@ -139,8 +131,7 @@ module Sipity
             access_right = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
                                                    release_date: Time.zone.today, transition_date: embargo_date)
             expect(work).to receive(:id).and_return('a_id')
-            expect(repository).to receive(:scope_users_for_entity_and_roles).
-              with(entity: work, roles: 'creating_user').and_return(creators)
+            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
             expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right.access_right_code)
             expect(work).to receive(:access_right).and_return(access_right)
@@ -153,8 +144,7 @@ module Sipity
             allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
             expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
             expect(subject).to receive(:embargo_date).and_return([embargo_date])
-            expect(repository).to receive(:scope_users_for_entity_and_roles).
-              with(entity: work, roles: 'creating_user').and_return(creators)
+            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             expect(work).to receive(:id).and_return('a_id')
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => [embargo_date], "read-groups" => ["public"],

@@ -33,8 +33,7 @@ module Sipity
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'defense_date').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return(['a program_name'])
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
-        expect(repository).to receive(:scope_users_for_entity_and_roles).
-          with(entity: work, roles: 'creating_user').and_return(creators)
+        expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
         expect(work).to receive(:id).and_return('a_id')
         expect(work).to receive(:title).and_return(title)
         expect(work).to receive(:collaborators).and_return(collaborators)
@@ -52,8 +51,7 @@ module Sipity
         it 'have public access rights' do
           access_right = 'open_access'
           expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
-          expect(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
           expect(work).to receive(:title).and_return(title)
           expect(work).to receive(:collaborators).and_return(collaborators)
@@ -64,8 +62,7 @@ module Sipity
         it 'have restricted access rights' do
           access_right = 'restricted_access'
           expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
-          expect(repository).to receive(:scope_users_for_entity_and_roles).
-            with(entity: work, roles: 'creating_user').and_return(creators)
+          expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           expect(work).to receive(:id).and_return('a_id')
           expect(work).to receive(:title).and_return(title)
           expect(work).to receive(:collaborators).and_return(collaborators)
@@ -80,8 +77,7 @@ module Sipity
                                                    release_date: Time.zone.today, transition_date: embargo_date)
             expect(repository).to receive(:work_access_right_code).with(work: work).
               and_return(access_right.access_right_code)
-            expect(repository).to receive(:scope_users_for_entity_and_roles).
-              with(entity: work, roles: 'creating_user').and_return(creators)
+            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             expect(work).to receive(:access_right).and_return(access_right)
             expect(work).to receive(:id).and_return('a_id')
             expect(work).to receive(:title).and_return(title)
@@ -95,8 +91,7 @@ module Sipity
             access_right = 'embargo_then_open_access'
             expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
             expect(subject).to receive(:embargo_date).and_return(embargo_date)
-            expect(repository).to receive(:scope_users_for_entity_and_roles).
-              with(entity: work, roles: 'creating_user').and_return(creators)
+            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             expect(work).to receive(:id).and_return('a_id')
             expect(work).to receive(:title).and_return(title)
             expect(work).to receive(:collaborators).and_return(collaborators)
