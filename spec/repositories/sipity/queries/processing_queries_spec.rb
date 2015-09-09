@@ -251,6 +251,14 @@ module Sipity
         end
       end
 
+      context '#scope_creating_users_for_entity' do
+        it "will leverage scope_users_for_entity_and_roles" do
+          entity = double("Entity")
+          expect(test_repository).to receive(:scope_users_for_entity_and_roles).with(entity: entity, roles: Models::Role::CREATING_USER)
+          test_repository.scope_creating_users_for_entity(entity: entity)
+        end
+      end
+
       context "#user_emails_for_entity_and_roles" do
         subject { test_repository.user_emails_for_entity_and_roles(entity: entity, roles: role) }
         it 'will be an array of emails' do
