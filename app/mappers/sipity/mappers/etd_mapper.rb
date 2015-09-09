@@ -146,6 +146,7 @@ module Sipity
 
       def decode_access_right
         # determine and add Public, Private, Embargo and ND only rights
+        # NOTE: We will also need to give rights to the ETD Reviewers Group
         decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
         case access_right
         when Models::AccessRight::OPEN_ACCESS
