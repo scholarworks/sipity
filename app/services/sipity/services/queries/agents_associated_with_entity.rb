@@ -1,8 +1,11 @@
 module Sipity
   module Services
     module Queries
-      # Responsible for exposing the a given entity's agent permissions via aggregation of
+      # Responsible for exposing the given entity's agent permissions via aggregation of
       # the local role and expanded identifier_id.
+      #
+      # @todo I need to be able to get the identifiers associated with the given role
+      # @see Sipity::Queries::ProcessingQuery#scope_users_for_entity_and_roles
       class AgentsAssociatedWithEntity
         def initialize(entity:, **keywords)
           self.entity = entity
