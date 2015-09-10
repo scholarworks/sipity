@@ -107,7 +107,32 @@ module Sipity
 
         # :nodoc:
         module Aggregator
-          def self.aggregate(*)
+          # A model to contain the relevant amalgam of localized Strategy Role information and remote identifying information for
+          # the given Sipity identifier.
+          class StrategyRoleAgentAggregate
+            def initialize(role_and_identifier_id:, **_)
+              self.role_and_identifier_id = role_and_identifier_id
+            end
+
+            [:role_name, :role_id, :identifier_id, :entity_id, :permission_grant_level].each do |method_name|
+              define_method(method_name) do
+                role_and_identifier_id.fetch(method_name.to_s)
+              end
+            end
+
+            private
+
+            attr_reader :role_and_identifier_id
+
+            def role_and_identifier_id=(input)
+              @role_and_identifier_id = input.as_json
+            end
+          end
+
+          def self.aggregate(role_and_identifier_ids:, aggregate_builder: StrategyRoleAgentAggregate.method(:new), **_)
+            role_and_identifier_ids.map do |role_and_identifier_id|
+              aggregate_builder.call(role_and_identifier_id: role_and_identifier_id, identifiers: [])
+            end
           end
         end
       end

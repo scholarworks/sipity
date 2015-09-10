@@ -92,5 +92,31 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::RoleIdenti
         }
       ])
     end
+
+    it 'will allow fetch of attributes' do
+      results = subject.all_for(entity: entity, role: 'creating_user')
+      expect(results.to_a.first.as_json.fetch('role_name')).to eq('creating_user')
+    end
+  end
+end
+
+RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::Aggregator do
+  subject { described_class }
+  let(:role_and_identifier_ids) do
+    [{
+      "id" => nil, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "1234", "entity_id" => 1,
+      "permission_grant_level" => "entity_level"
+    }, {
+      "id" => nil, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "5678", "entity_id" => 1,
+      "permission_grant_level" => "strategy_level"
+    }]
+  end
+  let(:agents) { [] }
+  context '.aggregate' do
+    subject { described_class.aggregate(role_and_identifier_ids: role_and_identifier_ids, agents: agents) }
+    it { should be_a(Enumerable) }
+    it 'will aggregate the role names' do
+      expect(subject.map(&:role_name).sort).to eq(['creating_user', 'etd_reviewer'])
+    end
   end
 end
