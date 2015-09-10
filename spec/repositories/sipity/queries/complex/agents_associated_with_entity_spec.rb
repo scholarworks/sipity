@@ -5,9 +5,11 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
   let(:role_identifier_2) { double('Role/ID', identifier_id: '456') }
   let(:agent_1) { double('Agent', identifier_id: '123') }
   let(:agent_2) { double('Agent', identifier_id: '456') }
+  let(:aggregate_1) { double(role_name: 'creating_user') }
+  let(:aggregate_2) { double(role_name: 'etd_reviewer') }
   let(:role_and_identifier_ids_finder) { double('Finder', call: [role_identifier_1, role_identifier_2]) }
   let(:agents_finder) { double('AgentsFinder', call: [agent_1, agent_2]) }
-  let(:aggregator) { double('Aggregator', call: [:aggregate_1, :aggregate_2]) }
+  let(:aggregator) { double('Aggregator', call: [aggregate_1, aggregate_2]) }
   let(:entity) { Sipity::Models::Processing::Entity.new }
 
   subject do
@@ -21,7 +23,23 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
 
   it { should be_a(Enumerable) }
 
+  context '.enumerator_for' do
+    it 'should return an enumerator' do
+      expect(described_class.enumerator_for(entity: entity)).to be_a(Enumerator)
+    end
+  end
+
   context '#each' do
+    it 'will return an enumerator if no block is given' do
+      expect(subject.each).to be_a(Enumerator)
+    end
+
+    it 'will allow you to limit on a given set of roles' do
+      aggregate_3 = double(role_name: 'h')
+      expect(subject).to receive(:aggregated_data).and_return([aggregate_1, aggregate_2, aggregate_3])
+      expect { |b| subject.each(roles: ['creating_user', 'etd_reviewer'], &b) }.to yield_successive_args(aggregate_1, aggregate_2)
+    end
+
     it 'will find all of the role/identifier_id pairs' do
       subject.each { |*| }
       expect(role_and_identifier_ids_finder).to have_received(:call).with(entity: entity)
@@ -42,7 +60,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
     end
 
     it 'will yield the aggregate information' do
-      expect { |b| subject.each(&b) }.to yield_successive_args(:aggregate_1, :aggregate_2)
+      expect { |b| subject.each(&b) }.to yield_successive_args(aggregate_1, aggregate_2)
     end
   end
 end

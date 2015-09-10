@@ -7,6 +7,12 @@ module Sipity
       # @todo I need to be able to get the identifiers associated with the given role
       # @see Sipity::Queries::ProcessingQuery#scope_users_for_entity_and_roles
       class AgentsAssociatedWithEntity
+
+        def self.enumerator_for(entity:, roles: nil)
+          object = new(entity: entity)
+          return object.each(roles: roles)
+        end
+
         include Enumerable
         def initialize(entity:, **keywords)
           self.entity = entity
@@ -15,9 +21,12 @@ module Sipity
           self.aggregator = keywords.fetch(:aggregator) { default_aggregator }
         end
 
-        def each
-          return enum_for(:each) unless block_given?
-          aggregated_data.each { |datum| yield(datum) }
+        def each(roles: nil)
+          return enum_for(:each, roles: roles) unless block_given?
+          roles = Array.wrap(roles) unless roles.nil?
+          aggregated_data.each do |datum|
+            yield(datum) if roles.nil? || roles.include?(datum.role_name)
+          end
         end
 
         private
