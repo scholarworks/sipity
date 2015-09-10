@@ -122,12 +122,11 @@ Metrics/AbcSize:
   Exclude:
      - app/conversions/**/*.rb
      - app/forms/sipity/forms/configure.rb
-     - app/repositories/sipity/queries/*.rb
+     - app/repositories/sipity/queries/**/*.rb
      - app/controllers/application_controller.rb
      - app/forms/sipity/forms/work_enrichments/attach_form.rb
      - 'app/repositories/sipity/commands/processing_commands.rb'
      - app/forms/sipity/forms/processing_form.rb
-     - app/repositories/sipity/queries/complex/agents_associated_with_entity.rb
      - app/services/sipity/services/authentication_layer.rb
 Delegate:
   Description: 'Prefer delegate method for delegations.'

@@ -22,8 +22,8 @@ namespace :sipity do
   desc 'Builds the interface for the command repository; Useful for testing purposes'
   task build_command_repository_interface: :environment do
     dirnames = [
-      File.expand_path('../../../app/repositories/sipity/commands/**/*.rb', __FILE__),
-      File.expand_path('../../../app/repositories/sipity/queries/**/*.rb', __FILE__)
+      File.expand_path('../../../app/repositories/sipity/commands/*.rb', __FILE__),
+      File.expand_path('../../../app/repositories/sipity/queries/*.rb', __FILE__)
     ]
     build_repository_interface(interface_name: 'command_repository_interface', dirnames: dirnames)
   end
@@ -31,7 +31,7 @@ namespace :sipity do
   desc 'Builds the interface for the query repository; Useful for testing purposes'
   task build_query_repository_interface: :environment do
     dirnames = [
-      File.expand_path('../../../app/repositories/sipity/queries/**/*.rb', __FILE__)
+      File.expand_path('../../../app/repositories/sipity/queries/*.rb', __FILE__)
     ]
     build_repository_interface(interface_name: 'query_repository_interface', dirnames: dirnames)
   end
