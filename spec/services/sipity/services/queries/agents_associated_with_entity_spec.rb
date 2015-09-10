@@ -100,18 +100,23 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::RoleIdenti
   end
 end
 
+require 'cogitate/client/response_parsers/agents_with_detailed_identifiers_extractor'
 RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::Aggregator do
   subject { described_class }
   let(:role_and_identifier_ids) do
     [{
-      "id" => nil, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "1234", "entity_id" => 1,
-      "permission_grant_level" => "entity_level"
+      "id" => nil, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "Z3JvdXAJR3JhZHVhdGUgU2Nob29sIEVURCBSZXZpZXdlcnM=",
+      "entity_id" => 1, "permission_grant_level" => "strategy_level"
     }, {
-      "id" => nil, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "5678", "entity_id" => 1,
-      "permission_grant_level" => "strategy_level"
+      "id" => nil, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "bmV0aWQJamZyaWVzZW4=", "entity_id" => 1,
+      "permission_grant_level" => "entity_level"
     }]
   end
-  let(:agents) { [] }
+
+  let(:agent_response) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
+  # TODO: This is far to invasive; There must be a better method
+  let(:agents) { Cogitate::Client::ResponseParsers::AgentsWithDetailedIdentifiersExtractor.call(response: agent_response) }
+
   context '.aggregate' do
     subject { described_class.aggregate(role_and_identifier_ids: role_and_identifier_ids, agents: agents) }
     it { should be_a(Enumerable) }

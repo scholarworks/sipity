@@ -110,8 +110,10 @@ module Sipity
           # A model to contain the relevant amalgam of localized Strategy Role information and remote identifying information for
           # the given Sipity identifier.
           class StrategyRoleAgentAggregate
-            def initialize(role_and_identifier_id:, **_)
+            include Enumerable
+            def initialize(role_and_identifier_id:, identifiers:)
               self.role_and_identifier_id = role_and_identifier_id
+              self.identifiers = Array.wrap(identifiers)
             end
 
             [:role_name, :role_id, :identifier_id, :entity_id, :permission_grant_level].each do |method_name|
@@ -122,6 +124,7 @@ module Sipity
 
             private
 
+            attr_accessor :identifiers
             attr_reader :role_and_identifier_id
 
             def role_and_identifier_id=(input)
@@ -129,9 +132,11 @@ module Sipity
             end
           end
 
-          def self.aggregate(role_and_identifier_ids:, aggregate_builder: StrategyRoleAgentAggregate.method(:new), **_)
+          def self.aggregate(role_and_identifier_ids:, agents:, aggregate_builder: StrategyRoleAgentAggregate.method(:new))
             role_and_identifier_ids.map do |role_and_identifier_id|
-              aggregate_builder.call(role_and_identifier_id: role_and_identifier_id, identifiers: [])
+              agent = agents.detect { |agent| agent.id == role_and_identifier_id['identifier_id'] }
+              identifiers = agent ? agent.with_verified_identifiers.to_a : []
+              aggregate_builder.call(role_and_identifier_id: role_and_identifier_id, identifiers: identifiers)
             end
           end
         end
