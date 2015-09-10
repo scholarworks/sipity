@@ -69,7 +69,7 @@ module Sipity
       # @param role [Object] that can be converted into a Sipity::Models::Role
       # @return [Array<#identifier_id, #permission_grant_level>]
       def identifier_ids_associated_with_entity_and_role(entity:, role:)
-        Services::Queries::AgentsAssociatedWithEntity::RoleIdentifierFinder.all_for(entity: entity, role: role)
+        Queries::Complex::AgentsAssociatedWithEntity::RoleIdentifierFinder.all_for(entity: entity, role: role)
       end
 
       # @api public

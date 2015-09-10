@@ -86,7 +86,7 @@ module Sipity
       context '#identifier_ids_associated_with_entity_and_role' do
         subject { test_repository.identifier_ids_associated_with_entity_and_role(role: role, entity: entity) }
         it 'will return an array' do
-          expect(Services::Queries::AgentsAssociatedWithEntity::RoleIdentifierFinder).to receive(:all_for)
+          expect(Queries::Complex::AgentsAssociatedWithEntity::RoleIdentifierFinder).to receive(:all_for)
           test_repository.identifier_ids_associated_with_entity_and_role(role: role, entity: entity)
           # user_processing_actor
           # group_processing_actor

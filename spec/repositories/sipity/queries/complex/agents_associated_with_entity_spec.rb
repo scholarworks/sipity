@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity do
+RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
   let(:role_identifier_1) { double('Role/ID', identifier_id: '123') }
   let(:role_identifier_2) { double('Role/ID', identifier_id: '456') }
   let(:agent_1) { double('Agent', identifier_id: '123') }
@@ -18,6 +18,8 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity do
   its(:default_role_and_identifier_ids_finder) { should respond_to(:call) }
   its(:default_agents_finder) { should respond_to(:call) }
   its(:default_aggregator) { should respond_to(:call) }
+
+  it { should be_a(Enumerable) }
 
   context '#each' do
     it 'will find all of the role/identifier_id pairs' do
@@ -45,7 +47,7 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity do
   end
 end
 
-RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::RoleIdentifierFinder do
+RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentifierFinder do
   subject { described_class }
   let(:entity) { Sipity::Models::Processing::Entity.new(id: 1, strategy_id: 2) }
   let(:role_creating_user) { Sipity::Models::Role.create!(name: 'creating_user') }
@@ -101,7 +103,7 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::RoleIdenti
 end
 
 require 'cogitate/client/response_parsers/agents_with_detailed_identifiers_extractor'
-RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::Aggregator do
+RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::Aggregator do
   subject { described_class }
   let(:role_and_identifier_ids) do
     [{
@@ -114,14 +116,18 @@ RSpec.describe Sipity::Services::Queries::AgentsAssociatedWithEntity::Aggregator
   end
 
   let(:agent_response) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
-  # TODO: This is far to invasive; There must be a better method
-  let(:agents) { Cogitate::Client::ResponseParsers::AgentsWithDetailedIdentifiersExtractor.call(response: agent_response) }
+  let(:response_parser) { Cogitate::Client.response_parser_for(:AgentsWithoutGroupMembership) }
+  let(:agents) { response_parser.call(response: agent_response) }
 
   context '.aggregate' do
     subject { described_class.aggregate(role_and_identifier_ids: role_and_identifier_ids, agents: agents) }
     it { should be_a(Enumerable) }
-    it 'will aggregate the role names' do
-      expect(subject.map(&:role_name).sort).to eq(['creating_user', 'etd_reviewer'])
+    it 'will aggregate the names' do
+      expect(subject.map { |a| [a.role_name, a.name] }).to eq(
+        [
+          ["etd_reviewer", "shill2"], ["creating_user", "jfriesen"]
+        ]
+      )
     end
   end
 end

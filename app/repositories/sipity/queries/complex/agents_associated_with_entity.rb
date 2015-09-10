@@ -1,12 +1,13 @@
 module Sipity
-  module Services
-    module Queries
+  module Queries
+    module Complex
       # Responsible for exposing the given entity's agent permissions via aggregation of
       # the local role and expanded identifier_id.
       #
       # @todo I need to be able to get the identifiers associated with the given role
       # @see Sipity::Queries::ProcessingQuery#scope_users_for_entity_and_roles
       class AgentsAssociatedWithEntity
+        include Enumerable
         def initialize(entity:, **keywords)
           self.entity = entity
           self.role_and_identifier_ids_finder = keywords.fetch(:role_and_identifier_ids_finder) { default_role_and_identifier_ids_finder }
@@ -44,7 +45,7 @@ module Sipity
         attr_accessor :agents_finder
         def default_agents_finder
           require 'cogitate/client' unless defined?(Cogiate::Client)
-          Cogitate::Client.method(:request)
+          Cogitate::Client.method(:request_agents_without_group_membership)
         end
 
         attr_accessor :aggregator
@@ -111,9 +112,9 @@ module Sipity
           # the given Sipity identifier.
           class StrategyRoleAgentAggregate
             include Enumerable
-            def initialize(role_and_identifier_id:, identifiers:)
+            def initialize(role_and_identifier_id:, identifier:)
               self.role_and_identifier_id = role_and_identifier_id
-              self.identifiers = Array.wrap(identifiers)
+              self.identifier = identifier
             end
 
             [:role_name, :role_id, :identifier_id, :entity_id, :permission_grant_level].each do |method_name|
@@ -122,9 +123,11 @@ module Sipity
               end
             end
 
+            delegate :identifying_value, :strategy, :name, :email, to: :identifier, allow_nil: true
+
             private
 
-            attr_accessor :identifiers
+            attr_accessor :identifier
             attr_reader :role_and_identifier_id
 
             def role_and_identifier_id=(input)
@@ -133,10 +136,14 @@ module Sipity
           end
 
           def self.aggregate(role_and_identifier_ids:, agents:, aggregate_builder: StrategyRoleAgentAggregate.method(:new))
-            role_and_identifier_ids.map do |role_and_identifier_id|
-              agent = agents.detect { |agent| agent.id == role_and_identifier_id['identifier_id'] }
-              identifiers = agent ? agent.with_verified_identifiers.to_a : []
-              aggregate_builder.call(role_and_identifier_id: role_and_identifier_id, identifiers: identifiers)
+            role_and_identifier_ids.each_with_object([]) do |role_and_identifier_id, mem|
+              agents.each do |agent|
+                next unless agent.id == role_and_identifier_id['identifier_id']
+                agent.with_verified_identifiers do |identifier|
+                  mem << aggregate_builder.call(role_and_identifier_id: role_and_identifier_id, identifier: identifier)
+                end
+              end
+              mem
             end
           end
         end
