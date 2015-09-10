@@ -106,12 +106,6 @@ module Sipity
         end
 
         # :nodoc:
-        module AgentsFinder
-          def self.find(*)
-          end
-        end
-
-        # :nodoc:
         module Aggregator
           def self.aggregate(*)
           end
