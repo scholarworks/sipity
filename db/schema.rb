@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150825171836) do
+ActiveRecord::Schema.define(version: 20150911190436) do
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -225,7 +225,7 @@ ActiveRecord::Schema.define(version: 20150825171836) do
   create_table "sipity_processing_entity_specific_responsibilities", force: :cascade do |t|
     t.integer  "strategy_role_id", limit: 4,   null: false
     t.string   "entity_id",        limit: 32,  null: false
-    t.integer  "actor_id",         limit: 4,   null: false
+    t.integer  "actor_id",         limit: 4
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.string   "identifier_id",    limit: 255
@@ -285,7 +285,7 @@ ActiveRecord::Schema.define(version: 20150825171836) do
   add_index "sipity_processing_strategy_actions", ["strategy_id", "presentation_sequence"], name: "sipity_processing_strategy_actions_sequence", using: :btree
 
   create_table "sipity_processing_strategy_responsibilities", force: :cascade do |t|
-    t.integer  "actor_id",         limit: 4,   null: false
+    t.integer  "actor_id",         limit: 4
     t.integer  "strategy_role_id", limit: 4,   null: false
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false

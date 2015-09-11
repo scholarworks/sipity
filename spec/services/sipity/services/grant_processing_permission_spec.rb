@@ -7,26 +7,28 @@ module Sipity
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
       let(:role) { Models::Role.new(id: 3) }
-      let(:actor) { Models::Processing::Actor.new(id: 4) }
+      let(:identifiable) { User.new(username: 'hworld') }
       let(:strategy_role) { Models::Processing::StrategyRole.new(strategy_id: strategy.id, role_id: role.id) }
       let(:strategy_responsibility) do
-        Sipity::Models::Processing::StrategyResponsibility.new(actor_id: actor.id, strategy_role_id: strategy_role.id)
+        Sipity::Models::Processing::StrategyResponsibility.new(
+          identifier_id: PowerConverter.convert_to_identifier_id(identifiable), strategy_role_id: strategy_role.id
+        )
       end
 
-      subject { described_class.new(entity: entity, role: role, actor: actor) }
+      subject { described_class.new(entity: entity, role: role, identifiable: identifiable) }
       its(:strategy) { should eq entity.strategy }
 
       context '.call' do
         it 'will instantiate then call the instance' do
-          expect(described_class).to receive(:new).and_return(double(call: true))
-          described_class.call(entity: entity, role: role, actor: actor)
+          expect_any_instance_of(described_class).to receive(:call)
+          described_class.call(entity: entity, role: role, actor: identifiable)
         end
       end
 
       context '#call' do
         let(:fake_relation) { double(first!: strategy_role) }
         before do
-          allow(PowerConverter).to receive(:convert_to_identifier_id).with(actor).and_return('an identifier')
+          allow(PowerConverter).to receive(:convert_to_identifier_id).with(identifiable).and_return('an identifier')
         end
         it 'will raise an exception if the role is not valid for the strategy' do
           expect { subject.call }.to raise_error Exceptions::ValidProcessingStrategyRoleNotFoundError

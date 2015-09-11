@@ -3,15 +3,16 @@ module Sipity
     # Service object that handles the business logic of granting permission.
     class GrantProcessingPermission
       def self.call(entity:, actor:, role:)
-        new(entity: entity, actor: actor, role: role).call
+        new(entity: entity, identifiable: actor, role: role).call
       end
 
-      def initialize(entity:, actor:, role:)
+      def initialize(entity:, identifiable:, role:)
         self.entity = entity
-        self.actor = actor
+        self.identifiable = identifiable
         self.role = role
       end
-      attr_reader :entity, :actor, :role
+      attr_reader :entity, :identifiable, :role
+      alias_method :identifier_id, :identifiable
 
       delegate :strategy, to: :entity
 
@@ -32,12 +33,8 @@ module Sipity
 
       def create_entity_specific_responsibility(strategy_role:)
         Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-          strategy_role_id: strategy_role.id, entity_id: entity.id, actor_id: actor.id, identifier_id: identifier_id
+          strategy_role_id: strategy_role.id, entity_id: entity.id, identifier_id: identifier_id
         )
-      end
-
-      def identifier_id
-        PowerConverter.convert_to_identifier_id(actor)
       end
 
       def strategy_role_responsibility_exists?
@@ -51,9 +48,8 @@ module Sipity
         @entity = convert_to_processing_entity(object)
       end
 
-      include Conversions::ConvertToProcessingActor
-      def actor=(object)
-        @actor = convert_to_processing_actor(object)
+      def identifiable=(object)
+        @identifiable = PowerConverter.convert_to_identifier_id(object)
       end
 
       include Conversions::ConvertToRole
