@@ -36,6 +36,7 @@ module Sipity
         end
 
         attr_reader :identifier_id
+        alias_method :to_identifier_id, :identifier_id
 
         private
 

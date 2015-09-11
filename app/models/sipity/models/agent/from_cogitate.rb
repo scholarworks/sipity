@@ -36,11 +36,13 @@ module Sipity
 
         delegate :ids, :name, to: :cogitate_agent
 
-        private
-
         def identifier_id
           Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: netid)
         end
+
+        alias_method :to_identifier_id, :identifier_id
+
+        private
 
         attr_accessor :cogitate_agent, :ids_decoder, :repository
 

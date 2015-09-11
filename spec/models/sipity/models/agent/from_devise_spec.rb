@@ -14,6 +14,7 @@ module Sipity
         its(:id) { should eq(user.id) }
         its(:user_signed_in?) { should eq(true) }
         its(:to_polymorphic_type) { should eq('User') }
+        its(:to_identifier_id) { should eq(subject.identifier_id) }
         context '#agreed_to_application_terms_of_service?' do
           it 'will use the given repository and identifier' do
             expect(repository).to receive(
