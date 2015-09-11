@@ -3,7 +3,7 @@ module Sipity
     # Service object that handles the business logic of granting permission.
     class ProcessingPermissionHandler
       # @api public
-      def self.call(entity:, actor:, role:)
+      def self.grant(entity:, actor:, role:)
         new(entity: entity, identifiable: actor, role: role).grant
       end
 

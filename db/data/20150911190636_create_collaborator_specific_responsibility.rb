@@ -4,7 +4,7 @@ class CreateCollaboratorSpecificResponsibility < ActiveRecord::Migration
       next unless collaborator.email.present?
       entity = Sipity::Conversions::ConvertToProcessingEntity(collaborator.work)
       role = Sipity::Models::Role::ADVISOR
-      Sipity::Services::ProcessingPermissionHandler.call(role: role, entity: entity, identifiable: collaborator)
+      Sipity::Services::ProcessingPermissionHandler.grant(role: role, entity: entity, identifiable: collaborator)
     end
   end
 

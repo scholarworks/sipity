@@ -18,10 +18,10 @@ module Sipity
       subject { described_class.new(entity: entity, role: role, identifiable: identifiable) }
       its(:strategy) { should eq entity.strategy }
 
-      context '.call' do
-        it 'will instantiate then call the instance' do
+      context '.grant' do
+        it 'will instantiate then grant via the instance' do
           expect_any_instance_of(described_class).to receive(:grant)
-          described_class.call(entity: entity, role: role, actor: identifiable)
+          described_class.grant(entity: entity, role: role, actor: identifiable)
         end
       end
 
