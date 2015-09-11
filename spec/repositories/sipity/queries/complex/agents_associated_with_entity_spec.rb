@@ -120,9 +120,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
   end
 end
 
-require 'cogitate/client/response_parsers/agents_with_detailed_identifiers_extractor'
 RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::Aggregator do
-  subject { described_class }
   let(:role_and_identifier_ids) do
     [{
       "id" => nil, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "Z3JvdXAJR3JhZHVhdGUgU2Nob29sIEVURCBSZXZpZXdlcnM=",
@@ -132,14 +130,17 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::Aggregator 
       "permission_grant_level" => "entity_level"
     }]
   end
-
-  let(:agent_response) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
-  let(:response_parser) { Cogitate::Client.response_parser_for(:AgentsWithoutGroupMembership) }
-  let(:agents) { response_parser.call(response: agent_response) }
+  let(:identifiers) { role_and_identifier_ids.map {|h| h.fetch('identifier_id') } }
+  let(:client_request_handler) { ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read } }
+  let(:agents) do
+    Cogitate::Client.with_custom_configuration(client_request_handler: client_request_handler) do
+      @agents = Cogitate::Client.request_agents_without_group_membership(identifiers: identifiers)
+    end
+    @agents
+  end
+  subject { described_class.aggregate(role_and_identifier_ids: role_and_identifier_ids, agents: agents) }
 
   context '.aggregate' do
-    subject { described_class.aggregate(role_and_identifier_ids: role_and_identifier_ids, agents: agents) }
-    it { should be_a(Enumerable) }
     it 'will aggregate the names' do
       expect(subject.map { |a| [a.role_name, a.name] }).to eq(
         [
