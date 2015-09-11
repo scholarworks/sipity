@@ -13,6 +13,14 @@ module Sipity
           return object.each(roles: roles)
         end
 
+        # @api private
+        def self.emails_for(entity:, roles: nil)
+          enumerator_for(entity: entity, roles: roles).each_with_object([]) do |element, mem|
+            mem << element if element.respond_to?(:email) && element.email.present?
+            mem
+          end
+        end
+
         include Enumerable
         def initialize(entity:, **keywords)
           self.entity = entity

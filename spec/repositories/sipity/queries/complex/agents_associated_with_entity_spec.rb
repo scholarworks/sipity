@@ -29,6 +29,15 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
     end
   end
 
+  context '.emails_for' do
+    it 'will return an Array of objects that have emails' do
+      with_email = double(email: 'Hello')
+      without_email = double
+      expect(described_class).to receive(:enumerator_for).and_return([with_email, without_email])
+      expect(described_class.emails_for(entity: entity)).to eq([with_email])
+    end
+  end
+
   context '#each' do
     it 'will return an enumerator if no block is given' do
       expect(subject.each).to be_a(Enumerator)
