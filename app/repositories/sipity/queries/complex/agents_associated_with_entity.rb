@@ -7,7 +7,7 @@ module Sipity
       # @todo I need to be able to get the identifiers associated with the given role
       # @see Sipity::Queries::ProcessingQuery#scope_users_for_entity_and_roles
       class AgentsAssociatedWithEntity
-
+        # @api public
         def self.enumerator_for(entity:, roles: nil)
           object = new(entity: entity)
           return object.each(roles: roles)
@@ -105,7 +105,7 @@ module Sipity
               strategy_roles[:role_id].as('role_id'),
               roles[:name].as('role_name'),
               arel_table[:identifier_id].as('identifier_id'),
-              Arel.sql("'#{entity.id.to_s}'").as("entity_id"),
+              Arel.sql("'#{entity.id}'").as("entity_id"),
               Arel.sql("'#{permission_grant_level}'").as('permission_grant_level')
             ).join(roles).on(
               strategy_roles[:role_id].eq(roles[:id])
