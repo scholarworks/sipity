@@ -80,10 +80,10 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
   before do
     Sipity::Models::Processing::StrategyRole.create!(role: role_advisor, strategy_id: entity.strategy_id)
     Sipity::Models::Processing::EntitySpecificResponsibility.create!(
-      actor_id: 1, identifier_id: '1234', entity_id: entity.id, strategy_role: strategy_role_etd_reviewer
+      actor_id: 1, identifier_id: 'abc', entity_id: entity.id, strategy_role: strategy_role_etd_reviewer
     )
     Sipity::Models::Processing::StrategyResponsibility.create!(
-      actor_id: 2, identifier_id: '5678', strategy_role: strategy_role_creating_user
+      actor_id: 2, identifier_id: 'def', strategy_role: strategy_role_creating_user
     )
   end
 
@@ -93,10 +93,10 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
       sorted_results = results.map(&:attributes).sort { |a, b| a.fetch('identifier_id') <=> b.fetch('identifier_id') }
       expect(sorted_results).to eq([
         {
-          "id" => nil, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "1234", "entity_id" => 1,
+          "id" => 0, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "abc", "entity_id" => "1",
           "permission_grant_level" => "entity_level"
         }, {
-          "id" => nil, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "5678", "entity_id" => 1,
+          "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
           "permission_grant_level" => "strategy_level"
         }
       ])
@@ -107,7 +107,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
       sorted_results = results.map(&:attributes).sort { |a, b| a.fetch('identifier_id') <=> b.fetch('identifier_id') }
       expect(sorted_results).to eq([
         {
-          "id" => nil, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "5678", "entity_id" => 1,
+          "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
           "permission_grant_level" => "strategy_level"
         }
       ])
@@ -115,7 +115,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
 
     it 'will allow fetch of attributes' do
       results = subject.all_for(entity: entity, role: 'creating_user')
-      expect(results.to_a.first.as_json.fetch('role_name')).to eq('creating_user')
+      expect(results.first.as_json.fetch('role_name')).to eq('creating_user')
     end
   end
 end

@@ -99,11 +99,13 @@ module Sipity
             strategy_roles = Models::Processing::StrategyRole.arel_table
             roles = Models::Role.arel_table
 
+            # I'm including an id of 0 because without it count queries will fail; However that is not part of the object interface
             select_manager = strategy_roles.project(
+              Arel.sql("0").as("id"),
               strategy_roles[:role_id].as('role_id'),
               roles[:name].as('role_name'),
-              arel_table[:identifier_id],
-              Arel.sql(entity.id.to_s).as("entity_id"),
+              arel_table[:identifier_id].as('identifier_id'),
+              Arel.sql("'#{entity.id.to_s}'").as("entity_id"),
               Arel.sql("'#{permission_grant_level}'").as('permission_grant_level')
             ).join(roles).on(
               strategy_roles[:role_id].eq(roles[:id])
