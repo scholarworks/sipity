@@ -2,8 +2,9 @@ module Sipity
   module Services
     # Service object that handles the business logic of granting permission.
     class ProcessingPermissionHandler
+      # @api public
       def self.call(entity:, actor:, role:)
-        new(entity: entity, identifiable: actor, role: role).call
+        new(entity: entity, identifiable: actor, role: role).grant
       end
 
       def initialize(entity:, identifiable:, role:)
@@ -16,7 +17,7 @@ module Sipity
 
       delegate :strategy, to: :entity
 
-      def call
+      def grant
         with_valid_strategy_role do |strategy_role|
           create_entity_specific_responsibility(strategy_role: strategy_role) unless strategy_role_responsibility_exists?
         end
