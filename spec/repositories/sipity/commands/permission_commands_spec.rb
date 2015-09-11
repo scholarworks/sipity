@@ -17,7 +17,7 @@ module Sipity
 
         it 'will use the :user parameter to write a permission' do
           # TODO: Remove this once the deprecation for granting permission is done
-          allow(Services::GrantProcessingPermission).to receive(:call)
+          allow(Services::ProcessingPermissionHandler).to receive(:call)
           subject.grant_creating_user_permission_for!(entity: entity, user: user)
         end
       end

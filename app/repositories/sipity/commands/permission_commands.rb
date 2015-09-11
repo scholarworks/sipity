@@ -28,7 +28,7 @@ module Sipity
       end
 
       def grant_processing_permission_for!(entity:, actor:, role:)
-        Services::GrantProcessingPermission.call(entity: entity, actor: actor, role: role)
+        Services::ProcessingPermissionHandler.call(entity: entity, actor: actor, role: role)
       end
     end
   end

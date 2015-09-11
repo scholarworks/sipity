@@ -1,7 +1,7 @@
 module Sipity
   module Services
     # Service object that handles the business logic of granting permission.
-    class GrantProcessingPermission
+    class ProcessingPermissionHandler
       def self.call(entity:, actor:, role:)
         new(entity: entity, identifiable: actor, role: role).call
       end

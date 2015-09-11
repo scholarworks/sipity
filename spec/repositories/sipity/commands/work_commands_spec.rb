@@ -7,7 +7,7 @@ module Sipity
     RSpec.describe WorkCommands, type: :command_with_related_query do
       before do
         # TODO: Remove this once the deprecation for granting permission is done
-        allow(Services::GrantProcessingPermission).to receive(:call)
+        allow(Services::ProcessingPermissionHandler).to receive(:call)
       end
 
       context '#destroy_a_work' do

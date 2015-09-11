@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/services/grant_processing_permission'
+require 'sipity/services/processing_permission_handler'
 
 module Sipity
   module Services
-    RSpec.describe GrantProcessingPermission do
+    RSpec.describe ProcessingPermissionHandler do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
       let(:role) { Models::Role.new(id: 3) }
