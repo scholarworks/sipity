@@ -262,9 +262,11 @@ module Sipity
       end
 
       context "#user_emails_for_entity_and_roles" do
-        subject { test_repository.user_emails_for_entity_and_roles(entity: entity, roles: role) }
         it 'will be an array of emails' do
-          expect(subject).to be_a(Array)
+          role = double('Role')
+          entity = double('Entity')
+          expect(Complex::AgentsAssociatedWithEntity).to receive(:emails_for).with(entity: entity, roles: role).and_return(['an@email.com'])
+          expect(test_repository.user_emails_for_entity_and_roles(entity: entity, roles: role)).to eq(['an@email.com'])
         end
       end
 

@@ -226,7 +226,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_creating_users_for_entity(entity:, role: Models::Role::CREATING_USER)
+    def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
