@@ -9,7 +9,6 @@ module Sipity
       #
       # @see User
       # @see Sipity::Models::Group
-      # @see Sipity::Queries::ProcessingQueries#scope_users_for_entity_and_roles
       class Actor < ActiveRecord::Base
         self.table_name = 'sipity_processing_actors'
 

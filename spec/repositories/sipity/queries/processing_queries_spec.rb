@@ -234,25 +234,6 @@ module Sipity
         end
       end
 
-      context '#scope_users_for_entity_and_roles' do
-        subject { test_repository.scope_users_for_entity_and_roles(entity: entity, roles: role) }
-        it "will resolve to an array of users" do
-          user = User.create!(username: 'user')
-          group_user = User.create!(username: 'group')
-          _other_user = User.create!(username: 'other')
-          group = Models::Group.find_or_create_by!(name: 'group')
-          group_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: group)
-          user_actor = Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-          Models::GroupMembership.create!(user: group_user, group: group)
-          Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: group_actor, entity: entity
-          )
-          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, actor: user_actor)
-
-          expect(subject).to eq([user, group_user])
-        end
-      end
-
       context '#scope_creating_users_for_entity' do
         it "will leverage Complex::AgentsAssociatedWithEntity" do
           entity = double("Entity")

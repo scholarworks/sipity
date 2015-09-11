@@ -297,10 +297,6 @@ module Sipity
     def scope_strategy_actions_without_prerequisites(entity:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def scope_users_for_entity_and_roles(entity:, roles:)
-    end
-
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
     end
