@@ -130,7 +130,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::Aggregator 
       "permission_grant_level" => "entity_level"
     }]
   end
-  let(:identifiers) { role_and_identifier_ids.map {|h| h.fetch('identifier_id') } }
+  let(:identifiers) { role_and_identifier_ids.map { |h| h.fetch('identifier_id') } }
   let(:client_request_handler) { ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read } }
   let(:agents) do
     Cogitate::Client.with_custom_configuration(client_request_handler: client_request_handler) do

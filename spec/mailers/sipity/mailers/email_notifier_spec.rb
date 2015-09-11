@@ -22,9 +22,13 @@ module Sipity
       EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |work_notification_method_name|
         context "##{work_notification_method_name}" do
           it 'should send an email' do
-            processing_entity # making sure its declared
-            described_class.send(work_notification_method_name, entity: work, to: to).deliver_now
-            expect(ActionMailer::Base.deliveries.count).to eq(1)
+            Cogitate::Client.with_custom_configuration(
+              client_request_handler: ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
+            ) do
+              processing_entity # making sure its declared
+              described_class.send(work_notification_method_name, entity: work, to: to).deliver_now
+              expect(ActionMailer::Base.deliveries.count).to eq(1)
+            end
           end
         end
       end

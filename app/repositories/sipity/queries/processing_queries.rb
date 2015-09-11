@@ -549,9 +549,9 @@ module Sipity
       deprecate :scope_users_for_entity_and_roles
 
       def scope_creating_users_for_entity(entity:, role: Models::Role::CREATING_USER)
-        scope_users_for_entity_and_roles(entity: entity, roles: role)
+        Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: role)
       end
-      deprecate :scope_creating_users_for_entity
+      # deprecate :scope_creating_users_for_entity
 
       def user_emails_for_entity_and_roles(entity:, roles:)
         scope_users_for_entity_and_roles(entity: entity, roles: roles).pluck(:email)

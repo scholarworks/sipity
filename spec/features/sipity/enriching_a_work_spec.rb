@@ -22,6 +22,11 @@ feature 'Enriching a Work', :devise, :feature do
     end
   end
 
+  around do |example|
+    Cogitate::Client.with_custom_configuration(
+      client_request_handler: ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
+    ) { example.run }
+  end
   scenario 'User can enrich their submission' do
     login_as(user, scope: :user)
     create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
