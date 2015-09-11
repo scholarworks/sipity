@@ -18,10 +18,25 @@ module Sipity
       subject { described_class.new(entity: entity, role: role, identifiable: identifiable) }
       its(:strategy) { should eq entity.strategy }
 
-      context '.grant' do
-        it 'will instantiate then grant via the instance' do
-          expect_any_instance_of(described_class).to receive(:grant)
-          described_class.grant(entity: entity, role: role, actor: identifiable)
+      it 'exposes .grant as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:grant)
+        described_class.grant(entity: entity, role: role, actor: identifiable)
+      end
+
+      it 'exposes .revoke as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:revoke)
+        described_class.revoke(entity: entity, role: role, actor: identifiable)
+      end
+
+      context '#grant then #revoke' do
+        it 'will create an entity specific entry if one does not exist for [strategy,role]' do
+          strategy_role.save!
+          expect { subject.grant }.to change { Models::Processing::EntitySpecificResponsibility.count }.by(1)
+          expect { subject.revoke }.to change { Models::Processing::EntitySpecificResponsibility.count }.by(-1)
+        end
+
+        it 'will work even if data is not quite correct' do
+          expect { subject.revoke }.to_not change { Models::Processing::EntitySpecificResponsibility.count }
         end
       end
 
@@ -37,6 +52,7 @@ module Sipity
           strategy_role.save!
           expect { subject.grant }.to change { Models::Processing::EntitySpecificResponsibility.count }.by(1)
         end
+
         it 'will NOT create an entity specific entry if an entry exists for [strategy,role]' do
           strategy_role.save!
           strategy_responsibility.save!

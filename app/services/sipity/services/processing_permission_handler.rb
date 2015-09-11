@@ -1,10 +1,17 @@
 module Sipity
   module Services
-    # Service object that handles the business logic of granting permission.
+    # Service object that handles the business logic of granting permission at the entity level.
+    #
+    # @todo Consider how this would look with strategy level as well.
     class ProcessingPermissionHandler
       # @api public
       def self.grant(entity:, actor:, role:)
         new(entity: entity, identifiable: actor, role: role).grant
+      end
+
+      # @api public
+      def self.revoke(entity:, actor:, role:)
+        new(entity: entity, identifiable: actor, role: role).revoke
       end
 
       def initialize(entity:, identifiable:, role:)
@@ -21,6 +28,17 @@ module Sipity
         with_valid_strategy_role do |strategy_role|
           create_entity_specific_responsibility(strategy_role: strategy_role) unless strategy_role_responsibility_exists?
         end
+        true
+      end
+
+      def revoke
+        with_valid_strategy_role do |strategy_role|
+          destroy_entity_specific_responsibility(strategy_role: strategy_role)
+        end
+        true
+      rescue Exceptions::ValidProcessingStrategyRoleNotFoundError
+        # REVIEW: Should there be any reporting on this?
+        true
       end
 
       private
@@ -36,6 +54,12 @@ module Sipity
         Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
           strategy_role_id: strategy_role.id, entity_id: entity.id, identifier_id: identifier_id
         )
+      end
+
+      def destroy_entity_specific_responsibility(strategy_role:)
+        Models::Processing::EntitySpecificResponsibility.where(
+          strategy_role_id: strategy_role.id, entity_id: entity.id, identifier_id: identifier_id
+        ).destroy_all
       end
 
       def strategy_role_responsibility_exists?
