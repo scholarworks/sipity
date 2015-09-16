@@ -1,4 +1,6 @@
 require 'hesburgh/lib/runner'
+require 'sipity/exceptions'
+require 'sipity/services/authorization_layer'
 
 module Sipity
   module Runners

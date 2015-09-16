@@ -1,3 +1,5 @@
+require 'sipity/runners/base_runner'
+
 module Sipity
   module Runners
     # Responsible for being a collection of SubmissionWindow runners
