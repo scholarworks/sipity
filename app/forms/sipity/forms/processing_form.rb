@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Forms
     # This class is responsible for handling much of the form composition

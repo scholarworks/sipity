@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Queries
     # Welcome intrepid developer. You have stumbled into some complex data

@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 require 'sipity/guard_interface_expectation'
 
 module Sipity

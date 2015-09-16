@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Controllers
     # Responsible for presenting an enrichment action
