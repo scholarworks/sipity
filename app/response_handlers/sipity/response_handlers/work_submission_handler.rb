@@ -1,3 +1,5 @@
+require 'power_converter'
+
 module Sipity
   module ResponseHandlers
     # These handlers are very nosy; In object perlance they are doing little on

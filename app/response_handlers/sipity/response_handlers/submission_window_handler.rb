@@ -1,3 +1,5 @@
+require 'power_converter'
+
 module Sipity
   module ResponseHandlers
     # This is an Experimental module and concept
