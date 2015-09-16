@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/exceptions'
+require 'sipity/exceptions'
 
 module Sipity
   module Exceptions

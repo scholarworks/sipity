@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/queries/notification_queries'
 
 module Sipity
   module Queries

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/debug_actor_presenter'
 
 module Sipity
   module Controllers

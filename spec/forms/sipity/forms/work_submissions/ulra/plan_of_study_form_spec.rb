@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/ulra/plan_of_study_form'
 
 module Sipity
   module Forms

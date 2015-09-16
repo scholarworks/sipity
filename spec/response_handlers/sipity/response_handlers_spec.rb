@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/response_handlers'
 
 module Sipity
   RSpec.describe ResponseHandlers do

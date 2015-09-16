@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/models/access_right_facade'
 
 module Sipity
   module Models

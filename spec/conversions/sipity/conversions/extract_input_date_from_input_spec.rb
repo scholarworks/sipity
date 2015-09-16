@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/conversions/extract_input_date_from_input'
 
 module Sipity
   module Conversions

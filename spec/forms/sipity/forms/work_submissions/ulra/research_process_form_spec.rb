@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/ulra/research_process_form'
 
 module Sipity
   module Forms

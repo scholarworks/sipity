@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/submission_windows/ulra/start_a_submission_form'
 
 module Sipity
   module Forms

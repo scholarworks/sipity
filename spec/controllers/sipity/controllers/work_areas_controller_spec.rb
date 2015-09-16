@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/work_areas_controller'
 
 module Sipity
   module Controllers

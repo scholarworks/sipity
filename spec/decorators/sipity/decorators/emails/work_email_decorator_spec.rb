@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/decorators/emails/work_email_decorator'
 
 module Sipity
   module Decorators

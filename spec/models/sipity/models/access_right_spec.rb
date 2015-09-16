@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/access_right'
 
 module Sipity
   module Models

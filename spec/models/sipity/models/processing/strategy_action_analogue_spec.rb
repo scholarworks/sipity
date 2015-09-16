@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/strategy_action_analogue'
 
 module Sipity
   module Models

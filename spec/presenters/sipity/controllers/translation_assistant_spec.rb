@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/translation_assistant'
 
 module Sipity
   module Controllers

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/action_taken_on_entity'
 
 module Sipity
   module Services

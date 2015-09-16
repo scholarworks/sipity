@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/decorators/base_object_with_composed_attributes_delegator'
 module Sipity
   module Decorators
     RSpec.describe BaseObjectWithComposedAttributesDelegator do

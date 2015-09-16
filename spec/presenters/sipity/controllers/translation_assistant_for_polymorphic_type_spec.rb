@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/translation_assistant_for_polymorphic_type'
 
 module Sipity
   module Controllers

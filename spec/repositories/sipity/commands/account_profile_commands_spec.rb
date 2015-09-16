@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/commands/account_profile_commands'
 
 module Sipity
   module Commands

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/services/create_work_service'
 
 module Sipity
   module Services

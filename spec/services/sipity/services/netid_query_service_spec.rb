@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/netid_query_service'
 
 module Sipity
   module Services

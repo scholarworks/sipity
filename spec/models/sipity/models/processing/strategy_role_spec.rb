@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/strategy_role'
 
 module Sipity
   module Models

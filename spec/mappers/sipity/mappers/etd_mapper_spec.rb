@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/mappers/etd_mapper'
 
 module Sipity
   module Mappers

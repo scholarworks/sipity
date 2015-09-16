@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/policies/base_policy'
 
 module Sipity
   module Policies

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/commands/work_commands'
 
 module Sipity
   module Commands

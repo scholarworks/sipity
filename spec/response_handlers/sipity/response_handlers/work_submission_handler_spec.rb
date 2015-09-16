@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/response_handlers/work_submission_handler'
+require 'sipity/response_handlers/work_submission_handler'
 
 module Sipity
   module ResponseHandlers

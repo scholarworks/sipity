@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/etd/grad_school_requests_change_form'
 
 module Sipity
   module Forms

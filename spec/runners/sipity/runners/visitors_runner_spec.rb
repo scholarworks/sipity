@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/runners/visitors_runner'
+require 'sipity/runners/visitors_runner'
 
 module Sipity
   module Runners

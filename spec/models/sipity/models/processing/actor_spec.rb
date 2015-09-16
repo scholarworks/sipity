@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/actor'
 
 module Sipity
   module Models

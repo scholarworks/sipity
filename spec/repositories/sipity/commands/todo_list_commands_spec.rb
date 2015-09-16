@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/commands/todo_list_commands'
 
 module Sipity
   module Commands

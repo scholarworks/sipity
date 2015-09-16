@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/models/collaborator'
 module Sipity
   module Models
     RSpec.describe Collaborator, type: :model do

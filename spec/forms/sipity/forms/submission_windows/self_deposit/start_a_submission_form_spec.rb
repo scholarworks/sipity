@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/submission_windows/self_deposit/start_a_submission_form'
 
 module Sipity
   module Forms

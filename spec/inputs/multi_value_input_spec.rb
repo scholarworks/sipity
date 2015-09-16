@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'multi_value_input'
 
 describe 'MultiValueInput', type: :input do
 

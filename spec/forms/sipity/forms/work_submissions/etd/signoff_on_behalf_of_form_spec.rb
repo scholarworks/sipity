@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/etd/signoff_on_behalf_of_form'
 
 module Sipity
   module Forms

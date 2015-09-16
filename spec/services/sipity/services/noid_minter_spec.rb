@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/noid_minter'
 module Sipity
   module Services
     describe NoidMinter do

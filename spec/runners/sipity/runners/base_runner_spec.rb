@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/runners/base_runner'
 
 module Sipity
   module Runners

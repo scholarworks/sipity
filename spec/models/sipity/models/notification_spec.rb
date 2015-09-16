@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/models/notification'
+require 'sipity/models/notification'
 
 module Sipity
   module Models

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/processing_state_notice_presenter'
 # Because RSpec's described_class is getting confused
 require 'sipity/controllers/processing_state_notice_presenter'
 

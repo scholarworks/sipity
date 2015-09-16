@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/etd/respond_to_advisor_request_form'
 
 module Sipity
   module Forms

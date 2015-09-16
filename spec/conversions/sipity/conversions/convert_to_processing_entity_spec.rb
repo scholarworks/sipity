@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/conversions/convert_to_processing_entity'
 
 module Sipity
   module Conversions

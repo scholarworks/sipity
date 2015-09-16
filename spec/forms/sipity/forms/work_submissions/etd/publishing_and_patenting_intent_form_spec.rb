@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/etd/publishing_and_patenting_intent_form'
 module Sipity
   module Forms
     module WorkSubmissions

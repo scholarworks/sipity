@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/parameters/action_set_parameter'
 
 module Sipity
   module Parameters

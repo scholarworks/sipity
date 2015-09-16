@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/base_form'
 
 module Sipity
   module Forms

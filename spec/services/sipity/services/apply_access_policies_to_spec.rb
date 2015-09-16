@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/apply_access_policies_to'
 module Sipity
   module Services
     RSpec.describe ApplyAccessPoliciesTo do

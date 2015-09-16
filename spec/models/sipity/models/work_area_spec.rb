@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/work_area'
 
 module Sipity
   module Models

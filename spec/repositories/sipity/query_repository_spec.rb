@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/query_repository'
 
 module Sipity
   RSpec.describe QueryRepository, type: :repository do

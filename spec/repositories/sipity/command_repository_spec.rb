@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/command_repository'
 
 module Sipity
   RSpec.describe CommandRepository, type: :repository do

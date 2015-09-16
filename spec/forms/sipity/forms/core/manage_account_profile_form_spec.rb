@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/core/manage_account_profile_form'
 
 module Sipity
   module Forms

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/notification/email_recipient'
 
 module Sipity
   module Models

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/queries/work_queries'
 
 module Sipity
   module Queries

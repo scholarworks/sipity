@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/authorization_layer'
 
 module Sipity
   module Services

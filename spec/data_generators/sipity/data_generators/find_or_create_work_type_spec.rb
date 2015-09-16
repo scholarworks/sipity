@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/data_generators/find_or_create_work_type'
 
 module Sipity
   module DataGenerators

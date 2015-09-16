@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/notifier'
 
 module Sipity
   module Services

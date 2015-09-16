@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_submissions/etd/search_term_form'
 
 module Sipity
   module Forms

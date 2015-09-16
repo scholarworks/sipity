@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/decorators/application_decorator'
 
 module Sipity
   module Decorators

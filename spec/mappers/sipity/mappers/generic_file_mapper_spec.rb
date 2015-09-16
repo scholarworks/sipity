@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/mappers/generic_file_mapper'
 
 module Sipity
   module Mappers

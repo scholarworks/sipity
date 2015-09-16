@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/update_entity_processing_state'
 
 module Sipity
   module Services

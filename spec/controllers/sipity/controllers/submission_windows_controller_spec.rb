@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/submission_windows_controller'
 
 module Sipity
   module Controllers

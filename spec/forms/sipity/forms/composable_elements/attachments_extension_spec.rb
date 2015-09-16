@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/composable_elements/attachments_extension'
 
 module Sipity
   module Forms

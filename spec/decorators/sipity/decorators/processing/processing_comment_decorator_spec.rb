@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/decorators/processing/processing_comment_decorator'
 
 module Sipity
   module Decorators

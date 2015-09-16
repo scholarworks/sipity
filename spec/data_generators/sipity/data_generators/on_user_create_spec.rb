@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/data_generators/on_user_create'
 
 module Sipity
   module DataGenerators

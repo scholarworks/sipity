@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/queries/collaborator_queries'
 
 module Sipity
   module Queries

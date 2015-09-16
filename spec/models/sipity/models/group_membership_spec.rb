@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/models/group_membership'
 
 module Sipity
   module Models

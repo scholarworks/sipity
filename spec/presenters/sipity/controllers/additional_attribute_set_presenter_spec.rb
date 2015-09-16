@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/additional_attribute_set_presenter'
 
 module Sipity
   module Controllers

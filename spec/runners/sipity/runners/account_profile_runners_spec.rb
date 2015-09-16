@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/runners/account_profile_runners'
+require 'sipity/runners/account_profile_runners'
 
 module Sipity
   module Runners

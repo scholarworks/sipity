@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/processing_action_composer'
 
 module Sipity
   module Controllers
