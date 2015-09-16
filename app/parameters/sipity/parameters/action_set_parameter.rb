@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Parameters
     # Responsible for providing an identified collection of actions.
