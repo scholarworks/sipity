@@ -55,6 +55,7 @@ module Sipity
         end
 
         def default_repository
+          require 'sipity/query_repository' unless defined?(Sipity::QueryRepository)
           QueryRepository.new
         end
       end

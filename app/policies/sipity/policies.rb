@@ -1,3 +1,5 @@
+require 'sipity/exceptions'
+
 module Sipity
   # Contains the various Policies associated with Sipity.
   #
