@@ -1,3 +1,5 @@
+require 'active_model/validations'
+
 module Sipity
   module Forms
     module WorkSubmissions

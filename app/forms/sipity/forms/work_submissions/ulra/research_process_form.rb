@@ -1,3 +1,4 @@
+require 'active_model/validations'
 require 'active_support/core_ext/array/wrap'
 
 module Sipity

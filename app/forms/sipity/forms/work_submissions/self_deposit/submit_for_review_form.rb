@@ -1,3 +1,4 @@
+require 'active_model/validations'
 require_relative '../../../forms'
 module Sipity
   module Forms

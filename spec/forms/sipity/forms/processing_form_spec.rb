@@ -1,3 +1,4 @@
+require 'active_model/validations'
 require 'spec_helper'
 require 'sipity/forms/processing_form'
 

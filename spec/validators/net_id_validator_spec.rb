@@ -1,3 +1,4 @@
+require 'active_model/validations'
 require 'rails_helper'
 require 'net_id_validator'
 

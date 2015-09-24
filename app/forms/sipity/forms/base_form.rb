@@ -1,3 +1,5 @@
+require 'active_model/validations'
+
 module Sipity
   module Forms
     # A Form data structure for validation and submission.
