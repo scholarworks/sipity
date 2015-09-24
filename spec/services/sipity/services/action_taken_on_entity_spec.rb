@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'spec/support/sipity/command_repository_interface'
+require 'support/sipity/command_repository_interface'
 require 'sipity/services/action_taken_on_entity'
 
 module Sipity

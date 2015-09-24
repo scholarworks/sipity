@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'spec/support/sipity/command_repository_interface'
+require 'support/sipity/command_repository_interface'
 require 'sipity/forms/work_submissions/etd/publishing_and_patenting_intent_form'
 require 'sipity/models/work'
 require 'sipity/policies/work_policy'

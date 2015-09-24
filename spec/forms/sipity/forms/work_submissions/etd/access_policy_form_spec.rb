@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'sipity/models/work'
 require 'sipity/models/attachment'
-require 'spec/support/sipity/command_repository_interface'
+require 'support/sipity/command_repository_interface'
 
 module Sipity
   module Forms
