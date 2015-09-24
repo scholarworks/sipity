@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Controllers
     # Responsible for presenting an state advancing action
