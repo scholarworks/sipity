@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'spec/support/sipity/command_repository_interface'
 require 'sipity/forms/core/manage_account_profile_form'
 
 module Sipity

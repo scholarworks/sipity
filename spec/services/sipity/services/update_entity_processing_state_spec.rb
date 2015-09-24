@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'spec/support/sipity/command_repository_interface'
 require 'sipity/services/update_entity_processing_state'
 
 module Sipity

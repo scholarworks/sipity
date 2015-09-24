@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'spec/support/sipity/command_repository_interface'
 require 'sipity/forms/work_submissions/ulra/faculty_response_form'
 
 module Sipity

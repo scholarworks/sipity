@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'spec/support/sipity/command_repository_interface'
 require 'sipity/processing_hooks/etd/works/grad_school_signoff'
 
 module Sipity

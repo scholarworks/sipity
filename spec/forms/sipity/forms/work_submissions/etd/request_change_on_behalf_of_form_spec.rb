@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'spec/support/sipity/command_repository_interface'
 require 'sipity/forms/work_submissions/etd/request_change_on_behalf_of_form'
 
 module Sipity
