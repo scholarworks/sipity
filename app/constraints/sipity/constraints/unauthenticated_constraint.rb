@@ -1,4 +1,7 @@
 module Sipity
+  # A namespace for routing constraints, as defined by Rails.
+  #
+  # @see http://guides.rubyonrails.org/routing.html#advanced-constraints
   module Constraints
     # A bit confusing here, this constraint will return true if there is
     # no associated user with the request. It will return false if there is an
