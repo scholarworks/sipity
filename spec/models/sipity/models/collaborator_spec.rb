@@ -88,6 +88,7 @@ module Sipity
       end
 
       its(:possible_roles) { should eq(described_class.roles) }
+      its(:possible_strategies) { should eq(described_class.strategies) }
 
       it 'will raise an ArgumentError if you provide an invalid role' do
         expect { subject.role = '__incorrect_role__' }.to raise_error(ArgumentError)
@@ -98,6 +99,14 @@ module Sipity
         subject.send(:nilify_blank_values)
         expect(subject.email).to be_nil
         expect(subject.netid).to be_nil
+      end
+
+      it 'will assign strategy and identifying value' do
+        subject = described_class.new(netid: 'hworld', email: '')
+        subject.send(:assign_strategy_and_identifying_value)
+        expect(subject.strategy).to eq('netid')
+        expect(subject.identifying_value).to eq(subject.netid)
+        expect(subject.identifier_id).to eq('bmV0aWQJaHdvcmxk')
       end
     end
   end

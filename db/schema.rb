@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150911190436) do
+ActiveRecord::Schema.define(version: 20150928194321) do
+
+  create_table "data_migrations", id: false, force: :cascade do |t|
+    t.string "version", limit: 255, null: false
+  end
+
+  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
 
   create_table "sipity_access_rights", force: :cascade do |t|
     t.string   "entity_id",         limit: 32,  null: false
@@ -28,8 +34,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
     t.string   "work_id",    limit: 32,    null: false
     t.string   "key",        limit: 255,   null: false
     t.text     "value",      limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
@@ -63,11 +69,14 @@ ActiveRecord::Schema.define(version: 20150911190436) do
     t.integer  "sequence",               limit: 4
     t.string   "name",                   limit: 255
     t.string   "role",                   limit: 255,                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "netid",                  limit: 255
     t.string   "email",                  limit: 255
     t.boolean  "responsible_for_review",             default: false
+    t.string   "strategy",               limit: 255
+    t.string   "identifying_value",      limit: 255
+    t.string   "identifier_id",          limit: 255
   end
 
   add_index "sipity_collaborators", ["email"], name: "index_sipity_collaborators_on_email", using: :btree
@@ -81,8 +90,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
     t.string   "entity_id",         limit: 32,  null: false
     t.string   "entity_type",       limit: 64,  null: false
     t.string   "event_name",        limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "requested_by_id",   limit: 255
     t.string   "requested_by_type", limit: 255
     t.string   "identifier_id",     limit: 255
@@ -106,8 +115,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
     t.string   "user_id",         limit: 255, null: false
     t.string   "group_id",        limit: 255, null: false
     t.string   "membership_role", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "sipity_group_memberships", ["group_id", "membership_role"], name: "index_sipity_group_memberships_on_group_id_and_membership_role", using: :btree
@@ -117,8 +126,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
 
   create_table "sipity_groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
@@ -410,8 +419,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
   create_table "sipity_works", id: false, force: :cascade do |t|
     t.string   "id",         limit: 32,    null: false
     t.text     "title",      limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "work_type",  limit: 255,   null: false
   end
 
@@ -427,8 +436,8 @@ ActiveRecord::Schema.define(version: 20150911190436) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",         limit: 255
     t.string   "last_sign_in_ip",            limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.string   "name",                       limit: 255
     t.integer  "role",                       limit: 4
     t.string   "username",                   limit: 255,                 null: false

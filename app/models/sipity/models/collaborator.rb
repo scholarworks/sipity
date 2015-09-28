@@ -66,12 +66,24 @@ module Sipity
         }
       )
 
+      enum(
+        strategy:
+        {
+          'email' => 'email',
+          'netid' => 'netid'
+        }
+      )
+
       def to_s
         name
       end
 
       def possible_roles
         self.class.roles
+      end
+
+      def possible_strategies
+        self.class.strategies
       end
 
       before_save :nilify_blank_values
@@ -83,6 +95,16 @@ module Sipity
         # However, for now, they are needed until I can do a data migration.
         self.netid = nil unless netid.present?
         self.email = nil unless email.present?
+
+        assign_strategy_and_identifying_value
+      end
+
+      def assign_strategy_and_identifying_value
+        # HACK: Without changing the outward facing interface I want to drive behavior from these fields
+        self.identifying_value = netid || email
+        self.strategy = 'netid' if netid.present?
+        self.strategy = 'email' if email.present?
+        self.identifier_id = Cogitate::Client.encoded_identifier_for(strategy: strategy, identifying_value: identifying_value)
       end
     end
   end
