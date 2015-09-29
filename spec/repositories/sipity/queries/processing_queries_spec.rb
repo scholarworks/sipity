@@ -395,29 +395,12 @@ module Sipity
         end
       end
 
-      context '#users_that_have_taken_the_action_on_the_entity' do
-        subject { test_repository.users_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
-        it "will include permitted strategy_state_actions" do
-          user = User.create!(username: 'user')
-          other_user = User.create!(username: 'another_user')
-          groupy = User.create!(username: 'groupy')
-          Models::GroupMembership.create(user_id: groupy.id, group_id: group.id)
-          Conversions::ConvertToProcessingActor.call(user)
-          Conversions::ConvertToProcessingActor.call(other_user)
-          Conversions::ConvertToProcessingActor.call(group)
-          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
-          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: group)
-          expect(subject).to eq([user, groupy])
-        end
-      end
-
       context '#collaborators_that_have_taken_the_action_on_the_entity' do
         subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
         it "will include permitted strategy_state_actions" do
           user = User.create!(username: 'user')
           non_acting_user = User.create!(username: 'non_acting_user')
           other_user = User.create!(username: 'another_user')
-          groupy = User.create!(username: 'groupy')
           user_acting_collaborator = Models::Collaborator.create!(
             name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
           )
@@ -428,9 +411,6 @@ module Sipity
             role: 'Committee Member',
             work_id: entity.proxy_for_id
           )
-          group_collaborator = Models::Collaborator.create!(
-            name: 'groupy', netid: groupy.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
-          )
 
           not_yet_acted_collaborator = Models::Collaborator.create!(
             name: 'not_yet_acted_collaborator',
@@ -439,10 +419,9 @@ module Sipity
             role: 'Committee Member',
             work_id: entity.proxy_for_id
           )
-          Models::GroupMembership.create(user_id: groupy.id, group_id: group.id)
 
           [
-            user, non_acting_user, other_user, groupy, user_acting_collaborator, acting_via_email_collaborator, not_yet_acted_collaborator
+            user, non_acting_user, other_user, user_acting_collaborator, acting_via_email_collaborator, not_yet_acted_collaborator
           ].each do |proxy_for_actor|
             Conversions::ConvertToProcessingActor.call(proxy_for_actor)
           end
@@ -451,13 +430,12 @@ module Sipity
             name: 'non_reviewing', role: 'Committee Member', responsible_for_review: false, work_id: entity.proxy_for_id
           )
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: user)
-          Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: group)
           Services::ActionTakenOnEntity.register(entity: entity, action: action, requested_by: acting_via_email_collaborator)
+
           expect(subject.pluck(:name)).to eq(
             [
               user_acting_collaborator.name,
-              acting_via_email_collaborator.name,
-              group_collaborator.name
+              acting_via_email_collaborator.name
             ]
           )
         end

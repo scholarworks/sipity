@@ -13,10 +13,6 @@ module Sipity
     def accessible_objects(work:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def action_registers_subquery_builder(poly_type:, entity:, actions:)
-    end
-
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
     def agreed_to_application_terms_of_service?(identifier_id:)
     end
@@ -118,10 +114,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def processing_state_names_for_select_within_work_area(work_area:, usage_type: Sipity::Models::WorkType)
     end
 
@@ -207,10 +199,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def user_emails_for_entity_and_roles(entity:, roles:)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def users_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
