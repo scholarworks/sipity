@@ -293,10 +293,6 @@ module Sipity
     def update_processing_state!(entity:, to:)
     end
 
-    # @see ./app/repositories/sipity/commands/account_profile_commands.rb
-    def update_user_preferred_name(user:, preferred_name:)
-    end
-
     # @see ./app/repositories/sipity/commands/additional_attribute_commands.rb
     def update_work_attribute_values!(work:, key:, values:, repository: self)
     end
@@ -306,7 +302,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/account_profile_commands.rb
-    def user_agreed_to_terms_of_service(user:)
+    def user_agreed_to_terms_of_service(user:, agreed_at: Time.zone.now)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

@@ -7,21 +7,6 @@
   <%= f.error :base, error_method: :to_sentence %>
 
   <div class="row">
-    <div class="col-md-4 col-md-offset-4">
-      <fieldset class="<%= dom_class(model, 'information') %> panel panel-primary">
-        <legend class="panel-heading">
-          <%= content_tag :h3, t("sipity/decorators/account.panels.information.title_html"), class: 'panel-title' %>
-        </legend>
-
-        <div class="panel-body">
-          <%= content_tag :p, t("sipity/decorators/account.panels.information.hint"), class: 'panel-hint' %>
-          <%= f.input :preferred_name, input_html: { class: 'form-control', autofocus: true }  %>
-        </div>
-      </fieldset>
-    </div>
-  </div>
-
-  <div class="row">
     <div class="col-md-8 col-md-offset-2">
       <fieldset>
         <%= content_tag :h2, t("sipity/decorators/account.panels.terms_of_service.title_html") %>
