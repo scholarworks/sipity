@@ -26,22 +26,8 @@ module Sipity
           collaborator.work_id = work.id
           collaborator.save!
           next unless collaborator.responsible_for_review?
-          create_sipity_user_from(netid: collaborator.netid, email: collaborator.email) do |user|
-            change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user)
-            repository.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
-          end
+          repository.grant_permission_for!(actors: collaborator, entity: work, acting_as: Models::Role::ADVISOR)
         end
-      end
-
-      # In an effort to preserve processing actors, I want to expose a mechanism
-      # for transfering processing actors to another proxy.
-      #
-      # This method arises as we consider the scenario in which someone approves
-      # on behalf of a non-User collaborator (i.e. someone that has an email
-      # address). Then the collaborator is changed such that a user is created.
-      def change_processing_actor_proxy(from_proxy:, to_proxy:)
-        return unless from_proxy.respond_to?(:processing_actor) && from_proxy.processing_actor.present?
-        from_proxy.processing_actor.update(proxy_for: to_proxy)
       end
 
       def create_work!(submission_window:, **attributes)
@@ -92,21 +78,6 @@ module Sipity
           update_all(is_representative_file: false)
         Models::Attachment.where(work_id: work.id, pid: attachment.pid).update_all(is_representative_file: true)
       end
-
-      def create_sipity_user_from(netid:, email: nil)
-        return false unless netid.present?
-        # This assumes a valid NetID.
-        user = User.find_or_create_by!(username: netid) do |u|
-          u.email = email || default_email_for_netid(netid)
-        end
-        yield(user) if block_given?
-        user
-      end
-
-      def default_email_for_netid(netid)
-        "#{netid}@nd.edu"
-      end
-      private :default_email_for_netid
 
       # @return [#call] A call-able object that when called will return a String
       #

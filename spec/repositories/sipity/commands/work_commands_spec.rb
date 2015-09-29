@@ -20,16 +20,6 @@ module Sipity
         end
       end
 
-      context '#change_processing_actor_proxy' do
-        let(:user) { User.create!(username: 'hello') }
-        let(:collaborator) { Models::Collaborator.create!(name: 'bob', role: 'Committee Member', work_id: 1) }
-        let(:current_actor) { collaborator.to_processing_actor }
-        it 'will transfer ownership from the given proxy to another' do
-          expect { test_repository.change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user) }.
-            to change { current_actor.reload.proxy_for }.from(collaborator).to(user)
-        end
-      end
-
       context '#manage_collaborators_for' do
         let(:work) { Models::Work.new(id: 123) }
         let(:collaborator) do
@@ -74,13 +64,11 @@ module Sipity
 
         context 'when a collaborator is responsible_for_review' do
           let(:is_responsible_for_review?) { true }
-          it 'will create a collaborator, user, and permission' do
+          it 'will create a collaborator, and permission' do
             expect(repository).to receive(:grant_permission_for!).and_call_original
             expect do
-              expect do
-                test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
-              end.to change(Models::Collaborator, :count).by(1)
-            end.to change(User, :count).by(1)
+              test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
+            end.to change(Models::Collaborator, :count).by(1)
           end
         end
       end
@@ -107,30 +95,6 @@ module Sipity
         subject { test_repository.default_pid_minter }
         it { should respond_to(:call) }
         its(:call) { should be_a(String) }
-      end
-
-      context '#create_sipity_user_from' do
-        it 'will create a user from the given netid if one does not exist' do
-          expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
-            to change { User.count }.by(1)
-          expect(User.last.email).to be_present
-        end
-        it 'will not create multiple times' do
-          user = Factories.create_user
-          expect { test_repository.create_sipity_user_from(netid: user.username) }.
-            to_not change { User.count }
-        end
-        it 'will skip user creation of the netID exists' do
-          test_repository.create_sipity_user_from(netid: 'helloworld')
-
-          expect { test_repository.create_sipity_user_from(netid: 'helloworld') }.
-            to_not change { User.count }
-        end
-
-        it 'will skip user creation if no netid is given' do
-          expect { test_repository.create_sipity_user_from(netid: '') }.
-            to_not change { User.count }
-        end
       end
 
       context '#update_processing_state!' do
