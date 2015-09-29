@@ -15,7 +15,6 @@ module Sipity
       end
 
       alias_method :reason_for_notification, :reason
-      deprecate :reason_for_notification
 
       private
 

@@ -15,6 +15,7 @@ module Sipity
       its(:scope) { should eq scope }
       its(:the_thing) { should eq the_thing }
       its(:reason) { should be_a String }
+      its(:reason_for_notification) { should eq(subject.reason) }
       it { should respond_to :requested_by }
       it { should respond_to :on_behalf_of }
 
