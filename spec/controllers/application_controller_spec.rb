@@ -2,6 +2,21 @@ require 'spec_helper'
 require 'application_controller'
 
 RSpec.describe ApplicationController do
+  context '#current_user' do
+    it 'will not call the CurrentAgentFromSessionExtractor if @current_user is set' do
+      user = double('User')
+      controller.send(:current_user=, user)
+      expect(Sipity::Services::CurrentAgentFromSessionExtractor).to_not receive(:call)
+      controller.current_user
+    end
+
+    it 'will set the @current_user via CurrentAgentFromSessionExtractor one is not already set' do
+      user = double('User')
+      expect(Sipity::Services::CurrentAgentFromSessionExtractor).to receive(:call).with(session: controller.session).and_return(user)
+      controller.current_user
+      expect(controller.instance_variable_get("@current_user")).to eq(user)
+    end
+  end
   context '#repository' do
     it 'will be a QueryRepository for a GET request' do
       expect(request).to receive(:get?).and_return(true)

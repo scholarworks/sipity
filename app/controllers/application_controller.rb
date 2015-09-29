@@ -1,6 +1,7 @@
 require 'active_support/core_ext/array/wrap'
 
 require 'hesburgh/lib/controller_with_runner'
+require 'sipity/services/current_agent_from_session_extractor'
 
 # The foundational controller for this application
 class ApplicationController < ActionController::Base
@@ -24,8 +25,15 @@ class ApplicationController < ActionController::Base
   end
   helper_method :repository
 
-  attr_accessor :current_user
+  attr_writer :current_user
   private :current_user=
+
+  # I had preferred to not use this logic as I was hoping to push all of it to the authentication layer, however not all actions
+  # make use of the authentication layer. So, while there is a duplication of some knowledge, its a reflection of the somewhat leaky
+  # nature of the Rails controller and the Runners that many of the controllers use.
+  def current_user
+    @current_user ||= Sipity::Services::CurrentAgentFromSessionExtractor.call(session: session)
+  end
   helper_method :current_user
 
   delegate :user_signed_in?, to: :current_user, allow_nil: true
