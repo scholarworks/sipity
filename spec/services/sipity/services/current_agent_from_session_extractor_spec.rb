@@ -1,6 +1,5 @@
 require 'spec_helper'
-require 'sipity/services/current_agent_extractor'
-require 'sipity/models/agent'
+require 'sipity/services/current_agent_from_session_extractor'
 
 RSpec.describe Sipity::Services::CurrentAgentFromSessionExtractor do
   subject { described_class }

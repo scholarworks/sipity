@@ -13,6 +13,7 @@ module Sipity
         if session.key?(:cogitate_token)
           Sipity::Models::Agent.new_from_cogitate_token(token: session[:cogitate_token])
         elsif session.key?(:validated_resource_id)
+          # Looks like Devise and Warden are still cooperating with us.
           Sipity::Models::Agent.new_from_user_id(user_id: session[:validated_resource_id])
         elsif session.key?('warden.user.user.key')
           # We have something that looks like `[[1], nil]` in the session
