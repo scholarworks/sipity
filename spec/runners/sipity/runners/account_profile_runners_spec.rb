@@ -16,21 +16,23 @@ module Sipity
           end
         end
 
-        it 'will require authentication by default' do
-          expect(described_class.authentication_layer).to respond_to(:call)
-        end
-
         it 'issues the :success callback' do
           response = subject.run
           expect(context.handler).to have_received(:invoked).with("SUCCESS", form)
           expect(response).to eq([:success, form])
+        end
+
+        context 'class configuration' do
+          subject { described_class }
+          its(:authentication_layer) { should eq(:authenticate_user_with_disregard_for_approval_of_terms_of_service) }
+          its(:authorization_layer) { should eq(:none) }
         end
       end
 
       RSpec.describe Update do
         let(:form) { double('Form', submit: update_response) }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(current_user_for_profile_management: user, build_account_profile_form: form) }
+        let(:context) { TestRunnerContext.new(current_user: user, build_account_profile_form: form) }
         let(:update_response) { nil }
         let(:handler) { double(invoked: true) }
         let(:attributes) { {} }
@@ -42,8 +44,10 @@ module Sipity
           end
         end
 
-        it 'will require authentication by default' do
-          expect(described_class.authentication_layer).to respond_to(:call)
+        context 'class configuration' do
+          subject { described_class }
+          its(:authentication_layer) { should eq(:authenticate_user_with_disregard_for_approval_of_terms_of_service) }
+          its(:authorization_layer) { should eq(:none) }
         end
 
         context 'when account profile is updated' do
