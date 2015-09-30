@@ -42,6 +42,13 @@ module Sipity
       self.authentication_layer = :none
       self.action_name = nil
 
+      # @api public
+      def self.run(context, *args, &block)
+        runner = new(context, &block)
+        return runner.callback(:unauthenticated) unless runner.enforce_authentication
+        runner.run(*args)
+      end
+
       # @param context [#current_user, #repository] The containing context in
       #   which the runner is acting. This is likely an ApplicationController.
       # @param options [Hash] configuration options
@@ -57,7 +64,6 @@ module Sipity
       def initialize(context, options = {}, &block)
         super(context, &block)
         self.authentication_layer = options.fetch(:authentication_layer) { self.class.authentication_layer }
-        enforce_authentication!
         self.authorization_layer = options.fetch(:authorization_layer) { self.class.authorization_layer }
       end
 
@@ -79,6 +85,14 @@ module Sipity
         self.class.action_name || self.class.to_s.demodulize.underscore
       end
 
+      def enforce_authentication!
+        enforce_authentication || fail(Exceptions::AuthenticationFailureError, self.class)
+      end
+
+      def enforce_authentication
+        authentication_layer.call(context)
+      end
+
       private
 
       # @todo Tease out a builder object
@@ -90,15 +104,6 @@ module Sipity
         rescue NameError
           raise Exceptions::FailedToBuildAuthenticationLayerError, uncoerced_layer
         end
-      end
-
-      def enforce_authentication!
-        return true if authentication_layer.call(context)
-        # I am choosing to raise this exception because the default authentication
-        # service has likely thrown an exception if things have failed. This is
-        # my last line of defense. If you encounter this exception, make sure
-        # to review the authentication_service method for its output.
-        fail Exceptions::AuthenticationFailureError, self.class
       end
 
       # @todo Tease out a builder

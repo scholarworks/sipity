@@ -9,12 +9,10 @@ module Sipity
       let(:my_options) { {} }
       subject { BaseRunner.new(context, my_options) }
 
-      it 'will not require authentication by default' do
-        expect(BaseRunner.authentication_layer).to eq(:none)
-      end
-
-      it 'will not require authorization by default' do
-        expect(BaseRunner.authorization_layer).to eq(:none)
+      context 'default configuration' do
+        subject { BaseRunner }
+        its(:authentication_layer) { should eq(:none) }
+        its(:authorization_layer) { should eq(:none) }
       end
 
       it 'will require you to implement #run' do
@@ -28,14 +26,24 @@ module Sipity
         expect(subject.action_name).to eq('base_runner')
       end
 
-      context 'authentication layer coordination' do
-        it 'will build the corresponding authentication layer' do
-          authenticator = double(call: true)
-          expect(Services::AuthenticationLayer).to receive(:method).with('chicken_taco!').and_return(authenticator)
-          expect(authenticator).to receive(:call).with(context).and_return(true)
-          BaseRunner.new(context, authentication_layer: :chicken_taco)
-        end
+      context '#enforce_authentication!' do
+        it 'will raise an error if enforce_authentication is false' do
+          expect(subject).to receive(:enforce_authentication).and_return(false)
 
+          expect { subject.enforce_authentication! }.to raise_error(Exceptions::AuthenticationFailureError)
+        end
+      end
+
+      context '.run' do
+        it 'will enforce authentication' do
+          expect_any_instance_of(described_class).to receive(:enforce_authentication).and_return(false)
+          expect_any_instance_of(described_class).to receive(:callback).with(:unauthenticated)
+          expect_any_instance_of(described_class).to_not receive(:run)
+          described_class.run(context: context)
+        end
+      end
+
+      context 'authentication layer coordination' do
         it 'will raise an exception if the authentication layer method does not exist' do
           expect { BaseRunner.new(context, authentication_layer: :bogus) }.to(
             raise_error(Sipity::Exceptions::FailedToBuildAuthenticationLayerError)
@@ -45,24 +53,6 @@ module Sipity
         it 'will build a "none" authentication layer if none is given' do
           runner = BaseRunner.new(context, authentication_layer: false)
           expect(runner.send(:authentication_layer)).to respond_to(:call)
-        end
-
-        context 'when authentication is called' do
-          let(:my_options) { { authentication_layer: double(call: true) } }
-
-          context 'and returns false' do
-            it 'will raise an AuthenticationFailureError on instantiation' do
-              expect(my_options[:authentication_layer]).to receive(:call).with(context).and_return(false)
-              expect { BaseRunner.new(context, my_options) }.to raise_error(Exceptions::AuthenticationFailureError)
-            end
-          end
-
-          context 'and returns true' do
-            it 'will successfully instantiate (and be ready to run)' do
-              expect(my_options[:authentication_layer]).to receive(:call).with(context).and_return(true)
-              expect(BaseRunner.new(context, my_options)).to be_a(BaseRunner)
-            end
-          end
         end
 
         context 'when the authentication layer is mis-configured' do

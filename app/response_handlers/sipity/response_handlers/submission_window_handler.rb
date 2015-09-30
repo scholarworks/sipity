@@ -11,11 +11,16 @@ module Sipity
         end
       end
 
+      # Unauthenticated so do nothing
+      module UnauthenticatedResponder
+        def self.call(*)
+          nil
+        end
+      end
+
       # We have a successful form submission.
       module SubmitSuccessResponder
-        module_function
-
-        def call(handler:)
+        def self.call(handler:)
           handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
         end
       end

@@ -39,6 +39,7 @@ module Sipity
       end
 
       # @api private
+      # @todo https://github.com/ndlib/sipity/issues/888
       def authenticate_user!
         set_current_user
         if current_user.user_signed_in?
@@ -52,6 +53,7 @@ module Sipity
       end
 
       # @api private
+      # @todo https://github.com/ndlib/sipity/issues/888
       def authenticate_user_with_disregard_for_approval_of_terms_of_service!
         set_current_user
         return current_user if current_user.user_signed_in?

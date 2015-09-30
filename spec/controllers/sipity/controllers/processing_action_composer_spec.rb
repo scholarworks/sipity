@@ -6,9 +6,10 @@ module Sipity
     RSpec.describe ProcessingActionComposer do
       let(:controller) do
         double(
+          'Controller',
           params: { processing_action_name: 'hello_world' },
           prepend_view_path: true,
-          response_handler_container: double,
+          response_handler_container: double(qualified_const_get: double('Handler')),
           controller_path: 'sipity/controllers/work_submissions',
           run: true
         )
@@ -22,6 +23,13 @@ module Sipity
 
       its(:processing_action_name) { should eq(processing_action_name) }
       its(:default_response_handler) { should respond_to :handle_response }
+
+      context 'when we receive an :unauthenticated response' do
+        it 'will handle unauthenticated' do
+          expect(controller).to receive(:run).and_return(:unauthenticated)
+          subject.run_and_respond_with_processing_action(work_id: 1)
+        end
+      end
 
       it 'will prepend_processing_action_view_path_with' do
         expect(controller).to receive(:prepend_view_path).with(%r{/#{controller.controller_path}/bug\Z})
