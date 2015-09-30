@@ -7,9 +7,11 @@ module Sipity
       self.runner_container = Sipity::Runners::CommentRunners
 
       def index
-        _status, model = run(work_id: work_id)
-        @model = Decorators::WorkDecorator.decorate(model)
-        respond_with(@model)
+        status, model = run(work_id: work_id)
+        with_authentication_hack_to_remove_warden(status) do
+          @model = Decorators::WorkDecorator.decorate(model)
+          respond_with(@model)
+        end
       end
 
       private

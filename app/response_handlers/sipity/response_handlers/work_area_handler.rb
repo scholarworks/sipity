@@ -9,13 +9,6 @@ module Sipity
         end
       end
 
-      # Unauthenticated so do nothing
-      module UnauthenticatedResponder
-        def self.call(*)
-          nil
-        end
-      end
-
       # Forms that fail to submit may have different errors.
       module SubmitFailureResponder
         def self.call(handler:)

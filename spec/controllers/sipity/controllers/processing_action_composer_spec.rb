@@ -11,6 +11,7 @@ module Sipity
           prepend_view_path: true,
           response_handler_container: double(qualified_const_get: double('Handler')),
           controller_path: 'sipity/controllers/work_submissions',
+          with_authentication_hack_to_remove_warden: true,
           run: true
         )
       end
@@ -26,7 +27,9 @@ module Sipity
 
       context 'when we receive an :unauthenticated response' do
         it 'will handle unauthenticated' do
+          expect(controller).to receive(:with_authentication_hack_to_remove_warden)
           expect(controller).to receive(:run).and_return(:unauthenticated)
+          expect(subject).to_not receive(:handle_response)
           subject.run_and_respond_with_processing_action(work_id: 1)
         end
       end
@@ -37,6 +40,8 @@ module Sipity
       end
 
       it 'will run and respond with a processing_action' do
+        expect(controller).to receive(:with_authentication_hack_to_remove_warden).and_yield
+
         a_response = double(to_work_area: work_area)
         expect(controller).to receive(:run).with(work_id: 1, processing_action_name: processing_action_name).
           and_return([:success, a_response])

@@ -6,7 +6,8 @@ module Sipity
       self.runner_container = Sipity::Runners::VisitorsRunner
 
       def areas_etd
-        _status, @view_object = run(work_area_slug: Sipity::DataGenerators::WorkAreas::EtdGenerator::SLUG)
+        status, @view_object = run(work_area_slug: Sipity::DataGenerators::WorkAreas::EtdGenerator::SLUG)
+        with_authentication_hack_to_remove_warden(status) { @view_object }
       end
 
       private

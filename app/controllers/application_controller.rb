@@ -28,6 +28,16 @@ class ApplicationController < ActionController::Base
   attr_writer :current_user
   private :current_user=
 
+  # @api private
+  #
+  # This is a HACK in the worst way.
+  #
+  # @note This is related to disentangling actions from their HTTP context. Passing a request through the various layers
+  def with_authentication_hack_to_remove_warden(status)
+    return false if status == :unauthenticated
+    yield
+  end
+
   # I had preferred to not use this logic as I was hoping to push all of it to the authentication layer, however not all actions
   # make use of the authentication layer. So, while there is a duplication of some knowledge, its a reflection of the somewhat leaky
   # nature of the Rails controller and the Runners that many of the controllers use.

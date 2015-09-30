@@ -2,6 +2,15 @@ require 'spec_helper'
 require 'application_controller'
 
 RSpec.describe ApplicationController do
+  context '#with_authentication_hack_to_remove_warden' do
+    it 'will not yield when the given status is :unauthenticated' do
+      expect { |b| controller.with_authentication_hack_to_remove_warden(:unauthenticated, &b) }.to_not yield_control
+    end
+    it 'will yield when the given status is something other than :unauthenticated' do
+      expect { |b| controller.with_authentication_hack_to_remove_warden(nil, &b) }.to yield_control
+    end
+  end
+
   context '#current_user' do
     it 'will not call the CurrentAgentFromSessionExtractor if @current_user is set' do
       user = double('User')

@@ -14,11 +14,6 @@ module Sipity
         end
       end
 
-      RSpec.describe UnauthenticatedResponder do
-        subject { described_class }
-        its(:call) { should eq(nil) }
-      end
-
       RSpec.describe SubmitSuccessResponder do
         let(:handler) { double(redirect_to: true, response_object: double(id: '123')) }
 

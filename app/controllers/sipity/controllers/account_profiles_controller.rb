@@ -8,8 +8,8 @@ module Sipity
       self.runner_container = Sipity::Runners::AccountProfileRunners
 
       def edit
-        _status, @model = run(attributes: edit_params)
-        respond_with(@model)
+        status, @model = run(attributes: edit_params)
+        with_authentication_hack_to_remove_warden(status) { respond_with(@model) }
       end
 
       def update

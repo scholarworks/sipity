@@ -5,11 +5,6 @@ require 'sipity/response_handlers/work_submission_handler'
 module Sipity
   module ResponseHandlers
     module WorkSubmissionHandler
-      RSpec.describe UnauthenticatedResponder do
-        subject { described_class }
-        its(:call) { should eq(nil) }
-      end
-
       RSpec.describe SuccessResponder do
         let(:handler) { double(render: 'rendered', template: 'show') }
 

@@ -5,13 +5,6 @@ module Sipity
     # These handlers are very nosy; In object perlance they are doing little on
     # their own, but instead coordinating that reality.
     module WorkSubmissionHandler
-      # Unauthenticated so do nothing
-      module UnauthenticatedResponder
-        def self.call(*)
-          nil
-        end
-      end
-
       # It worked
       module SuccessResponder
         def self.call(handler:)

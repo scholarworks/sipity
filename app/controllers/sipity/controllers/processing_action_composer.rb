@@ -18,27 +18,16 @@ module Sipity
       end
 
       def run_and_respond_with_processing_action(**keywords)
-        handle_response(run_processing_action(**keywords))
+        run_processing_action(**keywords) { |response| handle_response(response) }
       end
 
       private
 
-      # TODO: Extract a handled response parameter builder; At present there is an
-      # assumed duplication of knowledge.
-      UnauthenticatedHandledResponse = Struct.new(:status, :object) do
-        def with_each_additional_view_path_slug
-        end
-
-        def template
-        end
-      end
-
       def run_processing_action(**keywords)
         status, object = controller.run(processing_action_name: processing_action_name, **keywords)
-
-        # HACK: Look for a better paradigm for mapping this information; Perhaps a builder.
-        return UnauthenticatedHandledResponse.new(status, object) if status == :unauthenticated
-        Parameters::HandledResponseParameter.new(status: status, object: object, template: processing_action_name)
+        controller.with_authentication_hack_to_remove_warden(status) do
+          yield(Parameters::HandledResponseParameter.new(status: status, object: object, template: processing_action_name))
+        end
       end
 
       def handle_response(handled_response)
