@@ -70,7 +70,11 @@ PowerConverter.define_conversion_for(:identifier_id) do |input|
     group_name = name_map.fetch(input.name, input.name)
     Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: group_name) if group_name.present?
   when Sipity::Models::Collaborator
-    Cogitate::Client.encoded_identifier_for(strategy: 'email', identifying_value: input.email) if input.email.present?
+    if input.identifier_id.present?
+      input.identifier_id
+    elsif input.email.present?
+      Cogitate::Client.encoded_identifier_for(strategy: 'email', identifying_value: input.email)
+    end
   when Sipity::Models::Processing::Actor
     PowerConverter.convert(input.proxy_for, to: :identifier_id)
   end

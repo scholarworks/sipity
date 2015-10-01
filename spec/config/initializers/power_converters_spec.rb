@@ -114,6 +114,10 @@ RSpec.describe 'power converters' do
       collaborator = Sipity::Models::Collaborator.new(email: 'hello')
       expect(PowerConverter.convert(collaborator, to: :identifier_id)).to be_a(String)
     end
+    it 'will convert a collaborator with an identifier_id' do
+      collaborator = Sipity::Models::Collaborator.new(identifier_id: 'hello')
+      expect(PowerConverter.convert(collaborator, to: :identifier_id)).to eq('hello')
+    end
     it 'will not convert a collaborator without an email' do
       collaborator = Sipity::Models::Collaborator.new
       expect { PowerConverter.convert(collaborator, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
