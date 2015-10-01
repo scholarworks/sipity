@@ -35,7 +35,7 @@ module Sipity
       end
 
       def capture_cogitate_token(token:)
-        context.session[:cogitate_token] = token
+        context.session[:cogitate_data] = token
       end
 
       # @api private

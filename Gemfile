@@ -37,6 +37,8 @@ gem 'kaminari'
 gem 'locabulary', github: 'ndlib/locabulary', branch: 'master'
 gem 'data_migrator', github: 'jeremyf/data-migrator'
 gem 'contracts'
+gem 'activerecord-session_store'
+gem 'cogitate', github: 'ndlib/cogitate'
 
 group :doc do
   gem 'inch', require: false
@@ -85,7 +87,6 @@ group :development, :staging do
 end
 
 group :development, :test do
-  gem 'cogitate', github: 'ndlib/cogitate'
   gem 'faker'
   gem 'pry-rescue', require: false
   gem 'pry-stack_explorer', require: false

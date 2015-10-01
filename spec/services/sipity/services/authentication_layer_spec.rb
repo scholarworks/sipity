@@ -12,7 +12,7 @@ module Sipity
       subject { described_class.new(context: controller, current_user_extractor: current_user_extractor) }
 
       it 'will capture the cogitate_token in the session' do
-        expect { subject.capture_cogitate_token(token: token) }.to change { session[:cogitate_token] }.from(nil).to(token)
+        expect { subject.capture_cogitate_token(token: token) }.to change { session[:cogitate_data] }.from(nil).to(token)
       end
 
       it 'will expose .authenticate_user! as a convenience method' do

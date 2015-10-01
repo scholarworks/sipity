@@ -35,12 +35,11 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/cogitate.git
-  revision: e74f678b1c0f7191834ef211aa5f54cebcb1b114
+  revision: 7d8aeb4920b213665b6c3cd17879a2ca3714d8c8
   specs:
-    cogitate (0.0.1)
+    cogitate (0.0.2)
       contracts (~> 0.1)
       jwt (~> 1.5)
-      rest-client (~> 1.8)
 
 GIT
   remote: git://github.com/ndlib/guard-scss-lint.git
@@ -115,6 +114,10 @@ GEM
       activemodel (= 4.2.4)
       activesupport (= 4.2.4)
       arel (~> 6.0)
+    activerecord-session_store (0.1.1)
+      actionpack (>= 4.0.0, < 5)
+      activerecord (>= 4.0.0, < 5)
+      railties (>= 4.0.0, < 5)
     activesupport (4.2.4)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -604,6 +607,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-session_store
   airbrake!
   autoprefixer-rails
   better_errors

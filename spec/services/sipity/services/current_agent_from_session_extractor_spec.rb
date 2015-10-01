@@ -6,6 +6,7 @@ RSpec.describe Sipity::Services::CurrentAgentFromSessionExtractor do
   let(:agent) { double(user_signed_in?: true, agreed_to_application_terms_of_service?: true) }
 
   [
+    { session: { cogitate_data: 'data' }, method_name: :new_from_cogitate_data },
     { session: { cogitate_token: 'a token' }, method_name: :new_from_cogitate_token },
     { session: { validated_resource_id: 1 }, method_name: :new_from_user_id },
     { session: { 'warden.user.user.key' => [[1], nil] }, method_name: :new_from_user_id },

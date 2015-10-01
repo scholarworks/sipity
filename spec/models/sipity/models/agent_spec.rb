@@ -7,6 +7,7 @@ module Sipity
       context 'class configuration' do
         subject { described_class }
         its(:default_token_decoder) { should respond_to(:call) }
+        its(:default_data_coercer) { should respond_to(:call) }
       end
 
       context '.new_from_cogitate_token' do
@@ -19,6 +20,20 @@ module Sipity
           end
         end
         subject { Agent.new_from_cogitate_token(token: token, token_decoder: token_decoder) }
+        it 'will honor the AgentInterface' do
+          expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true)
+        end
+      end
+
+      context '.new_from_cogitate_data' do
+        let(:data) { { cogitate: :data } }
+        let(:data_coercer) { double('Token Decoder', call: agent) }
+        let(:agent) do
+          Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'hworld') do |the_agent|
+            the_agent.add_email('hworld@nd.edu')
+          end
+        end
+        subject { Agent.new_from_cogitate_data(data: data, data_coercer: data_coercer) }
         it 'will honor the AgentInterface' do
           expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true)
         end
