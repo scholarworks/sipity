@@ -25,3 +25,5 @@ module Sipity
     I18n.t(support_statement_defaults.shift, default: support_statement_defaults, fallback: '').html_safe
   end
 end
+
+require File.expand_path('../sipity/models', __FILE__)
