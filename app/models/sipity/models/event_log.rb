@@ -12,8 +12,7 @@ module Sipity
 
       # This is a "stop-gap" for validations going forward. Once the database
       # constraint is added this should go away.
-      validates :requested_by_id, presence: true, on: :create
-      validates :requested_by_type, presence: true, on: :create
+      validates :identifier_id, presence: true, on: :create
     end
   end
 end

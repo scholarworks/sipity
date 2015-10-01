@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928194321) do
+ActiveRecord::Schema.define(version: 20151001173907) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 20150928194321) do
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence", using: :btree
 
   create_table "sipity_event_logs", force: :cascade do |t|
-    t.string   "user_id",           limit: 255, null: false
+    t.string   "user_id",           limit: 255
     t.string   "entity_id",         limit: 32,  null: false
     t.string   "entity_type",       limit: 64,  null: false
     t.string   "event_name",        limit: 255, null: false
