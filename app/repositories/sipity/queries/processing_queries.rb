@@ -405,11 +405,11 @@ module Sipity
       private :scope_processing_entities_for_the_user_and_proxy_for_type
 
       def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
-        Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
+        Queries::Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
       end
 
       def user_emails_for_entity_and_roles(entity:, roles:)
-        Complex::AgentsAssociatedWithEntity.emails_for(entity: entity, roles: roles)
+        Queries::Complex::AgentsAssociatedWithEntity.emails_for(entity: entity, roles: roles)
       end
 
       # @api public
