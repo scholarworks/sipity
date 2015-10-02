@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151001190254) do
+ActiveRecord::Schema.define(version: 20151002183227) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -191,7 +191,7 @@ ActiveRecord::Schema.define(version: 20151001190254) do
 
   create_table "sipity_processing_comments", force: :cascade do |t|
     t.string   "entity_id",                      limit: 32,                    null: false
-    t.integer  "actor_id",                       limit: 4,                     null: false
+    t.integer  "actor_id",                       limit: 4
     t.text     "comment",                        limit: 65535
     t.integer  "originating_strategy_action_id", limit: 4,                     null: false
     t.integer  "originating_strategy_state_id",  limit: 4,                     null: false
@@ -226,8 +226,8 @@ ActiveRecord::Schema.define(version: 20151001190254) do
     t.string   "entity_id",                  limit: 32,  null: false
     t.datetime "created_at",                             null: false
     t.datetime "updated_at",                             null: false
-    t.integer  "requested_by_actor_id",      limit: 4,   null: false
-    t.integer  "on_behalf_of_actor_id",      limit: 4,   null: false
+    t.integer  "requested_by_actor_id",      limit: 4
+    t.integer  "on_behalf_of_actor_id",      limit: 4
     t.integer  "subject_id",                 limit: 4
     t.string   "subject_type",               limit: 255
     t.string   "requested_by_identifier_id", limit: 255
