@@ -98,6 +98,14 @@ RSpec.describe 'power converters' do
       user = User.new(username: 'hello')
       expect(PowerConverter.convert(user, to: :identifier_id)).to be_a(String)
     end
+    it 'will allow a properly encoding string to pass' do
+      identifier_id = Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'hworld')
+      expect(PowerConverter.convert(identifier_id, to: :identifier_id)).to eq(identifier_id)
+    end
+    it 'will not allow an improperly encoded string to pass' do
+      bad_identifier_id = 'chicken_soup'
+      expect { PowerConverter.convert(bad_identifier_id, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
+    end
     it 'will not convert a user with a username' do
       user = User.new
       expect { PowerConverter.convert(user, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)

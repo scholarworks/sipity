@@ -58,6 +58,10 @@ end
 
 PowerConverter.define_conversion_for(:identifier_id) do |input|
   case input
+  when String
+    result = Cogitate::Client.extract_strategy_and_identifying_value(input)
+    # Because we have an array of two elements from the parsed value
+    input if result.count == 2
   when Cogitate::Models::Identifier, Cogitate::Models::Agent
     input.id
   when User
