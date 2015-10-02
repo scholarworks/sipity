@@ -209,7 +209,7 @@ GEM
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)
-    contracts (0.11.0)
+    contracts (0.12.0)
     crass (1.0.2)
     database_cleaner (1.5.1)
     debug_inspector (0.0.2)
