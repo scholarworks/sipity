@@ -157,6 +157,10 @@ module Sipity
     def get_controlled_vocabulary_values_for_predicate_name(name:)
     end
 
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def get_role_names_with_email_addresses_for(entity:)
+    end
+
     # @see ./app/repositories/sipity/commands/permission_commands.rb
     def grant_creating_user_permission_for!(entity:, user: nil, group: nil, actor: nil)
     end

@@ -257,6 +257,14 @@ module Sipity
         end
       end
 
+      context "#get_role_names_with_email_addresses_for" do
+        it 'will be an hash keyed by role name with values of emails' do
+          entity = double('Entity')
+          expect(Complex::AgentsAssociatedWithEntity).to receive(:role_names_with_emails_for).with(entity: entity)
+          test_repository.get_role_names_with_email_addresses_for(entity: entity)
+        end
+      end
+
       context '#scope_strategy_actions_that_are_prerequisites' do
         subject { test_repository.scope_strategy_actions_that_are_prerequisites(entity: entity) }
         let(:guarded_action) { Models::Processing::StrategyAction.find_or_create_by!(strategy_id: strategy.id, name: 'guarded_action') }

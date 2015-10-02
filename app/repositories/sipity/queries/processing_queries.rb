@@ -414,6 +414,14 @@ module Sipity
 
       # @api public
       #
+      # @param entity [#to_processing_entity]
+      # @return Hash keyed by role names with values of email addresses.
+      def get_role_names_with_email_addresses_for(entity:)
+        Queries::Complex::AgentsAssociatedWithEntity.role_names_with_emails_for(entity: entity)
+      end
+
+      # @api public
+      #
       # For the given :user and :entity, return an ActiveRecord::Relation that,
       # if resolved, will be all of the assocated strategy roles for both the
       # strategy responsibilities and the entity specific responsibilities.

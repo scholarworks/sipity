@@ -110,6 +110,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
+    def get_role_names_with_email_addresses_for(entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/processing_queries.rb
     def identifier_ids_associated_with_entity_and_role(entity:, role:)
     end
 
