@@ -31,9 +31,9 @@ module Sipity
 
         def each(roles: nil)
           return enum_for(:each, roles: roles) unless block_given?
-          roles = Array.wrap(roles) unless roles.nil?
+          role_names = Array.wrap(roles).map { |role| PowerConverter.convert(role, to: :role_name) }
           aggregated_data.each do |datum|
-            yield(datum) if roles.nil? || roles.include?(datum.role_name)
+            yield(datum) if role_names.empty? || role_names.include?(datum.role_name)
           end
         end
 

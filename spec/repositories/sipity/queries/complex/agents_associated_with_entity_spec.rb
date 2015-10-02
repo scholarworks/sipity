@@ -44,9 +44,11 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
     end
 
     it 'will allow you to limit on a given set of roles' do
+      # Mixing both role and a role_name
+      roles = [Sipity::Models::Role.new(name: 'creating_user'), 'etd_reviewer']
       aggregate_3 = double(role_name: 'h')
       expect(subject).to receive(:aggregated_data).and_return([aggregate_1, aggregate_2, aggregate_3])
-      expect { |b| subject.each(roles: ['creating_user', 'etd_reviewer'], &b) }.to yield_successive_args(aggregate_1, aggregate_2)
+      expect { |b| subject.each(roles: roles, &b) }.to yield_successive_args(aggregate_1, aggregate_2)
     end
 
     it 'will find all of the role/identifier_id pairs' do
