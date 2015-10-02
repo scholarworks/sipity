@@ -15,6 +15,8 @@ module Sipity
             'bcc' => 'bcc'
           }
         )
+
+        delegate :name, to: :role, prefix: :role
       end
     end
   end
