@@ -25,15 +25,8 @@ module Sipity
 
       def call
         role_names_with_email_addresses = repository.get_role_names_with_email_addresses_for(entity: the_thing)
-
-        # Find all of the emails
-        emails = repository.email_notifications_for(scope: scope, reason: reason)
-
-        # Retrieve the email addresses associated with each of the roles
-
-        # Then send each email
-        emails.each do |email|
-          deliverer.call(options_for_an_email_new(email: email, role_names_with_email_addresses: role_names_with_email_addresses))
+        repository.email_notifications_for(scope: scope, reason: reason).each do |email|
+          notifier.call(options_for_an_email_new(email: email, role_names_with_email_addresses: role_names_with_email_addresses))
         end
       end
 
@@ -44,20 +37,9 @@ module Sipity
       def options_for_an_email_new(email:, role_names_with_email_addresses:)
         base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }
         email.recipients.each do |recipient|
-          role_names_with_email_addresses[recipient.role_name]
+          base_options[recipient.recipient_strategy.to_sym] ||= []
+          base_options[recipient.recipient_strategy.to_sym] += role_names_with_email_addresses.fetch(recipient.role_name) { [] }
         end
-      end
-
-      def options_for_an_email(email)
-        base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }
-        email.recipients.each { |recipient| append_recipient_options_to(base_options, recipient) }
-        base_options
-      end
-
-      def append_recipient_options_to(base_options, recipient)
-        recipient_strategy = recipient.recipient_strategy.to_sym
-        emails = repository.user_emails_for_entity_and_roles(entity: the_thing, roles: recipient.role)
-        base_options[recipient_strategy] += Array.wrap(emails) if emails.present?
         base_options
       end
 
