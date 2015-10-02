@@ -24,14 +24,29 @@ module Sipity
       private :scope, :the_thing
 
       def call
-        repository.email_notifications_for(scope: scope, reason: reason).each do |email|
-          notifier.call(options_for_an_email(email))
+        role_names_with_email_addresses = repository.get_role_names_with_email_addresses_for(entity: the_thing)
+
+        # Find all of the emails
+        emails = repository.email_notifications_for(scope: scope, reason: reason)
+
+        # Retrieve the email addresses associated with each of the roles
+
+        # Then send each email
+        emails.each do |email|
+          deliverer.call(options_for_an_email_new(email: email, role_names_with_email_addresses: role_names_with_email_addresses))
         end
       end
 
       private
 
       attr_accessor :notification_context, :repository, :notifier
+
+      def options_for_an_email_new(email:, role_names_with_email_addresses:)
+        base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }
+        email.recipients.each do |recipient|
+          role_names_with_email_addresses[recipient.role_name]
+        end
+      end
 
       def options_for_an_email(email)
         base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }

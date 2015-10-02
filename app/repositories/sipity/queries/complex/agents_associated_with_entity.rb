@@ -13,13 +13,28 @@ module Sipity
           return object.each(roles: roles)
         end
 
-        # @api private
-        def self.emails_for(entity:, roles: nil)
-          enumerator_for(entity: entity, roles: roles).each_with_object([]) do |element, mem|
-            mem << element if element.respond_to?(:email) && element.email.present?
+        # @api public
+        def self.role_names_with_emails_for(entity:)
+          object = enumerator_for(entity: entity)
+          object.each_with_object({}) do |agent, mem|
+            mem[agent.role_name] ||= []
+            mem[agent.role_name] << agent.email if there_is_an_email_for?(agent)
             mem
           end
         end
+
+        # @api private
+        def self.emails_for(entity:, roles: nil)
+          enumerator_for(entity: entity, roles: roles).each_with_object([]) do |agent, mem|
+            mem << agent if there_is_an_email_for?(agent)
+            mem
+          end
+        end
+
+        def self.there_is_an_email_for?(input)
+          input.respond_to?(:email) && input.email.present?
+        end
+        private_class_method :there_is_an_email_for?
 
         include Enumerable
         def initialize(entity:, **keywords)

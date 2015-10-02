@@ -38,6 +38,15 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
     end
   end
 
+  context '.role_names_with_emails_for' do
+    it 'will return an Hash of objects that have emails' do
+      with_email = double('WithEmail', email: 'Hello', role_name: 'creating_user')
+      without_email = double('WithoutEmail', role_name: 'something')
+      expect(described_class).to receive(:enumerator_for).and_return([with_email, without_email])
+      expect(described_class.role_names_with_emails_for(entity: entity)).to eq('creating_user' => [with_email.email], 'something' => [])
+    end
+  end
+
   context '#each' do
     it 'will return an enumerator if no block is given' do
       expect(subject.each).to be_a(Enumerator)
