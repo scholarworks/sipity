@@ -7,8 +7,8 @@ module Sipity
     RSpec.describe ActionTakenOnEntity do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
-      let(:requested_by) { Models::Processing::Actor.new(id: 4, proxy_for: User.new(username: '12')) }
-      let(:on_behalf_of) { Models::Processing::Actor.new(id: 5, proxy_for: User.new(username: '34')) }
+      let(:requested_by) { User.new(username: '12') }
+      let(:on_behalf_of) { User.new(username: '34') }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id, name: 'wowza') }
       let(:another_action) { Models::Processing::StrategyAction.new(id: 30, strategy_id: strategy.id, name: 'another') }
       let(:repository) { CommandRepositoryInterface.new }
@@ -22,11 +22,11 @@ module Sipity
 
       context 'on_behalf_of behavior' do
         it 'will default to the requested_by if none are given' do
-          expect(subject.on_behalf_of_actor).to eq(requested_by)
+          expect(subject.on_behalf_of).to eq(subject.requested_by)
         end
         it 'will allow use the provider if one is specified' do
           subject = described_class.new(entity: entity, requested_by: requested_by, action: action, on_behalf_of: on_behalf_of)
-          expect(subject.on_behalf_of_actor).to eq(on_behalf_of)
+          expect(subject.on_behalf_of).to_not eq(subject.requested_by)
         end
       end
 
@@ -57,24 +57,25 @@ module Sipity
           end
           it 'will log the event' do
             expect(repository).to receive(:log_event!).
-              with(entity: entity, requested_by: requested_by.proxy_for, event_name: "#{action.name}/submit")
+              with(entity: entity, requested_by: subject.requested_by, event_name: "#{action.name}/submit")
             subject.register
           end
           it 'will send notifications on the processing comment' do
             expect(repository).to receive(:deliver_notification_for).with(
               scope: action,
               the_thing: kind_of(Models::Processing::EntityActionRegister),
-              requested_by: requested_by,
-              on_behalf_of: on_behalf_of
+              requested_by: subject.requested_by,
+              on_behalf_of: subject.on_behalf_of
             )
             subject.register
           end
           it "will call the processing_hooks for both the action and also registered action" do
             expect(processing_hooks).to receive(:call).with(
-              action: action, entity: entity, on_behalf_of: on_behalf_of, requested_by: requested_by, repository: repository
+              action: action, entity: entity, on_behalf_of: subject.on_behalf_of, requested_by: subject.requested_by, repository: repository
             ).and_call_original
             expect(processing_hooks).to receive(:call).with(
-              action: another_action, entity: entity, on_behalf_of: on_behalf_of, requested_by: requested_by, repository: repository
+              action: another_action, entity: entity, on_behalf_of: subject.on_behalf_of, requested_by: subject.requested_by,
+              repository: repository
             ).and_call_original
             subject.register
           end
