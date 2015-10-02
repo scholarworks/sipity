@@ -267,6 +267,39 @@ RSpec.describe 'power converters' do
     end
   end
 
+  context 'role_name' do
+    it "will convert Sipity::Models::Role" do
+      object = Sipity::Models::Role.new(name: 'creating_user')
+      expect(PowerConverter.convert(object, to: :role_name)).to eq(object.name)
+    end
+
+    it "will convert a #to_role object" do
+      object = double(to_role_name: 'Chicken')
+      expect(PowerConverter.convert(object, to: :role_name)).to eq(object.to_role_name)
+    end
+
+    it "will convert a valid string" do
+      object = Sipity::Models::Role::CREATING_USER
+      expect(PowerConverter.convert(object, to: :role_name)).to eq(object)
+    end
+
+    it "will convert a base object with composed attributes delegator" do
+      base_object = Sipity::Models::Role.new(name: 'creating_user')
+      object = Sipity::Decorators::BaseObjectWithComposedAttributesDelegator.new(base_object)
+      expect(PowerConverter.convert(object, to: :role_name)).to eq(base_object.name)
+    end
+
+    it 'will not convert an empty string' do
+      expect { PowerConverter.convert("", to: :role_name) }.
+        to raise_error(PowerConverter::ConversionError)
+    end
+
+    it 'will not convert an invalid Role name' do
+      expect { PowerConverter.convert("soft_taco", to: :role_name) }.
+        to raise_error(PowerConverter::ConversionError)
+    end
+  end
+
   context "work_type" do
     let(:a_work_type) { Sipity::Models::WorkType.new }
     it 'will attempt to find the given String' do

@@ -106,6 +106,20 @@ PowerConverter.define_conversion_for(:role) do |input|
   end
 end
 
+PowerConverter.define_conversion_for(:role_name) do |input|
+  case input
+  when Sipity::Models::Role
+    input.name
+  when String, Symbol then
+    begin
+    # Leveraging Role's enum(:name) behavior for enforcement
+      Sipity::Models::Role.new(name: input.to_s).name if input.present?
+    rescue ArgumentError
+      nil
+    end
+  end
+end
+
 PowerConverter.define_conversion_for(:safe_for_method_name) do |input|
   case input
   when NilClass
