@@ -26,19 +26,18 @@ module Sipity
       its(:default_repository) { should respond_to :user_emails_for_entity_and_roles }
       its(:default_notifier) { should respond_to :call }
 
-      before do
-        allow(repository).to receive(:email_notifications_for).and_return([email])
-        allow(repository).to receive(:get_role_names_with_email_addresses_for).with(entity: the_thing).and_return(
-          role_for_to.name => to_emails, role_for_cc.name => cc_emails
-        )
-      end
-
       it 'will expose .call as a convenience method' do
-        expect(described_class).to receive_message_chain(:new, :call)
+        expect_any_instance_of(described_class).to receive(:call)
         described_class.call(notification_context: notification_context)
       end
 
       context '#call' do
+        before do
+          expect(repository).to receive(:email_notifications_for).and_return([email])
+          expect(repository).to receive(:get_role_names_with_email_addresses_for).with(entity: the_thing).and_return(
+            role_for_to.name => to_emails, role_for_cc.name => cc_emails
+          )
+        end
         it 'will deliver each of the scope emails to the associated recipients based on role' do
           expect(notifier).to receive(:call).
             with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails)

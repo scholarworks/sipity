@@ -14,7 +14,7 @@ module Sipity
         new(**keywords).call
       end
 
-      def initialize(notification_context:, repository: notification_context.repository, notifier: default_notifier)
+      def initialize(notification_context:, repository: default_repository, notifier: default_notifier)
         self.notification_context = notification_context
         self.repository = repository
         self.notifier = notifier
