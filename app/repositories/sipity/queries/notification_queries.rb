@@ -15,7 +15,7 @@ module Sipity
               )
             )
           )
-        ).includes(:recipients)
+        ).includes(recipients: :role)
       end
     end
   end
