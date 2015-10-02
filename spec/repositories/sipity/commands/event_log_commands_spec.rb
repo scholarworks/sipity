@@ -4,14 +4,34 @@ require 'sipity/commands/event_log_commands'
 module Sipity
   module Commands
     RSpec.describe EventLogCommands, type: :isolated_repository_module do
-      Given(:user) { User.new(id: 1, username: 'tim') }
-      Given(:entity) { Models::Work.new(id: 1) }
-      Given(:event_name) { 'event_name' }
+      let(:user) { User.new(id: 1, username: 'tim') }
+      let(:event_name) { 'event_name' }
 
       context '#log_event!' do
-        When(:result) { test_repository.log_event!(requested_by: user, entity: entity, event_name: event_name) }
-        Then { result.persisted? }
-        Then { Models::EventLog.count == 1 }
+        context 'with an entity that can be polymorphic' do
+          let(:entity) { Models::Work.new(id: 1) }
+          it 'will increment the log count' do
+            test_repository.log_event!(requested_by: user, entity: entity, event_name: event_name)
+            expect(Models::EventLog.count).to eq(1)
+          end
+        end
+
+        context 'with an entity that can be converted to an identifier_id' do
+          let(:entity) { double('Hello', to_identifier_id: 'abc') }
+          it 'will increment the log count' do
+            test_repository.log_event!(requested_by: user, entity: entity, event_name: event_name)
+            expect(Models::EventLog.count).to eq(1)
+          end
+        end
+
+        context 'with an entity that cannot be converted' do
+          let(:entity) { double('Hello') }
+          it 'will increment the log count' do
+            expect do
+              test_repository.log_event!(requested_by: user, entity: entity, event_name: event_name)
+            end.to raise_error(PowerConverter::ConversionError)
+          end
+        end
       end
     end
   end
