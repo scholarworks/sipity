@@ -1,4 +1,4 @@
-require 'cogitate/client/ticket_to_token_coercer'
+require 'cogitate/client'
 
 module Sipity
   module Controllers
