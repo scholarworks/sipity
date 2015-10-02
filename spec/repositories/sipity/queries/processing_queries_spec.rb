@@ -19,6 +19,12 @@ require 'sipity/queries/processing_queries'
 module Sipity
   module Queries
     RSpec.describe ProcessingQueries, type: :isolated_repository_module do
+      before do
+        # Some short circuits to prevent any of the commands from doing too many things.
+        allow_any_instance_of(CommandRepository).to receive(:deliver_notification_for)
+        allow_any_instance_of(CommandRepository).to receive(:log_event!)
+        allow(ProcessingHooks).to receive(:call)
+      end
       include Conversions::ConvertToPolymorphicType
       let(:user) { User.find_or_create_by!(username: 'user') }
       let(:group) { Models::Group.find_or_create_by!(name: 'group') }
