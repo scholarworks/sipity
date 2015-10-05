@@ -23,7 +23,7 @@ module Sipity
 
       subject { described_class.new(notification_context: notification_context, repository: repository, notifier: notifier) }
 
-      its(:default_repository) { should respond_to :user_emails_for_entity_and_roles }
+      its(:default_repository) { should respond_to :get_role_names_with_email_addresses_for }
       its(:default_notifier) { should respond_to :call }
 
       it 'will expose .call as a convenience method' do
