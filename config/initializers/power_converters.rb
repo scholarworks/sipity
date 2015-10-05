@@ -56,12 +56,20 @@ PowerConverter.define_conversion_for(:file_system_safe_file_name) do |input|
   end
 end
 
+PowerConverter.define_conversion_for(:identifiable_agent) do |input|
+  if Contract.valid?(input, Sipity::Interfaces::IdentifiableAgentInterface)
+    input
+  elsif input.is_a?(String)
+    Sipity::Models::IdentifiableAgent.new_for_identifier_id(identifier_id: PowerConverter.convert(input, to: :identifier_id))
+  end
+end
+
 PowerConverter.define_conversion_for(:identifier_id) do |input|
   case input
   when String
     result = Cogitate::Client.extract_strategy_and_identifying_value(input)
     # Because we have an array of two elements from the parsed value
-    input if result.count == 2
+    result.count == 2 ? input : nil
   when Cogitate::Models::Identifier, Cogitate::Models::Agent
     input.id
   when User

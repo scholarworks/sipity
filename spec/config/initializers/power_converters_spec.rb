@@ -89,6 +89,24 @@ RSpec.describe 'power converters' do
     end
   end
 
+  context ':identifiable_agent' do
+    it 'will convert an object that implements the interface' do
+      object = Sipity::Models::IdentifiableAgent.new_for_identifier_id(identifier_id: 'RXLB3MeFcsUbaDIX0I_38g==')
+      expect(PowerConverter.convert(object, to: :identifiable_agent)).to eq(object)
+    end
+
+    it 'will convert a well formed identifier_id' do
+      identifier_id = 'bmV0aWQJamZyaWVzZW4='
+      expect(
+        PowerConverter.convert(identifier_id, to: :identifiable_agent)
+      ).to contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface)
+    end
+
+    it 'will raise on a mal-formed' do
+      expect { PowerConverter.convert('junk', to: :identifiable_agent) }.to raise_error(PowerConverter::ConversionError)
+    end
+  end
+
   context ':identifier_id' do
     it 'will convert a Processing::Actor' do
       actor = Sipity::Models::Processing::Actor.new(proxy_for: User.new(username: 'hello'))
