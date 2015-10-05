@@ -13,10 +13,11 @@ module Sipity
         work_collaborators_for(work: work, id: id, responsible_for_review: true)
       end
 
-      def work_collaborators_for(pluck: nil, **keywords)
+      def work_collaborators_for(work:, pluck: nil, **keywords)
+        work = Conversions::ConvertToWork.call(work)
         relation = Models::Collaborator.includes(:work).where(
-          keywords.slice(:work, :role, :id, :responsible_for_review, :identifier_id, :strategy, :identifying_value).compact
-        )
+          keywords.slice(:role, :id, :responsible_for_review, :identifier_id, :strategy, :identifying_value).compact
+        ).where(work: work)
         return relation unless pluck.present?
         relation.pluck(*pluck)
       end

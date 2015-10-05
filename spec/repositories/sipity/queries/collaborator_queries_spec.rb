@@ -37,9 +37,8 @@ module Sipity
         it 'returns the collaborators for the given work' do
           one = Models::Collaborator.create!(work: work, role: 'Committee Member', name: 'jeremy')
           two = Models::Collaborator.create!(work: work, role: 'Research Director', name: 'jeremy')
-          three = Models::Collaborator.create!(work: work_two, role: 'Research Director', name: 'jeremy')
+          Models::Collaborator.create!(work: work_two, role: 'Research Director', name: 'jeremy')
           expect(subject.work_collaborators_for(work: work)).to eq([one, two])
-          expect(subject.work_collaborators_for(role: 'Research Director')).to eq([two, three])
         end
 
         it 'exposes the ability to pluck and limit values' do
