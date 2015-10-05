@@ -1,3 +1,5 @@
+require 'sipity/models/agent'
+
 module Sipity
   module Models
     # A collaborator for the given work. These are the named people that
@@ -84,6 +86,10 @@ module Sipity
 
       def possible_strategies
         self.class.strategies
+      end
+
+      def to_agent
+        Sipity::Models::Agent.new_from_identifier_id(identifier_id: identifier_id, attributes: attributes)
       end
 
       before_save :nilify_blank_values
