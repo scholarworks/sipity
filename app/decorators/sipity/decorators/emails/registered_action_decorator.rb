@@ -28,11 +28,11 @@ module Sipity
         end
 
         def requested_by
-          registered_action.requested_by_actor.proxy_for
+          repository.get_identifiable_agent_for(entity: entity, identifier_id: registered_action.requested_by_identifier_id)
         end
 
         def on_behalf_of
-          registered_action.on_behalf_of_actor.proxy_for
+          repository.get_identifiable_agent_for(entity: entity, identifier_id: registered_action.on_behalf_of_identifier_id)
         end
 
         def email_message_action_name
