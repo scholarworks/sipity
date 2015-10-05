@@ -157,6 +157,14 @@ module Sipity
     def get_controlled_vocabulary_values_for_predicate_name(name:)
     end
 
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
+    def get_identifiable_agent_for(entity:, identifier_id:, repository: self)
+    end
+
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
+    def get_remote_identifiable_agent_finder(entity:)
+    end
+
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def get_role_names_with_email_addresses_for(entity:)
     end
@@ -199,6 +207,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def register_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
+    end
+
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
+    def remote_identifiable_agent_for(entity:, identifier_id:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -334,7 +346,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def work_collaborators_for(pluck: nil, **keywords)
+    def work_collaborators_for(work:, pluck: nil, **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

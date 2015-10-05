@@ -7,6 +7,7 @@ module Sipity
   class QueryRepository
     include Queries::AccountProfileQueries
     include Queries::AdditionalAttributeQueries
+    include Queries::AgentQueries
     include Queries::AttachmentQueries
     include Queries::CollaboratorQueries
     include Queries::CommentQueries
