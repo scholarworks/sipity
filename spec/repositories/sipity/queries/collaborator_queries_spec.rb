@@ -29,7 +29,7 @@ module Sipity
         it { expect(subject.arel_table.table_name).to eq('sipity_collaborators') }
       end
 
-      context '.work_collaborators_for' do
+      context '#work_collaborators_for' do
         it 'returns the collaborators for the given work and role' do
           Models::Collaborator.create!(work: work, role: 'Committee Member', name: 'jeremy')
           expect(subject.work_collaborators_for(work: work, role: 'Committee Member').count).to eq(1)
@@ -41,9 +41,18 @@ module Sipity
           expect(subject.work_collaborators_for(work: work)).to eq([one, two])
           expect(subject.work_collaborators_for(role: 'Research Director')).to eq([two, three])
         end
+
+        it 'exposes the ability to pluck and limit values' do
+          Models::Collaborator.create!(work: work, role: 'Committee Member', name: 'jeremy')
+          Models::Collaborator.create!(work: work, role: 'Committee Member', name: 'rajesh')
+          expect(subject.work_collaborators_for(work: work, pluck: :name)).to eq(['jeremy', 'rajesh'])
+          expect(subject.work_collaborators_for(work: work, pluck: [:name, :role])).to eq(
+            [['jeremy', 'Committee Member'], ['rajesh', 'Committee Member']]
+          )
+        end
       end
 
-      context '.work_collaborator_names_for' do
+      context '#work_collaborator_names_for' do
         it 'returns only the names' do
           Models::Collaborator.create!(work: work, role: 'Committee Member', name: 'John')
           expect(subject.work_collaborator_names_for(work: work)).to eq(['John'])

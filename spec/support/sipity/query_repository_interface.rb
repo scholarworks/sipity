@@ -222,11 +222,11 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def work_collaborator_names_for(options = {})
+    def work_collaborator_names_for(**keywords)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb
-    def work_collaborators_for(options = {})
+    def work_collaborators_for(pluck: nil, **keywords)
     end
 
     # @see ./app/repositories/sipity/queries/collaborator_queries.rb

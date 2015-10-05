@@ -13,12 +13,16 @@ module Sipity
         work_collaborators_for(work: work, id: id, responsible_for_review: true)
       end
 
-      def work_collaborators_for(options = {})
-        Models::Collaborator.includes(:work).where(options.slice(:work, :role, :id, :responsible_for_review).compact)
+      def work_collaborators_for(pluck: nil, **keywords)
+        relation = Models::Collaborator.includes(:work).where(
+          keywords.slice(:work, :role, :id, :responsible_for_review, :identifier_id, :strategy, :identifying_value).compact
+        )
+        return relation unless pluck.present?
+        relation.pluck(*pluck)
       end
 
-      def work_collaborator_names_for(options = {})
-        work_collaborators_for(options).pluck(:name)
+      def work_collaborator_names_for(**keywords)
+        work_collaborators_for(pluck: :name, **keywords)
       end
 
       def work_collaborators_responsible_for_review(work:)
