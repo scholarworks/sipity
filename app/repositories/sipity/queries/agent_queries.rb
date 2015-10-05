@@ -1,9 +1,13 @@
 module Sipity
   module Queries
+    # Responsible for exposing complicated queries related to Agents; Be they Collaborators or those defined in Cogitate
     module AgentQueries
       def get_identifiable_agent_for(entity:, identifier_id:, repository: self)
-        identifiable_agent = repository.work_collaborators_for(work: entity, identifier_id: identifier_id).first ||
-          remote_identifiable_agent_for(entity: entity, identifier_id: identifier_id) || identifier_id
+        identifiable_agent = begin
+          repository.work_collaborators_for(work: entity, identifier_id: identifier_id).first ||
+          remote_identifiable_agent_for(entity: entity, identifier_id: identifier_id) ||
+          identifier_id
+        end
         PowerConverter.convert(identifiable_agent, to: :identifiable_agent)
       end
 

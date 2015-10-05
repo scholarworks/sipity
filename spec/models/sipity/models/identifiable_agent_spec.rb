@@ -11,7 +11,7 @@ module Sipity
         it { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
         its(:to_s) { should eq(collaborator.name) }
         its(:name) { should eq(collaborator.name) }
-        its(:identifier_id) { should eq(collaborator.identifier_id )}
+        its(:identifier_id) { should eq(collaborator.identifier_id) }
         its(:email) { should eq(collaborator.email) }
       end
 
@@ -22,7 +22,7 @@ module Sipity
         it { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
         its(:to_s) { should eq(collaborator.name) }
         its(:name) { should eq(collaborator.name) }
-        its(:identifier_id) { should eq(collaborator.identifier_id )}
+        its(:identifier_id) { should eq(collaborator.identifier_id) }
         its(:email) { should eq("#{collaborator.netid}@nd.edu") }
       end
     end

@@ -1,5 +1,6 @@
 module Sipity
   module Models
+    # A data structure class for identifiable agents.
     class IdentifiableAgent
       def self.new_from_collaborator(collaborator:)
         attributes = { name: collaborator.name, identifier_id: collaborator.identifier_id }
@@ -9,13 +10,16 @@ module Sipity
 
       def self.new_for_identifier_id(identifier_id:)
         strategy, identifying_value = Cogitate::Client.extract_strategy_and_identifying_value(identifier_id)
-        email = case strategy
-        when 'email' then identifying_value
-        when 'netid' then "#{identifying_value}@nd.edu"
-        else nil
-        end
+        email = extract_email_from(strategy: strategy, identifying_value: identifying_value)
         new(identifier_id: identifier_id, name: identifying_value, email: email)
       end
+
+      def self.extract_email_from(strategy:, identifying_value:)
+        return identifying_value if strategy == 'email'
+        return "#{identifying_value}@nd.edu" if strategy == 'netid'
+        nil
+      end
+      private_class_method :extract_email_from
 
       private_class_method :new
 
