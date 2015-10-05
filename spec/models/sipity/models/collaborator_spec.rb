@@ -46,9 +46,11 @@ module Sipity
         end
       end
 
-      context '#to_agent' do
-        subject { described_class.new(id: 1, netid: 'netid').tap { |o| o.send(:assign_strategy_and_identifying_value) }.to_agent }
-        it { expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true) }
+      context '#to_identifiable_agent' do
+        subject do
+          described_class.new(id: 1, netid: 'netid').tap { |o| o.send(:assign_strategy_and_identifying_value) }.to_identifiable_agent
+        end
+        it { expect(Contract.valid?(subject, Sipity::Interfaces::IdentifiableAgentInterface)).to eq(true) }
       end
 
       context 'validations' do

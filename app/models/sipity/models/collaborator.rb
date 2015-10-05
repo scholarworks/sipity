@@ -89,7 +89,7 @@ module Sipity
       end
 
       def to_agent
-        Sipity::Models::Agent.new_from_identifier_id(identifier_id: identifier_id, attributes: attributes)
+        Sipity::Models::IdentifiableAgent.new_from_collaborator(collaborator: self)
       end
 
       before_save :nilify_blank_values

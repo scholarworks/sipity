@@ -18,10 +18,6 @@ module Sipity
         Sipity::Models::Agent::FromCogitate.new(cogitate_agent: cogitate_agent, **keywords)
       end
 
-      def self.new_from_identifier_id(identifier_id:, attributes: {})
-        Sipity::Models::Agent::FromIdentifierId.new(identifier_id: identifier_id, attributes: attributes)
-      end
-
       Contract(KeywordArgs[user_id: Or[String, Integer]] => Sipity::Interfaces::AgentInterface)
       def self.new_from_user_id(user_id:)
         user = User.find(user_id)
