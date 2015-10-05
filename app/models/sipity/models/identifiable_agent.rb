@@ -6,6 +6,17 @@ module Sipity
         attributes[:email] = collaborator.netid.present? ? "#{collaborator.netid}@nd.edu" : collaborator.email
         new(**attributes)
       end
+
+      def self.new_for_identifier_id(identifier_id:)
+        strategy, identifying_value = Cogitate::Client.extract_strategy_and_identifying_value(identifier_id)
+        email = case strategy
+        when 'email' then identifying_value
+        when 'netid' then "#{identifying_value}@nd.edu"
+        else nil
+        end
+        new(identifier_id: identifier_id, name: identifying_value, email: email)
+      end
+
       private_class_method :new
 
       def initialize(identifier_id:, name:, email:)
