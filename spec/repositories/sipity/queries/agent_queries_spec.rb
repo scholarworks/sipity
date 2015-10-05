@@ -41,6 +41,31 @@ module Sipity
           it { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
         end
       end
+
+      context '#scope_creating_users_for_entity' do
+        it "will leverage Complex::AgentsAssociatedWithEntity" do
+          entity = double("Entity")
+          expect(Complex::AgentsAssociatedWithEntity).to receive(:enumerator_for).with(entity: entity, roles: Models::Role::CREATING_USER)
+          test_repository.scope_creating_users_for_entity(entity: entity)
+        end
+      end
+
+      context "#user_emails_for_entity_and_roles" do
+        it 'will be an array of emails' do
+          role = double('Role')
+          entity = double('Entity')
+          expect(Complex::AgentsAssociatedWithEntity).to receive(:emails_for).with(entity: entity, roles: role).and_return(['an@email.com'])
+          expect(test_repository.user_emails_for_entity_and_roles(entity: entity, roles: role)).to eq(['an@email.com'])
+        end
+      end
+
+      context "#get_role_names_with_email_addresses_for" do
+        it 'will be an hash keyed by role name with values of emails' do
+          entity = double('Entity')
+          expect(Complex::AgentsAssociatedWithEntity).to receive(:role_names_with_emails_for).with(entity: entity)
+          test_repository.get_role_names_with_email_addresses_for(entity: entity)
+        end
+      end
     end
   end
 end

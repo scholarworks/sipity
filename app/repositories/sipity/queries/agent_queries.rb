@@ -7,6 +7,22 @@ module Sipity
         PowerConverter.convert(identifiable_agent, to: :identifiable_agent)
       end
 
+      def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
+        Queries::Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
+      end
+
+      def user_emails_for_entity_and_roles(entity:, roles:)
+        Queries::Complex::AgentsAssociatedWithEntity.emails_for(entity: entity, roles: roles)
+      end
+
+      # @api public
+      #
+      # @param entity [#to_processing_entity]
+      # @return Hash keyed by role names with values of email addresses.
+      def get_role_names_with_email_addresses_for(entity:)
+        Queries::Complex::AgentsAssociatedWithEntity.role_names_with_emails_for(entity: entity)
+      end
+
       private
 
       def remote_identifiable_agent_for(entity:, identifier_id:)

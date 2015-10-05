@@ -404,22 +404,6 @@ module Sipity
       end
       private :scope_processing_entities_for_the_user_and_proxy_for_type
 
-      def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
-        Queries::Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
-      end
-
-      def user_emails_for_entity_and_roles(entity:, roles:)
-        Queries::Complex::AgentsAssociatedWithEntity.emails_for(entity: entity, roles: roles)
-      end
-
-      # @api public
-      #
-      # @param entity [#to_processing_entity]
-      # @return Hash keyed by role names with values of email addresses.
-      def get_role_names_with_email_addresses_for(entity:)
-        Queries::Complex::AgentsAssociatedWithEntity.role_names_with_emails_for(entity: entity)
-      end
-
       # @api public
       #
       # For the given :user and :entity, return an ActiveRecord::Relation that,
