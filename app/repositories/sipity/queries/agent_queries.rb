@@ -8,7 +8,7 @@ module Sipity
       end
 
       def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
-        Queries::Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
+        get_remote_identifiable_agent_finder(entity: entity).each(roles: roles)
       end
 
       # @api public

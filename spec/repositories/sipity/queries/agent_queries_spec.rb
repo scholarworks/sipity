@@ -44,8 +44,8 @@ module Sipity
 
       context '#scope_creating_users_for_entity' do
         it "will leverage Complex::AgentsAssociatedWithEntity" do
-          entity = double("Entity")
-          expect(Complex::AgentsAssociatedWithEntity).to receive(:enumerator_for).with(entity: entity, roles: Models::Role::CREATING_USER)
+          entity = Sipity::Models::Processing::Entity.new
+          expect_any_instance_of(Complex::AgentsAssociatedWithEntity).to receive(:each).with(roles: Models::Role::CREATING_USER)
           test_repository.scope_creating_users_for_entity(entity: entity)
         end
       end
