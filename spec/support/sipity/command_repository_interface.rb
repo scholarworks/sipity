@@ -165,7 +165,7 @@ module Sipity
     def get_remote_identifiable_agent_finder(entity:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
     def get_role_names_with_email_addresses_for(entity:)
     end
 
@@ -221,7 +221,7 @@ module Sipity
     def representative_attachment_for(work:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
     def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
     end
 
@@ -319,10 +319,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/account_profile_commands.rb
     def user_agreed_to_terms_of_service(user:, agreed_at: Time.zone.now)
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def user_emails_for_entity_and_roles(entity:, roles:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

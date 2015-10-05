@@ -117,7 +117,7 @@ module Sipity
     def get_remote_identifiable_agent_finder(entity:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
     def get_role_names_with_email_addresses_for(entity:)
     end
 
@@ -137,7 +137,7 @@ module Sipity
     def representative_attachment_for(work:)
     end
 
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
     def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
     end
 
@@ -211,10 +211,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
-    end
-
-    # @see ./app/repositories/sipity/queries/processing_queries.rb
-    def user_emails_for_entity_and_roles(entity:, roles:)
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb

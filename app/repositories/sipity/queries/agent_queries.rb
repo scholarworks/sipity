@@ -11,10 +11,6 @@ module Sipity
         Queries::Complex::AgentsAssociatedWithEntity.enumerator_for(entity: entity, roles: roles)
       end
 
-      def user_emails_for_entity_and_roles(entity:, roles:)
-        Queries::Complex::AgentsAssociatedWithEntity.emails_for(entity: entity, roles: roles)
-      end
-
       # @api public
       #
       # @param entity [#to_processing_entity]
