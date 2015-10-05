@@ -88,7 +88,7 @@ module Sipity
         self.class.strategies
       end
 
-      def to_agent
+      def to_identifiable_agent
         Sipity::Models::IdentifiableAgent.new_from_collaborator(collaborator: self)
       end
 
