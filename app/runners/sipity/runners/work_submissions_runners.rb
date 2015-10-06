@@ -26,7 +26,7 @@ module Sipity
       # case).
       class QueryAction < CommandQueryAction
         def run(work_id:, processing_action_name:, attributes: {})
-          super do |form, _work|
+          super(work_id: work_id, processing_action_name: processing_action_name, attributes: attributes) do |form, _work|
             callback(:success, form)
           end
         end
@@ -35,7 +35,7 @@ module Sipity
       # The general handler for all command actions
       class CommandAction < CommandQueryAction
         def run(work_id:, processing_action_name:, attributes: {})
-          super do |form, _work|
+          super(work_id: work_id, processing_action_name: processing_action_name, attributes: attributes) do |form, _work|
             ActiveRecord::Base.transaction do
               response = form.submit
               if response
