@@ -18,9 +18,14 @@ require 'rspec-given'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rspec-html-matchers'
 require_relative './support/sipity/rspec_matchers'
+require 'shoulda/matchers'
+
 RSpec.configure do |config|
   config.include RSpecHtmlMatchers
   config.include Sipity::RSpecMatchers
+  config.include Shoulda::Matchers::ActiveRecord, type: :model
+  config.include Shoulda::Matchers::ActiveModel, type: :model
+  config.include Shoulda::Matchers::Independent
 
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
