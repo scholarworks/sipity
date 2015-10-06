@@ -27,6 +27,17 @@ module Sipity
       end
     end
 
+    context '.new_from_user' do
+      let(:user) { User.new(username: 'hello', name: 'Hello World') }
+      subject { described_class.new_from_user(user: user) }
+
+      it { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
+      its(:to_s) { should eq(user.name) }
+      its(:name) { should eq(user.name) }
+      its(:identifier_id) { should be_a(String) }
+      its(:email) { should be_a(String) }
+    end
+
     context '.new_for_identifier_id' do
       let(:identifier_id) { Cogitate::Client.encoded_identifier_for(strategy: strategy, identifying_value: identifying_value) }
       subject { described_class.new_for_identifier_id(identifier_id: identifier_id) }

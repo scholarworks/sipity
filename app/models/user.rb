@@ -33,6 +33,10 @@ class User < ActiveRecord::Base
     name || username
   end
 
+  def to_identifiable_agent
+    Sipity::Models::IdentifiableAgent.new_from_user(user: self)
+  end
+
   private
 
   def set_notre_dame_specific_email

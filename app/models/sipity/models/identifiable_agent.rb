@@ -8,6 +8,11 @@ module Sipity
         new(**attributes)
       end
 
+      def self.new_from_user(user:)
+        identifier_id = Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: user.username)
+        new(name: user.name, email: "#{user.username}@nd.edu", identifier_id: identifier_id)
+      end
+
       def self.new_for_identifier_id(identifier_id:)
         strategy, identifying_value = Cogitate::Client.extract_strategy_and_identifying_value(identifier_id)
         email = extract_email_from(strategy: strategy, identifying_value: identifying_value)
@@ -21,6 +26,7 @@ module Sipity
       end
       private_class_method :extract_email_from
 
+      # Yup. Keeping this data structure's new method private. Use one of the above builder methods.
       private_class_method :new
 
       def initialize(identifier_id:, name:, email:)

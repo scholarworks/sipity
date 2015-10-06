@@ -1,6 +1,6 @@
 describe User do
 
-  subject { User.new(email: 'user@example.com', name: "Hello Somebody") }
+  subject { User.new(email: 'user@example.com', name: "Hello Somebody", username: 'hello') }
 
   it { should respond_to(:email) }
 
@@ -13,4 +13,5 @@ describe User do
 
   its(:to_s) { should eq subject.name }
 
+  its(:to_identifiable_agent) { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
 end
