@@ -12,7 +12,7 @@ module Sipity
       end
 
       def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
-        get_remote_identifiable_agent_finder(entity: entity).each(roles: roles)
+        get_remote_identifiable_agent_finder(entity: entity).each(roles: roles).to_a
       end
 
       # @api public
