@@ -7,6 +7,6 @@ module Sipity
   module Interfaces
     include Contracts
     AuthenticationAgentInterface = RespondTo[:email, :ids, :name, :user_signed_in?, :agreed_to_application_terms_of_service?]
-    IdentifiableAgentInterface = RespondTo[:email, :name, :identifier_id]
+    IdentifiableAgentInterface = RespondTo[:email, :name, :identifier_id, :to_identifier_id]
   end
 end
