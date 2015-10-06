@@ -28,22 +28,6 @@ Sipity is a Rails application but is built with a few more concepts in mind.
 
 ![Sipity Request Cycle](artifacts/sipity-request-cycle.png)
 
-1. A request comes into the Router.
-2. Router maps request to a Controller.
-3. Controller maps request to a Runner.
-4. Runner enforces Authentication layer
-5. Runner enforces Authorization layer
-6. Runner processes request by collaborating with the Repository and Job.
-7. Runner generates response for the Controller.
-8. Controller passes response through Decoration layer.
-9. Controller generates response for Responder.
-10. Responder sends response to the request.
-
-### RSpec output
-
-Don't forget, you can run `rspec --format documentation` (or its equivalent `rspec -f d`) to run the tests and output a "self-documentation" format.
-I am doing my best to re-read the output tests to make sure they are adequate/accurate low-level documentation.
-
 ## Anatomy of Sipity
 
 Below is a list of the various concepts of Sipity.
@@ -51,17 +35,24 @@ Below is a list of the various concepts of Sipity.
 ```
 app
 |-- assets
+|-- constraints
 |-- controllers
 |-- conversions
+|-- data_generators
 |-- decorators
 |-- exceptions
+|-- exporters
 |-- forms
 |-- jobs
-|-- helpers
 |-- mailers
+|-- mappers
 |-- models
+|-- parameters
 |-- policies
+|-- presenters
+|-- processing_hooks
 |-- repositories
+|-- response_handlers
 |-- runners
 |-- services
 |-- validators

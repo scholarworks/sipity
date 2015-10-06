@@ -1,0 +1,26 @@
+# Render via PlantUML
+# Generated via plantuml-preview (https://github.com/peele/plantuml-preview) in Atom
+@startuml
+
+title HTTP Sequence Diagram for Sipity
+
+Browser -> Application : GET /
+Application --> Controller : via Rails router
+Controller --> Runner
+Runner --> AuthenticationLayer
+AuthenticationLayer --> Form
+Form <--> Repository : for initial context
+Form --> AuthorizationLayer
+AuthorizationLayer --> Repository : for authorization checks
+Form <-- AuthorizationLayer
+Form <--> Repository : for additional context
+Presenter <-- Form
+Runner <-- Presenter
+Controller <-- Runner
+Controller --> ResponseHandler
+ResponseHandler --> TemplateRendering
+TemplateRendering <--> Presenter
+Presenter <--> Repository : for additional context
+Browser <- TemplateRendering : Response body
+
+@enduml
