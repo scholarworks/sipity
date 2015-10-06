@@ -1,4 +1,4 @@
-require 'sipity/models/agent'
+require 'sipity/models/authentication_agent'
 
 module Sipity
   module Models

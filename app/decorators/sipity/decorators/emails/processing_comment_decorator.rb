@@ -4,8 +4,9 @@ module Sipity
       # Responsible for exposing methods required for email delivery. Nothing
       # too fancy.
       class ProcessingCommentDecorator
-        def initialize(processing_comment)
+        def initialize(processing_comment, repository: default_repository)
           self.processing_comment = processing_comment
+          self.repository = repository
         end
 
         def work_type
@@ -17,7 +18,15 @@ module Sipity
           work.to_s
         end
 
-        delegate :comment, :entity, :name_of_commentor, to: :processing_comment
+        delegate :comment, :entity, to: :processing_comment
+
+        def commentor
+          repository.get_identifiable_agent_for(entity: entity, identifier_id: processing_comment.identifier_id)
+        end
+
+        def name_of_commentor
+          commentor.name
+        end
         private :entity
 
         # Related to building information for https://developers.google.com/gmail/markup/
@@ -36,6 +45,7 @@ module Sipity
         private
 
         attr_reader :processing_comment
+        attr_accessor :repository
 
         def processing_comment=(input)
           @processing_comment = PowerConverter.convert(input, to: :processing_comment)
@@ -47,6 +57,10 @@ module Sipity
 
         def view_context
           Draper::ViewContext.current
+        end
+
+        def default_repository
+          QueryRepository.new
         end
       end
     end

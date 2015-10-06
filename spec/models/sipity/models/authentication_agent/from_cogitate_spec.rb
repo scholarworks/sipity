@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    module Agent
+    module AuthenticationAgent
       RSpec.describe FromCogitate do
         let(:agent) do
           Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'hworld') do |the_agent|
@@ -11,9 +11,7 @@ module Sipity
         end
         let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(cogitate_agent: agent, repository: repository) }
-        it 'will honor the AgentInterface' do
-          expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true)
-        end
+        it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
         its(:email) { should eq('hworld@nd.edu') }
         its(:default_ids_decoder) { should respond_to(:call) }
         it { should delegate_method(:ids).to(:cogitate_agent) }

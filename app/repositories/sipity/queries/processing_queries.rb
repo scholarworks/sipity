@@ -184,7 +184,7 @@ module Sipity
         action_scope = scope_permitted_without_concern_for_repetition_entity_strategy_actions_for_current_state(user: user, entity: entity)
 
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        agent = PowerConverter.convert(user, to: :agent)
+        agent = PowerConverter.convert(user, to: :authentication_agent)
         registers = Models::Processing::EntityActionRegister.arel_table
         analogues = Models::Processing::StrategyActionAnalogue.arel_table
 
@@ -356,7 +356,7 @@ module Sipity
         strategy_responsibilities = Models::Processing::StrategyResponsibility.arel_table
         entity_responsibilities = Models::Processing::EntitySpecificResponsibility.arel_table
 
-        agent = PowerConverter.convert(user, to: :agent)
+        agent = PowerConverter.convert(user, to: :authentication_agent)
 
         join_builder = lambda do |responsibility|
           entities.project(
@@ -436,7 +436,7 @@ module Sipity
         responsibility_table = Models::Processing::StrategyResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 
-        agent = PowerConverter.convert(user, to: :agent)
+        agent = PowerConverter.convert(user, to: :authentication_agent)
         strategy_role_subquery = strategy_role_table[:id].in(
           responsibility_table.project(responsibility_table[:strategy_role_id]).
           where(
@@ -460,7 +460,7 @@ module Sipity
       # @return [ActiveRecord::Relation<Models::Processing::StrategyRole>]
       def scope_processing_strategy_roles_for_user_and_entity_specific(user:, entity:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        agent = PowerConverter.convert(user, to: :agent)
+        agent = PowerConverter.convert(user, to: :authentication_agent)
         specific_resp_table = Models::Processing::EntitySpecificResponsibility.arel_table
         strategy_role_table = Models::Processing::StrategyRole.arel_table
 

@@ -1,6 +1,6 @@
 module Sipity
   module Models
-    module Agent
+    module AuthenticationAgent
       # We have an anonymous visitor accessing the website
       class NullAgent
         def name

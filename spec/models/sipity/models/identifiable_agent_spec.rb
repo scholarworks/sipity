@@ -38,6 +38,18 @@ module Sipity
       its(:email) { should be_a(String) }
     end
 
+    context '.new_with_strategy_and_identifying_value' do
+      let(:strategy) { 'netid' }
+      let(:identifying_value) { 'hworld' }
+      subject { described_class.new_with_strategy_and_identifying_value(strategy: strategy, identifying_value: identifying_value) }
+
+      it { should contractually_honor(Sipity::Interfaces::IdentifiableAgentInterface) }
+      its(:to_s) { should eq(identifying_value) }
+      its(:name) { should eq(identifying_value) }
+      its(:identifier_id) { should be_a(String) }
+      its(:email) { should be_a(String) }
+    end
+
     context '.new_for_identifier_id' do
       let(:identifier_id) { Cogitate::Client.encoded_identifier_for(strategy: strategy, identifying_value: identifying_value) }
       subject { described_class.new_for_identifier_id(identifier_id: identifier_id) }

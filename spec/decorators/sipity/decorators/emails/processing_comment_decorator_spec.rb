@@ -5,14 +5,18 @@ module Sipity
   module Decorators
     module Emails
       RSpec.describe ProcessingCommentDecorator do
-        let(:user) { User.new(name: 'Hello World') }
+        let(:user) { User.new(name: 'Hello World', username: 'hworld') }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
-        let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
         let(:entity) { Models::Processing::Entity.new(proxy_for: work) }
-        let(:processing_comment) { Models::Processing::Comment.new(comment: 'hello', actor: actor, entity: entity) }
-        subject { described_class.new(processing_comment) }
+        let(:processing_comment) do
+          Models::Processing::Comment.new(comment: 'hello', identifier_id: PowerConverter.convert(user, to: :identifier_id), entity: entity)
+        end
+        let(:repository) { QueryRepositoryInterface.new }
+        subject { described_class.new(processing_comment, repository: repository) }
 
+        its(:default_repository) { should respond_to(:get_identifiable_agent_for) }
         its(:comment) { should eq processing_comment.comment }
+        before { allow(repository).to receive(:get_identifiable_agent_for).and_return(user) }
         its(:name_of_commentor) { should eq(user.name) }
         its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }

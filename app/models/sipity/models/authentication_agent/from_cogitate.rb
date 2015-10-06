@@ -1,6 +1,6 @@
 module Sipity
   module Models
-    module Agent
+    module AuthenticationAgent
       # Responsible for converting a cogitate agent into a Sipity agent
       class FromCogitate
         def initialize(cogitate_agent:, ids_decoder: default_ids_decoder, repository: default_repository)

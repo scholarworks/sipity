@@ -17,7 +17,8 @@ module Sipity
         end
 
         context 'with an entity that can be converted to an identifier_id' do
-          let(:entity) { double('Hello', to_identifier_id: 'abc') }
+          let(:identifiable_agent) { double(identifier_id: '123') }
+          let(:entity) { double('Hello', to_identifiable_agent: identifiable_agent) }
           it 'will increment the log count' do
             test_repository.log_event!(requested_by: user, entity: entity, event_name: event_name)
             expect(Models::EventLog.count).to eq(1)

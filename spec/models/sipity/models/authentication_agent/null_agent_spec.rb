@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    module Agent
+    module AuthenticationAgent
       RSpec.describe NullAgent do
         subject { described_class.new }
         its(:name) { should eq('anonymous') }
@@ -11,9 +11,7 @@ module Sipity
         its(:user_signed_in?) { should eq(false) }
         its(:agreed_to_application_terms_of_service?) { should eq(false) }
 
-        it 'will adhear to the AgentInterface' do
-          expect(Contract.valid?(subject, Sipity::Interfaces::AgentInterface)).to eq(true)
-        end
+        it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
       end
     end
   end

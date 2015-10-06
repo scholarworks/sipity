@@ -20,9 +20,9 @@ module Sipity
         if entity.is_a?(ActiveRecord::Base)
           Models::EventLog.create!(entity: entity, event_name: event_name, identifier_id: requested_by_identifier_id)
         else
-          entity_identifier_id = PowerConverter.convert(entity, to: :identifier_id)
+          identifiable_agent = PowerConverter.convert(entity, to: :identifiable_agent)
           Models::EventLog.create!(
-            entity_id: entity_identifier_id, entity_type: Sipity::Models::Agent, event_name: event_name,
+            entity_id: identifiable_agent.identifier_id, entity_type: Sipity::Models::IdentifiableAgent, event_name: event_name,
             identifier_id: requested_by_identifier_id
           )
         end

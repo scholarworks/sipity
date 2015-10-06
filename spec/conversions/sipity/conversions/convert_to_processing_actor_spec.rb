@@ -53,14 +53,14 @@ module Sipity
           context 'that has a persisted user' do
             let(:user) { User.create!(username: 'hello') }
             let(:agent) { Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: user.username) }
-            let(:object) { Sipity::Models::Agent::FromCogitate.new(cogitate_agent: agent) }
+            let(:object) { Sipity::Models::AuthenticationAgent::FromCogitate.new(cogitate_agent: agent) }
             it 'will find or create the associated Processing::Actor' do
               expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
             end
           end
           context 'that is NOT persisted' do
             let(:agent) { Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'somewhere') }
-            let(:object) { Sipity::Models::Agent::FromCogitate.new(cogitate_agent: agent) }
+            let(:object) { Sipity::Models::AuthenticationAgent::FromCogitate.new(cogitate_agent: agent) }
             it 'will raise an exception' do
               expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
             end
@@ -70,14 +70,14 @@ module Sipity
         context 'for a Models::Agent::DeviseBackedAgent' do
           context 'that has a persisted user' do
             let(:user) { User.create!(username: 'hello') }
-            let(:object) { Sipity::Models::Agent::FromDevise.new(user: user) }
+            let(:object) { Sipity::Models::AuthenticationAgent::FromDevise.new(user: user) }
             it 'will find or create the associated Processing::Actor' do
               expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
             end
           end
           context 'that is NOT persisted' do
             let(:user) { User.new }
-            let(:object) { Sipity::Models::Agent::FromDevise.new(user: user) }
+            let(:object) { Sipity::Models::AuthenticationAgent::FromDevise.new(user: user) }
             it 'will raise an exception' do
               expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
             end

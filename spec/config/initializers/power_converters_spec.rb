@@ -53,20 +53,20 @@ RSpec.describe 'power converters' do
     end
   end
 
-  context 'agent' do
+  context 'authentication_agent' do
     it 'will convert an object that adhears to the AgentInterface' do
       object = double(email: true, ids: [], name: 'hello', user_signed_in?: true, agreed_to_application_terms_of_service?: true)
-      expect(PowerConverter.convert(object, to: :agent)).to eq(object)
+      expect(PowerConverter.convert(object, to: :authentication_agent)).to eq(object)
     end
 
     it 'will convert a persisted User to an Agent' do
       user = User.new(username: 'hello')
-      expect(PowerConverter.convert(user, to: :agent)).to be_a(Sipity::Models::Agent::FromDevise)
+      expect(PowerConverter.convert(user, to: :authentication_agent)).to be_a(Sipity::Models::AuthenticationAgent::FromDevise)
     end
 
     it 'will not convert any old object' do
       object = double('An object')
-      expect { PowerConverter.convert(object, to: :agent) }.
+      expect { PowerConverter.convert(object, to: :authentication_agent) }.
         to raise_error(PowerConverter::ConversionError)
     end
   end
@@ -148,7 +148,7 @@ RSpec.describe 'power converters' do
       collaborator = Sipity::Models::Collaborator.new
       expect { PowerConverter.convert(collaborator, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
     end
-    it 'will convert a Cogitate::Models::Agent' do
+    it 'will convert a Cogitate::Models::IdentifiableAgent' do
       agent = Cogitate::Models::Agent.build_with_identifying_information(strategy: 'group', identifying_value: '123')
       expect(PowerConverter.convert(agent, to: :identifier_id)).to be_a(String)
     end

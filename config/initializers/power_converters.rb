@@ -24,11 +24,11 @@ PowerConverter.define_conversion_for(:access_url) do |input|
   end
 end
 
-PowerConverter.define_conversion_for(:agent) do |input|
-  if Contract.valid?(input, Sipity::Interfaces::AgentInterface)
+PowerConverter.define_conversion_for(:authentication_agent) do |input|
+  if Contract.valid?(input, Sipity::Interfaces::AuthenticationAgentInterface)
     input
   elsif input.is_a?(User)
-    Sipity::Models::Agent::FromDevise.new(user: input)
+    Sipity::Models::AuthenticationAgent::FromDevise.new(user: input)
   end
 end
 

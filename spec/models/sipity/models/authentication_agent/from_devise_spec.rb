@@ -1,7 +1,7 @@
 require 'spec_helper'
 module Sipity
   module Models
-    module Agent
+    module AuthenticationAgent
       RSpec.describe FromDevise do
         let(:user) { User.new(username: 'hello', id: 123) }
         let(:repository) { QueryRepositoryInterface.new }
@@ -15,6 +15,7 @@ module Sipity
         its(:user_signed_in?) { should eq(true) }
         its(:to_polymorphic_type) { should eq('User') }
         its(:to_identifier_id) { should eq(subject.identifier_id) }
+        it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
         context '#agreed_to_application_terms_of_service?' do
           it 'will use the given repository and identifier' do
             expect(repository).to receive(
