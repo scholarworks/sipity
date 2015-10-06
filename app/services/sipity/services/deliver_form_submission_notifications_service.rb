@@ -24,8 +24,13 @@ module Sipity
       private :scope, :the_thing
 
       def call
+        emails = repository.email_notifications_for(scope: scope, reason: reason)
+        # If we don't have any emails don't bother additional processing to determine the role names and their correspoding emails
+        # In fact the get_role_names_with_email_addresses_for is a very expensive query, so avoiding it is reasonable.
+        return true unless emails.present?
+
         role_names_with_email_addresses = repository.get_role_names_with_email_addresses_for(entity: the_thing)
-        repository.email_notifications_for(scope: scope, reason: reason).each do |email|
+        emails.each do |email|
           notifier.call(options_for_an_email_new(email: email, role_names_with_email_addresses: role_names_with_email_addresses))
         end
       end

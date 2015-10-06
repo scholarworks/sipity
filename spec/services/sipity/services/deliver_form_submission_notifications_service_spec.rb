@@ -32,15 +32,20 @@ module Sipity
       end
 
       context '#call' do
-        before do
+        it 'will deliver each of the scope emails to the associated recipients based on role' do
           expect(repository).to receive(:email_notifications_for).and_return([email])
           expect(repository).to receive(:get_role_names_with_email_addresses_for).with(entity: the_thing).and_return(
             role_for_to.name => to_emails, role_for_cc.name => cc_emails
           )
-        end
-        it 'will deliver each of the scope emails to the associated recipients based on role' do
           expect(notifier).to receive(:call).
             with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails, repository: repository)
+          subject.call
+        end
+
+        it 'will not attempt to retrieve role names if there are no emails' do
+          expect(repository).to receive(:email_notifications_for).and_return([])
+          expect(repository).to_not receive(:get_role_names_with_email_addresses_for)
+          expect(notifier).to_not receive(:call)
           subject.call
         end
       end
