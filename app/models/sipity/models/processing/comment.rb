@@ -19,10 +19,6 @@ module Sipity
         belongs_to :entity, class_name: 'Sipity::Models::Processing::Entity'
         belongs_to :originating_strategy_action, class_name: 'Sipity::Models::Processing::StrategyAction'
         belongs_to :originating_strategy_state, class_name: 'Sipity::Models::Processing::StrategyState'
-
-        def name_of_commentor
-          actor.proxy_for.name
-        end
       end
     end
   end
