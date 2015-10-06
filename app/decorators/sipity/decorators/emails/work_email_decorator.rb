@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Decorators
     module Emails
@@ -19,11 +21,11 @@ module Sipity
         end
 
         def collaborators
-          @collaborators ||= repository.work_collaborators_for(work: work)
+          @collaborators ||= Array.wrap(repository.work_collaborators_for(work: work))
         end
 
         def reviewers
-          @reviewers ||= repository.work_collaborators_responsible_for_review(work: work)
+          @reviewers ||= Array.wrap(repository.work_collaborators_responsible_for_review(work: work))
         end
 
         def additional_committe_members
@@ -39,7 +41,7 @@ module Sipity
         end
 
         def accessible_objects
-          @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: work)
+          @accessible_objects ||= Array.wrap(repository.access_rights_for_accessible_objects_of(work: work))
         end
 
         def work_access
@@ -47,7 +49,9 @@ module Sipity
         end
 
         def accessible_files
-          @accessible_files ||= repository.work_attachments(work: work).map { |object| Models::AccessRightFacade.new(object, work: work) }
+          @accessible_files ||= Array.wrap(repository.work_attachments(work: work)).map do |object|
+            Models::AccessRightFacade.new(object, work: work)
+          end
         end
 
         # TODO: The methods with `email_message_` prefix are ripe for extraction
@@ -59,23 +63,23 @@ module Sipity
         end
 
         def program_names
-          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME)
+          Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::PROGRAM_NAME_PREDICATE_NAME))
         end
 
         def degree
-          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::DEGREE_PREDICATE_NAME)
+          Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::DEGREE_PREDICATE_NAME))
         end
 
         def publishing_intent
-          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY)
+          Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::WORK_PUBLICATION_STRATEGY))
         end
 
         def patent_intent
-          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::WORK_PATENT_STRATEGY)
+          Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::WORK_PATENT_STRATEGY))
         end
 
         def submission_date
-          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::ETD_SUBMISSION_DATE)
+          Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::ETD_SUBMISSION_DATE))
         end
 
         def email_message_action_name
@@ -105,7 +109,7 @@ module Sipity
         end
 
         def creators
-          @creators ||= repository.scope_creating_users_for_entity(entity: work)
+          @creators ||= Array.wrap(repository.scope_creating_users_for_entity(entity: work))
         end
       end
     end

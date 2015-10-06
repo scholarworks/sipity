@@ -13,12 +13,11 @@ module Sipity
         let(:repository) { QueryRepositoryInterface.new }
         let(:work_access) { Models::AccessRightFacade.new(work, work: work) }
         let(:program_names) { [double, double] }
-        let(:degree) { [double] }
+        let(:degree) { double }
         let(:creator_netids) { ['john123', 'ringo123'] }
         let(:accessible_file) { double(name: 'Attachment') }
-        let(:accessible_files) { [accessible_file] }
-        let(:publishing_intent) { [double] }
-        let(:patent_intent) { [double] }
+        let(:publishing_intent) { double }
+        let(:patent_intent) { double }
         let(:submission_date) { double }
         let(:additional_attributes) do
           {
@@ -57,11 +56,11 @@ module Sipity
         its(:creator_names) { should eq(['John', 'Ringo']) }
         its(:accessible_objects) { should eq(accessible_objects) }
         its(:program_names) { should eq(program_names) }
-        its(:degree) { should eq(degree) }
+        its(:degree) { should eq([degree]) }
         its(:creator_netids) { should eq(creator_netids) }
-        its(:publishing_intent) { should eq(publishing_intent) }
-        its(:patent_intent) { should eq(patent_intent) }
-        its(:submission_date) { should eq(submission_date) }
+        its(:publishing_intent) { should eq([publishing_intent]) }
+        its(:patent_intent) { should eq([patent_intent]) }
+        its(:submission_date) { should eq([submission_date]) }
 
         its(:additional_committe_members) do
           allow(subject).to receive(:collaborators).and_return(['John', 'Ringo'])
@@ -71,17 +70,14 @@ module Sipity
         end
 
         its(:work_access) do
-          allow(Models::AccessRightFacade).to receive(:new).
-            with(work, work: work).and_return(work_access)
+          allow(Models::AccessRightFacade).to receive(:new).with(work, work: work).and_return(work_access)
           should eq(work_access)
         end
 
         its(:accessible_files) do
-          allow(repository).to receive(:work_attachments).
-            with(work: work).and_return(accessible_files)
-          allow(Models::AccessRightFacade).to receive(:new).
-            and_return(accessible_file)
-          should eq(accessible_files)
+          allow(repository).to receive(:work_attachments).with(work: work).and_return(accessible_file)
+          allow(Models::AccessRightFacade).to receive(:new).and_return(accessible_file)
+          should eq([accessible_file])
         end
 
       end
