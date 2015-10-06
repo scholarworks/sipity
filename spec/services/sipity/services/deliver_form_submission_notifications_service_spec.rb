@@ -40,7 +40,7 @@ module Sipity
         end
         it 'will deliver each of the scope emails to the associated recipients based on role' do
           expect(notifier).to receive(:call).
-            with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails)
+            with(notification: email.method_name, entity: the_thing, to: to_emails, cc: cc_emails, bcc: bcc_emails, repository: repository)
           subject.call
         end
       end

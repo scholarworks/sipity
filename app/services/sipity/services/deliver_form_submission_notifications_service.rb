@@ -35,7 +35,8 @@ module Sipity
       attr_accessor :notification_context, :repository, :notifier
 
       def options_for_an_email_new(email:, role_names_with_email_addresses:)
-        base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [] }
+        # Passing the repository along as we may have cached information from Cogitate
+        base_options = { notification: email.method_name, entity: the_thing, to: [], cc: [], bcc: [], repository: repository }
         email.recipients.each do |recipient|
           base_options[recipient.recipient_strategy.to_sym] ||= []
           base_options[recipient.recipient_strategy.to_sym] += role_names_with_email_addresses.fetch(recipient.role_name) { [] }

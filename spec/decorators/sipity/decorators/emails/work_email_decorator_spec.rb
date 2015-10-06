@@ -31,6 +31,8 @@ module Sipity
 
         subject { described_class.new(work, repository: repository) }
 
+        its(:default_repository) { should be_a(Sipity::QueryRepository) }
+
         before do
           allow(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           allow(repository).to receive(:access_rights_for_accessible_objects_of).

@@ -18,6 +18,7 @@ module Sipity
       end
 
       let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation', title: 'a title') }
+      let(:repository) { QueryRepositoryInterface.new }
       let(:processing_entity) { work.build_processing_entity(strategy_id: '1', strategy_state_id: '1', proxy_for: work) }
       let(:user) { User.new(name: 'User', username: 'hworld') }
       let(:to) { 'test@example.com' }
@@ -26,7 +27,7 @@ module Sipity
         context "##{work_notification_method_name}" do
           it 'should send an email' do
             processing_entity # making sure its declared
-            described_class.send(work_notification_method_name, entity: work, to: to).deliver_now
+            described_class.send(work_notification_method_name, entity: work, to: to, repository: repository).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)
           end
         end
@@ -38,7 +39,7 @@ module Sipity
             Models::Processing::Comment.new(identifier_id: PowerConverter.convert(user, to: :identifier_id), entity: processing_entity)
           end
           it 'should send an email' do
-            described_class.send(email_method, entity: processing_comment, to: to).deliver_now
+            described_class.send(email_method, entity: processing_comment, to: to, repository: repository).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)
           end
         end
@@ -54,7 +55,7 @@ module Sipity
             )
           end
           it 'should send an email' do
-            described_class.send(email_method, entity: registered_action, to: to).deliver_now
+            described_class.send(email_method, entity: registered_action, to: to, repository: repository).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)
           end
         end

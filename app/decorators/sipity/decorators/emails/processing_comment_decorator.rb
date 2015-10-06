@@ -25,7 +25,7 @@ module Sipity
         end
 
         def name_of_commentor
-          commentor.name
+          commentor.to_s
         end
         private :entity
 
