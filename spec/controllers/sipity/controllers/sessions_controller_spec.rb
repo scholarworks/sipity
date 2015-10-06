@@ -41,6 +41,15 @@ module Sipity
           expect(response).to redirect_to('/')
         end
       end
+
+      context 'DELETE :destroy' do
+        it 'will remove session information' do
+          controller.session[:cogitate_data] = 'hello'
+          delete :destroy
+          expect(controller.session).to be_empty
+          expect(response).to redirect_to('/')
+        end
+      end
     end
   end
 end

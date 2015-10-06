@@ -14,6 +14,11 @@ module Sipity
         before_authentication_location = session.delete(:before_authentication_location)
         redirect_to(before_authentication_location || '/')
       end
+
+      def destroy
+        reset_session
+        redirect_to '/'
+      end
     end
   end
 end

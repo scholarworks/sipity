@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   end
 
   get 'authenticate', to: 'sipity/controllers/sessions#new', as: 'authentication'
+  delete 'revoke_authentication', to: 'sipity/controllers/sessions#destroy', as: 'revoke_authentication'
   get 'after_authentication', to: 'sipity/controllers/sessions#create', as: 'after_authentication'
 
   ##############################################################################
