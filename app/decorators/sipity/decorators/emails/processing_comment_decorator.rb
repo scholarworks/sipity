@@ -4,6 +4,10 @@ module Sipity
       # Responsible for exposing methods required for email delivery. Nothing
       # too fancy.
       class ProcessingCommentDecorator
+        def self.decorate(*args)
+          new(*args)
+        end
+
         def initialize(processing_comment, repository: default_repository)
           self.processing_comment = processing_comment
           self.repository = repository
@@ -13,12 +17,16 @@ module Sipity
           Sipity::Controllers::TranslationAssistant.call(scope: :work_types, subject: work.work_type)
         end
 
-        include Conversions::SanitizeHtml
         def title
           work.to_s
         end
 
-        delegate :comment, :entity, to: :processing_comment
+        def created_date
+          created_at.strftime('%d %b %Y')
+        end
+
+        delegate :comment, :entity, :created_at, to: :processing_comment
+        private :entity
 
         def commentor
           repository.get_identifiable_agent_for(entity: entity, identifier_id: processing_comment.identifier_id)
@@ -27,7 +35,6 @@ module Sipity
         def name_of_commentor
           commentor.to_s
         end
-        private :entity
 
         # Related to building information for https://developers.google.com/gmail/markup/
         def email_message_action_url

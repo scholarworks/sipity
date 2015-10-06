@@ -14,12 +14,22 @@ module Sipity
         let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(processing_comment, repository: repository) }
 
+        context '.decorate' do
+          it 'is an alterate to .new' do
+            expect(described_class.decorate(processing_comment, repository: repository)).to be_a(described_class)
+          end
+        end
+
         its(:default_repository) { should respond_to(:get_identifiable_agent_for) }
         its(:comment) { should eq processing_comment.comment }
         before { allow(repository).to receive(:get_identifiable_agent_for).and_return(user) }
         its(:name_of_commentor) { should eq(user.name) }
         its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }
+        its(:created_date) do
+          expect(subject).to receive(:created_at).and_return(Time.zone.now)
+          should be_a(String)
+        end
         its(:email_message_action_description) { should eq("Review comments for “#{work.title}”") }
         its(:email_message_action_name) { should eq("Review comments") }
         its(:email_message_action_name) { should eq("Review comments") }

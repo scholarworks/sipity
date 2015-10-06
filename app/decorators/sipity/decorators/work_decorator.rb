@@ -37,18 +37,18 @@ module Sipity
       end
 
       def accessible_objects
-        @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
+        @accessible_objects ||= Array.wrap(repository.access_rights_for_accessible_objects_of(work: object))
       end
 
       def comments(decorator: default_comment_decorator)
-        @comments ||= repository.find_comments_for(entity: self).map do|comment|
-          decorator.decorate(comment)
+        @comments ||= Array.wrap(repository.find_comments_for(entity: object)).map do|comment|
+          decorator.decorate(comment, repository: repository)
         end
       end
 
       def current_comments(decorator: default_comment_decorator)
-        @current_comments ||= repository.find_current_comments_for(entity: self).map do|comment|
-          decorator.decorate(comment)
+        @current_comments ||= Array.wrap(repository.find_current_comments_for(entity: object)).map do|comment|
+          decorator.decorate(comment, repository: repository)
         end
       end
 
@@ -60,7 +60,7 @@ module Sipity
       private
 
       def default_comment_decorator
-        Decorators::Processing::ProcessingCommentDecorator
+        Decorators::Emails::ProcessingCommentDecorator
       end
     end
   end

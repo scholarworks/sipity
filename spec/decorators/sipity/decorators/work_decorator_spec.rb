@@ -40,28 +40,14 @@ module Sipity
         expect(subject.accessible_objects).to eq(accessible_objects)
       end
 
-      context "#comments" do
-        let(:comment) { double(Sipity::Models::Processing::Comment) }
-        let(:decorated_comment) { Sipity::Decorators::Processing::ProcessingCommentDecorator.decorate(comment) }
-        it 'will have #comments' do
-          comments = [comment, comment]
-          decorated_comments = [decorated_comment, decorated_comment]
-
-          expect(repository).to receive(:find_comments_for).with(entity: work).and_return(comments)
-          expect(subject.comments).to eq(decorated_comments)
-        end
+      let(:comment) { Sipity::Models::Processing::Comment.new }
+      its(:current_comments) do
+        expect(repository).to receive(:find_current_comments_for).with(entity: work).and_return(comment)
+        should be_a(Enumerable)
       end
-
-      context "#current_comments" do
-        let(:comment) { double(Sipity::Models::Processing::Comment) }
-        let(:decorated_comment) { Sipity::Decorators::Processing::ProcessingCommentDecorator.decorate(comment) }
-        it 'will have #comments' do
-          comments = [comment, comment]
-          decorated_comments = [decorated_comment, decorated_comment]
-
-          expect(repository).to receive(:find_current_comments_for).with(entity: work).and_return(comments)
-          expect(subject.current_comments).to eq(decorated_comments)
-        end
+      its(:comments) do
+        expect(repository).to receive(:find_comments_for).with(entity: work).and_return(comment)
+        should be_a(Enumerable)
       end
 
       context "#selected_copyright" do
