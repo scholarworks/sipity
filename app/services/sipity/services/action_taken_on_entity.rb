@@ -119,11 +119,11 @@ module Sipity
 
       include Conversions::ConvertToProcessingActor
       def requested_by=(input)
-        @requested_by = PowerConverter.convert(input, to: :agent)
+        @requested_by = PowerConverter.convert(input, to: :identifiable_agent)
       end
 
       def on_behalf_of=(input)
-        @on_behalf_of = PowerConverter.convert(input, to: :agent)
+        @on_behalf_of = PowerConverter.convert(input, to: :identifiable_agent)
       end
     end
   end
