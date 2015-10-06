@@ -20,7 +20,7 @@ module Sipity
       # @param entity [#to_processing_entity]
       # @return Hash keyed by role names with values of email addresses.
       def get_role_names_with_email_addresses_for(entity:)
-        Queries::Complex::AgentsAssociatedWithEntity.role_names_with_emails_for(entity: entity)
+        get_remote_identifiable_agent_finder(entity: entity).role_names_with_emails
       end
 
       private
@@ -30,8 +30,10 @@ module Sipity
       end
 
       def get_remote_identifiable_agent_finder(entity:)
+        # Because not all entity objects are the same thing.
+        entity = Conversions::ConvertToProcessingEntity.call(entity)
         @remote_identiable_agent_finder_cache ||= {}
-        @remote_identiable_agent_finder_cache[entity] ||= Queries::Complex::AgentsAssociatedWithEntity.new(entity: entity)
+        @remote_identiable_agent_finder_cache[entity.id] ||= Queries::Complex::AgentsAssociatedWithEntity.new(entity: entity)
       end
     end
   end

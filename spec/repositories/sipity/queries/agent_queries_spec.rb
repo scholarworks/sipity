@@ -24,7 +24,9 @@ module Sipity
         context 'with a collaborator not found but a remote agent found' do
           let(:agent_not_it) { double(ids: []) }
           let(:agent_is_it) do
-            double(name: 'Hello', email: 'hello@world.com', identifier_id: identifier_id, ids: [identifier_id])
+            double(
+              name: 'Hello', email: 'hello@world.com', identifier_id: identifier_id, ids: [identifier_id], to_identifier_id: identifier_id
+            )
           end
           before do
             allow(repository).to receive(:work_collaborators_for).with(work: entity, identifier_id: identifier_id).and_return([])
@@ -52,8 +54,8 @@ module Sipity
 
       context "#get_role_names_with_email_addresses_for" do
         it 'will be an hash keyed by role name with values of emails' do
-          entity = double('Entity')
-          expect(Complex::AgentsAssociatedWithEntity).to receive(:role_names_with_emails_for).with(entity: entity)
+          entity = Sipity::Models::Processing::Entity.new
+          expect_any_instance_of(Complex::AgentsAssociatedWithEntity).to receive(:role_names_with_emails)
           test_repository.get_role_names_with_email_addresses_for(entity: entity)
         end
       end

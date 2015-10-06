@@ -23,27 +23,12 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
 
   it { should be_a(Enumerable) }
 
-  context '.enumerator_for' do
-    it 'should return an enumerator' do
-      expect(described_class.enumerator_for(entity: entity)).to be_a(Enumerator)
-    end
-  end
-
-  context '.emails_for' do
-    it 'will return an Array of objects that have emails' do
-      with_email = double(email: 'Hello')
-      without_email = double
-      expect(described_class).to receive(:enumerator_for).and_return([with_email, without_email])
-      expect(described_class.emails_for(entity: entity)).to eq([with_email])
-    end
-  end
-
-  context '.role_names_with_emails_for' do
+  context '#role_names_with_emails_for' do
     it 'will return an Hash of objects that have emails' do
       with_email = double('WithEmail', email: 'Hello', role_name: 'creating_user')
       without_email = double('WithoutEmail', role_name: 'something')
-      expect(described_class).to receive(:enumerator_for).and_return([with_email, without_email])
-      expect(described_class.role_names_with_emails_for(entity: entity)).to eq('creating_user' => [with_email.email], 'something' => [])
+      expect(subject).to receive(:each).and_yield(with_email).and_yield(without_email)
+      expect(subject.role_names_with_emails).to eq('creating_user' => [with_email.email], 'something' => [])
     end
   end
 

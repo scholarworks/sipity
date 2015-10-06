@@ -7,35 +7,6 @@ module Sipity
       # @todo I need to be able to get the identifiers associated with the given role
       # @see Sipity::Queries::ProcessingQuery#scope_users_for_entity_and_roles
       class AgentsAssociatedWithEntity
-        # @api public
-        def self.enumerator_for(entity:, roles: nil)
-          object = new(entity: entity)
-          return object.each(roles: roles)
-        end
-
-        # @api public
-        def self.role_names_with_emails_for(entity:)
-          object = enumerator_for(entity: entity)
-          object.each_with_object({}) do |agent, mem|
-            mem[agent.role_name] ||= []
-            mem[agent.role_name] << agent.email if there_is_an_email_for?(agent)
-            mem
-          end
-        end
-
-        # @api private
-        def self.emails_for(entity:, roles: nil)
-          enumerator_for(entity: entity, roles: roles).each_with_object([]) do |agent, mem|
-            mem << agent if there_is_an_email_for?(agent)
-            mem
-          end
-        end
-
-        def self.there_is_an_email_for?(input)
-          input.respond_to?(:email) && input.email.present?
-        end
-        private_class_method :there_is_an_email_for?
-
         include Enumerable
         def initialize(entity:, **keywords)
           self.entity = entity
@@ -49,6 +20,14 @@ module Sipity
           role_names = Array.wrap(roles).map { |role| PowerConverter.convert(role, to: :role_name) }
           aggregated_data.each do |datum|
             yield(datum) if role_names.empty? || role_names.include?(datum.role_name)
+          end
+        end
+
+        def role_names_with_emails
+          each_with_object({}) do |agent, mem|
+            mem[agent.role_name] ||= []
+            mem[agent.role_name] << agent.email if agent.respond_to?(:email) && agent.email.present?
+            mem
           end
         end
 
