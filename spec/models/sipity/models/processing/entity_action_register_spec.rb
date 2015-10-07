@@ -9,8 +9,8 @@ module Sipity
           subject { described_class }
           its(:column_names) { should include("strategy_action_id") }
           its(:column_names) { should include("entity_id") }
-          its(:column_names) { should include("on_behalf_of_actor_id") }
-          its(:column_names) { should include("requested_by_actor_id") }
+          its(:column_names) { should include("on_behalf_of_identifier_id") }
+          its(:column_names) { should include("requested_by_identifier_id") }
           its(:column_names) { should include("subject_id") }
           its(:column_names) { should include("subject_type") }
         end
