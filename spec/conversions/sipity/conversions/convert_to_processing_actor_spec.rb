@@ -34,21 +34,6 @@ module Sipity
           expect(self.class.private_instance_methods).to include(:convert_to_processing_actor)
         end
 
-        context 'for a Models::Group' do
-          context 'that is persisted' do
-            let(:object) { Models::Group.create!(name: 'Hello') }
-            it 'will find or create the associated Processing::Actor' do
-              expect(convert_to_processing_actor(object)).to be_a(Models::Processing::Actor)
-            end
-          end
-          context 'that is NOT persisted' do
-            let(:object) { Models::Group.new }
-            it 'will raise an exception' do
-              expect { convert_to_processing_actor(object) }.to raise_error(Exceptions::ProcessingActorConversionError)
-            end
-          end
-        end
-
         context 'for a Models::Agent' do
           context 'that has a persisted user' do
             let(:user) { User.create!(username: 'hello') }

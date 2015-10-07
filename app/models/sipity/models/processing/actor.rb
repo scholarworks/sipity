@@ -8,7 +8,6 @@ module Sipity
       #   initiator?).
       #
       # @see User
-      # @see Sipity::Models::Group
       class Actor < ActiveRecord::Base
         self.table_name = 'sipity_processing_actors'
 

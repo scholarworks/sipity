@@ -46,7 +46,7 @@ module Sipity
         end
 
         def assign_ulra_review_committee_to_ulra_role_for(processing_strategy:)
-          group = Models::Group.find_or_create_by!(name: ULRA_REVIEW_COMMITTEE_GROUP_NAME)
+          group = Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: 'ULRA Review Committee')
           PermissionGenerator.call(actors: group, roles: ['ulra_reviewer'], strategy: processing_strategy)
         end
 

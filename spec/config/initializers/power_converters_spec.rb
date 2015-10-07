@@ -128,14 +128,6 @@ RSpec.describe 'power converters' do
       user = User.new
       expect { PowerConverter.convert(user, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
     end
-    it 'will convert a group with a name' do
-      group = Sipity::Models::Group.new(name: 'hello')
-      expect(PowerConverter.convert(group, to: :identifier_id)).to be_a(String)
-    end
-    it 'will not convert a group without a name' do
-      group = Sipity::Models::Group.new
-      expect { PowerConverter.convert(group, to: :identifier_id) }.to raise_error(PowerConverter::ConversionError)
-    end
     it 'will convert a collaborator with an email' do
       collaborator = Sipity::Models::Collaborator.new(email: 'hello')
       expect(PowerConverter.convert(collaborator, to: :identifier_id)).to be_a(String)

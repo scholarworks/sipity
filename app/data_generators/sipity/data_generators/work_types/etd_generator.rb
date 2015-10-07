@@ -63,12 +63,13 @@ module Sipity
 
               etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
 
-              gs_actor = Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
+              grad_school_identifier_id = Cogitate::Client.encoded_identifier_for(
+                strategy: 'group', identifying_value: 'Graduate School ETD Reviewers'
+              )
               find_or_initialize_or_create!(
                 context: etd_reviewer,
                 receiver: etd_reviewer.strategy_responsibilities,
-                actor: gs_actor,
-                identifier_id: PowerConverter.convert(gs_actor, to: :identifier_id)
+                identifier_id: grad_school_identifier_id
               )
 
               etd_states = {}

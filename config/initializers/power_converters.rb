@@ -74,13 +74,6 @@ PowerConverter.define_conversion_for(:identifier_id) do |input|
     input.id
   when User
     Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: input.username) if input.username.present?
-  when Sipity::Models::Group
-    name_map = {
-      'Graduate School Reviewers' => 'Graduate School ETD Reviewers',
-      'All Registered Users' => 'All Verified "netid" Users'
-    }
-    group_name = name_map.fetch(input.name, input.name)
-    Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: group_name) if group_name.present?
   when Sipity::Models::Collaborator
     if input.identifier_id.present?
       input.identifier_id

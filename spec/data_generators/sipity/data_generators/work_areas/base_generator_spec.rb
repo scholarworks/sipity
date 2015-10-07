@@ -35,7 +35,7 @@ module Sipity
 
         context 'default values' do
           subject { described_class.new(work_area: work_area, processing_strategy: processing_strategy) }
-          its(:default_work_area_viewers) { should eq Models::Group.all_verified_netid_users }
+          its(:default_work_area_viewers) { should be_a String }
           its(:default_work_area_viewer_role) { should eq Models::Role::WORK_AREA_VIEWER }
         end
 

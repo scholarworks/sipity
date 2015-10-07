@@ -11,13 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151002183227) do
-
-  create_table "data_migrations", id: false, force: :cascade do |t|
-    t.string "version", limit: 255, null: false
-  end
-
-  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
+ActiveRecord::Schema.define(version: 20151007130700) do
 
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255,   null: false
@@ -120,27 +114,6 @@ ActiveRecord::Schema.define(version: 20151002183227) do
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject", using: :btree
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name", using: :btree
   add_index "sipity_event_logs", ["user_id"], name: "index_sipity_event_logs_on_user_id", using: :btree
-
-  create_table "sipity_group_memberships", force: :cascade do |t|
-    t.string   "user_id",         limit: 255, null: false
-    t.string   "group_id",        limit: 255, null: false
-    t.string   "membership_role", limit: 255, null: false
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-  end
-
-  add_index "sipity_group_memberships", ["group_id", "membership_role"], name: "index_sipity_group_memberships_on_group_id_and_membership_role", using: :btree
-  add_index "sipity_group_memberships", ["group_id", "user_id"], name: "index_sipity_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
-  add_index "sipity_group_memberships", ["group_id"], name: "index_sipity_group_memberships_on_group_id", using: :btree
-  add_index "sipity_group_memberships", ["user_id"], name: "index_sipity_group_memberships_on_user_id", using: :btree
-
-  create_table "sipity_groups", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
 
   create_table "sipity_notification_email_recipients", force: :cascade do |t|
     t.integer  "email_id",           limit: 4,   null: false

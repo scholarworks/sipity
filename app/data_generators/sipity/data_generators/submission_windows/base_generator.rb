@@ -30,7 +30,7 @@ module Sipity
         end
 
         def default_work_submitters
-          Models::Group.all_verified_netid_users
+          Figaro.env.cogitate_identifier_id_for_all_verified_netid_users!
         end
 
         def submission_window=(input)

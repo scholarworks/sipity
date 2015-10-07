@@ -95,29 +95,6 @@ namespace :deploy do
       end
     end
   end
-
-  namespace :qa do
-    desc 'Add user with :qa_username to ETD Group'
-    task :add_qa_user_to_group do
-      on roles(:app) do
-        within release_path do
-          with rails_env: fetch(:rails_env) do
-            execute :rails, %(runner -e #{fetch(:rails_env)} "group = Sipity::Models::Group.where(name: 'Graduate School ETD Reviewers').first!; user = User.where(username: Figaro.env.qa_username!).first!; group.group_memberships.find_or_create_by(user: user)")
-          end
-        end
-      end
-    end
-    desc 'Remove user with :qa_username from ETD Group'
-    task :remove_qa_user_to_group do
-      on roles(:app) do
-        within release_path do
-          with rails_env: fetch(:rails_env) do
-            execute :rails, %(runner -e #{fetch(:rails_env)} "group = Sipity::Models::Group.where(name: 'Graduate School ETD Reviewers').first!; user = User.where(username: Figaro.env.qa_username!).first!; group.group_memberships.where(user_id: user.id).destroy_all")
-          end
-        end
-      end
-    end
-  end
 end
 
 namespace :configuration do

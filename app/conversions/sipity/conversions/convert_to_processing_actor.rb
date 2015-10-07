@@ -11,7 +11,7 @@ module Sipity
         return input if input.is_a?(Models::Processing::Actor)
         return input.to_processing_actor if input.respond_to?(:to_processing_actor)
         case input
-        when User, Models::Group then
+        when User then
           # I'm opting to use input.id.present? instead of persisted? as I'm
           # thinking that I would prefer the option of tests not quite building
           # up the whole world.

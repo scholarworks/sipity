@@ -27,7 +27,6 @@ module Sipity
       end
       include Conversions::ConvertToPolymorphicType
       let(:user) { User.find_or_create_by!(username: 'user') }
-      let(:group) { Models::Group.find_or_create_by!(name: 'group') }
       let(:role) { Models::Role.find_or_create_by!(name: Models::Role.valid_names.first) }
       let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy') }
       let(:entity) do
@@ -43,9 +42,6 @@ module Sipity
       end
       let(:user_processing_actor) do
         Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-      end
-      let(:group_processing_actor) do
-        Models::Processing::Actor.find_or_create_by!(proxy_for: group)
       end
       let(:strategy_role) { Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy) }
       let(:user_strategy_responsibility) do
@@ -94,19 +90,6 @@ module Sipity
         it 'will return an array' do
           expect(Queries::Complex::AgentsAssociatedWithEntity::RoleIdentifierFinder).to receive(:all_for)
           test_repository.identifier_ids_associated_with_entity_and_role(role: role, entity: entity)
-          # user_processing_actor
-          # group_processing_actor
-          # user_strategy_responsibility
-          # Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-          #   strategy_role: strategy_role, actor: group_processing_actor,
-          #   identifier_id: PowerConverter.convert(group_processing_actor, to: :identifier_id), entity: entity
-          # )
-          # returned_value = subject.to_a
-          # expect(returned_value.count).to eq(2)
-          # expect(returned_value.first.permission_grant_level).
-          #   to eq(Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
-          # expect(returned_value.last.permission_grant_level).
-          #   to eq(Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP)
         end
       end
 

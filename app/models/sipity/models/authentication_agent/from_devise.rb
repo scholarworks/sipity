@@ -43,7 +43,7 @@ module Sipity
         attr_accessor :user, :repository
 
         def all_verified_netid_users_group_identifier_id
-          Cogitate::Client.encoded_identifier_for(strategy: 'group', identifying_value: Models::Group::ALL_VERIFIED_NETID_USERS)
+          Figaro.env.cogitate_identifier_id_for_all_verified_netid_users!
         end
 
         def set_identifier_id!

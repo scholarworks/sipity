@@ -67,7 +67,7 @@ module Sipity
 
         context 'default values' do
           subject { described_class.new(submission_window: submission_window, work_area: work_area) }
-          its(:default_work_submitters) { should eq Models::Group.all_verified_netid_users }
+          its(:default_work_submitters) { should be_a(String) }
           its(:default_work_submitter_role) { should eq Models::Role::WORK_SUBMITTER }
         end
       end
