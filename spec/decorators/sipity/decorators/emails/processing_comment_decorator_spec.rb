@@ -5,7 +5,7 @@ module Sipity
   module Decorators
     module Emails
       RSpec.describe ProcessingCommentDecorator do
-        let(:user) { User.new(name: 'Hello World', username: 'hworld') }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.new(id: 'abc', work_type: 'doctoral_dissertation', title: 'My Title') }
         let(:entity) { Models::Processing::Entity.new(proxy_for: work) }
         let(:processing_comment) do

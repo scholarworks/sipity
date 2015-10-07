@@ -10,7 +10,7 @@ module Sipity
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:attributes) { {} }
-          let(:user) { double }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: attributes } }
           subject { described_class.new(keywords) }
           before do
@@ -60,7 +60,6 @@ module Sipity
           end
 
           context '#submit' do
-            let(:user) { User.new(id: '1') }
             context 'with invalid data' do
               before do
                 expect(subject).to receive(:valid?).and_return(false)

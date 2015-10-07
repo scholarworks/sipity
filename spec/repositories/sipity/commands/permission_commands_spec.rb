@@ -6,13 +6,10 @@ module Sipity
     RSpec.describe PermissionCommands, type: :isolated_repository_module do
       subject { test_repository }
       context '#grant_creating_user_permission_for!' do
-        # REVIEW: The entity, user, and group are all being created. Is it time
-        #   to consider using fixtures?
         let(:entity) { Models::Work.new(id: 1) }
-        let(:user) { User.new(id: 2) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
 
         it 'will use the :user parameter to write a permission' do
-          # TODO: Remove this once the deprecation for granting permission is done
           allow(Services::ProcessingPermissionHandler).to receive(:grant)
           subject.grant_creating_user_permission_for!(entity: entity, user: user)
         end

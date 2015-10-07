@@ -9,7 +9,7 @@ module Sipity
         RSpec.describe StartASubmissionForm do
           let(:keywords) { { repository: repository, submission_window: submission_window, requested_by: user, attributes: attributes } }
           let(:attributes) { {} }
-          let(:user) { double('User') }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: '1234') }
@@ -153,7 +153,6 @@ module Sipity
               end
             end
             context 'with valid data' do
-              let(:user) { User.new(id: '123') }
               let(:work) { double }
               before do
                 expect(subject).to receive(:valid?).and_return(true)

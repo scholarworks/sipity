@@ -3,7 +3,7 @@ require 'sipity/services/apply_access_policies_to'
 module Sipity
   module Services
     RSpec.describe ApplyAccessPoliciesTo do
-      let(:user) { User.new }
+      let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:work) { Models::Work.new(id: 1) }
       let(:attachment) { Models::Attachment.new(id: 2) }
       let(:access_policies) { {} }

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    module AuthenticationAgent
+    class AuthenticationAgent
       RSpec.describe FromCogitate do
         let(:agent) do
           Cogitate::Models::Agent.build_with_identifying_information(strategy: 'netid', identifying_value: 'hworld') do |the_agent|

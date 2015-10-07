@@ -36,15 +36,13 @@ module Sipity
         it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
       end
 
-      context '.new_from_user_id' do
-        before { allow(User).to receive(:find).with(user.id).and_return(user) }
-        let(:user) { double(id: 123, email: 'hello@world.com', to_s: 'The user', username: 'hello') }
-        subject { described_class.new_from_user_id(user_id: user.id) }
+      context '.new_null_agent' do
+        subject { described_class.new_null_agent }
         it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
       end
 
-      context '.new_null_agent' do
-        subject { described_class.new_null_agent }
+      context '.new_from_strategy_and_identifying_value' do
+        subject { described_class.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'hworld') }
         it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }
       end
     end

@@ -11,7 +11,7 @@ module Sipity
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: '123') }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           let(:submission_window) do
             Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
           end
@@ -143,7 +143,6 @@ module Sipity
               end
             end
             context 'with valid data' do
-              let(:user) { User.new(id: '123') }
               let(:work) { double }
               before do
                 expect(subject).to receive(:valid?).and_return(true)

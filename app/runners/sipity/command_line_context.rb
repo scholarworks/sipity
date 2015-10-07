@@ -1,5 +1,3 @@
-require 'user'
-
 module Sipity
   # Responsible for being a valid context for running a Sipity::Runner
   #

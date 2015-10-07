@@ -6,7 +6,8 @@ module Sipity
     RSpec.describe AuthorizationLayer do
       subject { described_class.new(context, policy_authorizer: policy_authorizer) }
       let(:entity) { Models::Work.new(id: '2', title: 'dummy') }
-      let(:context) { double(current_user: User.new(id: '1')) }
+      let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
+      let(:context) { double(current_user: user) }
       let(:action_to_authorize) { :create? }
       let(:policy_authorizer) { double('PolicyAuthorizer', call: :called) }
 
@@ -21,7 +22,6 @@ module Sipity
           expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: nil, &b) }.to yield_control
         end
         it 'will yield if the user does not have access to the given file_uid' do
-          user = User.new(id: 1)
           work = Models::Work.new(id: 2)
           file = Models::Attachment.new(work: work)
           allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
@@ -30,7 +30,6 @@ module Sipity
           expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: user, &b) }.to yield_control
         end
         it 'will not yield control if the user is authorized to the given file' do
-          user = User.new(id: 1)
           work = Models::Work.new(id: 2)
           file = Models::Attachment.new(work: work)
           allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
@@ -41,8 +40,6 @@ module Sipity
       end
 
       context '#enforce!' do
-        let(:user) { User.new }
-
         context 'when each policy is authorized' do
           it 'will yield to the caller' do
             allow(policy_authorizer).to receive(:call).and_return(true)

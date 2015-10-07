@@ -45,12 +45,11 @@ module Sipity
         end
         context 'when a collaborator is responsible_for_review' do
           let(:is_responsible_for_review?) { false }
-          it 'will create a collaborator but not a user nor permission' do
+          it 'will create a collaborator but not a permission' do
+            expect(repository).to_not receive(:grant_permission_for!)
             expect do
-              expect do
-                test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
-              end.to change(Models::Collaborator, :count).by(1)
-            end.to_not change(User, :count)
+              test_repository.assign_collaborators_to(work: work, collaborators: collaborator, repository: repository)
+            end.to change(Models::Collaborator, :count).by(1)
           end
         end
 
@@ -99,7 +98,7 @@ module Sipity
 
       context '#attach_files_to' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
-        let(:user) { User.new(id: 1234) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         it 'will increment the number of attachments in the system' do
@@ -111,7 +110,7 @@ module Sipity
       context '#remove_files_form' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
-        let(:user) { User.new(id: 1234) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
@@ -124,7 +123,7 @@ module Sipity
       context '#amend_files_metadata' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
-        let(:user) { User.new(id: 1234) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.create!(id: 1) }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }
@@ -137,7 +136,7 @@ module Sipity
       context '#set_as_representative_attachment' do
         let(:file) { FileUpload.fixture_file_upload('attachments/hello-world.txt') }
         let(:file_name) { "hello-world.txt" }
-        let(:user) { User.new(id: 1234) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.create!(id: '1') }
         let(:pid_minter) { -> { 'abc123' } }
         before { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }

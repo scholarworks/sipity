@@ -11,7 +11,7 @@ module Sipity
           let(:work) { double('Work', to_processing_entity: processing_entity) }
           let(:repository) { CommandRepositoryInterface.new }
           let(:action) { Models::Processing::StrategyAction.new(strategy_id: processing_entity.strategy_id, name: 'advisor_signoff') }
-          let(:user) { User.new(id: 1) }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           let(:signoff_service) { double('Signoff Service', call: true) }
           let(:attributes) { {} }
           let(:keywords) do

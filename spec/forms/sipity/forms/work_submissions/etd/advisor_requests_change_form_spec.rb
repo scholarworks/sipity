@@ -10,7 +10,7 @@ module Sipity
           let(:processing_entity) { Models::Processing::Entity.new(strategy_id: 1) }
           let(:work) { double('Work', to_processing_entity: processing_entity) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: 1) }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           subject { described_class.new(keywords) }
 

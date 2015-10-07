@@ -4,7 +4,8 @@ require 'sipity/data_generators/find_or_create_work_area'
 module Sipity
   module DataGenerators
     RSpec.describe FindOrCreateWorkArea do
-      let(:user) { Sipity::Factories.create_user }
+      let(:cogitate_data) { JSON.parse(Rails.root.join('spec/fixtures/cogitate/authenticated_agent.json').read) }
+      let(:user) { Models::AuthenticationAgent.new_from_cogitate_data(data: cogitate_data) }
       before do
         allow(WorkAreas::EtdGenerator).to receive(:call)
       end

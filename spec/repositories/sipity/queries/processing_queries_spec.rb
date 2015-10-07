@@ -26,7 +26,7 @@ module Sipity
         allow(ProcessingHooks).to receive(:call)
       end
       include Conversions::ConvertToPolymorphicType
-      let(:user) { User.find_or_create_by!(username: 'user') }
+      let(:user) { Models::AuthenticationAgent.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'hworld') }
       let(:role) { Models::Role.find_or_create_by!(name: Models::Role.valid_names.first) }
       let(:strategy) { Models::Processing::Strategy.find_or_create_by!(name: 'strategy') }
       let(:entity) do
@@ -91,12 +91,10 @@ module Sipity
       context '#scope_processing_strategy_roles_for_user_and_entity' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity) }
         it "will include the strategy specific roles for the given user" do
-
           user_strategy_responsibility
           expect(subject).to eq([strategy_role])
         end
         it "will include the entity specific specific roles for the given user" do
-
           entity_specific_responsibility
           expect(subject).to eq([strategy_role])
         end
@@ -119,9 +117,9 @@ module Sipity
         subject do
           test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
         end
-        let(:user) { User.create!(username: 'user') }
-        let(:advisor) { User.create!(username: 'advisor') }
-        let(:no_access) { User.create!(username: 'no_access') }
+        let(:user) { Models::AuthenticationAgent.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'user') }
+        let(:advisor) { Models::AuthenticationAgent.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'adv') }
+        let(:no_access) { Models::AuthenticationAgent.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'na') }
         let(:submission_window) { Models::SubmissionWindow.new(id: 111, work_area_id: 222) }
         let(:commands) { CommandRepository.new }
 
@@ -203,7 +201,6 @@ module Sipity
         end
         let(:strategy) { Models::Processing::Strategy.first! }
         let(:originating_state) { Models::Processing::StrategyState.first! }
-        let(:user) { User.create!(username: 'user') }
         let(:commands) { CommandRepository.new }
         subject do
           test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
@@ -260,7 +257,6 @@ module Sipity
             seeds_path: 'spec/fixtures/seeds/rendering_correct_actions_based_on_user_entity_state.rb'
           )
         end
-        let(:user) { User.first! }
         let(:entity) { Sipity::Models::Processing::Entity.first! }
 
         subject { test_repository.scope_permitted_entity_strategy_actions_for_current_state(user: user, entity: entity) }
@@ -365,11 +361,11 @@ module Sipity
       context '#collaborators_that_have_taken_the_action_on_the_entity' do
         subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
         it "will include permitted strategy_state_actions" do
-          user = User.create!(username: 'user')
-          _non_acting_user = User.create!(username: 'non_acting_user')
-          _other_user = User.create!(username: 'another_user')
+          # Models::IdentifiableAgent.new_from_strategy_and_identifying_value(strategy: 'netid', identifying_value: 'non_acting_user')
           user_acting_collaborator = Models::Collaborator.create!(
-            name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
+            name: 'user_acting', netid: user.identifying_value, responsible_for_review: true, role: 'Committee Member',
+            strategy: user.strategy, identifier_id: user.identifier_id, identifying_value: user.identifying_value,
+            work_id: entity.proxy_for_id
           )
           acting_via_email_collaborator = Models::Collaborator.create!(
             name: 'acting_via_email',
@@ -434,7 +430,6 @@ module Sipity
           Models::Processing::StrategyStateAction.find_or_create_by!(originating_strategy_state: originating_state, strategy_action: action)
 
           # Making sure that I have the expected counts
-          expect(User.count).to eq(1)
           expect(Models::Processing::StrategyResponsibility.count).to eq(1)
           expect(Models::Processing::EntitySpecificResponsibility.count).to eq(0)
           expect(Models::Processing::StrategyRole.count).to eq(1)

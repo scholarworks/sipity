@@ -46,8 +46,10 @@ module Sipity
           subject.call(submission_window: submission_window, work_area: work_area)
         end
 
+        let(:cogitate_data) { JSON.parse(Rails.root.join('spec/fixtures/cogitate/authenticated_agent.json').read) }
+        let(:user) { Models::AuthenticationAgent.new_from_cogitate_data(data: cogitate_data) }
+
         it 'will grant the given work_submitters the submission window actions' do
-          user = Sipity::Factories.create_user
           subject.call(submission_window: submission_window, work_area: work_area, work_submitters: user)
           described_class::SUBMISSION_WINDOW_ACTION_NAMES.each do |action_name|
             permission_to_show_submission_window = Policies::Processing::ProcessingEntityPolicy.call(

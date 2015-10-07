@@ -4,7 +4,7 @@ require 'sipity/policies/work_policy'
 module Sipity
   module Policies
     RSpec.describe WorkPolicy do
-      let(:user) { User.new(id: '1') }
+      let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:work) { Models::Work.new(id: '2') }
       subject { WorkPolicy.new(user, work) }
 

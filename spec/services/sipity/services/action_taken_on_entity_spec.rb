@@ -7,8 +7,8 @@ module Sipity
     RSpec.describe ActionTakenOnEntity do
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
-      let(:requested_by) { User.new(username: '12') }
-      let(:on_behalf_of) { User.new(username: '34') }
+      let(:requested_by) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
+      let(:on_behalf_of) { Models::IdentifiableAgent.new_from_netid(netid: 'another') }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: strategy.id, name: 'wowza') }
       let(:another_action) { Models::Processing::StrategyAction.new(id: 30, strategy_id: strategy.id, name: 'another') }
       let(:repository) { CommandRepositoryInterface.new }

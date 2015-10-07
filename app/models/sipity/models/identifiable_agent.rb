@@ -13,6 +13,10 @@ module Sipity
         new(name: user.name, email: "#{user.username}@nd.edu", identifier_id: identifier_id)
       end
 
+      def self.new_from_netid(netid:)
+        new_with_strategy_and_identifying_value(strategy: 'netid', identifying_value: netid)
+      end
+
       def self.new_for_identifier_id(identifier_id:)
         strategy, identifying_value = Cogitate::Client.extract_strategy_and_identifying_value(identifier_id)
         email = extract_email_from(strategy: strategy, identifying_value: identifying_value)
@@ -22,7 +26,7 @@ module Sipity
       def self.new_with_strategy_and_identifying_value(strategy:, identifying_value:)
         identifier_id = Cogitate::Client.encoded_identifier_for(strategy: strategy, identifying_value: identifying_value)
         email = extract_email_from(strategy: strategy, identifying_value: identifying_value)
-        new(identifier_id: identifier_id, name: identifying_value, email: email)
+        new(identifier_id: identifier_id, name: identifying_value, email: email, strategy: strategy, identifying_value: identifying_value)
       end
 
       def self.extract_email_from(strategy:, identifying_value:)
@@ -35,20 +39,30 @@ module Sipity
       # Yup. Keeping this data structure's new method private. Use one of the above builder methods.
       private_class_method :new
 
-      def initialize(identifier_id:, name:, email:)
+      def initialize(identifier_id:, name:, email:, **keywords)
         self.identifier_id = identifier_id
         self.name = name
         self.email = email
+        self.strategy = keywords.fetch(:strategy) { default_strategy_from_identifier }
+        self.identifying_value = keywords.fetch(:identifying_value) { default_identifying_value_from_identifier }
       end
 
-      attr_reader :identifier_id, :name, :email
+      attr_reader :identifier_id, :name, :email, :strategy, :identifying_value
       alias_method :to_s, :name
 
       alias_method :to_identifier_id, :identifier_id
 
       private
 
-      attr_writer :identifier_id, :name, :email
+      attr_writer :identifier_id, :name, :email, :strategy, :identifying_value
+
+      def default_strategy_from_identifier
+        Cogitate::Client.extract_strategy_and_identifying_value(identifier_id).first
+      end
+
+      def default_identifying_value_from_identifier
+        Cogitate::Client.extract_strategy_and_identifying_value(identifier_id).last
+      end
     end
   end
 end

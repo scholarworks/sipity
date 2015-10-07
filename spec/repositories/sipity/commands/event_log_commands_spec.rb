@@ -4,7 +4,7 @@ require 'sipity/commands/event_log_commands'
 module Sipity
   module Commands
     RSpec.describe EventLogCommands, type: :isolated_repository_module do
-      let(:user) { User.new(id: 1, username: 'tim') }
+      let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:event_name) { 'event_name' }
 
       context '#log_event!' do

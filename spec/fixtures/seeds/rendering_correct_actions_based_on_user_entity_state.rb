@@ -1,11 +1,9 @@
-user = User.create!([
-  {email: "test@example.com", remember_created_at: nil, sign_in_count: 2, current_sign_in_at: "2015-02-24 18:32:52", last_sign_in_at: "2015-02-24 18:32:52", current_sign_in_ip: "127.0.0.1", last_sign_in_ip: "127.0.0.1", name: "Test User", role: nil, username: "test@example.com"}
-])
+user = Sipity::Models::IdentifiableAgent.new_from_netid(netid: 'hworld')
 Sipity::Models::Processing::Entity.create!([
   {proxy_for_id: 1, proxy_for_type: "Sipity::Models::Work", strategy_id: 1, strategy_state_id: "2"}
 ])
-another_identifier_id = Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'hworld')
-identifier_id = PowerConverter.convert(user.first, to: :identifier_id)
+another_identifier_id = Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'another')
+identifier_id = user.identifier_id
 Sipity::Models::Processing::EntityActionRegister.create!([
   {strategy_action_id: 2, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 1, requested_by_identifier_id: identifier_id, on_behalf_of_identifier_id: identifier_id },
   {strategy_action_id: 4, entity_id: 1, subject_id: 1, subject_type: "Sipity::Models::Processing::Entity", requested_by_actor_id: 1, on_behalf_of_actor_id: 1, requested_by_identifier_id: identifier_id, on_behalf_of_identifier_id: identifier_id },

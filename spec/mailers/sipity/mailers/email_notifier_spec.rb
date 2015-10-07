@@ -20,7 +20,7 @@ module Sipity
       let(:work) { Models::Work.new(id: '123', work_type: 'doctoral_dissertation', title: 'a title') }
       let(:repository) { QueryRepositoryInterface.new }
       let(:processing_entity) { work.build_processing_entity(strategy_id: '1', strategy_state_id: '1', proxy_for: work) }
-      let(:user) { User.new(name: 'User', username: 'hworld') }
+      let(:identifiable_agent) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:to) { 'test@example.com' }
 
       EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |work_notification_method_name|
@@ -36,7 +36,7 @@ module Sipity
       EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |email_method|
         context "##{email_method}" do
           let(:processing_comment) do
-            Models::Processing::Comment.new(identifier_id: PowerConverter.convert(user, to: :identifier_id), entity: processing_entity)
+            Models::Processing::Comment.new(identifier_id: identifiable_agent.identifier_id, entity: processing_entity)
           end
           it 'should send an email' do
             described_class.send(email_method, entity: processing_comment, to: to, repository: repository).deliver_now
@@ -50,8 +50,7 @@ module Sipity
           # YOWZA! This is a lot of collaborators!
           let(:registered_action) do
             Models::Processing::EntityActionRegister.new(
-              entity: processing_entity, on_behalf_of_identifier_id: PowerConverter.convert(user, to: :identifier_id),
-              created_at: Time.zone.now
+              entity: processing_entity, on_behalf_of_identifier_id: identifiable_agent.identifier_id, created_at: Time.zone.now
             )
           end
           it 'should send an email' do

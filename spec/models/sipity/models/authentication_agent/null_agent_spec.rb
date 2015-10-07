@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Sipity
   module Models
-    module AuthenticationAgent
+    class AuthenticationAgent
       RSpec.describe NullAgent do
         subject { described_class.new }
         its(:name) { should eq('anonymous') }

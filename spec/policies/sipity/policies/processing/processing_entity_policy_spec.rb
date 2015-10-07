@@ -5,7 +5,7 @@ module Sipity
   module Policies
     module Processing
       RSpec.describe ProcessingEntityPolicy do
-        let(:user) { User.new(id: '1') }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:work) { Models::Work.new(id: '2') }
         let(:repository) { double('Repository') }
         subject { described_class.new(user, work, repository: repository) }

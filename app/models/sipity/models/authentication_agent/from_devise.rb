@@ -1,6 +1,6 @@
 module Sipity
   module Models
-    module AuthenticationAgent
+    class AuthenticationAgent
       # Responsible for negotiating the devise provided user and a Sipity agent.
       class FromDevise
         def initialize(user:, repository: default_repository)

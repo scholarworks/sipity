@@ -5,7 +5,7 @@ module Sipity
   module Commands
     RSpec.describe AccountProfileCommands, type: :isolated_repository_module do
       context '#user_agreed_to_terms_of_service' do
-        let(:user) { User.new(id: 1, username: 'username') }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         it 'register the AgreedToTermsOfService but only once' do
           expect do
             test_repository.user_agreed_to_terms_of_service(user: user)

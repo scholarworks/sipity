@@ -7,7 +7,7 @@ module Sipity
       let(:entity) { Models::Processing::Entity.new(id: 1, strategy_id: strategy.id, strategy: strategy) }
       let(:strategy) { Models::Processing::Strategy.new(id: 2) }
       let(:role) { Models::Role.new(id: 3) }
-      let(:identifiable) { User.new(username: 'hworld') }
+      let(:identifiable) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:strategy_role) { Models::Processing::StrategyRole.new(strategy_id: strategy.id, role_id: role.id) }
       let(:strategy_responsibility) do
         Sipity::Models::Processing::StrategyResponsibility.new(

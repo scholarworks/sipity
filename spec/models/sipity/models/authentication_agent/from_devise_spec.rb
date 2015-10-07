@@ -1,9 +1,9 @@
 require 'spec_helper'
 module Sipity
   module Models
-    module AuthenticationAgent
+    class AuthenticationAgent
       RSpec.describe FromDevise do
-        let(:user) { User.new(username: 'hello', id: 123) }
+        let(:user) { double(username: 'hello', id: 123, email: 'hello@world.com') }
         let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(user: user, repository: repository) }
         its(:default_repository) { should respond_to(:agreed_to_application_terms_of_service?) }

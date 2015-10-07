@@ -25,11 +25,7 @@ PowerConverter.define_conversion_for(:access_url) do |input|
 end
 
 PowerConverter.define_conversion_for(:authentication_agent) do |input|
-  if Contract.valid?(input, Sipity::Interfaces::AuthenticationAgentInterface)
-    input
-  elsif input.is_a?(User)
-    Sipity::Models::AuthenticationAgent::FromDevise.new(user: input)
-  end
+  input if Contract.valid?(input, Sipity::Interfaces::AuthenticationAgentInterface)
 end
 
 PowerConverter.define_conversion_for(:boolean) do |input|
@@ -72,16 +68,12 @@ PowerConverter.define_conversion_for(:identifier_id) do |input|
     result.count == 2 ? input : nil
   when Cogitate::Models::Identifier, Cogitate::Models::Agent
     input.id
-  when User
-    Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: input.username) if input.username.present?
   when Sipity::Models::Collaborator
     if input.identifier_id.present?
       input.identifier_id
     elsif input.email.present?
       Cogitate::Client.encoded_identifier_for(strategy: 'email', identifying_value: input.email)
     end
-  when Sipity::Models::Processing::Actor
-    PowerConverter.convert(input.proxy_for, to: :identifier_id)
   end
 end
 

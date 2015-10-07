@@ -1,7 +1,7 @@
 module Sipity
   module Policies
     RSpec.describe WorkAreaPolicy do
-      let(:user) { User.new(id: '1') }
+      let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
       let(:work_area) { Models::WorkArea.new(id: '2') }
       subject { described_class.new(user, work_area) }
 

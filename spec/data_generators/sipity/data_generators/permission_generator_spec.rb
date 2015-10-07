@@ -4,7 +4,8 @@ require 'sipity/data_generators/permission_generator'
 module Sipity
   module DataGenerators
     RSpec.describe PermissionGenerator do
-      let(:user) { Sipity::Factories.create_user }
+      let(:cogitate_data) { JSON.parse(Rails.root.join('spec/fixtures/cogitate/authenticated_agent.json').read) }
+      let(:user) { Models::AuthenticationAgent.new_from_cogitate_data(data: cogitate_data) }
       let(:role) { 'creating_user' }
       let(:strategy) { Models::Processing::Strategy.create!(name: 'strategy') }
       let(:strategy_state) { strategy.initial_strategy_state }

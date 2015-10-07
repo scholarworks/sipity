@@ -6,7 +6,7 @@ module Sipity
   module Forms
     module Core
       RSpec.describe ManageAccountProfileForm do
-        let(:user) { User.new(id: 1) }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:repository) { CommandRepositoryInterface.new }
         let(:attributes) { { agreed_to_terms_of_service: '1' } }
         subject { described_class.new(requested_by: user, repository: repository, attributes: attributes) }

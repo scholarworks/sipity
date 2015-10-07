@@ -20,9 +20,9 @@ module Sipity
           )
         end
 
+        let(:cogitate_data) { JSON.parse(Rails.root.join('spec/fixtures/cogitate/authenticated_agent.json').read) }
+        let(:user) { Models::AuthenticationAgent.new_from_cogitate_data(data: cogitate_data) }
         it 'will grant permission to show the work area if a work_area_manager is given' do
-          user = Factories.create_user
-
           described_class.call(work_area: work_area, processing_strategy: processing_strategy, work_area_viewers: user)
 
           described_class::PERMITTED_WORK_AREA_VIEWER_ACTIONS.each do |action_name|

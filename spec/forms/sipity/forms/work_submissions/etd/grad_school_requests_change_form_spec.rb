@@ -9,7 +9,7 @@ module Sipity
         RSpec.describe GradSchoolRequestsChangeForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: 1) }
+          let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           subject { described_class.new(keywords) }
 

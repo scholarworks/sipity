@@ -4,10 +4,7 @@ require 'sipity/models/event_log'
 module Sipity
   module Models
     RSpec.describe EventLog, type: :model do
-
-      it { should belong_to(:user) }
       it { should belong_to(:entity) }
-      it { should belong_to(:requested_by) }
 
       # This is a "stop-gap" for validations going forward. Once the database
       # constraint is added this should go away.

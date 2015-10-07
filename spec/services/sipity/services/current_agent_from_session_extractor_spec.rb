@@ -8,8 +8,6 @@ RSpec.describe Sipity::Services::CurrentAgentFromSessionExtractor do
   [
     { session: { cogitate_data: 'data' }, method_name: :new_from_cogitate_data },
     { session: { cogitate_token: 'a token' }, method_name: :new_from_cogitate_token },
-    { session: { validated_resource_id: 1 }, method_name: :new_from_user_id },
-    { session: { 'warden.user.user.key' => [[1], nil] }, method_name: :new_from_user_id },
     { session: {}, method_name: :new_null_agent }
   ].each do |test_case|
     it "will use Sipity::Models::AuthenticationAgent.#{test_case.fetch(:method_name)} for session = #{test_case.fetch(:session).inspect}" do

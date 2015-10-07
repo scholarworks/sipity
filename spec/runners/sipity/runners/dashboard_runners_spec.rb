@@ -7,7 +7,7 @@ module Sipity
     module DashboardRunners
       include RunnersSupport
       RSpec.describe Index do
-        let(:user) { User.new }
+        let(:user) { Models::IdentifiableAgent.new_from_netid(netid: 'hworld') }
         let(:context) { TestRunnerContext.new(current_user: user, build_dashboard_view: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
