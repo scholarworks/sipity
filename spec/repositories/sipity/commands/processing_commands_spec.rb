@@ -26,8 +26,8 @@ module Sipity
           strategy_action_id: strategy_action.id,
           subject_id: entity.id,
           subject_type: "Sipity::Models::Processing::Entity",
-          requested_by_actor_id: 999,
-          on_behalf_of_actor_id: 999
+          requested_by_identifier_id: 999,
+          on_behalf_of_identifier_id: 999
         )
       end
       context '#destroy_existing_registered_state_changing_actions_for' do

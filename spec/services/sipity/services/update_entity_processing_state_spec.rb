@@ -42,7 +42,7 @@ module Sipity
 
         it 'will mark as stale all comments for the new processing state' do
           comment = Models::Processing::Comment.create!(
-            entity_id: entity.id, actor_id: 99, comment: 'a comment', stale: false, originating_strategy_state_id: processing_state.id,
+            entity_id: entity.id, identifier_id: 99, comment: 'a comment', stale: false, originating_strategy_state_id: processing_state.id,
             originating_strategy_action_id: 2
           )
           subject.call
