@@ -18,7 +18,7 @@ module Sipity
       def initialize(roles:, strategy:, actors: [], **keywords)
         self.roles = roles
         self.strategy = strategy
-        self.actors = actors
+        self.identifier_ids = actors
         self.entity = keywords.fetch(:entity) if keywords.key?(:entity)
         self.strategy_state = keywords.fetch(:strategy_state, false)
         self.action_names = keywords.fetch(:action_names, [])
@@ -34,10 +34,10 @@ module Sipity
       private
 
       attr_accessor :strategy, :strategy_state
-      attr_reader :entity, :actors, :action_names, :roles
+      attr_reader :entity, :identifier_ids, :action_names, :roles
 
-      def actors=(input)
-        @actors = Array.wrap(input).map { |i| Conversions::ConvertToProcessingActor.call(i) }
+      def identifier_ids=(input)
+        @identifier_ids = Array.wrap(input).map { |i| PowerConverter.convert(i, to: :identifier_id) }
       end
 
       def action_names=(input)
@@ -85,18 +85,16 @@ module Sipity
 
       def associate_strategy_role_at_strategy_level(strategy_role)
         return if entity
-        actors.each do |actor|
-          Models::Processing::StrategyResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, actor: actor, identifier_id: PowerConverter.convert(actor, to: :identifier_id)
-          )
+        identifier_ids.each do |identifier_id|
+          Models::Processing::StrategyResponsibility.find_or_create_by!(strategy_role: strategy_role, identifier_id: identifier_id)
         end
       end
 
       def associate_strategy_role_at_entity_level(strategy_role)
         return unless entity
-        actors.each do |actor|
+        identifier_ids.each do |identifier_id|
           Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-            strategy_role: strategy_role, entity: entity, actor: actor, identifier_id: PowerConverter.convert(actor, to: :identifier_id)
+            strategy_role: strategy_role, entity: entity, identifier_id: identifier_id
           )
         end
       end
