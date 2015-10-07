@@ -108,10 +108,6 @@ RSpec.describe 'power converters' do
   end
 
   context ':identifier_id' do
-    it 'will convert a Processing::Actor' do
-      actor = Sipity::Models::Processing::Actor.new(proxy_for: User.new(username: 'hello'))
-      expect(PowerConverter.convert(actor, to: :identifier_id)).to be_a(String)
-    end
     it 'will convert a user with a username' do
       user = User.new(username: 'hello')
       expect(PowerConverter.convert(user, to: :identifier_id)).to be_a(String)

@@ -6,9 +6,6 @@
 User.create!([
   {email: nil, remember_created_at: nil, sign_in_count: 1, current_sign_in_at: "2015-02-23 15:05:46", last_sign_in_at: "2015-02-23 15:05:46", current_sign_in_ip: "::1", last_sign_in_ip: "::1", name: nil, role: nil, username: "jfriesen"}
 ])
-Sipity::Models::Processing::Actor.create!([
-  {proxy_for_id: 1, proxy_for_type: "User", name_of_proxy: nil}
-])
 Sipity::Models::Processing::Entity.create!([
   {proxy_for_id: 1, proxy_for_type: "Sipity::Models::Work", strategy_id: 1, strategy_state_id: "1"}
 ])

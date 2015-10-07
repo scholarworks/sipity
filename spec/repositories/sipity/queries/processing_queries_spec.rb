@@ -40,20 +40,15 @@ module Sipity
           allow(the_work).to receive(:work_area).and_return(work_area)
         end
       end
-      let(:user_processing_actor) do
-        Models::Processing::Actor.find_or_create_by!(proxy_for: user)
-      end
       let(:strategy_role) { Models::Processing::StrategyRole.find_or_create_by!(role: role, strategy: strategy) }
       let(:user_strategy_responsibility) do
         Models::Processing::StrategyResponsibility.find_or_create_by!(
-          strategy_role: strategy_role, actor: user_processing_actor,
-          identifier_id: PowerConverter.convert(user_processing_actor, to: :identifier_id)
+          strategy_role: strategy_role, identifier_id: PowerConverter.convert(user, to: :identifier_id)
         )
       end
       let(:entity_specific_responsibility) do
         Models::Processing::EntitySpecificResponsibility.find_or_create_by!(
-          strategy_role: strategy_role, actor: user_processing_actor, entity: entity,
-          identifier_id: PowerConverter.convert(user_processing_actor, to: :identifier_id)
+          strategy_role: strategy_role, entity: entity, identifier_id: PowerConverter.convert(user, to: :identifier_id)
         )
       end
       let(:action) { Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: 'complete') }
@@ -96,12 +91,12 @@ module Sipity
       context '#scope_processing_strategy_roles_for_user_and_entity' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_entity(user: user, entity: entity) }
         it "will include the strategy specific roles for the given user" do
-          user_processing_actor
+
           user_strategy_responsibility
           expect(subject).to eq([strategy_role])
         end
         it "will include the entity specific specific roles for the given user" do
-          user_processing_actor
+
           entity_specific_responsibility
           expect(subject).to eq([strategy_role])
         end
@@ -244,7 +239,7 @@ module Sipity
       context '#scope_processing_strategy_roles_for_user_and_strategy' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_strategy(user: user, strategy: strategy) }
         it "will include the associated strategy roles for the given user" do
-          user_processing_actor
+
           user_strategy_responsibility
           expect(subject).to eq([strategy_role])
         end
@@ -253,7 +248,7 @@ module Sipity
       context '#scope_processing_strategy_roles_for_user_and_entity_specific' do
         subject { test_repository.scope_processing_strategy_roles_for_user_and_entity_specific(user: user, entity: entity) }
         it "will include the associated strategy roles for the given user" do
-          user_processing_actor
+
           entity_specific_responsibility
           expect(subject).to eq([strategy_role])
         end
@@ -440,7 +435,6 @@ module Sipity
 
           # Making sure that I have the expected counts
           expect(User.count).to eq(1)
-          expect(Models::Processing::Actor.count).to eq(1)
           expect(Models::Processing::StrategyResponsibility.count).to eq(1)
           expect(Models::Processing::EntitySpecificResponsibility.count).to eq(0)
           expect(Models::Processing::StrategyRole.count).to eq(1)

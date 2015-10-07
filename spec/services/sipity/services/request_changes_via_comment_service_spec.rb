@@ -15,9 +15,9 @@ module Sipity
         )
       end
       let(:action) { Models::Processing::StrategyAction.new }
-      let(:on_behalf_of) { Models::Processing::Actor.new(id: 2) }
+      let(:on_behalf_of) { Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'goodbyeworld') }
       let(:repository) { CommandRepositoryInterface.new }
-      let(:requested_by) { Models::Processing::Actor.new(id: 1) }
+      let(:requested_by) { Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'hworld') }
       let(:base_options) { { form: form, repository: repository, requested_by: requested_by, on_behalf_of: on_behalf_of } }
       subject { described_class.new(base_options) }
 

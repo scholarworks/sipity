@@ -74,7 +74,7 @@ module Sipity
 
             entity_specific_select_manager = strategy_role_projection_for(
               entity: entity, arel_table: entity_responsibilities, role: role,
-              permission_grant_level: Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
+              permission_grant_level: Models::Processing::StrategyRole::ENTITY_LEVEL_RESPONSIBILITY
             ).join(entity_responsibilities).on(
               entity_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
             ).where(
@@ -83,7 +83,7 @@ module Sipity
 
             strategy_specific_select_manager = strategy_role_projection_for(
               entity: entity, arel_table: strategy_responsibilities, role: role,
-              permission_grant_level: Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
+              permission_grant_level: Models::Processing::StrategyRole::STRATEGY_LEVEL_RESPONSIBILITY
             ).join(strategy_responsibilities).on(
               strategy_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
             ).where(

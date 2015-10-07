@@ -4,6 +4,9 @@ module Sipity
       # For a given processing strategy, what roles have a part to play in
       # the processing?
       class StrategyRole < ActiveRecord::Base
+        ENTITY_LEVEL_RESPONSIBILITY = 'entity_level'.freeze
+        STRATEGY_LEVEL_RESPONSIBILITY = 'strategy_level'.freeze
+
         self.table_name = 'sipity_processing_strategy_roles'
 
         belongs_to :role, class_name: '::Sipity::Models::Role'

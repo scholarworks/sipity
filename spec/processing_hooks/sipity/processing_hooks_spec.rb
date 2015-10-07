@@ -33,7 +33,7 @@ module Sipity
       subject { described_class }
       let(:action) { Models::Processing::StrategyAction.new(id: 3, strategy_id: entity.strategy_id, name: 'hello') }
       let(:entity) { Models::Processing::Entity.new(id: 2, strategy_id: 1, proxy_for: work_area) }
-      let(:actor) { Models::Processing::Actor.new(id: 1) }
+      let(:actor) { Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: 'hworld') }
       let(:work_area) { Models::WorkArea.new(demodulized_class_prefix_name: 'Mock') }
 
       it 'will attempt to find the corresponding module to call based on the action' do

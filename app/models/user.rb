@@ -1,6 +1,5 @@
 # Every application needs users. Right? This is that class.
 class User < ActiveRecord::Base
-  has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
   has_many :event_logs, class_name: 'Sipity::Models::EventLog'
 
   # I'm using a callback because Devise CAS authentication is creating the
