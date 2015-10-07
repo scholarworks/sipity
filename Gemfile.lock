@@ -141,7 +141,6 @@ GEM
     autoprefixer-rails (6.0.3)
       execjs
       json
-    bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
       erubis (>= 2.6.6)
@@ -221,18 +220,6 @@ GEM
     database_cleaner (1.5.1)
     database_cleaner (1.5.0)
     debug_inspector (0.0.2)
-    devise (3.5.2)
-      bcrypt (~> 3.0)
-      orm_adapter (~> 0.1)
-      railties (>= 3.2.6, < 5)
-      responders
-      thread_safe (~> 0.1)
-      warden (~> 1.2.3)
-    devise-token_authenticatable (0.4.0)
-      devise (~> 3.5.0)
-    devise_cas_authenticatable (1.5.0)
-      devise (>= 1.2.0)
-      rubycas-client (>= 2.2.1)
     diff-lcs (1.2.5)
     docile (1.1.5)
     domain_name (0.5.25)
@@ -422,6 +409,9 @@ GEM
       rack (~> 1.4)
     rack-test (0.6.3)
       rack (>= 1.0)
+    rack_session_access (0.1.1)
+      builder (>= 2.0.0)
+      rack (>= 1.0.0)
     rails (4.2.4)
       actionmailer (= 4.2.4)
       actionpack (= 4.2.4)
@@ -510,8 +500,6 @@ GEM
       sexp_processor (~> 4.0)
     ruby_parser (3.7.1)
       sexp_processor (~> 4.1)
-    rubycas-client (2.3.9)
-      activesupport
     rubyzip (1.1.7)
     sanitize (4.0.0)
       crass (~> 1.0.2)
@@ -641,9 +629,6 @@ DEPENDENCIES
   curly-templates!
   data_migrator!
   database_cleaner
-  devise
-  devise-token_authenticatable
-  devise_cas_authenticatable
   dragonfly (~> 1.0.7)
   dragonfly-s3_data_store
   draper
@@ -682,6 +667,7 @@ DEPENDENCIES
   pry-stack_explorer
   quiet_assets
   rack-cache
+  rack_session_access
   railroady!
   rails (~> 4.2)
   rails-assets-readmore!

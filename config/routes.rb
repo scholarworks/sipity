@@ -12,8 +12,6 @@ Rails.application.routes.draw do
   ##############################################################################
   # Begin Account related things
   ##############################################################################
-  devise_for :users #, only: :sessions
-  devise_for :user_for_profile_managements, class_name: 'User', only: :sessions
 
   get 'account', to: 'sipity/controllers/account_profiles#edit', as: 'account'
   post 'account', to: 'sipity/controllers/account_profiles#update'

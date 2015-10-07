@@ -1,9 +1,5 @@
-require 'devise/strategies/cas_authenticatable_with_service_agreement'
-
 # Every application needs users. Right? This is that class.
 class User < ActiveRecord::Base
-  devise :cas_authenticatable, :trackable
-
   has_one :processing_actor, as: :proxy_for, class_name: 'Sipity::Models::Processing::Actor'
   has_many :event_logs, class_name: 'Sipity::Models::EventLog'
 

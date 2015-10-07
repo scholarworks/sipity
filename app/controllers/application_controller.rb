@@ -10,7 +10,6 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include Hesburgh::Lib::ControllerWithRunner
-  before_action :filter_notify
 
   force_ssl if: :ssl_configured?
 
@@ -53,20 +52,6 @@ class ApplicationController < ActionController::Base
 
   def message_for(key, options = {})
     t(key, { scope: "sipity/#{controller_name}.action/#{action_name}" }.merge(options))
-  end
-
-  # Remove error inserted since we are not showing a page before going to web access, this error message always shows up a page too late.
-  # for the moment just remove it always.  If we show a transition page in the future we may want to  display it then.
-  def filter_notify
-    return true unless flash[:alert].present?
-    flash[:alert] = Array.wrap(flash[:alert]).reject do |alert|
-      [
-        t('devise.failure.unauthenticated'),
-        t('devise.failure.invalid', authentication_keys: Devise.authentication_keys.first)
-      ].include?(alert)
-    end
-    flash[:alert] = nil unless flash[:alert].present?
-    true
   end
 
   def ssl_configured?

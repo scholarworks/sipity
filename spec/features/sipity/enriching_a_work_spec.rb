@@ -1,14 +1,12 @@
 require 'rails_helper'
+require "rack_session_access/capybara"
 
-feature 'Enriching a Work', :devise, :feature do
-  include Warden::Test::Helpers
+feature 'Enriching a Work', :feature do
   before do
     Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd') do |work_area|
       Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: work_area)
     end
-    Warden.test_mode!
   end
-  let(:user) { Sipity::Factories.create_user }
 
   def create_a_work(options = {})
     visit '/start'
@@ -27,8 +25,15 @@ feature 'Enriching a Work', :devise, :feature do
       client_request_handler: ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
     ) { example.run }
   end
+
+  def login(agreed_to_tos: true)
+    cogitate_data = JSON.parse(Rails.root.join('spec/fixtures/cogitate/authenticated_agent.json').read)
+    page.set_rack_session(cogitate_data: cogitate_data)
+    Sipity::Models::AgreedToTermsOfService.create!(identifier_id: cogitate_data.fetch('id'), agreed_at: 1.days.ago) if agreed_to_tos
+  end
+
   scenario 'User can enrich their submission' do
-    login_as(user, scope: :user)
+    login
     create_a_work(work_type: 'doctoral_dissertation', title: 'Hello World', work_publication_strategy: 'do_not_know')
 
     on('work_page') do |the_page|

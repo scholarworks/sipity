@@ -57,4 +57,9 @@ Rails.application.configure do
 
   #Use random string for pid rather then using noid service
   config.default_pid_minter = -> { SecureRandom.urlsafe_base64(nil, true) }
+
+  Sipity::Application.configure do |config|
+    # Access to rack session
+    config.middleware.use RackSessionAccess::Middleware
+  end
 end

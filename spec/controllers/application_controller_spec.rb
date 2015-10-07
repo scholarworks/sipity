@@ -60,13 +60,6 @@ RSpec.describe ApplicationController do
     end
   end
 
-  context '#filter_notify' do
-    it 'will remove the devise messaging for failure.unauthenticated' do
-      subject.flash[:alert] = subject.t('devise.failure.unauthenticated')
-      expect { subject.send(:filter_notify) }.to change { subject.flash[:alert] }.to(nil)
-    end
-  end
-
   it { should delegate_method(:user_signed_in?).to(:current_user) }
   its(:public_methods) { should include(:current_user) }
   its(:public_methods) { should include(:user_signed_in?) }
