@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/exporters/etd_exporter'
 
 module Sipity
   module Exporters

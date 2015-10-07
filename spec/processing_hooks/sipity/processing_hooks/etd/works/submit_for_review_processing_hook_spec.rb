@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'support/sipity/command_repository_interface'
+require 'sipity/processing_hooks/etd/works/submit_for_review_processing_hook'
 
 module Sipity
   module ProcessingHooks

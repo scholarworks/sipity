@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/parameters/handled_response_parameter'
 module Sipity
   module Parameters
     RSpec.describe HandledResponseParameter do

@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'sipity/data_generators/work_areas/self_deposit_generator'
+require 'sipity/data_generators/work_areas/self_deposit_generator'
 
 module Sipity
   module DataGenerators

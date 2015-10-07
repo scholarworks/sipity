@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/group'
 
 module Sipity
   module Models

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/policies/processing/processing_entity_policy'
 
 module Sipity
   module Policies

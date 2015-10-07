@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/commands/transient_answer_commands'
 
 module Sipity
   module Commands

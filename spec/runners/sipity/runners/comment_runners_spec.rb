@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/runners/comment_runners'
+require 'sipity/runners/comment_runners'
 
 module Sipity
   module Runners

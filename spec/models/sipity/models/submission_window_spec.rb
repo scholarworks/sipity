@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/submission_window'
 
 module Sipity
   module Models

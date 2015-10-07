@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/controllers/work_submissions/show_presenter'
+require 'sipity/controllers/work_submissions/show_presenter'
 
 module Sipity
   module Controllers

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/constraints/unauthenticated_constraint'
 
 module Sipity
   module Constraints

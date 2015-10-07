@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/parameters/notification_context_parameter'
 module Sipity
   module Parameters
     RSpec.describe NotificationContextParameter do

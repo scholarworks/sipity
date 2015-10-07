@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/commands/additional_attribute_commands'
 
 module Sipity
   module Commands

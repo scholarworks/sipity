@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'application_controller'
 
 RSpec.describe ApplicationController do
   context '#repository' do

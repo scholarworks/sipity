@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/entity_action_register'
 
 module Sipity
   module Models

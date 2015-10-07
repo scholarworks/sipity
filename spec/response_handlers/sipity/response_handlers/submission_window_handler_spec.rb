@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/response_handlers/submission_window_handler'
+require 'sipity/response_handlers/submission_window_handler'
 
 module Sipity
   module ResponseHandlers

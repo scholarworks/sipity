@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/queries/simple_controlled_vocabulary_queries'
 
 module Sipity
   module Queries

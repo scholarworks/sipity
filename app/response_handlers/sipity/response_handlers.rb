@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   # ResponseHandlers are a means of encapsulating how we respond to an action's
   # response. Action responses should implement the interface of the

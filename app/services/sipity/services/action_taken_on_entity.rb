@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Services
     # Service object that handles the business logic of granting permission.

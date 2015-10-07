@@ -1,3 +1,5 @@
+require 'sipity/runners/base_runner'
+
 module Sipity
   module Runners
     # Container for account profile related actions.

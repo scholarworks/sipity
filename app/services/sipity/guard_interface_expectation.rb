@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   # A mixin to expose a quick means of guarding an interface.
   module GuardInterfaceExpectation

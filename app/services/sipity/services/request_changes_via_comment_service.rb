@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Services
     # When someone has requested changes via a comment, this is the service that

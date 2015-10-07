@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/strategy_state_action_permission'
 
 module Sipity
   module Models

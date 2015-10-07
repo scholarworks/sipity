@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'sipity/data_generators/submission_windows/ulra_generator'
+require 'sipity/data_generators/submission_windows/ulra_generator'
 
 module Sipity
   module DataGenerators

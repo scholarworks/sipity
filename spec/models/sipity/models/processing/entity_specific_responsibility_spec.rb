@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/processing/entity_specific_responsibility'
 
 module Sipity
   module Models

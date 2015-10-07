@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   # The logical container for all things Exceptional in Sipity! And by
   # Exceptional, I mean custom exceptions that can and will be raised by Sipity.

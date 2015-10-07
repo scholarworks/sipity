@@ -1,3 +1,6 @@
+require 'active_support/core_ext/array/wrap'
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Parameters
     # Responsible for providing an identified collection of actions.

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/comments_controller'
 require 'hesburgh/lib/mock_runner'
 
 module Sipity

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/mailers/email_notifier'
 module Sipity
   module Mailers
     describe EmailNotifier do

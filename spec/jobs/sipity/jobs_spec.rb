@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/jobs'
+require 'sipity/jobs'
 
 module Sipity
   RSpec.describe Jobs do

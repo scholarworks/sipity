@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/data_generators/find_or_create_submission_window'
 
 module Sipity
   module DataGenerators

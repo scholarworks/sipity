@@ -1,3 +1,5 @@
+require 'sipity/policies/processing/processing_entity_policy'
+
 module Sipity
   module Policies
     # Responsible for enforcing access to a given Sipity::Models::WorkArea.

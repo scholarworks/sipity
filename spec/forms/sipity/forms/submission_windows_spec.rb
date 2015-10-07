@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/submission_windows'
 
 module Sipity
   module Forms

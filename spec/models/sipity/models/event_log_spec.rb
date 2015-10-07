@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/event_log'
 
 module Sipity
   module Models

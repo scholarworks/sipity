@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/models/work'
 
 module Sipity
   module Models

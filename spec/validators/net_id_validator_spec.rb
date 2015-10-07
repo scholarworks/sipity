@@ -1,4 +1,6 @@
-require 'spec_helper'
+require 'active_model/validations'
+require 'rails_helper'
+require 'net_id_validator'
 
 describe NetIdValidator do
   let(:validatable) do

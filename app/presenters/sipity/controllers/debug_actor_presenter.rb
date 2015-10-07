@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Controllers
     # Responsible for exposing an Actor to a debug style view.

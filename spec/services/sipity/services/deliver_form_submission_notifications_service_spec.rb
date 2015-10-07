@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/deliver_form_submission_notifications_service'
 
 module Sipity
   module Services

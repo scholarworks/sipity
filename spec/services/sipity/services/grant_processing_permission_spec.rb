@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/services/grant_processing_permission'
 
 module Sipity
   module Services

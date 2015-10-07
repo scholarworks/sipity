@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Services
     # Responsible for taking a notification context, building out the emails

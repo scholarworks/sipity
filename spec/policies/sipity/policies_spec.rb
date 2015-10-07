@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/policies'
+require 'sipity/policies'
 
 module Sipity
   RSpec.describe Policies do

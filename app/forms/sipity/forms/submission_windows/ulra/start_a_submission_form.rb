@@ -1,3 +1,6 @@
+require 'sipity/forms/processing_form'
+require 'active_model/validations'
+
 module Sipity
   module Forms
     module SubmissionWindows

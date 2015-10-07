@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'sipity/data_generators/work_areas/etd_generator'
+require 'sipity/data_generators/work_areas/etd_generator'
 
 module Sipity
   module DataGenerators

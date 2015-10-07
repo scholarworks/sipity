@@ -22,11 +22,13 @@ module Sipity
           end
 
           def default_repository
+            require 'sipity/command_repository' unless defined?(Sipity::CommandRepository)
             CommandRepository.new
           end
           private_class_method :default_repository
 
           def default_as_of_date
+            require 'active_support/core_ext/numeric/time' unless Time.respond_to?(:zone)
             Time.zone.today
           end
           private_class_method :default_as_of_date

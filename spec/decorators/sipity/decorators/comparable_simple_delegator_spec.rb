@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/decorators/comparable_simple_delegator'
 module Sipity
   module Decorators
     RSpec.describe ComparableSimpleDelegator do

@@ -1,3 +1,6 @@
+require 'active_support/core_ext/array/wrap'
+require 'simple_form/inputs/collection_input'
+
 require 'simple_form'
 # Customization for multi-valued input field
 class MultiValueInput < SimpleForm::Inputs::CollectionInput

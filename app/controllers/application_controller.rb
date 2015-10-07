@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 require 'hesburgh/lib/controller_with_runner'
 
 # The foundational controller for this application

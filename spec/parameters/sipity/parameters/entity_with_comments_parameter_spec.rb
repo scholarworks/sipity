@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/parameters/entity_with_comments_parameter'
 
 module Sipity
   module Parameters

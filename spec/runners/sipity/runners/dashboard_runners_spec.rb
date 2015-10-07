@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/runners/dashboard_runners'
+require 'sipity/runners/dashboard_runners'
 
 module Sipity
   module Runners

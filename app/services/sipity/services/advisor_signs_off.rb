@@ -1,3 +1,5 @@
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Services
     # This is what happens when the advisor signs off on a given form.

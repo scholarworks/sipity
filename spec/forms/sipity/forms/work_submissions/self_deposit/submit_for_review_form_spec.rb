@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'support/sipity/command_repository_interface'
+require 'sipity/forms/work_submissions/self_deposit/submit_for_review_form'
 
 module Sipity
   module Forms

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/conversions/convert_to_polymorphic_type'
 
 module Sipity
   module Conversions

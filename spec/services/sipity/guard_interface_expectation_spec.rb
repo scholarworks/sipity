@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/guard_interface_expectation'
 
 module Sipity
   RSpec.describe GuardInterfaceExpectation do

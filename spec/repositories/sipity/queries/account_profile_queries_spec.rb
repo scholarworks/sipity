@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/queries/account_profile_queries'
 
 module Sipity
   module Queries

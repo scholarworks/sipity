@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/queries/processing_queries'
 
 # Welcome intrepid developer. You have stumbled into some complex data
 # interactions. There are a lot of data collaborators regarding these tests.

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/forms/work_areas'
 
 module Sipity
   module Forms

@@ -1,3 +1,5 @@
+require 'active_model/validator'
+
 # Responsible for validating netid
 class NetIdValidator < ActiveModel::EachValidator
   def initialize(options = {})

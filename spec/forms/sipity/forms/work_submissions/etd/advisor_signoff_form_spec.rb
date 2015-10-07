@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'support/sipity/command_repository_interface'
+require 'sipity/forms/work_submissions/etd/advisor_signoff_form'
 
 module Sipity
   module Forms

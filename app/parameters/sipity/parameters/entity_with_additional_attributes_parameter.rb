@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Parameters
     # A coordination parameter for gathering collecting an entity and its

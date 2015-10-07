@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/runners/work_submissions_runners'
+require 'sipity/runners/work_submissions_runners'
 
 module Sipity
   module Runners

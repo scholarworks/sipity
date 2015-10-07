@@ -1,3 +1,6 @@
+require 'power_converter'
+require 'sipity/exceptions'
+
 module Sipity
   module Parameters
     # Responsible for defining the mapping interface between the Runners

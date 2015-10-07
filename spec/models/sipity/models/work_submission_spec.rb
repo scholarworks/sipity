@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'sipity/models/work_submission'
 
 module Sipity
   module Models

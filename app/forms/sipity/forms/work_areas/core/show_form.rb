@@ -1,3 +1,7 @@
+require 'sipity/forms/processing_form'
+require 'active_model/validations'
+require 'sipity/guard_interface_expectation'
+
 module Sipity
   module Forms
     module WorkAreas

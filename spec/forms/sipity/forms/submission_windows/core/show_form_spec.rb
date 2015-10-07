@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'sipity/forms/submission_windows/core/show_form'
+require 'sipity/forms/submission_windows/core/show_form'
 
 module Sipity
   module Forms

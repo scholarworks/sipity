@@ -1,3 +1,6 @@
+require 'sipity/runners/base_runner'
+require 'active_record/base'
+
 module Sipity
   module Runners
     # Container for WorkSubmission's "action" runners

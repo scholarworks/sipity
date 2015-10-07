@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'devise/strategies/cas_authenticatable_with_service_agreement'
 
 module Devise
   module Strategies

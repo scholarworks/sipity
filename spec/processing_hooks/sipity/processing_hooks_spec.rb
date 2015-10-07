@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/processing_hooks'
 
 module Sipity
   # A container module for functions that are called as part of

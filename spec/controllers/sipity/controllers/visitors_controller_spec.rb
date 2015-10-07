@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'sipity/controllers/visitors_controller'
 
 module Sipity
   module Controllers

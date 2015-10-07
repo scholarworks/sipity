@@ -1,3 +1,6 @@
+require 'spec_helper'
+require 'support/sipity/command_repository_interface'
+
 module Sipity
   module Forms
     module WorkSubmissions

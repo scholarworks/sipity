@@ -1,3 +1,5 @@
+require 'active_support/core_ext/array/wrap'
+
 module Sipity
   module Controllers
     # Because we are dealing with a complex state driven engine, I want to

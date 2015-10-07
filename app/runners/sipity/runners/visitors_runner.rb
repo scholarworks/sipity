@@ -1,3 +1,6 @@
+require 'sipity/runners/base_runner'
+require 'sipity/controllers/work_areas/etd/show_presenter'
+
 module Sipity
   module Runners
     module VisitorsRunner
