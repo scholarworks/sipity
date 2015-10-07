@@ -117,7 +117,6 @@ module Sipity
         @also_register_as = Array.wrap(input).map { |an_action| convert_to_processing_action(an_action, scope: entity) }
       end
 
-      include Conversions::ConvertToProcessingActor
       def requested_by=(input)
         @requested_by = PowerConverter.convert(input, to: :identifiable_agent)
       end

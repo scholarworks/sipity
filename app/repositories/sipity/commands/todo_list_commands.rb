@@ -29,17 +29,14 @@ module Sipity
       # @return Models::Processing::Comment
       def record_processing_comment(entity:, commenter:, action:, comment:)
         entity = Conversions::ConvertToProcessingEntity.call(entity)
-        actor = Conversions::ConvertToProcessingActor.call(commenter)
+        identifier_id = PowerConverter.convert(commenter, to: :identifier_id)
         action = Conversions::ConvertToProcessingAction.call(action, scope: entity)
 
         # Opting for IDs because I want my unit tests to not require all of the
         # collaborating models to be built.
         Models::Processing::Comment.create!(
-          entity_id: entity.id, actor_id: actor.id,
-          originating_strategy_action_id: action.id,
-          originating_strategy_state_id: entity.strategy_state.id,
-          identifier_id: PowerConverter.convert(actor, to: :identifier_id),
-          comment: comment
+          entity_id: entity.id, originating_strategy_action_id: action.id, originating_strategy_state_id: entity.strategy_state.id,
+          identifier_id: identifier_id, comment: comment
         )
       end
     end

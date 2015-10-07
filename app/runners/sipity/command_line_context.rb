@@ -24,9 +24,8 @@ module Sipity
 
     private
 
-    # @todo When Cogitate is deployed switch from ConvertToProcessingActor
     def requested_by=(input)
-      @requested_by = Conversions::ConvertToProcessingActor.call(input)
+      @requested_by = PowerConverter.convert(input, to: :identifiable_agent)
     end
 
     def repository_strategy=(input)

@@ -371,8 +371,8 @@ module Sipity
         subject { test_repository.collaborators_that_have_taken_the_action_on_the_entity(entity: entity, actions: action) }
         it "will include permitted strategy_state_actions" do
           user = User.create!(username: 'user')
-          non_acting_user = User.create!(username: 'non_acting_user')
-          other_user = User.create!(username: 'another_user')
+          _non_acting_user = User.create!(username: 'non_acting_user')
+          _other_user = User.create!(username: 'another_user')
           user_acting_collaborator = Models::Collaborator.create!(
             name: 'user_acting', netid: user.username, responsible_for_review: true, role: 'Committee Member', work_id: entity.proxy_for_id
           )
@@ -384,19 +384,13 @@ module Sipity
             work_id: entity.proxy_for_id
           )
 
-          not_yet_acted_collaborator = Models::Collaborator.create!(
+          _not_yet_acted_collaborator = Models::Collaborator.create!(
             name: 'not_yet_acted_collaborator',
             email: 'not_yet_acted_collaborator@gmail.com',
             responsible_for_review: true,
             role: 'Committee Member',
             work_id: entity.proxy_for_id
           )
-
-          [
-            user, non_acting_user, other_user, user_acting_collaborator, acting_via_email_collaborator, not_yet_acted_collaborator
-          ].each do |proxy_for_actor|
-            Conversions::ConvertToProcessingActor.call(proxy_for_actor)
-          end
 
           Models::Collaborator.create!(
             name: 'non_reviewing', role: 'Committee Member', responsible_for_review: false, work_id: entity.proxy_for_id

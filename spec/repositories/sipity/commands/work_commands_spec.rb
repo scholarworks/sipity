@@ -33,14 +33,6 @@ module Sipity
           expect { test_repository.manage_collaborators_for(work: work, collaborators: []) }.
             to change { Models::Collaborator.count }.by(-1)
         end
-
-        it 'will destroy the collaborator processing actor' do
-          collaborator.save!
-          collaborator.to_processing_actor
-          expect(test_repository).to receive(:assign_collaborators_to).with(work: work, collaborators: [], repository: test_repository)
-          expect { test_repository.manage_collaborators_for(work: work, collaborators: []) }.
-            to change { Models::Processing::Actor.count }.by(-1)
-        end
       end
 
       context '#assign_collaborators_to' do
