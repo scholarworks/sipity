@@ -113,7 +113,7 @@ module Sipity
               strategy_roles[:role_id].eq(roles[:id])
             )
             return select_manager if role.nil?
-            role = Conversions::ConvertToRole.call(role)
+            role = PowerConverter.convert(role, to: :role)
             select_manager.where(roles[:id].eq(role.id))
           end
           private_class_method :strategy_role_projection_for

@@ -45,7 +45,7 @@ module Sipity
       end
 
       def roles=(input)
-        @roles = Array.wrap(input).map { |role| Conversions::ConvertToRole.call(role) }
+        @roles = Array.wrap(input).map { |role| PowerConverter.convert(role, to: :role) }
       end
 
       def entity=(entity)

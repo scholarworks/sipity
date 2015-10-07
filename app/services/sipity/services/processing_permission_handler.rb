@@ -77,9 +77,8 @@ module Sipity
         @identifiable = PowerConverter.convert_to_identifier_id(object)
       end
 
-      include Conversions::ConvertToRole
       def role=(object)
-        @role = convert_to_role(object)
+        @role = PowerConverter.convert(object, to: :role)
       end
     end
   end
