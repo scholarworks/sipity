@@ -8,20 +8,25 @@
 [![APACHE 2 License](http://img.shields.io/badge/APACHE2-license-blue.svg)](./LICENSE)
 [![Contributing Guidelines](http://img.shields.io/badge/CONTRIBUTING-Guidelines-blue.svg)](./CONTRIBUTING.md)
 
+A plugin-ready and extensible Rails application for modeling approval style workflows.
+
+**Q: Is it ready for other people to use?**
+_A: No. However it has been designed to extract Notre Dame specific information into a separate plugin._
+
+**Q: Why would we want to use and build upon Sipity instead of rolling our own?**
+_A: Good question. Depends on your use cases. Sipity is built with the idea of approval steps and custom forms. It is not yet a generalized application. However, it is our teams observations and response to how shared Rails applications fail._
+
+**Q: What is appealing about Sipity? In otherwords how might it work for me?**
+_A: Sipity keeps business logic/validation separate from process/approval modeling separate from captured metadata. It has naive assumptions but those are isolated and provide a place to work from._
+
 Sipity is a patron-oriented deposit interface into CurateND.
 Its goal is to provide clarity on why a patron would want to fill out metadata information.
-
-* Does the patron want a DOI? Ask them to provide a publisher and publication date.
-* Does the patron want to include the works citation? Encourage them to fill out the component fields for building a citation, or have them provide the citation.
-* Does the patron want their deposit to be listed in Google Scholar? Fill out this information.
-* Does the patron want other people to assist them on editing this information? Fill out this particular information.
 
 ## Getting Your Bearings
 
 Sipity is a Rails application but is built with a few more concepts in mind.
 
 ![Sipity Request Cycle](artifacts/sipity-request-cycle.png)
-
 
 1. A request comes into the Router.
 2. Router maps request to a Controller.
