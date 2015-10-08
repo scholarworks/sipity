@@ -8,7 +8,7 @@ module Sipity
         its(:name) { should eq('anonymous') }
         its(:email) { should eq('') }
         its(:ids) { should eq([]) }
-        its(:user_signed_in?) { should eq(false) }
+        its(:signed_in?) { should eq(false) }
         its(:agreed_to_application_terms_of_service?) { should eq(false) }
 
         it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }

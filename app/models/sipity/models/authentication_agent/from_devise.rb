@@ -9,7 +9,7 @@ module Sipity
           set_identifier_id!
         end
 
-        def user_signed_in?
+        def signed_in?
           true
         end
 

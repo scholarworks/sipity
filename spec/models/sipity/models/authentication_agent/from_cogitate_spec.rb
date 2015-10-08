@@ -16,7 +16,7 @@ module Sipity
         its(:default_ids_decoder) { should respond_to(:call) }
         it { should delegate_method(:ids).to(:cogitate_agent) }
         it { should delegate_method(:name).to(:cogitate_agent) }
-        its(:user_signed_in?) { should eq(true) }
+        its(:signed_in?) { should eq(true) }
         its(:netid) { should eq('hworld') }
         its(:to_identifier_id) { should eq(subject.identifier_id) }
         context '#agreed_to_application_terms_of_service?' do

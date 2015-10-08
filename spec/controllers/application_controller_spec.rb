@@ -60,9 +60,9 @@ RSpec.describe ApplicationController do
     end
   end
 
-  it { should delegate_method(:user_signed_in?).to(:current_user) }
+  it { should delegate_method(:signed_in?).to(:current_user) }
   its(:public_methods) { should include(:current_user) }
-  its(:public_methods) { should include(:user_signed_in?) }
+  its(:public_methods) { should include(:signed_in?) }
   its(:public_methods) { should_not include(:current_user=) }
   its(:private_methods) { should include(:current_user=) }
 end

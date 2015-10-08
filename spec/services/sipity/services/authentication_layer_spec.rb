@@ -6,7 +6,7 @@ module Sipity
       let(:controller) { double(redirect_to: true, session: session, :current_user= => true) }
       let(:session) { {} }
       let(:token) { 'A Cogitate Token' }
-      let(:user) { double('Current User', user_signed_in?: false, agreed_to_application_terms_of_service?: false) }
+      let(:user) { double('Current User', signed_in?: false, agreed_to_application_terms_of_service?: false) }
       let(:current_user_extractor) { double(call: user) }
 
       subject { described_class.new(context: controller, current_user_extractor: current_user_extractor) }
@@ -35,7 +35,7 @@ module Sipity
       end
 
       context 'when the user is not signed in' do
-        let(:user) { double(user_signed_in?: false) }
+        let(:user) { double(signed_in?: false) }
         context '#authenticate_user!' do
           it 'will redirect to to the authenticate path' do
             expect(controller).to receive(:redirect_to).with('/authenticate')
@@ -56,7 +56,7 @@ module Sipity
         end
       end
       context 'when the user is signed in but has NOT agreed to the application ToS' do
-        let(:user) { double(user_signed_in?: true, agreed_to_application_terms_of_service?: false) }
+        let(:user) { double(signed_in?: true, agreed_to_application_terms_of_service?: false) }
         context '#authenticate_user!' do
           it 'will redirect to to the account path' do
             expect(controller).to receive(:redirect_to).with('/account')
@@ -77,7 +77,7 @@ module Sipity
         end
       end
       context 'when the user is signed in and has agreed to the application ToS' do
-        let(:user) { double(user_signed_in?: true, agreed_to_application_terms_of_service?: true) }
+        let(:user) { double(signed_in?: true, agreed_to_application_terms_of_service?: true) }
         context '#authenticate_user!' do
           it 'will not redirect' do
             expect(controller).to_not receive(:redirect_to)

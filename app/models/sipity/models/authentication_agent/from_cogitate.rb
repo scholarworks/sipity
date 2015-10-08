@@ -13,7 +13,7 @@ module Sipity
           cogitate_agent.with_emails.to_a.first
         end
 
-        def user_signed_in?
+        def signed_in?
           true
         end
 

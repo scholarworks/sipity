@@ -12,7 +12,7 @@ module Sipity
         its(:ids) { should eq([subject.identifier_id, subject.send(:all_verified_netid_users_group_identifier_id)]) }
         its(:user_id) { should eq(user.id) }
         its(:id) { should eq(user.id) }
-        its(:user_signed_in?) { should eq(true) }
+        its(:signed_in?) { should eq(true) }
         its(:to_polymorphic_type) { should eq('User') }
         its(:to_identifier_id) { should eq(subject.identifier_id) }
         it { should contractually_honor(Sipity::Interfaces::AuthenticationAgentInterface) }

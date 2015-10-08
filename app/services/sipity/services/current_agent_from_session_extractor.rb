@@ -7,7 +7,7 @@ module Sipity
 
       Contract(
         Contracts::KeywordArgs[session: Contracts::RespondTo[:key?, :[]]] =>
-        Contracts::RespondTo[:user_signed_in?, :agreed_to_application_terms_of_service?]
+        Contracts::RespondTo[:signed_in?, :agreed_to_application_terms_of_service?]
       )
       def self.call(session:, builder: Sipity::Models::AuthenticationAgent)
         return builder.new_from_cogitate_token(token: session[:cogitate_token]) if session.key?(:cogitate_token)

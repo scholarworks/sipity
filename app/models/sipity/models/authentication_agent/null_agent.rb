@@ -15,7 +15,7 @@ module Sipity
           []
         end
 
-        def user_signed_in?
+        def signed_in?
           false
         end
 

@@ -3,7 +3,7 @@ require 'sipity/services/current_agent_from_session_extractor'
 
 RSpec.describe Sipity::Services::CurrentAgentFromSessionExtractor do
   subject { described_class }
-  let(:agent) { double(user_signed_in?: true, agreed_to_application_terms_of_service?: true) }
+  let(:agent) { double(signed_in?: true, agreed_to_application_terms_of_service?: true) }
 
   [
     { session: { cogitate_data: 'data' }, method_name: :new_from_cogitate_data },

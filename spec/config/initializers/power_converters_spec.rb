@@ -55,7 +55,7 @@ RSpec.describe 'power converters' do
 
   context 'authentication_agent' do
     it 'will convert an object that adhears to the AgentInterface' do
-      object = double(email: true, ids: [], name: 'hello', user_signed_in?: true, agreed_to_application_terms_of_service?: true)
+      object = double(email: true, ids: [], name: 'hello', signed_in?: true, agreed_to_application_terms_of_service?: true)
       expect(PowerConverter.convert(object, to: :authentication_agent)).to eq(object)
     end
 
