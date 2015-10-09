@@ -22,6 +22,12 @@ _A: Sipity keeps business logic/validation separate from process/approval modeli
 Sipity is a patron-oriented deposit interface into CurateND.
 Its goal is to provide clarity on why a patron would want to fill out metadata information.
 
+## Running Under SSL
+
+With [Cogitate](https://github.com/ndlib/cogitate) integration, you will need to run Sipity under SSL. See below:
+
+* `$ ./bin/ssl_server` - You can then go to [https://localhost:3000](https://localhost:3000) to run the application under SSL.
+
 ## Getting Your Bearings
 
 Sipity is a Rails application but is built with a few more concepts in mind.

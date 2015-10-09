@@ -82,6 +82,10 @@ group :development do
   gem 'terminal-notifier-guard', '~> 1.6.4'
 end
 
+group :development do
+  gem 'thin'
+end
+
 group :development, :staging do
   gem 'seed_dump'
 end
