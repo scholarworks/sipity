@@ -13,12 +13,6 @@
 
 ActiveRecord::Schema.define(version: 20151007152907) do
 
-  create_table "data_migrations", id: false, force: :cascade do |t|
-    t.string "version", limit: 255, null: false
-  end
-
-  add_index "data_migrations", ["version"], name: "unique_data_migrations", unique: true, using: :btree
-
   create_table "sessions", force: :cascade do |t|
     t.string   "session_id", limit: 255,   null: false
     t.text     "data",       limit: 65535
@@ -40,20 +34,6 @@ ActiveRecord::Schema.define(version: 20151007152907) do
 
   add_index "sipity_access_rights", ["entity_id", "entity_type"], name: "index_sipity_access_rights_on_entity_id_and_entity_type", unique: true, using: :btree
 
-  create_table "sipity_account_placeholders", force: :cascade do |t|
-    t.string   "identifier",      limit: 255,                     null: false
-    t.string   "name",            limit: 255
-    t.string   "identifier_type", limit: 32,                      null: false
-    t.string   "state",           limit: 32,  default: "created", null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_account_placeholders", ["identifier", "identifier_type"], name: "sipity_account_placeholders_id_and_type", unique: true, using: :btree
-  add_index "sipity_account_placeholders", ["identifier"], name: "index_sipity_account_placeholders_on_identifier", using: :btree
-  add_index "sipity_account_placeholders", ["name"], name: "index_sipity_account_placeholders_on_name", using: :btree
-  add_index "sipity_account_placeholders", ["state"], name: "index_sipity_account_placeholders_on_state", using: :btree
-
   create_table "sipity_additional_attributes", force: :cascade do |t|
     t.string   "work_id",    limit: 32,    null: false
     t.string   "key",        limit: 255,   null: false
@@ -64,22 +44,6 @@ ActiveRecord::Schema.define(version: 20151007152907) do
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
   add_index "sipity_additional_attributes", ["work_id"], name: "index_sipity_additional_attributes_on_work_id", using: :btree
-
-  create_table "sipity_agents", force: :cascade do |t|
-    t.string   "name",                 limit: 255,               null: false
-    t.text     "description",          limit: 65535
-    t.string   "authentication_token", limit: 255,               null: false
-    t.integer  "sign_in_count",        limit: 4,     default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
-    t.string   "current_sign_in_ip",   limit: 255
-    t.string   "last_sign_in_ip",      limit: 255
-    t.datetime "created_at",                                     null: false
-    t.datetime "updated_at",                                     null: false
-  end
-
-  add_index "sipity_agents", ["authentication_token"], name: "index_sipity_agents_on_authentication_token", unique: true, using: :btree
-  add_index "sipity_agents", ["name"], name: "index_sipity_agents_on_name", unique: true, using: :btree
 
   create_table "sipity_agreed_to_terms_of_services", id: false, force: :cascade do |t|
     t.string   "identifier_id", limit: 255, null: false
@@ -125,17 +89,6 @@ ActiveRecord::Schema.define(version: 20151007152907) do
   add_index "sipity_collaborators", ["work_id", "netid"], name: "index_sipity_collaborators_on_work_id_and_netid", unique: true, using: :btree
   add_index "sipity_collaborators", ["work_id", "sequence"], name: "index_sipity_collaborators_on_work_id_and_sequence", using: :btree
 
-  create_table "sipity_doi_creation_requests", force: :cascade do |t|
-    t.string   "work_id",          limit: 32,                                        null: false
-    t.string   "state",            limit: 255, default: "request_not_yet_submitted", null: false
-    t.string   "response_message", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_doi_creation_requests", ["state"], name: "index_sipity_doi_creation_requests_on_state", using: :btree
-  add_index "sipity_doi_creation_requests", ["work_id"], name: "index_sipity_doi_creation_requests_on_work_id", unique: true, using: :btree
-
   create_table "sipity_event_logs", force: :cascade do |t|
     t.string   "user_id",           limit: 255
     t.string   "entity_id",         limit: 32,  null: false
@@ -161,37 +114,6 @@ ActiveRecord::Schema.define(version: 20151007152907) do
   add_index "sipity_event_logs", ["user_id", "entity_id", "entity_type"], name: "sipity_event_logs_user_subject", using: :btree
   add_index "sipity_event_logs", ["user_id", "event_name"], name: "sipity_event_logs_user_event_name", using: :btree
   add_index "sipity_event_logs", ["user_id"], name: "index_sipity_event_logs_on_user_id", using: :btree
-
-  create_table "sipity_group_memberships", force: :cascade do |t|
-    t.integer  "user_id",         limit: 4,   null: false
-    t.integer  "group_id",        limit: 4,   null: false
-    t.string   "membership_role", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_group_memberships", ["group_id", "membership_role"], name: "index_sipity_group_memberships_on_group_id_and_membership_role", using: :btree
-  add_index "sipity_group_memberships", ["group_id", "user_id"], name: "index_sipity_group_memberships_on_group_id_and_user_id", unique: true, using: :btree
-  add_index "sipity_group_memberships", ["group_id"], name: "index_sipity_group_memberships_on_group_id", using: :btree
-  add_index "sipity_group_memberships", ["user_id"], name: "index_sipity_group_memberships_on_user_id", using: :btree
-
-  create_table "sipity_groups", force: :cascade do |t|
-    t.string   "name",       limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
-
-  create_table "sipity_models_processing_administrative_scheduled_actions", force: :cascade do |t|
-    t.datetime "scheduled_time",             null: false
-    t.string   "reason",         limit: 255, null: false
-    t.string   "entity_id",      limit: 255, null: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-  end
-
-  add_index "sipity_models_processing_administrative_scheduled_actions", ["entity_id", "reason"], name: "idx_sipity_scheduled_actions_entity_id_reason", using: :btree
 
   create_table "sipity_notification_email_recipients", force: :cascade do |t|
     t.integer  "email_id",           limit: 4,   null: false
