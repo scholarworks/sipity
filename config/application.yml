@@ -6,12 +6,6 @@
 #
 # They are included so we can share what the keys should be.
 
-cogitate_services_tokenizer_encryption_type: 'RS256'
-cogitate_services_tokenizer_public_password: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuZYpQKfFJ2CfdyPTMj7b\nQBALe58cWAN+B6tyLBPozDRe7OcJPs/PnOtaPcvdk0RQcTxCtTkgb3Z1bTeQam+l\n3Hy5byCXcojCQPbQes+jGQ62W59aC6li/v0QakO68kCr/HAI49HBhMp59LOVNWUQ\nZNIgnbQxWT3N/0guLPbN2d+qTSW906YRjanVE4daKQ0TNZKa8Py1PP8ey0h2ipoW\nkr0WAz24AgdXUkQ4Y1RdeEs71On5exx8WtrUBMluNIG4neJwvkiaXWMDS2eQU2Oy\nV/L1dkNUrpnNuUb3vhlfyTKEsYUpt0ZoMVyddL1Vzuw/GmGuc4a1y+P6rmHXxQJR\n7wIDAQAB\n-----END PUBLIC KEY-----\n"
-cogitate_services_tokenizer_issuer_claim: "https://library.nd.edu"
-cogitate_services_remote_server_base_url: "https://cogitate-staging.library.nd.edu"
-cogitate_services_after_authentication_callback_url: 'https://localhost:3000/after_authentication'
-
 curate_nd_url_for_etds: "https://curate.nd.edu/catalog?utf8=%E2%9C%93&search_field=all_fields&q=etd"
 curate_nd_url_show_prefix_url: "https://curate.nd.edu/show/"
 default_email_from: 'sipity-development@nd.edu'
@@ -34,6 +28,11 @@ protocol: 'http'
 airbrake_api_key: 'this-makes-no-sense'
 airbrake_host: 'errbit.library.nd.edu'
 
+# NOTE: cogitate_services_tokenizer_public_password is different for development and test environment.
+# It is assumed that the development environment is connecting to a "live server" whereas test is
+# often stubbing out the connection. The most important thing is that the `cogitate_services_tokenizer_public_password` is correct.
+# The `cogitate_services_tokenizer_public_password` is the public key for the remote service. The cogitate token is signed with a
+# corresponding private key and to detokenize via JWT, the public key must match.
 development:
   domain_name: "localhost:3000"
   url_host: "http://localhost:3000"
@@ -41,6 +40,11 @@ development:
   curate_batch_user_pid: "batch_user_pid"
   curate_batch_group_pid: "batch_group_pid"
   curate_batch_mnt_path: "local/path/to/create/rof/file"
+  cogitate_services_tokenizer_public_password: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxhwhuijWgzTA0Gzuih5E\n2aueEF/9v1a6fLddhi9TtDT15zc2fAcQulieyJ5Jk0V+Xp6Fs1w+MEikO2YbLmdT\nEz07et/xjdhCKKiLaYwAl5w2F4/BlpSD17x998uS/lkOZkOHmXpDZk14gHM9IiNN\nK++jQaTcChfCDdG9kjMjKq2OHMye052PH9GYSXOsGfXaT1ijRbksnZmj5kcG2mJ2\nNRr1pqBeYWjvtY8y488p/ymGTg5Xu/BvxtFKzVEN+lBOVcZaCA9/DeeYCdlFgeLj\nDqY3RI+NaoJyqA5yJYtgBcnj+h86XMOWgTnQ3GfELkELEeK+49DhisIfRJFaYfBo\ndQIDAQAB\n-----END PUBLIC KEY-----\n"
+  cogitate_services_remote_server_base_url: "https://cogitate-staging.library.nd.edu"
+  cogitate_services_tokenizer_encryption_type: 'RS256'
+  cogitate_services_tokenizer_issuer_claim: "https://library.nd.edu"
+  cogitate_services_after_authentication_callback_url: 'https://localhost:3000/after_authentication'
 
 test:
   domain_name: "localhost:3000"
@@ -49,3 +53,8 @@ test:
   curate_batch_user_pid: "batch_user_pid"
   curate_batch_group_pid: "batch_group_pid"
   curate_batch_mnt_path: "tmp"
+  cogitate_services_tokenizer_public_password: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuZYpQKfFJ2CfdyPTMj7b\nQBALe58cWAN+B6tyLBPozDRe7OcJPs/PnOtaPcvdk0RQcTxCtTkgb3Z1bTeQam+l\n3Hy5byCXcojCQPbQes+jGQ62W59aC6li/v0QakO68kCr/HAI49HBhMp59LOVNWUQ\nZNIgnbQxWT3N/0guLPbN2d+qTSW906YRjanVE4daKQ0TNZKa8Py1PP8ey0h2ipoW\nkr0WAz24AgdXUkQ4Y1RdeEs71On5exx8WtrUBMluNIG4neJwvkiaXWMDS2eQU2Oy\nV/L1dkNUrpnNuUb3vhlfyTKEsYUpt0ZoMVyddL1Vzuw/GmGuc4a1y+P6rmHXxQJR\n7wIDAQAB\n-----END PUBLIC KEY-----\n"
+  cogitate_services_remote_server_base_url: "https://localhost:3001"
+  cogitate_services_tokenizer_encryption_type: 'RS256'
+  cogitate_services_tokenizer_issuer_claim: "https://library.nd.edu"
+  cogitate_services_after_authentication_callback_url: 'https://localhost:3000/after_authentication'
