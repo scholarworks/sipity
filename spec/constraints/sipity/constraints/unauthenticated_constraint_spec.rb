@@ -5,24 +5,19 @@ module Sipity
   module Constraints
     RSpec.describe UnauthenticatedConstraint do
       context '.matches?' do
-        it 'will be true if there is no warden environment' do
-          request = double(env: {})
-          expect(subject.matches?(request)).to eq(true)
-        end
-
-        it 'will be true warden does not have a user' do
-          request = double(env: { 'warden' => nil })
-          expect(subject.matches?(request)).to eq(true)
-        end
-
-        it 'will be true warden user is nil' do
-          request = double(env: { 'warden' => double(user: nil) })
-          expect(subject.matches?(request)).to eq(true)
-        end
-
-        it 'will be false if warden has a user (that is someone is authenticated)' do
-          request = double(env: { 'warden' => double(user: 'Hello') })
-          expect(subject.matches?(request)).to eq(false)
+        [
+          [true, -> { {} }],
+          [true, -> { { 'warden' => nil } }],
+          [true, -> { { 'warden' => double(user: nil) } }],
+          [false, -> { { 'warden' => double(user: 'name') } }],
+          [true, -> { { 'rack.session' => {} } }],
+          [true, -> { { 'rack.session' => { 'cogitate_data' => nil } } }],
+          [false, -> { { 'rack.session' => { 'cogitate_data' => :logged_ind } } }]
+        ].each do |expected, env|
+          it "will be #{expected.inspect} with env = #{env.inspect}" do
+            request = double(env: instance_exec(&env))
+            expect(subject.matches?(request)).to eq(expected)
+          end
         end
       end
     end
