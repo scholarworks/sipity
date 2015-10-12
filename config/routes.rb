@@ -9,6 +9,11 @@ Rails.application.routes.draw do
   delete 'revoke_authentication', to: 'sipity/controllers/sessions#destroy', as: 'revoke_authentication'
   get 'after_authentication', to: 'sipity/controllers/sessions#create', as: 'after_authentication'
 
+  constraints Sipity::Constraints::AllowMockAuthenticationConstraint do
+    get 'mock/authenticate', to: 'sipity/controllers/sessions#mock_new', as: 'mock_authentication'
+    post 'mock/authenticate', to: 'sipity/controllers/sessions#mock_create'
+  end
+
   ##############################################################################
   # Begin Account related things
   ##############################################################################
