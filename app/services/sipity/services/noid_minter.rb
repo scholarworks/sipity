@@ -8,11 +8,11 @@ module Sipity
         connection.mint.first
       end
 
-      def connection
+      def connection(env: Figaro.env)
         return @connection if @connection.present?
-        server = Figaro.env.noid_server!
-        port = Figaro.env.noid_port!.to_i
-        pool = Figaro.env.noid_pool!
+        server = env.noid_server!
+        port = env.noid_port!.to_i
+        pool = env.noid_pool!
         @connection = ::NoidsClient::Connection.new("#{server}:#{port}").get_pool(pool)
       end
     end
