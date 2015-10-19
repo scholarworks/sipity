@@ -5,7 +5,7 @@ module Sipity
   module Runners
     # Container for WorkArea related "action" runners
     module WorkAreaRunners
-      # :nodoc:
+      # Encapsulates the commonalities between the Query and the Command action.
       class CommandQueryAction < BaseRunner
         self.authentication_layer = :default
         self.authorization_layer = :default
