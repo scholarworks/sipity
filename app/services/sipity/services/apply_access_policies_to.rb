@@ -14,8 +14,8 @@ module Sipity
         self.work = work
         self.access_policies = Array.wrap(access_policies)
       end
-      attr_accessor :user, :work, :access_policies
-      private(:user=, :work=, :access_policies=)
+
+      attr_reader :user, :work, :access_policies
 
       def call
         access_policies.each do |attributes|
@@ -24,6 +24,8 @@ module Sipity
       end
 
       private
+
+      attr_writer :user, :work, :access_policies
 
       include Conversions::ConvertToDate
 
