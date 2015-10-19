@@ -26,8 +26,8 @@ module Sipity
       def with_valid_strategy_role
         strategy_role = Models::Processing::StrategyRole.where(strategy_id: strategy.id, role_id: role.id).first!
         yield(strategy_role)
-      rescue ActiveRecord::RecordNotFound => e
-        raise Exceptions::ValidProcessingStrategyRoleNotFoundError, e.message
+      rescue ActiveRecord::RecordNotFound => exception
+        raise Exceptions::ValidProcessingStrategyRoleNotFoundError, exception.message
       end
 
       def create_entity_specific_responsibility(strategy_role:)
