@@ -43,6 +43,8 @@ group :doc do
   gem 'yard', require: false
   gem 'yard-activerecord', require: false
   gem 'reek', require: false
+  gem 'flay', require: false
+  gem 'flog', require: false
 end
 
 group :development do
