@@ -42,6 +42,7 @@ group :doc do
   gem 'railroady', require: false, github: 'jeremyf/railroady', branch: 'allowing-namespaced-models'
   gem 'yard', require: false
   gem 'yard-activerecord', require: false
+  gem 'reek', require: false
 end
 
 group :development do
