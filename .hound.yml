@@ -45,6 +45,10 @@ Style/PredicateName:
     - app/decorators/sipity/decorators/comparable_simple_delegator.rb
     - app/decorators/sipity/decorators/base_object_with_composed_attributes_delegator.rb
 
+Style/ParallelAssignment:
+  Exclude:
+    - app/services/sipity/services/notifier.rb
+
 MethodLength:
   Max: 10
   Description: 'Avoid methods longer than 10 lines of code.'
