@@ -6,7 +6,7 @@
       <%= simple_form_for(view_object, url: request.path, method: :post) do |f| %>
         <%= f.error_notification %>
         <%= f.error :base, error_method: :to_sentence %>
-        <%= view_object.render(f: f) %>
+        <%= view_object.render(form: f) %>
         <div class="action-pane state-advancing-action">
           <%= submit_tag("Submit", itemprop: 'name', autofocus: true, class: 'btn btn-primary') %>
         </div>

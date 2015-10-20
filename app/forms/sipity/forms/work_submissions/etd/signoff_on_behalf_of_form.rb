@@ -34,8 +34,8 @@ module Sipity
 
           private(:on_behalf_of_collaborator_id=)
 
-          def render(f:)
-            f.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
+          def render(form:)
+            form.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
           end
 
           def submit

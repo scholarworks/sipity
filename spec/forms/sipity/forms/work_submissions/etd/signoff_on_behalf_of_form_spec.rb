@@ -45,7 +45,7 @@ module Sipity
               form_object = double('Form Object')
               expect(form_object).to receive(:input).with(:on_behalf_of_collaborator_id, collection: [someone], value_method: :id).
                 and_return("<input />")
-              expect(subject.render(f: form_object)).to eq("<input />")
+              expect(subject.render(form: form_object)).to eq("<input />")
             end
           end
 

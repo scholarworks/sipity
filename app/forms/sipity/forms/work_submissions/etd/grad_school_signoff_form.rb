@@ -23,12 +23,12 @@ module Sipity
           include ActiveModel::Validations
           validates :agree_to_signoff, acceptance: { accept: true }
 
-          # @param f SimpleFormBuilder
+          # @param form SimpleFormBuilder
           #
           # @return String
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', legend)
-            markup << f.input(
+            markup << form.input(
               :agree_to_signoff,
               as: :boolean,
               inline_label:

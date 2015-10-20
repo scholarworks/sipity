@@ -37,10 +37,10 @@ module Sipity
           # @param f SimpleFormBuilder
           #
           # @return String
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', comment_legend)
-            markup << f.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
-            markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
+            markup << form.input(:on_behalf_of_collaborator_id, collection: valid_on_behalf_of_collaborators, value_method: :id)
+            markup << form.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
           end
 
           def submit

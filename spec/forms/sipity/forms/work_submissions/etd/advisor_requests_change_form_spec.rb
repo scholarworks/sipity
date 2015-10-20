@@ -18,10 +18,10 @@ module Sipity
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context '#render' do
-            let(:f) { double }
+            let(:form) { double }
             it 'will return an input text area' do
-              expect(f).to receive(:input).with(:comment, hash_including(as: :text))
-              subject.render(f: f)
+              expect(form).to receive(:input).with(:comment, hash_including(as: :text))
+              subject.render(form: form)
             end
           end
 

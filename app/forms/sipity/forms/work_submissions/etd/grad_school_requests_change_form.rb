@@ -24,12 +24,12 @@ module Sipity
           include ActiveModel::Validations
           validates :comment, presence: true
 
-          # @param f SimpleFormBuilder
+          # @param form SimpleFormBuilder
           #
           # @return String
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', grad_school_requests_change_legend)
-            markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
+            markup << form.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
           end
 
           def grad_school_requests_change_legend

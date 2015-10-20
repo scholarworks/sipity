@@ -26,12 +26,12 @@ module Sipity
           let(:someone) { double(id: 'one') }
 
           context '#render' do
-            let(:f) { double }
+            let(:form) { double }
             it 'will render HTML safe comment textarea and comment selection box' do
-              expect(f).to receive(:input).with(:comment, hash_including(as: :text))
-              expect(f).to receive(:input).with(:on_behalf_of_collaborator_id, collection: [someone], value_method: :id).
+              expect(form).to receive(:input).with(:comment, hash_including(as: :text))
+              expect(form).to receive(:input).with(:on_behalf_of_collaborator_id, collection: [someone], value_method: :id).
                 and_return("<input />")
-              subject.render(f: f)
+              subject.render(form: form)
             end
           end
 

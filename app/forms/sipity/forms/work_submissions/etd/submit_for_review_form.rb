@@ -23,10 +23,10 @@ module Sipity
           include ActiveModel::Validations
           validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', deposit_terms_legend)
             markup << view_context.content_tag('article', deposit_terms, class: 'legally-binding-text')
-            markup << f.input(
+            markup << form.input(
               :agree_to_terms_of_deposit,
               as: :boolean,
               inline_label: deposit_agreement,

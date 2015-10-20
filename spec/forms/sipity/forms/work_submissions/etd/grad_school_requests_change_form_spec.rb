@@ -25,10 +25,10 @@ module Sipity
           end
 
           context '#render' do
-            let(:f) { double }
+            let(:form) { double }
             it 'will return an input text area' do
-              expect(f).to receive(:input).with(:comment, hash_including(as: :text))
-              subject.render(f: f)
+              expect(form).to receive(:input).with(:comment, hash_including(as: :text))
+              subject.render(form: form)
             end
             its(:grad_school_requests_change_legend) { should be_html_safe }
           end

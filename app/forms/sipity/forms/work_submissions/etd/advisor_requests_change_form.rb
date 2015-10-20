@@ -24,12 +24,12 @@ module Sipity
           validates :comment, presence: true
           validates :requested_by, presence: true
 
-          # @param f SimpleFormBuilder
+          # @param form SimpleFormBuilder
           #
           # @return String
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', comment_legend)
-            markup << f.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
+            markup << form.input(:comment, as: :text, autofocus: true, input_html: { class: 'form-control', required: 'required' })
           end
 
           # Because the underlying service handles the things that are normally

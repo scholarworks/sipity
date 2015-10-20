@@ -25,12 +25,12 @@ module Sipity
           validates :agree_to_signoff, acceptance: { accept: true }
           validates :requested_by, presence: true
 
-          # @param f SimpleFormBuilder
+          # @param form SimpleFormBuilder
           #
           # @return String
-          def render(f:)
+          def render(form:)
             markup = view_context.content_tag('legend', advisor_signoff_legend)
-            markup << f.input(
+            markup << form.input(
               :agree_to_signoff,
               as: :boolean,
               inline_label:
