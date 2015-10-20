@@ -22,8 +22,8 @@ module Sipity
 
         first_key_to_try = defaults.shift
         I18n.translate(first_key_to_try, options).html_safe
-      rescue I18n::MissingInterpolationArgument => e
-        Rails.logger.debug("#{e.class}: #{e.message}. Falling back to default.")
+      rescue I18n::MissingInterpolationArgument => exception
+        Rails.logger.debug("#{exception.class}: #{exception.message}. Falling back to default.")
         object.to_s.humanize
       end
 
