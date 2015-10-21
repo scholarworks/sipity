@@ -91,3 +91,9 @@ NestedIterators:
     - "Sipity::Runners::WorkAreaRunners::CommandAction#run"
     - "Sipity::Runners::WorkSubmissionsRunners::CommandAction#run"
     - "Sipity::GuardInterfaceExpectation#guard_interface_collaborator_expectations!"
+"app/repositories/sipity/commands":
+  TooManyStatements:
+    enabled: false
+"app/repositories/sipity/queries":
+  TooManyStatements:
+    enabled: false
