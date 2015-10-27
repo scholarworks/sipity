@@ -4,44 +4,47 @@ class EtdExportRunner
     new.run
   end
 
+  def initialize(work_area: default_work_area, requested_by: default_requested_by, form_builder: default_form_builder)
+    self.work_area = work_area
+    self.requested_by = requested_by
+    self.form_builder = form_builder
+  end
+
   def run
     target_entities do |work|
-      obj = form.new(work: work, requested_by: etd_group)
-      obj.submit
+      form = form_builder.call(work: work, requested_by: requested_by)
+      form.submit
     end
   end
 
   private
 
-  def etd_ingestors
-    Sipity::DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS
+  attr_accessor :requested_by, :form_builder
+  attr_reader :work_area
+
+  def work_area=(input)
+    @work_area = PowerConverter.convert_to_work_area(input)
   end
 
-  def etd_group
-    Sipity::Models::Group.find_or_create_by!(name: etd_ingestors)
+  def default_work_area
+    'etd'
   end
 
-  def form
-    Sipity::Forms::WorkSubmissions::Etd::SubmitForIngestForm
+  def default_requested_by
+    Sipity::Models::Group.find_or_create_by!(name: Sipity::DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS)
   end
 
-  def etd_work_area
-    PowerConverter.convert_to_work_area('etd')
-  end
-
-  def each_etd_entities
-    Sipity::Models::WorkSubmission.find_each do |work_submission|
-      yield(convert_to_entity(work_submission.work)) if work_submission.work_area == etd_work_area
-    end
-  end
-
-  def convert_to_entity(work)
-    Sipity::Conversions::ConvertToProcessingEntity.call(work)
+  def default_form_builder
+    Sipity::Forms::WorkSubmissions::Etd::SubmitForIngestForm.method(:new)
   end
 
   def target_entities
-    each_etd_entities do |entity|
-      yield(entity.proxy_for) if entity.strategy_state.name == 'ready_for_ingest'
+    # @TODO This is a tortured method. Lots of violations. Consider a concise and encapsulated query.
+    Sipity::Models::WorkSubmission.where(work_area: work_area).include(
+      work: { processing_entity: :strategy_state }
+    ).find_each do |work_submission|
+      work = work_submission.work
+      yield(work) if work.processing_entity.strategy_state.name == 'ready_for_ingest'
     end
   end
 end
