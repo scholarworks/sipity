@@ -11,12 +11,13 @@ module Sipity
             template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
+          include Conversions::ExtractInputDateFromInput
           def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.agree_to_signoff = attributes[:agree_to_signoff]
-            self.scheduled_time = attributes.fetch(:scheduled_time) { scheduled_time_from_work }
+            self.scheduled_time = extract_input_date_from_input(:scheduled_time, attributes) { scheduled_time_from_work }
           end
 
           include ActiveModel::Validations
@@ -83,7 +84,10 @@ module Sipity
 
           private
 
-          attr_writer :scheduled_time
+          include Conversions::ConvertToDate
+          def scheduled_time=(value)
+            @scheduled_time = convert_to_date(value) { nil }
+          end
 
           def agree_to_signoff=(value)
             @agree_to_signoff = PowerConverter.convert_to_boolean(value)

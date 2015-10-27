@@ -10,16 +10,7 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
-          subject do
-            described_class.new(
-              keywords.merge(
-                attributes: {
-                  agree_to_signoff: true,
-                  scheduled_time: scheduled_time
-                }
-              )
-            )
-          end
+          subject { described_class.new(keywords.merge(attributes: { agree_to_signoff: true, scheduled_time: scheduled_time })) }
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation with scheduled_time' do
@@ -43,52 +34,52 @@ module Sipity
           its(:signoff_agreement) { should be_html_safe }
           its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
-          context 'with valid data' do
-            subject do
-              described_class.new(
-                keywords.merge(
-                  attributes: {
-                    agree_to_signoff: true,
-                    scheduled_time: 'bogus'
-                  }
-                )
-              )
+          context '#scheduled_time' do
+            it 'will be set by extracting from the attributes' do
+              date = Date.new(2015,10,5)
+              expect(repository).to_not receive(:scheduled_time_from_work)
+              form = described_class.new(keywords.merge(attributes: { agree_to_signoff: true, scheduled_time: date.strftime('%Y-%m-%d') }))
+              expect(form.scheduled_time).to eq(date)
             end
-
-            before do
-              allow(subject).to receive(:valid?).and_return(true)
-              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+            it 'will be set by asking the work for the previous scheduled_time if no attributes are given' do
+              today = Date.today
+              expect(repository).to receive(:scheduled_time_from_work).and_return(today)
+              form = described_class.new(keywords.merge(attributes: { agree_to_signoff: true }))
+              expect(form.scheduled_time).to eq(today)
             end
-            it 'will create administrative scheduled actions entries' do
-              expect(repository).to receive(:create_scheduled_action).exactly(1).and_call_original
-              subject.submit
-            end
-
-            it 'will retreive the administrative scheduled actions from work' do
-              expect(repository).to receive(:scheduled_time_from_work).exactly(1).and_call_original
-              subject.scheduled_time_from_work
+            it 'will be nil if neither the attributes nor work have a given value' do
+              expect(repository).to receive(:scheduled_time_from_work).and_return(nil)
+              form = described_class.new(keywords.merge(attributes: { agree_to_signoff: true }))
+              expect(form.scheduled_time).to be_nil
             end
           end
 
-          context 'with out scheduled_time' do
-            subject do
-              described_class.new(
-                keywords.merge(
-                  attributes: {
-                    agree_to_signoff: true,
-                    scheduled_time: ''
-                  }
-                )
-              )
-            end
-            before do
-              allow(subject).to receive(:valid?).and_return(true)
-              allow(subject.send(:processing_action_form)).to receive(:submit)
+          context '#submit' do
+            context 'with a provided scheduled_time' do
+              subject { described_class.new(keywords.merge(attributes: { agree_to_signoff: true, scheduled_time: scheduled_time })) }
+
+              before do
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+              end
+
+              it 'will create administrative scheduled actions entries' do
+                expect(repository).to receive(:create_scheduled_action).exactly(1).and_call_original
+                subject.submit
+              end
             end
 
-            it 'will not create administrative scheduled actions' do
-              expect(repository).to receive(:create_scheduled_action).exactly(0).and_call_original
-              subject.submit
+            context 'with out provided scheduled_time' do
+              subject { described_class.new(keywords.merge(attributes: { agree_to_signoff: true, scheduled_time: '' })) }
+              before do
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(subject.send(:processing_action_form)).to receive(:submit)
+              end
+
+              it 'will not create administrative scheduled actions' do
+                expect(repository).to receive(:create_scheduled_action).exactly(0)
+                subject.submit
+              end
             end
           end
         end
