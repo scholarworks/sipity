@@ -57,7 +57,7 @@ module Sipity
 
           def signoff_agreement
             view_context.t(
-              'i_agree', scope: 'sipity/forms.state_advancing_actions.verification.etd/ingest_with_ingest_with_postponed_cataloging'
+              'i_agree', scope: 'sipity/forms.state_advancing_actions.verification.etd/ingest_with_postponed_cataloging'
             ).html_safe
           end
 
