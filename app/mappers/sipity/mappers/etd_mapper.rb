@@ -37,13 +37,14 @@ module Sipity
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
       EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
 
-      def self.call(work)
-        new(work).call
+      def self.call(work, **keywords)
+        new(work, **keywords).call
       end
 
-      def initialize(work, repository: default_repository)
+      def initialize(work, repository: default_repository, attribute_map: default_attribute_map)
         self.work = work
         self.repository = repository
+        self.attribute_map = attribute_map
       end
 
       def call
@@ -52,7 +53,7 @@ module Sipity
 
       private
 
-      attr_accessor :work, :repository
+      attr_accessor :work, :repository, :attribute_map
 
       def build_json
         Jbuilder.encode do |json|
@@ -166,7 +167,12 @@ module Sipity
       end
 
       def extract_name_for(attribute)
-        Exporters::EtdExporter.etd_attributes[attribute.to_sym]
+        attribute_map.fetch(attribute.to_sym)
+      end
+
+      def default_attribute_map
+        require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::ETD_ATTRIBUTES)
+        Exporters::EtdExporter::ETD_ATTRIBUTES
       end
 
       def default_repository

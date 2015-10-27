@@ -25,6 +25,7 @@ module Sipity
       subject { described_class.new(file, repository: repository) }
 
       its(:default_repository) { should respond_to :attachment_access_right_code }
+      its(:default_attribute_map) { should be_a(Hash) }
 
       before do
         allow(file).to receive_message_chain("file.to_file") { sample_file }

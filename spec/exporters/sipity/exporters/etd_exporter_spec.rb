@@ -12,14 +12,6 @@ module Sipity
       let(:batch_user) { 'curate_batch_user' }
       let(:file) { double }
       let(:json_array) { ["etd_to_json", "attachment_to_json"] }
-      let(:etd_mapping_hash) do
-        {
-          creator: "dc:creator",
-          title: "dc:title",
-          alternate_title: "dc:title#alternate",
-          subject: "dc:subject"
-        }
-      end
 
       subject { described_class.new(work, repository: repository) }
 
@@ -30,26 +22,12 @@ module Sipity
         described_class.call(work)
       end
 
-      context '.etd_attributes' do
-        it 'will be a Hash of etd attributes' do
-          expect(described_class.etd_attributes).to be_a(Hash)
-        end
-      end
-
-      context 'etd mapping constants' do
-        it "will expose ETD mapping" do
-          etd_mapping_hash.each do |key, value|
-            expect(described_class.etd_attributes[key]).to eq(value)
-          end
-        end
-      end
-
       context 'export_to_json' do
         it 'will create ROF JSON for given work' do
           expect(repository).to receive(:work_attachments).with(work: work).and_return([file])
-          expect(Mappers::EtdMapper).to receive(:call).with(work).
+          expect(Mappers::EtdMapper).to receive(:call).with(work, attribute_map: kind_of(Hash)).
             and_return("etd_to_json")
-          expect(Mappers::GenericFileMapper).to receive(:call).with(file).
+          expect(Mappers::GenericFileMapper).to receive(:call).with(file, attribute_map: kind_of(Hash)).
             and_return("attachment_to_json")
           expect(subject.export_to_json).to eq(json_array)
         end

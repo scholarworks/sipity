@@ -1,4 +1,3 @@
-require 'optparse'
 module Sipity
   # :nodoc:
   module Exporters
@@ -36,11 +35,7 @@ module Sipity
         degree_name: "ms:name",
         program_name: "ms:discipline",
         degree_level: "ms:level"
-      }
-
-      def self.etd_attributes
-        ETD_ATTRIBUTES
-      end
+      }.freeze
 
       def self.call(work)
         new(work).call
@@ -59,10 +54,10 @@ module Sipity
 
       def export_to_json
         json_array = []
-        json_array << Mappers::EtdMapper.call(work)
+        json_array << Mappers::EtdMapper.call(work, attribute_map: ETD_ATTRIBUTES)
         # build attachment json
         attachments.each do |file|
-          json_array << Mappers::GenericFileMapper.call(file)
+          json_array << Mappers::GenericFileMapper.call(file, attribute_map: ETD_ATTRIBUTES)
         end
         json_array
       end
