@@ -30,7 +30,7 @@ module Sipity
           private
 
           def check_if_authorized
-            return true if repository.authorized_for_processing?(user: requested_by, entity: work, action: 'submit_for_ingest')
+            return true if repository.authorized_for_processing?(user: requested_by, entity: work, action: processing_action_name)
             errors.add(:base, :unauthorized)
           end
 
