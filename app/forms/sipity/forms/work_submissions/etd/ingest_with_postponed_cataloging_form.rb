@@ -22,6 +22,7 @@ module Sipity
 
           include ActiveModel::Validations
           validates :agree_to_signoff, acceptance: { accept: true }
+          validates :scheduled_time, presence: true
 
           attr_reader :scheduled_time, :reason
 
@@ -35,7 +36,7 @@ module Sipity
           end
 
           def add_scheduled_time(f:)
-            f.input(:scheduled_time, input_html: { value: work.access_right_transition_date }).html_safe
+            f.input(:scheduled_time, as: :date, input_html: { value: work.access_right_transition_date }).html_safe
           end
 
           def add_agree_to_signoff(f:)
@@ -67,7 +68,6 @@ module Sipity
           end
 
           def create_scheduled_action_if_applicable
-            return true unless scheduled_time.present?
             repository.create_scheduled_action(
               work: work,
               scheduled_time: scheduled_time,
