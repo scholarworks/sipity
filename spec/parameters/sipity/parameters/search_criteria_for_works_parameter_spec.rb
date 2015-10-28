@@ -18,9 +18,12 @@ module Sipity
         it { should respond_to(:order) }
         it { should respond_to(:proxy_for_type) }
         it { should respond_to(:work_area) }
+        it { should respond_to(:page) }
+        it { should respond_to(:per) }
       end
 
       its(:default_page) { should eq(1) }
+      its(:default_per) { should eq(15) }
       its(:default_user) { should eq(nil) }
       its(:default_proxy_for_type) { should eq(Models::Work) }
       its(:default_processing_state) { should eq(nil) }

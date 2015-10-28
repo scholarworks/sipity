@@ -200,6 +200,12 @@ module Sipity
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: user, proxy_for_type: Sipity::Models::Work, page: 1, per: 1
+            ).sort(&sorter)
+          ).to eq([work_one].sort(&sorter))
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
               user: user, proxy_for_type: Sipity::Models::Work, filter: { processing_state: 'new' }
             ).sort(&sorter)
           ).to eq([work_one, work_two].sort(&sorter))
