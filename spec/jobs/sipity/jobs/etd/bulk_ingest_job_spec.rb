@@ -14,6 +14,7 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
   its(:default_work_ingester) { should respond_to(:call) }
   its(:default_requested_by) { should be_a(String) }
   its(:default_search_criteria_builder) { should respond_to(:call) }
+  its(:default_processing_action_name) { should eq('submit_for_ingest') }
   its(:default_repository) { should respond_to(:find_works_via_search) }
 
   it 'exposes .call as a convenience method' do
@@ -26,7 +27,9 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
       work = Sipity::Models::Work.new(id: 1)
       expect(repository).to receive(:find_works_via_search).and_return([work])
       subject.call
-      expect(work_ingester).to have_received(:call).with(work_id: work.id, requested_by: subject.send(:requested_by))
+      expect(work_ingester).to have_received(:call).with(
+        work_id: work.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name)
+      )
     end
   end
 end
