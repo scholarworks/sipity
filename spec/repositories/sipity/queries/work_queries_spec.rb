@@ -19,13 +19,23 @@ module Sipity
 
       context '#find_works_via_search' do
         let(:repository) { QueryRepositoryInterface.new }
-        let(:criteria) { double(user: double, processing_state: double, proxy_for_type: double, order: double, page: double) }
+        let(:criteria) { Parameters::SearchCriteriaForWorksParameter.new }
         it 'will leverage the underlying scope_proxied_objects_for_the_user_and_proxy_for_type method' do
           expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).with(
             user: criteria.user, proxy_for_type: criteria.proxy_for_type,
-            filter: { processing_state: criteria.processing_state }, order: criteria.order, page: criteria.page
+            filter: { processing_state: criteria.processing_state }, order: criteria.order, page: criteria.page, per: criteria.per
           ).and_call_original
           test_repository.find_works_via_search(criteria: criteria, repository: repository)
+        end
+
+        it 'will leverage the scope and apply additional logic based on a work area' do
+          work_area = Models::WorkArea.new(name: 'etd')
+          criteria = Parameters::SearchCriteriaForWorksParameter.new(work_area: work_area)
+          expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).with(
+            user: criteria.user, proxy_for_type: criteria.proxy_for_type,
+            filter: { processing_state: criteria.processing_state }, order: criteria.order, page: criteria.page, per: criteria.per
+          ).and_return(Models::Work)
+          expect(test_repository.find_works_via_search(criteria: criteria, repository: repository)).to be_a(ActiveRecord::Relation)
         end
       end
 

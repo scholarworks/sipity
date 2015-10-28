@@ -36,11 +36,24 @@ module Sipity
       end
 
       def find_works_via_search(criteria:, repository: self)
-        repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-          user: criteria.user, proxy_for_type: criteria.proxy_for_type, filter: { processing_state: criteria.processing_state },
-          order: criteria.order, page: criteria.page
+        scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+          user: criteria.user, proxy_for_type: Models::Work, filter: { processing_state: criteria.processing_state },
+          order: criteria.order, page: criteria.page, per: criteria.per
+        )
+        apply_work_area_filter_to(scope: scope, criteria: criteria)
+      end
+
+      def apply_work_area_filter_to(scope:, criteria:)
+        return scope unless criteria.work_area
+        work_submissions = Models::WorkSubmission.arel_table
+        work_area = PowerConverter.convert(criteria.work_area, to: :work_area)
+        scope.where(
+          Models::Work.arel_table[:id].in(
+            work_submissions.project(work_submissions[:work_id]).where(work_submissions[:work_area_id].eq(work_area.id))
+          )
         )
       end
+      private :apply_work_area_filter_to
 
       def work_access_right_code(work:)
         work.access_right.access_right_code

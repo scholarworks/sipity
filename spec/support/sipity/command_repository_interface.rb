@@ -25,6 +25,10 @@ module Sipity
     def apply_access_policies_to(work:, user:, access_policies:)
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def apply_work_area_filter_to(scope:, criteria:)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def assign_collaborators_to(work:, collaborators:, repository: self)
     end
