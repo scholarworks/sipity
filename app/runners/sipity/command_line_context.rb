@@ -1,5 +1,3 @@
-require 'user'
-
 module Sipity
   # Responsible for being a valid context for running a Sipity::Runner
   #
@@ -9,7 +7,7 @@ module Sipity
   #   runner = Sipity::Runners::WorkSubmissionsRunner.new(context)
   #   runner.run(work_id: 123)
   #
-  # @param username [String]
+  # @param requested_by [#to_processing_actor]
   # @param repository_strategy [#to_s] :query and :command are the two likely repositories
   #
   # @see Sipity::Runners
