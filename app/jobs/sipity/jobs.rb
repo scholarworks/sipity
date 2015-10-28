@@ -21,7 +21,6 @@ module Sipity
       raise Exceptions::JobNotFoundError, name: job_name_as_constant, container: self
     end
     module_function :find_job_by_name
-    private_class_method :find_job_by_name
 
     def verify_primativeness_of!(*)
       # REVIEW: Would it make sense to verify that each of the args is a
