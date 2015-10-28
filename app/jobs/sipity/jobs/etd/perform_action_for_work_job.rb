@@ -5,7 +5,7 @@ module Sipity
       # mimics how the Controller interacts with the runner layer.
       #
       # @see Sipity::Controllers::WorkSubmissionsController
-      class ProcessingActionForWorkJob
+      class PerformActionForWorkJob
         def self.call(**keywords)
           new(**keywords).call
         end

@@ -50,8 +50,8 @@ module Sipity
         attr_accessor :work_ingester
 
         def default_work_ingester
-          require 'sipity/jobs/etd/processing_action_for_work_job' unless defined?(Sipity::Jobs::Etd::ProcessingActionForWorkJob)
-          Sipity::Jobs::Etd::ProcessingActionForWorkJob
+          require 'sipity/jobs/etd/perform_action_for_work_job' unless defined?(Sipity::Jobs::Etd::PerformActionForWorkJob)
+          Sipity::Jobs::Etd::PerformActionForWorkJob
         end
 
         attr_accessor :initial_processing_state_name

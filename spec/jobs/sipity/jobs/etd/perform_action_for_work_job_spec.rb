@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'sipity/jobs/etd/processing_action_for_work_job'
+require 'sipity/jobs/etd/perform_action_for_work_job'
 
-RSpec.describe Sipity::Jobs::Etd::ProcessingActionForWorkJob do
+RSpec.describe Sipity::Jobs::Etd::PerformActionForWorkJob do
   let(:context_builder) { double('ContextBuilder', call: :a_context) }
   let(:runner) { double('Runner', call: true) }
   let(:parameters) do
