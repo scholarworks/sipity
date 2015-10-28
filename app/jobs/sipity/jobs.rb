@@ -10,13 +10,13 @@ module Sipity
     def submit(job_name, *args)
       job = find_job_by_name(job_name)
       verify_primativeness_of!(*args)
-      job.submit(*args)
+      job.call(*args)
     end
     module_function :submit
 
     def find_job_by_name(job_name)
       job_name_as_constant = job_name.to_s.classify
-      return "#{self}::#{job_name_as_constant}".constantize
+      return "#{self}::#{job_name_as_constant}Job".constantize
     rescue NameError
       raise Exceptions::JobNotFoundError, name: job_name_as_constant, container: self
     end
