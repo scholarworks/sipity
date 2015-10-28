@@ -33,7 +33,7 @@ module Sipity
 
       private
 
-      attr_writer :user, :processing_state, :proxy_for_type, :page, :work_area, :per
+      attr_writer :user, :processing_state, :proxy_for_type, :work_area, :per
 
       def order=(input)
         if ORDER_BY_OPTIONS.include?(input)
@@ -41,6 +41,10 @@ module Sipity
         else
           @order = default_order
         end
+      end
+
+      def page=(input)
+        @page = (input == :all ? nil : input)
       end
     end
   end
