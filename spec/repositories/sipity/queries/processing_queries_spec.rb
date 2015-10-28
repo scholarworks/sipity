@@ -200,9 +200,9 @@ module Sipity
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-              user: user, proxy_for_type: Sipity::Models::Work, page: 1, per: 1
-            ).sort(&sorter)
-          ).to eq([work_one].sort(&sorter))
+              user: user, proxy_for_type: Sipity::Models::Work, page: 1, per: 1, order: 'title ASC'
+            )
+          ).to eq([work_one])
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
