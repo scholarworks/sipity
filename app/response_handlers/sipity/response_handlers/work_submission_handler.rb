@@ -4,6 +4,8 @@ module Sipity
   module ResponseHandlers
     # These handlers are very nosy; In object perlance they are doing little on
     # their own, but instead coordinating that reality.
+    #
+    # @todo should this module be moved into the Runner's namespace? It would give a closer proximity to the code that was being leveraged.
     module WorkSubmissionHandler
       # It worked
       module SuccessResponder
