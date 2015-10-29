@@ -37,9 +37,10 @@ module Sipity
 
   module ResponseHandlers
     RSpec.describe ControllerResponseHandler do
+      let(:responder) { double(call: true) }
       let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
       let(:handled_response) { double(status: :success, object: double, template: 'show', with_each_additional_view_path_slug: true) }
-      subject { described_class.new(context: context, handled_response: handled_response) }
+      subject { described_class.new(context: context, handled_response: handled_response, responder: responder) }
       it 'will #respond by rendering the context' do
         expect(subject.respond).to eq(context.render)
       end
@@ -48,12 +49,12 @@ module Sipity
         expect(handled_response).to receive(:with_each_additional_view_path_slug).and_yield('core').and_yield('ulra')
         expect(context).to receive(:prepend_processing_action_view_path_with).with(slug: 'core').ordered
         expect(context).to receive(:prepend_processing_action_view_path_with).with(slug: 'ulra').ordered
-        described_class.new(context: context, handled_response: handled_response)
+        described_class.new(context: context, handled_response: handled_response, responder: responder)
       end
 
-      it 'will .respond by rendering the context' do
-        expect(described_class.respond(context: context, handled_response: handled_response)).to eq(context.render)
-        expect(context).to have_received(:render).with(template: 'show')
+      it 'will .respond by calling the responder with the handler' do
+        expect(described_class.respond(context: context, handled_response: handled_response, responder: responder)).to eq(context.render)
+        expect(responder).to have_received(:call).with(handler: kind_of(described_class))
       end
 
       it 'accepts a custom responder' do
@@ -82,7 +83,7 @@ module Sipity
             redirect_to: 'redirected_to',
             submission_window_path: true
           )
-          subject = described_class.new(context: context, handled_response: handled_response)
+          subject = described_class.new(context: context, handled_response: handled_response, responder: responder)
           expect(subject.respond_to?(:submission_window_path)).to eq(true)
         end
         it 'will pass through if the method_name is not *_path' do
@@ -92,19 +93,19 @@ module Sipity
 
       context 'collaborating objects expected interface' do
         it '#context must implement #view_object=' do
-          expect { described_class.new(context: double(render: true), handled_response: handled_response) }.
+          expect { described_class.new(context: double(render: true), handled_response: handled_response, responder: responder) }.
             to raise_error(Exceptions::InterfaceExpectationError)
         end
         it '#context must implement #render' do
-          expect { described_class.new(context: double(:view_object= => true), handled_response: handled_response) }.
+          expect { described_class.new(context: double(:view_object= => true), handled_response: handled_response, responder: responder) }.
             to raise_error(Exceptions::InterfaceExpectationError)
         end
         it '#handled_response must implement #object' do
-          expect { described_class.new(context: context, handled_response: double(template: 'show')) }.
+          expect { described_class.new(context: context, handled_response: double(template: 'show'), responder: responder) }.
             to raise_error(Exceptions::InterfaceExpectationError)
         end
         it '#handled_response must implement #template' do
-          expect { described_class.new(context: context, handled_response: double(object: double)) }.
+          expect { described_class.new(context: context, handled_response: double(object: double), responder: responder) }.
             to raise_error(Exceptions::InterfaceExpectationError)
         end
       end

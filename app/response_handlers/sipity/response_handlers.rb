@@ -33,8 +33,8 @@ module Sipity
         new(**keywords).respond
       end
 
-      attr_reader :context, :handled_response
-      def initialize(context:, handled_response:, responder: default_responder)
+      attr_reader :context, :handled_response, :responder
+      def initialize(context:, handled_response:, responder:)
         self.context = context
         self.handled_response = handled_response
         self.responder = responder
@@ -69,12 +69,7 @@ module Sipity
         end
       end
 
-      attr_accessor :responder
-      attr_writer :template
-
-      def default_responder
-        -> (handler:) { handler.render(template: handler.template) }
-      end
+      attr_writer :template, :responder
 
       def prepare_context_for_response
         # Wouldn't it be great if we had proper View objects in Rails? Instead
