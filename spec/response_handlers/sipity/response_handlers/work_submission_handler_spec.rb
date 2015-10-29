@@ -13,6 +13,12 @@ module Sipity
             expect(handler).to have_received(:render).with(template: handler.template)
           end
         end
+
+        context '.for_command_line' do
+          it 'will return true' do
+            expect(described_class.for_command_line(handler: handler)).to eq(true)
+          end
+        end
       end
 
       RSpec.describe SubmitSuccessResponder do
@@ -24,6 +30,12 @@ module Sipity
             expect(handler).to have_received(:redirect_to).with('/hello/world')
           end
         end
+
+        context '.for_command_line' do
+          it 'will return true' do
+            expect(described_class.for_command_line(handler: handler)).to eq(true)
+          end
+        end
       end
 
       RSpec.describe SubmitFailureResponder do
@@ -32,6 +44,14 @@ module Sipity
           it 'will coordinate the rendering of the template' do
             described_class.call(handler: handler)
             expect(handler).to have_received(:render).with(template: handler.template, status: :unprocessable_entity)
+          end
+        end
+        context '.for_command_line' do
+          let(:handler) { double(response_object: double, response_errors: [], response_status: :failure) }
+          it 'will raise an exception' do
+            expect do
+              described_class.for_command_line(handler: handler)
+            end.to raise_error(Sipity::Exceptions::ResponseHandlerError)
           end
         end
       end
