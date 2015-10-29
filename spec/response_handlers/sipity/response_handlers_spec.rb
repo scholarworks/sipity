@@ -38,6 +38,25 @@ module Sipity
   end
 
   module ResponseHandlers
+    RSpec.describe CommandLineResponseHandler do
+      let(:responder) { double(for_command_line: true) }
+      let(:handled_response) { double(status: :success, errors: [], object: double) }
+      subject { described_class.new(handled_response: handled_response, responder: responder) }
+
+      it 'exposes .respond as a convenience method' do
+        expect_any_instance_of(described_class).to receive(:respond)
+        described_class.respond(handled_response: handled_response, responder: responder)
+      end
+
+      it 'will #respond by calling the responder#for_command_line' do
+        expect(responder).to receive(:for_command_line).with(handler: subject).and_return(:for_command_line_called)
+        expect(subject.respond).to eq(:for_command_line_called)
+      end
+      it { should delegate_method(:status).to(:handled_response).with_prefix(:response) }
+      it { should delegate_method(:object).to(:handled_response).with_prefix(:response) }
+      it { should delegate_method(:errors).to(:handled_response).with_prefix(:response) }
+    end
+
     RSpec.describe ControllerResponseHandler do
       let(:responder) { double(call: true) }
       let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }

@@ -26,6 +26,34 @@ module Sipity
       container.qualified_const_get("#{handled_response_status.to_s.classify}Responder")
     end
 
+    # The default response handler for command line applications
+    class CommandLineResponseHandler
+      def self.respond(**keywords)
+        new(**keywords).respond
+      end
+
+      attr_reader :handled_response, :responder
+      def initialize(handled_response:, responder:, **)
+        self.handled_response = handled_response
+        self.responder = responder
+      end
+
+      def respond
+        responder.for_command_line(handler: self)
+      end
+
+      private
+
+      attr_writer :handled_response, :responder
+      delegate :object, :status, :errors, to: :handled_response, prefix: :response
+
+      include GuardInterfaceExpectation
+      def handled_response=(input)
+        guard_interface_expectation!(input, :object, :status, :errors)
+        @handled_response = input
+      end
+    end
+
     # The default response handler. It makes sure things are well composed,
     # guarding the interface of collaborating objects.
     class ControllerResponseHandler
