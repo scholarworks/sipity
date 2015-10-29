@@ -1,5 +1,6 @@
 require 'power_converter'
 require 'sipity/exceptions'
+require 'sipity/guard_interface_expectation'
 
 module Sipity
   module Parameters
@@ -55,7 +56,10 @@ module Sipity
         @status = input
       end
 
+      include Sipity::GuardInterfaceExpectation
       def object=(input)
+        # TODO: Refactor to include Contracts gem
+        guard_interface_expectation!(input, :errors)
         @work_area = PowerConverter.convert_to_work_area(input)
         @object = input
       end

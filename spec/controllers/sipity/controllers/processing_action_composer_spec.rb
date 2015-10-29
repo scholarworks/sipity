@@ -29,7 +29,7 @@ module Sipity
       end
 
       it 'will run and respond with a processing_action' do
-        a_response = double(to_work_area: work_area)
+        a_response = double(to_work_area: work_area, errors: [])
         expect(controller).to receive(:run).with(work_id: 1, processing_action_name: processing_action_name).
           and_return([:success, a_response])
 
