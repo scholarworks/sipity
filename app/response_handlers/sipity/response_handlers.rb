@@ -17,7 +17,7 @@ module Sipity
     module_function
 
     # TODO: Remove the template as it can be packed into the handled response
-    def handle_response(context:, handled_response:, container:, handler: DefaultHandler)
+    def handle_response(context:, handled_response:, container:, handler: ControllerResponseHandler)
       responder = build_responder(container: container, handled_response_status: handled_response.status)
       handler.respond(context: context, handled_response: handled_response, responder: responder)
     end
@@ -28,7 +28,7 @@ module Sipity
 
     # The default response handler. It makes sure things are well composed,
     # guarding the interface of collaborating objects.
-    class DefaultHandler
+    class ControllerResponseHandler
       def self.respond(**keywords)
         new(**keywords).respond
       end

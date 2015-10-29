@@ -20,7 +20,7 @@ module Sipity
 
     context '.handle_response' do
       it 'will build a handler then respond with that handler' do
-        expect(MockContainer::SuccessResponder).to receive(:call).with(handler: kind_of(described_class::DefaultHandler))
+        expect(MockContainer::SuccessResponder).to receive(:call).with(handler: kind_of(described_class::ControllerResponseHandler))
         described_class.handle_response(
           container: MockContainer, context: context, handled_response: handled_response
         )
@@ -36,7 +36,7 @@ module Sipity
   end
 
   module ResponseHandlers
-    RSpec.describe DefaultHandler do
+    RSpec.describe ControllerResponseHandler do
       let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
       let(:handled_response) { double(status: :success, object: double, template: 'show', with_each_additional_view_path_slug: true) }
       subject { described_class.new(context: context, handled_response: handled_response) }
