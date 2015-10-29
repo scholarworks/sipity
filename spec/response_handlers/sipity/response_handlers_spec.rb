@@ -16,7 +16,9 @@ module Sipity
     end
     after { Sipity.send(:remove_const, :MockContainer) }
     let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
-    let(:handled_response) { double(status: :success, object: double, template: double, with_each_additional_view_path_slug: true) }
+    let(:handled_response) do
+      double(status: :success, errors: [], object: double, template: double, with_each_additional_view_path_slug: true)
+    end
 
     context '.handle_response' do
       it 'will build a handler then respond with that handler' do
@@ -39,11 +41,17 @@ module Sipity
     RSpec.describe ControllerResponseHandler do
       let(:responder) { double(call: true) }
       let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
-      let(:handled_response) { double(status: :success, object: double, template: 'show', with_each_additional_view_path_slug: true) }
+      let(:handled_response) do
+        double(status: :success, errors: [], object: double, template: 'show', with_each_additional_view_path_slug: true)
+      end
       subject { described_class.new(context: context, handled_response: handled_response, responder: responder) }
       it 'will #respond by rendering the context' do
         expect(subject.respond).to eq(context.render)
       end
+
+      it { should delegate_method(:status).to(:handled_response).with_prefix(:response) }
+      it { should delegate_method(:object).to(:handled_response).with_prefix(:response) }
+      it { should delegate_method(:errors).to(:handled_response).with_prefix(:response) }
 
       it 'will coordinate updating view path information with the context' do
         expect(handled_response).to receive(:with_each_additional_view_path_slug).and_yield('core').and_yield('ulra')

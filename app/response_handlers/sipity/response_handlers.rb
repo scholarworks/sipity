@@ -46,7 +46,7 @@ module Sipity
       end
 
       delegate :render, :redirect_to, to: :context
-      delegate :object, to: :handled_response, prefix: :response
+      delegate :object, :status, :errors, to: :handled_response, prefix: :response
       delegate :template, to: :handled_response
 
       private
@@ -90,7 +90,7 @@ module Sipity
       end
 
       def handled_response=(input)
-        guard_interface_expectation!(input, :object, :template, :with_each_additional_view_path_slug)
+        guard_interface_expectation!(input, :object, :status, :errors, :template, :with_each_additional_view_path_slug)
         @handled_response = input
       end
     end
