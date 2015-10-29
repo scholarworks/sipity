@@ -13,6 +13,8 @@ module Sipity
       its(:object) { should eq object }
       its(:template) { should eq template }
 
+      it { should delegate_method(:errors).to(:object) }
+
       it 'will fail to initialize if the status is not a symbol' do
         expect { described_class.new(status: double, object: object, template: template) }.
           to raise_error(Exceptions::InvalidHandledResponseStatus)
