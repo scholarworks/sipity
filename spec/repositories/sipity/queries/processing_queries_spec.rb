@@ -120,20 +120,30 @@ module Sipity
       end
 
       context '#scope_processing_actors_for' do
-        subject { test_repository.scope_processing_actors_for(user: user) }
-        it 'will return an empty enumerable if the user is nil' do
-          user_processing_actor
-          group_processing_actor
-          Models::GroupMembership.create(user_id: user.id, group_id: group.id)
-          subject = test_repository.scope_processing_actors_for(user: nil)
-          expect(subject).to eq([])
-          expect(subject).to be_a(ActiveRecord::Relation)
+        context 'with a user' do
+          subject { test_repository.scope_processing_actors_for(user: user) }
+          it 'will return an empty enumerable if the user is nil' do
+            user_processing_actor
+            group_processing_actor
+            Models::GroupMembership.create(user_id: user.id, group_id: group.id)
+            subject = test_repository.scope_processing_actors_for(user: nil)
+            expect(subject).to eq([])
+            expect(subject).to be_a(ActiveRecord::Relation)
+          end
+          it 'will return an enumerable of both user and group' do
+            user_processing_actor
+            group_processing_actor
+            Models::GroupMembership.create(user_id: user.id, group_id: group.id)
+            expect(subject).to eq([user_processing_actor, group_processing_actor])
+          end
         end
-        it 'will return an enumerable of both user and group' do
-          user_processing_actor
-          group_processing_actor
-          Models::GroupMembership.create(user_id: user.id, group_id: group.id)
-          expect(subject).to eq([user_processing_actor, group_processing_actor])
+        context 'with a group' do
+          subject { test_repository.scope_processing_actors_for(user: group_processing_actor) }
+          it 'will return an enumerable of both user and group' do
+            group_processing_actor
+            Models::GroupMembership.create(user_id: user.id, group_id: group.id)
+            expect(subject).to eq([group_processing_actor])
+          end
         end
       end
 

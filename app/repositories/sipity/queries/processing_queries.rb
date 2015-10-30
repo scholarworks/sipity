@@ -413,21 +413,27 @@ module Sipity
         actor_table = Models::Processing::Actor.arel_table
 
         group_polymorphic_type = Conversions::ConvertToPolymorphicType.call(Models::Group)
-        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(user)
+        user_polymorphic_type = Conversions::ConvertToPolymorphicType.call(User)
+        actor = Conversions::ConvertToProcessingActor.call(user)
 
-        user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).and(actor_table[:proxy_for_id].eq(user.id))
+        if actor.proxy_for_type.to_s == user_polymorphic_type.to_s
+          user_constraints = actor_table[:proxy_for_type].eq(user_polymorphic_type).and(actor_table[:proxy_for_id].eq(actor.proxy_for_id))
 
-        group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).and(
-          actor_table[:proxy_for_id].in(
-            memb_table.project(memb_table[:group_id]).where(
-              memb_table[:user_id].eq(user.id)
+          group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).and(
+            actor_table[:proxy_for_id].in(
+              memb_table.project(memb_table[:group_id]).where(
+                memb_table[:user_id].eq(actor.proxy_for_id)
+              )
             )
           )
-        )
 
-        # Because AND takes precedence over OR, this query works.
-        # WHERE (a AND b OR c AND d) == WHERE (a AND b) OR (c AND d)
-        Models::Processing::Actor.where(user_constraints.or(group_constraints))
+          # Because AND takes precedence over OR, this query works.
+          # WHERE (a AND b OR c AND d) == WHERE (a AND b) OR (c AND d)
+          Models::Processing::Actor.where(user_constraints.or(group_constraints))
+        elsif actor.proxy_for_type.to_s == group_polymorphic_type.to_s
+          group_constraints = actor_table[:proxy_for_type].eq(group_polymorphic_type).and(actor_table[:proxy_for_id].eq(actor.proxy_for_id))
+          Models::Processing::Actor.where(group_constraints)
+        end
       end
 
       # @api public
