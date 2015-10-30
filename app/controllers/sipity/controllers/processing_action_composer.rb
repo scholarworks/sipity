@@ -7,6 +7,8 @@ module Sipity
     #
     # This class encapsulates the shared logic of the controller as it handles
     # the response object from a processing action.
+    #
+    # @todo Extract this from outside of the Controllers module namespace. Its a bit misleading.
     class ProcessingActionComposer
       private_class_method :new
 
