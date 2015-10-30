@@ -10,19 +10,20 @@ module Sipity
       let(:processing_action_name) { 'hello_world' }
 
       context '.build_for_command_line' do
-        let(:command_line_context) { double(run: true) }
+        let(:command_line_context) { double('Command Line Context') }
+        let(:runner) { double('Runner', call: true) }
         let(:response_handler_container) { double }
         subject do
           described_class.build_for_command_line(
             response_handler: response_handler, context: command_line_context, processing_action_name: processing_action_name,
-            response_handler_container: response_handler_container
+            response_handler_container: response_handler_container, runner: runner
           )
         end
 
         it { should_not respond_to(:prepend_processing_action_view_path_with) }
 
         it 'will expose #run_and_respond_with_processing_action' do
-          expect(command_line_context).to receive(:run).with(work_id: 1, processing_action_name: processing_action_name).
+          expect(runner).to receive(:call).with(work_id: 1, processing_action_name: processing_action_name).
             and_return([:success, a_response])
 
           subject.run_and_respond_with_processing_action(work_id: 1)

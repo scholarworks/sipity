@@ -16,6 +16,7 @@ module Sipity
       def self.build_for_controller(controller:, **keywords)
         run_and_respond = new(
           context: controller,
+          runner: controller.method(:run),
           response_handler_container: controller.response_handler_container,
           processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } },
           **keywords
@@ -24,17 +25,19 @@ module Sipity
         ProcessingActionViewPathDelegator.new(controller: controller, decorated_object: run_and_respond)
       end
 
-      def self.build_for_command_line(context:, processing_action_name:, response_handler_container:, **keywords)
+      def self.build_for_command_line(context:, processing_action_name:, runner:, response_handler_container:, **keywords)
         new(
           processing_action_name: processing_action_name,
           context: context,
+          runner: runner,
           response_handler_container: response_handler_container,
           **keywords
         )
       end
 
-      def initialize(context:, processing_action_name:, response_handler_container:, response_handler: default_response_handler)
+      def initialize(context:, processing_action_name:, response_handler_container:, runner:, response_handler: default_response_handler)
         self.context = context
+        self.runner = runner
         self.processing_action_name = processing_action_name
         self.response_handler_container = response_handler_container
         self.response_handler = response_handler
@@ -58,7 +61,7 @@ module Sipity
       attr_accessor :response_handler_container
 
       def run_processing_action(**keywords)
-        status, object = context.run(processing_action_name: processing_action_name, **keywords)
+        status, object = runner.call(processing_action_name: processing_action_name, **keywords)
         Parameters::HandledResponseParameter.new(status: status, object: object, template: processing_action_name)
       end
 
@@ -72,13 +75,14 @@ module Sipity
 
       attr_writer :processing_action_name
 
-      attr_reader :context
+      attr_accessor :context
+
+      attr_reader :runner
 
       include GuardInterfaceExpectation
-      def context=(input)
-        # @TODO - Get this down to :run
-        guard_interface_expectation!(input, :run)
-        @context = input
+      def runner=(input)
+        guard_interface_expectation!(input, :call)
+        @runner = input
       end
 
       attr_reader :response_handler
