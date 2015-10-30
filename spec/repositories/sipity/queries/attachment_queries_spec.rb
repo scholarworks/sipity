@@ -57,6 +57,12 @@ module Sipity
           Models::AccessRight.create!(entity: attachment, access_right_code: 'private_access')
           expect(test_repository.attachment_access_right_code(attachment: attachment)).to eq('private_access')
         end
+
+        it "will fallback to the work's access_right_code" do
+          attachment = Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment', file: file)
+          Models::AccessRight.create!(entity: work, access_right_code: 'private_access')
+          expect(test_repository.attachment_access_right_code(attachment: attachment)).to eq('private_access')
+        end
       end
     end
   end
