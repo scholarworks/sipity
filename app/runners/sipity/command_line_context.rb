@@ -22,6 +22,17 @@ module Sipity
 
     private
 
+    IS_A_AUTHENTICATE_METHOD_REGEXP = /\Aauthenticate_(.*)!\Z/.freeze
+
+    def method_missing(method_name, *args, &block)
+      return current_user.present? if method_name =~ IS_A_AUTHENTICATE_METHOD_REGEXP
+      super
+    end
+
+    def respond_to_missing?(method_name, *args)
+      method_name =~ IS_A_AUTHENTICATE_METHOD_REGEXP || super
+    end
+
     # @todo When Cogitate is deployed switch from ConvertToProcessingActor
     def requested_by=(input)
       @requested_by = Conversions::ConvertToProcessingActor.call(input)

@@ -13,4 +13,16 @@ RSpec.describe Sipity::CommandLineContext do
     expect { described_class.new(username: username, repository_strategy: :bogus) }.to raise_error(NameError)
   end
 
+  it { should respond_to(:authenticate_some_outlandish_method_that_no_one_would_ever_consider_like_I_am_batman!) }
+
+  context 'without a current user' do
+    before { allow(subject).to receive(:current_user).and_return(nil) }
+    its(:authenticate_user!) { should eq(false) }
+    its(:authenticate_user_for_profile_management!) { should eq(false) }
+  end
+
+  context 'with a current user' do
+    its(:authenticate_user!) { should eq(true) }
+    its(:authenticate_user_for_profile_management!) { should eq(true) }
+  end
 end
