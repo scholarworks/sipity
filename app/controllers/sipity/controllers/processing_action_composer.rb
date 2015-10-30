@@ -7,6 +7,12 @@ module Sipity
     # This class encapsulates the shared logic of the controller as it handles
     # the response object from a processing action.
     class ProcessingActionComposer
+      private_class_method :new
+
+      def self.build_for_controller(controller:, **keywords)
+        new(controller: controller, **keywords)
+      end
+
       def initialize(controller:, response_handler: default_response_handler)
         self.controller = controller
         self.response_handler = response_handler
