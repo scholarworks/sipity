@@ -67,7 +67,8 @@ module Sipity
 
       include GuardInterfaceExpectation
       def context=(input)
-        guard_interface_expectation!(input, :prepend_view_path, :params, :run, :response_handler_container, :controller_path)
+        # @TODO - Get this down to :run
+        guard_interface_expectation!(input, :prepend_view_path, :run, :controller_path)
         @context = input
       end
 
