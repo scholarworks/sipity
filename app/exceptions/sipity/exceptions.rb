@@ -222,7 +222,7 @@ module Sipity
         @user = user
         @action_to_authorize = action_to_authorize
         @entity = entity
-        super("#{user} not allowed to #{action_to_authorize} this #{entity}")
+        super("#{user.inspect} not allowed to #{action_to_authorize.inspect} this #{entity.inspect}")
       end
     end
 
