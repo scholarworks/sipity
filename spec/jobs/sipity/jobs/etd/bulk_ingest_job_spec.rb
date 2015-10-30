@@ -17,6 +17,8 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
   its(:default_processing_action_name) { should eq('submit_for_ingest') }
   its(:default_repository) { should respond_to(:find_works_via_search) }
 
+  before { allow(Sipity::Models::Group).to receive(:find_by!).and_return('ETD Ingestor') }
+
   it 'exposes .call as a convenience method' do
     expect_any_instance_of(described_class).to receive(:call)
     described_class.call(work_area: work_area, repository: repository)

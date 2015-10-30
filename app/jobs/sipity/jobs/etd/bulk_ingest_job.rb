@@ -76,7 +76,8 @@ module Sipity
 
         def default_requested_by
           require 'sipity/data_generators/work_types/etd_generator' unless defined?(DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS)
-          DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS
+          # Need this to be the "ETD Ingesters" group; Though I'd prefer a Cogitate string going forward
+          Sipity::Models::Group.find_by!(name: DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS)
         end
 
         attr_accessor :repository
