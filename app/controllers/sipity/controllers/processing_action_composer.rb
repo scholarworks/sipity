@@ -1,6 +1,7 @@
 require 'sipity/guard_interface_expectation'
 
 module Sipity
+  # :nodoc:
   module Controllers
     # Responsible for composing collaborating behavior on the base controller.
     #
@@ -11,12 +12,14 @@ module Sipity
 
       # @see ProcessingActionComposer#processing_action_name
       def self.build_for_controller(controller:, **keywords)
-        new(
+        run_and_respond = new(
           context: controller,
           response_handler_container: controller.response_handler_container,
           processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } },
           **keywords
         )
+        # Because command line applications may not have these same concerns.
+        ProcessingActionViewPathDelegator.new(controller: controller, decorated_object: run_and_respond)
       end
 
       def initialize(context:, processing_action_name:, response_handler_container:, response_handler: default_response_handler)
@@ -26,13 +29,17 @@ module Sipity
         self.response_handler = response_handler
       end
 
-      def prepend_processing_action_view_path_with(slug:)
-        path = build_processing_action_view_path_for(slug: slug)
-        context.prepend_view_path(path)
-      end
-
       def run_and_respond_with_processing_action(**keywords)
         handle_response(run_processing_action(**keywords))
+      end
+
+      # Why these antics? Because when this object is created using a context as the context, the params object is not entirely set (at
+      # least not in test). So I'm adding the ability to provide a callable value.
+      #
+      # @see ProcessingActionComposer.build_for_controller
+      def processing_action_name
+        return @processing_action_name.call if @processing_action_name.respond_to?(:call)
+        @processing_action_name
       end
 
       private
@@ -54,28 +61,13 @@ module Sipity
 
       attr_writer :processing_action_name
 
-      # Why these antics? Because when this object is created using a context as the context, the params object is not entirely set (at
-      # least not in test). So I'm adding the ability to provide a callable value.
-      #
-      # @see ProcessingActionComposer.build_for_controller
-      def processing_action_name
-        return @processing_action_name.call if @processing_action_name.respond_to?(:call)
-        @processing_action_name
-      end
-
       attr_reader :context
 
       include GuardInterfaceExpectation
       def context=(input)
         # @TODO - Get this down to :run
-        guard_interface_expectation!(input, :prepend_view_path, :run, :controller_path)
+        guard_interface_expectation!(input, :run)
         @context = input
-      end
-
-      ROOT_VIEW_PATH = Rails.root.join('app/views')
-
-      def build_processing_action_view_path_for(slug:)
-        File.join(ROOT_VIEW_PATH, context.controller_path, PowerConverter.convert_to_file_system_safe_file_name(slug))
       end
 
       attr_reader :response_handler
@@ -89,5 +81,44 @@ module Sipity
         Sipity::ResponseHandlers
       end
     end
+
+    # Responsible for wrapping controller based view path logic into the mess
+    class ProcessingActionViewPathDelegator
+      def initialize(controller:, decorated_object:)
+        self.controller = controller
+        self.decorated_object = decorated_object
+      end
+
+      def prepend_processing_action_view_path_with(slug:)
+        path = build_processing_action_view_path_for(slug: slug)
+        controller.prepend_view_path(path)
+      end
+
+      private
+
+      def method_missing(method_name, *args, &block)
+        decorated_object.send(method_name, *args, &block)
+      end
+
+      def respond_to_missing?(*args)
+        decorated_object.respond_to?(*args)
+      end
+
+      attr_accessor :decorated_object
+      attr_reader :controller
+
+      include GuardInterfaceExpectation
+      def controller=(input)
+        guard_interface_expectation!(input, :prepend_view_path, :controller_path)
+        @controller = input
+      end
+
+      ROOT_VIEW_PATH = Rails.root.join('app/views')
+
+      def build_processing_action_view_path_for(slug:)
+        File.join(ROOT_VIEW_PATH, controller.controller_path, PowerConverter.convert_to_file_system_safe_file_name(slug))
+      end
+    end
+    private_constant :ProcessingActionViewPathDelegator
   end
 end
