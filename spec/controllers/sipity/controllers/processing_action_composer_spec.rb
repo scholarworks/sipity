@@ -24,6 +24,13 @@ module Sipity
         its(:processing_action_name) { should eq(processing_action_name) }
         its(:default_response_handler) { should respond_to :handle_response }
 
+        it 'will allow a specific processing action name to be provided' do
+          subject = described_class.build_for_controller(
+            controller: controller, response_handler: response_handler, processing_action_name: 'york'
+          )
+          expect(subject.send(:processing_action_name)).to eq('york')
+        end
+
         it 'will prepend_processing_action_view_path_with' do
           expect(controller).to receive(:prepend_view_path).with(%r{/#{controller.controller_path}/bug\Z})
           subject.prepend_processing_action_view_path_with(slug: 'bug')

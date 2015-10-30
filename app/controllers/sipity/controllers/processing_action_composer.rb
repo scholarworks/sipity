@@ -9,12 +9,20 @@ module Sipity
     class ProcessingActionComposer
       private_class_method :new
 
+      # @see ProcessingActionComposer#processing_action_name
       def self.build_for_controller(controller:, **keywords)
-        new(controller: controller, **keywords)
+        new(
+          controller: controller,
+          response_handler_container: controller.response_handler_container,
+          processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } },
+          **keywords
+        )
       end
 
-      def initialize(controller:, response_handler: default_response_handler)
+      def initialize(controller:, processing_action_name:, response_handler_container:, response_handler: default_response_handler)
         self.controller = controller
+        self.processing_action_name = processing_action_name
+        self.response_handler_container = response_handler_container
         self.response_handler = response_handler
       end
 
@@ -29,6 +37,8 @@ module Sipity
 
       private
 
+      attr_accessor :response_handler_container
+
       def run_processing_action(**keywords)
         status, object = controller.run(processing_action_name: processing_action_name, **keywords)
         Parameters::HandledResponseParameter.new(status: status, object: object, template: processing_action_name)
@@ -38,12 +48,19 @@ module Sipity
         response_handler.handle_response(
           context: controller,
           handled_response: handled_response,
-          container: controller.response_handler_container # Note: Controller is passed twice, tighten this up?
+          container: response_handler_container # Note: Controller is passed twice, tighten this up?
         )
       end
 
+      attr_writer :processing_action_name
+
+      # Why these antics? Because when this object is created using a controller as the context, the params object is not entirely set (at
+      # least not in test). So I'm adding the ability to provide a callable value.
+      #
+      # @see ProcessingActionComposer.build_for_controller
       def processing_action_name
-        controller.params.fetch(:processing_action_name)
+        return @processing_action_name.call if @processing_action_name.respond_to?(:call)
+        @processing_action_name
       end
 
       attr_reader :controller
