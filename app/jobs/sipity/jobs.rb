@@ -15,8 +15,8 @@ module Sipity
     module_function :submit
 
     def find_job_by_name(job_name)
-      job_name_as_constant = job_name.to_s.classify
-      return "#{self}::#{job_name_as_constant}Job".constantize
+      job_name_as_constant = "#{job_name.to_s.underscore}_job".classify
+      return "#{self}::#{job_name_as_constant}".constantize
     rescue NameError
       raise Exceptions::JobNotFoundError, name: job_name_as_constant, container: self
     end
