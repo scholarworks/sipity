@@ -22,6 +22,15 @@ module Sipity
         ProcessingActionViewPathDelegator.new(controller: controller, decorated_object: run_and_respond)
       end
 
+      def self.build_for_command_line(context:, processing_action_name:, response_handler_container:, **keywords)
+        new(
+          processing_action_name: processing_action_name,
+          context: context,
+          response_handler_container: response_handler_container,
+          **keywords
+        )
+      end
+
       def initialize(context:, processing_action_name:, response_handler_container:, response_handler: default_response_handler)
         self.context = context
         self.processing_action_name = processing_action_name

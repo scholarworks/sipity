@@ -4,6 +4,37 @@ require 'sipity/controllers/processing_action_composer'
 module Sipity
   module Controllers
     RSpec.describe ProcessingActionComposer do
+      let(:a_response) { double(to_work_area: work_area, errors: []) }
+      let(:work_area) { double(slug: 'bug') }
+      let(:response_handler) { double(handle_response: true) }
+      let(:processing_action_name) { 'hello_world' }
+
+      context '.build_for_command_line' do
+        let(:command_line_context) { double(run: true) }
+        let(:response_handler_container) { double }
+        subject do
+          described_class.build_for_command_line(
+            response_handler: response_handler, context: command_line_context, processing_action_name: processing_action_name,
+            response_handler_container: response_handler_container
+          )
+        end
+
+        it { should_not respond_to(:prepend_processing_action_view_path_with) }
+
+        it 'will expose #run_and_respond_with_processing_action' do
+          expect(command_line_context).to receive(:run).with(work_id: 1, processing_action_name: processing_action_name).
+            and_return([:success, a_response])
+
+          subject.run_and_respond_with_processing_action(work_id: 1)
+
+          expect(response_handler).to have_received(:handle_response).with(
+            handled_response: kind_of(Parameters::HandledResponseParameter), context: command_line_context,
+            container: response_handler_container
+          )
+
+        end
+      end
+
       context '.build_for_controller' do
         let(:controller) do
           double(
@@ -14,10 +45,6 @@ module Sipity
             run: true
           )
         end
-
-        let(:response_handler) { double(handle_response: true) }
-        let(:work_area) { double(slug: 'bug') }
-        let(:processing_action_name) { 'hello_world' }
 
         subject { described_class.build_for_controller(controller: controller, response_handler: response_handler) }
 
@@ -38,7 +65,6 @@ module Sipity
         end
 
         it 'will run and respond with a processing_action' do
-          a_response = double(to_work_area: work_area, errors: [])
           expect(controller).to receive(:run).with(work_id: 1, processing_action_name: processing_action_name).
             and_return([:success, a_response])
 
