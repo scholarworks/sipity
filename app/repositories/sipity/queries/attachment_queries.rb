@@ -7,8 +7,11 @@ module Sipity
       end
 
       def attachment_access_right_code(attachment:)
-        return attachment.access_right.access_right_code if attachment.access_right
-        attachment.work.access_right.access_right_code
+        attachment_access_right(attachment: attachment).access_right_code
+      end
+
+      def attachment_access_right(attachment:)
+        attachment.access_right || attachment.work.access_right
       end
 
       def accessible_objects(work:)
