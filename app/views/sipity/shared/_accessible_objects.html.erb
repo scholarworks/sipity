@@ -5,7 +5,11 @@
         <dt class="predicate title"><%= accessible_object.translate(:title) %></dt>
         <dd class="value title"><%= link_to accessible_object.to_s.html_safe, accessible_object.access_url %></dd>
         <dt class="predicate access-right"><%= accessible_object.translate(:access_right_code) %></dt>
+        <% if accessible_object.access_right_code.present? %>
         <dd class="value access-right"><%= t("sipity/emails.access_controls.#{accessible_object.access_right_code.to_s.titleize}") %></dd>
+        <% else %>
+        <dd class="value access-right"><em>Unknown</em></dd>
+        <% end %>
         <% if accessible_object.release_date.present? %>
         <dt class="predicate release-date"><%= accessible_object.translate(:release_date) %></dt>
         <dd class="value release-date"><%= accessible_object.release_date %></dd>
