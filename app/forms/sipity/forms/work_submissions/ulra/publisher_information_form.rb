@@ -26,7 +26,11 @@ module Sipity
           validates :publication_name, presence: true
 
           VALID_VALUES_FOR_ALLOW_PRE_PRINTS = ["Yes", "No", "I do not know"].freeze
-          validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }
+          validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }, presence: true
+
+          def available_options_for_allow_pre_prints
+            VALID_VALUES_FOR_ALLOW_PRE_PRINTS
+          end
 
           def submit
             processing_action_form.submit do
@@ -37,20 +41,12 @@ module Sipity
 
           private
 
-          def allow_pre_prints=(values)
-            @allow_pre_prints = to_array_without_empty_values(values)
-          end
-
           def publication_name_from_work
-            repository.work_attribute_values_for(work: work, key: 'publication_name')
+            Array.wrap(repository.work_attribute_values_for(work: work, key: 'publication_name')).first
           end
 
           def allow_pre_prints_from_work
-            repository.work_attribute_values_for(work: work, key: 'allow_pre_prints')
-          end
-
-          def to_array_without_empty_values(value)
-            Array.wrap(value).select(&:present?)
+            Array.wrap(repository.work_attribute_values_for(work: work, key: 'allow_pre_prints')).first
           end
         end
       end

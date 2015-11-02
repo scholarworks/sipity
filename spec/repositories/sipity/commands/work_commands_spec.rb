@@ -163,6 +163,11 @@ module Sipity
           expect { test_repository.remove_files_from(pids: pid_minter.call, work: work, user: user) }.
             to change { Models::Attachment.count }.by(-1)
         end
+
+        it 'will only destroy attachments of the specified predicate' do
+          expect { test_repository.remove_files_from(pids: pid_minter.call, work: work, user: user, predicate_name: 'other') }.
+            to_not change { Models::Attachment.count }
+        end
       end
 
       context '#amend_files_metadata' do

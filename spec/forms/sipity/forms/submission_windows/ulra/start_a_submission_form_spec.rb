@@ -22,6 +22,7 @@ module Sipity
           end
 
           it { should implement_processing_form_interface }
+          its(:public_methods) { should include(:to_work_area) }
 
           context 'its class configuration' do
             subject { described_class }

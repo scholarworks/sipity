@@ -10,7 +10,7 @@
     html: { class: 'simple-form panel panel-primary with-footer' }
   ) do |f| %>
     <legend class="panel-heading">
-      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.publication_name.title_html"), class: 'panel-title' %>
+      <h3 class="panel-title"><%= model.translate(:panel, predicate: :title) %></h3>
     </legend>
 
     <fieldset class="panel-body">
@@ -18,12 +18,8 @@
       <%= f.error_notification %>
       <%= f.error :base, error_method: :to_sentence %>
       <%= f.input :publication_name, input_html: { class: 'form-control' } %>
-      <ul>
-        <li>Allow deposit of pre-prints to an Institutional Digital Repository</li>
-        <li><%= f.radio_button(:allow_pre_prints, "Yes") %></li>
-        <li><%= f.radio_button(:allow_pre_prints, "No") %></li>
-        <li><%= f.radio_button(:allow_pre_prints, "I don't know") %></li>
-      </ul>
+
+      <%= f.input :allow_pre_prints, as: :radio_buttons, collection: model.available_options_for_allow_pre_prints %>
     </fieldset>
 
     <div class="panel-footer action-pane">
