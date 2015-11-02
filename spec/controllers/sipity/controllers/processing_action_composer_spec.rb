@@ -6,7 +6,7 @@ module Sipity
     RSpec.describe ProcessingActionComposer do
       let(:a_response) { double(to_work_area: work_area, errors: []) }
       let(:work_area) { double(slug: 'bug') }
-      let(:response_handler) { double(handle_response: true) }
+      let(:response_handler) { double(call: true) }
       let(:processing_action_name) { 'hello_world' }
 
       context '.build_for_command_line' do
@@ -28,7 +28,7 @@ module Sipity
 
           subject.run_and_respond_with_processing_action(work_id: 1)
 
-          expect(response_handler).to have_received(:handle_response).with(
+          expect(response_handler).to have_received(:call).with(
             handled_response: kind_of(Parameters::HandledResponseParameter), context: command_line_context,
             container: response_handler_container
           )
@@ -50,7 +50,6 @@ module Sipity
         subject { described_class.build_for_controller(controller: controller, response_handler: response_handler) }
 
         its(:processing_action_name) { should eq(processing_action_name) }
-        its(:default_response_handler) { should respond_to :handle_response }
         it { should respond_to(:processing_action_name) }
 
         it 'will allow a specific processing action name to be provided' do
@@ -71,7 +70,7 @@ module Sipity
 
           subject.run_and_respond_with_processing_action(work_id: 1)
 
-          expect(response_handler).to have_received(:handle_response).with(
+          expect(response_handler).to have_received(:call).with(
             context: controller,
             handled_response: kind_of(Parameters::HandledResponseParameter),
             container: controller.response_handler_container

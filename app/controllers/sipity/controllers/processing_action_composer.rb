@@ -17,6 +17,7 @@ module Sipity
         run_and_respond = new(
           context: controller,
           runner: controller.method(:run),
+          response_handler: Sipity::ResponseHandlers.method(:handle_controller_response),
           response_handler_container: controller.response_handler_container,
           processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } },
           **keywords
@@ -31,11 +32,12 @@ module Sipity
           context: context,
           runner: runner,
           response_handler_container: response_handler_container,
+          response_handler: Sipity::ResponseHandlers.method(:handle_command_line_response),
           **keywords
         )
       end
 
-      def initialize(context:, processing_action_name:, response_handler_container:, runner:, response_handler: default_response_handler)
+      def initialize(context:, processing_action_name:, response_handler_container:, runner:, response_handler:)
         self.context = context
         self.runner = runner
         self.processing_action_name = processing_action_name
@@ -66,7 +68,7 @@ module Sipity
       end
 
       def handle_response(handled_response)
-        response_handler.handle_response(
+        response_handler.call(
           context: context,
           handled_response: handled_response,
           container: response_handler_container # Note: Controller is passed twice, tighten this up?
@@ -88,12 +90,8 @@ module Sipity
       attr_reader :response_handler
 
       def response_handler=(input)
-        guard_interface_expectation!(input, :handle_response)
+        guard_interface_expectation!(input, :call)
         @response_handler = input
-      end
-
-      def default_response_handler
-        Sipity::ResponseHandlers
       end
     end
 

@@ -9,8 +9,13 @@ module Sipity
     module WorkSubmissionHandler
       # It worked
       module SuccessResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.render(template: handler.template)
+        end
+
+        class << self
+          alias_method :call, :for_controller
+          deprecate call: "Prefer .for_controller instead"
         end
 
         # @review should I consider if a logger is passed?
@@ -21,8 +26,13 @@ module Sipity
 
       # We have a successful form submission.
       module SubmitSuccessResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
+        end
+
+        class << self
+          alias_method :call, :for_controller
+          deprecate call: "Prefer .for_controller instead"
         end
 
         # @review should I consider if a logger is passed?
@@ -33,8 +43,13 @@ module Sipity
 
       # Forms that fail to submit may have different errors.
       module SubmitFailureResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.render(template: handler.template, status: :unprocessable_entity)
+        end
+
+        class << self
+          alias_method :call, :for_controller
+          deprecate call: "Prefer .for_controller instead"
         end
 
         # @review should I consider if a logger is passed?

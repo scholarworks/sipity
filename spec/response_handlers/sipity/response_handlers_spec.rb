@@ -11,6 +11,10 @@ module Sipity
             # me to do something with the keyword.
             _handler = handler
           end
+
+          def self.for_command_line(*args)
+            return *args
+          end
         end
       end
     end
@@ -20,10 +24,21 @@ module Sipity
       double(status: :success, errors: [], object: double, template: double, with_each_additional_view_path_slug: true)
     end
 
-    context '.handle_response' do
+    context '.handle_controller_response' do
       it 'will build a handler then respond with that handler' do
         expect(MockContainer::SuccessResponder).to receive(:call).with(handler: kind_of(described_class::ControllerResponseHandler))
-        described_class.handle_response(
+        described_class.handle_controller_response(
+          container: MockContainer, context: context, handled_response: handled_response
+        )
+      end
+    end
+
+    context '.handle_command_line_response' do
+      it 'will build a handler then respond with that handler' do
+        expect(MockContainer::SuccessResponder).to receive(:for_command_line).with(
+          handler: kind_of(described_class::CommandLineResponseHandler)
+        )
+        described_class.handle_command_line_response(
           container: MockContainer, context: context, handled_response: handled_response
         )
       end

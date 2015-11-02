@@ -16,11 +16,20 @@ module Sipity
   module ResponseHandlers
     module_function
 
+    def handle_controller_response(context:, handled_response:, container:)
+      handle_response(context: context, handled_response: handled_response, container: container, handler: ControllerResponseHandler)
+    end
+
+    def handle_command_line_response(context:, handled_response:, container:)
+      handle_response(context: context, handled_response: handled_response, container: container, handler: CommandLineResponseHandler)
+    end
+
     # TODO: Remove the template as it can be packed into the handled response
-    def handle_response(context:, handled_response:, container:, handler: ControllerResponseHandler)
+    def handle_response(context:, handled_response:, container:, handler:)
       responder = build_responder(container: container, handled_response_status: handled_response.status)
       handler.respond(context: context, handled_response: handled_response, responder: responder)
     end
+    private_class_method :handle_response
 
     def build_responder(container:, handled_response_status:)
       container.qualified_const_get("#{handled_response_status.to_s.classify}Responder")
