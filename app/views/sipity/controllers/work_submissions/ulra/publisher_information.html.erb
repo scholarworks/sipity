@@ -10,7 +10,7 @@
     html: { class: 'simple-form panel panel-primary with-footer' }
   ) do |f| %>
     <legend class="panel-heading">
-      <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.publication_name.title_html"), class: 'panel-title' %>
+      <h3 class="panel-title"><%= model.translate(:panel, predicate: :title) %></h3>
     </legend>
 
     <fieldset class="panel-body">

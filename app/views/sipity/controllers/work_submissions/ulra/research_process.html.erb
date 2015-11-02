@@ -11,15 +11,34 @@
   ) do |f| %>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
+    <legend class="panel-heading">
+      <h3 class="panel-title"><%= model.translate(:panel, predicate: :title) %></h3>
+    </legend>
+
     <fieldset class="panel-body">
-      <legend class="panel-heading">
-        <%= content_tag :h3, t("sipity/decorators/entitiy_enrichments.panels.research_process.title_html"), class: 'panel-title' %>
-      </legend>
-      <% #TODO %>
-      <% #Change from select box to text box with autocomplete %>
       <%= f.input :citation_style, as: :select, collection: model.available_citation_style, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
       <%= f.input :resource_consulted, as: :check_boxes, collection: model.available_resource_consulted, input_html: { class: 'form-control input-xlarge' }  %>
       <%= f.input :other_resource_consulted, as: :text, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
+      <p class="panel-hint"><%= model.translate(:panel, predicate: :research_process_attachment) %></p>
+      <%= f.input :files, as: :file %>
+      <% if model.attachments.any? %>
+        <ol class="attachment-listing">
+          <%= f.fields_for :attachments_attributes do |attachment_form| %>
+            <li class="attachement form-inline">
+              <figure class="thumbnail-wrapper">
+                <%= link_to(
+                      image_tag(attachment_form.object.thumbnail_url, alt: attachment_form.object.name, class: 'img-thumbnail'),
+                      attachment_form.object.file_url,
+                      target: '_blank'
+                    )
+                 %>
+              </figure>
+              <%= attachment_form.input :name, input_html: { class: 'form-control' } %>
+              <%= attachment_form.input :delete, as: :boolean, wrapper_html: { class: 'checkbox' } %>
+            </li>
+          <% end %>
+        </ol>
+      <% end %>
     </fieldset>
 
     <div class="panel-footer action-pane">
