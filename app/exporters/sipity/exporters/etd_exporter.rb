@@ -77,7 +77,8 @@ module Sipity
       end
 
       def move_files_to_curate_batch_queue
-        FileUtils.mv(curate_data_directory, MNT_QUEUE_PATH, verbose: true)
+        create_directory(MNT_QUEUE_PATH)
+        FileUtils.mv(curate_data_directory, File.join(MNT_QUEUE_PATH, '/'), verbose: true)
       end
 
       def curate_data_directory

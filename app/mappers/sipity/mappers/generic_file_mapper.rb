@@ -81,17 +81,14 @@ module Sipity
           date_modified: date_convert(file.updated_at) }
       end
 
-      def file_access_right
-        @file_access_right ||= repository.attachment_access_right_code(attachment: file)
+      def file_access_rights
+        @file_access_rights ||= repository.attachment_access_right(attachment: file)
       end
 
-      def work_access_right
-        @work_access_right ||= repository.work_access_right_code(work: work)
+      def file_access_right_code
+        file_access_rights.access_right_code
       end
-
-      def access_right_code
-        @access_right_code = file_access_right.present? ? file_access_right : work_access_right
-      end
+      alias_method :access_right_code, :file_access_right_code
 
       def creators
         @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)
@@ -198,7 +195,7 @@ module Sipity
       end
 
       def embargo_date
-        embargo_dt = file_access_right.present? ? file.access_right.transition_date : work.access_right.transition_date
+        embargo_dt = file_access_rights.transition_date
         embargo_dt.strftime('%Y-%m-%d')
       end
 

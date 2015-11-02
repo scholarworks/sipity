@@ -38,6 +38,10 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def attachment_access_right(attachment:)
+    end
+
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def attachment_access_right_code(attachment:)
     end
 
