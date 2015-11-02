@@ -59,9 +59,9 @@ module Sipity
           def initialize_non_attachment_attributes(attributes)
             self.resource_consulted = attributes.fetch(:resource_consulted) { retrieve_from_work(key: 'resource_consulted') }
             self.other_resource_consulted = attributes.fetch(:other_resource_consulted) do
-              retrieve_from_work(key: 'other_resource_consulted')
+              retrieve_from_work(key: 'other_resource_consulted').first
             end
-            self.citation_style = attributes.fetch(:citation_style) { retrieve_from_work(key: 'citation_style') }
+            self.citation_style = attributes.fetch(:citation_style) { retrieve_from_work(key: 'citation_style').first }
           end
 
           def resource_consulted=(values)
@@ -69,7 +69,7 @@ module Sipity
           end
 
           def retrieve_from_work(key:)
-            repository.work_attribute_values_for(work: work, key: key)
+            Array.wrap(repository.work_attribute_values_for(work: work, key: key))
           end
 
           def to_array_without_empty_values(value)

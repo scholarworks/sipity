@@ -30,23 +30,9 @@ module Sipity
           it { should respond_to :files }
           it { should_not be_persisted }
 
-          it 'will require a citation_style' do
-            subject.valid?
-            expect(subject.errors[:citation_style]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
 
-          it 'will require a non-blank citation_stype' do
-            subject = described_class.new(keywords.merge(attributes: { citation_style: '' }))
-            subject.valid?
-            expect(subject.errors[:citation_style]).to be_present
-          end
-
-          it 'will require a non-blank citation_style' do
-            subject = described_class.new(keywords.merge(attributes: { citation_style: 'chocolate' }))
-            subject.valid?
-            expect(subject.errors[:citation_style]).to_not be_present
-          end
-
+          it { should validate_presence_of(:citation_style) }
           it 'will have #available_resouce_consulted' do
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
               and_return(['some value', 'bogus'])
