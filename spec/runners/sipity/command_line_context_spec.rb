@@ -13,6 +13,12 @@ RSpec.describe Sipity::CommandLineContext do
     expect { described_class.new(username: username, repository_strategy: :bogus) }.to raise_error(NameError)
   end
 
+  it { should_not respond_to(:some_random_authenticate_thing!) }
+
+  it 'will raise an exception on other missing methods' do
+    expect { subject.some_random_authenticate_thing! }.to raise_error(NoMethodError)
+  end
+
   it { should respond_to(:authenticate_some_outlandish_method_that_no_one_would_ever_consider_like_I_am_batman!) }
 
   context 'without a current user' do
