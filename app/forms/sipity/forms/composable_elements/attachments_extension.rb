@@ -27,7 +27,7 @@ module Sipity
 
         def attach_or_update_files(requested_by:, predicate_name: 'attachment')
           repository.attach_files_to(work: work, files: files, predicate_name: predicate_name) if files.any?
-          repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion)
+          repository.remove_files_from(work: work, user: requested_by, pids: ids_for_deletion, predicate_name: predicate_name)
           repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
         end
 

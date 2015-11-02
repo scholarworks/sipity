@@ -68,16 +68,8 @@ module Sipity
             end
 
             it 'will delete any attachments marked for deletion' do
-              expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
-              subject.submit
-            end
-
-            it 'will amend any attachment metadata' do
-              expect(repository).to receive(:amend_files_metadata).with(
-                work: work, user: user, metadata: {
-                  "y5Fm8YK9-ekjEwUMKeeutw==" => { "name" => "hotel.pdf" },
-                  "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }
-                }
+              expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(
+                requested_by: subject.send(:requested_by), predicate_name: 'research_process_attachment'
               )
               subject.submit
             end

@@ -72,9 +72,9 @@ module Sipity
         end
       end
 
-      def remove_files_from(work:, user:, pids:)
+      def remove_files_from(work:, user:, pids:, predicate_name: 'attachment')
         _user = user # Don't need it yet, but it makes sense to capture this
-        Models::Attachment.where(work: work, pid: Array.wrap(pids)).destroy_all
+        Models::Attachment.where(work: work, pid: Array.wrap(pids), predicate_name: predicate_name).destroy_all
       end
 
       def amend_files_metadata(work:, user:, metadata: {})

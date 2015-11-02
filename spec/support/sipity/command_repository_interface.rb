@@ -210,7 +210,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def remove_files_from(work:, user:, pids:)
+    def remove_files_from(work:, user:, pids:, predicate_name: 'attachment')
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
