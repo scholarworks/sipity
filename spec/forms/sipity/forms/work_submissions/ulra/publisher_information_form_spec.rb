@@ -29,52 +29,12 @@ module Sipity
           it { should respond_to :allow_pre_prints }
           it { should_not be_persisted }
 
-          it 'will require a publication' do
-            subject.valid?
-            expect(subject.errors[:publication_name]).to be_present
-            expect(subject.errors[:allow_pre_prints]).to be_present
-          end
+          its(:available_options_for_allow_pre_prints) { should be_a(Array) }
 
-          it 'will require a allow_pre_prints' do
-            subject.valid?
-            expect(subject.errors[:allow_pre_prints]).to be_present
-          end
-
-          it 'with valid allow_pre_prints' do
-            form_obj = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: "Yes" }))
-            form_obj.valid?
-            expect(form_obj.errors[:allow_pre_prints]).not_to be_present
-          end
-
-          it 'with invalid allow_pre_prints' do
-            form_obj = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: "dummy" }))
-            form_obj.valid?
-            expect(form_obj.errors[:allow_pre_prints]).to be_present
-          end
-
-          it 'will require at least one non-blank allow_pre_prints' do
-            subject = described_class.new(keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: ["", ""] }))
-            subject.valid?
-            expect(subject.errors[:allow_pre_prints]).to be_present
-          end
-
-          it 'will require at least one non-blank allow_pre_prints' do
-            subject = described_class.new(
-              keywords.merge(attributes: { publication_name: "dummy", allow_pre_prints: ["I do not know", ""] })
-            )
-            subject.valid?
-            expect(subject.errors[:allow_pre_prints]).to_not be_present
-          end
-
-          it 'will only keep publication entries that are "present?"' do
-            subject = described_class.new(keywords.merge(attributes: { publication_name: 'something' }))
-            expect(subject.publication_name).to eq('something')
-          end
-
-          it 'will only keep allow_pre_printss entries that are "present?"' do
-            subject = described_class.new(keywords.merge(attributes: { allow_pre_prints: ['Yes'] }))
-            expect(subject.allow_pre_prints).to eq(['Yes'])
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of :publication_name }
+          it { should validate_presence_of :allow_pre_prints }
+          it { should validate_inclusion_of(:allow_pre_prints).in_array(subject.available_options_for_allow_pre_prints) }
 
           context '#publication_name' do
             before do
@@ -96,13 +56,13 @@ module Sipity
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(keywords.merge(attributes: { allow_pre_prints: ['Yes'] }))
-              expect(subject.allow_pre_prints).to eq ['Yes']
+              subject = described_class.new(keywords.merge(attributes: { allow_pre_prints: 'Yes' }))
+              expect(subject.allow_pre_prints).to eq 'Yes'
             end
             it 'will fall back on #allow_pre_prints information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'allow_pre_prints').and_return('Yes')
               subject = described_class.new(keywords)
-              expect(subject.allow_pre_prints).to eq(['Yes'])
+              expect(subject.allow_pre_prints).to eq('Yes')
             end
           end
 
