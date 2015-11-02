@@ -89,8 +89,8 @@ module Sipity
         @work_access_right ||= repository.work_access_right_code(work: work)
       end
 
-      def access_right
-        @access_right = file_access_right.present? ? file_access_right : work_access_right
+      def access_right_code
+        @access_right_code = file_access_right.present? ? file_access_right : work_access_right
       end
 
       def creators
@@ -184,7 +184,7 @@ module Sipity
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
         decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
-        case access_right
+        case access_right_code
         when Models::AccessRight::OPEN_ACCESS
           decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
         when Models::AccessRight::RESTRICTED_ACCESS
