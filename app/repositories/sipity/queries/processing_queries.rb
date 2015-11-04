@@ -463,6 +463,8 @@ module Sipity
       #   the ActiveRecord::Relation
       # @option query_criteria [Integer] :page - A page value to apply pagination
       #   to the query
+      # @option query_criteria [Integer] :per - A value to apply pagination
+      #   to the query
       #
       # @return [ActiveRecord::Relation<proxy_for_types>]
       def scope_proxied_objects_for_the_user_and_proxy_for_type(user:, proxy_for_type:, filter: {}, **query_criteria)
@@ -486,6 +488,7 @@ module Sipity
 
         if query_criteria.key?(:page)
           scope = scope.page(query_criteria.fetch(:page))
+          scope = scope.per(query_criteria.fetch(:per)) if query_criteria.key?(:per)
         end
         scope
       end

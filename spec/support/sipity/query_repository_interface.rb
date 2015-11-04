@@ -17,6 +17,14 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def apply_work_area_filter_to(scope:, criteria:)
+    end
+
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def attachment_access_right(attachment:)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def attachment_access_right_code(attachment:)
     end
@@ -55,6 +63,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/notification_queries.rb
     def email_notifications_for(reason:, scope:)
+    end
+
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def extract_search_paramters_from(criteria:)
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
@@ -119,6 +131,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def representative_attachment_for(work:)
+    end
+
+    # @see ./app/repositories/sipity/queries/administrative_scheduled_action_queries.rb
+    def scheduled_time_from_work(work:, reason:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb

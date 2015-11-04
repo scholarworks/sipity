@@ -16,25 +16,62 @@ module Sipity
   module ResponseHandlers
     module_function
 
+    def handle_controller_response(context:, handled_response:, container:)
+      handle_response(context: context, handled_response: handled_response, container: container, handler: ControllerResponseHandler)
+    end
+
+    def handle_command_line_response(context:, handled_response:, container:)
+      handle_response(context: context, handled_response: handled_response, container: container, handler: CommandLineResponseHandler)
+    end
+
     # TODO: Remove the template as it can be packed into the handled response
-    def handle_response(context:, handled_response:, container:, handler: DefaultHandler)
+    def handle_response(context:, handled_response:, container:, handler:)
       responder = build_responder(container: container, handled_response_status: handled_response.status)
       handler.respond(context: context, handled_response: handled_response, responder: responder)
     end
+    private_class_method :handle_response
 
     def build_responder(container:, handled_response_status:)
       container.qualified_const_get("#{handled_response_status.to_s.classify}Responder")
     end
 
-    # The default response handler. It makes sure things are well composed,
-    # guarding the interface of collaborating objects.
-    class DefaultHandler
+    # The default response handler for command line applications
+    class CommandLineResponseHandler
       def self.respond(**keywords)
         new(**keywords).respond
       end
 
-      attr_reader :context, :handled_response
-      def initialize(context:, handled_response:, responder: default_responder)
+      attr_reader :handled_response, :responder
+      def initialize(handled_response:, responder:, **)
+        self.handled_response = handled_response
+        self.responder = responder
+      end
+
+      def respond
+        responder.for_command_line(handler: self)
+      end
+
+      private
+
+      attr_writer :handled_response, :responder
+      delegate :object, :status, :errors, to: :handled_response, prefix: :response
+
+      include GuardInterfaceExpectation
+      def handled_response=(input)
+        guard_interface_expectation!(input, :object, :status, :errors)
+        @handled_response = input
+      end
+    end
+
+    # The default response handler. It makes sure things are well composed,
+    # guarding the interface of collaborating objects.
+    class ControllerResponseHandler
+      def self.respond(**keywords)
+        new(**keywords).respond
+      end
+
+      attr_reader :context, :handled_response, :responder
+      def initialize(context:, handled_response:, responder:)
         self.context = context
         self.handled_response = handled_response
         self.responder = responder
@@ -46,7 +83,7 @@ module Sipity
       end
 
       delegate :render, :redirect_to, to: :context
-      delegate :object, to: :handled_response, prefix: :response
+      delegate :object, :status, :errors, to: :handled_response, prefix: :response
       delegate :template, to: :handled_response
 
       private
@@ -69,12 +106,7 @@ module Sipity
         end
       end
 
-      attr_accessor :responder
-      attr_writer :template
-
-      def default_responder
-        -> (handler:) { handler.render(template: handler.template) }
-      end
+      attr_writer :template, :responder
 
       def prepare_context_for_response
         # Wouldn't it be great if we had proper View objects in Rails? Instead
@@ -95,7 +127,7 @@ module Sipity
       end
 
       def handled_response=(input)
-        guard_interface_expectation!(input, :object, :template, :with_each_additional_view_path_slug)
+        guard_interface_expectation!(input, :object, :status, :errors, :template, :with_each_additional_view_path_slug)
         @handled_response = input
       end
     end

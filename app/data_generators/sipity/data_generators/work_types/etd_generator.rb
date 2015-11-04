@@ -15,6 +15,8 @@ module Sipity
           Models::Role::ADVISOR
         ]
         GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
+        CATALOGERS = "Catalogers"
+        ETD_INGESTORS = "ETD Ingestors"
 
         def self.call(**keywords)
           new(**keywords).call
@@ -52,7 +54,9 @@ module Sipity
               [
                 'creating_user',
                 'etd_reviewer',
-                'advisor'
+                'advisor',
+                'cataloger',
+                'batch_ingestor'
               ].each do |role_name|
                 etd_strategy_roles[role_name] = find_or_initialize_or_create!(
                   context: etd_strategy,
@@ -62,11 +66,25 @@ module Sipity
               end
 
               etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
+              cataloger = etd_strategy_roles.fetch('cataloger')
+              batch_ingestor = etd_strategy_roles.fetch('batch_ingestor')
 
               find_or_initialize_or_create!(
                 context: etd_reviewer,
                 receiver: etd_reviewer.strategy_responsibilities,
                 actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
+              )
+
+              find_or_initialize_or_create!(
+                context: cataloger,
+                receiver: cataloger.strategy_responsibilities,
+                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: CATALOGERS))
+              )
+
+              find_or_initialize_or_create!(
+                context: batch_ingestor,
+                receiver: batch_ingestor.strategy_responsibilities,
+                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: ETD_INGESTORS))
               )
 
               etd_states = {}
@@ -76,7 +94,11 @@ module Sipity
                 'advisor_changes_requested',
                 'under_grad_school_review',
                 'grad_school_changes_requested',
-                'ready_for_ingest'
+                'ready_for_ingest',
+                'ready_for_cataloging',
+                'back_from_cataloging',
+                'ingesting',
+                'ingested'
               ].each do |state_name|
                 etd_states[state_name] = find_or_initialize_or_create!(
                   context: etd_strategy,
@@ -107,7 +129,11 @@ module Sipity
                 { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
                 { action_name: 'respond_to_grad_school_request', resulting_state_name: 'grad_school_changes_requested', seq: 1, allow_repeat_within_current_state: true },
                 { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: true },
-                { action_name: 'grad_school_signoff', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false }
+                { action_name: 'send_to_cataloging', resulting_state_name: 'ready_for_cataloging',seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'send_back_to_grad_school', resulting_state_name: 'back_from_cataloging',seq: 2, allow_repeat_within_current_state: true },
+                { action_name: 'cataloging_complete', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'ingest_with_postponed_cataloging', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'submit_for_ingest', resulting_state_name: 'ingesting', seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
                 action_name = structure.fetch(:action_name)
                 resulting_state = structure[:resulting_state_name] ? etd_states.fetch(structure[:resulting_state_name]) : nil
@@ -184,7 +210,7 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
                   ['show'],
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
@@ -204,8 +230,16 @@ module Sipity
                   ['destroy'],
                   ['etd_reviewer']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
                   ['debug'],
+                  ['etd_reviewer']
+                ],[
+                  ['ready_for_cataloging'],
+                  ['send_back_to_grad_school', 'cataloging_complete'],
+                  ['cataloger']
+                ],[
+                  ['back_from_cataloging'],
+                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
                 ],[
                   ['under_advisor_review'],
@@ -221,8 +255,12 @@ module Sipity
                   ['advisor']
                 ],[
                   ['under_grad_school_review', 'grad_school_changes_requested'],
-                  ['grad_school_requests_change', 'grad_school_signoff'],
+                  ['grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
+                ],[
+                  ['ready_for_ingest'],
+                  ['submit_for_ingest'],
+                  ['batch_ingestor']
                 ]
               ].each do |originating_state_names, action_names, role_names|
                 Array.wrap(originating_state_names).each do |originating_state_name|
@@ -309,8 +347,13 @@ module Sipity
                 },
                 {
                   named_container: Models::Processing::StrategyAction,
-                  name: 'grad_school_signoff',
-                  emails: { confirmation_of_grad_school_signoff: { to: ['creating_user', 'etd_reviewer'] } }
+                  name: 'send_to_cataloging',
+                  emails: { grad_school_requests_cataloging: { to: 'cataloger', cc: 'etd_reviewer' } }
+                },
+                {
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'send_back_to_grad_school',
+                  emails: { cataloger_request_change: { to: 'etd_reviewer' } }
                 },
                 {
                   named_container: Models::Processing::StrategyState,

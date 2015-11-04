@@ -17,6 +17,17 @@ module Sipity
     class NonPrimativeParameterError < RuntimeError
     end
 
+    # Responsible for conveying the erroring information when there is an error.
+    class ResponseHandlerError < RuntimeError
+      attr_reader :object, :status, :errors
+      def initialize(object:, errors:, status:)
+        @object = object
+        @errors = errors
+        @status = status
+        super(%(Encountered status="#{status}" for object="#{object}"\n\terrors=#{Array.wrap(errors).to_sentence}))
+      end
+    end
+
     # Uh oh! It looks like our response handler didn't know what to do.
     class UnhandledResponseError < RuntimeError
       def initialize(handler)
@@ -211,7 +222,7 @@ module Sipity
         @user = user
         @action_to_authorize = action_to_authorize
         @entity = entity
-        super("#{user} not allowed to #{action_to_authorize} this #{entity}")
+        super("#{user.inspect} not allowed to #{action_to_authorize.inspect} this #{entity.inspect}")
       end
     end
 

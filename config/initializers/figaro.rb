@@ -16,5 +16,5 @@ Figaro.require_keys(
   'url_host',
   'curate_batch_user_pid',
   'curate_batch_group_pid',
-  'curate_batch_mnt_path'
+  'curate_batch_data_mount_path'
 )

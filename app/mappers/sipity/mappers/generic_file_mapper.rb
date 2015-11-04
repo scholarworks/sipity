@@ -15,8 +15,6 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
-      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_mnt_path) + "../../data/sipity"
-      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_mnt_path!}/queue"
       # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
@@ -37,14 +35,14 @@ module Sipity
       EDITOR_PREDICATE_KEY = 'hydramata-rel:hasEditor'.freeze
       EDITOR_GROUP_PREDICATE_KEY = 'hydramata-rel:hasEditorGroup'.freeze
 
-      def self.call(attachment)
-        new(attachment).call
+      def self.call(attachment, **keywords)
+        new(attachment, **keywords).call
       end
 
-      def initialize(attachment, repository: default_repository)
+      def initialize(attachment, **keywords)
         self.file = attachment
-        self.repository = repository
         self.work = attachment.work
+        extract_keywords(**keywords)
       end
 
       def call
@@ -53,9 +51,13 @@ module Sipity
 
       private
 
-      attr_accessor :file, :repository, :work
+      def extract_keywords(repository: default_repository, attribute_map: default_attribute_map, mount_data_path: default_mount_data_path)
+        self.repository = repository
+        self.attribute_map = attribute_map
+        self.mount_data_path = mount_data_path
+      end
 
-      attr_reader :work_area
+      attr_accessor :file, :repository, :work, :attribute_map, :mount_data_path
 
       def build_json
         Jbuilder.encode do |json|
@@ -82,17 +84,14 @@ module Sipity
           date_modified: date_convert(file.updated_at) }
       end
 
-      def file_access_right
-        @file_access_right ||= repository.attachment_access_right_code(attachment: file)
+      def file_access_rights
+        @file_access_rights ||= repository.attachment_access_right(attachment: file)
       end
 
-      def work_access_right
-        @work_access_right ||= repository.work_access_right_code(work: work)
+      def file_access_right_code
+        file_access_rights.access_right_code
       end
-
-      def access_right
-        @access_right = file_access_right.present? ? file_access_right : work_access_right
-      end
+      alias_method :access_right_code, :file_access_right_code
 
       def creators
         @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)
@@ -154,7 +153,7 @@ module Sipity
       end
 
       def curate_data_directory
-        "#{MNT_DATA_PATH}/sipity-#{work.id}"
+        File.join(mount_data_path, "sipity-#{work.id}")
       end
 
       def create_directory(directory)
@@ -185,7 +184,7 @@ module Sipity
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
         decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
-        case access_right
+        case access_right_code
         when Models::AccessRight::OPEN_ACCESS
           decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
         when Models::AccessRight::RESTRICTED_ACCESS
@@ -199,12 +198,22 @@ module Sipity
       end
 
       def embargo_date
-        embargo_dt = file_access_right.present? ? file.access_right.transition_date : work.access_right.transition_date
+        embargo_dt = file_access_rights.transition_date
         embargo_dt.strftime('%Y-%m-%d')
       end
 
       def extract_name_for(attribute)
-        Exporters::EtdExporter.etd_attributes[attribute.to_sym]
+        attribute_map.fetch(attribute.to_sym)
+      end
+
+      def default_attribute_map
+        require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::ETD_ATTRIBUTES)
+        Exporters::EtdExporter::ETD_ATTRIBUTES
+      end
+
+      def default_mount_data_path
+        require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::MNT_DATA_PATH)
+        Exporters::EtdExporter::MNT_DATA_PATH
       end
     end
   end

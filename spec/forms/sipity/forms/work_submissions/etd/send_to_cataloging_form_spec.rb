@@ -1,12 +1,11 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/work_submissions/etd/grad_school_signoff_form'
 
 module Sipity
   module Forms
     module WorkSubmissions
       module Etd
-        RSpec.describe GradSchoolSignoffForm do
+        RSpec.describe SendToCatalogingForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }

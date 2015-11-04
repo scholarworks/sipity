@@ -24,6 +24,13 @@ module Sipity
             allow_any_instance_of(described_class).to receive(:convert_to_processing_action).and_return(processing_action)
           end
 
+          context '#search_criteria' do
+            subject do
+              described_class.new(context, work_area: work_area, repository: repository, translator: translator).send(:search_criteria)
+            end
+            its(:work_area) { should eq(work_area) }
+          end
+
           it 'will initialize the presumptive submission window' do
             expect(repository).to receive(:find_submission_window_by).
               with(work_area: work_area, slug: described_class::SUBMISSION_WINDOW_SLUG_THAT_IS_HARD_CODED).and_return(submission_window)

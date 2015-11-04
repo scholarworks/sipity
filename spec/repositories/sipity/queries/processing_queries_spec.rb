@@ -72,8 +72,8 @@ module Sipity
           # demonstrates what's working
           expect(subject).to eq(
             [
-              "advisor_changes_requested", "grad_school_changes_requested", "new", "ready_for_ingest", "under_advisor_review",
-              "under_grad_school_review"
+              "advisor_changes_requested", "back_from_cataloging", "grad_school_changes_requested", "ingested", "ingesting",
+              "new", "ready_for_cataloging", "ready_for_ingest", "under_advisor_review", "under_grad_school_review"
             ]
           )
         end
@@ -197,6 +197,12 @@ module Sipity
               user: user, proxy_for_type: Sipity::Models::Work, page: 1
             ).sort(&sorter)
           ).to eq([work_one, work_two].sort(&sorter))
+
+          expect(
+            test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
+              user: user, proxy_for_type: Sipity::Models::Work, page: 1, per: 1, order: 'title ASC'
+            )
+          ).to eq([work_one])
 
           expect(
             test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
