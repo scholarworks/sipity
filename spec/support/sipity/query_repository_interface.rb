@@ -65,6 +65,10 @@ module Sipity
     def email_notifications_for(reason:, scope:)
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def extract_search_paramters_from(criteria:)
+    end
+
     # @see ./app/repositories/sipity/queries/comment_queries.rb
     def find_comments_for(entity:)
     end

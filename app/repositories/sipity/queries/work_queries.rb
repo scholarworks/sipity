@@ -26,7 +26,7 @@ module Sipity
         )
       end
 
-      # @todo: Is there a Parameter Object that makes more sense?
+      # @todo Refactor places that use #find_works_for to leverage #find_works_via_search
       def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work, page: nil)
         scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
           user: user, proxy_for_type: proxy_for_type, filter: { processing_state: processing_state }
@@ -36,12 +36,19 @@ module Sipity
       end
 
       def find_works_via_search(criteria:, repository: self)
-        scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-          user: criteria.user, proxy_for_type: Models::Work, filter: { processing_state: criteria.processing_state },
-          order: criteria.order, page: criteria.page, per: criteria.per
-        )
+        parameters = extract_search_paramters_from(criteria: criteria)
+        scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(**parameters)
         apply_work_area_filter_to(scope: scope, criteria: criteria)
       end
+
+      def extract_search_paramters_from(criteria:)
+        search_parameters = {
+          user: criteria.user, proxy_for_type: Models::Work, filter: { processing_state: criteria.processing_state }, order: criteria.order
+        }
+        search_parameters = search_parameters.merge(page: criteria.page, per: criteria.per) if criteria.page
+        search_parameters
+      end
+      private :extract_search_paramters_from
 
       def apply_work_area_filter_to(scope:, criteria:)
         return scope unless criteria.work_area
