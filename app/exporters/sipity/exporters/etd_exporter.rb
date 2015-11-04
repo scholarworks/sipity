@@ -6,8 +6,8 @@ module Sipity
     class EtdExporter
       ROF_FILE_PREFIX = 'metadata-'.freeze
       ROF_FILE_EXTN = '.rof'.freeze
-      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_mnt_path) + "../../data/sipity"
-      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_mnt_path}/queue"
+      MNT_DATA_PATH = File.join(Figaro.env.curate_batch_data_mount_path, "../../data/sipity")
+      MNT_QUEUE_PATH = File.join(Figaro.env.curate_batch_data_mount_path, 'queue')
       ETD_ATTRIBUTES = {
         creator: "dc:creator",
         title: "dc:title",
@@ -54,10 +54,10 @@ module Sipity
 
       def export_to_json
         json_array = []
-        json_array << Mappers::EtdMapper.call(work, attribute_map: ETD_ATTRIBUTES)
+        json_array << Mappers::EtdMapper.call(work, attribute_map: ETD_ATTRIBUTES, mount_data_path: MNT_DATA_PATH)
         # build attachment json
         attachments.each do |file|
-          json_array << Mappers::GenericFileMapper.call(file, attribute_map: ETD_ATTRIBUTES)
+          json_array << Mappers::GenericFileMapper.call(file, attribute_map: ETD_ATTRIBUTES, mount_data_path: MNT_DATA_PATH)
         end
         json_array
       end

@@ -15,8 +15,8 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
-      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_mnt_path) + "../../data/sipity"
-      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_mnt_path!}/queue"
+      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_data_mount_path) + "../../data/sipity"
+      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_data_mount_path!}/queue"
       # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
