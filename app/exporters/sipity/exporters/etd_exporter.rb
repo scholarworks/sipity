@@ -6,8 +6,8 @@ module Sipity
     class EtdExporter
       ROF_FILE_PREFIX = 'metadata-'.freeze
       ROF_FILE_EXTN = '.rof'.freeze
-      MNT_DATA_PATH = File.join(Figaro.env.curate_batch_data_mount_path, "../../data/sipity")
-      MNT_QUEUE_PATH = File.join(Figaro.env.curate_batch_data_mount_path, 'queue')
+      MNT_DATA_PATH = Figaro.env.curate_batch_data_mount_path!
+      MNT_QUEUE_PATH = Figaro.env.curate_batch_queue_mount_path!
       ETD_ATTRIBUTES = {
         creator: "dc:creator",
         title: "dc:title",
@@ -82,7 +82,7 @@ module Sipity
       end
 
       def curate_data_directory
-        "#{MNT_DATA_PATH}/sipity-#{work.id}"
+        File.join(MNT_DATA_PATH, "/sipity-#{work.id}")
       end
 
       def create_directory(directory)

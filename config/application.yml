@@ -34,6 +34,7 @@ development:
   curate_batch_user_pid: "batch_user_pid"
   curate_batch_group_pid: "batch_group_pid"
   curate_batch_data_mount_path: "local/data"
+  curate_batch_queue_mount_path: "local/queue"
 
 test:
   domain_name: "localhost:3000"
@@ -41,4 +42,5 @@ test:
   secret_key_base: 'bd6953190e19dabc215af75a5c856f584dca49a3ab729696946a80ec50f46094d4643d908b88b07011f898f5c6748f2ffa832c96bae409e5462f2cf3055f1ee7'
   curate_batch_user_pid: "batch_user_pid"
   curate_batch_group_pid: "batch_group_pid"
-  curate_batch_data_mount_path: "tmp"
+  curate_batch_data_mount_path: "tmp/data"
+  curate_batch_queue_mount_path: "tmp/queue"
