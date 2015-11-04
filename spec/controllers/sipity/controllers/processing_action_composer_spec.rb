@@ -20,6 +20,16 @@ module Sipity
           )
         end
 
+        context 'with default build options' do
+          subject do
+            described_class.build_for_command_line(
+              response_handler_container: response_handler_container, runner: runner, context: command_line_context,
+              processing_action_name: processing_action_name
+            )
+          end
+          its(:response_handler) { should respond_to(:call) }
+        end
+
         it { should_not respond_to(:prepend_processing_action_view_path_with) }
 
         it 'will expose #run_and_respond_with_processing_action' do
@@ -51,6 +61,11 @@ module Sipity
 
         its(:processing_action_name) { should eq(processing_action_name) }
         it { should respond_to(:processing_action_name) }
+
+        context 'with default build options' do
+          subject { described_class.build_for_controller(controller: controller, processing_action_name: 'york') }
+          its(:response_handler) { should respond_to(:call) }
+        end
 
         it 'will allow a specific processing action name to be provided' do
           subject = described_class.build_for_controller(

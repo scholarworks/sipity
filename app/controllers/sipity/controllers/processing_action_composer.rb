@@ -17,10 +17,9 @@ module Sipity
         run_and_respond = new(
           context: controller,
           runner: controller.method(:run),
-          response_handler: Sipity::ResponseHandlers.method(:handle_controller_response),
+          response_handler: keywords.fetch(:response_handler) { Sipity::ResponseHandlers.method(:handle_controller_response) },
           response_handler_container: controller.response_handler_container,
-          processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } },
-          **keywords
+          processing_action_name: keywords.fetch(:processing_action_name) { -> { controller.params.fetch(:processing_action_name) } }
         )
         # Because command line applications may not have these same concerns.
         ProcessingActionViewPathDelegator.new(controller: controller, decorated_object: run_and_respond)
@@ -32,8 +31,7 @@ module Sipity
           context: context,
           runner: runner,
           response_handler_container: response_handler_container,
-          response_handler: Sipity::ResponseHandlers.method(:handle_command_line_response),
-          **keywords
+          response_handler: keywords.fetch(:response_handler) { Sipity::ResponseHandlers.method(:handle_command_line_response) }
         )
       end
 
