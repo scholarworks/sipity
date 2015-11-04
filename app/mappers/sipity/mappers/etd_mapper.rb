@@ -41,10 +41,11 @@ module Sipity
         new(work, **keywords).call
       end
 
-      def initialize(work, repository: default_repository, attribute_map: default_attribute_map)
+      def initialize(work, mount_data_path: default_mount_data_path, repository: default_repository, attribute_map: default_attribute_map)
         self.work = work
         self.repository = repository
         self.attribute_map = attribute_map
+        self.mount_data_path = mount_data_path
       end
 
       def call
@@ -53,7 +54,7 @@ module Sipity
 
       private
 
-      attr_accessor :work, :repository, :attribute_map
+      attr_accessor :work, :repository, :attribute_map, :mount_data_path
 
       def build_json
         Jbuilder.encode do |json|
@@ -173,6 +174,11 @@ module Sipity
       def default_attribute_map
         require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::ETD_ATTRIBUTES)
         Exporters::EtdExporter::ETD_ATTRIBUTES
+      end
+
+      def default_mount_data_path
+        require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::MNT_DATA_PATH)
+        Exporters::EtdExporter::MNT_DATA_PATH
       end
 
       def default_repository

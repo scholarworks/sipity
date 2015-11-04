@@ -15,8 +15,6 @@ module Sipity
       CONTEXT_KEY = '@context'.freeze
       AF_MODEL_KEY = 'af-model'.freeze
       DESC_METADATA_KEY = 'metadata'.freeze
-      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_data_mount_path) + "../../data/sipity"
-      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_data_mount_path!}/queue"
       # Properties keys
       PROPERTIES_METADATA_KEY = 'properties-meta'.freeze
       PROPERTIES_KEY = 'properties'.freeze
@@ -41,11 +39,12 @@ module Sipity
         new(attachment, **keywords).call
       end
 
-      def initialize(attachment, repository: default_repository, attribute_map: default_attribute_map)
+      def initialize(attachment, repository: default_repository, attribute_map: default_attribute_map, mount_data_path: default_mount_data_path)
         self.file = attachment
         self.repository = repository
         self.work = attachment.work
         self.attribute_map = attribute_map
+        self.mount_data_path = mount_data_path
       end
 
       def call
@@ -54,7 +53,7 @@ module Sipity
 
       private
 
-      attr_accessor :file, :repository, :work, :attribute_map
+      attr_accessor :file, :repository, :work, :attribute_map, :mount_data_path
 
       def build_json
         Jbuilder.encode do |json|
@@ -150,7 +149,7 @@ module Sipity
       end
 
       def curate_data_directory
-        "#{MNT_DATA_PATH}/sipity-#{work.id}"
+        File.join(mount_data_path, "sipity-#{work.id}")
       end
 
       def create_directory(directory)
@@ -206,6 +205,11 @@ module Sipity
       def default_attribute_map
         require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::ETD_ATTRIBUTES)
         Exporters::EtdExporter::ETD_ATTRIBUTES
+      end
+
+      def default_mount_data_path
+        require 'sipity/exporters/etd_exporter' unless defined?(Exporters::EtdExporter::MNT_DATA_PATH)
+        Exporters::EtdExporter::MNT_DATA_PATH
       end
     end
   end

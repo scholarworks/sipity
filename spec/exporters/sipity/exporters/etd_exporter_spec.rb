@@ -25,9 +25,9 @@ module Sipity
       context 'export_to_json' do
         it 'will create ROF JSON for given work' do
           expect(repository).to receive(:work_attachments).with(work: work).and_return([file])
-          expect(Mappers::EtdMapper).to receive(:call).with(work, attribute_map: kind_of(Hash)).
+          expect(Mappers::EtdMapper).to receive(:call).with(work, attribute_map: kind_of(Hash), mount_data_path: kind_of(String)).
             and_return("etd_to_json")
-          expect(Mappers::GenericFileMapper).to receive(:call).with(file, attribute_map: kind_of(Hash)).
+          expect(Mappers::GenericFileMapper).to receive(:call).with(file, attribute_map: kind_of(Hash), mount_data_path: kind_of(String)).
             and_return("attachment_to_json")
           expect(subject.export_to_json).to eq(json_array)
         end

@@ -18,6 +18,7 @@ module Sipity
 
       its(:default_repository) { should respond_to :work_attribute_key_value_pairs }
       its(:default_attribute_map) { should be_a(Hash) }
+      its(:default_mount_data_path) { should be_a(String) }
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))

@@ -26,6 +26,7 @@ module Sipity
 
       its(:default_repository) { should respond_to :attachment_access_right }
       its(:default_attribute_map) { should be_a(Hash) }
+      its(:default_mount_data_path) { should be_a(String) }
 
       before do
         allow(file).to receive_message_chain("file.to_file") { sample_file }
