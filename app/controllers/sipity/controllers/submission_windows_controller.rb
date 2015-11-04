@@ -26,7 +26,7 @@ module Sipity
 
       def initialize(*args, &block)
         super(*args, &block)
-        self.processing_action_composer = ProcessingActionComposer.new(controller: self)
+        self.processing_action_composer = ProcessingActionComposer.build_for_controller(controller: self)
       end
 
       delegate(

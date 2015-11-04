@@ -3,6 +3,8 @@ require 'power_converter'
 module Sipity
   module ResponseHandlers
     # This is an Experimental module and concept
+    #
+    # @todo should this module be moved into the Runner's namespace? It would give a closer proximity to the code that was being leveraged.
     module SubmissionWindowHandler
       # Success! Huzzah
       module SuccessResponder

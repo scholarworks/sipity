@@ -18,5 +18,6 @@ module Sipity
     include Queries::SubmissionWindowQueries
     include Queries::WorkAreaQueries
     include Queries::WorkQueries
+    include Queries::AdministrativeScheduledActionQueries
   end
 end

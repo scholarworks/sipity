@@ -25,12 +25,20 @@ module Sipity
     def apply_access_policies_to(work:, user:, access_policies:)
     end
 
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def apply_work_area_filter_to(scope:, criteria:)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def assign_collaborators_to(work:, collaborators:, repository: self)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def attach_files_to(work:, files:, predicate_name: 'attachment', **keywords)
+    end
+
+    # @see ./app/repositories/sipity/queries/attachment_queries.rb
+    def attachment_access_right(attachment:)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
@@ -69,6 +77,10 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/commands/administrative_scheduled_action_commands.rb
+    def create_scheduled_action(work:, scheduled_time:, reason:)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def create_work!(submission_window:, **attributes)
     end
@@ -103,6 +115,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/processing_commands.rb
     def existing_registered_state_changing_actions_for(entity:, strategy_state:)
+    end
+
+    # @see ./app/repositories/sipity/queries/work_queries.rb
+    def extract_search_paramters_from(criteria:)
     end
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
@@ -214,11 +230,15 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
-    def remove_files_from(work:, user:, pids:)
+    def remove_files_from(work:, user:, pids:, predicate_name: 'attachment')
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def representative_attachment_for(work:)
+    end
+
+    # @see ./app/repositories/sipity/queries/administrative_scheduled_action_queries.rb
+    def scheduled_time_from_work(work:, reason:)
     end
 
     # @see ./app/repositories/sipity/queries/agent_queries.rb

@@ -1,4 +1,3 @@
-require 'optparse'
 module Sipity
   # :nodoc:
   module Exporters
@@ -7,8 +6,8 @@ module Sipity
     class EtdExporter
       ROF_FILE_PREFIX = 'metadata-'.freeze
       ROF_FILE_EXTN = '.rof'.freeze
-      MNT_DATA_PATH = Pathname(Figaro.env.curate_batch_mnt_path) + "../../data/sipity"
-      MNT_QUEUE_PATH = "#{Figaro.env.curate_batch_mnt_path}/queue"
+      MNT_DATA_PATH = Figaro.env.curate_batch_data_mount_path!
+      MNT_QUEUE_PATH = Figaro.env.curate_batch_queue_mount_path!
       ETD_ATTRIBUTES = {
         creator: "dc:creator",
         title: "dc:title",
@@ -36,11 +35,7 @@ module Sipity
         degree_name: "ms:name",
         program_name: "ms:discipline",
         degree_level: "ms:level"
-      }
-
-      def self.etd_attributes
-        ETD_ATTRIBUTES
-      end
+      }.freeze
 
       def self.call(work)
         new(work).call
@@ -53,22 +48,16 @@ module Sipity
       end
 
       def call
-        # Create rof etd file to be ingested
-        create_directory(curate_data_directory)
-        file_name = ROF_FILE_PREFIX + work.id + ROF_FILE_EXTN
-        metadata_file = File.join(curate_data_directory, file_name)
-        File.open(metadata_file, 'w+') do |rof_file|
-          rof_file.puts '[' + export_to_json.join(',') + ']'
-        end
+        package_data
         move_files_to_curate_batch_queue
       end
 
       def export_to_json
         json_array = []
-        json_array << Mappers::EtdMapper.call(work)
+        json_array << Mappers::EtdMapper.call(work, attribute_map: ETD_ATTRIBUTES, mount_data_path: MNT_DATA_PATH)
         # build attachment json
         attachments.each do |file|
-          json_array << Mappers::GenericFileMapper.call(file)
+          json_array << Mappers::GenericFileMapper.call(file, attribute_map: ETD_ATTRIBUTES, mount_data_path: MNT_DATA_PATH)
         end
         json_array
       end
@@ -77,12 +66,23 @@ module Sipity
 
       attr_accessor :repository, :work, :attachments
 
+      def package_data
+        # Create rof etd file to be ingested
+        create_directory(curate_data_directory)
+        file_name = ROF_FILE_PREFIX + work.id + ROF_FILE_EXTN
+        metadata_file = File.join(curate_data_directory, file_name)
+        File.open(metadata_file, 'w+') do |rof_file|
+          rof_file.puts '[' + export_to_json.join(',') + ']'
+        end
+      end
+
       def move_files_to_curate_batch_queue
-        FileUtils.mv(curate_data_directory, MNT_QUEUE_PATH, verbose: true)
+        create_directory(MNT_QUEUE_PATH)
+        FileUtils.mv(curate_data_directory, File.join(MNT_QUEUE_PATH, '/'), verbose: true)
       end
 
       def curate_data_directory
-        "#{MNT_DATA_PATH}/sipity-#{work.id}"
+        File.join(MNT_DATA_PATH, "/sipity-#{work.id}")
       end
 
       def create_directory(directory)

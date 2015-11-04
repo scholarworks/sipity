@@ -30,23 +30,9 @@ module Sipity
           it { should respond_to :files }
           it { should_not be_persisted }
 
-          it 'will require a citation_style' do
-            subject.valid?
-            expect(subject.errors[:citation_style]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
 
-          it 'will require a non-blank citation_stype' do
-            subject = described_class.new(keywords.merge(attributes: { citation_style: '' }))
-            subject.valid?
-            expect(subject.errors[:citation_style]).to be_present
-          end
-
-          it 'will require a non-blank citation_style' do
-            subject = described_class.new(keywords.merge(attributes: { citation_style: 'chocolate' }))
-            subject.valid?
-            expect(subject.errors[:citation_style]).to_not be_present
-          end
-
+          it { should validate_presence_of(:citation_style) }
           it 'will have #available_resouce_consulted' do
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
               and_return(['some value', 'bogus'])
@@ -82,16 +68,8 @@ module Sipity
             end
 
             it 'will delete any attachments marked for deletion' do
-              expect(repository).to receive(:remove_files_from).with(work: work, user: user, pids: ["i8tnddObffbIfNgylX7zSA=="])
-              subject.submit
-            end
-
-            it 'will amend any attachment metadata' do
-              expect(repository).to receive(:amend_files_metadata).with(
-                work: work, user: user, metadata: {
-                  "y5Fm8YK9-ekjEwUMKeeutw==" => { "name" => "hotel.pdf" },
-                  "64Y9v5yGshHFgE6fS4FRew==" => { "name" => "code4lib.pdf" }
-                }
+              expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(
+                requested_by: subject.send(:requested_by), predicate_name: 'research_process_attachment'
               )
               subject.submit
             end

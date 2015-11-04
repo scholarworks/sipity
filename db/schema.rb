@@ -142,6 +142,16 @@ ActiveRecord::Schema.define(version: 20151002183227) do
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
 
+  create_table "sipity_models_processing_administrative_scheduled_actions", force: :cascade do |t|
+    t.datetime "scheduled_time",             null: false
+    t.string   "reason",         limit: 255, null: false
+    t.string   "entity_id",      limit: 255, null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  add_index "sipity_models_processing_administrative_scheduled_actions", ["entity_id", "reason"], name: "idx_sipity_scheduled_actions_entity_id_reason", using: :btree
+
   create_table "sipity_notification_email_recipients", force: :cascade do |t|
     t.integer  "email_id",           limit: 4,   null: false
     t.integer  "role_id",            limit: 4,   null: false

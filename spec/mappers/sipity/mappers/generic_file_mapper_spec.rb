@@ -4,7 +4,7 @@ require 'sipity/mappers/generic_file_mapper'
 module Sipity
   module Mappers
     RSpec.describe GenericFileMapper do
-      let(:access_right) { 'private_access' }
+      let(:access_right) { double(access_right_code: 'private_access') }
       let(:work) { double(id: 'work_id') }
       let(:file) do
         double(work: work,
@@ -24,7 +24,9 @@ module Sipity
 
       subject { described_class.new(file, repository: repository) }
 
-      its(:default_repository) { should respond_to :attachment_access_right_code }
+      its(:default_repository) { should respond_to :attachment_access_right }
+      its(:default_attribute_map) { should be_a(Hash) }
+      its(:default_mount_data_path) { should be_a(String) }
 
       before do
         allow(file).to receive_message_chain("file.to_file") { sample_file }
@@ -38,8 +40,7 @@ module Sipity
 
       it 'verify if maps additional attributes, right and pid' do
         expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-        allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
-        expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
+        allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
         expected_json = JSON.parse(subject.call)
         expect(expected_json["pid"]).to eq("und:a_pid")
@@ -53,8 +54,7 @@ module Sipity
         expect(file).to receive(:created_at).and_return(nil)
         expect(file).to receive(:updated_at).and_return(nil)
         expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-        expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
-        expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
+        allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
         expected_json = JSON.parse(subject.call)
         expect(expected_json["metadata"]["dc:dateSubmitted"]).to eq(nil)
@@ -63,8 +63,7 @@ module Sipity
 
       it 'verify rels-ext attributes' do
         expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-        allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
-        expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
+        allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
         expected_json = JSON.parse(subject.call)
         expect(expected_json["rels-ext"]["@context"]).to eq("hydramata-rel" => "http://projecthydra.org/ns/relations#")
@@ -75,8 +74,7 @@ module Sipity
 
       it 'verify content datastream attributes' do
         expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-        allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
-        expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
+        allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
         expect(subject).to receive(:file_name_to_create).and_return(File.basename __FILE__)
         expected_json = JSON.parse(subject.call)
@@ -86,27 +84,27 @@ module Sipity
 
       context 'will have be able to map correct access_right' do
         it 'have public access rights' do
-          access_right = 'open_access'
+          access_right = double(access_right_code: 'open_access')
           expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-          expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(access_right)
+          allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
           expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
         end
 
         it 'have work access_right when file have no access rights ' do
+          access_right = double(access_right_code: 'open_access')
           expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-          expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return([])
-          expect(repository).to receive(:work_access_right_code).with(work: work).and_return('open_access')
+          allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
           expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
         end
 
         it 'will use attachment access_right when available' do
+          access_right = double(access_right_code: 'restricted_access')
           expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-          expect(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return("restricted_access")
-          allow(repository).to receive(:work_access_right_code).and_return("open_access")
+          allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
           expect(expected_json["rights"]).to eq("read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user])
@@ -114,35 +112,21 @@ module Sipity
 
         context 'will add embargo date to rights metadata' do
           let(:embargo_date) { "2022-12-01" }
-          it 'return embargo date from attachment' do
-            access_right = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
-                                                   release_date: Time.zone.today, transition_date: embargo_date)
-            expect(work).to receive(:id).and_return('a_id')
-            expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-            allow(repository).to receive(:attachment_access_right_code).with(attachment: file).
-              and_return(access_right.access_right_code)
-            expect(file).to receive(:access_right).and_return(access_right)
-            expected_json = JSON.parse(subject.call)
-            expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
-                                                  "read" => ['Hello'], "edit" => [batch_user])
+          let(:access_right) do
+            Models::AccessRight.new(
+              access_right_code: 'embargo_then_open_access', release_date: Time.zone.today, transition_date: embargo_date
+            )
           end
-
           it 'return embargo date from work when attachment access right is empty' do
-            access_right = Models::AccessRight.new(access_right_code: 'embargo_then_open_access',
-                                                   release_date: Time.zone.today, transition_date: embargo_date)
             expect(work).to receive(:id).and_return('a_id')
             expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
-            allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
-            expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right.access_right_code)
-            expect(work).to receive(:access_right).and_return(access_right)
+            allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
                                                   "read" => ['Hello'], "edit" => [batch_user])
           end
           it 'have public access rights with embargo date' do
-            access_right = 'embargo_then_open_access'
-            allow(repository).to receive(:attachment_access_right_code).with(attachment: file).and_return(nil)
-            expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
+            allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
             expect(subject).to receive(:embargo_date).and_return([embargo_date])
             expect(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
             expect(work).to receive(:id).and_return('a_id')

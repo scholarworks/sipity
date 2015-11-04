@@ -37,7 +37,7 @@
       <legend class="panel-heading">
         <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
       </legend>
-      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_uupload.title_html"), class: 'panel-hint' %>
+      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
       <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">

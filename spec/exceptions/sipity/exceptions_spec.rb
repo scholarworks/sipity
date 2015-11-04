@@ -4,6 +4,11 @@ require 'sipity/exceptions'
 
 module Sipity
   module Exceptions
+    RSpec.describe ResponseHandlerError do
+      subject { described_class.new(object: double, errors: [], status: :failure) }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe ExistingMethodsAlreadyDefined do
       subject { described_class.new('hello', [:ab, :cd]) }
       its(:message) { should be_a(String) }

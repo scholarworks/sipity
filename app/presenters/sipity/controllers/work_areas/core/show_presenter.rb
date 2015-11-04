@@ -25,10 +25,7 @@ module Sipity
           end
 
           def works
-            @works ||= begin
-              initialize_search_criteria!
-              repository.find_works_via_search(criteria: search_criteria)
-            end
+            @works ||= repository.find_works_via_search(criteria: search_criteria)
           end
 
           def paginate_works
@@ -52,17 +49,15 @@ module Sipity
             self.start_a_submission_action = convert_to_processing_action(ACTION_NAME_THAT_IS_HARD_CODED, scope: submission_window)
           end
 
-          def initialize_search_criteria!
-            @search_criteria = Parameters::SearchCriteriaForWorksParameter.new(
-              user: current_user,
-              processing_state: work_area.processing_state,
-              page: work_area.page,
-              order: work_area.order,
-              repository: repository
-            )
+          def search_criteria
+            @search_criteria ||= begin
+              Parameters::SearchCriteriaForWorksParameter.new(
+                user: current_user, processing_state: work_area.processing_state, page: work_area.page, order: work_area.order,
+                repository: repository, work_area: work_area
+              )
+            end
           end
 
-          attr_reader :search_criteria
           attr_accessor :submission_window, :start_a_submission_action
 
           # Responsible for rendering the form for filtering out the various

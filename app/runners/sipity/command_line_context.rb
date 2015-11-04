@@ -1,5 +1,3 @@
-require 'user'
-
 module Sipity
   # Responsible for being a valid context for running a Sipity::Runner
   #
@@ -9,7 +7,7 @@ module Sipity
   #   runner = Sipity::Runners::WorkSubmissionsRunner.new(context)
   #   runner.run(work_id: 123)
   #
-  # @param username [String]
+  # @param requested_by [#to_processing_actor]
   # @param repository_strategy [#to_s] :query and :command are the two likely repositories
   #
   # @see Sipity::Runners
@@ -23,6 +21,17 @@ module Sipity
     alias_method :current_user, :requested_by
 
     private
+
+    IS_A_AUTHENTICATE_METHOD_REGEXP = /\Aauthenticate_(.*)!\Z/.freeze
+
+    def method_missing(method_name, *args, &block)
+      return current_user.present? if method_name =~ IS_A_AUTHENTICATE_METHOD_REGEXP
+      super
+    end
+
+    def respond_to_missing?(method_name, *args)
+      method_name =~ IS_A_AUTHENTICATE_METHOD_REGEXP || super
+    end
 
     # @todo When Cogitate is deployed switch from ConvertToProcessingActor
     def requested_by=(input)

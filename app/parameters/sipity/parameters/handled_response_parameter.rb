@@ -1,5 +1,7 @@
 require 'power_converter'
 require 'sipity/exceptions'
+require 'sipity/guard_interface_expectation'
+require 'forwardable'
 
 module Sipity
   module Parameters
@@ -17,6 +19,13 @@ module Sipity
       #   analogue, this is the instance variable that we will send to the view.
       #   @return [Object]
       attr_reader :object
+
+      extend Forwardable
+      # @!attribute [r] errors
+      #   Any errors associated with the handled response
+      #   @return [Enumerable]
+      def_delegator :object, :errors
+
       #
       # @!attribute [r] status
       #   A symbolic response from the runner. It is the response handler's job
@@ -55,7 +64,10 @@ module Sipity
         @status = input
       end
 
+      include Sipity::GuardInterfaceExpectation
       def object=(input)
+        # TODO: Refactor to include Contracts gem
+        guard_interface_expectation!(input, :errors)
         @work_area = PowerConverter.convert_to_work_area(input)
         @object = input
       end
