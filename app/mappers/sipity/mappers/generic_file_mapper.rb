@@ -39,12 +39,10 @@ module Sipity
         new(attachment, **keywords).call
       end
 
-      def initialize(attachment, repository: default_repository, attribute_map: default_attribute_map, mount_data_path: default_mount_data_path)
+      def initialize(attachment, **keywords)
         self.file = attachment
-        self.repository = repository
         self.work = attachment.work
-        self.attribute_map = attribute_map
-        self.mount_data_path = mount_data_path
+        extract_keywords(**keywords)
       end
 
       def call
@@ -52,6 +50,12 @@ module Sipity
       end
 
       private
+
+      def extract_keywords(repository: default_repository, attribute_map: default_attribute_map, mount_data_path: default_mount_data_path)
+        self.repository = repository
+        self.attribute_map = attribute_map
+        self.mount_data_path = mount_data_path
+      end
 
       attr_accessor :file, :repository, :work, :attribute_map, :mount_data_path
 
