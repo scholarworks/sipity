@@ -9,7 +9,7 @@ module Sipity
       #
       # @note Run the Bulk Ingest Job from development; As with all how to documentation, your mileage may vary
       #   1. Mount the curatend-batch directory (smb://library.corpfs.nd.edu/DCNS/Library/Departmental/curatend-batch)
-      #      * In OS X, go to Finder, Connect to Server… [Cmd+K] and paste the above URL
+      #      * In OS X, go to Finder, Connect to Server... [Cmd+K] and paste the above URL
       #   2. Update the ./config/application.yml entries for :curate_batch_data_mount_path and :curate_batch_queue_mount_path.
       #      The following is the examples for the libvirt6 environment.
       #
