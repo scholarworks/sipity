@@ -65,29 +65,20 @@ module Sipity
                 )
               end
 
-              etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
-              cataloger = etd_strategy_roles.fetch('cataloger')
-              batch_ingestor = etd_strategy_roles.fetch('batch_ingestor')
-
-              gs_actor = Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: GRADUATE_SCHOOL_REVIEWERS))
-              find_or_initialize_or_create!(
-                context: etd_reviewer,
-                receiver: etd_reviewer.strategy_responsibilities,
-                actor: gs_actor,
-                identifier_id: PowerConverter.convert(gs_actor, to: :identifier_id)
-              )
-
-              find_or_initialize_or_create!(
-                context: cataloger,
-                receiver: cataloger.strategy_responsibilities,
-                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: CATALOGERS))
-              )
-
-              find_or_initialize_or_create!(
-                context: batch_ingestor,
-                receiver: batch_ingestor.strategy_responsibilities,
-                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: ETD_INGESTORS))
-              )
+              {
+                'etd_reviewer' => GRADUATE_SCHOOL_REVIEWERS,
+                'cataloger' => CATALOGERS,
+                'batch_ingestor' => ETD_INGESTORS
+              }.each do |role_name, group_name|
+                strategy_role = etd_strategy_roles.fetch(role_name)
+                actor = Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: group_name))
+                find_or_initialize_or_create!(
+                  context: strategy_role,
+                  receiver: strategy_role.strategy_responsibilities,
+                  actor: actor,
+                  identifier_id: PowerConverter.convert(actor, to: :identifier_id)
+                )
+              end
 
               etd_states = {}
               [
