@@ -3,6 +3,8 @@ module Sipity
   # That means we are only passing primatives to the Jobs and it is
   # the Jobs responsibility to reify the correct objects.
   #
+  # @note As a matter of procedure, the steps for testing the various jobs against live data can be found in each of the jobs.
+  #
   # @see https://github.com/resque/resque Resque gem
   module Jobs
     # Herein lies the inflection point. If you want to run things
