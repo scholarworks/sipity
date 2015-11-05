@@ -1,3 +1,5 @@
+require 'hesburgh/lib/html_scrubber'
+
 module Sipity
   module Models
     # A rudimentary container for all (as of now string based) attributes
@@ -72,6 +74,13 @@ module Sipity
           OCLC_NUMBER => OCLC_NUMBER
         }
       )
+
+      # The predicate definitions are nearby, so that is why I'm providing the
+      # lookup container.
+      def self.scrubber_for(predicate_name:, container: Hesburgh::Lib::HtmlScrubber)
+        return container.build_inline_scrubber if predicate_name.to_s =~ /title\Z/
+        container.build_block_scrubber
+      end
     end
   end
 end
