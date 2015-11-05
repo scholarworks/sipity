@@ -227,6 +227,9 @@ en:
     models/work:
       title:
         label: 'Title'
+  sipity/account_profiles:
+    action/update:
+      update_account_profile: "Your account profile has been updated."
   sipity/decorators/resourceful_actions:
     label:
       show: 'Show'
