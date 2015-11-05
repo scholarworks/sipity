@@ -332,7 +332,7 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    listen (3.0.3)
+    listen (3.0.4)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
     loofah (2.0.3)
