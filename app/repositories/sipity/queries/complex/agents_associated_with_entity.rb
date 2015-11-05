@@ -75,8 +75,6 @@ module Sipity
             entity_specific_select_manager = strategy_role_projection_for(
               entity: entity, arel_table: entity_responsibilities, role: role,
               permission_grant_level: Models::Processing::Actor::ENTITY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
-            ).join(entity_responsibilities).on(
-              entity_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
             ).where(
               entity_responsibilities[:entity_id].eq(entity.id)
             )
@@ -84,8 +82,6 @@ module Sipity
             strategy_specific_select_manager = strategy_role_projection_for(
               entity: entity, arel_table: strategy_responsibilities, role: role,
               permission_grant_level: Models::Processing::Actor::STRATEGY_LEVEL_ACTOR_PROCESSING_RELATIONSHIP
-            ).join(strategy_responsibilities).on(
-              strategy_responsibilities[:strategy_role_id].eq(strategy_roles[:id])
             ).where(
               strategy_roles[:strategy_id].eq(entity.strategy_id)
             )
@@ -111,6 +107,8 @@ module Sipity
               Arel.sql("'#{permission_grant_level}'").as('permission_grant_level')
             ).join(roles).on(
               strategy_roles[:role_id].eq(roles[:id])
+            ).join(arel_table).on(
+              arel_table[:strategy_role_id].eq(strategy_roles[:id])
             )
             return select_manager if role.nil?
             role = Conversions::ConvertToRole.call(role)
