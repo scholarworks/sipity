@@ -7,6 +7,8 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
     it { should respond_to(:call) }
     {
       nil => '',
+      ' ' => '',
+      %( <p>Hello</p> ) => %(Hello),
       %(<p>Hello</p>) => %(Hello),
       %(Hello) => %(Hello),
       %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
@@ -23,6 +25,8 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
       subject { described_class.build_inline_scrubber(tags: :fallback) }
       {
         nil => '',
+        ' ' => '',
+        %( <p>Hello</p> ) => %(<p>Hello</p>),
         %(<p>Hello</p>) => %(<p>Hello</p>),
         %(Hello) => %(Hello),
         %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
@@ -40,6 +44,8 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
       subject { described_class.build_inline_scrubber(attributes: :fallback) }
       {
         nil => '',
+        ' ' => '',
+        %( <p>Hello</p> ) => %(Hello),
         %(<p>Hello</p>) => %(Hello),
         %(Hello) => %(Hello),
         %(<script><i>Hello</i></script>) => %(),
@@ -58,6 +64,8 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
     it { should respond_to(:call) }
     {
       nil => '',
+      ' ' => '',
+      %( <p>Hello</p> ) => %(<p>Hello</p>),
       %(<p>Hello</p>) => %(<p>Hello</p>),
       %(Hello) => %(Hello),
       %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
@@ -76,6 +84,8 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
     it { should respond_to(:call) }
     {
       nil => '',
+      ' ' => '',
+      %( <p>Hello</p> ) => %(Hello),
       %(<p>Hello</p>) => %(Hello),
       %(Hello) => %(Hello),
       %(<i>Hello<script><i>World</i></script></i>) => %(Hello),

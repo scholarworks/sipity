@@ -41,7 +41,7 @@ module Hesburgh
 
         # A convenience method for sanitiziation
         def sanitize(input)
-          Loofah.fragment(input).scrub!(self).to_s
+          Loofah.fragment(input).scrub!(self).to_s.strip
         end
         alias_method :call, :sanitize
 
