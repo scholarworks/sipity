@@ -13,7 +13,9 @@ module Sipity
       end
 
       def create_work_attribute_values!(work:, key:, values:)
-        Array.wrap(values).each do |value|
+        scrubber = Models::AdditionalAttribute.scrubber_for(predicate_name: key)
+        Array.wrap(values).each do |raw_value|
+          value = scrubber.sanitize(raw_value)
           Models::AdditionalAttribute.create!(work: work, key: key, value: value) if value.present?
         end
       end
