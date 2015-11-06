@@ -2,7 +2,7 @@ require 'loofah/scrubber'
 
 module Hesburgh
   module Lib
-    # Exposes a consistent means of scrubbing HTML
+    # Exposes a consistent means of scrubbing HTML.
     #
     # @see Rails `sanitize` method
     # @todo Extract to the Hesburgh::Lib gem
@@ -26,14 +26,13 @@ module Hesburgh
         AllowedTagsScrubber.new(tags: AllowedTagsScrubber::FALLBACK, attributes: ALLOWED_BLOCK_ATTRIBUTES)
       end
 
-      # place this file to app/scrubbers/ directory
-      #
-      # This scrubber is analog of :strip build-in scrubber
-      #  (http://rubydoc.info/github/flavorjones/loofah/master/Loofah/Scrubbers/Strip)
-      # with allowed @tags and @attributes lists.
-      # Fallback to default :strip behavior included.
+      # Responsible for stripping and general sanitization of HTML documents
       class AllowedTagsScrubber < Loofah::Scrubber
         FALLBACK = :fallback
+        # @param tags [Symbol, Array<String>] What are the tags we are we going to keep. Otherwise the tag (but not content) is stripped.
+        # @param attributes [Symbol, Array<String>] What are the attributes we are we going to keep? Otherwise the attribute and its value
+        #                                           are dropped.
+        # @param direction [Symbol] How are we processing the nodes; This is an assumption based on the Loofah::Scrubber
         def initialize(tags: FALLBACK, attributes: FALLBACK, direction: :bottom_up)
           self.direction = direction
           self.tags = tags
