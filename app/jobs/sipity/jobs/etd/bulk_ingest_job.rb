@@ -47,21 +47,23 @@ module Sipity
         include Conversions::ConvertToWork
         def call
           repository.find_works_via_search(criteria: search_criteria).each do |work_like|
-            work = convert_to_work(work_like)
-            begin
-              ActiveRecord::Base.transaction do
-                work_ingester.call(work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name)
-              end
-            rescue StandardError => exception
-              exception_handler.call(
-                exception: exception, work_id: work.id, processing_action_name: processing_action_name,
-                requested_by: requested_by, job_class: self.class
-              )
-            end
+            ingest(work: convert_to_work(work_like))
           end
         end
 
         private
+
+        def ingest(work:)
+          parameters = { work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name }
+          begin
+            ActiveRecord::Base.transaction { work_ingester.call(parameters) }
+          rescue StandardError => exception
+            exception_handler.call(
+              error_class: exception.class, error_message: exception.message,
+              parameters: parameters.merge(work_ingester: work_ingester, job_class: self.class)
+            )
+          end
+        end
 
         attr_reader :search_criteria
 
@@ -106,9 +108,7 @@ module Sipity
         attr_accessor :exception_handler
 
         def default_exception_handler
-          lambda do |exception:, **parameters|
-            Airbrake.notify_or_ignore(error_class: exception.class, error_message: exception.message, parameters: parameters)
-          end
+          Airbrake.method(:notify_or_ignore)
         end
 
         attr_accessor :requested_by

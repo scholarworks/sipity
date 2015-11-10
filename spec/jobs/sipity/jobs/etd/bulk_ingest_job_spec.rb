@@ -6,8 +6,11 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
   let(:work_area) { 'etd' }
   let(:repository) { Sipity::QueryRepositoryInterface.new }
   let(:work_ingester) { double('Work Ingester', call: true) }
+  let(:exception_handler) { double('Exception Handler', call: true) }
 
-  subject { described_class.new(work_area: work_area, repository: repository, work_ingester: work_ingester) }
+  subject do
+    described_class.new(work_area: work_area, repository: repository, work_ingester: work_ingester, exception_handler: exception_handler)
+  end
 
   its(:default_initial_processing_state_name) { should eq('ready_for_ingest') }
   its(:default_work_area) { should eq('etd') }
@@ -32,6 +35,27 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
       subject.call
       expect(work_ingester).to have_received(:call).with(
         work_id: work.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name)
+      )
+    end
+  end
+
+  context 'with a custom exception handler' do
+    it 'will handle exceptions through the exception handler and keep on chugging' do
+      work1 = Sipity::Models::Work.new(id: 1)
+      work2 = Sipity::Models::Work.new(id: 2)
+      allow(repository).to receive(:find_works_via_search).and_return([work1, work2])
+      expect(work_ingester).to receive(:call).with(
+        work_id: work1.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name)
+      ).and_raise(RuntimeError, "Failed for work1")
+      expect(work_ingester).to receive(:call).with(
+        work_id: work2.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name)
+      )
+      subject.call
+      expect(exception_handler).to have_received(:call).with(
+        error_class: RuntimeError, error_message: 'Failed for work1', parameters: {
+          work_id: work1.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name),
+          job_class: described_class, work_ingester: work_ingester
+        }
       )
     end
   end
