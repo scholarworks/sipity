@@ -16,6 +16,7 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
   its(:default_search_criteria_builder) { should respond_to(:call) }
   its(:default_processing_action_name) { should eq('submit_for_ingest') }
   its(:default_repository) { should respond_to(:find_works_via_search) }
+  its(:default_exception_handler) { should respond_to(:call) }
 
   before { allow(Sipity::Models::Group).to receive(:find_by!).and_return('ETD Ingestor') }
 

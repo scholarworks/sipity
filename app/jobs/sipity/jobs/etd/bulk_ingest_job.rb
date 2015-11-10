@@ -34,7 +34,7 @@ module Sipity
 
         ATTRIBUTE_NAMES = [
           :work_area, :requested_by, :repository, :initial_processing_state_name, :work_ingester, :search_criteria_builder,
-          :processing_action_name
+          :processing_action_name, :exception_handler
         ].freeze
 
         def initialize(**keywords)
@@ -48,7 +48,16 @@ module Sipity
         def call
           repository.find_works_via_search(criteria: search_criteria).each do |work_like|
             work = convert_to_work(work_like)
-            work_ingester.call(work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name)
+            begin
+              ActiveRecord::Base.transaction do
+                work_ingester.call(work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name)
+              end
+            rescue StandardError => exception
+              exception_handler.call(
+                exception: exception, work_id: work.id, processing_action_name: processing_action_name,
+                requested_by: requested_by, job_class: self.class
+              )
+            end
           end
         end
 
@@ -92,6 +101,14 @@ module Sipity
 
         def default_work_area
           'etd'
+        end
+
+        attr_accessor :exception_handler
+
+        def default_exception_handler
+          lambda do |exception:, **parameters|
+            Airbrake.notify_or_ignore(error_class: exception.class, error_message: exception.message, parameters: parameters)
+          end
         end
 
         attr_accessor :requested_by
