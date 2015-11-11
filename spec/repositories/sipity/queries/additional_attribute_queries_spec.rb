@@ -23,22 +23,4 @@ RSpec.describe Sipity::Queries::AdditionalAttributeQueries, type: :isolated_repo
         to eq(['Title is Chicken', 'Title is Egg'])
     end
   end
-  context '#work_attribute_key_value_pairs' do
-    before do
-      Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'alternate_title', value: 'Title is Chicken')
-      Sipity::Models::AdditionalAttribute.create!(work_id: another_work.id, key: 'alternate_title', value: 'Title is Soup')
-      Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'abstract', value: 'An Abstract')
-      Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'alternate_title', value: 'Title is Egg')
-    end
-
-    it 'will limit based on given keys' do
-      expect(test_repository.work_attribute_key_value_pairs(work: work, keys: 'alternate_title')).
-        to eq([["alternate_title", "Title is Chicken"], ["alternate_title", "Title is Egg"]])
-    end
-
-    it 'will return all keys if none are given' do
-      expect(test_repository.work_attribute_key_value_pairs(work: work)).
-        to eq([["abstract", "An Abstract"], ["alternate_title", "Title is Chicken"], ["alternate_title", "Title is Egg"]])
-    end
-  end
 end

@@ -16,7 +16,7 @@ module Sipity
 
       subject { described_class.new(work, repository: repository) }
 
-      its(:default_repository) { should respond_to :work_attribute_key_value_pairs }
+      its(:default_repository) { should be_a QueryRepository }
       its(:default_attribute_map) { should be_a(Hash) }
       its(:default_mount_data_path) { should be_a(String) }
 

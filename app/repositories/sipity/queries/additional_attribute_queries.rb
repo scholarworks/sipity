@@ -26,13 +26,6 @@ module Sipity
         returning_value = returning_value.first if cardinality == :one || cardinality == 1
         returning_value
       end
-
-      def work_attribute_key_value_pairs(work:, keys: [])
-        work = Conversions::ConvertToWork.call(work)
-        query = Models::AdditionalAttribute.where(work_id: work.id).order(:work_id, :key)
-        query = query.where(key: Array.wrap(keys)) if keys.present?
-        query.pluck(:key, :value)
-      end
     end
   end
 end

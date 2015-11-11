@@ -238,10 +238,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
-    def work_attribute_key_value_pairs(work:, keys: [])
-    end
-
-    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
     def work_attribute_values_for(work:, key:, cardinality: :many)
     end
 
