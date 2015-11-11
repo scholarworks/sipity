@@ -51,7 +51,7 @@ module Sipity
           end
 
           def degree_from_work
-            repository.work_attribute_values_for(work: work, key: 'degree')
+            repository.work_attribute_values_for(work: work, key: 'degree', cardinality: 1)
           end
 
           def program_name_from_work

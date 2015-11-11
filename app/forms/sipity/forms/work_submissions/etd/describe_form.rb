@@ -51,15 +51,14 @@ module Sipity
           end
 
           def abstract_from_work
-            repository.work_attribute_values_for(work: work, key: 'abstract').first
+            repository.work_attribute_values_for(work: work, key: 'abstract', cardinality: 1)
           end
 
           def alternate_title_from_work
-            repository.work_attribute_values_for(work: work, key: 'alternate_title').first
+            repository.work_attribute_values_for(work: work, key: 'alternate_title', cardinality: 1)
           end
 
           def title_from_work
-            return '' unless work
             work.title
           end
         end

@@ -11,7 +11,9 @@ module Sipity
         work = Conversions::ConvertToWork.call(work)
         scope = Models::AdditionalAttribute.where(work_id: work.id, key: key)
         scope = scope.limit(cardinality) unless cardinality == :many
-        scope.pluck(:value)
+        returning_value = scope.pluck(:value)
+        returning_value = returning_value.first if cardinality == 1 || cardinality == :one
+        returning_value
       end
 
       def work_attribute_key_value_pairs(work:, keys: [])

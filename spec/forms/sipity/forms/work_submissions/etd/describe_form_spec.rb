@@ -13,7 +13,10 @@ module Sipity
           subject { described_class.new(keywords) }
 
           before do
-            allow(repository).to receive(:work_attribute_values_for).and_return([])
+            allow(repository).to receive(:work_attribute_values_for).
+              with(work: work, key: 'abstract', cardinality: 1).and_return(nil)
+            allow(repository).to receive(:work_attribute_values_for).
+              with(work: work, key: 'alternate_title', cardinality: 1).and_return(nil)
           end
 
           its(:processing_action_name) { should eq('describe') }
@@ -24,23 +27,12 @@ module Sipity
           it { should respond_to :abstract }
           it { should respond_to :alternate_title }
 
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:title) }
+          it { should validate_presence_of(:abstract) }
+          it { should validate_presence_of(:work) }
+
           context 'validations' do
-            it 'will require a title' do
-              subject.valid?
-              expect(subject.errors[:title]).to be_present
-            end
-
-            it 'will require a abstract' do
-              subject.valid?
-              expect(subject.errors[:abstract]).to be_present
-            end
-
-            it 'will require a work' do
-              subject = described_class.new(keywords.merge(work: nil))
-              subject.valid?
-              expect(subject.errors[:work]).to_not be_empty
-            end
-
             it 'will require a requested_by' do
               expect { described_class.new(keywords.merge(requested_by: nil)) }.
                 to raise_error(Exceptions::InterfaceCollaboratorExpectationError)
@@ -48,14 +40,14 @@ module Sipity
           end
 
           context 'retrieving values from the repository' do
-            let(:abstract) { ['Hello Dolly'] }
+            let(:abstract) { 'Hello Dolly' }
             let(:title) { 'My Work title' }
             subject { described_class.new(keywords) }
             it 'will return the abstract of the work' do
               expect(repository).to receive(:work_attribute_values_for).
-                with(work: work, key: 'alternate_title').and_return("")
+                with(work: work, key: 'alternate_title', cardinality: 1).and_return("")
               expect(repository).to receive(:work_attribute_values_for).
-                with(work: work, key: 'abstract').and_return(abstract)
+                with(work: work, key: 'abstract', cardinality: 1).and_return(abstract)
               expect(subject.abstract).to eq 'Hello Dolly'
               expect(subject.alternate_title).to eq ''
             end

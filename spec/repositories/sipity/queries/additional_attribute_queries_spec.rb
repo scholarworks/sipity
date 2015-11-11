@@ -18,7 +18,9 @@ RSpec.describe Sipity::Queries::AdditionalAttributeQueries, type: :isolated_repo
     end
 
     it 'will limit based on cardinality' do
-      expect(test_repository.work_attribute_values_for(work: work, key: 'alternate_title', cardinality: 1)).to eq(['Title is Chicken'])
+      expect(test_repository.work_attribute_values_for(work: work, key: 'alternate_title', cardinality: 1)).to eq('Title is Chicken')
+      expect(test_repository.work_attribute_values_for(work: work, key: 'alternate_title', cardinality: 2)).
+        to eq(['Title is Chicken', 'Title is Egg'])
     end
   end
   context '#work_attribute_key_value_pairs' do

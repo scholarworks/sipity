@@ -64,7 +64,7 @@ module Sipity
               expect(subject.degree).to eq ['bogus', 'test']
             end
             it 'will fall back on #degree information associated with the work' do
-              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return('hello')
+              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree', cardinality: 1).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.degree).to eq(['hello'])
             end
