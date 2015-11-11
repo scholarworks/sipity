@@ -9,16 +9,12 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }
           let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: {} } }
-          let(:oclc_number) { ["123456789"] }
+          let(:oclc_number) { "123456789" }
           subject { described_class.new(keywords.merge(attributes: { agree_to_signoff: true, oclc_number: oclc_number })) }
 
-          context 'validation' do
-            it 'will require agreement to the signoff' do
-              subject = described_class.new(keywords.merge(attributes: { oclc_number: oclc_number }))
-              subject.valid?
-              expect(subject.errors[:agree_to_signoff]).to be_present
-            end
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:oclc_number) }
+          it { should validate_acceptance_of(:agree_to_signoff) }
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
@@ -38,7 +34,7 @@ module Sipity
               subject { described_class.new(keywords) }
               it 'will return the oclc_number of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'oclc_number').and_return(oclc_number)
+                  with(work: work, key: 'oclc_number', cardinality: 1).and_return(oclc_number)
                 expect(subject.oclc_number).to eq oclc_number
               end
             end
