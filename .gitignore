@@ -86,6 +86,7 @@ pickle-email-*.html
 .yardoc
 /doc
 
-.tags
+.tags*
 .tags_sorted_by_file
 .ruby-gemset
+.byebug_history
