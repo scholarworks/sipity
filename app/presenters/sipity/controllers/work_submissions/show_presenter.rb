@@ -74,6 +74,14 @@ module Sipity
           collaborators.present?
         end
 
+        def creators?
+          creators.present?
+        end
+
+        def creators
+          @creators ||= repository.scope_users_for_entity_and_roles(entity: work_submission, roles: Sipity::Models::Role::CREATING_USER)
+        end
+
         def work_type
           TranslationAssistant.call(scope: :work_types, subject: work_submission.work_type)
         end
