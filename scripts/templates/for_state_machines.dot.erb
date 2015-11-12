@@ -10,7 +10,7 @@ digraph "G" {
       label="States";
       node[shape="record" fillcolor="seashell1" penwidth=5]
       <% strategy.fetch(:states).each do |state| %>
-      state_<%= state.fetch(:name).underscore %> [label="{ STATE: <%= state.fetch(:name).titleize %> | ALLOWED_ACTIONS: | <%= state.fetch(:enrichments).map {|e| "#{e.fetch(:name).titleize}: #{e.fetch(:roles).join(', ')}" }.join(' | ') %> | EMAILS: | <%= state.fetch(:emails).map(&email_templater).join(" | ") %> }"]
+      state_<%= state.fetch(:name).underscore %> [label="{ STATE: <%= state.fetch(:name).titleize %> | TASKS: | <%= state.fetch(:enrichments).map {|e| "#{e.fetch(:name).titleize}: #{e.fetch(:roles).join(', ')}" }.join(' | ') %> | EMAILS: | <%= state.fetch(:emails).map(&email_templater).join(" | ") %> }"]
       <% end %>
     }
 
