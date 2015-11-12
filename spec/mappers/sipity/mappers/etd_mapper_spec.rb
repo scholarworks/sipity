@@ -7,7 +7,7 @@ module Sipity
       let(:access_right) { 'private_access' }
       let(:work) { double }
       let(:repository) { QueryRepositoryInterface.new }
-      let(:creators) { [double(username: 'Hello')] }
+      let(:creators) { [double(username: 'Hello', name: "Creator Name")] }
       let(:collaborators) { [double(name: 'Hello', role: 'role')] }
       let(:contributor_map) { { 'dc:contributor' => 'Hello', 'ms:role' => 'role' } }
       let(:degree_map) { { "ms:name" => ["a degree_name"], "ms:discipline" => ["a program_name"] } }
@@ -48,6 +48,7 @@ module Sipity
         expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
         expect(expected_json["metadata"]["dc:contributor"]).to eq([contributor_map])
         expect(expected_json["metadata"]["ms:degree"]).to eq(degree_map)
+        expect(expected_json["metadata"]["dc:creator"]).to eq(creators.map(&:name))
       end
 
       context 'will have be able to map correct access_right' do

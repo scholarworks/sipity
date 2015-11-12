@@ -86,6 +86,7 @@ module Sipity
         metadata['title'] = work.title
         metadata['contributor'] = collaborators_name_and_title
         metadata['degree'] = degree_info
+        metadata['creator'] = creators.map(&:name)
         metadata
       end
 
@@ -116,7 +117,11 @@ module Sipity
       end
 
       def creators
-        @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)
+        @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
+      end
+
+      def creator_usernames
+        creators.map(&:username)
       end
 
       def gather_work_metadata(json)
@@ -148,7 +153,7 @@ module Sipity
 
       def decode_access_right
         # determine and add Public, Private, Embargo and ND only rights
-        decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
+        decoded_access_rights = { READ_KEY => creator_usernames, EDIT_KEY => [BATCH_USER] }
         case access_right
         when Models::AccessRight::OPEN_ACCESS
           decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
