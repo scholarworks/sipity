@@ -67,7 +67,7 @@ module Sipity
           end
 
           def oclc_number_from_work
-            repository.work_attribute_values_for(work: work, key: 'oclc_number')
+            repository.work_attribute_values_for(work: work, key: 'oclc_number', cardinality: 1)
           end
         end
       end

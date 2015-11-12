@@ -23,7 +23,6 @@ files_to_copy="
     config/environment_bootstrapper.rb
     config/locales/site-specific.yml
     app/assets/stylesheets/theme/_default.scss
-    db/seeds/groups_and_roles_seeds.rb
     "
 
 for f in $files_to_copy; do

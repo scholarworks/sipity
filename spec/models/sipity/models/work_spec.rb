@@ -13,6 +13,11 @@ module Sipity
         its(:column_names) { should include('title') }
       end
 
+      it 'will sanitize its title' do
+        subject = Work.new(title: '<p>Hello<script>World</script></p>')
+        expect(subject.title).to eq('Hello')
+      end
+
       its(:to_s) { should eq(subject.title) }
 
       it { should respond_to :processing_strategy }

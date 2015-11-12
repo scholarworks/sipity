@@ -21,10 +21,8 @@ module Sipity
           it { should respond_to :work }
           it { should respond_to :defense_date }
 
-          it 'will require a defense_date' do
-            subject.valid?
-            expect(subject.errors[:defense_date]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:defense_date) }
 
           it 'will handle Rails defense_date that was input via Rails HTML multi-field date input' do
             form = described_class.new(
@@ -38,7 +36,7 @@ module Sipity
               subject { described_class.new(keywords) }
               it 'will return the defense_date of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'defense_date').and_return([defense_date])
+                  with(work: work, key: 'defense_date', cardinality: 1).and_return(defense_date)
                 expect(subject.defense_date).to eq defense_date
               end
             end

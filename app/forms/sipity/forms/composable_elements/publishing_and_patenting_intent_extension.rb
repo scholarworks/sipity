@@ -1,5 +1,4 @@
 require 'sipity/guard_interface_expectation'
-require 'active_support/core_ext/array/wrap'
 
 module Sipity
   module Forms
@@ -41,7 +40,7 @@ module Sipity
             end
 
             define_method "#{singular_name}_from_work" do
-              Array.wrap(repository.work_attribute_values_for(work: form.work, key: send("#{singular_name}_predicate_name"))).first
+              repository.work_attribute_values_for(work: form.work, key: send("#{singular_name}_predicate_name"), cardinality: 1)
             end
 
             define_method "persist_#{singular_name}" do

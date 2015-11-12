@@ -10,7 +10,7 @@ module Sipity
         let(:current_user) { double('Current User') }
         let(:work_submission) { Models::Work.new(id: 'hello-world') }
         let(:repository) { QueryRepositoryInterface.new }
-        subject { described_class.new(context, work_submission: work_submission) }
+        subject { described_class.new(context, work_submission: work_submission, repository: repository) }
 
         its(:default_repository) { should respond_to :find_current_comments_for }
 
@@ -114,6 +114,22 @@ module Sipity
           expect(ComposableElements::ProcessingActionsComposer).to receive(:new).
             with(user: current_user, entity: work_submission)
           subject
+        end
+
+        context '#creators?' do
+          it 'will be true if there is at least one creating user' do
+            expect(repository).to receive(:scope_users_for_entity_and_roles).with(
+              entity: work_submission, roles: Sipity::Models::Role::CREATING_USER
+            ).and_return(['Hello'])
+            expect(subject.creators?).to eq(true)
+          end
+
+          it 'will be true if there is are no creating users' do
+            expect(repository).to receive(:scope_users_for_entity_and_roles).with(
+              entity: work_submission, roles: Sipity::Models::Role::CREATING_USER
+            ).and_return([])
+            expect(subject.creators?).to eq(false)
+          end
         end
 
         it 'exposes resourceful_actions' do

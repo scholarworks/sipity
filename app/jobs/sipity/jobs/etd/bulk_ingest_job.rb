@@ -4,7 +4,29 @@ module Sipity
       # Responsible for managing the ingest of each and every work in the :work_area that is in the :initial_processing_state_name.
       #
       # As these are jobs, I believe that I want the parameters to all be primatives (i.e. a String, an Integer). This way they can
-      # be serialized without holding too much state.
+      # be serialized without holding too much state. The BulkIngestJob makes use of the [curatend-batch](https://github.com/ndlib/curatend-batch)
+      # process.
+      #
+      # @note Run the Bulk Ingest Job from development; As with all how to documentation, your mileage may vary
+      #   1. Mount the curatend-batch directory (smb://library.corpfs.nd.edu/DCNS/Library/Departmental/curatend-batch)
+      #      * In OS X, go to Finder, Connect to Server... [Cmd+K] and paste the above URL
+      #   2. Update the ./config/application.yml entries for :curate_batch_data_mount_path and :curate_batch_queue_mount_path.
+      #      The following is the examples for the libvirt6 environment.
+      #
+      #        curate_batch_data_mount_path: /Volumes/curatend-batch/data/sipity/libvirt6
+      #        curate_batch_queue_mount_path: /Volumes/curatend-batch/test/libvirt6/queue
+      #
+      #      * *Please review the directory structure of the mounted drive as that may have changed*
+      #   3. Open up a Terminal window
+      #      1. Change directory (cd) into the root of this Rails project
+      #      2. Run the following command `rails runner 'Sipity::Jobs::Etd::BulkIngestJob.call'`
+      #   4. Review the mounted queue subdirectories (i.e. `/Volumes/curatend-batch/test/libvirt6/queue`) for successes and failures
+      #
+      #   In some cases you may need to make changes to address that you don't have a copy of the attachments, see
+      #   Sipity::Models::Attachment for more information on how to do this.
+      #
+      # @see Sipity::Models::Attachment for information on faking attached files.
+      # @see https://github.com/ndlib/curatend-batch curatend-batch
       class BulkIngestJob
         def self.call(**keywords)
           new(**keywords).call
@@ -12,7 +34,7 @@ module Sipity
 
         ATTRIBUTE_NAMES = [
           :work_area, :requested_by, :repository, :initial_processing_state_name, :work_ingester, :search_criteria_builder,
-          :processing_action_name
+          :processing_action_name, :exception_handler
         ].freeze
 
         def initialize(**keywords)
@@ -25,12 +47,23 @@ module Sipity
         include Conversions::ConvertToWork
         def call
           repository.find_works_via_search(criteria: search_criteria).each do |work_like|
-            work = convert_to_work(work_like)
-            work_ingester.call(work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name)
+            ingest(work: convert_to_work(work_like))
           end
         end
 
         private
+
+        def ingest(work:)
+          parameters = { work_id: work.id, requested_by: requested_by, processing_action_name: processing_action_name }
+          begin
+            ActiveRecord::Base.transaction { work_ingester.call(parameters) }
+          rescue StandardError => exception
+            exception_handler.call(
+              error_class: exception.class, error_message: exception.message,
+              parameters: parameters.merge(work_ingester: work_ingester, job_class: self.class)
+            )
+          end
+        end
 
         attr_reader :search_criteria
 
@@ -70,6 +103,12 @@ module Sipity
 
         def default_work_area
           'etd'
+        end
+
+        attr_accessor :exception_handler
+
+        def default_exception_handler
+          Airbrake.method(:notify_or_ignore)
         end
 
         attr_accessor :requested_by

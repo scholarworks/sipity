@@ -82,7 +82,7 @@ module Sipity
           end
 
           def copyright_from_work
-            repository.work_attribute_values_for(work: work, key: 'copyright').first
+            repository.work_attribute_values_for(work: work, key: 'copyright', cardinality: 1)
           end
 
           def access_objects_attributes_for_persistence

@@ -1,6 +1,5 @@
 require 'sipity/forms/processing_form'
 require 'active_model/validations'
-require 'active_support/core_ext/array/wrap'
 
 module Sipity
   module Forms
@@ -32,8 +31,7 @@ module Sipity
           private
 
           def defense_date_from_work
-            return nil unless work
-            Array.wrap(repository.work_attribute_values_for(work: work, key: 'defense_date')).first
+            repository.work_attribute_values_for(work: work, key: 'defense_date', cardinality: 1)
           end
 
           include Conversions::ConvertToDate

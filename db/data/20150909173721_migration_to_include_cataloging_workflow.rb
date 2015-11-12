@@ -29,8 +29,8 @@ class MigrationToIncludeCatalogingWorkflow < ActiveRecord::Migration
   end
 
   def each_etd_entities
-    Sipity::Models::WorkSubmission.find_each do |work_submission|
-      yield(convert_to_entity(work_submission.work)) if work_submission.work_area == etd_work_area
+    Sipity::Models::WorkSubmission.where(work_area: etd_work_area).find_each do |work_submission|
+      yield(convert_to_entity(work_submission.work))
     end
   end
 
@@ -45,7 +45,9 @@ class MigrationToIncludeCatalogingWorkflow < ActiveRecord::Migration
   end
 
   def required_strategy_state_for(entity)
-    Sipity::Models::Processing::StrategyState.where(strategy_id: entity.strategy_id, name: 'ready_for_cataloging').first
+    Sipity::Models::Processing::StrategyState.find_by!(
+      strategy_id: entity.strategy_id, name: 'grad_school_approved_but_waiting_for_routing'
+    )
   end
 
   def log_entities(successfully_migrated, errored_while_migrating)

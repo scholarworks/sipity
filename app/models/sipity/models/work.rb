@@ -1,3 +1,5 @@
+require 'hesburgh/lib/html_scrubber'
+
 module Sipity
   module Models
     # The most basic of information required for generating a valid work.
@@ -27,6 +29,10 @@ module Sipity
       enum(work_type: WorkType.all_for_enum_configuration)
 
       after_initialize :set_default_work_type, if: :new_record?
+
+      def title=(input, scrubber: Hesburgh::Lib::HtmlScrubber.build_inline_scrubber)
+        super(scrubber.sanitize(input))
+      end
 
       private
 

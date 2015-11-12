@@ -87,6 +87,7 @@ module Sipity
                 'advisor_changes_requested',
                 'under_grad_school_review',
                 'grad_school_changes_requested',
+                'grad_school_approved_but_waiting_for_routing',
                 'ready_for_ingest',
                 'ready_for_cataloging',
                 'back_from_cataloging',
@@ -203,7 +204,7 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest'],
                   ['show'],
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
@@ -223,7 +224,7 @@ module Sipity
                   ['destroy'],
                   ['etd_reviewer']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
                   ['debug'],
                   ['etd_reviewer']
                 ],[
@@ -249,6 +250,10 @@ module Sipity
                 ],[
                   ['under_grad_school_review', 'grad_school_changes_requested'],
                   ['grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
+                  ['etd_reviewer']
+                ],[
+                  ['grad_school_approved_but_waiting_for_routing'],
+                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
                 ],[
                   ['ready_for_ingest'],

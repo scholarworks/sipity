@@ -1,6 +1,15 @@
 module Sipity
   module Models
     # Represents a single file attached to a given work.
+    #
+    # If you want to always fake having an attachment (i.e. you copied the production database to your local machine but did not copy
+    # the production attachments from their filesystem) add the following to the class definition:
+    #
+    #      if Rails.env.development?
+    #        after_initialize do |obj|
+    #          obj.file = File.new(__FILE__)
+    #        end
+    #      end
     class Attachment < ActiveRecord::Base
       extend Dragonfly::Model
       self.table_name = 'sipity_attachments'

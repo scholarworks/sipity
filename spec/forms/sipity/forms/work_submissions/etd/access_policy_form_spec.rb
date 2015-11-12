@@ -20,7 +20,7 @@ module Sipity
           subject { described_class.new(keywords) }
 
           before do
-            allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
+            allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright', cardinality: 1).and_return(nil)
             allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
             allow(repository).to receive(:representative_attachment_for).with(work: work).and_return(attachment)
             allow(repository).to receive(:work_attachments).with(work: work).and_return([attachment])
@@ -41,23 +41,14 @@ module Sipity
             expect(subject.available_representative_attachments).to eq(enumerable)
           end
 
-          it 'will validate that a copyright is given' do
-            expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
-            subject = described_class.new(keywords)
-            subject.valid?
-            expect(subject.errors[:copyright]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:copyright) }
+          it { should validate_presence_of(:representative_attachment_id) }
 
           it 'will validate the presence of accessible_objects_attributes' do
             subject = described_class.new(keywords.merge(attributes: { accessible_objects_attributes: {} }))
             subject.valid?
             expect(subject.errors[:base]).to be_present
-          end
-
-          it 'will validate the presence of a representative attachment' do
-            subject = described_class.new(keywords.merge(attributes: { representative_attachment_id: '' }))
-            subject.valid?
-            expect(subject.errors[:representative_attachment_id]).to be_present
           end
 
           it 'will not validate the presence of a representative attachment if there are no attachments' do
