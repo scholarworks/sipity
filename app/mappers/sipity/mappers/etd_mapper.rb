@@ -1,5 +1,3 @@
-require 'sipity/models/work_type'
-
 module Sipity
   # :nodoc:
   module Mappers

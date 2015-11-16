@@ -49,6 +49,7 @@ module Sipity
 
       def call
         package_data
+        create_webook
         move_files_to_curate_batch_queue
       end
 
@@ -65,6 +66,19 @@ module Sipity
       private
 
       attr_accessor :repository, :work, :attachments
+
+      def create_webook
+        create_directory(curate_data_directory)
+        File.open(File.join(curate_data_directory, 'WEBHOOK'), 'w+') do |file|
+          file.puts(webhook_url)
+        end
+      end
+
+      # @TODO This is a place holder as I want to know what the source machine
+      # was for an import request.
+      def webhook_url
+        "#{Figaro.env.protocol!}://#{Figaro.env.domain_name!}/bogus-webhook"
+      end
 
       def package_data
         # Create rof etd file to be ingested
