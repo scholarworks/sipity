@@ -134,6 +134,7 @@ module Sipity
                 { action_name: 'send_back_to_grad_school', resulting_state_name: 'back_from_cataloging',seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'cataloging_complete', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'ingest_with_postponed_cataloging', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'ingest_completed', resulting_state_name: 'ingested',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'submit_for_ingest', resulting_state_name: 'ingesting', seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
                 action_name = structure.fetch(:action_name)
@@ -211,7 +212,7 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['show'],
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
@@ -231,7 +232,7 @@ module Sipity
                   ['destroy'],
                   ['etd_reviewer']
                 ],[
-                  ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['debug'],
                   ['etd_reviewer']
                 ],[
@@ -262,6 +263,10 @@ module Sipity
                   ['grad_school_approved_but_waiting_for_routing'],
                   ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
+                ],[
+                  ['ingesting'],
+                  ['ingest_completed'],
+                  ['batch_ingestor']
                 ],[
                   ['ready_for_ingest'],
                   ['submit_for_ingest'],
