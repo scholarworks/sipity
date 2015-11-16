@@ -58,10 +58,7 @@ module Sipity
           begin
             ActiveRecord::Base.transaction { work_ingester.call(parameters) }
           rescue StandardError => exception
-            exception_handler.call(
-              error_class: exception.class, error_message: exception.message,
-              parameters: parameters.merge(work_ingester: work_ingester, job_class: self.class)
-            )
+            exception_handler.call(exception, parameters: parameters.merge(work_ingester: work_ingester, job_class: self.class))
           end
         end
 
