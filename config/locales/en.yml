@@ -215,8 +215,10 @@ en:
   work_types:
     master_thesis:
       label: "Master’s Thesis"
+      curate_nd_label: "Master’s Thesis"
     doctoral_dissertation:
       label: "Doctoral Dissertation"
+      curate_nd_label: "Doctoral Dissertation"
   access_rights:
     models/attachment:
       title:
