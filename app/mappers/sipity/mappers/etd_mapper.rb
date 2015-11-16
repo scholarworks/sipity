@@ -1,3 +1,5 @@
+require 'sipity/models/work_type'
+
 module Sipity
   # :nodoc:
   module Mappers
@@ -94,7 +96,12 @@ module Sipity
         degree_info = {}
         degree_info[extract_name_for('degree_name')] = repository.work_attribute_values_for(work: work, key: 'degree')
         degree_info[extract_name_for('program_name')] = repository.work_attribute_values_for(work: work, key: 'program_name')
+        degree_info[extract_name_for('degree_level')] = lookup_degree_level_for(work: work)
         degree_info
+      end
+
+      def lookup_degree_level_for(work:)
+        I18n.t("#{work.work_type}.label", scope: 'work_types', raise: true)
       end
 
       def collaborators
