@@ -40,6 +40,7 @@ module Sipity
           expect(subject).to receive(:export_to_json).
             and_return(["rof json array"])
           expect(FileUtils).to receive(:mv)
+          expect(subject).to receive(:create_webook).and_call_original
           subject.call
         end
       end
