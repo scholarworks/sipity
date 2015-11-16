@@ -6,7 +6,7 @@ gem 'rails', '~> 4.2'
 # This is part of the v4.3.0 API
 # Once the following pull request is merged (or similar solution), then we
 # can hopefully use the Airbrake maintained gem. https://github.com/airbrake/airbrake/pull/397
-gem 'airbrake', github: 'jeremyf/airbrake'
+gem 'airbrake'
 gem 'autoprefixer-rails'
 gem 'bootstrap-sass'
 gem 'coffee-rails', '~> 4.0'
