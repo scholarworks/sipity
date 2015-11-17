@@ -5,7 +5,7 @@ module Sipity
   module Exporters
     RSpec.describe EtdExporter do
       let(:access_right) { ['private_access'] }
-      let(:work) { double }
+      let(:work) { Sipity::Models::Work.new(id: 'abc123') }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
       let(:title) { 'Title of the work' }
@@ -16,6 +16,8 @@ module Sipity
       subject { described_class.new(work, repository: repository) }
 
       its(:default_repository) { should respond_to :work_attachments }
+      its(:webhook_authorization_credentials) { should be_a(String) }
+      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/do/ingest_completed$}) }
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))

@@ -30,6 +30,18 @@ module Sipity
       alias_method :model, :view_object
       helper_method :model
 
+      # @TODO - With Cogitate this will need to be revisited
+      def authenticate_user!
+        authenticate_with_http_basic { |user, password| user_for_etd_ingester(user: user, password: password) } || super
+      end
+
+      # @TODO - With Cogitate this will need to be revisited
+      def user_for_etd_ingester(user:, password:, group_name: DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS, env: Figaro.env)
+        return false unless user == group_name
+        return false unless password == env.sipity_batch_ingester_access_key!
+        Sipity::Models::Group.find_by!(name: group_name)
+      end
+
       private
 
       attr_accessor :processing_action_composer

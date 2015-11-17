@@ -74,10 +74,16 @@ module Sipity
         end
       end
 
-      # @TODO This is a place holder as I want to know what the source machine
-      # was for an import request.
+      # @TODO This is likely in the wrong place but its what I have.
       def webhook_url
-        "#{Figaro.env.protocol!}://#{Figaro.env.domain_name!}/bogus-webhook"
+        File.join(
+          "#{Figaro.env.protocol!}://#{webhook_authorization_credentials}@#{Figaro.env.domain_name!}",
+          "/work_submissions/#{work.to_param}/do/ingest_completed"
+        )
+      end
+
+      def webhook_authorization_credentials
+        "#{Sipity::DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS}:#{Figaro.env.sipity_batch_ingester_access_key!}"
       end
 
       def package_data
