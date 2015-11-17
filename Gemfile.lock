@@ -539,7 +539,7 @@ GEM
     slop (3.6.0)
     sorcerer (1.0.2)
     sparkr (0.4.1)
-    spring (1.4.1)
+    spring (1.4.3)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     sprockets (3.4.0)
