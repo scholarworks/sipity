@@ -10,7 +10,7 @@ module Sipity
             attribute_names: []
           )
 
-          def initialize(work:, requested_by:, exporter: default_exporter, _attributes: {}, **keywords)
+          def initialize(work:, requested_by:, exporter: default_exporter, **keywords)
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
