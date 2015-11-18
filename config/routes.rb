@@ -70,6 +70,10 @@ Rails.application.routes.draw do
     to: 'sipity/controllers/work_submissions#query_action'
   )
   [:post, :put, :patch, :delete].each do |http_verb_name|
+    send(
+      http_verb_name,
+      'work_submissions/:work_id/callback/:processing_action_name', to: 'sipity/controllers/work_submission_callbacks#command_action'
+    )
     send(http_verb_name, 'work_submissions/:work_id/do/:processing_action_name', to: 'sipity/controllers/work_submissions#command_action')
   end
 
