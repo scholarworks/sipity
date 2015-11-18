@@ -47,6 +47,7 @@ module Sipity
             expect(controller).to receive(:user_for_etd_ingester).with(user: 'User', password: 'Password').and_return(user)
             request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('User', 'Password')
             controller.authenticate_user!
+            expect(controller.instance_variable_get("@current_user")).to eq(user)
           end
         end
 
@@ -54,6 +55,7 @@ module Sipity
           it 'will attempt to find user_for_etd_ingester' do
             expect(controller).to_not receive(:user_for_etd_ingester)
             expect { controller.authenticate_user! }.to raise_error(StandardError)
+            expect(controller.instance_variable_get("@current_user")).to eq(nil)
           end
         end
       end

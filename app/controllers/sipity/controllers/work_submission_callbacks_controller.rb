@@ -30,7 +30,12 @@ module Sipity
 
       # @TODO - With Cogitate this will need to be revisited
       def authenticate_user!
-        authenticate_with_http_basic { |user, password| user_for_etd_ingester(user: user, password: password) } || super
+        authenticated_user = authenticate_with_http_basic { |user, password| user_for_etd_ingester(user: user, password: password) }
+        if authenticated_user
+          @current_user = authenticated_user
+        else
+          super
+        end
       end
 
       # @TODO - With Cogitate this will need to be revisited
