@@ -52,11 +52,46 @@ describe 'work area routing spec' do
           action: 'command_action',
           processing_action_name: 'edit'
         }
+      ], [
+        :post,
+        {
+          path: "/work_submissions/1234/callback/a_callback",
+          controller: 'sipity/controllers/work_submission_callbacks',
+          work_id: '1234',
+          action: 'command_action',
+          processing_action_name: 'a_callback'
+        }
+      ], [
+        :patch,
+        {
+          path: "/work_submissions/1234/callback/a_callback",
+          controller: 'sipity/controllers/work_submission_callbacks',
+          work_id: '1234',
+          action: 'command_action',
+          processing_action_name: 'a_callback'
+        }
+      ], [
+        :put,
+        {
+          path: "/work_submissions/1234/callback/a_callback",
+          controller: 'sipity/controllers/work_submission_callbacks',
+          work_id: '1234',
+          action: 'command_action',
+          processing_action_name: 'a_callback'
+        }
+      ], [
+        :delete,
+        {
+          path: "/work_submissions/1234/callback/a_callback",
+          controller: 'sipity/controllers/work_submission_callbacks',
+          work_id: '1234',
+          action: 'command_action',
+          processing_action_name: 'a_callback'
+        }
       ]
     ].each do |http_method, settings|
       it "will #{http_method.to_s.upcase} #{settings.fetch(:path)}" do
-        expect(send(http_method, settings.fetch(:path))).
-          to route_to(settings.except(:path).merge(controller: controller))
+        expect(send(http_method, settings.fetch(:path))).to route_to({ controller: controller }.merge(settings.except(:path)))
       end
     end
 

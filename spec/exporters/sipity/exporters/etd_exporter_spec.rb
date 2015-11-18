@@ -17,7 +17,7 @@ module Sipity
 
       its(:default_repository) { should respond_to :work_attachments }
       its(:webhook_authorization_credentials) { should be_a(String) }
-      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/do/ingest_completed$}) }
+      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/callback/ingest_completed$}) }
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
