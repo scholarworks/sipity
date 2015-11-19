@@ -78,7 +78,7 @@ module Sipity
       def webhook_url
         File.join(
           "#{Figaro.env.protocol!}://#{webhook_authorization_credentials}@#{Figaro.env.domain_name!}",
-          "/work_submissions/#{work.to_param}/callback/ingest_completed"
+          "/work_submissions/#{work.to_param}/callback/ingest_completed.json"
         )
       end
 

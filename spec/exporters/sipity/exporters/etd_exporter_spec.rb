@@ -17,7 +17,11 @@ module Sipity
 
       its(:default_repository) { should respond_to :work_attachments }
       its(:webhook_authorization_credentials) { should be_a(String) }
-      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/callback/ingest_completed$}) }
+
+      # The .json is important as it helps this Rails application negotiate the content. Without the .json,
+      # the batch ingest process is posting a "Content-Type: application/json" but Rails is falling back to
+      # an HTML response; Which doesn't work because the HTML template does not exist.
+      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/callback/ingest_completed.json$}) }
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
