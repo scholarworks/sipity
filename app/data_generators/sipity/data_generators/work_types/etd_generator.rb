@@ -115,13 +115,14 @@ module Sipity
                 { action_name: 'debug', seq: 3 },
                 { action_name: 'start_a_submission', seq: 0, resulting_state_name: 'new', allow_repeat_within_current_state: false }, # A bit of a misnomer
                 { action_name: 'publishing_and_patenting_intent', seq: 1 },
-                { action_name: 'describe', seq: 2 },
-                { action_name: 'collaborators', seq: 3 },
-                { action_name: 'attach', seq: 4 },
-                { action_name: 'defense_date', seq: 5 },
-                { action_name: 'search_terms', seq: 6 },
-                { action_name: 'degree', seq: 7 },
-                { action_name: 'access_policy', seq: 8 },
+                { action_name: 'author', seq: 2 },
+                { action_name: 'describe', seq: 3 },
+                { action_name: 'collaborators', seq: 4 },
+                { action_name: 'attach', seq: 5 },
+                { action_name: 'defense_date', seq: 6 },
+                { action_name: 'search_terms', seq: 7 },
+                { action_name: 'degree', seq: 8 },
+                { action_name: 'access_policy', seq: 9 },
                 { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: true },
@@ -178,7 +179,7 @@ module Sipity
               end
 
               pre_requisite_states =       {
-                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent']
+                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent', 'author']
               }
 
               if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
@@ -217,11 +218,11 @@ module Sipity
                   ['creating_user', 'advisor', 'etd_reviewer'],
                 ],[
                   ['new', 'advisor_changes_requested'],
-                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
                   ['creating_user', 'etd_reviewer']
                 ],[
                   ['grad_school_changes_requested', 'under_grad_school_review'],
-                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
                   ['etd_reviewer']
                 ],[
                   ['new'],
