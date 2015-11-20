@@ -170,6 +170,8 @@ en:
       label: "<b>Attach</b> files to this %{work_type}"
     describe:
       label: "Further <b>describe</b> your %{work_type}"
+    author:
+      label: "Update your <b>author name</b> as it appears in your %{work_type}"
     destroy:
       confirm_destroy:
         label: "I am sure that I want to delete this %{work_type}?"
