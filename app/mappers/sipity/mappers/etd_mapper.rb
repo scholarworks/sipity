@@ -86,7 +86,7 @@ module Sipity
         metadata['title'] = work.title
         metadata['contributor'] = collaborators_name_and_title
         metadata['degree'] = degree_info
-        metadata['creator'] = creators.map(&:name)
+        metadata['creator'] = creator_names
         metadata
       end
 
@@ -121,12 +121,12 @@ module Sipity
         @access_right ||= repository.work_access_right_code(work: work)
       end
 
-      def creators
-        @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
+      def creator_names
+        repository.work_attribute_values_for(work: work, key: 'author_name')
       end
 
       def creator_usernames
-        creators.map(&:username)
+        repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)
       end
 
       def gather_work_metadata(json)

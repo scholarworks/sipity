@@ -11,7 +11,7 @@ module Sipity
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: '123') }
+          let(:user) { User.new(id: '123', name: 'Hello') }
           let(:submission_window) do
             Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
           end
@@ -149,6 +149,7 @@ module Sipity
                 expect(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
                 allow(repository).to receive(:register_action_taken_on_entity)
+                expect(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy)
               end
               it 'will assign the work attribute on submit' do
                 expect { subject.submit }.to change(subject, :work).from(nil).to(work)
@@ -163,6 +164,19 @@ module Sipity
               it 'will register the action on the submission window' do
                 expect(repository).to receive(:register_action_taken_on_entity).
                   with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will register the author action on the work submission' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will set the author_name' do
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'author_name', values: user.to_s).
                   and_call_original
                 subject.submit
               end

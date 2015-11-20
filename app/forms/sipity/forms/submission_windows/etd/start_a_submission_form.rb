@@ -92,6 +92,7 @@ module Sipity
               repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
               persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+              repository.update_work_attribute_values!(work: work, key: 'author_name', values: requested_by.to_s)
               register_actions
             end
           end
@@ -105,6 +106,7 @@ module Sipity
             repository.register_action_taken_on_entity(
               entity: submission_window, action: processing_action_name, requested_by: requested_by
             )
+            repository.register_action_taken_on_entity(entity: work, action: 'author', requested_by: requested_by)
           end
 
           include Conversions::SanitizeHtml
