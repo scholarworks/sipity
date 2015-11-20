@@ -106,6 +106,7 @@ module Sipity
             repository.register_action_taken_on_entity(
               entity: submission_window, action: processing_action_name, requested_by: requested_by
             )
+            repository.register_action_taken_on_entity(entity: work, action: 'author', requested_by: requested_by)
           end
 
           include Conversions::SanitizeHtml

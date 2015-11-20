@@ -114,8 +114,8 @@ module Sipity
                 { action_name: 'destroy', seq: 2 },
                 { action_name: 'debug', seq: 3 },
                 { action_name: 'start_a_submission', seq: 0, resulting_state_name: 'new', allow_repeat_within_current_state: false }, # A bit of a misnomer
-                { action_name: 'publishing_and_patenting_intent', seq: 1 },
-                { action_name: 'author', seq: 2 },
+                { action_name: 'author', seq: 1 },
+                { action_name: 'publishing_and_patenting_intent', seq: 2 },
                 { action_name: 'describe', seq: 3 },
                 { action_name: 'collaborators', seq: 4 },
                 { action_name: 'attach', seq: 5 },

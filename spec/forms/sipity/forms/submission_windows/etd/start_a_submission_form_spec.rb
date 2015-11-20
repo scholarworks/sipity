@@ -168,6 +168,13 @@ module Sipity
                 subject.submit
               end
 
+              it 'will register the author action on the work submission' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
               it 'will set the author_name' do
                 expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'author_name', values: user.to_s).
                   and_call_original
