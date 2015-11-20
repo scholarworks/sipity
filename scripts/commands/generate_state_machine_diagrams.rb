@@ -32,7 +32,7 @@ Sipity::Models::Processing::Strategy.all.each do |__strategy|
 
   # Create a diagraph file with correct header information
   __strategy.strategy_states.each do |__state|
-    state = { name: __state.name, enrichments: Set.new, emails: Set.new }
+    state = { name: __state.name, enrichments: Set.new, emails: Set.new, id: __state.id }
     yield_emails_for(__state) { |email| state[:emails] << email }
     __state.originating_strategy_state_actions.includes(:strategy_action, :strategy_state_action_permissions).each do |state_action|
       next if state_action.strategy_action.resulting_strategy_state_id
