@@ -41,6 +41,7 @@ en:
         citationType: 'Citation style'
         collaborators: 'People involved'
         publicationDate: 'Publication date'
+        scheduled_time: 'Scheduled date'
         work_publication_strategy: 'Publication intent'
         work_patent_strategy: 'Patent intent'
   application:
