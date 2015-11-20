@@ -10,6 +10,7 @@ module Sipity
       DATE_FORMAT = '%Y-%m-%d'.freeze
 
       # TODO: Create a map for input name to key and vice versa
+      AUTHOR_NAME = 'author_name'.freeze
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
       CITATION_PREDICATE_NAME = 'citation'.freeze
       CITATION_TYPE_PREDICATE_NAME = 'citationType'.freeze
@@ -44,6 +45,7 @@ module Sipity
 
       enum(
         key: {
+          AUTHOR_NAME => AUTHOR_NAME,
           DOI_PREDICATE_NAME => DOI_PREDICATE_NAME,
           CITATION_PREDICATE_NAME => CITATION_PREDICATE_NAME,
           CITATION_TYPE_PREDICATE_NAME => CITATION_TYPE_PREDICATE_NAME,

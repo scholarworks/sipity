@@ -36,6 +36,7 @@ module Sipity
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'abstract').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return(['a degree_name'])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'author_name').and_return(['Dolly'])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'defense_date').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return(['a program_name'])
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
@@ -52,7 +53,7 @@ module Sipity
         expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
         expect(expected_json["metadata"]["dc:contributor"]).to eq([contributor_map])
         expect(expected_json["metadata"]["ms:degree"]).to eq(degree_map)
-        expect(expected_json["metadata"]["dc:creator"]).to eq(creators.map(&:name))
+        expect(expected_json["metadata"]["dc:creator"]).to eq(['Dolly'])
       end
 
       context 'will have be able to map correct access_right' do
