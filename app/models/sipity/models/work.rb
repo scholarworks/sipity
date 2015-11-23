@@ -14,6 +14,7 @@ module Sipity
       has_one :access_right, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       has_one :work_submission, dependent: :destroy
+      has_many :work_redirect_strategies
 
       delegate :submission_window, :work_area, to: :work_submission, allow_nil: true
       delegate :transition_date, to: :access_right, allow_nil: true, prefix: true

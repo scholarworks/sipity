@@ -417,6 +417,17 @@ ActiveRecord::Schema.define(version: 20151120201633) do
   add_index "sipity_work_areas", ["name"], name: "index_sipity_work_areas_on_name", unique: true, using: :btree
   add_index "sipity_work_areas", ["slug"], name: "index_sipity_work_areas_on_slug", unique: true, using: :btree
 
+  create_table "sipity_work_redirect_strategies", force: :cascade do |t|
+    t.string   "work_id",    limit: 255, null: false
+    t.string   "url",        limit: 255, null: false
+    t.date     "start_date",             null: false
+    t.date     "end_date"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "sipity_work_redirect_strategies", ["work_id", "start_date"], name: "idx_work_redirect_strategies_surrogate", using: :btree
+
   create_table "sipity_work_submissions", force: :cascade do |t|
     t.integer  "work_area_id",         limit: 4,   null: false
     t.integer  "submission_window_id", limit: 4,   null: false
