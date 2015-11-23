@@ -41,6 +41,8 @@ module Hesburgh
 
         # A convenience method for sanitiziation
         def sanitize(input)
+          return '' unless input.present?
+          return input unless input.is_a?(String)
           Loofah.fragment(input).scrub!(self).to_s.strip
         end
         alias_method :call, :sanitize
