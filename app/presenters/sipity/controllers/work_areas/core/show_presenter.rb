@@ -110,6 +110,10 @@ module Sipity
               creators.to_sentence
             end
 
+            def program_names_to_sentence
+              Array.wrap(repository.work_attribute_values_for(work: work, key: 'program_name')).to_sentence
+            end
+
             def date_created
               work.created_at.strftime('%a, %d %b %Y')
             end
