@@ -119,6 +119,7 @@ module Sipity
           its(:processing_state) { should eq('New') }
           its(:date_created) { should be_a(String) }
           its(:creator_names_to_sentence) { should be_a(String) }
+          its(:program_names_to_sentence) { should be_a(String) }
           its(:work_type) { should eq('Doctoral dissertation') }
 
           it 'will delegate path to PowerConverter' do

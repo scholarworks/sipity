@@ -33,8 +33,9 @@
         <thead>
           <tr>
             <th>Title</th>
-            <th>Type</th>
             <th>Creator(s)</th>
+            <th>Program Name(s)</th>
+            <th>Type</th>
             <th>Processing State</th>
             <th>Date Created</th>
           </tr>
@@ -43,8 +44,9 @@
           {{*works}}
             <tr>
               <td><a href="{{path}}">{{title}}</td>
-              <td>{{work_type}}</td>
               <td>{{creator_names_to_sentence}}</td>
+              <td>{{program_names_to_sentence}}</td>
+              <td>{{work_type}}</td>
               <td>{{processing_state}}</td>
               <td>{{date_created}}</td>
             </tr>
