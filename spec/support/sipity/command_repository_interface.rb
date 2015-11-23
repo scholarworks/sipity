@@ -81,6 +81,10 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def create_redirect_for(work:, url:, as_of: Time.zone.today)
+    end
+
     # @see ./app/repositories/sipity/commands/administrative_scheduled_action_commands.rb
     def create_scheduled_action(work:, scheduled_time:, reason:)
     end
@@ -327,6 +331,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def unregister_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
+    end
+
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def update_previous_open_ended_redirects_for(work:, as_of:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
