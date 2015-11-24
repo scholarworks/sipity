@@ -2,12 +2,12 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
   if Rails.env.development?
-    config.cas_base_url = "https://cas.library.nd.edu/cas"
-    config.cas_destination_url = 'http://localhost:3000'
-    config.cas_follow_url = 'http://localhost:3000'
+    config.cas_base_url = Figaro.env.cas_base_url
+    config.cas_destination_url = Figaro.env.cas_destination_url
+    config.cas_follow_url = Figaro.env.cas_follow_url
   else
-    config.cas_base_url = "https://login.nd.edu/cas"
-    config.cas_validate_url = "https://login.nd.edu/cas/serviceValidate"
+    config.cas_base_url = Figaro.env.cas_base_url
+    config.cas_validate_url = Figaro.env.cas_validate_url
   end
   config.cas_logout_url_param = 'follow'
   config.cas_enable_single_sign_out = true
