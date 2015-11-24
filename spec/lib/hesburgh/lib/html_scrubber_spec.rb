@@ -8,6 +8,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
     {
       nil => '',
       ' ' => '',
+      Date.new(2015, 10, 1) => Date.new(2015, 10, 1),
       %( <p>Hello</p> ) => %(Hello),
       %(<p>Hello</p>) => %(Hello),
       %(Hello) => %(Hello),
