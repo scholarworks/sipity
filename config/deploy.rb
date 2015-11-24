@@ -121,6 +121,7 @@ namespace :deploy do
 end
 
 namespace :configuration do
+  desc 'Update application secrets'
   task :copy_secrets do
     on roles(:app) do
       within release_path do
