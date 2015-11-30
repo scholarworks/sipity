@@ -63,6 +63,13 @@ module Sipity
         its(:publishing_intent) { should eq(publishing_intent) }
         its(:patent_intent) { should eq(patent_intent) }
         its(:submission_date) { should eq(submission_date) }
+        its(:catalog_system_number) do
+          expect(repository).to receive(:work_attribute_values_for).with(
+            work: work, key: Sipity::Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1
+          ).and_return(1234)
+
+          should eq(1234)
+        end
 
         its(:additional_committe_members) do
           allow(subject).to receive(:collaborators).and_return(['John', 'Ringo'])

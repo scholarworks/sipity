@@ -1,4 +1,8 @@
-<p>The following <%= @entity.work_type %> is ready for cataloging. Please review:</p>
+<p>The following <%= @entity.work_type %> with cataloging system number <%= @entity.cataloging_system_number %> has been ingested into CurateND.
+<strong>You can remove the catalog record's suspension.</strong>
+</p>
+
+<p>You can review the <%= @entity.work_type %> here: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %>.</p>
 
 <p>Author summary:</p>
 <ul>

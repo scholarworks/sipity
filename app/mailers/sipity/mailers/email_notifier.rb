@@ -11,6 +11,7 @@ module Sipity
         :confirmation_of_advisor_signoff_is_complete,
         :confirmation_of_work_created,
         :confirmation_of_submit_for_review,
+        :confirmation_of_grad_school_signoff,
         :grad_school_requests_cataloging,
         :submit_for_review
       ].freeze

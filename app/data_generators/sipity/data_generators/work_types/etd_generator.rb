@@ -130,11 +130,11 @@ module Sipity
                 { action_name: 'request_change_on_behalf_of', resulting_state_name: 'advisor_changes_requested', seq: 3, allow_repeat_within_current_state: false },
                 { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
                 { action_name: 'respond_to_grad_school_request', resulting_state_name: 'grad_school_changes_requested', seq: 1, allow_repeat_within_current_state: true },
+                { action_name: 'grad_school_signoff', resulting_state_name: 'grad_school_approved_but_waiting_for_routing', seq: 1 },
                 { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'send_to_cataloging', resulting_state_name: 'ready_for_cataloging',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'send_back_to_grad_school', resulting_state_name: 'back_from_cataloging',seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'cataloging_complete', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'ingest_with_postponed_cataloging', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'ingest_completed', resulting_state_name: 'ingested',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'submit_for_ingest', resulting_state_name: 'ingesting', seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
@@ -241,8 +241,8 @@ module Sipity
                   ['send_back_to_grad_school', 'cataloging_complete'],
                   ['cataloger']
                 ],[
-                  ['back_from_cataloging'],
-                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
+                  ['back_from_cataloging', 'grad_school_approved_but_waiting_for_routing'],
+                  ['send_to_cataloging'],
                   ['etd_reviewer']
                 ],[
                   ['under_advisor_review'],
@@ -258,11 +258,8 @@ module Sipity
                   ['advisor']
                 ],[
                   ['under_grad_school_review', 'grad_school_changes_requested'],
-                  ['grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
-                  ['etd_reviewer']
-                ],[
-                  ['grad_school_approved_but_waiting_for_routing'],
-                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
+                  ['grad_school_signoff', 'grad_school_requests_change'],
+                  # ['grad_school_signoff', 'grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
                 ],[
                   ['ingesting'],
@@ -301,78 +298,65 @@ module Sipity
                 {
                   named_container: Models::Processing::StrategyAction,
                   name: 'start_a_submission',
-                  emails: {
-                    confirmation_of_work_created: { to: 'creating_user' }
-                  }
-                },
-                {
+                  emails: { confirmation_of_work_created: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'submit_for_review',
                   emails: {
                     confirmation_of_submit_for_review: { to: 'creating_user' },
                     submit_for_review: { to: ['advisor'] }
                   }
-                },
-                {
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'advisor_signoff',
-                  emails: {
-                    confirmation_of_advisor_signoff: { to: 'creating_user' },
-                  }
-                },
-                {
+                  emails: { confirmation_of_advisor_signoff: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'signoff_on_behalf_of',
-                  emails: {
-                    confirmation_of_advisor_signoff: { to: 'creating_user' },
-                  }
-                },
-                {
+                  emails: { confirmation_of_advisor_signoff: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'advisor_requests_change',
-                  emails: {
-                    advisor_requests_change: { to: 'creating_user' }
-                  }
-                },
-                {
+                  emails: { advisor_requests_change: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'request_change_on_behalf_of',
-                  emails: {
-                    request_change_on_behalf_of: { to: 'creating_user' }
-                  }
-                },
-                {
+                  emails: { request_change_on_behalf_of: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'respond_to_advisor_request',
                   emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
-                },
-                {
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'respond_to_grad_school_request',
                   emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
-                },
-                {
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'grad_school_requests_change',
                   emails: { grad_school_requests_change: { to: 'creating_user' } }
-                },
-                {
+                },{
+                  named_container: Models::Processing::StrategyAction,
+                  name: 'grad_school_signoff',
+                  emails: { confirmation_of_grad_school_signoff: { to: 'creating_user' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'send_to_cataloging',
-                  emails: { grad_school_requests_cataloging: { to: 'cataloger', cc: 'etd_reviewer' } }
-                },
-                {
+                  emails: { grad_school_requests_cataloging: { to: 'cataloger' } }
+                },{
                   named_container: Models::Processing::StrategyAction,
                   name: 'send_back_to_grad_school',
                   emails: { cataloger_request_change: { to: 'etd_reviewer' } }
-                },
-                {
+                },{
                   named_container: Models::Processing::StrategyState,
                   name: 'under_grad_school_review',
                   emails: {
                     advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
                     confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
                   }
+                },{
+                  named_container: Models::Processing::StrategyState,
+                  name: 'ingested',
+                  emails: { release_suspended_catalog_record: { to: 'cataloger' } }
                 }
               ].each do |email_config|
                 named_container = email_config.fetch(:named_container)
