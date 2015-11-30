@@ -1,4 +1,6 @@
 require_relative '../../../forms'
+require 'sipity/conversions/convert_to_permanent_uri'
+
 module Sipity
   module Forms
     module WorkSubmissions
@@ -22,7 +24,16 @@ module Sipity
           include ActiveModel::Validations
           validates :job_state, inclusion: { in: [JOB_STATE_SUCCESS] }
 
-          delegate :submit, to: :processing_action_form
+          def submit
+            processing_action_form.submit { create_a_redirect }
+          end
+
+          private
+
+          include Conversions::ConvertToPermanentUri
+          def create_a_redirect
+            repository.create_redirect_for(work: work, url: convert_to_permanent_uri(work))
+          end
         end
       end
     end
