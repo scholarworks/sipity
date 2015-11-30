@@ -1,0 +1,11 @@
+<p>
+  A cataloger has indicated that the following <%= link_to "#{@entity.work_type}", @entity.email_message_action_url %> has issues. See below:
+</p>
+
+<p><strong>Cataloging Comment:</strong></p>
+<blockquote><%= @entity.comment %></blockquote>
+
+<p>You can review the issues at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %>.</p>
+
+<%= render partial: 'grad_school_email_signature' %>
+<%= render(partial: 'action_in_the_inbox', object: @entity) %>
