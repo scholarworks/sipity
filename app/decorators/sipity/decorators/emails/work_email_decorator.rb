@@ -78,6 +78,10 @@ module Sipity
           repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::ETD_SUBMISSION_DATE)
         end
 
+        def catalog_system_number
+          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1)
+        end
+
         def email_message_action_name
           "Review #{work_type}"
         end
