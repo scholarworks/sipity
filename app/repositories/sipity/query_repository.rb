@@ -7,16 +7,17 @@ module Sipity
   class QueryRepository
     include Queries::AccountProfileQueries
     include Queries::AdditionalAttributeQueries
+    include Queries::AdministrativeScheduledActionQueries
     include Queries::AttachmentQueries
     include Queries::CollaboratorQueries
     include Queries::CommentQueries
     include Queries::EventLogQueries
     include Queries::NotificationQueries
     include Queries::ProcessingQueries
+    include Queries::RedirectQueries
     include Queries::SimpleControlledVocabularyQueries
     include Queries::SubmissionWindowQueries
     include Queries::WorkAreaQueries
     include Queries::WorkQueries
-    include Queries::AdministrativeScheduledActionQueries
   end
 end

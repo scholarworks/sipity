@@ -17,6 +17,10 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/redirect_queries.rb
+    def active_redirect_for(work:, as_of: Time.zone.today)
+    end
+
     # @see ./app/repositories/sipity/queries/work_queries.rb
     def apply_work_area_filter_to(scope:, criteria:)
     end

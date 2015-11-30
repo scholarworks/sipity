@@ -17,6 +17,10 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/redirect_queries.rb
+    def active_redirect_for(work:, as_of: Time.zone.today)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def amend_files_metadata(work:, user:, metadata: {})
     end
