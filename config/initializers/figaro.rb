@@ -1,6 +1,8 @@
 Figaro.require_keys(
   'airbrake_api_key',
   'airbrake_host',
+  'cas_base_url',
+  'cas_validate_url',
   'curate_batch_data_mount_path',
   'curate_batch_group_pid',
   'curate_batch_user_pid',
