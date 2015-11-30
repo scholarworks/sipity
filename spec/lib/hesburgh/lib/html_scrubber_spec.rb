@@ -14,7 +14,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
       %(Hello) => %(Hello),
       %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
       %(<script><i>Hello</i></script>) => %(),
-      %(<p>Hello <a href="http://world.com" target="_blank">World</a></p>) => %(Hello <a href="http://world.com">World</a>),
+      %(<p>Hello <a href="http://world.com" target="_blank">World</a></p>) => %(Hello World),
       %(Hello <p>World <i>Are we there yet?</i></p>) => %(Hello World <i>Are we there yet?</i>)
     }.each do |input, expected|
       it "will scrub #{input.inspect} into #{expected.inspect}" do
@@ -51,7 +51,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
         %(Hello) => %(Hello),
         %(<script><i>Hello</i></script>) => %(),
         %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
-        %(<p>Hello <a href="http://world.com" bad_attr="_blank">World</a></p>) => %(Hello <a href="http://world.com">World</a>),
+        %(<p>Hello World</a></p>) => %(Hello World),
         %(Hello <p>World <i>Are we there yet?</i></p>) => %(Hello World <i>Are we there yet?</i>)
       }.each do |input, expected|
         it "will scrub #{input.inspect} into #{expected.inspect}" do
