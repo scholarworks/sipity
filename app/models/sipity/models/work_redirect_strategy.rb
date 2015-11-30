@@ -10,6 +10,8 @@ module Sipity
     class WorkRedirectStrategy < ActiveRecord::Base
       self.table_name = :sipity_work_redirect_strategies
       belongs_to :work
+
+      delegate :work_area, to: :work, prefix: :to
     end
   end
 end

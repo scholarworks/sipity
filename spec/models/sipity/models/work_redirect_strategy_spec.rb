@@ -9,5 +9,6 @@ RSpec.describe Sipity::Models::WorkRedirectStrategy, type: :model do
   context 'an instance' do
     subject { described_class.new }
     it { should belong_to :work }
+    it { should delegate_method(:to_work_area).to(:work).as(:work_area) }
   end
 end
