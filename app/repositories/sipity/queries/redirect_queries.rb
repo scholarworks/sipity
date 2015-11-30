@@ -9,7 +9,7 @@ module Sipity
       # @param as_of [Date]
       def active_redirect_for(work:, as_of: Time.zone.today)
         work = Conversions::ConvertToWork.call(work)
-        Sipity::Models::WorkRedirectStrategy.includes(:work).where(
+        Sipity::Models::WorkRedirectStrategy.includes(work: { work_submission: :work_area }).where(
           work_id: work.id
         ).where('start_date <= :as_of AND (end_date IS NULL OR end_date > :as_of)', as_of: as_of).order('start_date ASC').first
       end
