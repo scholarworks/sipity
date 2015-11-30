@@ -7,8 +7,9 @@ module Sipity
         # Responsible for submitting final step which is completing cataloging.
         class CatalogingCompleteForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::Work, attribute_names: :agree_to_signoff, processing_subject_name: :work,
-            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME,
+            attribute_names: [:agree_to_signoff, :oclc_number, :catalog_system_number]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -17,26 +18,25 @@ module Sipity
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.agree_to_signoff = attributes[:agree_to_signoff]
             self.oclc_number = attributes.fetch(:oclc_number) { oclc_number_from_work }
+            self.catalog_system_number = attributes.fetch(:catalog_system_number) { catalog_system_number_from_work }
           end
 
           include ActiveModel::Validations
           validates :agree_to_signoff, acceptance: { accept: true }
           validates :oclc_number, presence: true
+          validates :catalog_system_number, presence: true
 
-          attr_reader :oclc_number
           # @param f SimpleFormBuilder
           #
           # @return String
           def render(f:)
             markup = view_context.content_tag('legend', legend)
             markup << f.input(:oclc_number, input_html: { required: 'required' }).html_safe
+            markup << f.input(:catalog_system_number, input_html: { required: 'required' }).html_safe
             markup << f.input(
               :agree_to_signoff,
-              as: :boolean,
-              inline_label: signoff_agreement,
-              input_html: { required: 'required' }, # There is no way to add true boolean attributes to simle_form fields.
-              label: false,
-              wrapper_class: 'checkbox'
+              as: :boolean, inline_label: signoff_agreement, label: false, wrapper_class: 'checkbox',
+              input_html: { required: 'required' } # There is no way to add true boolean attributes to simle_form fields.
             ).html_safe
           end
 
@@ -51,12 +51,13 @@ module Sipity
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: Models::AdditionalAttribute::OCLC_NUMBER, values: oclc_number)
+              repository.update_work_attribute_values!(
+                work: work, key: Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, values: catalog_system_number
+              )
             end
           end
 
           private
-
-          attr_writer :oclc_number
 
           def agree_to_signoff=(value)
             @agree_to_signoff = PowerConverter.convert_to_boolean(value)
@@ -67,7 +68,11 @@ module Sipity
           end
 
           def oclc_number_from_work
-            repository.work_attribute_values_for(work: work, key: 'oclc_number', cardinality: 1)
+            repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::OCLC_NUMBER, cardinality: 1)
+          end
+
+          def catalog_system_number_from_work
+            repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1)
           end
         end
       end
