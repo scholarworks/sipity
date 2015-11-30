@@ -7,7 +7,7 @@ module Hesburgh
     # @see Rails `sanitize` method
     # @todo Extract to the Hesburgh::Lib gem
     module HtmlScrubber
-      ALLOWED_INLINE_TAGS = %w(a abbr acronym b big cit cite code dfn em i mark samp small strong sub sup time tt var).freeze
+      ALLOWED_INLINE_TAGS = %w(abbr acronym b big cit cite code dfn em i mark samp small strong sub sup time tt var).freeze
       ALLOWED_INLINE_ATTRIBUTES = %w(datetime title href rel dir).freeze
       ALLOWED_BLOCK_ATTRIBUTES = ALLOWED_INLINE_ATTRIBUTES
 
