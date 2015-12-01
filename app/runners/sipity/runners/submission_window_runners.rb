@@ -10,6 +10,7 @@ module Sipity
         self.authorization_layer = :default
 
         def run(work_area_slug:, submission_window_slug:, processing_action_name:, attributes: {})
+          enforce_authentication!
           submission_window = repository.find_submission_window_by(slug: submission_window_slug, work_area: work_area_slug)
           form = repository.build_submission_window_processing_action_form(
             submission_window: submission_window, processing_action_name: processing_action_name, attributes: attributes,

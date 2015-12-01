@@ -57,7 +57,6 @@ module Sipity
       def initialize(context, options = {}, &block)
         super(context, &block)
         self.authentication_layer = options.fetch(:authentication_layer) { self.class.authentication_layer }
-        enforce_authentication!
         self.authorization_layer = options.fetch(:authorization_layer) { self.class.authorization_layer }
       end
 

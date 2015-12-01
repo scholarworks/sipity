@@ -8,6 +8,7 @@ module Sipity
       class AreasEtd < BaseRunner
         self.authentication_layer = :none
         def run(work_area_slug:)
+          enforce_authentication!
           work_area = repository.find_work_area_by(slug: work_area_slug)
           # REVIEW: Should I be building a presenter here? I believe this is
           #   perhaps a responsibility of the controller.

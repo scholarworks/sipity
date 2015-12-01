@@ -31,9 +31,12 @@ module Sipity
 
           context 'with valid data' do
             before do
-              allow(subject.send(:processing_action_form)).to receive(:submit).and_return(work)
+              allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
             end
-            its(:submit) { should eq(work) }
+            it 'register the redirect for the ingested work' do
+              expect(repository).to receive(:create_redirect_for).with(work: work, url: kind_of(String))
+              subject.submit
+            end
           end
         end
       end

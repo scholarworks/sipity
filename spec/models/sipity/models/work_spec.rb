@@ -20,6 +20,7 @@ module Sipity
 
       its(:to_s) { should eq(subject.title) }
 
+      it { should have_many :work_redirect_strategies }
       it { should respond_to :processing_strategy }
       it { should respond_to :processing_state }
       it { should respond_to :work_area }

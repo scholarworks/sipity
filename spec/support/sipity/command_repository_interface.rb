@@ -17,6 +17,10 @@ module Sipity
     def action_registers_subquery_builder(poly_type:, entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/redirect_queries.rb
+    def active_redirect_for(work_id:, as_of: Time.zone.today)
+    end
+
     # @see ./app/repositories/sipity/commands/work_commands.rb
     def amend_files_metadata(work:, user:, metadata: {})
     end
@@ -79,6 +83,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
+    end
+
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def create_redirect_for(work:, url:, as_of: Time.zone.today)
     end
 
     # @see ./app/repositories/sipity/commands/administrative_scheduled_action_commands.rb
@@ -327,6 +335,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def unregister_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
+    end
+
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def update_previous_open_ended_redirects_for(work:, as_of:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
