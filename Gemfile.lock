@@ -119,7 +119,7 @@ GEM
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
     addressable (2.3.8)
-    airbrake (4.3.3)
+    airbrake (4.3.4)
       builder
       multi_json
     arel (6.0.3)
