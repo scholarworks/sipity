@@ -215,7 +215,15 @@ module Sipity
                 ],[
                   ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['show'],
-                  ['creating_user', 'advisor', 'etd_reviewer'],
+                  ['creating_user', 'etd_reviewer'],
+                ],[
+                  ['new', 'under_advisor_review', 'advisor_changes_requested'],
+                  ['show'],
+                  ['advisor'],
+                ],[
+                  ['ready_for_cataloging'],
+                  ['show'],
+                  ['cataloger'],
                 ],[
                   ['new', 'advisor_changes_requested'],
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
