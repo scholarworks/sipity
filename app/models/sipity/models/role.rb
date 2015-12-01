@@ -27,31 +27,33 @@ module Sipity
         class_name: 'Sipity::Models::Notification::EmailRecipient'
       )
 
-      CREATING_USER = 'creating_user'.freeze
       ADVISOR = 'advisor'.freeze
+      BATCH_INGESTOR = 'batch_ingestor'.freeze
+      CATALOGER = 'cataloger'.freeze
+      CREATING_USER = 'creating_user'.freeze
+      DATA_OBSERVER = 'data_observer'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
+      SUBMISSION_WINDOW_VIEWER = 'submission_window_viewer'.freeze
       ULRA_REVIEWER = 'ulra_reviewer'.freeze
       WORK_AREA_MANAGER = 'work_area_manager'.freeze
       WORK_AREA_VIEWER = 'work_area_viewer'.freeze
       WORK_SUBMITTER = 'work_submitter'.freeze
-      SUBMISSION_WINDOW_VIEWER = 'submission_window_viewer'.freeze
-      CATALOGER = 'cataloger'.freeze
-      BATCH_INGESTOR = 'batch_ingestor'.freeze
 
       # As I don't have a means for assigning roles for a given processing type
       # I need a controlled vocabulary for roles.
       enum(
         name: {
-          CREATING_USER => CREATING_USER,
-          ETD_REVIEWER => ETD_REVIEWER,
           ADVISOR => ADVISOR,
-          WORK_AREA_MANAGER => WORK_AREA_MANAGER,
-          WORK_AREA_VIEWER => WORK_AREA_VIEWER,
-          WORK_SUBMITTER => WORK_SUBMITTER,
+          BATCH_INGESTOR => BATCH_INGESTOR,
+          CATALOGER => CATALOGER,
+          CREATING_USER => CREATING_USER,
+          DATA_OBSERVER => DATA_OBSERVER,
+          ETD_REVIEWER => ETD_REVIEWER,
           SUBMISSION_WINDOW_VIEWER => SUBMISSION_WINDOW_VIEWER,
           ULRA_REVIEWER => ULRA_REVIEWER,
-          CATALOGER => CATALOGER,
-          BATCH_INGESTOR => BATCH_INGESTOR
+          WORK_AREA_MANAGER => WORK_AREA_MANAGER,
+          WORK_AREA_VIEWER => WORK_AREA_VIEWER,
+          WORK_SUBMITTER => WORK_SUBMITTER
         }
       )
 

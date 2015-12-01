@@ -12,11 +12,13 @@ module Sipity
         PROCESSING_ROLE_NAMES = [
           Models::Role::CREATING_USER,
           Models::Role::ETD_REVIEWER,
+          Models::Role::DATA_OBSERVER,
           Models::Role::ADVISOR
         ]
         GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
         CATALOGERS = "Catalogers"
         ETD_INGESTORS = "ETD Ingestors"
+        DATA_ADMINISTRATORS = "Data Administrators"
 
         def self.call(**keywords)
           new(**keywords).call
@@ -56,7 +58,8 @@ module Sipity
                 'etd_reviewer',
                 'advisor',
                 'cataloger',
-                'batch_ingestor'
+                'batch_ingestor',
+                Models::Role::DATA_OBSERVER
               ].each do |role_name|
                 etd_strategy_roles[role_name] = find_or_initialize_or_create!(
                   context: etd_strategy,
@@ -85,6 +88,12 @@ module Sipity
                 context: batch_ingestor,
                 receiver: batch_ingestor.strategy_responsibilities,
                 actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: ETD_INGESTORS))
+              )
+
+              find_or_initialize_or_create!(
+                context: batch_ingestor,
+                receiver: batch_ingestor.strategy_responsibilities,
+                actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: DATA_ADMINISTRATORS))
               )
 
               etd_states = {}
@@ -215,7 +224,7 @@ module Sipity
                 ],[
                   ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['show'],
-                  ['creating_user', 'etd_reviewer'],
+                  ['creating_user', 'etd_reviewer', Models::Role::DATA_OBSERVER],
                 ],[
                   ['new', 'under_advisor_review', 'advisor_changes_requested'],
                   ['show'],
@@ -227,11 +236,11 @@ module Sipity
                 ],[
                   ['new', 'advisor_changes_requested'],
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
-                  ['creating_user', 'etd_reviewer']
+                  ['creating_user', 'etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['grad_school_changes_requested', 'under_grad_school_review'],
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
-                  ['etd_reviewer']
+                  ['etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['new'],
                   ['destroy'],
@@ -243,7 +252,7 @@ module Sipity
                 ],[
                   ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['debug'],
-                  ['etd_reviewer']
+                  ['etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['ready_for_cataloging'],
                   ['send_back_to_grad_school', 'cataloging_complete'],
