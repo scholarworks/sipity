@@ -41,7 +41,7 @@ module Sipity
         end
 
         it 'issues the :redirect callback if a redirect is present' do
-          expect(context.repository).to receive(:active_redirect_for).with(work: work).and_return(:a_redirect)
+          expect(context.repository).to receive(:active_redirect_for).with(work_id: work.id).and_return(:a_redirect)
           response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("REDIRECT", :a_redirect)
           expect(response).to eq([:redirect, :a_redirect])
@@ -77,7 +77,7 @@ module Sipity
         end
 
         it 'issues the :redirect callback if a redirect is present' do
-          expect(context.repository).to receive(:active_redirect_for).with(work: work).and_return(:a_redirect)
+          expect(context.repository).to receive(:active_redirect_for).with(work_id: work.id).and_return(:a_redirect)
           response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("REDIRECT", :a_redirect)
           expect(response).to eq([:redirect, :a_redirect])

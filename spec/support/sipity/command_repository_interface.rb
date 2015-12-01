@@ -18,7 +18,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/redirect_queries.rb
-    def active_redirect_for(work:, as_of: Time.zone.today)
+    def active_redirect_for(work_id:, as_of: Time.zone.today)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb

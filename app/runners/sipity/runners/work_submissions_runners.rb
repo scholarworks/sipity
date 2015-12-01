@@ -11,10 +11,10 @@ module Sipity
         self.authorization_layer = :default
 
         def run(work_id:, processing_action_name:, attributes: {})
-          work = repository.find_work_by(id: work_id)
-          active_redirect = repository.active_redirect_for(work: work)
+          active_redirect = repository.active_redirect_for(work_id: work_id)
           return callback(:redirect, active_redirect) if active_redirect.present?
           enforce_authentication!
+          work = repository.find_work_by(id: work_id)
           form = repository.build_work_submission_processing_action_form(
             work: work, processing_action_name: processing_action_name, attributes: attributes, requested_by: current_user
           )
