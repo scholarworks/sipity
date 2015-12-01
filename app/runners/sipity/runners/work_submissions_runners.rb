@@ -14,6 +14,7 @@ module Sipity
           work = repository.find_work_by(id: work_id)
           active_redirect = repository.active_redirect_for(work: work)
           return callback(:redirect, active_redirect) if active_redirect.present?
+          enforce_authentication!
           form = repository.build_work_submission_processing_action_form(
             work: work, processing_action_name: processing_action_name, attributes: attributes, requested_by: current_user
           )

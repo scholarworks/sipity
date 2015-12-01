@@ -5,6 +5,18 @@ module Sipity
   module Runners
     include RunnersSupport
     RSpec.describe BaseRunner do
+      before do
+        class MockRunner < BaseRunner
+          def run(*)
+            enforce_authentication!
+          end
+        end
+      end
+
+      after do
+        Sipity::Runners.send(:remove_const, :MockRunner)
+      end
+
       let(:context) { double('Context') }
       let(:my_options) { {} }
       subject { BaseRunner.new(context, my_options) }
@@ -32,7 +44,7 @@ module Sipity
         context 'with the :default authentication layer' do
           it 'will delegate authentication to the given context (because Devise)' do
             expect(context).to receive(:authenticate_user!).and_return(true)
-            BaseRunner.new(context, authentication_layer: :default)
+            MockRunner.new(context, authentication_layer: :default).run
           end
         end
 
@@ -42,16 +54,13 @@ module Sipity
           context 'and returns false' do
             it 'will raise an AuthenticationFailureError on instantiation' do
               expect(my_options[:authentication_layer]).to receive(:call).with(context).and_return(false)
-              expect { BaseRunner.new(context, my_options) }.to raise_error(Exceptions::AuthenticationFailureError)
+              expect { MockRunner.new(context, my_options).run }.to raise_error(Exceptions::AuthenticationFailureError)
             end
           end
+        end
 
-          context 'and returns true' do
-            it 'will successfully instantiate (and be ready to run)' do
-              expect(my_options[:authentication_layer]).to receive(:call).with(context).and_return(true)
-              expect(BaseRunner.new(context, my_options)).to be_a(BaseRunner)
-            end
-          end
+        it 'will successfully instantiate (and be ready to run) without attempting to enforce the authentication layer' do
+          expect(BaseRunner.new(context, my_options)).to be_a(BaseRunner)
         end
 
         context 'when the authentication layer is mis-configured' do
