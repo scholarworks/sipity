@@ -1,12 +1,14 @@
 require 'spec_helper'
 require 'sipity/queries/notification_queries'
+require 'sipity/parameters/notification_context_parameter'
 
 module Sipity
   module Queries
     RSpec.describe NotificationQueries, type: :isolated_repository_module do
 
       context '#email_notifications_for' do
-        let(:reason_for_notification) { 'action_is_taken' }
+        let(:reason_for_notification) { Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN }
+        let(:another_reason_for_notification) { Parameters::NotificationContextParameter::REASON_ENTERED_STATE }
         let(:scope_for_notification) { Models::Processing::StrategyAction.new(id: 1) }
         let(:separate_scope_for_notification) { Models::Processing::StrategyAction.new(id: 2) }
         let!(:email_not_to_send) { Models::Notification::Email.create!(method_name: 'not_to_send') }
@@ -21,13 +23,13 @@ module Sipity
           Models::Notification::NotifiableContext.create!(
             scope_for_notification_id: scope_for_notification.id,
             scope_for_notification_type: Conversions::ConvertToPolymorphicType.call(scope_for_notification),
-            reason_for_notification: "some_other_#{reason_for_notification}",
+            reason_for_notification: another_reason_for_notification,
             email: email_not_to_send
           )
           Models::Notification::NotifiableContext.create!(
             scope_for_notification_id: separate_scope_for_notification.id,
             scope_for_notification_type: Conversions::ConvertToPolymorphicType.call(separate_scope_for_notification),
-            reason_for_notification: "some_other_#{reason_for_notification}",
+            reason_for_notification: another_reason_for_notification,
             email: email_not_to_send
           )
         end

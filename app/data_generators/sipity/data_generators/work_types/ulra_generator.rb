@@ -1,4 +1,6 @@
 require 'active_support/core_ext/array/wrap'
+require 'sipity/parameters/notification_context_parameter'
+require 'sipity/data_generators/email_notification_generator'
 
 module Sipity
   module DataGenerators
@@ -11,6 +13,7 @@ module Sipity
         PROCESSING_ROLE_NAMES = [
           Models::Role::CREATING_USER,
           Models::Role::ADVISOR,
+          Models::Role::DATA_OBSERVER,
           Models::Role::ULRA_REVIEWER
         ]
         ULRA_REVIEW_COMMITTEE_GROUP_NAME = 'ULRA Review Committee'
@@ -51,36 +54,68 @@ module Sipity
         end
 
         def generate_state_diagram(processing_strategy:, initial_state:)
+          initial_state_name = initial_state.name.to_sym
           {
             show: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
-                under_review: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] }
+                initial_state_name => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
+                under_review: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
+                pending_advisor_completion: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
+                pending_student_completion: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
+                review_completed: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] }
               }
             },
             destroy: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'ulra_reviewer'] },
+                initial_state_name => { roles: ['creating_user', 'ulra_reviewer'] },
+                pending_advisor_completion: { roles: ['creating_user', 'ulra_reviewer'] },
+                pending_student_completion: { roles: ['creating_user', 'ulra_reviewer'] },
                 under_review: { roles: ['ulra_reviewer'] }
               }
             },
             plan_of_study: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: {
+                initial_state_name => { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] }
+              }
             },
             publisher_information: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: {
+                initial_state_name => { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] }
+              }
             },
             research_process: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: {
+                initial_state_name => { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] }
+              }
             },
             faculty_response: {
-              states: { initial_state.name.to_sym => { roles: ['advisor'] } }
+              states: {
+                initial_state_name => { roles: ['advisor'] },
+                pending_student_completion: { roles: ['advisor'] }
+              }
+            },
+            submit_student_portion: {
+              states: { initial_state_name => { roles: ['creating_user'] } },
+              transition_to: :pending_advisor_completion,
+              emails: { student_completed_their_portion_of_ulra: { to: 'advisor', cc: 'creating_user' } },
+              required_actions: [:plan_of_study, :publisher_information, :research_process]
+            },
+            submit_advisor_portion: {
+              states: { initial_state_name => { roles: ['advisor'] } },
+              transition_to: :pending_student_completion,
+              emails: { student_completed_their_portion_of_ulra: { to: 'creating_user', cc: 'advisor' } },
+              required_actions: [:faculty_response]
             },
             submit_for_review: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'advisor'] }
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['advisor'] }
               },
               transition_to: :under_review,
+              emails: { confirmation_of_submitted_to_ulra_committee: { to: 'creating_user', cc: 'advisor' } },
               required_actions: [:plan_of_study, :publisher_information, :research_process, :faculty_response]
             },
             submit_completed_review: {
@@ -119,6 +154,13 @@ module Sipity
                 prerequisite_action.update!(completion_required: true) unless prerequisite_action.completion_required?
                 Models::Processing::StrategyActionPrerequisite.find_or_create_by!(guarded_strategy_action: action, prerequisite_strategy_action: prerequisite_action)
               end
+            end
+
+            action_config.fetch(:emails, {}).each do |email_name, recipients|
+              EmailNotificationGenerator.call(
+                strategy: processing_strategy, email_name: email_name, recipients: recipients, scope: action_name,
+                reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
+              )
             end
           end
         end
