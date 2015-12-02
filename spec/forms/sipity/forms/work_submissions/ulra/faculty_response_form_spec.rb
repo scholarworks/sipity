@@ -7,7 +7,7 @@ module Sipity
     module WorkSubmissions
       module Ulra
         RSpec.describe FacultyResponseForm do
-          let(:work) { double }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           let(:user) { double('User') }
@@ -32,13 +32,32 @@ module Sipity
           it { should respond_to :nature_of_supervision }
           it { should_not be_persisted }
 
-          it 'will require course, supervising_semester and nature_of_supervision' do
-            subject.valid?
-            expect(subject.errors[:course]).to be_present
-            expect(subject.errors[:supervising_semester]).to be_present
-            expect(subject.errors[:nature_of_supervision]).to be_present
-            expect(subject.errors[:quality_of_research]).to be_present
-            expect(subject.errors[:use_of_library_resources]).to be_present
+          context 'validations' do
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:course) }
+            it { should validate_presence_of(:supervising_semester) }
+            it { should validate_presence_of(:nature_of_supervision) }
+            it { should validate_presence_of(:quality_of_research) }
+            it { should validate_presence_of(:use_of_library_resources) }
+
+            context '#supervising_semester' do
+              before { allow(repository).to receive(:available_supervising_semester_for).with(work: work).and_return(['A', 'B']) }
+              it 'will be invalid if some of the entries are not in the given array' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: ['A', 'C'] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to be_present
+              end
+              it 'will be invalid if no entries are given' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: [] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to be_present
+              end
+              it 'will be valid if the entries are all in the given array' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: ['A', 'B'] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to_not be_present
+              end
+            end
           end
 
           it 'will call attachments_from_work' do
@@ -80,7 +99,7 @@ module Sipity
               expect(subject.course).to eq 'test'
             end
             it 'will fall back on #course information associated with the work' do
-              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'course').and_return('hello')
+              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'course', cardinality: 1).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.course).to eq('hello')
             end
@@ -96,7 +115,7 @@ module Sipity
             end
             it 'will fall back on #nature_of_supervision information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'nature_of_supervision'
+                work: work, key: 'nature_of_supervision', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.nature_of_supervision).to eq('hello')
@@ -113,7 +132,7 @@ module Sipity
             end
             it 'will fall back on #supervising_semester information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'supervising_semester'
+                work: work, key: 'supervising_semester', cardinality: :many
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.supervising_semester).to eq(['hello'])
@@ -130,7 +149,7 @@ module Sipity
             end
             it 'will fall back on #quality_of_research information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'quality_of_research'
+                work: work, key: 'quality_of_research', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.quality_of_research).to eq('hello')
@@ -147,7 +166,7 @@ module Sipity
             end
             it 'will fall back on #use_of_library_resources information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'use_of_library_resources'
+                work: work, key: 'use_of_library_resources', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.use_of_library_resources).to eq('hello')

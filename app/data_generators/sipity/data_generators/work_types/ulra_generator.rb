@@ -73,7 +73,7 @@ module Sipity
             research_process: {
               states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
             },
-            faculty_comments: {
+            faculty_response: {
               states: { initial_state.name.to_sym => { roles: ['advisor'] } }
             },
             submit_for_review: {
