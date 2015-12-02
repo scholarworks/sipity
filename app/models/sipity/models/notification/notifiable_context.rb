@@ -10,7 +10,7 @@ module Sipity
       # StrategyState and Email.
       #
       # @example
-      #   strategy = Sipity::Models::Processing::StrategyState.new
+      #   strategy_state = Sipity::Models::Processing::StrategyState.new
       #   email = Sipity::Models::Notification::Email.new
       #
       #   Sipity::Models::Notification::NotifiableContext.new(
