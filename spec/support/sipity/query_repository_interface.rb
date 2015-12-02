@@ -38,7 +38,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
-    def available_supervising_semester_for(work:)
+    def available_supervising_semester_for(ending_year: Time.zone.today.year, **)
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
