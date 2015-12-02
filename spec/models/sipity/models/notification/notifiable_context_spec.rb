@@ -12,6 +12,11 @@ module Sipity
           its(:column_names) { should include('reason_for_notification') }
           its(:column_names) { should include('email_id') }
         end
+
+        subject { described_class.new }
+        it 'will raise an ArgumentError if you provide an invalid #reason_for_notification' do
+          expect { subject.reason_for_notification = '__incorrect_name__' }.to raise_error(ArgumentError)
+        end
       end
     end
   end

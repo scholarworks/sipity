@@ -1,3 +1,5 @@
+require 'sipity/parameters/notification_context_parameter'
+
 module Sipity
   module Models
     module Notification
@@ -22,6 +24,8 @@ module Sipity
         self.table_name = 'sipity_notification_notifiable_contexts'
         belongs_to :scope_for_notification, polymorphic: true
         belongs_to :email, class_name: 'Sipity::Models::Notification::Email'
+
+        enum(reason_for_notification: Parameters::NotificationContextParameter::VALID_REASONS_FOR_ENUM)
       end
     end
   end
