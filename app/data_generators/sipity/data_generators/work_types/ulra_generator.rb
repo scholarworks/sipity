@@ -51,34 +51,35 @@ module Sipity
         end
 
         def generate_state_diagram(processing_strategy:, initial_state:)
+          initial_state_name = initial_state.name.to_sym
           {
             show: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
+                initial_state_name => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
                 under_review: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] }
               }
             },
             destroy: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'ulra_reviewer'] },
+                initial_state_name => { roles: ['creating_user', 'ulra_reviewer'] },
                 under_review: { roles: ['ulra_reviewer'] }
               }
             },
             plan_of_study: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: { initial_state_name => { roles: ['creating_user'] } }
             },
             publisher_information: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: { initial_state_name => { roles: ['creating_user'] } }
             },
             research_process: {
-              states: { initial_state.name.to_sym => { roles: ['creating_user'] } }
+              states: { initial_state_name => { roles: ['creating_user'] } }
             },
             faculty_response: {
-              states: { initial_state.name.to_sym => { roles: ['advisor'] } }
+              states: { initial_state_name => { roles: ['advisor'] } }
             },
             submit_for_review: {
               states: {
-                initial_state.name.to_sym => { roles: ['creating_user', 'advisor'] }
+                initial_state_name => { roles: ['creating_user', 'advisor'] }
               },
               transition_to: :under_review,
               required_actions: [:plan_of_study, :publisher_information, :research_process, :faculty_response]
