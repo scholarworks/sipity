@@ -3,11 +3,20 @@ require 'active_support/core_ext/array/wrap'
 module Sipity
   # :nodoc:
   module DataGenerators
-    # Responsible for building the appropriate email generation
+    # Responsible for persisting the email configuration in a consistent manner.
+    # When does an email get sent, what is the template, and who receives those emails.
     class EmailNotificationGenerator
-      def self.call(**keywords)
-        new(**keywords).call
+      # @api public
+      def self.call(strategy:, reason:, scope:, email_name:, recipients:)
+        new(strategy: strategy, reason: reason, scope: scope, email_name: email_name, recipients: recipients).call
       end
+
+      # @param strategy [Sipity::Models::Processing::Strategy] The containing strategy for this email; Without the strategy the scope is
+      #                                                        meaningless
+      # @param reason [#to_s] Why is this email being sent? Did we enter a state? Was an action taken?
+      # @param scope [Object] The specific name (or object) of associated with the reason (i.e. "submit_for_review" would be the scope)
+      # @param email_name [#to_s] The template/method name for sending emails
+      # @param recipients [Hash] With keys of :to, :cc, :bcc
       def initialize(strategy:, reason:, scope:, email_name:, recipients:)
         self.strategy = strategy
         self.reason = reason
