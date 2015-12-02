@@ -55,13 +55,15 @@ module Sipity
           private
 
           def initialize_non_attachment_attributes(attributes)
-            self.course = attributes.fetch(:course) { retrieve_from_work(key: 'course') }
-            self.nature_of_supervision = attributes.fetch(:nature_of_supervision) { retrieve_from_work(key: 'nature_of_supervision') }
-            self.supervising_semester = attributes.fetch(:supervising_semester) { retrieve_from_work(key: 'supervising_semester') }
-            self.quality_of_research = attributes.fetch(:quality_of_research) { retrieve_from_work(key: 'quality_of_research') }
-            self.use_of_library_resources = attributes.fetch(:use_of_library_resources) do
-              retrieve_from_work(key: 'use_of_library_resources')
-            end
+            self.course = retrieve(key: :course, from: attributes, cardinality: 1)
+            self.nature_of_supervision = retrieve(key: :nature_of_supervision, from: attributes, cardinality: 1)
+            self.supervising_semester = retrieve(key: :supervising_semester, from: attributes, cardinality: :many)
+            self.quality_of_research = retrieve(key: :quality_of_research, from: attributes, cardinality: 1)
+            self.use_of_library_resources = retrieve(key: :use_of_library_resources, from: attributes, cardinality: 1)
+          end
+
+          def retrieve(key:, from:, cardinality: 1)
+            from.fetch(key) { repository.work_attribute_values_for(work: work, key: key.to_s, cardinality: cardinality) }
           end
 
           def supervising_semester=(values)
@@ -86,10 +88,6 @@ module Sipity
 
           def update_use_of_library_resources
             repository.update_work_attribute_values!(work: work, key: 'use_of_library_resources', values: use_of_library_resources)
-          end
-
-          def retrieve_from_work(key:)
-            repository.work_attribute_values_for(work: work, key: key)
           end
 
           def to_array_without_empty_values(value)

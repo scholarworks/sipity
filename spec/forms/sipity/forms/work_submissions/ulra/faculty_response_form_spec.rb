@@ -78,7 +78,7 @@ module Sipity
               expect(subject.course).to eq 'test'
             end
             it 'will fall back on #course information associated with the work' do
-              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'course').and_return('hello')
+              expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'course', cardinality: 1).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.course).to eq('hello')
             end
@@ -94,7 +94,7 @@ module Sipity
             end
             it 'will fall back on #nature_of_supervision information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'nature_of_supervision'
+                work: work, key: 'nature_of_supervision', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.nature_of_supervision).to eq('hello')
@@ -111,7 +111,7 @@ module Sipity
             end
             it 'will fall back on #supervising_semester information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'supervising_semester'
+                work: work, key: 'supervising_semester', cardinality: :many
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.supervising_semester).to eq(['hello'])
@@ -128,7 +128,7 @@ module Sipity
             end
             it 'will fall back on #quality_of_research information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'quality_of_research'
+                work: work, key: 'quality_of_research', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.quality_of_research).to eq('hello')
@@ -145,7 +145,7 @@ module Sipity
             end
             it 'will fall back on #use_of_library_resources information associated with the work' do
               expect(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'use_of_library_resources'
+                work: work, key: 'use_of_library_resources', cardinality: 1
               ).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.use_of_library_resources).to eq('hello')
