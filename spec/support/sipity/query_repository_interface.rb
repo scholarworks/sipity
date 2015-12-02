@@ -37,6 +37,10 @@ module Sipity
     def authorized_for_processing?(user:, entity:, action:)
     end
 
+    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
+    def available_supervising_semester_for(work:)
+    end
+
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
     def build_account_profile_form(requested_by:, attributes:)
     end

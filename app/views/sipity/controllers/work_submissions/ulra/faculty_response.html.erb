@@ -17,11 +17,7 @@
       </legend>
       <%= f.input :course, label: t('sipity/decorators/entitiy_enrichments.course'), input_html: { class: 'form-control' }  %>
       <%= f.input :nature_of_supervision, label: t('sipity/decorators/entitiy_enrichments.nature_of_supervision'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
-      <% #TODO %>
-      <% # Change the input field to 2 dropdown box %>
-      <% # one for semester and one for year %>
-      <%= f.input :supervising_semester, label: t('sipity/decorators/entitiy_enrichments.supervising_semester'), as: :multi_value, input_html: { class: 'form-control' }  %>
-
+      <%= f.input :supervising_semester, as: :radio_buttons, collection: view_object.supervising_semester_for_select, input_html: { class: 'form-control' }  %>
     </fieldset>
 
     <fieldset class="panel-body">

@@ -26,6 +26,9 @@ module Sipity
         returning_value = returning_value.first if cardinality == :one || cardinality == 1
         returning_value
       end
+
+      def available_supervising_semester_for(work:)
+      end
     end
   end
 end

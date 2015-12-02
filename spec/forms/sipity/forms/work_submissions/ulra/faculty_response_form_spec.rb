@@ -7,7 +7,7 @@ module Sipity
     module WorkSubmissions
       module Ulra
         RSpec.describe FacultyResponseForm do
-          let(:work) { double }
+          let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           let(:user) { double('User') }
@@ -32,12 +32,33 @@ module Sipity
           it { should respond_to :nature_of_supervision }
           it { should_not be_persisted }
 
-          include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:course) }
-          it { should validate_presence_of(:supervising_semester) }
-          it { should validate_presence_of(:nature_of_supervision) }
-          it { should validate_presence_of(:quality_of_research) }
-          it { should validate_presence_of(:use_of_library_resources) }
+          context 'validations' do
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:course) }
+            it { should validate_presence_of(:supervising_semester) }
+            it { should validate_presence_of(:nature_of_supervision) }
+            it { should validate_presence_of(:quality_of_research) }
+            it { should validate_presence_of(:use_of_library_resources) }
+
+            context '#supervising_semester' do
+              before { allow(repository).to receive(:available_supervising_semester_for).with(work: work).and_return(['A', 'B']) }
+              it 'will be invalid if some of the entries are not in the given array' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: ['A', 'C'] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to be_present
+              end
+              it 'will be invalid if no entries are given' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: [] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to be_present
+              end
+              it 'will be valid if the entries are all in the given array' do
+                subject = described_class.new(keywords.merge(attributes: { supervising_semester: ['A', 'B'] }))
+                subject.valid?
+                expect(subject.errors[:supervising_semester]).to_not be_present
+              end
+            end
+          end
 
           it 'will call attachments_from_work' do
             expect(repository).to receive(:work_attachments).with(work: work).and_return([double, double])

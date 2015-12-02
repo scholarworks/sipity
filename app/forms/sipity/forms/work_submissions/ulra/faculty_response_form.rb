@@ -21,6 +21,11 @@ module Sipity
             self.attachments_extension = build_attachments(attributes.slice(:files, :attachments_attributes))
           end
 
+          def available_supervising_semester
+            Array.wrap(repository.available_supervising_semester_for(work: work))
+          end
+          alias_method :supervising_semester_for_select, :available_supervising_semester
+
           private
 
           attr_accessor :attachments_extension
@@ -39,7 +44,7 @@ module Sipity
           validates :nature_of_supervision, presence: true
           validates :quality_of_research, presence: true
           validates :use_of_library_resources, presence: true
-          validates :supervising_semester, presence: true
+          validates :supervising_semester, presence: true, inclusion: { in: :available_supervising_semester }
 
           def submit
             processing_action_form.submit do
