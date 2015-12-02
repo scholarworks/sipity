@@ -32,14 +32,12 @@ module Sipity
           it { should respond_to :nature_of_supervision }
           it { should_not be_persisted }
 
-          it 'will require course, supervising_semester and nature_of_supervision' do
-            subject.valid?
-            expect(subject.errors[:course]).to be_present
-            expect(subject.errors[:supervising_semester]).to be_present
-            expect(subject.errors[:nature_of_supervision]).to be_present
-            expect(subject.errors[:quality_of_research]).to be_present
-            expect(subject.errors[:use_of_library_resources]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:course) }
+          it { should validate_presence_of(:supervising_semester) }
+          it { should validate_presence_of(:nature_of_supervision) }
+          it { should validate_presence_of(:quality_of_research) }
+          it { should validate_presence_of(:use_of_library_resources) }
 
           it 'will call attachments_from_work' do
             expect(repository).to receive(:work_attachments).with(work: work).and_return([double, double])
