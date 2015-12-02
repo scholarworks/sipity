@@ -1,4 +1,6 @@
 require 'active_support/core_ext/array/wrap'
+require 'sipity/parameters/notification_context_parameter'
+require 'sipity/data_generators/email_notification_generator'
 
 module Sipity
   module DataGenerators
@@ -98,11 +100,13 @@ module Sipity
             submit_student_portion: {
               states: { initial_state_name => { roles: ['creating_user'] } },
               transition_to: :pending_advisor_completion,
+              emails: { student_completed_their_portion_of_ulra: { to: 'advisor', cc: 'creating_user' } },
               required_actions: [:plan_of_study, :publisher_information, :research_process]
             },
             submit_advisor_portion: {
               states: { initial_state_name => { roles: ['advisor'] } },
               transition_to: :pending_student_completion,
+              emails: { student_completed_their_portion_of_ulra: { to: 'creating_user', cc: 'advisor' } },
               required_actions: [:faculty_response]
             },
             submit_for_review: {
@@ -111,6 +115,7 @@ module Sipity
                 pending_advisor_completion: { roles: ['advisor'] }
               },
               transition_to: :under_review,
+              emails: { confirmation_of_submitted_to_ulra_committee: { to: 'creating_user', cc: 'advisor' } },
               required_actions: [:plan_of_study, :publisher_information, :research_process, :faculty_response]
             },
             submit_completed_review: {
@@ -149,6 +154,13 @@ module Sipity
                 prerequisite_action.update!(completion_required: true) unless prerequisite_action.completion_required?
                 Models::Processing::StrategyActionPrerequisite.find_or_create_by!(guarded_strategy_action: action, prerequisite_strategy_action: prerequisite_action)
               end
+            end
+
+            action_config.fetch(:emails, {}).each do |email_name, recipients|
+              EmailNotificationGenerator.call(
+                strategy: processing_strategy, email_name: email_name, recipients: recipients, scope: action_name,
+                reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
+              )
             end
           end
         end
