@@ -169,6 +169,7 @@ RSpec.describe 'power converters' do
     [
       { to_convert: 'Hello World', expected: 'HelloWorld' },
       { to_convert: 'HelloWorld', expected: 'HelloWorld' },
+      { to_convert: 'HelloWorlds', expected: 'HelloWorld' },
       { to_convert: nil, expected: '' },
       { to_convert: 'hello World/Somebody', expected: 'HelloWorldSomebody' }
     ].each do |scenario|
