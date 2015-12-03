@@ -71,6 +71,7 @@ MethodLength:
     - 'spec/support/site_prism_support.rb'
     - 'app/services/sipity/guard_interface_expectation.rb'
     - 'app/services/sipity/services/notifier.rb'
+    - 'app/mailers/sipity/mailer_builder.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
@@ -125,6 +126,7 @@ Metrics/AbcSize:
      - app/forms/sipity/forms/work_enrichments/attach_form.rb
      - 'app/repositories/sipity/commands/processing_commands.rb'
      - app/forms/sipity/forms/processing_form.rb
+     - app/mailers/sipity/mailer_builder.rb
 Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: false

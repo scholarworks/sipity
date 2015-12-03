@@ -11,6 +11,13 @@ module Sipity
     class RuntimeError < ::RuntimeError
     end
 
+    # When you have misconfigured the email options
+    class EmailAsOptionInvalidError < RuntimeError
+      def initialize(as:, valid_list:)
+        super("Invalid :as option for email notifier, #{as.inspect} is not in #{valid_list.inspect}")
+      end
+    end
+
     # When passing parameters through the job layer, passing complex objects
     # can cause problems; In that we don't want to pass state across the async
     # boundary.

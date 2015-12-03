@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'sipity/mailers/etd_mailer'
 module Sipity
   module Mailers
-    describe EtdMailer do
+    describe UlraMailer do
       before do
         ActionMailer::Base.delivery_method = :test
         ActionMailer::Base.perform_deliveries = true
@@ -18,16 +18,12 @@ module Sipity
       let(:user) { User.new(name: 'User') }
       let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
       let(:to) { 'test@example.com' }
-      let(:comment) { Models::Processing::Comment.new(actor: actor, entity: processing_entity) }
-      let(:action) do
-        Models::Processing::EntityActionRegister.new(entity: processing_entity, on_behalf_of_actor: actor, created_at: Time.zone.now)
-      end
 
       described_class.emails.each do |email|
         context "##{email.method_name}" do
           it 'should send an email' do
-            processing_entity
-            described_class.send(email.method_name, entity: send(email.as), to: to).deliver_now
+            processing_entity # making sure its declared
+            described_class.send(email.method_name, entity: work, to: to).deliver_now
             expect(ActionMailer::Base.deliveries.count).to eq(1)
           end
         end
