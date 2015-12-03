@@ -1,7 +1,8 @@
 require 'sipity/exceptions'
 
 module Sipity
-  # The name space for mailers
+  # Sipity::Mailers are responsible for sending out emails. This module
+  # provides the interface for finding the correct mailer for a given context.
   module Mailers
     # @api public
     #
