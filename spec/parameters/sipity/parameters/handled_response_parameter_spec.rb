@@ -21,7 +21,7 @@ module Sipity
       end
 
       it 'will yield each additional view path slug' do
-        expect { |b| subject.with_each_additional_view_path_slug(&b) }.to yield_successive_args('', work_area.slug)
+        expect { |b| subject.with_each_additional_view_path_slug(&b) }.to yield_successive_args('', 'core', work_area.slug)
       end
 
       it 'will use the object\'s template if one is assigned' do

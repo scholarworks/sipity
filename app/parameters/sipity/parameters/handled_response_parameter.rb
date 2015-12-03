@@ -48,8 +48,14 @@ module Sipity
         end
       end
 
+      # Inject these view path slugs into the rendering sequence. In doing so we
+      # are able to use specific partials and presenters but fallback on more
+      # generic presenters.
+      #
+      # @note Order is very important; The values yielded are with increased specificity.
       def with_each_additional_view_path_slug
-        yield('') # Important if we want to degrade to a fall-back.
+        yield('') # Can this be deprecated?
+        yield('core') # I want to move things up to core
         yield(work_area.slug) # Important if we want to leverage a specific template
       end
 
