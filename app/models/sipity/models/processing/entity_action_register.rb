@@ -6,6 +6,10 @@ module Sipity
       #
       # In some cases, it is possible that some actions are not available to
       # take if other events have not been triggered.
+      #
+      # @note That we have both entity and subject; Often they will represent the same
+      #   thing. But, in the case of a comment, the entity will be the proxy for
+      #   the work in which a comment was made; and the subject will be the comment.
       class EntityActionRegister < ActiveRecord::Base
         self.table_name = 'sipity_processing_entity_action_registers'
 
@@ -14,11 +18,6 @@ module Sipity
         belongs_to :requested_by_actor, class_name: 'Sipity::Models::Processing::Actor'
         belongs_to :on_behalf_of_actor, class_name: 'Sipity::Models::Processing::Actor'
         belongs_to :subject, polymorphic: true
-
-        # Lazy validation. All objects going forward will require this. And I'll
-        # move that requirement into the database after we have a migration.
-        validates :subject_id, presence: true
-        validates :subject_type, presence: true
 
         alias_method :to_processing_action, :strategy_action
         alias_method :to_processing_entity, :entity

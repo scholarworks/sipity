@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151202183937) do
+ActiveRecord::Schema.define(version: 20151203141423) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -248,8 +248,8 @@ ActiveRecord::Schema.define(version: 20151202183937) do
     t.datetime "updated_at",                        null: false
     t.integer  "requested_by_actor_id", limit: 4,   null: false
     t.integer  "on_behalf_of_actor_id", limit: 4,   null: false
-    t.integer  "subject_id",            limit: 4
-    t.string   "subject_type",          limit: 255
+    t.string   "subject_id",            limit: 255, null: false
+    t.string   "subject_type",          limit: 255, null: false
   end
 
   add_index "sipity_processing_entity_action_registers", ["strategy_action_id", "entity_id", "on_behalf_of_actor_id"], name: "sipity_processing_entity_action_registers_on_behalf", using: :btree
