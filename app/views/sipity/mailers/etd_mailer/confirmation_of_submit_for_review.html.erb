@@ -17,6 +17,6 @@ Your <%= 'director'.pluralize(@entity.reviewers.count) %> may then log in to the
 
 <p>Please note: You will be unable to edit the document or the record while your submission is undergoing review. As your document completes each review stage, you will receive an email notice to apprise you of the status.</p>
 
-<%= render partial: 'etd_submission_assistance' %>
-<%= render partial: 'grad_school_email_signature' %>
-<%= render(partial: 'action_in_the_inbox', object: @entity) %>
+<%= render partial: 'sipity/mailers/etd_mailer/etd_submission_assistance' %>
+<%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>

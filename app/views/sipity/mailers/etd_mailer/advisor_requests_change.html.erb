@@ -4,8 +4,8 @@
   Your director will then be prompted to review the changes.
 </p>
 
-<%= render partial: 'comment', object: @entity %>
+<%= render partial: 'sipity/mailers/etd_mailer/comment', object: @entity %>
 
-<%= render partial: 'etd_submission_assistance' %>
-<%= render partial: 'grad_school_email_signature' %>
-<%= render(partial: 'action_in_the_inbox', object: @entity) %>
+<%= render partial: 'sipity/mailers/etd_mailer/etd_submission_assistance' %>
+<%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>
