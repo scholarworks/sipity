@@ -5,22 +5,17 @@ module Sipity
       module_function
 
       # Providing a singular end point for sending messages
-      def deliver(options = {})
-        notificaton_container = build_notification_container(options.slice(:notificaton_container, :notification))
-        deliver_email(notificaton_container: notificaton_container, notification: options.fetch(:notification), options: options)
+      def deliver(entity:, notification:, email_service_finder: default_email_service_finder, **options)
+        notificaton_container = email_service_finder.call(entity: entity, notification: notification)
+        deliver_email(notificaton_container: notificaton_container, notification: notification, options: options, entity: entity)
       end
 
-      def build_notification_container(notification:, notificaton_container: Sipity::Mailers::EmailNotifier)
-        unless notificaton_container.respond_to?(notification)
-          fail Exceptions::NotificationNotFoundError, name: notification, container: notificaton_container
-        end
-        notificaton_container
+      def default_email_service_finder
+        Sipity::Mailers.method(:find_mailer_for)
       end
-      private_class_method :build_notification_container
 
-      def deliver_email(notificaton_container:, notification:, options:)
+      def deliver_email(notificaton_container:, notification:, entity:, options:)
         to, cc, bcc = options.fetch(:to), options.fetch(:cc, []), options.fetch(:bcc, [])
-        entity = options.fetch(:entity)
         return notify_aibrake_of_no_sender if to.empty?
         email_notifier = notificaton_container.public_send(notification, entity: entity, to: to, cc: cc, bcc: bcc)
         email_notifier.deliver_now

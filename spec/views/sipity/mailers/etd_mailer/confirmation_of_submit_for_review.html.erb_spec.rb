@@ -2,7 +2,7 @@ require 'rails_helper'
 
 # This behaves very much as an integration test. Its fragile but is helping me
 # make sure that I have rendered a proper email.
-RSpec.describe 'sipity/mailers/email_notifier/confirmation_of_submit_for_review.html.erb', type: :view do
+RSpec.describe 'sipity/mailers/etd_mailer/confirmation_of_submit_for_review.html.erb', type: :view do
   let(:user) { double }
   let(:work) { Sipity::Models::Work.new(id: 1, title: 'Hello', work_type: 'doctoral_dissertation') }
   let(:repository) { Sipity::CommandRepository.new }
@@ -16,7 +16,7 @@ RSpec.describe 'sipity/mailers/email_notifier/confirmation_of_submit_for_review.
     expect(decorator.accessible_objects.size).to eq(2)
 
     assign(:entity, decorator)
-    render template: 'sipity/mailers/email_notifier/confirmation_of_submit_for_review'
+    render template: 'sipity/mailers/etd_mailer/confirmation_of_submit_for_review'
     expect(rendered).to be_a(String)
   end
 end

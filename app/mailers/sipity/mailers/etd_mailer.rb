@@ -1,8 +1,8 @@
 module Sipity
   module Mailers
-    # This class is responsible for creating/delivering email
-    #
-    class EmailNotifier < ActionMailer::Base
+    # This class is responsible for creating/delivering emails associated with
+    # the ETD work area.
+    class EtdMailer < ActionMailer::Base
       default from: Figaro.env.default_email_from, return_path: Figaro.env.default_email_return_path
       layout 'mailer'
 

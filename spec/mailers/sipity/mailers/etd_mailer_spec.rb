@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'sipity/mailers/email_notifier'
+require 'sipity/mailers/etd_mailer'
 module Sipity
   module Mailers
-    describe EmailNotifier do
+    describe EtdMailer do
       before do
         ActionMailer::Base.delivery_method = :test
         ActionMailer::Base.perform_deliveries = true
@@ -19,7 +19,7 @@ module Sipity
       let(:actor) { Models::Processing::Actor.new(proxy_for: user) }
       let(:to) { 'test@example.com' }
 
-      EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |work_notification_method_name|
+      described_class::NOTIFCATION_METHOD_NAMES_FOR_WORK.each do |work_notification_method_name|
         context "##{work_notification_method_name}" do
           it 'should send an email' do
             processing_entity # making sure its declared
@@ -29,7 +29,7 @@ module Sipity
         end
       end
 
-      EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |email_method|
+      described_class::NOTIFCATION_METHOD_NAMES_FOR_PROCESSING_COMMENTS.each do |email_method|
         context "##{email_method}" do
           let(:processing_comment) { Models::Processing::Comment.new(actor: actor, entity: processing_entity) }
           it 'should send an email' do
@@ -39,7 +39,7 @@ module Sipity
         end
       end
 
-      EmailNotifier::NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION.each do |email_method|
+      described_class::NOTIFCATION_METHOD_NAMES_FOR_REGISTERED_ACTION.each do |email_method|
         context "##{email_method}" do
           # YOWZA! This is a lot of collaborators!
           let(:registered_action) do
