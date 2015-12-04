@@ -3,6 +3,7 @@ module Sipity
     module WorkAreas
       # Responsible for generating the work types within the ETD.
       class UlraGenerator < BaseGenerator
+        SLUG = 'ulra'.freeze
       end
     end
   end
