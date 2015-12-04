@@ -85,6 +85,10 @@ module Sipity
     def find_current_comments_for(entity:)
     end
 
+    # @see ./app/repositories/sipity/queries/submission_window_queries.rb
+    def find_open_submission_windows_by(work_area:, as_of: Time.zone.now)
+    end
+
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def find_or_initialize_attachments_by(work:, pid:)
     end
