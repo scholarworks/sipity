@@ -1,6 +1,10 @@
 require 'active_model/validator'
 
 # Responsible for validating that a submission window is open for starting submissions
+#
+# @note This validator shares logic with Sipity::Queries::SubmissionWindowQueries#find_open_submission_windows_by
+#
+# @see Sipity::Queries::SubmissionWindowQueries#find_open_submission_windows_by
 class OpenForStartingSubmissionsValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     as_of = Time.zone.now
