@@ -12,6 +12,10 @@ module Sipity
       # @param work_area [#to_work_area]
       # @param as_of [Time]
       # @return ActiveRecord::Relation records from Models::SubmissionWindow
+      #
+      ## @note This query shares logic with OpenForStartingSubmissionsValidator#validate_each
+      #
+      # @see OpenForStartingSubmissionsValidator
       def find_open_submission_windows_by(work_area:, as_of: Time.zone.now)
         work_area = PowerConverter.convert_to_work_area(work_area)
         submission_windows = Models::SubmissionWindow.arel_table
