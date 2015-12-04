@@ -17,6 +17,7 @@ module Sipity
     include Queries::RedirectQueries
     include Queries::SimpleControlledVocabularyQueries
     include Queries::SubmissionWindowQueries
+    include Queries::UlraQueries
     include Queries::WorkAreaQueries
     include Queries::WorkQueries
   end

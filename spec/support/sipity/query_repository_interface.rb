@@ -37,7 +37,7 @@ module Sipity
     def authorized_for_processing?(user:, entity:, action:)
     end
 
-    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
+    # @see ./app/repositories/sipity/queries/ulra_queries.rb
     def available_supervising_semester_for(ending_year: Time.zone.today.year, **)
     end
 
