@@ -61,7 +61,7 @@ module Sipity
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_codes }
-          validates :submission_window, presence: true
+          validates :submission_window, presence: true, open_for_starting_submissions: true
           validates :requested_by, presence: true
 
           def form_path
