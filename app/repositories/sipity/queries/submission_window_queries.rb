@@ -7,6 +7,23 @@ module Sipity
         Models::SubmissionWindow.find_by!(slug: slug, work_area_id: work_area.id)
       end
 
+      # @api public
+      #
+      # @param work_area [#to_work_area]
+      # @param as_of [Time]
+      # @return ActiveRecord::Relation records from Models::SubmissionWindow
+      def find_open_submission_windows_by(work_area:, as_of: Time.zone.now)
+        work_area = PowerConverter.convert_to_work_area(work_area)
+        submission_windows = Models::SubmissionWindow.arel_table
+        Models::SubmissionWindow.order(:slug).where(work_area_id: work_area.id).where(
+          submission_windows[:open_for_starting_submissions_at].lteq(as_of).and(
+            submission_windows[:closed_for_starting_submissions_at].eq(nil).or(
+              submission_windows[:closed_for_starting_submissions_at].gt(as_of)
+            )
+          )
+        )
+      end
+
       def build_submission_window_processing_action_form(submission_window:, processing_action_name:, **keywords)
         # Leveraging an obvious inflection point, namely each work area may well
         # have its own form module.
