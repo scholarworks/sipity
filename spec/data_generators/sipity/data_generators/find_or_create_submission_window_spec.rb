@@ -13,7 +13,7 @@ module Sipity
         allow(Sipity::DataGenerators::WorkTypes::EtdGenerator).to receive(:call)
       end
       it 'will create a submission window for the given work area' do
-        expect { subject.call(slug: slug, work_area: work_area) }.
+        expect { subject.call(slug: slug, work_area: work_area, open_for_starting_submissions_at: Time.zone.now) }.
           to change(Models::SubmissionWindow, :count).by(1)
       end
       it 'will yield the created submission window' do

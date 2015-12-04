@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203141423) do
+ActiveRecord::Schema.define(version: 20151204140143) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -395,13 +395,18 @@ ActiveRecord::Schema.define(version: 20151203141423) do
   add_index "sipity_submission_window_work_types", ["work_type_id"], name: "idx_sipity_submission_window_work_types_work_type_id", using: :btree
 
   create_table "sipity_submission_windows", force: :cascade do |t|
-    t.integer  "work_area_id", limit: 4,   null: false
-    t.string   "slug",         limit: 255, null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "work_area_id",                       limit: 4,   null: false
+    t.string   "slug",                               limit: 255, null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.datetime "open_for_starting_submissions_at"
+    t.datetime "closed_for_starting_submissions_at"
   end
 
+  add_index "sipity_submission_windows", ["closed_for_starting_submissions_at"], name: "idx_submission_windows_closed_surrogate", using: :btree
+  add_index "sipity_submission_windows", ["open_for_starting_submissions_at"], name: "idx_submission_window_opening_at", using: :btree
   add_index "sipity_submission_windows", ["slug"], name: "index_sipity_submission_windows_on_slug", using: :btree
+  add_index "sipity_submission_windows", ["work_area_id", "open_for_starting_submissions_at"], name: "idx_submission_windows_open_surrogate", using: :btree
   add_index "sipity_submission_windows", ["work_area_id", "slug"], name: "index_sipity_submission_windows_on_work_area_id_and_slug", unique: true, using: :btree
   add_index "sipity_submission_windows", ["work_area_id"], name: "index_sipity_submission_windows_on_work_area_id", using: :btree
 

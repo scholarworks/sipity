@@ -9,14 +9,16 @@ module Sipity
         new(**keywords).call(&block)
       end
 
-      def initialize(slug:, work_area:)
+      def initialize(slug:, work_area:, open_for_starting_submissions_at: nil, closed_for_starting_submissions_at: nil)
         self.slug = slug
         self.work_area = work_area
+        self.open_for_starting_submissions_at = open_for_starting_submissions_at
+        self.closed_for_starting_submissions_at = closed_for_starting_submissions_at
       end
 
       private
 
-      attr_accessor :slug
+      attr_accessor :slug, :open_for_starting_submissions_at, :closed_for_starting_submissions_at
       attr_reader :submission_window, :work_area
 
       def work_area=(input)
@@ -35,7 +37,11 @@ module Sipity
       private
 
       def create_submission_window!
-        Models::SubmissionWindow.find_or_create_by!(work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug))
+        Models::SubmissionWindow.find_or_create_by!(
+          work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug),
+          open_for_starting_submissions_at: open_for_starting_submissions_at,
+          closed_for_starting_submissions_at: closed_for_starting_submissions_at
+        )
       end
 
       def build_submission_window_workflow!

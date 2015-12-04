@@ -68,47 +68,19 @@ module Sipity
             end
           end
 
-          context 'validations for' do
+          context 'validations' do
             let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
             subject { described_class.new(keywords) }
-            context '#title' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:title]).to be_present
-              end
-            end
-            context '#submission_window' do
-              it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(keywords.merge(submission_window: nil)) }.to raise_error(PowerConverter::ConversionError)
-              end
-            end
-            context '#access_rights_answer' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:access_rights_answer]).to be_present
-              end
-              it 'must be in the given list' do
-                subject = described_class.new(keywords.merge(attributes: { access_rights_answer: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:access_rights_answer]).to be_present
-              end
-            end
-            context '#work_type' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_type]).to be_present
-              end
-            end
-            context '#work_publication_strategy' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'must be from the approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:title) }
+            it { should validate_presence_of(:access_rights_answer) }
+            it { should validate_inclusion_of(:access_rights_answer).in_array(subject.send(:possible_access_right_codes)) }
+            it { should validate_presence_of(:work_publication_strategy) }
+            it { should validate_inclusion_of(:work_publication_strategy).in_array(subject.send(:possible_work_publication_strategies)) }
+            it { should validate_presence_of(:work_type) }
+            it 'should validate submission_window_is_open' do
+              expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
+              subject.valid?
             end
           end
 

@@ -23,6 +23,7 @@ AllCops:
     - 'tmp/**/*'
     - 'spec/support/sipity/command_repository_interface.rb'
     - 'spec/support/sipity/query_repository_interface.rb'
+    - 'app/validators/open_for_starting_submissions_validator.rb'
   RunRailsCops: true
 
 ModuleLength:
