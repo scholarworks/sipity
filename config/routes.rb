@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root to: redirect('/areas/etd')
 
   constraints Sipity::Constraints::UnauthenticatedConstraint do
-    get 'areas/etd', to: 'sipity/controllers/visitors#areas_etd'
+    get 'areas/:work_area_slug', to: 'sipity/controllers/visitors#work_area'
   end
 
   ##############################################################################
