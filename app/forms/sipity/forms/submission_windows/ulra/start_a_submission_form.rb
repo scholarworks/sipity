@@ -57,17 +57,38 @@ module Sipity
           validates :advisor_netid, presence: true, net_id: true
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true
-          validates :submission_window, presence: true
+          validates :submission_window, presence: true, open_for_starting_submissions: true
+          validates :requested_by, presence: true
 
           def submit
             return false unless valid?
+            save
+          end
+
+          private
+
+          def save
             create_the_work do |work|
               persist_work_publication_strategy
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
-              repository.log_event!(entity: work, requested_by: requested_by, event_name: event_name)
+              register_actions(work: work)
             end
+          end
+
+          def register_actions(work:)
+            # TODO: See Etd::StartASubmissionForm for common behavior
+            #
+            # Your read that right, register actions on both the work and submission window.
+            # This form crosses a conceptual boundary. I need permission within
+            # the submission window to create a work. However, I want to
+            # notify the creating user of the work of the action they've taken.
+            repository.register_action_taken_on_entity(entity: work, action: processing_action_name, requested_by: requested_by)
+            repository.register_action_taken_on_entity(
+              entity: submission_window, action: processing_action_name, requested_by: requested_by
+            )
+            repository.log_event!(entity: work, requested_by: requested_by, event_name: event_name)
           end
 
           alias_method :to_work_area, :work_area
