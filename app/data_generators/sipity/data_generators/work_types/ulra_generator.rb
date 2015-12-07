@@ -63,6 +63,15 @@ module Sipity
                 faculty_assigned_for_ulra_submission: { to: 'advisor' }
               }
             },
+            debug: {
+              states: {
+                initial_state_name => { roles: ['ulra_reviewer'] },
+                under_review: { roles: ['ulra_reviewer'] },
+                pending_advisor_completion: { roles: ['ulra_reviewer'] },
+                pending_student_completion: { roles: ['ulra_reviewer'] },
+                review_completed: { roles: ['ulra_reviewer'] }
+              }
+            },
             show: {
               states: {
                 initial_state_name => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
