@@ -11,7 +11,7 @@ module Sipity
         collaborators_table = Models::Collaborator.arel_table
         Models::Collaborator.where(
           collaborators_table[:work_id].eq(work.id).and(
-            collaborators_table[:id].not_in(collaborators.flat_map(&:id))
+            collaborators_table[:id].not_in(Array.wrap(collaborators).flat_map(&:id))
           )
         ).destroy_all
 
