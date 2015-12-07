@@ -517,7 +517,7 @@ GEM
     scss-lint (0.38.0)
       rainbow (~> 2.0)
       sass (~> 3.4.1)
-    seed_dump (3.2.2)
+    seed_dump (3.2.3)
       activerecord (~> 4)
       activesupport (~> 4)
     selenium-webdriver (2.48.1)
