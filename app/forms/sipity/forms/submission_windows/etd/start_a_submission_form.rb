@@ -98,6 +98,8 @@ module Sipity
           end
 
           def register_actions
+            # TODO: See Ulra::StartASubmissionForm for common behavior
+            #
             # Your read that right, register actions on both the work and submission window.
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to

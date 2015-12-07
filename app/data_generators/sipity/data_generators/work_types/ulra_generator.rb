@@ -56,6 +56,10 @@ module Sipity
         def generate_state_diagram(processing_strategy:, initial_state:)
           initial_state_name = initial_state.name.to_sym
           {
+            start_a_submission: {
+              transition_to: initial_state_name,
+              emails: { confirmation_of_ulra_submission_started: { to: 'creating_user' } }
+            },
             show: {
               states: {
                 initial_state_name => { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
@@ -124,9 +128,8 @@ module Sipity
             }
           }.each do |action_name, action_config|
             action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: action_name.to_s)
-
             # Strategy State
-            action_config.fetch(:states).each do |state_name, state_config|
+            action_config.fetch(:states, {}).each do |state_name, state_config|
               strategy_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: state_name.to_s)
               PermissionGenerator.call(
                 actors: [],

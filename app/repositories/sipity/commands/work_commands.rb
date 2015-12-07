@@ -11,7 +11,7 @@ module Sipity
         collaborators_table = Models::Collaborator.arel_table
         Models::Collaborator.where(
           collaborators_table[:work_id].eq(work.id).and(
-            collaborators_table[:id].not_in(collaborators.flat_map(&:id))
+            collaborators_table[:id].not_in(Array.wrap(collaborators).flat_map(&:id))
           )
         ).destroy_all
 
@@ -28,6 +28,8 @@ module Sipity
           next unless collaborator.responsible_for_review?
           create_sipity_user_from(netid: collaborator.netid, email: collaborator.email) do |user|
             change_processing_actor_proxy(from_proxy: collaborator, to_proxy: user)
+            # TODO: This cannot be the assumed role for the :acting_as; I wonder if it would make sense
+            # to dilineate roles on the contributor and roles in the system?
             repository.grant_permission_for!(actors: user, entity: work, acting_as: Models::Role::ADVISOR)
           end
         end

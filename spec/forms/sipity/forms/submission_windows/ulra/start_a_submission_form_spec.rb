@@ -64,55 +64,19 @@ module Sipity
             end
           end
 
-          context 'validations for' do
-            let(:attributes) { { title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
+          context 'validations' do
+            let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
             subject { described_class.new(keywords) }
-            context '#title' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:title]).to be_present
-              end
-            end
-            context '#advisor_netid' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:advisor_netid]).to be_present
-              end
-            end
-            context '#award_category' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:award_category]).to be_present
-              end
-            end
-            context '#submission_window' do
-              it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(requested_by: user, repository: repository, attributes: attributes) }.
-                  to raise_error(ArgumentError)
-              end
-            end
-            context '#work_type' do
-              it 'must be present' do
-                subject = described_class.new(keywords.merge(attributes: { work_type: nil }))
-                subject.valid?
-                expect(subject.errors[:work_type]).to be_present
-              end
-            end
-            context '#work_publication_strategy' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'must be from the approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'will be valid if from approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: 'valid_work_publication_strategy' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to_not be_present
-              end
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:title) }
+            it { should validate_presence_of(:work_publication_strategy) }
+            it { should validate_inclusion_of(:work_publication_strategy).in_array(subject.send(:possible_work_publication_strategies)) }
+            it { should validate_presence_of(:advisor_netid) }
+            it { should validate_presence_of(:award_category) }
+            it { should validate_presence_of(:work_type) }
+            it 'should validate submission_window_is_open' do
+              expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
+              subject.valid?
             end
           end
 
@@ -137,7 +101,7 @@ module Sipity
               {
                 title: "This is my title",
                 work_publication_strategy: 'do_not_know',
-                advisor_net_id: 'dummy_id',
+                advisor_netid: 'dummy_id',
                 award_category: 'some_category'
               }
             end
@@ -155,12 +119,14 @@ module Sipity
             end
             context 'with valid data' do
               let(:user) { User.new(id: '123') }
-              let(:work) { double }
+              let(:work) { Sipity::Models::Work.new(id: 1) }
               before do
-                expect(subject).to receive(:valid?).and_return(true)
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(repository).to receive(:create_work!).and_return(work)
+                allow(repository).to receive(:register_action_taken_on_entity)
               end
-              it 'will return the work having created the work, added the attributes,
-              assigned collaborators, assigned permission, and loggged the event' do
+
+              it 'will return the work' do
                 expect(repository).to receive(:create_work!).and_return(work)
                 response = subject.submit
                 expect(response).to eq(work)
@@ -174,6 +140,31 @@ module Sipity
               it 'will grant creating user permission for' do
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
                 subject.submit
+              end
+
+              it 'will also register the action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).with(
+                  entity: work, action: subject.processing_action_name, requested_by: user
+                ).and_call_original
+                subject.submit
+              end
+
+              it 'will register the action on the submission window' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will assiassign_collaborators_to the given work' do
+                expect(repository).to receive(:assign_collaborators_to).with(
+                  work: work, collaborators: kind_of(Models::Collaborator)
+                ).and_call_original
+                subject.submit
+              end
+
+              it 'will use a valid collaborator' do
+                expect(subject.send(:build_collaborator, work: work)).to be_valid
               end
             end
           end
