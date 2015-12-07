@@ -82,7 +82,8 @@ module Sipity
             # HACK: I don't like the name as netid nor do I like the role as RESEARCH_DIRECTOR_ROLE, however, I'm pressed for time so
             # I'm making a compromise. The alternative is a larger systemic change that will need to come later.
             Models::Collaborator.new(
-              work: work, name: advisor_netid, netid: advisor_netid, role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE
+              work: work, name: advisor_netid, netid: advisor_netid, role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE,
+              responsible_for_review: true
             )
           end
 
@@ -119,13 +120,7 @@ module Sipity
           end
 
           def create_the_work
-            @work = repository.create_work!(
-              submission_window: submission_window,
-              title: title,
-              advisor_netid: advisor_netid,
-              award_category: award_category,
-              work_type: work_type
-            )
+            @work = repository.create_work!(submission_window: submission_window, title: title, work_type: work_type)
             yield(@work)
             @work
           end

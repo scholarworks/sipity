@@ -164,7 +164,9 @@ module Sipity
               end
 
               it 'will use a valid collaborator' do
-                expect(subject.send(:build_collaborator, work: work)).to be_valid
+                collaborator = subject.send(:build_collaborator, work: work)
+                expect(collaborator).to be_valid
+                expect(collaborator).to be_responsible_for_review
               end
             end
           end
