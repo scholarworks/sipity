@@ -92,25 +92,25 @@ module Sipity
             plan_of_study: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_advisor_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] }
               }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_advisor_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] }
               }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_advisor_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] }
               }
             },
             faculty_response: {
               states: {
                 initial_state_name => { roles: ['advisor'] },
-                pending_student_completion: { roles: ['advisor'] }
+                pending_advisor_completion: { roles: ['advisor'] }
               }
             },
             submit_student_portion: {
