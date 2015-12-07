@@ -92,24 +92,28 @@ module Sipity
             plan_of_study: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_student_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_faculty_completion: { roles: ['creating_user'] }
               }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_student_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_faculty_completion: { roles: ['creating_user'] }
               }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
-                pending_student_completion: { roles: ['creating_user'] }
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_faculty_completion: { roles: ['creating_user'] }
               }
             },
             faculty_response: {
               states: {
                 initial_state_name => { roles: ['advisor'] },
+                pending_student_completion: { roles: ['advisor'] },
                 pending_advisor_completion: { roles: ['advisor'] }
               }
             },
@@ -122,7 +126,7 @@ module Sipity
             submit_advisor_portion: {
               states: { initial_state_name => { roles: ['advisor'] } },
               transition_to: :pending_student_completion,
-              emails: { student_completed_their_portion_of_ulra: { to: 'creating_user', cc: 'advisor' } },
+              emails: { faculty_completed_their_portion_of_ulra: { to: 'creating_user', cc: 'advisor' } },
               required_actions: [:faculty_response]
             },
             submit_for_review: {
