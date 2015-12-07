@@ -58,7 +58,10 @@ module Sipity
           {
             start_a_submission: {
               transition_to: initial_state_name,
-              emails: { confirmation_of_ulra_submission_started: { to: 'creating_user' } }
+              emails: {
+                confirmation_of_ulra_submission_started: { to: 'creating_user' },
+                faculty_assigned_for_ulra_submission: { to: 'advisor' }
+              }
             },
             show: {
               states: {
