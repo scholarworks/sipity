@@ -101,7 +101,7 @@ module Sipity
               {
                 title: "This is my title",
                 work_publication_strategy: 'do_not_know',
-                advisor_net_id: 'dummy_id',
+                advisor_netid: 'dummy_id',
                 award_category: 'some_category'
               }
             end
@@ -119,9 +119,9 @@ module Sipity
             end
             context 'with valid data' do
               let(:user) { User.new(id: '123') }
-              let(:work) { double('Work') }
+              let(:work) { Sipity::Models::Work.new(id: 1) }
               before do
-                expect(subject).to receive(:valid?).and_return(true)
+                allow(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
                 allow(repository).to receive(:register_action_taken_on_entity)
               end
@@ -154,6 +154,17 @@ module Sipity
                   with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
                   and_call_original
                 subject.submit
+              end
+
+              it 'will assiassign_collaborators_to the given work' do
+                expect(repository).to receive(:assign_collaborators_to).with(
+                  work: work, collaborators: kind_of(Models::Collaborator)
+                ).and_call_original
+                subject.submit
+              end
+
+              it 'will use a valid collaborator' do
+                expect(subject.send(:build_collaborator, work: work)).to be_valid
               end
             end
           end

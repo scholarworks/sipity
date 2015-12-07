@@ -73,8 +73,17 @@ module Sipity
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+              repository.assign_collaborators_to(work: work, collaborators: build_collaborator(work: work))
               register_actions(work: work)
             end
+          end
+
+          def build_collaborator(work:)
+            # HACK: I don't like the name as netid nor do I like the role as RESEARCH_DIRECTOR_ROLE, however, I'm pressed for time so
+            # I'm making a compromise. The alternative is a larger systemic change that will need to come later.
+            Models::Collaborator.new(
+              work: work, name: advisor_netid, netid: advisor_netid, role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE
+            )
           end
 
           def register_actions(work:)
