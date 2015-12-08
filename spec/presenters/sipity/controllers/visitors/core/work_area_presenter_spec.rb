@@ -30,6 +30,52 @@ module Sipity
             its(:work_area) { should eq(work_area) }
           end
 
+          context '#translate' do
+            it 'will delegate to the translator' do
+              identifier = double
+              expect(translator).to receive(:call).
+                with(scope: "processing_actions.show", subject: work_area, object: identifier, predicate: :label)
+              subject.translate(identifier)
+            end
+          end
+
+          it 'exposes submission_windows' do
+            expect(PowerConverter).to receive(:convert).with(work_area, to: :work_area).and_return(work_area)
+            expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
+              with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
+            subject.submission_windows
+          end
+
+          it 'exposes submission_windows?' do
+            expect(subject).to receive(:submission_windows).and_return([1])
+            expect(subject.submission_windows?).to be_truthy
+          end
+
+          it 'exposes processing_state' do
+            allow(work_area).to receive(:processing_state).and_return('Hello')
+            expect(subject.processing_state).to eq('Hello')
+          end
+
+          it 'sets the work_area (which is private)' do
+            expect(subject.send(:work_area)).to eq(work_area)
+          end
+
+          it 'will compose actions for the submission window' do
+            expect(ComposableElements::ProcessingActionsComposer).to receive(:new).
+              with(user: current_user, entity: work_area, repository: repository)
+            subject
+          end
+
+          it { should delegate_method(:name).to(:work_area) }
+          it { should delegate_method(:resourceful_actions).to(:processing_actions) }
+          it { should delegate_method(:resourceful_actions?).to(:processing_actions) }
+          it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+          it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
+          it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+          it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+
+          its(:to_work_area) { should eq(subject.send(:work_area)) }
+
           it 'will initialize the presumptive submission window' do
             expect(repository).to receive(:find_submission_window_by).
               with(work_area: work_area, slug: described_class::SUBMISSION_WINDOW_SLUG_THAT_IS_HARD_CODED).and_return(submission_window)

@@ -1,3 +1,5 @@
+require 'sipity/controllers/visitors/core/work_area_presenter'
+
 module Sipity
   module Controllers
     module Visitors

@@ -1,4 +1,5 @@
 require 'active_support/core_ext/array/wrap'
+require 'sipity/controllers/visitors/core/work_area_presenter'
 
 module Sipity
   module Controllers
@@ -9,7 +10,7 @@ module Sipity
         # TODO: Consider this presenter as a more complicated composition of
         #   both work area and submission window; That is more reflective of
         #   the reality.
-        class ShowPresenter < WorkAreas::ShowPresenter
+        class ShowPresenter < Controllers::Visitors::Core::WorkAreaPresenter
           presents :work_area
           def initialize(*args)
             super
