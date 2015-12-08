@@ -22,14 +22,20 @@ module Sipity
           new(**keywords).call
         end
 
-        def initialize(work_area:, submission_window:, **keywords)
+        def initialize(work_area:, submission_window:, state_machine_generator: default_state_machine_generator, **keywords)
           self.submission_window = submission_window
           self.work_area = work_area
+          self.state_machine_generator = state_machine_generator
         end
 
         private
 
-        attr_accessor :submission_window, :work_area
+        attr_accessor :submission_window, :work_area, :state_machine_generator
+
+        def default_state_machine_generator
+          require 'sipity/data_generators/state_machine_generator'
+          DataGenerators::StateMachineGenerator.method(:call)
+        end
 
         public
 
@@ -171,52 +177,7 @@ module Sipity
               transition_to: :review_completed
             }
           }.each do |action_name, action_config|
-            action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: action_name.to_s)
-            if action_config.key?(:attributes)
-              action_attributes = action_config.fetch(:attributes).stringify_keys
-              existing_action_attributes = action.attributes.slice(*action_attributes.keys)
-              unless action_attributes == existing_action_attributes
-                action.update_attributes!(action_attributes)
-              end
-            end
-
-            # Strategy State
-            action_config.fetch(:states, {}).each do |state_name, state_config|
-              strategy_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: state_name.to_s)
-              PermissionGenerator.call(
-                actors: [],
-                roles: state_config.fetch(:roles),
-                strategy_state: strategy_state,
-                action_names: action_name,
-                strategy: processing_strategy
-              )
-            end
-
-            # Prerequisites
-            if action_config.key?(:transition_to)
-              transition_to_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: action_config.fetch(:transition_to).to_s)
-              if action.resulting_strategy_state != transition_to_state
-                action.resulting_strategy_state = transition_to_state
-                action.action_type = action.default_action_type
-                action.save!
-              end
-            end
-
-            # Required Actions
-            if action_config.key?(:required_actions)
-              Array.wrap(action_config.fetch(:required_actions)).each do |required_action_name|
-                prerequisite_action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: required_action_name)
-                prerequisite_action.update!(completion_required: true) unless prerequisite_action.completion_required?
-                Models::Processing::StrategyActionPrerequisite.find_or_create_by!(guarded_strategy_action: action, prerequisite_strategy_action: prerequisite_action)
-              end
-            end
-
-            action_config.fetch(:emails, {}).each do |email_name, recipients|
-              EmailNotificationGenerator.call(
-                strategy: processing_strategy, email_name: email_name, recipients: recipients, scope: action_name,
-                reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
-              )
-            end
+            state_machine_generator.call(processing_strategy: processing_strategy, action_name: action_name, config: action_config)
           end
         end
       end
