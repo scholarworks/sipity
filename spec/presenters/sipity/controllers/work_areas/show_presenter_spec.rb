@@ -32,6 +32,7 @@ module Sipity
         end
 
         it 'exposes submission_windows' do
+          expect(PowerConverter).to receive(:convert).with(work_area, to: :work_area).and_call_original
           expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
             with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
           subject.submission_windows
