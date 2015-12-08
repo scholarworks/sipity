@@ -98,7 +98,7 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] },
                 under_review: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 1 }
             },
@@ -106,7 +106,7 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] },
                 under_review: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 2 }
             },
@@ -114,21 +114,21 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 3 }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 5 }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 3 }
             },
             faculty_response: {
