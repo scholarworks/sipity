@@ -21,6 +21,22 @@ module Sipity
           end
 
           its(:initialize_submission_window_variables!) { should be_nil }
+
+          context 'when there are open submission windows' do
+            let(:submission_window) { double }
+            before do
+              allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return(submission_window)
+            end
+            its(:submission_windows) { should eq([submission_window]) }
+            its(:submission_windows?) { should eq(true) }
+          end
+          context 'when there are NO open submission windows' do
+            before do
+              allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return(nil)
+            end
+            its(:submission_windows) { should eq([]) }
+            its(:submission_windows?) { should eq(false) }
+          end
         end
       end
     end

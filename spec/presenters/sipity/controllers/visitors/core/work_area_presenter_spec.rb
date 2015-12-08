@@ -32,18 +32,6 @@ module Sipity
             end
           end
 
-          it 'exposes submission_windows' do
-            expect(PowerConverter).to receive(:convert).with(work_area, to: :work_area).and_return(work_area)
-            expect(repository).to receive(:scope_proxied_objects_for_the_user_and_proxy_for_type).
-              with(user: current_user, proxy_for_type: Models::SubmissionWindow, where: { work_area: work_area })
-            subject.submission_windows
-          end
-
-          it 'exposes submission_windows?' do
-            expect(subject).to receive(:submission_windows).and_return([1])
-            expect(subject.submission_windows?).to be_truthy
-          end
-
           it 'exposes processing_state' do
             allow(work_area).to receive(:processing_state).and_return('Hello')
             expect(subject.processing_state).to eq('Hello')

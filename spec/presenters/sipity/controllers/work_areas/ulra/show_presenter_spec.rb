@@ -13,6 +13,22 @@ module Sipity
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
           it { should be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
+
+          context 'when there are open submission windows' do
+            let(:submission_window) { double }
+            before do
+              allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return(submission_window)
+            end
+            its(:submission_windows) { should eq([submission_window]) }
+            its(:submission_windows?) { should eq(true) }
+          end
+          context 'when there are NO open submission windows' do
+            before do
+              allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return([])
+            end
+            its(:submission_windows) { should eq([]) }
+            its(:submission_windows?) { should eq(false) }
+          end
         end
       end
     end

@@ -35,19 +35,6 @@ module Sipity
             work_area
           end
 
-          def submission_windows
-            # Because the work_area quacks like a work_area, at least until it is
-            # used in an ActiveRecord query. Then all things fall apart.
-            @submission_windows ||= repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-              user: current_user, proxy_for_type: Models::SubmissionWindow,
-              where: { work_area: PowerConverter.convert(work_area, to: :work_area) }
-            )
-          end
-
-          def submission_windows?
-            submission_windows.present?
-          end
-
           delegate(
             :resourceful_actions, :resourceful_actions?,
             :enrichment_actions, :enrichment_actions?,
