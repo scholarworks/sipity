@@ -42,10 +42,15 @@ module Sipity
         def associate_work_types_and_their_state_machines_with_submission_window!
           WORK_TYPE_NAMES.each do |work_type_name|
             DataGenerators::FindOrCreateWorkType.call(name: work_type_name) do |work_type, processing_strategy, initial_state|
+              assign_submission_window_work_type(work_type: work_type)
               assign_ulra_review_committee_to_ulra_role_for(processing_strategy: processing_strategy)
               generate_state_diagram(processing_strategy: processing_strategy, initial_state: initial_state)
             end
           end
+        end
+
+        def assign_submission_window_work_type(work_type:)
+          Models::SubmissionWindowWorkType.find_or_create_by!(work_type: work_type, submission_window: submission_window)
         end
 
         def assign_ulra_review_committee_to_ulra_role_for(processing_strategy:)
