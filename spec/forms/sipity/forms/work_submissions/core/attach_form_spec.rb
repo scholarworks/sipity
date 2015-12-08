@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/work_submissions/etd/attach_form'
+require 'sipity/forms/work_submissions/core/attach_form'
 
 module Sipity
   module Forms
     module WorkSubmissions
-      module Etd
+      module Core
         RSpec.describe AttachForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
