@@ -29,18 +29,10 @@ module Sipity
 
           public
 
-          def translate(identifier, scope: default_translation_scope, predicate: :label)
-            translator.call(scope: scope, subject: work_area, object: identifier, predicate: predicate)
-          end
-
           delegate :name, to: :work_area
 
           def to_work_area
             work_area
-          end
-
-          def start_a_submission_path
-            File.join(PowerConverter.convert(submission_window, to: :processing_action_root_path), start_a_submission_action.name)
           end
 
           def filter_form(dom_class: 'form-inline', method: 'get', &block)
@@ -53,6 +45,15 @@ module Sipity
 
           def paginate_works
             paginate(works)
+          end
+
+          private def search_criteria
+            @search_criteria ||= begin
+              Parameters::SearchCriteriaForWorksParameter.new(
+                user: current_user, processing_state: work_area.processing_state, page: work_area.page, order: work_area.order,
+                repository: repository, work_area: work_area
+              )
+            end
           end
 
           def submission_windows
@@ -75,29 +76,33 @@ module Sipity
             to: :processing_actions
           )
 
-          def processing_state
-            work_area.processing_state.to_s
-          end
-
           private
-
-          def default_translation_scope
-            "processing_actions.show"
-          end
 
           attr_accessor :translator
 
-          def default_translator
+          private def default_translator
             Controllers::TranslationAssistant
           end
 
-          def compose_processing_actions
+          private def default_translation_scope
+            "processing_actions.show"
+          end
+
+          public def translate(identifier, scope: default_translation_scope, predicate: :label)
+            translator.call(scope: scope, subject: work_area, object: identifier, predicate: predicate)
+          end
+
+          private def compose_processing_actions
             ComposableElements::ProcessingActionsComposer.new(repository: repository, user: current_user, entity: work_area)
+          end
+
+          public def processing_state
+            work_area.processing_state.to_s
           end
 
           attr_accessor :repository
 
-          def default_repository
+          private def default_repository
             QueryRepository.new
           end
 
@@ -107,7 +112,7 @@ module Sipity
           SUBMISSION_WINDOW_SLUG_THAT_IS_HARD_CODED = 'start'.freeze
 
           include Conversions::ConvertToProcessingAction
-          def initialize_submission_window_variables!
+          private def initialize_submission_window_variables!
             # Critical assumption about ETD structure. This is not a long-term
             # solution, but one to get things out the door.
             self.submission_window = repository.find_submission_window_by(
@@ -116,16 +121,11 @@ module Sipity
             self.start_a_submission_action = convert_to_processing_action(ACTION_NAME_THAT_IS_HARD_CODED, scope: submission_window)
           end
 
-          def search_criteria
-            @search_criteria ||= begin
-              Parameters::SearchCriteriaForWorksParameter.new(
-                user: current_user, processing_state: work_area.processing_state, page: work_area.page, order: work_area.order,
-                repository: repository, work_area: work_area
-              )
-            end
-          end
-
           attr_accessor :submission_window, :start_a_submission_action
+
+          public def start_a_submission_path
+            File.join(PowerConverter.convert(submission_window, to: :processing_action_root_path), start_a_submission_action.name)
+          end
         end
       end
     end
