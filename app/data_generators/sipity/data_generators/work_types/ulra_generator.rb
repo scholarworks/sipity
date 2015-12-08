@@ -70,7 +70,7 @@ module Sipity
                 pending_advisor_completion: { roles: ['ulra_reviewer'] },
                 pending_student_completion: { roles: ['ulra_reviewer'] },
                 review_completed: { roles: ['ulra_reviewer'] }
-              }
+              }, attributes: { presentation_sequence: 2 }
             },
             show: {
               states: {
@@ -79,7 +79,7 @@ module Sipity
                 pending_advisor_completion: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
                 pending_student_completion: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] },
                 review_completed: { roles: ['creating_user', 'advisor', 'ulra_reviewer'] }
-              }
+              }, attributes: { presentation_sequence: 1 }
             },
             destroy: {
               states: {
@@ -87,28 +87,36 @@ module Sipity
                 pending_advisor_completion: { roles: ['creating_user', 'ulra_reviewer'] },
                 pending_student_completion: { roles: ['creating_user', 'ulra_reviewer'] },
                 under_review: { roles: ['ulra_reviewer'] }
-              }
+              }, attributes: { presentation_sequence: 3 }
+            },
+            attach: {
+              states: {
+                initial_state_name => { roles: ['creating_user'] },
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_faculty_completion: { roles: ['creating_user'] },
+                under_review: { roles: ['creating_user'] }
+              }, attributes: { presentation_sequence: 1 }
             },
             plan_of_study: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_faculty_completion: { roles: ['creating_user'] }
-              }
+              }, attributes: { presentation_sequence: 2 }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_faculty_completion: { roles: ['creating_user'] }
-              }
+              }, attributes: { presentation_sequence: 4 }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_faculty_completion: { roles: ['creating_user'] }
-              }
+              }, attributes: { presentation_sequence: 3 }
             },
             faculty_response: {
               states: {
@@ -121,7 +129,7 @@ module Sipity
               states: { initial_state_name => { roles: ['creating_user'] } },
               transition_to: :pending_advisor_completion,
               emails: { student_completed_their_portion_of_ulra: { to: 'advisor', cc: 'creating_user' } },
-              required_actions: [:plan_of_study, :publisher_information, :research_process]
+              required_actions: [:attach, :plan_of_study, :publisher_information, :research_process]
             },
             submit_advisor_portion: {
               states: { initial_state_name => { roles: ['advisor'] } },
@@ -136,7 +144,7 @@ module Sipity
               },
               transition_to: :under_review,
               emails: { confirmation_of_submitted_to_ulra_committee: { to: 'creating_user', cc: 'advisor' } },
-              required_actions: [:plan_of_study, :publisher_information, :research_process, :faculty_response]
+              required_actions: [:attach, :plan_of_study, :publisher_information, :research_process, :faculty_response]
             },
             submit_completed_review: {
               states: { under_review: { roles: 'ulra_reviewer' } },
@@ -144,6 +152,14 @@ module Sipity
             }
           }.each do |action_name, action_config|
             action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: action_name.to_s)
+            if action_config.key?(:attributes)
+              action_attributes = action_config.fetch(:attributes).stringify_keys
+              existing_action_attributes = action.attributes.slice(*action_attributes.keys)
+              unless action_attributes == existing_action_attributes
+                action.update_attributes!(action_attributes)
+              end
+            end
+
             # Strategy State
             action_config.fetch(:states, {}).each do |state_name, state_config|
               strategy_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: state_name.to_s)
