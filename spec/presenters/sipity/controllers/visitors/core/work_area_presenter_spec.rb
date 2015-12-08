@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'sipity/controllers/work_areas/core/show_presenter'
+require 'sipity/controllers/visitors/core/work_area_presenter'
 
 module Sipity
   module Controllers
@@ -21,13 +21,6 @@ module Sipity
           before do
             allow(repository).to receive(:find_submission_window_by).and_return(submission_window)
             allow_any_instance_of(described_class).to receive(:convert_to_processing_action).and_return(processing_action)
-          end
-
-          context '#search_criteria' do
-            subject do
-              described_class.new(context, work_area: work_area, repository: repository, translator: translator).send(:search_criteria)
-            end
-            its(:work_area) { should eq(work_area) }
           end
 
           context '#translate' do
@@ -92,24 +85,6 @@ module Sipity
             allow(PowerConverter).to receive(:convert).and_call_original
             expect(PowerConverter).to receive(:convert).with(submission_window, to: :processing_action_root_path).and_return('/hello/dolly')
             expect(subject.start_a_submission_path).to eq("/hello/dolly/#{processing_action.name}")
-          end
-
-          it 'will render a filter form' do
-            expect(context).to receive(:form_tag).and_yield
-            expect { |b| subject.filter_form(&b) }.to yield_control
-          end
-
-          it 'exposes works as an enumerable' do
-            expect(repository).to receive(:find_works_via_search).with(criteria: kind_of(Parameters::SearchCriteriaForWorksParameter)).
-              and_call_original
-            subject.works
-          end
-
-          it 'will paginate the works' do
-            works = double
-            allow(repository).to receive(:find_works_via_search).and_return(works)
-            expect(context).to receive(:paginate).with(works)
-            subject.paginate_works
           end
         end
       end

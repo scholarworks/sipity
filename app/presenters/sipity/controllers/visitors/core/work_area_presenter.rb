@@ -35,27 +35,6 @@ module Sipity
             work_area
           end
 
-          def filter_form(dom_class: 'form-inline', method: 'get', &block)
-            form_tag(request.path, method: method, class: dom_class, &block)
-          end
-
-          def works
-            @works ||= repository.find_works_via_search(criteria: search_criteria)
-          end
-
-          def paginate_works
-            paginate(works)
-          end
-
-          private def search_criteria
-            @search_criteria ||= begin
-              Parameters::SearchCriteriaForWorksParameter.new(
-                user: current_user, processing_state: work_area.processing_state, page: work_area.page, order: work_area.order,
-                repository: repository, work_area: work_area
-              )
-            end
-          end
-
           def submission_windows
             # Because the work_area quacks like a work_area, at least until it is
             # used in an ActiveRecord query. Then all things fall apart.
