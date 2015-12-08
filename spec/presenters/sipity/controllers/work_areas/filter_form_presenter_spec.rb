@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'sipity/controllers/filter_form_presenter'
+require 'sipity/controllers/work_areas/filter_form_presenter'
 
-RSpec.describe Sipity::Controllers::FilterFormPresenter do
+RSpec.describe Sipity::Controllers::WorkAreas::FilterFormPresenter do
   let(:context) { PresenterHelper::ContextWithForm.new }
   let(:work_area) do
     double(
