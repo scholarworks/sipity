@@ -1,11 +1,11 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/work_submissions/etd/attach_form'
+require 'sipity/forms/work_submissions/ulra/attach_form'
 
 module Sipity
   module Forms
     module WorkSubmissions
-      module Etd
+      module Ulra
         RSpec.describe AttachForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
@@ -20,27 +20,23 @@ module Sipity
           it { should respond_to :attachments }
           it { should respond_to :representative_attachment_id }
           it { should respond_to :files }
+          it { should respond_to :attached_files_completion_state }
 
-          context 'validations' do
-            it 'will require a work' do
-              subject = described_class.new(keywords.merge(work: nil))
-              subject.valid?
-              expect(subject.errors[:work]).to_not be_empty
+          context 'values from work' do
+            before do
+              allow(repository).to receive(:work_attribute_values_for).with(
+                work: work, key: 'attached_files_completion_state', cardinality: 1
+              ).and_return('complete')
             end
-
-            it 'will have #representative_for_attachment_id' do
-              representative_for_attachment = [double('Attachment')]
-              expect(repository).to receive(:representative_attachment_for).
-                with(work: work).and_return(representative_for_attachment)
-              subject.representative_attachment_id
-            end
-
-            it 'will have #attachments' do
-              attachment = [double('Attachment')]
-              expect(repository).to receive(:work_attachments).and_return(attachment)
-              expect(subject.attachments).to_not be_empty
-            end
+            its(:attached_files_completion_state_from_work) { should eq('complete') }
+            its(:attached_files_completion_state) { should eq('complete') }
           end
+
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:work) }
+          it { should validate_presence_of(:requested_by) }
+          it { should validate_presence_of(:attached_files_completion_state) }
+          it { should validate_inclusion_of(:attached_files_completion_state).in_array(subject.possible_attached_files_completion_states) }
 
           context 'assigning attachments attributes' do
             let(:user) { double('User') }
