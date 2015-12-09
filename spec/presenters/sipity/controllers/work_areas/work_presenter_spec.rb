@@ -15,6 +15,7 @@ module Sipity
         its(:creator_names_to_sentence) { should be_a(String) }
         its(:program_names_to_sentence) { should be_a(String) }
         its(:work_type) { should eq('Doctoral dissertation') }
+        it { should delegate_method(:submission_window).to(:work) }
 
         it 'will delegate path to PowerConverter' do
           expect(PowerConverter).to receive(:convert).with(work, to: :access_path).and_return('/the/path')

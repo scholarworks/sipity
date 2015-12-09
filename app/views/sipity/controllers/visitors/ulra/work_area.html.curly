@@ -10,7 +10,7 @@
   <div class="row">
     <div class="col-xs-12">
       {{*submission_windows}}
-        <a href="{{slug}}" class="btn btn-primary">Start a Submission for {{ slug }}</a>
+        <a href="{{path_to_start_a_submission}}" class="btn btn-primary">Start a Submission for {{ slug }}</a>
       {{/submission_windows}}
     </div>
   </div>

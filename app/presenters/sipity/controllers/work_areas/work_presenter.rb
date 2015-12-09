@@ -19,6 +19,10 @@ module Sipity
           creators.to_sentence
         end
 
+        def submission_window
+          work.submission_window
+        end
+
         def program_names_to_sentence
           Array.wrap(repository.work_attribute_values_for(work: work, key: 'program_name')).to_sentence
         end
