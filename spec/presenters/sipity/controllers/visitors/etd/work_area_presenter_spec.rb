@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'sipity/controllers/work_areas/etd/show_presenter'
+require 'sipity/controllers/visitors/etd/work_area_presenter'
 
 module Sipity
   module Controllers
-    module WorkAreas
+    module Visitors
       module Etd
-        RSpec.describe ShowPresenter do
+        RSpec.describe WorkAreaPresenter do
           let(:context) { PresenterHelper::ContextWithForm.new(current_user: current_user, request: double(path: '/path'), paginate: true) }
           let(:current_user) { double('Current User') }
           let(:work_area) { double(slug: 'the-slug', title: 'The Slug', processing_state: 'new', order: 'title', page: 1) }
@@ -20,7 +20,7 @@ module Sipity
             allow(repository).to receive(:find_submission_window_by).and_return(submission_window)
             allow_any_instance_of(described_class).to receive(:convert_to_processing_action).and_return(processing_action)
           end
-          it { should be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
+
           its(:view_submitted_etds_url) { should match(%r{\Ahttps://curate.nd.edu}) }
         end
       end

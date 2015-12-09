@@ -42,10 +42,15 @@ module Sipity
         def associate_work_types_and_their_state_machines_with_submission_window!
           WORK_TYPE_NAMES.each do |work_type_name|
             DataGenerators::FindOrCreateWorkType.call(name: work_type_name) do |work_type, processing_strategy, initial_state|
+              assign_submission_window_work_type(work_type: work_type)
               assign_ulra_review_committee_to_ulra_role_for(processing_strategy: processing_strategy)
               generate_state_diagram(processing_strategy: processing_strategy, initial_state: initial_state)
             end
           end
+        end
+
+        def assign_submission_window_work_type(work_type:)
+          Models::SubmissionWindowWorkType.find_or_create_by!(work_type: work_type, submission_window: submission_window)
         end
 
         def assign_ulra_review_committee_to_ulra_role_for(processing_strategy:)
@@ -93,7 +98,7 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] },
                 under_review: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 1 }
             },
@@ -101,7 +106,7 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] },
                 under_review: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 2 }
             },
@@ -109,21 +114,21 @@ module Sipity
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 3 }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 5 }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_faculty_completion: { roles: ['creating_user'] }
+                pending_advisor_completion: { roles: ['creating_user'] }
               }, attributes: { presentation_sequence: 3 }
             },
             faculty_response: {

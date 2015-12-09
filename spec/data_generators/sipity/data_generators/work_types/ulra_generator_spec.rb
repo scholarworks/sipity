@@ -19,7 +19,9 @@ module Sipity
             expect do
               expect do
                 expect do
-                  subject.call(work_area: work_area, submission_window: submission_window)
+                  expect do
+                    subject.call(work_area: work_area, submission_window: submission_window)
+                  end.to change { Models::SubmissionWindowWorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
                 end.to change { Models::WorkType.count }.by(described_class::WORK_TYPE_NAMES.count)
               end.to change { Models::Processing::Strategy.count }.by(described_class::WORK_TYPE_NAMES.count)
             end.to change { Models::Processing::StrategyResponsibility.count }.by(described_class::WORK_TYPE_NAMES.count)

@@ -21,6 +21,14 @@ module Sipity
         link_to(submission_window.slug, path)
       end
 
+      def path_to_start_a_submission
+        # TODO: This is a hard-coded action name
+        submission_window_action_path(
+          work_area_slug: submission_window.work_area_slug, submission_window_slug: submission_window.slug,
+          processing_action_name: 'start_a_submission'
+        )
+      end
+
       def path
         submission_window_path(
           work_area_slug: submission_window.work_area_slug, submission_window_slug: submission_window.slug

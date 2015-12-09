@@ -5,8 +5,9 @@ describe 'work area routing spec' do
     let(:controller) { 'sipity/controllers/work_areas' }
     [
       [
+        # Because of routing contraints this won't be found in the work areas
         :get,
-        { path: "/areas/my_slug", action: 'query_action', work_area_slug: 'my_slug', processing_action_name: 'show' }
+        { path: "/areas/my_slug", controller: 'sipity/controllers/visitors', action: 'work_area', work_area_slug: 'my_slug' }
       ], [
         :get,
         { path: "/areas/my_slug/do/fun_things", action: 'query_action', work_area_slug: 'my_slug', processing_action_name: 'fun_things' }
@@ -26,7 +27,7 @@ describe 'work area routing spec' do
     ].each do |http_method, settings|
       it "will #{http_method.to_s.upcase} #{settings.fetch(:path)}" do
         expect(send(http_method, settings.fetch(:path))).
-          to route_to(settings.except(:path).merge(controller: controller))
+          to route_to({ controller: controller }.merge(settings.except(:path)))
       end
     end
 

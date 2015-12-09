@@ -215,6 +215,13 @@ en:
             <p>Please note: Some submissions may be restricted to campus-access only or may be temporarily withheld from public access due to pending patent registration or publication.
             If you wish to inquire about an electronic thesis or dissertation that is not yet publicly accessible,
             please contact the Graduate School's dissertation editor at <a mailto="dteditor@nd.edu">dteditor@nd.edu</a> or (574) 631-7545.</p>
+      work_area/ulra:
+        landing_page_greeting_introduction_html:
+          label: |
+            <p>Greeting and introduction goes here.</p>
+        landing_page_greeting_help_html:
+          label: |
+            <p>Greeting help goes here.</p>
   work_types:
     master_thesis:
       label: "Master’s Thesis"
