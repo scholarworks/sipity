@@ -230,10 +230,6 @@ module Sipity
                   ['show'],
                   ['advisor'],
                 ],[
-                  ['ready_for_cataloging'],
-                  ['show'],
-                  ['cataloger'],
-                ],[
                   ['new', 'advisor_changes_requested'],
                   ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
                   ['creating_user', 'etd_reviewer', Models::Role::DATA_OBSERVER]
@@ -255,7 +251,11 @@ module Sipity
                   ['etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['ready_for_cataloging'],
-                  ['send_back_to_grad_school', 'cataloging_complete'],
+                  ['send_back_to_grad_school', 'cataloging_complete', 'show'],
+                  ['cataloger']
+                ],[
+                  ['back_from_cataloging', 'ready_for_ingest'],
+                  ['show'],
                   ['cataloger']
                 ],[
                   ['back_from_cataloging', 'grad_school_approved_but_waiting_for_routing'],
