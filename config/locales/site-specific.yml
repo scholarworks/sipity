@@ -2,7 +2,7 @@
 en:
   application:
     description: 'Welcome to the deposit interface of our digital repository.'
-    name: 'Siptiy'
+    name: 'Sipity'
     title: 'Repository Deposit Interface'
     footer: >
       <div class="row">
