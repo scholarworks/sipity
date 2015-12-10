@@ -12,6 +12,7 @@
 <ul>
   <li>Title: <%= @entity.title %></li>
   <li>Submitted for advisor approval: <%= @entity.submission_date.to_sentence %></li>
+  <li>Link to <%= @entity.work_type %>: <%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></li>
 </ul>
 
 <%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
