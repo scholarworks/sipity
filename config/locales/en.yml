@@ -136,6 +136,8 @@ en:
       label: 'Patent Intent'
     work_publication_strategy:
       label: 'Publication Intent'
+    catalog_system_number:
+      label: 'ALEPH system number'
   panel_headings:
     access_rights_answer:
       label: 'Who should have <b>access</b> to this work after it is deposited?'
