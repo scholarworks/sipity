@@ -11,7 +11,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid]
+            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :course_name, :course_number]
           )
 
           def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
@@ -26,11 +26,10 @@ module Sipity
 
           delegate(
             :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
-            :possible_work_publication_strategies, :persist_work_publication_strategy,
-            to: :publication_and_patenting_intent_extension
+            :possible_work_publication_strategies, to: :publication_and_patenting_intent_extension
           )
 
-          private(:work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy)
+          private(:work_publication_strategy=, :possible_work_publication_strategies)
 
           private
 
@@ -57,6 +56,8 @@ module Sipity
           validates :advisor_netid, presence: true, net_id: true
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true
+          validates :course_name, presence: true
+          validates :course_number, presence: true
           validates :submission_window, presence: true, open_for_starting_submissions: true
           validates :requested_by, presence: true
 
@@ -69,11 +70,12 @@ module Sipity
 
           def save
             create_the_work do |work|
-              persist_work_publication_strategy
+              publication_and_patenting_intent_extension.persist_work_publication_strategy
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
               repository.assign_collaborators_to(work: work, collaborators: build_collaborator(work: work))
+              assign_additional_attributes_to(work: work)
               register_actions(work: work)
             end
           end
@@ -101,6 +103,12 @@ module Sipity
             repository.log_event!(entity: work, requested_by: requested_by, event_name: event_name)
           end
 
+          def assign_additional_attributes_to(work:)
+            repository.update_work_attribute_values!(work: work, key: 'course_name', values: course_name)
+            repository.update_work_attribute_values!(work: work, key: 'course_number', values: course_number)
+            repository.update_work_attribute_values!(work: work, key: 'award_category', values: award_category)
+          end
+
           alias_method :to_work_area, :work_area
           public :to_work_area
 
@@ -112,6 +120,8 @@ module Sipity
             self.award_category = attributes[:award_category]
             self.work_type = default_work_type
             self.work_publication_strategy = attributes[:work_publication_strategy]
+            self.course_name = attributes[:course_name]
+            self.course_number = attributes[:course_number]
           end
 
           include Conversions::SanitizeHtml
