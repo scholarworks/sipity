@@ -10,7 +10,7 @@ module Sipity
         class PlanOfStudyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:expected_graduation_date, :majors]
+            attribute_names: [:expected_graduation_date, :majors, :minors]
           )
 
           include Conversions::ExtractInputDateFromInput
@@ -22,32 +22,43 @@ module Sipity
               expected_graduation_date_from_work
             end
             self.majors = attributes.fetch(:majors) { majors_from_work }
+            self.minors = attributes.fetch(:minors) { minors_from_work }
           end
 
           include ActiveModel::Validations
           include Hydra::Validations
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
+          validates :minors, presence: true
 
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
               repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
+              repository.update_work_attribute_values!(work: work, key: 'minors', values: majors)
             end
           end
 
           private
 
           def expected_graduation_date_from_work
-            repository.work_attribute_values_for(work: work, key: 'expected_graduation_date')
+            repository.work_attribute_values_for(work: work, key: 'expected_graduation_date', cardinality: 1)
           end
 
           def majors_from_work
-            repository.work_attribute_values_for(work: work, key: 'majors')
+            repository.work_attribute_values_for(work: work, key: 'majors', cardinality: :many)
           end
 
-          def majors=(values)
-            @majors = to_array_without_empty_values(values)
+          def minors_from_work
+            repository.work_attribute_values_for(work: work, key: 'minors', cardinality: :many)
+          end
+
+          def majors=(input)
+            @majors = to_array_without_empty_values(input)
+          end
+
+          def minors=(input)
+            @minors = to_array_without_empty_values(input)
           end
 
           include Conversions::ConvertToDate

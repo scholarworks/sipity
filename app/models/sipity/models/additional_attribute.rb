@@ -33,6 +33,7 @@ module Sipity
       EXPECTED_GRADUATION_DATE = 'expected_graduation_date'.freeze
       LANGUAGE = 'language'.freeze
       MAJORS = 'majors'.freeze
+      MINORS = 'minors'.freeze
       NATURE_OF_SUPERVISION_PREDICATE_NAME = 'nature_of_supervision'.freeze
       OCLC_NUMBER = 'oclc_number'.freeze
       ORGANIZATION_PREDICATE_NAME = 'organization'.freeze
@@ -79,6 +80,7 @@ module Sipity
           EXPECTED_GRADUATION_DATE => EXPECTED_GRADUATION_DATE,
           LANGUAGE => LANGUAGE,
           MAJORS => MAJORS,
+          MINORS => MINORS,
           NATURE_OF_SUPERVISION_PREDICATE_NAME => NATURE_OF_SUPERVISION_PREDICATE_NAME,
           OCLC_NUMBER => OCLC_NUMBER,
           ORGANIZATION_PREDICATE_NAME => ORGANIZATION_PREDICATE_NAME,
