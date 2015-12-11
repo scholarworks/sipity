@@ -10,9 +10,9 @@ module Sipity
           self.attachments_attributes = args[:attachments_attributes] || {}
         end
 
-        attr_accessor :form, :repository, :files
-        attr_reader :attachments_attributes
-        private(:form=, :repository=, :files=)
+        attr_accessor :form, :repository
+        attr_reader :attachments_attributes, :files
+        private(:form=, :repository=)
 
         delegate :action, :work, to: :form
 
@@ -38,6 +38,10 @@ module Sipity
         end
 
         private
+
+        def files=(input)
+          @files = Array.wrap(input)
+        end
 
         def ids_for_deletion
           collect_files_for_deletion_and_update

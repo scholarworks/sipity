@@ -33,6 +33,11 @@ module Sipity
           subject.attachments
         end
 
+        it 'will wrap the files in an array' do
+          described_class.new(repository: repository, form: form, files: double, attachments_attributes: attachments_attributes)
+          expect(subject.files).to be_a(Array)
+        end
+
         context 'attach_or_update_files' do
           let(:attachments_attributes) do
             {
