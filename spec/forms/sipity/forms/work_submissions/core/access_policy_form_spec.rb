@@ -6,7 +6,7 @@ require 'support/sipity/command_repository_interface'
 module Sipity
   module Forms
     module WorkSubmissions
-      module Etd
+      module Core
         RSpec.describe AccessPolicyForm do
           let(:user) { double('User') }
           let(:work) { Models::Work.new(id: 1) }
@@ -21,7 +21,9 @@ module Sipity
 
           before do
             allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright', cardinality: 1).and_return(nil)
-            allow(repository).to receive(:access_rights_for_accessible_objects_of).with(work: work).and_return([work, attachment])
+            allow(repository).to receive(
+              :access_rights_for_accessible_objects_of
+            ).with(work: work, predicate_name: :all).and_return([work, attachment])
             allow(repository).to receive(:representative_attachment_for).with(work: work).and_return(attachment)
             allow(repository).to receive(:work_attachments).with(work: work).and_return([attachment])
           end
