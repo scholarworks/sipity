@@ -47,12 +47,7 @@ module Sipity
           end
 
           delegate(
-            :attachments,
-            :attachments_metadata,
-            :attach_or_update_files,
-            :attachments_attributes=,
-            :files,
-            to: :attachments_extension
+            :attachments, :attachments_metadata, :attach_or_update_files, :attachments_attributes=, :files, to: :attachments_extension
           )
           private(:attach_or_update_files)
 
@@ -65,16 +60,17 @@ module Sipity
           def save
             repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
             attach_or_update_files(requested_by: requested_by)
-            repository.update_work_attribute_values!(
-              work: work, key: 'attached_files_completion_state', values: attached_files_completion_state
-            )
-            repository.update_work_attribute_values!(work: work, key: 'project_url', values: project_url)
+            update_additional_attributes(keys: ['attached_files_completion_state', 'project_url'])
             # HACK: This is expanding the knowledge of what action is being
             #   taken. Instead it is something that should be modeled in the
             #   underlying database. That is to say: When an action fires what
             #   actions should be registered and what actions should be
             #   unregistered.
             repository.unregister_action_taken_on_entity(entity: work, action: 'access_policy', requested_by: requested_by)
+          end
+
+          def update_additional_attributes(keys:)
+            keys.each { |key| repository.update_work_attribute_values!(work: work, key: key, values: send(key)) }
           end
 
           def representative_attachment_id_from_work

@@ -14,6 +14,7 @@ module Sipity
           subject { described_class.new(keywords) }
 
           its(:processing_action_name) { should eq('research_process') }
+          its(:attachment_predicate_name) { should eq('application_essay') }
           its(:base_class) { should eq(Models::Work) }
 
           context 'class configuration' do
@@ -32,6 +33,7 @@ module Sipity
 
           include Shoulda::Matchers::ActiveModel
 
+          it { should delegate_method(:attachment_predicate_name).to(:attachments_extension) }
           it { should validate_presence_of(:citation_style) }
           it 'will have #available_resouce_consulted' do
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
@@ -69,7 +71,7 @@ module Sipity
 
             it 'will delete any attachments marked for deletion' do
               expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(
-                requested_by: subject.send(:requested_by), predicate_name: 'application_essay'
+                requested_by: subject.send(:requested_by)
               )
               subject.submit
             end

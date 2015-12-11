@@ -33,7 +33,7 @@ module Sipity
           public
 
           delegate(
-            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files, :attachment_predicate_name,
             to: :attachments_extension
           )
           private(:attach_or_update_files)
@@ -53,7 +53,7 @@ module Sipity
               update_supervising_semester
               update_quality_of_research
               update_use_of_library_resources
-              attach_or_update_files(requested_by: requested_by, predicate_name: "faculty_comments_attachment")
+              attach_or_update_files(requested_by: requested_by)
             end
           end
 
@@ -104,6 +104,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
+              predicate_name: 'faculty_comments_attachment',
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

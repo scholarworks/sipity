@@ -2,8 +2,10 @@ module Sipity
   module Queries
     # Queries
     module AttachmentQueries
-      def work_attachments(work:)
-        Models::Attachment.includes(:work).where(work_id: work.id)
+      def work_attachments(work:, predicate_name: 'attachment')
+        scope = Models::Attachment.includes(:work).where(work_id: work.id)
+        return scope if predicate_name == :all
+        scope.where(predicate_name: predicate_name)
       end
 
       def attachment_access_right_code(attachment:)
@@ -14,12 +16,12 @@ module Sipity
         attachment.access_right || attachment.work.access_right
       end
 
-      def accessible_objects(work:)
-        [work] + work_attachments(work: work)
+      def accessible_objects(work:, predicate_name: 'attachment')
+        [work] + work_attachments(work: work, predicate_name: predicate_name)
       end
 
-      def access_rights_for_accessible_objects_of(work:)
-        accessible_objects(work: work).map { |object| Models::AccessRightFacade.new(object, work: work) }
+      def access_rights_for_accessible_objects_of(work:, predicate_name: 'attachment')
+        accessible_objects(work: work, predicate_name: predicate_name).map { |object| Models::AccessRightFacade.new(object, work: work) }
       end
 
       def find_or_initialize_attachments_by(work:, pid:)

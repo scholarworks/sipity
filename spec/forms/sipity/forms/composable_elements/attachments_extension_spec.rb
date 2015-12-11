@@ -18,9 +18,14 @@ module Sipity
           }
         end
         let(:form) { double('Form', work: work) }
+        let(:predicate_name) { 'chicken' }
         subject do
-          described_class.new(repository: repository, form: form, files: {}, attachments_attributes: attachments_attributes)
+          described_class.new(
+            repository: repository, form: form, files: {}, attachments_attributes: attachments_attributes, predicate_name: predicate_name
+          )
         end
+
+        its(:default_predicate_name) { should eq('attachment') }
 
         it { should respond_to :repository }
         it { should respond_to :files }
@@ -28,8 +33,10 @@ module Sipity
         it { should respond_to :attachments_attributes= }
         it { should respond_to :attachments }
 
+        its(:attachment_predicate_name) { should eq('attachment') }
+
         it 'will call attachments_from_work' do
-          expect(repository).to receive(:work_attachments).with(work: work).and_return([double, double])
+          expect(repository).to receive(:work_attachments).with(work: work , predicate_name: predicate_name).and_return([double, double])
           subject.attachments
         end
 

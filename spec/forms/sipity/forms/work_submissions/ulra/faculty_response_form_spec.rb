@@ -16,6 +16,7 @@ module Sipity
           its(:processing_action_name) { should eq('faculty_response') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
+          its(:attachment_predicate_name) { should eq('faculty_comments_attachment') }
 
           context 'class configuration' do
             subject { described_class }
@@ -83,9 +84,7 @@ module Sipity
             end
 
             it 'will attach_or_update_files' do
-              expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(
-                requested_by: subject.requested_by, predicate_name: "faculty_comments_attachment"
-              )
+              expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(requested_by: subject.requested_by)
               subject.submit
             end
           end
