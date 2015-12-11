@@ -69,7 +69,7 @@ module Sipity
 
             it 'will delete any attachments marked for deletion' do
               expect(subject.send(:attachments_extension)).to receive(:attach_or_update_files).with(
-                requested_by: subject.send(:requested_by), predicate_name: 'research_process_attachment'
+                requested_by: subject.send(:requested_by), predicate_name: 'application_essay'
               )
               subject.submit
             end

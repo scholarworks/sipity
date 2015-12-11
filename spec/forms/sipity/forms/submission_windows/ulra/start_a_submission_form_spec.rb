@@ -140,7 +140,9 @@ module Sipity
               end
 
               it 'will persist the work publication strategy' do
-                expect(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy).and_call_original
+                expect(
+                  subject.send(:publication_and_patenting_intent_extension)
+                ).to receive(:persist_work_publication_strategy).and_call_original
                 subject.submit
               end
 

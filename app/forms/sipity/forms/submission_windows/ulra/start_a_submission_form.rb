@@ -62,8 +62,7 @@ module Sipity
           validates :requested_by, presence: true
 
           def submit
-            return false unless valid?
-            save
+            valid? ? save : false
           end
 
           private
@@ -104,9 +103,9 @@ module Sipity
           end
 
           def assign_additional_attributes_to(work:)
-            repository.update_work_attribute_values!(work: work, key: 'course_name', values: course_name)
-            repository.update_work_attribute_values!(work: work, key: 'course_number', values: course_number)
-            repository.update_work_attribute_values!(work: work, key: 'award_category', values: award_category)
+            ['course_name', 'course_number', 'award_category'].each do |predicate_name|
+              repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
+            end
           end
 
           alias_method :to_work_area, :work_area
@@ -115,10 +114,10 @@ module Sipity
           private
 
           def initialize_attributes(attributes)
+            self.work_type = default_work_type
             self.title = attributes[:title]
             self.advisor_netid = attributes[:advisor_netid]
             self.award_category = attributes[:award_category]
-            self.work_type = default_work_type
             self.work_publication_strategy = attributes[:work_publication_strategy]
             self.course_name = attributes[:course_name]
             self.course_number = attributes[:course_number]

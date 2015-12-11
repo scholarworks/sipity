@@ -50,7 +50,7 @@ module Sipity
               repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
-              attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
+              attach_or_update_files(requested_by: requested_by, predicate_name: "application_essay")
             end
           end
 
