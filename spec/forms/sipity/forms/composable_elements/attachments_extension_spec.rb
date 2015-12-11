@@ -19,12 +19,7 @@ module Sipity
         end
         let(:form) { double('Form', work: work) }
         subject do
-          described_class.new(
-            repository: repository,
-            form: form,
-            files: {},
-            attachments_attributes: attachments_attributes
-          )
+          described_class.new(repository: repository, form: form, files: {}, attachments_attributes: attachments_attributes)
         end
 
         it { should respond_to :repository }
