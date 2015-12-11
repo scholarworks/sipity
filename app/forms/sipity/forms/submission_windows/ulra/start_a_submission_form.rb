@@ -11,7 +11,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :work_type]
+            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid]
           )
 
           def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
@@ -35,7 +35,7 @@ module Sipity
           private
 
           attr_reader :work_area
-          attr_accessor :publication_and_patenting_intent_extension
+          attr_accessor :publication_and_patenting_intent_extension, :work_type
 
           def publication_and_patenting_intent_extension_builder
             Forms::ComposableElements::PublishingAndPatentingIntentExtension
@@ -110,7 +110,7 @@ module Sipity
             self.title = attributes[:title]
             self.advisor_netid = attributes[:advisor_netid]
             self.award_category = attributes[:award_category]
-            self.work_type = attributes.fetch(:work_type) { default_work_type }
+            self.work_type = default_work_type
             self.work_publication_strategy = attributes[:work_publication_strategy]
           end
 
