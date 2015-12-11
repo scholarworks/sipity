@@ -17,7 +17,8 @@ module Sipity
             "2" => { "name" => "code4lib.pdf", "delete" => "0", "id" => "64Y9v5yGshHFgE6fS4FRew==" }
           }
         end
-        let(:form) { double('Form', work: work) }
+        let(:errors) { double(add: true) }
+        let(:form) { double('Form', work: work, errors: errors) }
         let(:predicate_name) { 'chicken' }
         subject do
           described_class.new(
@@ -32,11 +33,25 @@ module Sipity
         it { should respond_to :attach_or_update_files }
         it { should respond_to :attachments_attributes= }
         it { should respond_to :attachments }
+        it { should delegate_method(:errors).to(:form) }
 
-        its(:attachment_predicate_name) { should eq('attachment') }
+        its(:default_predicate_name) { should eq('attachment') }
+
+        context '#at_least_one_file_must_be_attached' do
+          it 'will return true if there are works assigned' do
+            expect(subject).to receive(:attachments_associated_with_the_work?).and_return(true)
+            expect(subject.send(:at_least_one_file_must_be_attached)).to eq(true)
+          end
+
+          it 'will add errors to the object' do
+            expect(subject).to receive(:attachments_associated_with_the_work?).and_return(false)
+            expect(errors).to receive(:add).with(:base, :at_least_one_attachment_required)
+            subject.send(:at_least_one_file_must_be_attached)
+          end
+        end
 
         it 'will call attachments_from_work' do
-          expect(repository).to receive(:work_attachments).with(work: work , predicate_name: predicate_name).and_return([double, double])
+          expect(repository).to receive(:work_attachments).with(work: work, predicate_name: predicate_name).and_return([double, double])
           subject.attachments
         end
 

@@ -10,7 +10,7 @@ module Sipity
         class AccessPolicyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id, :use_of_library_resources]
+            attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)

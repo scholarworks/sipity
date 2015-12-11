@@ -17,7 +17,7 @@ module Sipity
 
         alias_method :attachment_predicate_name, :predicate_name
 
-        delegate :action, :work, to: :form
+        delegate :action, :work, :errors, to: :form
 
         def attachments
           @attachments ||= attachments_from_work
@@ -46,6 +46,15 @@ module Sipity
         # for validations outside of this class
         def attachments_metadata
           @attachments_metadata || {}
+        end
+
+        def attachments_associated_with_the_work?
+          attachments_metadata.present? || files.present?
+        end
+
+        def at_least_one_file_must_be_attached
+          return true if attachments_associated_with_the_work?
+          errors.add(:base, :at_least_one_attachment_required)
         end
 
         private

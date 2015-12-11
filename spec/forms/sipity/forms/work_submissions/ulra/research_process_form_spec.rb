@@ -34,6 +34,7 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
 
           it { should delegate_method(:attachment_predicate_name).to(:attachments_extension) }
+          it { should delegate_method(:attachments).to(:attachments_extension) }
           it { should validate_presence_of(:citation_style) }
           it 'will have #available_resouce_consulted' do
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
@@ -45,11 +46,6 @@ module Sipity
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'citation_style').
               and_return(['test', 'bogus', 'more bogus'])
             expect(subject.available_citation_style).to be_a(Array)
-          end
-
-          it 'will call attachments_from_work' do
-            expect(repository).to receive(:work_attachments).with(work: work).and_return([double, double])
-            subject.attachments
           end
 
           context 'assigning attachments attributes' do

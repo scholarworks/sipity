@@ -23,6 +23,8 @@ module Sipity
           it { should respond_to :attached_files_completion_state }
           it { should respond_to :project_url }
 
+          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+
           context 'values from work' do
             before do
               allow(repository).to receive(:work_attribute_values_for).with(

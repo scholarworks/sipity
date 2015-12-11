@@ -34,7 +34,7 @@ module Sipity
 
           delegate(
             :attachments, :attach_or_update_files, :attachments_attributes=, :files, :attachment_predicate_name,
-            to: :attachments_extension
+            :at_least_one_file_must_be_attached, to: :attachments_extension
           )
           private(:attach_or_update_files)
 

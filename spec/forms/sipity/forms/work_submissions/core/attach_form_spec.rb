@@ -21,6 +21,9 @@ module Sipity
           it { should respond_to :representative_attachment_id }
           it { should respond_to :files }
 
+          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { should delegate_method(:attachments_associated_with_the_work?).to(:attachments_extension) }
+
           context 'validations' do
             it 'will require a work' do
               subject = described_class.new(keywords.merge(work: nil))

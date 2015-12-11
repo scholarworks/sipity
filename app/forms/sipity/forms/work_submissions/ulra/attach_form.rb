@@ -47,7 +47,8 @@ module Sipity
           end
 
           delegate(
-            :attachments, :attachments_metadata, :attach_or_update_files, :attachments_attributes=, :files, to: :attachments_extension
+            :attachments, :attachments_metadata, :attach_or_update_files, :attachments_attributes=, :files,
+            :at_least_one_file_must_be_attached, to: :attachments_extension
           )
           private(:attach_or_update_files)
 
@@ -83,15 +84,6 @@ module Sipity
 
           def project_url_from_work
             repository.work_attribute_values_for(work: work, key: 'project_url', cardinality: 1)
-          end
-
-          def attachments_associated_with_the_work?
-            attachments_metadata.present? || files.present?
-          end
-
-          def at_least_one_file_must_be_attached
-            return true if attachments_associated_with_the_work?
-            errors.add(:base, :at_least_one_attachment_required)
           end
 
           def build_attachments(attachment_attr)

@@ -34,10 +34,10 @@
         <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
       </legend>
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
-      <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
+      <%= f.input :files, as: :file, input_html: { multiple: false } %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">
-          <%= f.fields_for :faculty_comments_attachments do |attachment_form| %>
+          <%= f.fields_for :attachments do |attachment_form| %>
             <li class="attachement form-inline">
               <figure class="thumbnail-wrapper">
                 <%= link_to(
