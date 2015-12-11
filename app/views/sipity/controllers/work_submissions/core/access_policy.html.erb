@@ -27,7 +27,7 @@
         <%= f.fields_for :accessible_objects do |field| %>
           <tr class="accessible-object <%= dom_class(field.object.entity_type) %>">
             <td>
-              <p class="human-model-name"><%= field.object.human_model_name %></p>
+              <p class="human-model-name"><%= field.object.accessible_object_type %></p>
             </td>
             <td>
               <p class="title"><%= field.object %></p>
