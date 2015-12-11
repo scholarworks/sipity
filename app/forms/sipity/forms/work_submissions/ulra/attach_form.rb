@@ -9,7 +9,9 @@ module Sipity
         class AttachForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:files, :attachments_attributes, :representative_attachment_id, :attached_files_completion_state]
+            attribute_names: [
+              :project_url, :files, :attachments_attributes, :representative_attachment_id, :attached_files_completion_state
+            ]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -17,6 +19,7 @@ module Sipity
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
+            self.project_url = attributes.fetch(:project_url) { project_url_from_work }
             self.attached_files_completion_state = attributes.fetch(:attached_files_completion_state) do
               attached_files_completion_state_from_work
             end
@@ -65,6 +68,7 @@ module Sipity
             repository.update_work_attribute_values!(
               work: work, key: 'attached_files_completion_state', values: attached_files_completion_state
             )
+            repository.update_work_attribute_values!(work: work, key: 'project_url', values: project_url)
             # HACK: This is expanding the knowledge of what action is being
             #   taken. Instead it is something that should be modeled in the
             #   underlying database. That is to say: When an action fires what
@@ -79,6 +83,10 @@ module Sipity
 
           def attached_files_completion_state_from_work
             repository.work_attribute_values_for(work: work, key: 'attached_files_completion_state', cardinality: 1)
+          end
+
+          def project_url_from_work
+            repository.work_attribute_values_for(work: work, key: 'project_url', cardinality: 1)
           end
 
           def attachments_associated_with_the_work?

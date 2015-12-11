@@ -21,12 +21,16 @@ module Sipity
           it { should respond_to :representative_attachment_id }
           it { should respond_to :files }
           it { should respond_to :attached_files_completion_state }
+          it { should respond_to :project_url }
 
           context 'values from work' do
             before do
               allow(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'attached_files_completion_state', cardinality: 1
               ).and_return('complete')
+              allow(repository).to receive(:work_attribute_values_for).with(
+                work: work, key: 'project_url', cardinality: 1
+              ).and_return('existing.url')
             end
             its(:attached_files_completion_state_from_work) { should eq('complete') }
             its(:attached_files_completion_state) { should eq('complete') }
@@ -78,13 +82,16 @@ module Sipity
             end
 
             context 'with valid data' do
-              let(:attributes) { { files: [file], remove_files: [remove_file] } }
+              let(:attributes) do
+                { files: [file], remove_files: [remove_file], project_url: 'the.url', attached_files_completion_state: 'complete' }
+              end
               let(:file) { double('A File') }
               let(:remove_file) { double('File to delete') }
 
               before do
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
+                allow(repository).to receive(:update_work_attribute_values!)
               end
 
               it 'will attach each file' do
@@ -99,6 +106,20 @@ module Sipity
 
               it 'will mark a file as representative' do
                 expect(repository).to receive(:set_as_representative_attachment).and_call_original
+                subject.submit
+              end
+
+              it 'will persist the project_url' do
+                expect(repository).to receive(
+                  :update_work_attribute_values!
+                ).with(work: work, key: 'project_url', values: 'the.url').and_call_original
+                subject.submit
+              end
+
+              it 'will persist the attached_files_completion_state' do
+                expect(repository).to receive(
+                  :update_work_attribute_values!
+                ).with(work: work, key: 'attached_files_completion_state', values: 'complete').and_call_original
                 subject.submit
               end
             end
