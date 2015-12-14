@@ -254,10 +254,6 @@ en:
             access_rights_answer:
               blank: 'Please select an option'
               inclusion: 'Please select an option from the list'
-        sipity/forms/work_enrichments/publisher_information_form:
-          attributes:
-            allow_pre_prints:
-              inclusion: 'is not included in the list'
   sipity/forms:
     error_messages:
     state_advancing_actions:
