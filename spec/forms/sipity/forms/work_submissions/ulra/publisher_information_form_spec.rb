@@ -42,7 +42,7 @@ module Sipity
             it 'will fall back on #publication information associated with the work' do
               expect(repository).to receive(
                 :work_attribute_values_for
-              ).with(work: work, key: 'publication_name', cardinality: 1).and_return('hello')
+              ).with(work: work, key: 'publication_name', cardinality: :many).and_return('hello')
               subject = described_class.new(keywords)
               expect(subject.publication_name).to eq('hello')
             end

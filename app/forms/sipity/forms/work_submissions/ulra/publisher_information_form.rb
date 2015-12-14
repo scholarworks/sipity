@@ -33,7 +33,7 @@ module Sipity
           private
 
           def publication_name_from_work
-            repository.work_attribute_values_for(work: work, key: 'publication_name', cardinality: 1)
+            repository.work_attribute_values_for(work: work, key: 'publication_name', cardinality: :many)
           end
         end
       end
