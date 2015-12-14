@@ -18,6 +18,7 @@
       <%= f.error_notification %>
       <%= f.error :base, error_method: :to_sentence %>
 
+      <%= f.input :college, as: :select, collection: f.object.possible_colleges, input_html: { class: 'form-control' }  %>
       <%= f.input :majors, as: :multi_value, input_html: { class: 'form-control input-xlarge' }  %>
       <%= f.input :minors, as: :multi_value, input_html: { class: 'form-control input-xlarge' }  %>
       <%= f.input :expected_graduation_date, as: :date, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>

@@ -10,7 +10,7 @@ module Sipity
         class PlanOfStudyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:expected_graduation_date, :majors, :minors]
+            attribute_names: [:expected_graduation_date, :majors, :minors, :college]
           )
 
           include Conversions::ExtractInputDateFromInput
@@ -23,6 +23,7 @@ module Sipity
             end
             self.majors = attributes.fetch(:majors) { majors_from_work }
             self.minors = attributes.fetch(:minors) { minors_from_work }
+            self.college = attributes.fetch(:college) { college_from_work }
           end
 
           include ActiveModel::Validations
@@ -30,19 +31,28 @@ module Sipity
           validates :expected_graduation_date, presence: true
           validates :majors, presence: true
           validates :minors, presence: true
+          validates :college, presence: true, inclusion: { in: :possible_colleges }
 
           def submit
             processing_action_form.submit do
-              repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
-              repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
-              repository.update_work_attribute_values!(work: work, key: 'minors', values: minors)
+              ['expected_graduation_date', 'majors', 'minors', 'college'].each do |predicate_name|
+                repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
+              end
             end
+          end
+
+          def possible_colleges
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'college')
           end
 
           private
 
           def expected_graduation_date_from_work
             repository.work_attribute_values_for(work: work, key: 'expected_graduation_date', cardinality: 1)
+          end
+
+          def college_from_work
+            repository.work_attribute_values_for(work: work, key: 'college', cardinality: 1)
           end
 
           def majors_from_work
