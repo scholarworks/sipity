@@ -35,7 +35,7 @@ module Sipity
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'expected_graduation_date', values: expected_graduation_date)
               repository.update_work_attribute_values!(work: work, key: 'majors', values: majors)
-              repository.update_work_attribute_values!(work: work, key: 'minors', values: majors)
+              repository.update_work_attribute_values!(work: work, key: 'minors', values: minors)
             end
           end
 

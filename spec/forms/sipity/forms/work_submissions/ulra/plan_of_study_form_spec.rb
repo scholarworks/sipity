@@ -97,7 +97,15 @@ module Sipity
               end
 
               it 'will add additional attributes entries' do
-                expect(repository).to receive(:update_work_attribute_values!).exactly(3).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'expected_graduation_date', values: expected_graduation_date
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'majors', values: [majors]
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'minors', values: [minors]
+                ).and_call_original
                 subject.submit
               end
             end
