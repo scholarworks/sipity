@@ -11,10 +11,7 @@ module Sipity
           let(:work) { double('Work', title: 'The work title') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:attributes) do
-            {
-              work_publication_strategy: 'A Publication Strategy', award_category: 'An Award Category', title: 'A Title',
-              course_name: 'A Course Name', course_number: 'A Course Number'
-            }
+            { award_category: 'An Award Category', title: 'A Title', course_name: 'A Course Name', course_number: 'A Course Number' }
           end
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
           subject { described_class.new(keywords) }
@@ -22,7 +19,6 @@ module Sipity
           its(:default_repository) { should respond_to(:get_controlled_vocabulary_values_for_predicate_name) }
 
           before do
-            allow(subject).to receive(:possible_work_publication_strategies).and_return([attributes.fetch(:work_publication_strategy)])
             allow(
               repository
             ).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return(
@@ -33,8 +29,6 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:title) }
           it { should validate_inclusion_of(:award_category).in_array(subject.award_categories_for_select) }
-          it { should validate_inclusion_of(:work_publication_strategy).in_array(subject.send(:possible_work_publication_strategies)) }
-          it { should validate_presence_of(:work_publication_strategy) }
           it { should validate_presence_of(:course_name) }
           it { should validate_presence_of(:course_number) }
           it { should validate_presence_of(:requested_by) }
@@ -46,14 +40,13 @@ module Sipity
             end
 
             it "will fetch the additional attributes from the repository" do
-              ['course_name', 'course_number', 'work_publication_strategy', 'award_category'].each do |attribute_name|
+              ['course_name', 'course_number', 'award_category'].each do |attribute_name|
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: attribute_name.to_s, cardinality: 1).and_return("a #{attribute_name}")
               end
               subject = described_class.new(requested_by: user, attributes: {}, work: work, repository: repository)
               expect(subject.course_name).to eq('a course_name')
               expect(subject.course_number).to eq('a course_number')
-              expect(subject.work_publication_strategy).to eq('a work_publication_strategy')
               expect(subject.award_category).to eq('a award_category')
             end
           end
@@ -69,16 +62,8 @@ module Sipity
               before do
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield.and_return(work)
-                allow(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy)
               end
               its(:submit) { should eq(work) }
-
-              it 'will update the work publication strategy' do
-                expect(
-                  subject.send(:publication_and_patenting_intent_extension)
-                ).to receive(:persist_work_publication_strategy).and_call_original
-                subject.submit
-              end
 
               it 'will update the title' do
                 expect(repository).to receive(:update_work_title!).with(work: work, title: attributes.fetch(:title))

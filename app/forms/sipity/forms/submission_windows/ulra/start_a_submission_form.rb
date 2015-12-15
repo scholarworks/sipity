@@ -11,34 +11,20 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :course_name, :course_number]
+            attribute_names: [:title, :award_category, :advisor_netid, :course_name, :course_number]
           )
 
           def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.publication_and_patenting_intent_extension = publication_and_patenting_intent_extension_builder.new(
-              form: self, repository: repository
-            )
             initialize_work_area_and_submission_window!(submission_window: submission_window)
             initialize_attributes(attributes)
           end
 
-          delegate(
-            :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
-            :possible_work_publication_strategies, to: :publication_and_patenting_intent_extension
-          )
-
-          private(:work_publication_strategy=, :possible_work_publication_strategies)
-
           private
 
           attr_reader :work_area
-          attr_accessor :publication_and_patenting_intent_extension, :work_type
-
-          def publication_and_patenting_intent_extension_builder
-            Forms::ComposableElements::PublishingAndPatentingIntentExtension
-          end
+          attr_accessor :work_type
 
           public
 
@@ -54,7 +40,6 @@ module Sipity
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
-          validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true
           validates :course_name, presence: true
           validates :course_number, presence: true
@@ -69,7 +54,6 @@ module Sipity
 
           def save
             create_the_work do |work|
-              publication_and_patenting_intent_extension.persist_work_publication_strategy
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
@@ -119,7 +103,6 @@ module Sipity
             self.title = attributes[:title]
             self.advisor_netid = attributes[:advisor_netid]
             self.award_category = attributes[:award_category]
-            self.work_publication_strategy = attributes[:work_publication_strategy]
             self.course_name = attributes[:course_name]
             self.course_number = attributes[:course_number]
           end

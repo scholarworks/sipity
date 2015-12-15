@@ -17,8 +17,6 @@ module Sipity
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
-            allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_publication_strategy').
-              and_return(['valid_work_publication_strategy'])
           end
 
           it { should implement_processing_form_interface }
@@ -58,19 +56,11 @@ module Sipity
             expect(subject.award_categories_for_select).to be_a(Array)
           end
 
-          context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
-            it 'will have #work_publication_strategies_for_select' do
-              expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
-            end
-          end
-
           context 'validations' do
-            let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
+            let(:attributes) { { title: nil, access_rights_answer: nil } }
             subject { described_class.new(keywords) }
             include Shoulda::Matchers::ActiveModel
             it { should validate_presence_of(:title) }
-            it { should validate_presence_of(:work_publication_strategy) }
-            it { should validate_inclusion_of(:work_publication_strategy).in_array(subject.send(:possible_work_publication_strategies)) }
             it { should validate_presence_of(:advisor_netid) }
             it { should validate_presence_of(:award_category) }
             it { should validate_presence_of(:work_type) }
@@ -85,12 +75,7 @@ module Sipity
           context '#submit' do
             subject { described_class.new(keywords) }
             context 'with invalid data' do
-              let(:attributes) do
-                {
-                  title: "This is my title", work_publication_strategy: 'do_not_know', advisor_netid: 'dummy_id',
-                  award_category: 'some_category'
-                }
-              end
+              let(:attributes) { { title: "This is my title", advisor_netid: 'dummy_id', award_category: 'some_category' } }
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
                 expect { subject.submit }.
@@ -106,7 +91,7 @@ module Sipity
               let(:work) { Sipity::Models::Work.new(id: 1) }
               let(:attributes) do
                 {
-                  title: 'Hello', access_rights_answer: 'right answer', work_publication_strategy: 'do_not_know',
+                  title: 'Hello', access_rights_answer: 'right answer',
                   course_name: 'a name', course_number: 'a number', award_category: 'a category', advisor_netid: 'a netid'
                 }
               end
@@ -114,20 +99,12 @@ module Sipity
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
                 allow(repository).to receive(:register_action_taken_on_entity)
-                allow(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy)
               end
 
               it 'will return the work' do
                 expect(repository).to receive(:create_work!).and_return(work)
                 response = subject.submit
                 expect(response).to eq(work)
-              end
-
-              it 'will persist the work publication strategy' do
-                expect(
-                  subject.send(:publication_and_patenting_intent_extension)
-                ).to receive(:persist_work_publication_strategy).and_call_original
-                subject.submit
               end
 
               it 'will log the event' do

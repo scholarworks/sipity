@@ -10,7 +10,6 @@
     <%= f.error :base, error_method: :to_sentence %>
     <div class="panel-tiles">
       <%= f.input :title, as: :text, input_html: { class: 'redactor-input form-control' } %>
-      <%= f.input :work_publication_strategy, as: :radio_buttons, collection: view_object.work_publication_strategies_for_select %>
       <%= f.input :award_category, as: :radio_buttons, collection: view_object.award_categories_for_select %>
       <%= f.input :course_name %>
       <%= f.input :course_number %>
