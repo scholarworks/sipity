@@ -69,6 +69,7 @@ module Sipity
         # just yet.
         pid_minter = keywords.fetch(:pid_minter) { default_pid_minter }
         Array.wrap(files).each do |file|
+          next unless file.present? # because we may have gotten [{}]
           pid = pid_minter.call
           Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: predicate_name)
         end

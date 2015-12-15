@@ -150,6 +150,11 @@ module Sipity
           expect { test_repository.attach_files_to(work: work, files: file, user: user, pid_minter: pid_minter) }.
             to change { Models::Attachment.where(pid: 'abc123').count }.by(1)
         end
+
+        it 'will not increment the number of attachments in the system if we get an empty hash' do
+          expect { test_repository.attach_files_to(work: work, files: {}, user: user, pid_minter: pid_minter) }.
+            to_not change { Models::Attachment.where(pid: 'abc123').count }
+        end
       end
 
       context '#remove_files_form' do
