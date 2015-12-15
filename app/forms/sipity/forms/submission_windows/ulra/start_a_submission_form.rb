@@ -124,11 +124,6 @@ module Sipity
             self.course_number = attributes[:course_number]
           end
 
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
-          end
-
           def create_the_work
             @work = repository.create_work!(submission_window: submission_window, title: title, work_type: work_type)
             yield(@work)

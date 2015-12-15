@@ -82,22 +82,6 @@ module Sipity
             end
           end
 
-          context 'Sanitizing HTML title' do
-            let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-            subject { described_class.new(keywords) }
-            context 'removes script tags' do
-              let(:title) { "<script>alert('Like this');</script>" }
-              it { expect(subject.title).to_not have_tag('script') }
-            end
-            context 'removes JavaScript links' do
-              let(:title) do
-                "JavaScript can also be included in an anchor tag
-            <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
-              end
-              it { expect(subject.title).to_not have_tag("a[href]") }
-            end
-          end
-
           context '#submit' do
             subject { described_class.new(keywords) }
             context 'with invalid data' do
