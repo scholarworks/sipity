@@ -28,10 +28,14 @@ module Sipity
 
           include ActiveModel::Validations
           include Hydra::Validations
-          validates :expected_graduation_date, presence: true
+          validates :expected_graduation_date, presence: true, inclusion: { in: :possible_expected_graduation_dates }
           validates :majors, presence: true
           validates :minors, presence: true
           validates :college, presence: true, inclusion: { in: :possible_colleges }
+
+          def possible_expected_graduation_dates
+            repository.possible_expected_graduation_dates
+          end
 
           def submit
             processing_action_form.submit do
@@ -69,11 +73,6 @@ module Sipity
 
           def minors=(input)
             @minors = to_array_without_empty_values(input)
-          end
-
-          include Conversions::ConvertToDate
-          def expected_graduation_date=(value)
-            @expected_graduation_date = convert_to_date(value) { nil }
           end
 
           def to_array_without_empty_values(value)

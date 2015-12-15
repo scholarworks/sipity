@@ -9,7 +9,7 @@ module Sipity
         RSpec.describe PlanOfStudyForm do
           let(:user) { double('User') }
           let(:work) { double('Work') }
-          let(:expected_graduation_date) { Time.zone.today }
+          let(:expected_graduation_date) { 'Summer 2015' }
           let(:majors) { 'Computer Science' }
           let(:minors) { 'A Minor' }
           let(:college) { 'Arts and Letters' }
@@ -21,11 +21,13 @@ module Sipity
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
             ).with(name: 'college').and_return([college])
+            allow(repository).to receive(:possible_expected_graduation_dates).and_return([expected_graduation_date])
           end
 
           its(:processing_action_name) { should eq('plan_of_study') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
+          it { should delegate_method(:possible_expected_graduation_dates).to(:repository) }
 
           context 'class configuration' do
             subject { described_class }
@@ -43,6 +45,7 @@ module Sipity
 
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:expected_graduation_date) }
+          it { should validate_inclusion_of(:expected_graduation_date).in_array(subject.possible_expected_graduation_dates) }
           it { should validate_presence_of(:college) }
           it { should validate_inclusion_of(:college).in_array(subject.possible_colleges) }
 
@@ -78,10 +81,6 @@ module Sipity
                 expect(subject.majors).to eq [majors]
                 expect(subject.minors).to eq [minors]
               end
-            end
-            context 'when initial date is given is bogus' do
-              subject { described_class.new(keywords.merge(attributes: { expected_graduation_date: '2014-02-31' })) }
-              its(:expected_graduation_date) { should_not be_present }
             end
           end
           context '#submit' do

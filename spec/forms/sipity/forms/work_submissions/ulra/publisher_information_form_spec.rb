@@ -11,7 +11,12 @@ module Sipity
           let(:user) { double('User') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) do
-            { requested_by: user, work: work, repository: repository, attributes: { submission_accepted_for_publication: true } }
+            {
+              requested_by: user, work: work, repository: repository,
+              attributes: {
+                submitted_for_publication: true, submission_accepted_for_publication: true
+              }
+            }
           end
           subject { described_class.new(keywords) }
 
@@ -60,6 +65,9 @@ module Sipity
               )
               allow(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'submission_accepted_for_publication', cardinality: 1
+              )
+              allow(repository).to receive(:work_attribute_values_for).with(
+                work: work, key: 'submitted_for_publication', cardinality: 1
               )
             end
             it 'will be the input via the #form' do
@@ -118,6 +126,9 @@ module Sipity
                 expect(repository).to receive(
                   :update_work_attribute_values!
                 ).with(work: work, key: 'submission_accepted_for_publication', values: true).and_call_original
+                expect(repository).to receive(
+                  :update_work_attribute_values!
+                ).with(work: work, key: 'submitted_for_publication', values: false).and_call_original
                 subject.submit
               end
             end
