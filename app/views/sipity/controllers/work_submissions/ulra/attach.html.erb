@@ -19,7 +19,7 @@
     <%= f.input :project_url, input_html: { class: 'form-control' } %>
     <%= f.input :attached_files_completion_state, collection: model.possible_attached_files_completion_states, input_html: { class: 'form-control' } %>
 
-    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
+    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Select your project file(s) for upload" %>
 
   <% if model.attachments.any? %>
     <ol class="attachment-listing">
