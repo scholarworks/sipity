@@ -96,6 +96,7 @@ module Sipity
             # the submission window to create a work. However, I want to
             # notify the creating user of the work of the action they've taken.
             repository.register_action_taken_on_entity(entity: work, action: processing_action_name, requested_by: requested_by)
+            repository.register_action_taken_on_entity(entity: work, action: 'project_information', requested_by: requested_by)
             repository.register_action_taken_on_entity(
               entity: submission_window, action: processing_action_name, requested_by: requested_by
             )

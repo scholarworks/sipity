@@ -170,6 +170,13 @@ module Sipity
                 subject.submit
               end
 
+              it 'will register the project_information action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: work, action: 'project_information', requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
               it 'will assiassign_collaborators_to the given work' do
                 expect(repository).to receive(:assign_collaborators_to).with(
                   work: work, collaborators: kind_of(Models::Collaborator)
