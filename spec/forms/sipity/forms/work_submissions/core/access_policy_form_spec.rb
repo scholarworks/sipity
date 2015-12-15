@@ -132,6 +132,7 @@ module Sipity
 
           its(:persisted?) { should be_truthy }
           its(:human_model_name) { should eq(persisted_object.human_model_name) }
+          it { should delegate_method(:accessible_object_type).to(:persisted_object) }
 
           it 'will have a public :access_right_code' do
             expect { subject.access_right_code }.to_not raise_error
