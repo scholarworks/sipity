@@ -204,6 +204,8 @@ en:
         label: "Explain your <b>Research Process</b>"
       publisher_information:
         label: "Provide additional <b>Publication Information</b>"
+      faculty_response:
+        label: "Attach your <b>Letter of Recommendation</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
@@ -284,6 +286,7 @@ en:
         etd/ingest_with_postponed_cataloging: 'Ingest with Postponed Cataloging'
         etd/cataloger_requests_change: 'Changes are Required for Cataloging'
         etd/submit_for_review: 'Terms of Deposit'
+        ulra/submit_for_review: 'Terms of Deposit'
       verification:
         etd/advisor_signoff:
           i_agree: 'I have reviewed the submission and all aspects of it conform to my expectations.'

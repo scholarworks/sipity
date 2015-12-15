@@ -16,10 +16,11 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:requested_by) }
           it { should validate_presence_of(:work) }
+          it { should validate_acceptance_of(:agree_to_terms_of_deposit) }
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
-              form_object = double('Form Object')
+              form_object = double('Form Object', input: '')
               expect(subject.render(f: form_object)).to be_html_safe
             end
           end
