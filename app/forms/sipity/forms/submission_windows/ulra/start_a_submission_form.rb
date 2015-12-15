@@ -95,11 +95,11 @@ module Sipity
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to
             # notify the creating user of the work of the action they've taken.
-            repository.register_action_taken_on_entity(entity: work, action: processing_action_name, requested_by: requested_by)
-            repository.register_action_taken_on_entity(entity: work, action: 'project_information', requested_by: requested_by)
-            repository.register_action_taken_on_entity(
-              entity: submission_window, action: processing_action_name, requested_by: requested_by
-            )
+            [
+              [work, processing_action_name], [work, 'project_information'], [submission_window, processing_action_name]
+            ].each do |entity, action|
+              repository.register_action_taken_on_entity(entity: entity, action: action, requested_by: requested_by)
+            end
             repository.log_event!(entity: work, requested_by: requested_by, event_name: event_name)
           end
 
