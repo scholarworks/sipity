@@ -37,11 +37,14 @@ module Sipity
       private
 
       def create_submission_window!
-        Models::SubmissionWindow.find_or_create_by!(
-          work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug),
+        window = Models::SubmissionWindow.find_or_create_by!(work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug))
+        return window if window.open_for_starting_submissions_at == open_for_starting_submissions_at &&
+          window.closed_for_starting_submissions_at == closed_for_starting_submissions_at
+        window.update_attributes(
           open_for_starting_submissions_at: open_for_starting_submissions_at,
           closed_for_starting_submissions_at: closed_for_starting_submissions_at
         )
+        window
       end
 
       def build_submission_window_workflow!
