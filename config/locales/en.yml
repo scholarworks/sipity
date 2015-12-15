@@ -198,6 +198,8 @@ en:
     work_type/ulra_submission:
       project_information:
         label: "Tell us about your <b>Project Information</b>"
+      plan_of_study:
+        label: "Tell us more about your <b>Plan of Study</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
