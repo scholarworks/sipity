@@ -195,6 +195,9 @@ en:
       label: "Add <b>degree</b> for your %{work_type}"
     program_name:
       label: "Add <b>program name</b> for your %{work_type}"
+    work_type/ulra_submission:
+      project_information:
+        label: "Tell us about your <b>Project Information</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
