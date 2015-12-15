@@ -53,10 +53,6 @@ module Sipity
     def authorized_for_processing?(user:, entity:, action:)
     end
 
-    # @see ./app/repositories/sipity/queries/ulra_queries.rb
-    def available_supervising_semester_for(ending_year: Time.zone.today.year, **)
-    end
-
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
     def build_account_profile_form(requested_by:, attributes:)
     end
@@ -227,6 +223,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
+    end
+
+    # @see ./app/repositories/sipity/queries/ulra_queries.rb
+    def possible_expected_graduation_dates(ending_year: Time.zone.today.year, **)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
