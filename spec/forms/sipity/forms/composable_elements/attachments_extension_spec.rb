@@ -37,6 +37,17 @@ module Sipity
 
         its(:default_predicate_name) { should eq('attachment') }
 
+        context '#attachments_associated_with_the_work?' do
+          it 'will be false if no files nor attachments_metadata exists' do
+            subject = described_class.new(repository: repository, form: form, attachments_attributes: nil)
+            expect(subject.attachments_associated_with_the_work?).to eq(false)
+          end
+          it 'will be false if given a files empty hash' do
+            subject = described_class.new(repository: repository, form: form, files: {}, attachments_attributes: nil)
+            expect(subject.attachments_associated_with_the_work?).to eq(false)
+          end
+        end
+
         context '#at_least_one_file_must_be_attached' do
           it 'will return true if there are works assigned' do
             expect(subject).to receive(:attachments_associated_with_the_work?).and_return(true)

@@ -49,7 +49,7 @@ module Sipity
         end
 
         def attachments_associated_with_the_work?
-          attachments_metadata.present? || files.present?
+          attachments_metadata.present? || Array.wrap(files).any?(&:present?)
         end
 
         def at_least_one_file_must_be_attached

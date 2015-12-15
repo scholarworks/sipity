@@ -140,6 +140,13 @@ en:
       description: "Does this work contain the first public disclosure of material being considered for patent protection?"
     work_type:
       label: 'What <b>type</b> of work is this?'
+    work_area/ulra:
+      award_category:
+        label: "What is the type of project you are submitting?"
+      advisor_netid:
+        label: "What is your sponsoring <b>Advisor's Netid</b> for this submission?"
+      course_information:
+        label: "What is basic <b>Course Information</b>?"
   sections:
     todo:
       label: 'To-do'
@@ -188,6 +195,15 @@ en:
       label: "Add <b>degree</b> for your %{work_type}"
     program_name:
       label: "Add <b>program name</b> for your %{work_type}"
+    work_type/ulra_submission:
+      project_information:
+        label: "Tell us about your <b>Project Information</b>"
+      plan_of_study:
+        label: "Tell us more about your <b>Plan of Study</b>"
+      research_process:
+        label: "Explain your <b>Research Process</b>"
+      publisher_information:
+        label: "Provide additional <b>Publication Information</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
