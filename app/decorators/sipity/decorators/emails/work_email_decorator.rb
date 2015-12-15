@@ -9,7 +9,6 @@ module Sipity
           self.repository = repository
         end
 
-        include Conversions::SanitizeHtml
         def title
           work.to_s
         end

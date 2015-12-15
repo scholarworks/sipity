@@ -111,11 +111,6 @@ module Sipity
             repository.register_action_taken_on_entity(entity: work, action: 'author', requested_by: requested_by)
           end
 
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
-          end
-
           def create_the_work
             @work = repository.create_work!(submission_window: submission_window, title: title, work_type: work_type)
             yield(@work)

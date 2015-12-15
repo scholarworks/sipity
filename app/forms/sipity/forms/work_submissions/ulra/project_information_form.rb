@@ -82,11 +82,6 @@ module Sipity
             end
           end
 
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
-          end
-
           def default_repository
             CommandRepository.new
           end

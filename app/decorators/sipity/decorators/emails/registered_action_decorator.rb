@@ -47,7 +47,6 @@ module Sipity
           Sipity::Controllers::TranslationAssistant.call(scope: :work_types, subject: work.work_type)
         end
 
-        include Conversions::SanitizeHtml
         def title
           work.to_s
         end
