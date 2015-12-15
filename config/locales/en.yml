@@ -200,6 +200,8 @@ en:
         label: "Tell us about your <b>Project Information</b>"
       plan_of_study:
         label: "Tell us more about your <b>Plan of Study</b>"
+      research_process:
+        label: "Explain your <b>Research Process</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
