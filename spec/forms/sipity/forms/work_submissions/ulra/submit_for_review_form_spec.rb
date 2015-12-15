@@ -1,26 +1,28 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/work_submissions/ulra/submit_advisor_portion_form'
+require 'sipity/forms/work_submissions/ulra/submit_for_review_form'
 
 module Sipity
   module Forms
     module WorkSubmissions
       module Ulra
-        RSpec.describe SubmitAdvisorPortionForm do
+        RSpec.describe SubmitForReviewForm do
           let(:work) { double('Work') }
           let(:repository) { CommandRepositoryInterface.new }
           let(:user) { double('User') }
           let(:keywords) { { work: work, requested_by: user, repository: repository } }
           subject { described_class.new(keywords) }
 
-          include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:requested_by) }
-          it { should validate_presence_of(:work) }
-          it { should validate_acceptance_of(:agree_to_terms_of_deposit) }
+          it 'validates the aggreement to the submission terms' do
+            subject = described_class.new(keywords)
+            subject.valid?
+            expect(subject.errors[:agree_to_terms_of_deposit]).to be_present
+          end
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
-              form_object = double('Form Object', input: '')
+              form_object = double('Form Object')
+              expect(form_object).to receive(:input).with(:agree_to_terms_of_deposit, hash_including(as: :boolean)).and_return("<input />")
               expect(subject.render(f: form_object)).to be_html_safe
             end
           end

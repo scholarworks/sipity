@@ -1,21 +1,14 @@
-<h1><%= model.translate(:call_to_action, predicate: :heading) %></h1>
+<h1>Attach your <b>Letter of Recommendation</b></h1>
 
-<div class="panel-tiles">
+<%= simple_form_for(view_object, url: request.path, as: :work, method: :post, html: { class: 'simple-form panel panel-primary with-footer' }) do |f| %>
+  <legend class="panel-heading">
+    <h3 class="panel-title">Letter of Recommendation</h3>
+  </legend>
 
-  <%= simple_form_for(
-    model,
-    url: request.path,
-    method: :post,
-    as: :work,
-    html: { class: 'simple-form panel panel-primary with-footer' }
-  ) do |f| %>
+  <fieldset class="panel-body">
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
-    <fieldset class="panel-body">
-      <legend class="panel-heading">
-        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.faculty_response.title_html"), class: 'panel-hint' %>
-      </legend>
-      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
+    <div class="panel-tiles">
       <%= f.input :files, as: :file, input_html: { multiple: false } %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">
@@ -35,15 +28,14 @@
           <% end %>
         </ol>
       <% end %>
-    </fieldset>
-
-    <div class="panel-footer action-pane">
-      <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
     </div>
-  <% end %>
+  </fieldset>
 
-</div>
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
 
 <div class="action-pane">
-  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+<%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
 </div>

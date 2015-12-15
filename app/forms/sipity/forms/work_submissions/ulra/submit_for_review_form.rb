@@ -7,10 +7,10 @@ module Sipity
       module Ulra
         # Responsible for submitting the associated entity to the advisor
         # for signoff.
-        class SubmitStudentPortionForm
+        class SubmitForReviewForm
           ProcessingForm.configure(
-            form_class: self, base_class: Models::Work, attribute_names: [:agree_to_terms_of_deposit],
-            template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+            form_class: self, base_class: Models::Work, processing_subject_name: :work,
+            attribute_names: [:agree_to_terms_of_deposit], template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -21,13 +21,8 @@ module Sipity
           end
 
           include ActiveModel::Validations
-          validates :requested_by, presence: true
-          validates :work, presence: true
           validates :agree_to_terms_of_deposit, acceptance: { accept: true }
 
-          # @param f SimpleFormBuilder
-          #
-          # @return String
           def render(f:)
             markup = view_context.content_tag('legend', deposit_terms_legend)
             markup << view_context.content_tag('article', deposit_terms, class: 'legally-binding-text')
@@ -45,10 +40,6 @@ module Sipity
 
           private
 
-          def agree_to_terms_of_deposit=(value)
-            @agree_to_terms_of_deposit = PowerConverter.convert_to_boolean(value)
-          end
-
           def deposit_terms_legend
             view_context.t('ulra/submit_for_review', scope: 'sipity/forms.state_advancing_actions.legend').html_safe
           end
@@ -63,6 +54,10 @@ module Sipity
 
           def view_context
             Draper::ViewContext.current
+          end
+
+          def agree_to_terms_of_deposit=(value)
+            @agree_to_terms_of_deposit = PowerConverter.convert_to_boolean(value)
           end
         end
       end
