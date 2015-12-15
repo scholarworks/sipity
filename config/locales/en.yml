@@ -202,6 +202,8 @@ en:
         label: "Tell us more about your <b>Plan of Study</b>"
       research_process:
         label: "Explain your <b>Research Process</b>"
+      publisher_information:
+        label: "Provide additional <b>Publication Information</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
