@@ -92,7 +92,14 @@ module Sipity
                 pending_advisor_completion: { roles: ['creating_user', 'ulra_reviewer'] },
                 pending_student_completion: { roles: ['creating_user', 'ulra_reviewer'] },
                 under_review: { roles: ['ulra_reviewer'] }
-              }, attributes: { presentation_sequence: 4 }
+              }, attributes: { presentation_sequence: 3 }
+            },
+            project_information: {
+              states: {
+                initial_state_name => { roles: ['creating_user'] },
+                pending_student_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user'] }
+              }, attributes: { presentation_sequence: 1 }
             },
             attach: {
               states: {
@@ -100,36 +107,36 @@ module Sipity
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_advisor_completion: { roles: ['creating_user'] },
                 under_review: { roles: ['creating_user'] }
-              }, attributes: { presentation_sequence: 1 }
+              }, attributes: { presentation_sequence: 2 }
             },
             access_policy: {
               states: {
-                initial_state_name => { roles: ['creating_user'] },
+                initial_state_name => { roles: ['creating_user', 'advisor'] },
                 pending_student_completion: { roles: ['creating_user'] },
-                pending_advisor_completion: { roles: ['creating_user'] },
+                pending_advisor_completion: { roles: ['creating_user', 'advisor'] },
                 under_review: { roles: ['creating_user'] }
-              }, attributes: { presentation_sequence: 2 }
+              }, attributes: { presentation_sequence: 3 }
             },
             plan_of_study: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_advisor_completion: { roles: ['creating_user'] }
-              }, attributes: { presentation_sequence: 3 }
+              }, attributes: { presentation_sequence: 4 }
             },
             publisher_information: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_advisor_completion: { roles: ['creating_user'] }
-              }, attributes: { presentation_sequence: 5 }
+              }, attributes: { presentation_sequence: 6 }
             },
             research_process: {
               states: {
                 initial_state_name => { roles: ['creating_user'] },
                 pending_student_completion: { roles: ['creating_user'] },
                 pending_advisor_completion: { roles: ['creating_user'] }
-              }, attributes: { presentation_sequence: 3 }
+              }, attributes: { presentation_sequence: 5 }
             },
             faculty_response: {
               states: {
@@ -142,13 +149,13 @@ module Sipity
               states: { initial_state_name => { roles: ['creating_user'] } },
               transition_to: :pending_advisor_completion,
               emails: { student_completed_their_portion_of_ulra: { to: 'advisor', cc: 'creating_user' } },
-              required_actions: [:attach, :access_policy, :plan_of_study, :publisher_information, :research_process]
+              required_actions: [:project_information, :attach, :access_policy, :plan_of_study, :publisher_information, :research_process]
             },
             submit_advisor_portion: {
               states: { initial_state_name => { roles: ['advisor'] } },
               transition_to: :pending_student_completion,
               emails: { faculty_completed_their_portion_of_ulra: { to: 'creating_user', cc: 'advisor' } },
-              required_actions: [:faculty_response]
+              required_actions: [:access_policy, :faculty_response]
             },
             submit_for_review: {
               states: {

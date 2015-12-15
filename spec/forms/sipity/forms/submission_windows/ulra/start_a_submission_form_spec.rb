@@ -74,39 +74,23 @@ module Sipity
             it { should validate_presence_of(:advisor_netid) }
             it { should validate_presence_of(:award_category) }
             it { should validate_presence_of(:work_type) }
+            it { should validate_presence_of(:course_name) }
+            it { should validate_presence_of(:course_number) }
             it 'should validate submission_window_is_open' do
               expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
               subject.valid?
             end
           end
 
-          context 'Sanitizing HTML title' do
-            let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-            subject { described_class.new(keywords) }
-            context 'removes script tags' do
-              let(:title) { "<script>alert('Like this');</script>" }
-              it { expect(subject.title).to_not have_tag('script') }
-            end
-            context 'removes JavaScript links' do
-              let(:title) do
-                "JavaScript can also be included in an anchor tag
-            <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
-              end
-              it { expect(subject.title).to_not have_tag("a[href]") }
-            end
-          end
-
           context '#submit' do
-            let(:attributes) do
-              {
-                title: "This is my title",
-                work_publication_strategy: 'do_not_know',
-                advisor_netid: 'dummy_id',
-                award_category: 'some_category'
-              }
-            end
             subject { described_class.new(keywords) }
             context 'with invalid data' do
+              let(:attributes) do
+                {
+                  title: "This is my title", work_publication_strategy: 'do_not_know', advisor_netid: 'dummy_id',
+                  award_category: 'some_category'
+                }
+              end
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
                 expect { subject.submit }.
@@ -120,16 +104,30 @@ module Sipity
             context 'with valid data' do
               let(:user) { User.new(id: '123') }
               let(:work) { Sipity::Models::Work.new(id: 1) }
+              let(:attributes) do
+                {
+                  title: 'Hello', access_rights_answer: 'right answer', work_publication_strategy: 'do_not_know',
+                  course_name: 'a name', course_number: 'a number', award_category: 'a category', advisor_netid: 'a netid'
+                }
+              end
               before do
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
                 allow(repository).to receive(:register_action_taken_on_entity)
+                allow(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy)
               end
 
               it 'will return the work' do
                 expect(repository).to receive(:create_work!).and_return(work)
                 response = subject.submit
                 expect(response).to eq(work)
+              end
+
+              it 'will persist the work publication strategy' do
+                expect(
+                  subject.send(:publication_and_patenting_intent_extension)
+                ).to receive(:persist_work_publication_strategy).and_call_original
+                subject.submit
               end
 
               it 'will log the event' do
@@ -156,6 +154,13 @@ module Sipity
                 subject.submit
               end
 
+              it 'will register the project_information action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: work, action: 'project_information', requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
               it 'will assiassign_collaborators_to the given work' do
                 expect(repository).to receive(:assign_collaborators_to).with(
                   work: work, collaborators: kind_of(Models::Collaborator)
@@ -167,6 +172,13 @@ module Sipity
                 collaborator = subject.send(:build_collaborator, work: work)
                 expect(collaborator).to be_valid
                 expect(collaborator).to be_responsible_for_review
+              end
+
+              it 'will persist the additional attributes of course_name, course_number, and award_category' do
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'course_name', values: 'a name')
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'course_number', values: 'a number')
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'award_category', values: 'a category')
+                subject.submit
               end
             end
           end

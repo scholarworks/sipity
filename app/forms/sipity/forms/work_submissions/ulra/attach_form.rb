@@ -9,7 +9,9 @@ module Sipity
         class AttachForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:files, :attachments_attributes, :representative_attachment_id, :attached_files_completion_state]
+            attribute_names: [
+              :project_url, :files, :attachments_attributes, :representative_attachment_id, :attached_files_completion_state
+            ]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -17,6 +19,7 @@ module Sipity
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.representative_attachment_id = attributes.fetch(:representative_attachment_id) { representative_attachment_id_from_work }
+            self.project_url = attributes.fetch(:project_url) { project_url_from_work }
             self.attached_files_completion_state = attributes.fetch(:attached_files_completion_state) do
               attached_files_completion_state_from_work
             end
@@ -44,12 +47,8 @@ module Sipity
           end
 
           delegate(
-            :attachments,
-            :attachments_metadata,
-            :attach_or_update_files,
-            :attachments_attributes=,
-            :files,
-            to: :attachments_extension
+            :attachments, :attachments_metadata, :attach_or_update_files, :attachments_attributes=, :files,
+            :at_least_one_file_must_be_attached, to: :attachments_extension
           )
           private(:attach_or_update_files)
 
@@ -62,15 +61,17 @@ module Sipity
           def save
             repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
             attach_or_update_files(requested_by: requested_by)
-            repository.update_work_attribute_values!(
-              work: work, key: 'attached_files_completion_state', values: attached_files_completion_state
-            )
+            update_additional_attributes(keys: ['attached_files_completion_state', 'project_url'])
             # HACK: This is expanding the knowledge of what action is being
             #   taken. Instead it is something that should be modeled in the
             #   underlying database. That is to say: When an action fires what
             #   actions should be registered and what actions should be
             #   unregistered.
             repository.unregister_action_taken_on_entity(entity: work, action: 'access_policy', requested_by: requested_by)
+          end
+
+          def update_additional_attributes(keys:)
+            keys.each { |key| repository.update_work_attribute_values!(work: work, key: key, values: send(key)) }
           end
 
           def representative_attachment_id_from_work
@@ -81,13 +82,8 @@ module Sipity
             repository.work_attribute_values_for(work: work, key: 'attached_files_completion_state', cardinality: 1)
           end
 
-          def attachments_associated_with_the_work?
-            attachments_metadata.present? || files.present?
-          end
-
-          def at_least_one_file_must_be_attached
-            return true if attachments_associated_with_the_work?
-            errors.add(:base, :at_least_one_attachment_required)
+          def project_url_from_work
+            repository.work_attribute_values_for(work: work, key: 'project_url', cardinality: 1)
           end
 
           def build_attachments(attachment_attr)

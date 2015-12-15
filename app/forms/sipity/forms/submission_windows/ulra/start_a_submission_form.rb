@@ -11,7 +11,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :work_type]
+            attribute_names: [:title, :work_publication_strategy, :award_category, :advisor_netid, :course_name, :course_number]
           )
 
           def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
@@ -26,16 +26,15 @@ module Sipity
 
           delegate(
             :work_publication_strategy, :work_publication_strategy=, :work_publication_strategies_for_select,
-            :possible_work_publication_strategies, :persist_work_publication_strategy,
-            to: :publication_and_patenting_intent_extension
+            :possible_work_publication_strategies, to: :publication_and_patenting_intent_extension
           )
 
-          private(:work_publication_strategy=, :possible_work_publication_strategies, :persist_work_publication_strategy)
+          private(:work_publication_strategy=, :possible_work_publication_strategies)
 
           private
 
           attr_reader :work_area
-          attr_accessor :publication_and_patenting_intent_extension
+          attr_accessor :publication_and_patenting_intent_extension, :work_type
 
           def publication_and_patenting_intent_extension_builder
             Forms::ComposableElements::PublishingAndPatentingIntentExtension
@@ -57,23 +56,25 @@ module Sipity
           validates :advisor_netid, presence: true, net_id: true
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true
+          validates :course_name, presence: true
+          validates :course_number, presence: true
           validates :submission_window, presence: true, open_for_starting_submissions: true
           validates :requested_by, presence: true
 
           def submit
-            return false unless valid?
-            save
+            valid? ? save : false
           end
 
           private
 
           def save
             create_the_work do |work|
-              persist_work_publication_strategy
+              publication_and_patenting_intent_extension.persist_work_publication_strategy
               # I believe this form has too much knowledge of what is going on;
               # Consider pushing some of the behavior down into the repository.
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
               repository.assign_collaborators_to(work: work, collaborators: build_collaborator(work: work))
+              assign_additional_attributes_to(work: work)
               register_actions(work: work)
             end
           end
@@ -94,11 +95,18 @@ module Sipity
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to
             # notify the creating user of the work of the action they've taken.
-            repository.register_action_taken_on_entity(entity: work, action: processing_action_name, requested_by: requested_by)
-            repository.register_action_taken_on_entity(
-              entity: submission_window, action: processing_action_name, requested_by: requested_by
-            )
+            [
+              [work, processing_action_name], [work, 'project_information'], [submission_window, processing_action_name]
+            ].each do |entity, action|
+              repository.register_action_taken_on_entity(entity: entity, action: action, requested_by: requested_by)
+            end
             repository.log_event!(entity: work, requested_by: requested_by, event_name: event_name)
+          end
+
+          def assign_additional_attributes_to(work:)
+            ['course_name', 'course_number', 'award_category'].each do |predicate_name|
+              repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
+            end
           end
 
           alias_method :to_work_area, :work_area
@@ -107,16 +115,13 @@ module Sipity
           private
 
           def initialize_attributes(attributes)
+            self.work_type = default_work_type
             self.title = attributes[:title]
             self.advisor_netid = attributes[:advisor_netid]
             self.award_category = attributes[:award_category]
-            self.work_type = attributes.fetch(:work_type) { default_work_type }
             self.work_publication_strategy = attributes[:work_publication_strategy]
-          end
-
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
+            self.course_name = attributes[:course_name]
+            self.course_number = attributes[:course_number]
           end
 
           def create_the_work

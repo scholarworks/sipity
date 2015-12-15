@@ -1,4 +1,4 @@
-<%= simple_form_for(view_object, url: request.path, as: :submission_window, method: :post) do |f| %>
+<%= simple_form_for(view_object, url: request.path, as: :work, method: :post) do |f| %>
   <%= f.error_notification %>
   <%= f.error :base, error_method: :to_sentence %>
   <div class="panel-tiles">
@@ -14,9 +14,6 @@
     <%= render(layout: 'sipity/form_panel', locals: { name: 'course_information', theme: :info, object: view_object }) do %>
       <%= f.input :course_name %>
       <%= f.input :course_number %>
-    <% end %>
-    <%= render(layout: 'sipity/form_panel', locals: { name: 'advisor_netid', theme: :info, object: view_object }) do %>
-      <%= f.input :advisor_netid, input_html: { class: 'form-control' } %>
     <% end %>
   </div>
   <div class="action-pane">

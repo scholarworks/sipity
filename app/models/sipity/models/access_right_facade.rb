@@ -25,6 +25,11 @@ module Sipity
         translator.call(scope: scope, subject: subject, object: object, predicate: predicate)
       end
 
+      def accessible_object_type
+        return accessible_object.predicate_name.titleize if accessible_object.respond_to?(:predicate_name)
+        human_model_name
+      end
+
       delegate :model_name, to: :entity_type
 
       def human_model_name

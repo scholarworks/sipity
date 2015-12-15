@@ -4,13 +4,13 @@ require 'active_model/validations'
 module Sipity
   module Forms
     module WorkSubmissions
-      module Etd
+      module Core
         # Exposes a means of assigning an access policy to each of the related
         # items.
         class AccessPolicyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id, :use_of_library_resources]
+            attribute_names: [:copyright, :accessible_objects_attributes, :representative_attachment_id]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -90,7 +90,7 @@ module Sipity
           end
 
           def accessible_objects_from_repository
-            repository.access_rights_for_accessible_objects_of(work: work)
+            repository.access_rights_for_accessible_objects_of(work: work, predicate_name: :all)
           end
 
           def parse_accessible_objects_attributes(values = {})

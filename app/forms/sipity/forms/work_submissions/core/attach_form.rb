@@ -32,8 +32,8 @@ module Sipity
           validates :requested_by, presence: true
 
           delegate(
-            :attachments,
-            :attachments_metadata,
+            :attachments, :attachments_associated_with_the_work?,
+            :attachments_metadata, :at_least_one_file_must_be_attached,
             :attach_or_update_files,
             :attachments_attributes=,
             :files,
@@ -60,15 +60,6 @@ module Sipity
 
           def representative_attachment_id_from_work
             repository.representative_attachment_for(work: work).to_param
-          end
-
-          def attachments_associated_with_the_work?
-            attachments_metadata.present? || files.present?
-          end
-
-          def at_least_one_file_must_be_attached
-            return true if attachments_associated_with_the_work?
-            errors.add(:base, :at_least_one_attachment_required)
           end
 
           def build_attachments(attachment_attr)

@@ -28,7 +28,7 @@ module Sipity
           public
 
           delegate(
-            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files, :attachment_predicate_name,
             to: :attachments_extension
           )
 
@@ -50,7 +50,7 @@ module Sipity
               repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
-              attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
+              attach_or_update_files(requested_by: requested_by)
             end
           end
 
@@ -81,6 +81,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
+              predicate_name: 'application_essay',
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

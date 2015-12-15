@@ -6,6 +6,7 @@ module Sipity
     RSpec.describe AccessRightFacade do
       let(:object) { work }
       let(:work) { Models::Work.new(id: 123, title: 'dummy') }
+      let(:attachment) { Models::Attachment.new(id: 234, predicate_name: 'chicken') }
       let(:access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today) }
       subject { described_class.new(object, work: work) }
 
@@ -30,7 +31,7 @@ module Sipity
       end
 
       context 'with prepopulation of access right information' do
-        let(:object) { Models::Attachment.new(id: 234) }
+        let(:object) { attachment }
         let(:work_access_right) { Models::AccessRight.new(access_right_code: 'embargo_then_open_access', release_date: Time.zone.today) }
         let(:access_right) { Models::AccessRight.new }
         it "will default an accessible object without a code to have the work's access right" do
@@ -49,6 +50,16 @@ module Sipity
           expect(Models::AccessRight).to_not receive(:find_or_initialize_by).with(hash_including(entity_id: work.id))
           expect(subject.access_right_code).to_not eq(work_access_right.access_right_code)
           expect(subject.release_date).to_not eq(work_access_right.release_date)
+        end
+      end
+
+      context '#accessible_object_type' do
+        it 'will include the object predicate name if one exists' do
+          subject = described_class.new(attachment, work: work)
+          expect(subject.accessible_object_type).to eq(attachment.predicate_name.titleize)
+        end
+        it 'will use the human_model_name if no predicate name exists' do
+          expect(subject.accessible_object_type).to eq(subject.human_model_name)
         end
       end
 

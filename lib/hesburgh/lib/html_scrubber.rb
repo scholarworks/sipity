@@ -8,6 +8,7 @@ module Hesburgh
     # @todo Extract to the Hesburgh::Lib gem
     module HtmlScrubber
       ALLOWED_INLINE_TAGS = %w(abbr acronym b big cit cite code dfn em i mark samp small strong sub sup time tt var).freeze
+      ALLOWED_INLINE_WITH_LINK_TAGS = (%w(a) + ALLOWED_INLINE_TAGS).freeze
       ALLOWED_INLINE_ATTRIBUTES = %w(datetime title href rel dir).freeze
       ALLOWED_BLOCK_ATTRIBUTES = ALLOWED_INLINE_ATTRIBUTES
 
@@ -18,6 +19,11 @@ module Hesburgh
 
       # We expect a single line of content. Examples include a "title" of an item
       def self.build_inline_scrubber(tags: ALLOWED_INLINE_TAGS, attributes: ALLOWED_INLINE_ATTRIBUTES)
+        AllowedTagsScrubber.new(tags: tags, attributes: attributes)
+      end
+
+      # We expect a single line of content but are allowing links (A-tags) to be included.
+      def self.build_inline_with_link_scrubber(tags: ALLOWED_INLINE_WITH_LINK_TAGS, attributes: ALLOWED_INLINE_ATTRIBUTES)
         AllowedTagsScrubber.new(tags: tags, attributes: attributes)
       end
 

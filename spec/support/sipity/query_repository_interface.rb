@@ -6,11 +6,11 @@
 module Sipity
   class QueryRepositoryInterface
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def access_rights_for_accessible_objects_of(work:)
+    def access_rights_for_accessible_objects_of(work:, predicate_name: 'attachment')
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def accessible_objects(work:)
+    def accessible_objects(work:, predicate_name: 'attachment')
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -35,10 +35,6 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def authorized_for_processing?(user:, entity:, action:)
-    end
-
-    # @see ./app/repositories/sipity/queries/ulra_queries.rb
-    def available_supervising_semester_for(ending_year: Time.zone.today.year, **)
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
@@ -135,6 +131,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def non_user_collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
+    end
+
+    # @see ./app/repositories/sipity/queries/ulra_queries.rb
+    def possible_expected_graduation_dates(ending_year: Time.zone.today.year, **)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -246,7 +246,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def work_attachments(work:)
+    def work_attachments(work:, predicate_name: 'attachment')
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb

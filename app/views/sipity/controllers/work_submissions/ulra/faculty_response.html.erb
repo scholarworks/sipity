@@ -13,31 +13,13 @@
     <%= f.error :base, error_method: :to_sentence %>
     <fieldset class="panel-body">
       <legend class="panel-heading">
-        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_info.title_html"), class: 'panel-hint' %>
-      </legend>
-      <%= f.input :course, label: t('sipity/decorators/entitiy_enrichments.course'), input_html: { class: 'form-control' }  %>
-      <%= f.input :nature_of_supervision, label: t('sipity/decorators/entitiy_enrichments.nature_of_supervision'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
-      <%= f.input :supervising_semester, as: :select, collection: view_object.supervising_semester_for_select, input_html: { class: 'form-control', multiple: :multiple }  %>
-    </fieldset>
-
-    <fieldset class="panel-body">
-      <legend class="panel-heading">
-        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_evaluation.title_html"), class: 'panel-hint' %>
-      </legend>
-      <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.project_evaluation.title_html"), class: 'panel-hint' %>
-      <%= f.input :quality_of_research, label: t('sipity/decorators/entitiy_enrichments.quality_of_research'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
-      <%= f.input :use_of_library_resources, label: t('sipity/decorators/entitiy_enrichments.use_of_library_resources'), as: :text, input_html: { class: 'form-control', rows: 5 } %>
-    </fieldset>
-
-    <fieldset class="panel-body">
-      <legend class="panel-heading">
-        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
+        <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.faculty_response.title_html"), class: 'panel-hint' %>
       </legend>
       <%= content_tag :p, t("sipity/decorators/entitiy_enrichments.panels.file_upload.title_html"), class: 'panel-hint' %>
-      <%= f.input :files, as: :file, input_html: { multiple: 'multiple' } %>
+      <%= f.input :files, as: :file, input_html: { multiple: false } %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">
-          <%= f.fields_for :faculty_comments_attachments do |attachment_form| %>
+          <%= f.fields_for :attachments do |attachment_form| %>
             <li class="attachement form-inline">
               <figure class="thumbnail-wrapper">
                 <%= link_to(

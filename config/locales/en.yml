@@ -117,16 +117,6 @@ en:
         hint: 'Select the program name for which you are submitting this work'
       publication_name:
         title_html: 'Please provide a <b>publication name</b> of your work'
-      course:
-        title_html: 'Course Name/Number (if applicable)'
-      nature_of_supervision:
-        title_html: 'Please briefly describe the nature of your supervision of this project'
-      supervising_semester:
-        title_html: 'Semester(s) supervising student work on this project (select all that apply)'
-      quality_of_research:
-        title_html: "Please comment on the quality of the research and the depth of inquiry demonstrated by the student's project."
-      use_of_library_resources:
-        title_html: "How did the student’s use of library resources (such as print, electronic, database, special collections, etc.) contribute to the outcome of this research project?"
       project_info:
         title_html: "Project Information"
       project_evaluation:
@@ -264,10 +254,6 @@ en:
             access_rights_answer:
               blank: 'Please select an option'
               inclusion: 'Please select an option from the list'
-        sipity/forms/work_enrichments/publisher_information_form:
-          attributes:
-            allow_pre_prints:
-              inclusion: 'is not included in the list'
   sipity/forms:
     error_messages:
     state_advancing_actions:

@@ -23,7 +23,7 @@
       <%= f.input :files, as: :file %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">
-          <%= f.fields_for :attachments_attributes do |attachment_form| %>
+          <%= f.fields_for :attachments do |attachment_form| %>
             <li class="attachement form-inline">
               <figure class="thumbnail-wrapper">
                 <%= link_to(
