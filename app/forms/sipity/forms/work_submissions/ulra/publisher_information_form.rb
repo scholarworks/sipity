@@ -10,7 +10,7 @@ module Sipity
         class PublisherInformationForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:publication_name, :submission_accepted_for_publication]
+            attribute_names: [:publication_name, :submission_accepted_for_publication, :submitted_for_publication]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -21,16 +21,21 @@ module Sipity
             self.submission_accepted_for_publication = attributes.fetch(:submission_accepted_for_publication) do
               submission_accepted_for_publication_from_work
             end
+            self.submitted_for_publication = attributes.fetch(:submitted_for_publication) { submitted_for_publication_from_work }
           end
 
           include ActiveModel::Validations
           include Hydra::Validations
           validates :publication_name, presence: { if: :submission_accepted_for_publication? }
-          validates :submission_accepted_for_publication, inclusion: { in: :possible_submission_accepted_for_publication }
+          validates(
+            :submission_accepted_for_publication,
+            inclusion: { in: :possible_submission_accepted_for_publication, if: :submitted_for_publication? }
+          )
 
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
+              repository.update_work_attribute_values!(work: work, key: 'submitted_for_publication', values: submitted_for_publication)
               repository.update_work_attribute_values!(
                 work: work, key: 'submission_accepted_for_publication', values: submission_accepted_for_publication
               )
@@ -47,6 +52,8 @@ module Sipity
             true
           end
 
+          alias_method :submitted_for_publication?, :submitted_for_publication
+
           private
 
           def publication_name_from_work
@@ -55,6 +62,14 @@ module Sipity
 
           def submission_accepted_for_publication_from_work
             repository.work_attribute_values_for(work: work, key: 'submission_accepted_for_publication', cardinality: 1)
+          end
+
+          def submitted_for_publication_from_work
+            repository.work_attribute_values_for(work: work, key: 'submitted_for_publication', cardinality: 1)
+          end
+
+          def submitted_for_publication=(input)
+            @submitted_for_publication = PowerConverter.convert(input, to: :boolean)
           end
         end
       end

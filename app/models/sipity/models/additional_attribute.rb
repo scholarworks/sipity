@@ -44,6 +44,7 @@ module Sipity
       SPATIAL_COVERAGE = 'spatial_coverage'.freeze
       SUBJECT = 'subject'.freeze
       SUBMISSION_ACCEPTED_FOR_PUBLICATION = 'submission_accepted_for_publication'.freeze
+      SUBMITTED_FOR_PUBLICATION = 'submitted_for_publication'.freeze
       TEMPORAL_COVERAGE = 'temporal_coverage'.freeze
       USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME = 'use_of_library_resources'.freeze
       WORK_PATENT_STRATEGY = 'work_patent_strategy'.freeze
@@ -88,6 +89,7 @@ module Sipity
           SPATIAL_COVERAGE => SPATIAL_COVERAGE,
           SUBJECT => SUBJECT,
           SUBMISSION_ACCEPTED_FOR_PUBLICATION => SUBMISSION_ACCEPTED_FOR_PUBLICATION,
+          SUBMITTED_FOR_PUBLICATION => SUBMITTED_FOR_PUBLICATION,
           TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
           USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME => USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME,
           WORK_PATENT_STRATEGY => WORK_PATENT_STRATEGY,
