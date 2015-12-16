@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/processing_hooks/etd/works/grad_school_signoff'
+require 'sipity/processing_hooks/etd/works/grad_school_signoff_processing_hook'
 
 module Sipity
   module ProcessingHooks
