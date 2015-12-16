@@ -31,6 +31,7 @@ module Sipity
         def attach_or_update_files(requested_by:)
           update_attachments(requested_by: requested_by)
           update_attachment_metadata(requested_by: requested_by)
+          unregister_access_policy_action_for(requested_by: requested_by)
         end
 
         def update_attachments(requested_by:)
@@ -40,6 +41,11 @@ module Sipity
 
         def update_attachment_metadata(requested_by:)
           repository.amend_files_metadata(work: work, user: requested_by, metadata: attachments_metadata)
+        end
+
+        def unregister_access_policy_action_for(requested_by:)
+          # NOTE: This only unregisters the action if it has been taken by the given person.
+          repository.unregister_action_taken_on_entity(entity: work, action: 'access_policy', requested_by: requested_by)
         end
 
         # Exposed so that it can be used
