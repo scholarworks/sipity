@@ -64,6 +64,12 @@ module Sipity
             Conversions::ConvertToProcessingAction.call(scope, scope: strategy)
           when Parameters::NotificationContextParameter::REASON_ENTERED_STATE
             PowerConverter.convert(scope, to: :strategy_state, scope: strategy)
+          when Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED
+            # A processing hook is associated with an action; However if I
+            # wanted a notification when the action was taken, I would have
+            # chosen a different reason. So instead consider that I need
+            # some other pivot point; the strategy state makes logical sense.
+            PowerConverter.convert(scope, to: :strategy_state, scope: strategy)
           end
         end
       end

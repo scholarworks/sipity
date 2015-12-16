@@ -5,10 +5,12 @@ module Sipity
     class NotificationContextParameter
       REASON_ACTION_IS_TAKEN = 'action_is_taken'.freeze
       REASON_ENTERED_STATE = 'entered_state'.freeze
+      REASON_PROCESSING_HOOK_TRIGGERED = 'processing_hook_triggered'.freeze
 
       VALID_REASONS_FOR_ENUM = {
         REASON_ACTION_IS_TAKEN => REASON_ACTION_IS_TAKEN,
-        REASON_ENTERED_STATE => REASON_ENTERED_STATE
+        REASON_ENTERED_STATE => REASON_ENTERED_STATE,
+        REASON_PROCESSING_HOOK_TRIGGERED => REASON_PROCESSING_HOOK_TRIGGERED
       }.freeze
 
       attr_reader :scope, :reason, :the_thing, :requested_by, :on_behalf_of

@@ -13,7 +13,8 @@ module Sipity
         its(:default_state_machine_generator) { should respond_to(:call) }
 
         it "will generate the state diagram for a ULRA submission" do
-          expect(subject.send(:state_machine_generator)).to receive(:call).at_least(:once)
+          expect(subject.send(:state_machine_generator)).to receive(:call).at_least(:once).and_call_original
+          expect(subject.send(:email_notification_generator)).to receive(:call).at_least(:once).and_call_original
           expect do
             subject.call
           end.to change { Models::SubmissionWindowWorkType.count }.by(described_class::WORK_TYPE_NAMES.count)

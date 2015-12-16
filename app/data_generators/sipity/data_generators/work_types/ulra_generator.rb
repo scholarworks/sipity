@@ -1,6 +1,5 @@
 require 'active_support/core_ext/array/wrap'
 require 'sipity/parameters/notification_context_parameter'
-require 'sipity/data_generators/email_notification_generator'
 
 module Sipity
   module DataGenerators
@@ -26,15 +25,21 @@ module Sipity
           self.submission_window = submission_window
           self.work_area = work_area
           self.state_machine_generator = state_machine_generator
+          self.email_notification_generator = keywords.fetch(:email_notification_generator) { default_email_notification_generator }
         end
 
         private
 
-        attr_accessor :submission_window, :work_area, :state_machine_generator
+        attr_accessor :submission_window, :work_area, :state_machine_generator, :email_notification_generator
 
         def default_state_machine_generator
           require 'sipity/data_generators/state_machine_generator'
           DataGenerators::StateMachineGenerator.method(:call)
+        end
+
+        def default_email_notification_generator
+          require 'sipity/data_generators/email_notification_generator'
+          DataGenerators::EmailNotificationGenerator.method(:call)
         end
 
         public
@@ -178,6 +183,20 @@ module Sipity
             }
           }.each do |action_name, action_config|
             state_machine_generator.call(processing_strategy: processing_strategy, action_name: action_name, config: action_config)
+          end
+
+          # Add processing hook triggered emails
+          [
+            { states: [:under_review], emails: { student_has_indicated_attachments_are_complete: { to: 'ulra_reviewer'} } }
+          ].each do |config|
+            config.fetch(:states, []).each do |state|
+              config.fetch(:emails).each_pair do |email_name, recipients|
+                email_notification_generator.call(
+                  strategy: processing_strategy, scope: state, email_name: email_name, recipients: recipients,
+                  reason: Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED
+                )
+              end
+            end
           end
         end
       end
