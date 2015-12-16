@@ -99,11 +99,6 @@ module Sipity
                 subject.submit
               end
 
-              it "will unregister that the 'access_policy' action was taken" do
-                expect(repository).to receive(:unregister_action_taken_on_entity).and_call_original
-                subject.submit
-              end
-
               it 'will mark a file as representative' do
                 expect(repository).to receive(:set_as_representative_attachment).and_call_original
                 subject.submit

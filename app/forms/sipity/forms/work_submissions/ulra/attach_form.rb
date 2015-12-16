@@ -65,12 +65,6 @@ module Sipity
             repository.set_as_representative_attachment(work: work, pid: representative_attachment_id)
             attach_or_update_files(requested_by: requested_by)
             update_additional_attributes(keys: ['attached_files_completion_state', 'project_url'])
-            # HACK: This is expanding the knowledge of what action is being
-            #   taken. Instead it is something that should be modeled in the
-            #   underlying database. That is to say: When an action fires what
-            #   actions should be registered and what actions should be
-            #   unregistered.
-            repository.unregister_action_taken_on_entity(entity: work, action: 'access_policy', requested_by: requested_by)
           end
 
           def update_additional_attributes(keys:)

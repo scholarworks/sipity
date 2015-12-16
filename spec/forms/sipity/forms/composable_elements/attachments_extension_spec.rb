@@ -91,6 +91,9 @@ module Sipity
                   "77Z8v5yGshHFgE6fS4FRew==" => { "name" => "conference.pdf" }
                 }
               )
+            expect(repository).to receive(:unregister_action_taken_on_entity).
+              with(entity: work, action: 'access_policy', requested_by: user).
+              and_call_original
             subject.attach_or_update_files(requested_by: user)
           end
         end
