@@ -31,15 +31,22 @@ module Sipity
           it { should respond_to :files }
           it { should_not be_persisted }
 
+          it { should delegate_method(:attachment_predicate_name).to(:attachments_extension) }
+          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { should delegate_method(:attachments).to(:attachments_extension) }
+
           include Shoulda::Matchers::ActiveModel
 
-          it { should delegate_method(:attachment_predicate_name).to(:attachments_extension) }
-          it { should delegate_method(:attachments).to(:attachments_extension) }
           it { should validate_presence_of(:citation_style) }
           it 'will have #available_resouce_consulted' do
             expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
               and_return(['some value', 'bogus'])
             expect(subject.available_resource_consulted).to be_a(Array)
+          end
+
+          it 'will validate at_least_one_file_must_be_attached' do
+            expect(subject.send(:attachments_extension)).to receive(:at_least_one_file_must_be_attached)
+            subject.valid?
           end
 
           it 'will have #available_citation_style' do

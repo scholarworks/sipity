@@ -12,9 +12,7 @@
 
       <fieldset class="panel-body">
         <%= f.input :citation_style, as: :select, collection: model.available_citation_style, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
-        <%= f.input :resource_consulted, as: :check_boxes, collection: model.available_resource_consulted, input_html: { class: 'form-control input-xlarge' }  %>
-        <%= f.input :other_resource_consulted, as: :text, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
-        <%= f.input :files, as: :file, label: "Select your ULRA submission essay" %>
+        <%= f.input :files, as: :file, label: "Select your ULRA submission essay", required: true %>
         <% if model.attachments.any? %>
           <ol class="attachment-listing">
             <%= f.fields_for :attachments do |attachment_form| %>
@@ -33,6 +31,8 @@
             <% end %>
           </ol>
         <% end %>
+        <%= f.input :resource_consulted, as: :check_boxes, collection: model.available_resource_consulted, input_html: { class: 'form-control input-xlarge' }  %>
+        <%= f.input :other_resource_consulted, as: :text, input_html: { class: 'form-control' }, wrapper_html: { class: 'form-inline' } %>
       </fieldset>
     </div>
     <div class="panel-footer action-pane">
