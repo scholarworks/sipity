@@ -1,4 +1,3 @@
-require 'sipity/models/additional_attribute'
 require 'sipity/forms/work_submissions/ulra/attach_form'
 require 'sipity/parameters/notification_context_parameter'
 
@@ -23,12 +22,12 @@ module Sipity
           # @api private
           # @see Sipity::ProcessingHooks.call for how this is called
           def call(entity:, repository: default_repository, **keywords)
-            strategy_state = PowerConverter.convert_to_strategy_state(entity)
+            entity = Conversions::ConvertToProcessingEntity.call(entity)
             return true unless attached_files_are_complete_for?(entity: entity, repository: repository)
             # Excluding :action keyword as I don't want to send that further down the call path; Its not relevant to delivering
             # a strategy based email.
             repository.deliver_notification_for(
-              scope: strategy_state, the_thing: entity, repository: repository,
+              scope: entity.strategy_state, the_thing: entity, repository: repository,
               reason: Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED, **keywords.except(:action)
             )
           end

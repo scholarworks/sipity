@@ -1,4 +1,3 @@
-require 'sipity/models/additional_attribute'
 require 'active_support/core_ext/numeric/time'
 
 module Sipity

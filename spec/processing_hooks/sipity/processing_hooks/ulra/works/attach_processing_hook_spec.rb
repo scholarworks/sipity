@@ -8,8 +8,8 @@ module Sipity
         RSpec.describe AttachProcessingHook do
           context '.call' do
             let(:repository) { CommandRepositoryInterface.new }
-            let(:strategy_state) { double('Strategy State') }
-            let(:entity) { double('Entity', to_strategy_state: strategy_state) }
+            let(:strategy_state) { Models::Processing::StrategyState.new }
+            let(:entity) { Models::Processing::Entity.new(strategy_state: strategy_state) }
             let(:action) { double('Action') }
             let(:user) { double('User') }
 
