@@ -30,7 +30,6 @@ module Sipity
           include Hydra::Validations
           validates :expected_graduation_date, presence: true, inclusion: { in: :possible_expected_graduation_dates }
           validates :majors, presence: true
-          validates :minors, presence: true
           validates :college, presence: true, inclusion: { in: :possible_colleges }
 
           def possible_expected_graduation_dates

@@ -55,6 +55,12 @@ module Sipity
             expect(subject.errors[:majors]).to be_present
           end
 
+          it 'will not require minors' do
+            subject = described_class.new(keywords.merge(attributes: { minors: ['', ''] }))
+            subject.valid?
+            expect(subject.errors[:minors]).to_not be_present
+          end
+
           it 'will be valid if at least one of the input majors is not blank' do
             subject = described_class.new(keywords.merge(attributes: { majors: ['chocolate', ''] }))
             subject.valid?
