@@ -37,16 +37,18 @@ module Sipity
           creators.map(&:username)
         end
 
-        def accessible_objects
-          @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: work)
+        def accessible_objects(predicate_name: :all)
+          repository.access_rights_for_accessible_objects_of(work: work, predicate_name: predicate_name)
         end
 
         def work_access
           @work_access ||= Models::AccessRightFacade.new(work, work: work)
         end
 
-        def accessible_files
-          @accessible_files ||= repository.work_attachments(work: work).map { |object| Models::AccessRightFacade.new(object, work: work) }
+        def accessible_files(predicate_name: :all)
+          repository.work_attachments(work: work, predicate_name: predicate_name).map do |object|
+            Models::AccessRightFacade.new(object, work: work)
+          end
         end
 
         # TODO: The methods with `email_message_` prefix are ripe for extraction

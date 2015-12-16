@@ -36,7 +36,7 @@ module Sipity
           allow(repository).to receive(:scope_users_for_entity_and_roles).
             with(entity: work, roles: 'creating_user').and_return(creators)
           allow(repository).to receive(:access_rights_for_accessible_objects_of).
-            with(work: work).and_return(accessible_objects)
+            with(work: work, predicate_name: :all).and_return(accessible_objects)
           allow(repository).to receive(:work_collaborators_for).
             with(work: work).and_return(collaborators)
           allow(repository).to receive(:work_collaborators_responsible_for_review).
@@ -86,7 +86,7 @@ module Sipity
 
         its(:accessible_files) do
           allow(repository).to receive(:work_attachments).
-            with(work: work).and_return(accessible_files)
+            with(work: work, predicate_name: :all).and_return(accessible_files)
           allow(Models::AccessRightFacade).to receive(:new).
             and_return(accessible_file)
           should eq(accessible_files)
