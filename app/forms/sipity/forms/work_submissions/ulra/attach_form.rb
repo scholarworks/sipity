@@ -42,8 +42,11 @@ module Sipity
             inclusion: { in: ->(record) { record.possible_attached_files_completion_states } }
           )
 
+          INCOMPLETE_STATE = 'incomplete'.freeze
+          COMPLETE_STATE = 'complete'.freeze
+
           def possible_attached_files_completion_states
-            ['incomplete', 'complete']
+            [INCOMPLETE_STATE, COMPLETE_STATE]
           end
 
           delegate(

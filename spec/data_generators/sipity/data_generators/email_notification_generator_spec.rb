@@ -37,6 +37,20 @@ module Sipity
             end.to change { strategy_state.notifiable_contexts.count }.by(1)
           end
         end
+
+        context 'with for reason: REASON_PROCESSING_HOOK_TRIGGERED' do
+          let(:reason) { Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED }
+          it 'will generate the requisite entries' do
+            strategy_state = Sipity::Models::Processing::StrategyState.create!(strategy_id: strategy.id, name: scope)
+            expect do
+              expect do
+                expect do
+                  described_class.call(strategy: strategy, reason: reason, scope: scope, email_name: email_name, recipients: recipients)
+                end.to change { Models::Notification::Email.count }.by(1)
+              end.to change { Models::Notification::EmailRecipient.count }.by(3)
+            end.to change { strategy_state.notifiable_contexts.count }.by(1)
+          end
+        end
       end
     end
   end
