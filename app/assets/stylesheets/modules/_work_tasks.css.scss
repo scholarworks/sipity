@@ -1,7 +1,5 @@
 @import 'bootstrap/variables';
 
-$lightest-gray: #efefef;
-
 .work-tasks {
   padding-bottom: 1em;
 }
@@ -17,7 +15,7 @@ $lightest-gray: #efefef;
 }
 
 .todo-item {
-  border-bottom: 1px solid $lightest-gray;
+  border-bottom: 1px solid $table-border-color;
   line-height: 3;
   margin-bottom: .5em;
   padding-left: 30px;
@@ -25,7 +23,7 @@ $lightest-gray: #efefef;
   position: relative;
 
   .circle {
-    border: 1px solid $lightest-gray;
+    border: 1px solid $table-border-color;
     border-radius: 10px;
     height: 20px;
     left: 0;
