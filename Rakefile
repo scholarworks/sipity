@@ -92,5 +92,5 @@ end
 
 if Rails.env.development? || Rails.env.test?
   desc 'Drop and create a new database with proper seed data'
-  task bootstrap: ['db:drop', 'db:create', 'db:schema:load', 'db:seed', 'sipity:environment_bootstrapper']
+  task bootstrap: ['db:drop', 'db:create', 'db:schema:load', 'db:seed', 'sipity:environment_bootstrapper', 'db:data:migrate']
 end
