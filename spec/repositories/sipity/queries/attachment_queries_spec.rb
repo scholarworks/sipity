@@ -20,7 +20,7 @@ module Sipity
         it 'returns the attachments for the given work and role' do
           attachment = Models::Attachment.create!(work_id: work.id, pid: 'attach1', predicate_name: 'attachment', file: file)
           other_type = Models::Attachment.create!(work_id: work.id, pid: 'attach2', predicate_name: 'alternate_attachment', file: file)
-          expect(subject.work_attachments(work: work)).to eq([attachment])
+          expect(subject.work_attachments(work: work)).to eq([attachment, other_type])
           expect(subject.work_attachments(work: work, predicate_name: 'alternate_attachment')).to eq([other_type])
           expect(subject.work_attachments(work: work, predicate_name: :all)).to eq([attachment, other_type])
         end

@@ -32,8 +32,8 @@ module Sipity
         object.class.human_attribute_name(name)
       end
 
-      def accessible_objects
-        @accessible_objects ||= repository.access_rights_for_accessible_objects_of(work: object)
+      def accessible_objects(predicate_name: :all)
+        repository.access_rights_for_accessible_objects_of(work: object, predicate_name: predicate_name)
       end
 
       def comments(decorator: default_comment_decorator)
