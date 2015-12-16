@@ -14,10 +14,11 @@
       <%= f.input :course_name %>
       <%= f.input :course_number %>
     </div>
-    <div class="panel-footer action-pane">
-      <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
-    </div>
   </fieldset>
+
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
 <% end %>
 
 <div class="action-pane">
