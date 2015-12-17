@@ -101,7 +101,7 @@ module Sipity
                 under_director_review: { roles: [creating_user, managing_projects, approving_projects] },
                 proposal_rejected: { roles: [creating_user, managing_projects] },
                 proposal_accepted: { roles: [creating_user, managing_projects] },
-                }, attributes: { presentation_sequence: 1 }
+              }, attributes: { presentation_sequence: 1 }
             },
             debug: {
               states: {
@@ -110,11 +110,27 @@ module Sipity
                 under_director_review: { roles: [managing_projects] },
                 proposal_rejected: { roles: [managing_projects] },
                 proposal_accepted: { roles: [managing_projects] },
-                }, attributes: { presentation_sequence: 2 }
+              }, attributes: { presentation_sequence: 2 }
+            },
+            requester_information: {
+              states: {
+                initial_state_name => { roles: [creating_user] },
+              }, attributes: { presentation_sequence: 1 }
+            },
+            project_information: {
+              states: {
+                initial_state_name => { roles: [creating_user] },
+              }, attributes: { presentation_sequence: 2 }
+            },
+            completion_requirement: {
+              states: {
+                initial_state_name => { roles: [creating_user] },
+              }, attributes: { presentation_sequence: 3 }
             },
             submit_for_pmo_review: {
               states: { initial_state_name => { roles: [creating_user] } },
               transition_to: :under_pmo_review,
+              required_actions: [:requester_information, :project_information],
               emails: {
                 confirmation_of_project_proposal_submitted: { to: creating_user },
                 project_proposal_submitted_to_pmos: { to: managing_projects }

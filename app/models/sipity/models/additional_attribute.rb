@@ -32,6 +32,7 @@ module Sipity
       ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
       EXPECTED_GRADUATION_DATE = 'expected_graduation_date'.freeze
       LANGUAGE = 'language'.freeze
+      LIBRARY_PROGRAM_NAME = 'library_program_name'.freeze
       MAJORS = 'majors'.freeze
       MINORS = 'minors'.freeze
       OCLC_NUMBER = 'oclc_number'.freeze
@@ -78,6 +79,7 @@ module Sipity
           ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE,
           EXPECTED_GRADUATION_DATE => EXPECTED_GRADUATION_DATE,
           LANGUAGE => LANGUAGE,
+          LIBRARY_PROGRAM_NAME => LIBRARY_PROGRAM_NAME,
           MAJORS => MAJORS,
           MINORS => MINORS,
           OCLC_NUMBER => OCLC_NUMBER,
