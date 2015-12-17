@@ -38,3 +38,9 @@ library_project_managers = Sipity::Models::Group.find_or_create_by!(
 )
 $stdout.puts "Associating #{user.username} with #{library_project_managers.name}"
 library_project_managers.group_memberships.find_or_create_by!(user: user)
+
+library_program_directors = Sipity::Models::Group.find_or_create_by!(
+  name: Sipity::DataGenerators::WorkTypes::LibraryProjectGenerator::GROUP_NAME_LIBRARY_PROGRAM_DIRECTORS
+)
+$stdout.puts "Associating #{user.username} with #{library_program_directors.name}"
+library_program_directors.group_memberships.find_or_create_by!(user: user)
