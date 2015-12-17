@@ -75,6 +75,14 @@ GIT
     hydra-validations (0.4.0)
       activemodel (~> 4.0)
 
+GIT
+  remote: git://github.com/sumoheavy/jira-ruby.git
+  revision: bba7cc5ade3d83ef83e321ab661542f809affc91
+  specs:
+    jira-ruby (0.1.16)
+      activesupport
+      oauth (~> 0.4.7)
+
 GEM
   remote: https://rubygems.org/
   remote: https://rails-assets.org/
@@ -372,6 +380,7 @@ GEM
     notiffany (0.0.8)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    oauth (0.4.7)
     orm_adapter (0.5.0)
     parser (2.2.3.0)
       ast (>= 1.1, < 3.0)
@@ -654,6 +663,7 @@ DEPENDENCIES
   i18n-debug
   inch
   jbuilder (~> 2.0)
+  jira-ruby!
   jquery-rails
   kaminari
   launchy
