@@ -10,22 +10,30 @@ module Sipity
         class ApproveForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [], template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
+            attribute_names: [:project_proposal_decision], template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME
           )
 
-          def initialize(work:, requested_by:, **keywords)
+          def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
+            self.project_proposal_decision = attributes[:project_proposal_decision]
           end
 
           include ActiveModel::Validations
+          validates :project_proposal_decision, presence: true
 
-          def render(*)
-            %(<legend>Approve the project proposal</legend>).html_safe
+          def render(f:)
+            markup = %(<legend>Approve the project proposal</legend>)
+            markup << f.input(:project_proposal_decision, as: :text, input_html: { class: 'form-control' })
+            markup.html_safe
           end
 
-          delegate :submit, to: :processing_action_form
+          def submit
+            processing_action_form.submit do
+              repository.update_work_attribute_values!(work: work, key: 'project_proposal_decision', values: project_proposal_decision)
+            end
+          end
         end
       end
     end
