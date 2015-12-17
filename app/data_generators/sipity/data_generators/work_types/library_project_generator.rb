@@ -119,13 +119,18 @@ module Sipity
             },
             project_information: {
               states: {
-                initial_state_name => { roles: [creating_user] },
+                initial_state_name => { roles: [creating_user] }
               }, attributes: { presentation_sequence: 2 }
             },
             completion_requirement: {
               states: {
                 initial_state_name => { roles: [creating_user] },
               }, attributes: { presentation_sequence: 3 }
+            },
+            project_assignment: {
+              states: {
+                under_pmo_review: { roles: [managing_projects] }
+              }, attributes: { presentation_sequence: 1 }
             },
             submit_for_pmo_review: {
               states: { initial_state_name => { roles: [creating_user] } },
@@ -141,17 +146,22 @@ module Sipity
                 under_pmo_review: { roles: [managing_projects] },
                 under_director_review: { roles: [managing_projects, approving_projects] }
               },
+              required_actions: [:project_assignment],
               transition_to: :proposal_accepted,
+              attributes: { presentation_sequence: 2 },
               emails: { project_proposal_accepted: { to: creating_user, cc: managing_projects } }
             },
             reject: {
               states: { under_pmo_review: { roles: [managing_projects] } },
               transition_to: :proposal_rejected,
+              attributes: { presentation_sequence: 3 },
               emails: { project_proposal_rejected: { to: creating_user, cc: managing_projects } }
             },
             submit_for_director_review: {
               states: { under_pmo_review: { roles: [managing_projects] } },
               transition_to: :proposal_rejected,
+              attributes: { presentation_sequence: 1 },
+              required_actions: [:project_assignment],
               emails: { project_proposal_submitted_to_directors: { to: approving_projects, cc: [creating_user, managing_projects] } }
             }
           }.each do |action_name, action_config|
