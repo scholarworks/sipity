@@ -10,11 +10,10 @@ module Sipity
           let(:user) { double('User') }
           let(:work) { double('Work', title: 'The work title') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:as_of) { Date.today }
+          let(:as_of) { Time.zone.today }
           let(:attributes) { { project_must_complete_by_date: as_of, project_must_complete_by_reason: 'The reason' } }
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
           subject { described_class.new(keywords) }
-
 
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:project_must_complete_by_date) }

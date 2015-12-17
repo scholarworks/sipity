@@ -5,6 +5,7 @@ module Sipity
   module Forms
     module WorkSubmissions
       module LibraryProject
+        # Capture project assignment information
         class ProjectAssignmentForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,

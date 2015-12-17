@@ -18,7 +18,6 @@ module Sipity
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
-
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:project_assigned_to_person) }
           it { should validate_presence_of(:project_issue_type) }
