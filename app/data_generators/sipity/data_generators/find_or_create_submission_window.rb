@@ -38,7 +38,7 @@ module Sipity
 
       def create_submission_window!
         window = Models::SubmissionWindow.find_or_create_by!(work_area_id: work_area.id, slug: PowerConverter.convert_to_slug(slug))
-        return window if window.attributes.slice(submission_window_attributes.keys) == submission_window_attributes
+        return window if window.attributes.slice(*submission_window_attributes.keys) == submission_window_attributes
         window.update_attributes(submission_window_attributes)
         window
       end
