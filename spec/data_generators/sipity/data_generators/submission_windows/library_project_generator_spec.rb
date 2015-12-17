@@ -6,10 +6,8 @@ module Sipity
     module SubmissionWindows
       # Responsible for generating the submission window for the ETD work area.
       RSpec.describe LibraryProjectGenerator do
-        it 'does not deviate from the base implementation' do
-          expect(described_class.methods(false)).to be_empty
-          expect(described_class.instance_methods(false)).to be_empty
-        end
+        subject { described_class }
+        its(:submission_window_action_names) { should eq(['show', 'propose']) }
       end
     end
   end

@@ -79,11 +79,14 @@ module Sipity
 
         SUBMISSION_WINDOW_ACTION_NAMES = ['show', 'start_a_submission'].freeze
 
+        class_attribute :submission_window_action_names
+        self.submission_window_action_names = SUBMISSION_WINDOW_ACTION_NAMES
+
         def grant_permissions_to_submission_actions!
           PermissionGenerator.call(
             actors: work_submitters,
             roles: work_submitter_role,
-            action_names: SUBMISSION_WINDOW_ACTION_NAMES,
+            action_names: submission_window_action_names,
             entity: submission_window,
             strategy: processing_strategy,
             strategy_state: processing_strategy.initial_strategy_state
