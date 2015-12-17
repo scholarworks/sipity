@@ -1,2 +1,15 @@
-Generated in:
-<code>app/views/sipity/mailers/library_project_mailer/confirmation_of_project_proposal_created.html.erb</code>
+<p>
+  Thank you for starting a project proposal.
+  We need you to finish "<%= link_to(@entity.title, @entity.email_message_action_url) %>" then submit it for review.
+</p>
+
+<p>You can complete your submission at the following link:</p>
+
+<p><%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></p>
+
+<p>Thank you again for starting your project proposal. If you have questions, please contact us.</p>
+<p>
+  Sincerely,
+  <br />
+  Project Management Office
+</p>
