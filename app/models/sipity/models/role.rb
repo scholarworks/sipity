@@ -4,6 +4,8 @@ module Sipity
     # Often confused for a Group. Group represents people.
     # Roles represent what can/is done by anything/anyone having the given role.
     #
+    # @todo I would like to shift all roles to include a verb. So shift etd_reviewer to "Reviewing ETDs"
+    #
     # @note Should this be in the Processing submodule? Perhaps. This model
     #   representes the "roles" that users of the system can have. It is not
     #   the "role" that they had in relation to the scholarly work that is
@@ -28,11 +30,13 @@ module Sipity
       )
 
       ADVISOR = 'advisor'.freeze
+      APPROVING_PROJECTS = 'Approving Projects'.freeze
       BATCH_INGESTOR = 'batch_ingestor'.freeze
       CATALOGER = 'cataloger'.freeze
       CREATING_USER = 'creating_user'.freeze
       DATA_OBSERVER = 'data_observer'.freeze
       ETD_REVIEWER = 'etd_reviewer'.freeze
+      MANAGING_PROJECTS = 'Managing Projects'.freeze
       SUBMISSION_WINDOW_VIEWER = 'submission_window_viewer'.freeze
       ULRA_REVIEWER = 'ulra_reviewer'.freeze
       WORK_AREA_MANAGER = 'work_area_manager'.freeze
@@ -44,11 +48,13 @@ module Sipity
       enum(
         name: {
           ADVISOR => ADVISOR,
+          APPROVING_PROJECTS => APPROVING_PROJECTS,
           BATCH_INGESTOR => BATCH_INGESTOR,
           CATALOGER => CATALOGER,
           CREATING_USER => CREATING_USER,
           DATA_OBSERVER => DATA_OBSERVER,
           ETD_REVIEWER => ETD_REVIEWER,
+          MANAGING_PROJECTS => MANAGING_PROJECTS,
           SUBMISSION_WINDOW_VIEWER => SUBMISSION_WINDOW_VIEWER,
           ULRA_REVIEWER => ULRA_REVIEWER,
           WORK_AREA_MANAGER => WORK_AREA_MANAGER,
