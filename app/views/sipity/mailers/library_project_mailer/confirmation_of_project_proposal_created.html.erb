@@ -8,8 +8,4 @@
 <p><%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></p>
 
 <p>Thank you again for starting your project proposal. If you have questions, please contact us.</p>
-<p>
-  Sincerely,
-  <br />
-  Project Management Office
-</p>
+<%= render partial: 'sipity/mailers/library_project_mailer/pmo_signature' %>
