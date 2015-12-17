@@ -1,2 +1,9 @@
-Generated in:
-<code>app/views/sipity/mailers/library_project_mailer/project_proposal_submitted_to_directors.html.erb</code>
+<p>
+  <strong>RE:</strong> <%= link_to(@entity.title, @entity.email_message_action_url) %> submitted by <%= @entity.creator_names.to_sentence %>
+</p>
+
+<p>Please review the project proposal at the following link:
+  <ul>
+    <li><%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></li>
+  </ul>
+</p>

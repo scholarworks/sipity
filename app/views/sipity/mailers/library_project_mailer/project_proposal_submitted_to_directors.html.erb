@@ -1,2 +1,10 @@
-Generated in:
-<code>app/views/sipity/mailers/library_project_mailer/project_proposal_submitted_to_directors.html.erb</code>
+<p>
+  <%= @entity.creator_names.to_sentence %> <%= pluralize(@entity.creator_names.count, 'has', 'have') %> proposed <%= link_to(@entity.title, @entity.email_message_action_url) %> as a project.
+  The Project Management Office has reviewed the proposal and is asking for the Program Directors to review the project proposal.
+</p>
+
+<p>Please review the project proposal at the following link:
+  <ul>
+    <li><%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></li>
+  </ul>
+</p>
