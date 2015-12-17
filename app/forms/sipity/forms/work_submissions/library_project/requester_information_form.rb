@@ -49,10 +49,6 @@ module Sipity
           def library_program_name_from_work
             repository.work_attribute_values_for(work: work, key: 'library_program_name', cardinality: 1)
           end
-
-          def default_repository
-            CommandRepository.new
-          end
         end
       end
     end

@@ -70,10 +70,6 @@ module Sipity
               send("#{attribute_name}=", value)
             end
           end
-
-          def default_repository
-            CommandRepository.new
-          end
         end
       end
     end

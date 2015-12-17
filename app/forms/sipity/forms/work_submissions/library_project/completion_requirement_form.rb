@@ -46,10 +46,6 @@ module Sipity
             end
           end
 
-          def default_repository
-            CommandRepository.new
-          end
-
           include Conversions::ConvertToDate
           def project_must_complete_by_date=(input)
             @project_must_complete_by_date = convert_to_date(input) { nil }

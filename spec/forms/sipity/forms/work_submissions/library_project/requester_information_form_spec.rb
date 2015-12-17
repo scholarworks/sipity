@@ -14,11 +14,20 @@ module Sipity
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
-          its(:default_repository) { should respond_to(:update_work_attribute_values!) }
-
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:library_program_name) }
           it { should validate_inclusion_of(:library_program_name).in_array(subject.library_program_name_for_select) }
+
+          context '#initialization without attributes given' do
+            subject { described_class.new(requested_by: user, attributes: {}, work: work, repository: repository) }
+
+            it "will fetch the additional attributes from the repository" do
+              expect(repository).to receive(:work_attribute_values_for).
+                with(work: work, key: 'library_program_name', cardinality: 1).and_return("a library_program_name")
+              subject = described_class.new(requested_by: user, attributes: {}, work: work, repository: repository)
+              expect(subject.library_program_name).to eq('a library_program_name')
+            end
+          end
 
           context '#submit' do
             context 'with invalid data' do

@@ -85,6 +85,10 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/commands/library_project_commands.rb
+    def create_jira_issue_for(entity:, status:)
+    end
+
     # @see ./app/repositories/sipity/commands/redirect_commands.rb
     def create_redirect_for(work:, url:, as_of: Time.zone.today)
     end

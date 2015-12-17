@@ -32,6 +32,7 @@ module Sipity
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'project_proposal_decision', values: project_proposal_decision)
+              repository.create_jira_issue_for(entity: work, status: 'rejected')
             end
           end
         end

@@ -19,6 +19,7 @@ module Sipity
     include Commands::AdditionalAttributeCommands
     include Commands::AdministrativeScheduledActionCommands
     include Commands::EventLogCommands
+    include Commands::LibraryProjectCommands
     include Commands::NotificationCommands
     include Commands::PermissionCommands
     include Commands::ProcessingCommands

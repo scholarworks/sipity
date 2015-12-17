@@ -43,6 +43,11 @@ module Sipity
               end
               its(:submit) { should eq(work) }
 
+              it 'will create a jira issue' do
+                expect(repository).to receive(:create_jira_issue_for).with(entity: work, status: 'rejected')
+                subject.submit
+              end
+
               it 'will update the additional attributes' do
                 ['project_proposal_decision'].each do |attribute_name|
                   expect(repository).to receive(:update_work_attribute_values!).with(
