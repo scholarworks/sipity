@@ -42,6 +42,8 @@ module Sipity
       PROJECT_DESCRIPTION = 'project_description'.freeze
       PROJECT_IMPACT = 'project_impact'.freeze
       PROJECT_MANAGEMENT_SERVICES_REQUESTED = 'project_management_services_requested'.freeze
+      PROJECT_MUST_COMPLETE_BY_DATE = 'project_must_complete_by_date'.freeze
+      PROJECT_MUST_COMPLETE_BY_REASON = 'project_must_complete_by_reason'.freeze
       PROJECT_PRIORITY = 'project_priority'.freeze
       PUBLICATION_DATE_PREDICATE_NAME = 'publicationDate'.freeze
       PUBLICATION_NAME_PREDICATE_NAME = 'publication_name'.freeze
@@ -94,6 +96,8 @@ module Sipity
           PROJECT_DESCRIPTION => PROJECT_DESCRIPTION,
           PROJECT_IMPACT => PROJECT_IMPACT,
           PROJECT_MANAGEMENT_SERVICES_REQUESTED => PROJECT_MANAGEMENT_SERVICES_REQUESTED,
+          PROJECT_MUST_COMPLETE_BY_DATE => PROJECT_MUST_COMPLETE_BY_DATE,
+          PROJECT_MUST_COMPLETE_BY_REASON => PROJECT_MUST_COMPLETE_BY_REASON,
           PROJECT_PRIORITY => PROJECT_PRIORITY,
           PUBLICATION_DATE_PREDICATE_NAME => PUBLICATION_DATE_PREDICATE_NAME,
           PUBLICATION_NAME_PREDICATE_NAME => PUBLICATION_NAME_PREDICATE_NAME,
