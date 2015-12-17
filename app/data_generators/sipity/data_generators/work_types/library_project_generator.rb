@@ -169,7 +169,7 @@ module Sipity
             },
             submit_for_director_review: {
               states: { under_pmo_review: { roles: [managing_projects] } },
-              transition_to: :proposal_rejected,
+              transition_to: :under_director_review,
               attributes: { presentation_sequence: 1 },
               required_actions: [:project_assignment],
               emails: { project_proposal_submitted_to_directors: { to: approving_projects, cc: [creating_user, managing_projects] } }

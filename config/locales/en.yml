@@ -140,6 +140,9 @@ en:
       description: "Does this work contain the first public disclosure of material being considered for patent protection?"
     work_type:
       label: 'What <b>type</b> of work is this?'
+    work_area/library-project:
+      title:
+        label: "What is the name of your project proposal?"
     work_area/ulra:
       award_category:
         label: "What is the type of project you are submitting?"

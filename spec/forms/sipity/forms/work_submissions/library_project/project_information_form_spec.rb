@@ -13,7 +13,7 @@ module Sipity
           let(:attributes) do
             {
               title: 'The title', project_description: 'Hello World', project_impact: 'Its really important',
-              whom_does_this_impract: 'Whom does this impact', project_management_services_requested: 'Yes', project_priority: 'Low'
+              whom_does_this_impact: 'Whom does this impact', project_management_services_requested: 'Yes', project_priority: 'Low'
             }
           end
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
@@ -23,7 +23,7 @@ module Sipity
           it { should validate_presence_of(:title) }
           it { should validate_presence_of(:project_description) }
           it { should validate_presence_of(:project_impact) }
-          it { should validate_presence_of(:whom_does_this_impract) }
+          it { should validate_presence_of(:whom_does_this_impact) }
           it { should validate_presence_of(:project_priority) }
           it { should validate_inclusion_of(:project_priority).in_array(subject.project_priority_for_select) }
           it { should validate_presence_of(:project_management_services_requested) }
@@ -40,7 +40,7 @@ module Sipity
 
             it "will fetch the additional attributes from the repository" do
               [
-                'project_description', 'project_impact', 'whom_does_this_impract', 'project_management_services_requested',
+                'project_description', 'project_impact', 'whom_does_this_impact', 'project_management_services_requested',
                 'project_priority'
               ].each do |attribute_name|
                 expect(repository).to receive(:work_attribute_values_for).
@@ -49,7 +49,7 @@ module Sipity
               subject = described_class.new(requested_by: user, attributes: {}, work: work, repository: repository)
               expect(subject.project_description).to eq('a project_description')
               expect(subject.project_impact).to eq('a project_impact')
-              expect(subject.whom_does_this_impract).to eq('a whom_does_this_impract')
+              expect(subject.whom_does_this_impact).to eq('a whom_does_this_impact')
               expect(subject.project_management_services_requested).to eq('a project_management_services_requested')
               expect(subject.project_priority).to eq('a project_priority')
             end
@@ -76,7 +76,7 @@ module Sipity
 
               it 'will update the additional attributes' do
                 [
-                  'project_description', 'project_priority', 'project_impact', 'whom_does_this_impract',
+                  'project_description', 'project_priority', 'project_impact', 'whom_does_this_impact',
                   'project_management_services_requested'
                 ].each do |attribute_name|
                   expect(repository).to receive(:update_work_attribute_values!).with(

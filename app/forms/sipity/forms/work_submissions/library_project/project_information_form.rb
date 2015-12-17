@@ -10,7 +10,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
             attribute_names: [
-              :title, :project_description, :project_impact, :whom_does_this_impract, :project_management_services_requested,
+              :title, :project_description, :project_impact, :whom_does_this_impact, :project_management_services_requested,
               :project_priority
             ]
           )
@@ -28,7 +28,7 @@ module Sipity
           validates :title, presence: true
           validates :project_description, presence: true
           validates :project_impact, presence: true
-          validates :whom_does_this_impract, presence: true
+          validates :whom_does_this_impact, presence: true
           validates :project_priority, presence: true, inclusion: { in: :project_priority_for_select }
           validates(
             :project_management_services_requested, presence: true, inclusion: { in: :project_management_services_requested_for_select }
@@ -48,7 +48,7 @@ module Sipity
             processing_action_form.submit do
               repository.update_work_title!(work: work, title: title)
               [
-                'project_description', 'project_priority', 'project_impact', 'whom_does_this_impract',
+                'project_description', 'project_priority', 'project_impact', 'whom_does_this_impact',
                 'project_management_services_requested'
               ].each do |predicate_name|
                 repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
@@ -61,7 +61,7 @@ module Sipity
           def initialize_attributes(attributes)
             self.title = attributes.fetch(:title) { work.title }
             [
-              [:project_description, 1], [:project_impact, 1], [:whom_does_this_impract, 1],
+              [:project_description, 1], [:project_impact, 1], [:whom_does_this_impact, 1],
               [:project_management_services_requested, 1], [:project_priority, 1]
             ].each do |attribute_name, cardinality|
               value = attributes.fetch(attribute_name) do
