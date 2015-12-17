@@ -33,3 +33,8 @@ ulra_review_committee_group = Sipity::Models::Group.find_or_create_by!(name: ulr
 
 $stdout.puts "Associating #{user.name} with #{ulra_review_committee_group.name}"
 ulra_review_committee_group.group_memberships.find_or_create_by(user: batch_ingestor)
+library_project_managers = Sipity::Models::Group.find_or_create_by!(
+  name: Sipity::DataGenerators::WorkTypes::LibraryProjectGenerator::GROUP_NAME_LIBRARY_PROJECT_MANAGERS
+)
+$stdout.puts "Associating #{user.username} with #{library_project_managers.name}"
+library_project_managers.group_memberships.find_or_create_by!(user: user)
