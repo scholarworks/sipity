@@ -1,2 +1,11 @@
-Generated in:
-<code>app/views/sipity/mailers/library_project_mailer/project_proposal_accepted.html.erb</code>
+<p>
+  Thank you for submitting your project proposal!
+  We agree that <%= link_to(@entity.title, @entity.email_message_action_url) %> is a project that would benefit the library and look forward to including it in future initiatives.
+</p>
+
+<p>
+  As we near the scheduling period for this project, we will contact you with additional information.
+</p>
+
+<p>Thank you again for your proposal. If you have questions, please contact us.</p>
+<%= render partial: 'sipity/mailers/library_project_mailer/pmo_signature' %>
