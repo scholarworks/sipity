@@ -115,7 +115,10 @@ module Sipity
             submit_for_pmo_review: {
               states: { initial_state_name => { roles: [creating_user] } },
               transition_to: :under_pmo_review,
-              emails: { project_proposal_submitted: { to: managing_projects, cc: creating_user } }
+              emails: {
+                confirmation_of_project_proposal_submitted: { to: creating_user },
+                project_proposal_submitted_to_pmos: { to: managing_projects }
+              }
             },
             approve: {
               states: {
