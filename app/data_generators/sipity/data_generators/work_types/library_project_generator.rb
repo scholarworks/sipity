@@ -15,7 +15,7 @@ module Sipity
           Models::Role::APPROVING_PROJECTS
         ]
 
-        GROUP_NAME_LIBRARY_ADVISORY_COUNCIL = 'Library Advisory Council'
+        GROUP_NAME_LIBRARY_PROGRAM_DIRECTORS = 'Library Program Directors'
         GROUP_NAME_LIBRARY_PROJECT_MANAGERS = 'Library Project Managers'
 
         def self.call(**keywords)
@@ -62,7 +62,7 @@ module Sipity
               )
               assign_group_to_role_for(
                 processing_strategy: processing_strategy,
-                group_names: [GROUP_NAME_LIBRARY_ADVISORY_COUNCIL, GROUP_NAME_LIBRARY_PROJECT_MANAGERS],
+                group_names: [GROUP_NAME_LIBRARY_PROGRAM_DIRECTORS, GROUP_NAME_LIBRARY_PROJECT_MANAGERS],
                 role_names: Models::Role::APPROVING_PROJECTS
               )
               generate_state_diagram(processing_strategy: processing_strategy, initial_state: initial_state)
@@ -131,7 +131,7 @@ module Sipity
               emails: { project_proposal_rejected: { to: creating_user, cc: managing_projects } }
             },
             submit_for_director_review: {
-              states: { under_director_review: { roles: [managing_projects] } },
+              states: { under_pmo_review: { roles: [managing_projects] } },
               transition_to: :proposal_rejected,
               emails: { project_proposal_submitted_to_directors: { to: approving_projects, cc: [creating_user, managing_projects] } }
             }
