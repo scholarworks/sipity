@@ -1,2 +1,13 @@
-Generated in:
-<code>app/views/sipity/mailers/library_project_mailer/project_proposal_rejected.html.erb</code>
+<p>
+  Thank you, again, for submitting your project proposal.
+  After careful consideration, we have determined that <%= link_to(@entity.title, @entity.email_message_action_url) %> is not currently feasible because
+  <ul>
+    <li>It is not within the scope of our work.</li>
+    <li>It will need more resources than we can allocate.</li>
+    <li>The needs of this proposal appear to be covered by existing technology.</li>
+    <li>Feedback from PMO.</li>
+  </ul>
+</p>
+
+<p>Thank you again for your proposal. If you have questions, please contact us.</p>
+<%= render partial: 'sipity/mailers/library_project_mailer/pmo_signature' %>
