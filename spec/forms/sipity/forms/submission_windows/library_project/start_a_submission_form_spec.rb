@@ -1,18 +1,18 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/submission_windows/library_project/propose_form'
+require 'sipity/forms/submission_windows/library_project/start_a_submission_form'
 
 module Sipity
   module Forms
     module SubmissionWindows
       module LibraryProject
-        RSpec.describe ProposeForm do
+        RSpec.describe StartASubmissionForm do
           let(:keywords) { { repository: repository, submission_window: submission_window, requested_by: user, attributes: attributes } }
           let(:attributes) { {} }
           let(:user) { double('User') }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'propose') }
+          let(:submission_window) { Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start_a_submission') }
           let(:work_area) { Models::WorkArea.new(id: 2, slug: 'library-project') }
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
@@ -48,7 +48,6 @@ module Sipity
           it 'will have a model name like Work' do
             expect(described_class.model_name).to be_a(ActiveModel::Name)
           end
-
 
           context 'validations' do
             let(:attributes) { {} }

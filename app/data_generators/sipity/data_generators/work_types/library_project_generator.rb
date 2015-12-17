@@ -88,7 +88,7 @@ module Sipity
 
           initial_state_name = initial_state.name.to_sym
           {
-            propose: {
+            start_a_submission: {
               transition_to: initial_state_name,
               emails: {
                 confirmation_of_project_proposal_created: { to: creating_user }

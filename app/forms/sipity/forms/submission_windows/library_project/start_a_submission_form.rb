@@ -6,7 +6,7 @@ module Sipity
     module SubmissionWindows
       module LibraryProject
         # Responsible for creating a proposal for the LibraryProject
-        class ProposeForm
+        class StartASubmissionForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,

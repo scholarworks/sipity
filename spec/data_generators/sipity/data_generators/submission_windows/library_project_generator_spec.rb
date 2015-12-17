@@ -7,7 +7,7 @@ module Sipity
       # Responsible for generating the submission window for the ETD work area.
       RSpec.describe LibraryProjectGenerator do
         subject { described_class }
-        its(:submission_window_action_names) { should eq(['show', 'propose']) }
+        its(:submission_window_action_names) { should eq(['show', 'start_a_submission']) }
       end
     end
   end
