@@ -37,6 +37,13 @@
           <dl class="work attribute-listing">
             <dt class="predicate title">{{label.title}}</dt>
             <dd class="value title">{{ title }}</dd>
+            {{#creators?}}
+              <dt class="predicate creator">Created by</dt>
+                {{*creators}}
+                  <dd class="value creator">{{name}}</dd>
+                {{/creators}}
+              </dt>
+            {{/creators?}}
             <dt class="predicate work-type">{{label.work_type}}</dt>
             <dd class="value work-type">{{work_type}}</dd>
             {{render_additional_attribute_set}}

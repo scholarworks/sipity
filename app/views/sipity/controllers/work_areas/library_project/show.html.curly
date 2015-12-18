@@ -35,7 +35,6 @@
           <tr>
             <th>Title</th>
             <th>Creator(s)</th>
-            <th>Submission Window</th>
             <th>Processing State</th>
             <th>Date Created</th>
           </tr>
@@ -45,7 +44,6 @@
             <tr>
               <td><a href="{{path}}">{{title}}</td>
               <td>{{creator_names_to_sentence}}</td>
-              <td>{{submission_window}}</td>
               <td>{{processing_state}}</td>
               <td>{{date_created}}</td>
             </tr>

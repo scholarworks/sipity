@@ -19,7 +19,6 @@
 <section>
   <div class="row">
     <div class="col-xs-12">
-      {{ translate.landing_page_greeting_introduction_html }}
       {{ translate.landing_page_greeting_help_html }}
     </div>
   </div>
