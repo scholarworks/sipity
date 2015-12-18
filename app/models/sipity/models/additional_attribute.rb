@@ -43,6 +43,7 @@ module Sipity
       PROJECT_DESCRIPTION = 'project_description'.freeze
       PROJECT_IMPACT = 'project_impact'.freeze
       PROJECT_ISSUE_TYPE = 'project_issue_type'.freeze
+      PROJECT_JIRA_URL = 'project_jira_url'.freeze
       PROJECT_MANAGEMENT_SERVICES_REQUESTED = 'project_management_services_requested'.freeze
       PROJECT_MUST_COMPLETE_BY_DATE = 'project_must_complete_by_date'.freeze
       PROJECT_MUST_COMPLETE_BY_REASON = 'project_must_complete_by_reason'.freeze
@@ -100,6 +101,7 @@ module Sipity
           PROJECT_DESCRIPTION => PROJECT_DESCRIPTION,
           PROJECT_IMPACT => PROJECT_IMPACT,
           PROJECT_ISSUE_TYPE => PROJECT_ISSUE_TYPE,
+          PROJECT_JIRA_URL => PROJECT_JIRA_URL,
           PROJECT_MANAGEMENT_SERVICES_REQUESTED => PROJECT_MANAGEMENT_SERVICES_REQUESTED,
           PROJECT_MUST_COMPLETE_BY_DATE => PROJECT_MUST_COMPLETE_BY_DATE,
           PROJECT_MUST_COMPLETE_BY_REASON => PROJECT_MUST_COMPLETE_BY_REASON,

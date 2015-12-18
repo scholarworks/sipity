@@ -19,6 +19,9 @@ module Sipity
         }
         issue = client.Issue.build
         issue.save!("fields" => json)
+        issue.fetch
+        url = File.join(Figaro.env.jira_site_url!, "browse/#{issue.key}")
+        repository.update_work_attribute_values!(work: work, key: 'project_jira_url', values: "<a href='#{url}'>#{url}</a>")
         json
       end
     end
