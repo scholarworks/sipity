@@ -235,6 +235,13 @@ en:
         landing_page_greeting_help_html:
           label: |
             <p>Greeting help goes here.</p>
+      work_area/library-project:
+        landing_page_greeting_help_html:
+          label: |
+            <p>
+              Welcome to the Hesburgh Library Project proposal system.
+              This was created by team "Ask Chris" for the 3rd Library Freestyle event.
+            </p>
   work_types:
     master_thesis:
       label: "Master’s Thesis"
