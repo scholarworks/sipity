@@ -96,6 +96,17 @@ namespace :deploy do
     end
   end
 
+  desc "Dump the database"
+  task :db_dump do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :ruby, %(./scripts/commands/dump_database)
+        end
+      end
+    end
+  end
+
   namespace :qa do
     desc 'Add user with :qa_username to ETD Group'
     task :add_qa_user_to_group do
@@ -133,6 +144,7 @@ end
 
 before 'deploy:db_migrate', 'configuration:copy_secrets'
 after 'deploy', 'deploy:db_migrate'
+before 'deploy:db_migrate', 'deploy:db_dump'
 after 'deploy:db_migrate', 'deploy:db_seed'
 after 'deploy:db_migrate', 'deploy:data_migrate'
 after 'deploy:db_migrate', 'deploy:precompile_assets'

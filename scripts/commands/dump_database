@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby -wU
+
+#*******************************************************************************
+#
+# CONFIGURATION OPTIONS
+#
+#*******************************************************************************
+
+CONFIG_KEYS = [:RAILS_ENV, :DUMP_FILENAME].freeze
+
+RAILS_ENV = ENV.fetch('RAILS_ENV') { 'development' } unless defined?(RAILS_ENV)
+DUMP_FILENAME = ENV.fetch('DUMP_FILENAME') { File.expand_path("../../../db-dump.sql", __FILE__)}
+
+#*******************************************************************************
+#
+# HELP OPTIONS
+#
+#*******************************************************************************
+
+if ARGV.grep(/^-+h(elp)?$/i).size > 0
+  $stdout.puts ""
+  $stdout.puts "$ ./#{File.basename(__FILE__)}"
+  $stdout.puts ""
+  $stdout.puts "Dump the given environment's database to the filesystem."
+  $stdout.puts ""
+  $stdout.puts "Current Configuration:"
+  CONFIG_KEYS.each do |key|
+    $stdout.puts "\t#{key}='#{Object.const_get(key)}'"
+  end
+  $stdout.puts ""
+  $stdout.puts "You can override the configuration option by adding the corresponding"
+  $stdout.puts "ENV variable."
+  $stdout.puts ""
+  $stdout.puts "Example:"
+  $stdout.puts "$ RAILS_ENV=development ./scripts/commands/#{File.basename(__FILE__)}"
+  exit(0)
+end
+
+
+#*******************************************************************************
+#
+# HELP OPTIONS
+#
+#*******************************************************************************
+
+require 'psych'
+require 'erb'
+
+database_config_filename = File.expand_path("../../../config/database.yml", __FILE__)
+database_config_file_contents = ERB.new(File.read(database_config_filename)).result(binding)
+database_config = Psych.load(database_config_file_contents)
+db_environment_config = database_config.fetch(RAILS_ENV) { database_config.fetch(RAILS_ENV.to_sym) }
+
+if db_environment_config.fetch('adapter') =~ /^mysql/i
+  username = db_environment_config.fetch('username').strip
+  password = db_environment_config.fetch('password').to_s.strip
+  port = db_environment_config.fetch('port', '').to_s.strip
+  database = db_environment_config.fetch('database').strip
+  host = db_environment_config.fetch('host').strip
+  tokens = ["mysqldump --skip-triggers --compact --add-drop-table --single-transaction"]
+  tokens << "-u#{username}"
+  tokens << "-h#{host}"
+  tokens << "-P#{port}" unless port.empty?
+  tokens << "-p#{password}" unless password.empty?
+  tokens << "#{database} > #{DUMP_FILENAME}"
+  command = tokens.join(" ")
+  $stdout.puts "Backing up #{database} database to #{DUMP_FILENAME}"
+  system(command)
+  exit!($?.exitstatus)
+else
+  fail "Expected mysql for dumping the database"
+end
