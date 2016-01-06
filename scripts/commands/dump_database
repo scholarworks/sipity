@@ -63,6 +63,7 @@ if db_environment_config.fetch('adapter') =~ /^mysql/i
   tokens << "-P#{port}" unless port.empty?
   tokens << "-p#{password}" unless password.empty?
   tokens << "--result-file=#{DUMP_FILENAME}"
+  tokens << "#{database}"
   command = tokens.join(" ")
   $stdout.puts "Backing up #{database} database to #{DUMP_FILENAME}"
   system(command)
