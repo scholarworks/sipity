@@ -71,6 +71,7 @@ module Sipity
               etd_reviewer = etd_strategy_roles.fetch('etd_reviewer')
               cataloger = etd_strategy_roles.fetch('cataloger')
               batch_ingestor = etd_strategy_roles.fetch('batch_ingestor')
+              data_observer = etd_strategy_roles.fetch(Models::Role::DATA_OBSERVER)
 
               find_or_initialize_or_create!(
                 context: etd_reviewer,
@@ -91,8 +92,8 @@ module Sipity
               )
 
               find_or_initialize_or_create!(
-                context: batch_ingestor,
-                receiver: batch_ingestor.strategy_responsibilities,
+                context: data_observer,
+                receiver: data_observer.strategy_responsibilities,
                 actor: Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: DATA_ADMINISTRATORS))
               )
 
