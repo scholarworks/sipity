@@ -1,6 +1,11 @@
 Figaro.require_keys(
   'airbrake_api_key',
   'airbrake_host',
+  'cas_base_url',
+  'cas_validate_url',
+  'curate_batch_data_mount_path',
+  'curate_batch_group_pid',
+  'curate_batch_user_pid',
   'curate_nd_url_for_etds',
   'curate_nd_url_show_prefix_url',
   'default_email_from',
@@ -8,13 +13,11 @@ Figaro.require_keys(
   'domain_name',
   'hesburgh_api_auth_token',
   'hesburgh_api_host',
-  'protocol',
   'noid_pool',
   'noid_port',
   'noid_server',
+  'protocol',
   'secret_key_base',
+  'sipity_batch_ingester_access_key',
   'url_host',
-  'curate_batch_user_pid',
-  'curate_batch_group_pid',
-  'curate_batch_data_mount_path'
 )

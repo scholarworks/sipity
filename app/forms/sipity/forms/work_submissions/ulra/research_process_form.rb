@@ -28,14 +28,15 @@ module Sipity
           public
 
           delegate(
-            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
-            to: :attachments_extension
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files, :attachment_predicate_name,
+            :at_least_one_file_must_be_attached, to: :attachments_extension
           )
 
           private(:attach_or_update_files)
 
           include ActiveModel::Validations
           validates :citation_style, presence: true
+          validate :at_least_one_file_must_be_attached
 
           def available_resource_consulted
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'resource_consulted')
@@ -50,7 +51,7 @@ module Sipity
               repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
-              attach_or_update_files(requested_by: requested_by, predicate_name: "research_process_attachment")
+              attach_or_update_files(requested_by: requested_by)
             end
           end
 
@@ -81,6 +82,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
+              predicate_name: 'application_essay',
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

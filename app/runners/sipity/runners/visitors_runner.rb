@@ -4,15 +4,15 @@ require 'sipity/controllers/work_areas/etd/show_presenter'
 module Sipity
   module Runners
     module VisitorsRunner
-      # Responsible for generating the areas/etd response
-      class AreasEtd < BaseRunner
+      # Responsible for retrieving the given work area
+      class WorkArea < BaseRunner
         self.authentication_layer = :none
-        def run(work_area_slug:)
+        # @note Some of the methods that invoke the runners assume :processing_action_name, however this one does not need it. Thus I am
+        # swalling with :processing_action_name keyword arg in the double splat (**) operator.
+        def run(work_area_slug:, **)
+          enforce_authentication! # No authentication required; but I'd prefer to follow the authentication layer convention
           work_area = repository.find_work_area_by(slug: work_area_slug)
-          # REVIEW: Should I be building a presenter here? I believe this is
-          #   perhaps a responsibility of the controller.
-          presenter = Controllers::WorkAreas::Etd::ShowPresenter.new(self, work_area: work_area)
-          callback(:success, presenter)
+          callback(:success, work_area)
         end
       end
     end

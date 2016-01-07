@@ -12,11 +12,13 @@ module Sipity
         PROCESSING_ROLE_NAMES = [
           Models::Role::CREATING_USER,
           Models::Role::ETD_REVIEWER,
+          Models::Role::DATA_OBSERVER,
           Models::Role::ADVISOR
         ]
         GRADUATE_SCHOOL_REVIEWERS = 'Graduate School ETD Reviewers'
         CATALOGERS = "Catalogers"
         ETD_INGESTORS = "ETD Ingestors"
+        DATA_ADMINISTRATORS = "Data Administrators"
 
         def self.call(**keywords)
           new(**keywords).call
@@ -56,7 +58,8 @@ module Sipity
                 'etd_reviewer',
                 'advisor',
                 'cataloger',
-                'batch_ingestor'
+                'batch_ingestor',
+                Models::Role::DATA_OBSERVER
               ].each do |role_name|
                 etd_strategy_roles[role_name] = find_or_initialize_or_create!(
                   context: etd_strategy,
@@ -68,7 +71,8 @@ module Sipity
               {
                 'etd_reviewer' => GRADUATE_SCHOOL_REVIEWERS,
                 'cataloger' => CATALOGERS,
-                'batch_ingestor' => ETD_INGESTORS
+                'batch_ingestor' => ETD_INGESTORS,
+                Models::Role::DATA_OBSERVER => DATA_ADMINISTRATORS
               }.each do |role_name, group_name|
                 strategy_role = etd_strategy_roles.fetch(role_name)
                 actor = Conversions::ConvertToProcessingActor.call(Models::Group.find_or_create_by!(name: group_name))
@@ -107,14 +111,15 @@ module Sipity
                 { action_name: 'destroy', seq: 2 },
                 { action_name: 'debug', seq: 3 },
                 { action_name: 'start_a_submission', seq: 0, resulting_state_name: 'new', allow_repeat_within_current_state: false }, # A bit of a misnomer
-                { action_name: 'publishing_and_patenting_intent', seq: 1 },
-                { action_name: 'describe', seq: 2 },
-                { action_name: 'collaborators', seq: 3 },
-                { action_name: 'attach', seq: 4 },
-                { action_name: 'defense_date', seq: 5 },
-                { action_name: 'search_terms', seq: 6 },
-                { action_name: 'degree', seq: 7 },
-                { action_name: 'access_policy', seq: 8 },
+                { action_name: 'author', seq: 1 },
+                { action_name: 'publishing_and_patenting_intent', seq: 2 },
+                { action_name: 'describe', seq: 3 },
+                { action_name: 'collaborators', seq: 4 },
+                { action_name: 'attach', seq: 5 },
+                { action_name: 'defense_date', seq: 6 },
+                { action_name: 'search_terms', seq: 7 },
+                { action_name: 'degree', seq: 8 },
+                { action_name: 'access_policy', seq: 9 },
                 { action_name: 'submit_for_review', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'advisor_signoff', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'signoff_on_behalf_of', resulting_state_name: 'under_grad_school_review', seq: 1, allow_repeat_within_current_state: true },
@@ -122,11 +127,12 @@ module Sipity
                 { action_name: 'request_change_on_behalf_of', resulting_state_name: 'advisor_changes_requested', seq: 3, allow_repeat_within_current_state: false },
                 { action_name: 'respond_to_advisor_request', resulting_state_name: 'under_advisor_review', seq: 1, allow_repeat_within_current_state: false  },
                 { action_name: 'respond_to_grad_school_request', resulting_state_name: 'grad_school_changes_requested', seq: 1, allow_repeat_within_current_state: true },
+                { action_name: 'grad_school_signoff', resulting_state_name: 'grad_school_approved_but_waiting_for_routing', seq: 1 },
                 { action_name: 'grad_school_requests_change', resulting_state_name: 'grad_school_changes_requested', seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'send_to_cataloging', resulting_state_name: 'ready_for_cataloging',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'send_back_to_grad_school', resulting_state_name: 'back_from_cataloging',seq: 2, allow_repeat_within_current_state: true },
                 { action_name: 'cataloging_complete', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
-                { action_name: 'ingest_with_postponed_cataloging', resulting_state_name: 'ready_for_ingest',seq: 1, allow_repeat_within_current_state: false },
+                { action_name: 'ingest_completed', resulting_state_name: 'ingested',seq: 1, allow_repeat_within_current_state: false },
                 { action_name: 'submit_for_ingest', resulting_state_name: 'ingesting', seq: 1, allow_repeat_within_current_state: false }
               ].each do |structure|
                 action_name = structure.fetch(:action_name)
@@ -170,7 +176,7 @@ module Sipity
               end
 
               pre_requisite_states =       {
-                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent']
+                'submit_for_review' => ['describe', 'degree', 'attach', 'collaborators', 'access_policy', 'publishing_and_patenting_intent', 'author']
               }
 
               if work_type_name == Models::WorkType::DOCTORAL_DISSERTATION
@@ -204,17 +210,21 @@ module Sipity
                   ['respond_to_grad_school_request'],
                   ['creating_user']
                 ],[
-                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'grad_school_approved_but_waiting_for_routing', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['show'],
-                  ['creating_user', 'advisor', 'etd_reviewer'],
+                  ['creating_user', 'etd_reviewer', Models::Role::DATA_OBSERVER],
+                ],[
+                  ['new', 'under_advisor_review', 'advisor_changes_requested'],
+                  ['show'],
+                  ['advisor'],
                 ],[
                   ['new', 'advisor_changes_requested'],
-                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
-                  ['creating_user', 'etd_reviewer']
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
+                  ['creating_user', 'etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['grad_school_changes_requested', 'under_grad_school_review'],
-                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'describe','search_terms', 'attach', 'collaborators'],
-                  ['etd_reviewer']
+                  ['defense_date','degree', 'access_policy', 'publishing_and_patenting_intent', 'author', 'describe', 'search_terms', 'attach', 'collaborators'],
+                  ['etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['new'],
                   ['destroy'],
@@ -224,16 +234,20 @@ module Sipity
                   ['destroy'],
                   ['etd_reviewer']
                 ],[
-                  ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest'],
+                  ['new', 'grad_school_approved_but_waiting_for_routing', 'under_advisor_review', 'advisor_changes_requested', 'under_grad_school_review', 'grad_school_changes_requested', 'ready_for_cataloging', 'back_from_cataloging', 'ready_for_ingest', 'ingesting', 'ingested'],
                   ['debug'],
-                  ['etd_reviewer']
+                  ['etd_reviewer', Models::Role::DATA_OBSERVER]
                 ],[
                   ['ready_for_cataloging'],
-                  ['send_back_to_grad_school', 'cataloging_complete'],
+                  ['send_back_to_grad_school', 'cataloging_complete', 'show'],
                   ['cataloger']
                 ],[
-                  ['back_from_cataloging'],
-                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
+                  ['back_from_cataloging', 'ready_for_ingest'],
+                  ['show'],
+                  ['cataloger']
+                ],[
+                  ['back_from_cataloging', 'grad_school_approved_but_waiting_for_routing'],
+                  ['send_to_cataloging'],
                   ['etd_reviewer']
                 ],[
                   ['under_advisor_review'],
@@ -249,12 +263,13 @@ module Sipity
                   ['advisor']
                 ],[
                   ['under_grad_school_review', 'grad_school_changes_requested'],
-                  ['grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
+                  ['grad_school_signoff', 'grad_school_requests_change'],
+                  # ['grad_school_signoff', 'grad_school_requests_change', 'send_to_cataloging', 'ingest_with_postponed_cataloging'],
                   ['etd_reviewer']
                 ],[
-                  ['grad_school_approved_but_waiting_for_routing'],
-                  ['send_to_cataloging', 'ingest_with_postponed_cataloging'],
-                  ['etd_reviewer']
+                  ['ingesting'],
+                  ['ingest_completed'],
+                  ['batch_ingestor']
                 ],[
                   ['ready_for_ingest'],
                   ['submit_for_ingest'],
@@ -286,112 +301,74 @@ module Sipity
               # Define associated emails by a named thing
               [
                 {
-                  named_container: Models::Processing::StrategyAction,
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'start_a_submission',
-                  emails: {
-                    confirmation_of_work_created: { to: 'creating_user' }
-                  }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { confirmation_of_work_created: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'submit_for_review',
                   emails: {
                     confirmation_of_submit_for_review: { to: 'creating_user' },
                     submit_for_review: { to: ['advisor'] }
                   }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'advisor_signoff',
-                  emails: {
-                    confirmation_of_advisor_signoff: { to: 'creating_user' },
-                  }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { confirmation_of_advisor_signoff: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'signoff_on_behalf_of',
-                  emails: {
-                    confirmation_of_advisor_signoff: { to: 'creating_user' },
-                  }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { confirmation_of_advisor_signoff: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'advisor_requests_change',
-                  emails: {
-                    advisor_requests_change: { to: 'creating_user' }
-                  }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { advisor_requests_change: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'request_change_on_behalf_of',
-                  emails: {
-                    request_change_on_behalf_of: { to: 'creating_user' }
-                  }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { request_change_on_behalf_of: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'respond_to_advisor_request',
                   emails: { respond_to_advisor_request: { to: 'advisor', cc: 'creating_user'} }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'respond_to_grad_school_request',
                   emails: { respond_to_grad_school_request: { to: 'etd_reviewer', cc: 'creating_user'} }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'grad_school_requests_change',
                   emails: { grad_school_requests_change: { to: 'creating_user' } }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
+                  name: 'grad_school_signoff',
+                  emails: { confirmation_of_grad_school_signoff: { to: 'creating_user' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'send_to_cataloging',
-                  emails: { grad_school_requests_cataloging: { to: 'cataloger', cc: 'etd_reviewer' } }
-                },
-                {
-                  named_container: Models::Processing::StrategyAction,
+                  emails: { grad_school_requests_cataloging: { to: 'cataloger' } }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN,
                   name: 'send_back_to_grad_school',
                   emails: { cataloger_request_change: { to: 'etd_reviewer' } }
-                },
-                {
-                  named_container: Models::Processing::StrategyState,
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ENTERED_STATE,
                   name: 'under_grad_school_review',
                   emails: {
                     advisor_signoff_is_complete: { to: 'etd_reviewer', cc: 'creating_user' },
                     confirmation_of_advisor_signoff_is_complete: { to: 'creating_user' }
                   }
+                },{
+                  reason: Parameters::NotificationContextParameter::REASON_ENTERED_STATE,
+                  name: 'ingested',
+                  emails: { release_suspended_catalog_record: { to: 'cataloger' } }
                 }
               ].each do |email_config|
-                named_container = email_config.fetch(:named_container)
-                name = email_config.fetch(:name)
-                named_container.where(name: name, strategy: etd_strategy).each do |named_thing|
-                  email_config.fetch(:emails).each do |email_name, recipients|
-                    the_email = Models::Notification::Email.find_or_create_by!(method_name: email_name) do |email|
-                      recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
-                        Array.wrap(recipient_roles).each do |recipient_role|
-                          find_or_initialize_or_create!(
-                            context: email,
-                            receiver: email.recipients,
-                            role: Models::Role.find_by!(name: recipient_role),
-                            recipient_strategy: recipient_strategy.to_s
-                          )
-                        end
-                      end
-                    end
-                    reason_for_notification = begin
-                      case named_thing
-                      when Models::Processing::StrategyAction
-                        Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
-                      when Models::Processing::StrategyState
-                        Parameters::NotificationContextParameter::REASON_ENTERED_STATE
-                      end
-                    end
-                    Models::Notification::NotifiableContext.find_or_create_by!(
-                      scope_for_notification: named_thing,
-                      reason_for_notification: reason_for_notification,
-                      email: the_email
-                    )
-                  end
+                email_config.fetch(:emails).each do |email_name, recipients|
+                  EmailNotificationGenerator.call(
+                    strategy: etd_strategy, email_name: email_name, recipients: recipients, scope: email_config.fetch(:name),
+                    reason: email_config.fetch(:reason)
+                  )
                 end
               end
             end

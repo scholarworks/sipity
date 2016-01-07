@@ -32,8 +32,12 @@ module Sipity
         end
 
         it 'will use the given reason' do
-          subject = described_class.new(keywords.merge(reason: 'casseroles'))
-          expect(subject.reason).to eq('casseroles')
+          subject = described_class.new(keywords.merge(reason: 'entered_state'))
+          expect(subject.reason).to eq('entered_state')
+        end
+
+        it 'will raise an exception if an invalid reason is given' do
+          expect { described_class.new(keywords.merge(reason: 'casseroles')) }.to raise_error(ArgumentError)
         end
       end
     end

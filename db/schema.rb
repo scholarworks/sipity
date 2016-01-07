@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151002183227) do
+ActiveRecord::Schema.define(version: 20151211183738) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -44,8 +44,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.string   "work_id",    limit: 32,    null: false
     t.string   "key",        limit: 255,   null: false
     t.text     "value",      limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "sipity_additional_attributes", ["work_id", "key"], name: "index_sipity_additional_attributes_on_work_id_and_key", using: :btree
@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.integer  "sequence",               limit: 4
     t.string   "name",                   limit: 255
     t.string   "role",                   limit: 255,                 null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "netid",                  limit: 255
     t.string   "email",                  limit: 255
     t.boolean  "responsible_for_review",             default: false
@@ -100,8 +100,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.string   "entity_id",         limit: 32,  null: false
     t.string   "entity_type",       limit: 64,  null: false
     t.string   "event_name",        limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
     t.string   "requested_by_id",   limit: 255
     t.string   "requested_by_type", limit: 255
     t.string   "identifier_id",     limit: 255
@@ -125,8 +125,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.string   "user_id",         limit: 255, null: false
     t.string   "group_id",        limit: 255, null: false
     t.string   "membership_role", limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "sipity_group_memberships", ["group_id", "membership_role"], name: "index_sipity_group_memberships_on_group_id_and_membership_role", using: :btree
@@ -136,8 +136,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
 
   create_table "sipity_groups", force: :cascade do |t|
     t.string   "name",       limit: 255, null: false
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
@@ -238,8 +238,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.datetime "updated_at",                             null: false
     t.integer  "requested_by_actor_id",      limit: 4
     t.integer  "on_behalf_of_actor_id",      limit: 4
-    t.integer  "subject_id",                 limit: 4
-    t.string   "subject_type",               limit: 255
+    t.string   "subject_id",                 limit: 255, null: false
+    t.string   "subject_type",               limit: 255, null: false
     t.string   "requested_by_identifier_id", limit: 255
     t.string   "on_behalf_of_identifier_id", limit: 255
   end
@@ -393,13 +393,18 @@ ActiveRecord::Schema.define(version: 20151002183227) do
   add_index "sipity_submission_window_work_types", ["work_type_id"], name: "idx_sipity_submission_window_work_types_work_type_id", using: :btree
 
   create_table "sipity_submission_windows", force: :cascade do |t|
-    t.integer  "work_area_id", limit: 4,   null: false
-    t.string   "slug",         limit: 255, null: false
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.integer  "work_area_id",                       limit: 4,   null: false
+    t.string   "slug",                               limit: 255, null: false
+    t.datetime "created_at",                                     null: false
+    t.datetime "updated_at",                                     null: false
+    t.datetime "open_for_starting_submissions_at"
+    t.datetime "closed_for_starting_submissions_at"
   end
 
+  add_index "sipity_submission_windows", ["closed_for_starting_submissions_at"], name: "idx_submission_windows_closed_surrogate", using: :btree
+  add_index "sipity_submission_windows", ["open_for_starting_submissions_at"], name: "idx_submission_window_opening_at", using: :btree
   add_index "sipity_submission_windows", ["slug"], name: "index_sipity_submission_windows_on_slug", using: :btree
+  add_index "sipity_submission_windows", ["work_area_id", "open_for_starting_submissions_at"], name: "idx_submission_windows_open_surrogate", using: :btree
   add_index "sipity_submission_windows", ["work_area_id", "slug"], name: "index_sipity_submission_windows_on_work_area_id_and_slug", unique: true, using: :btree
   add_index "sipity_submission_windows", ["work_area_id"], name: "index_sipity_submission_windows_on_work_area_id", using: :btree
 
@@ -414,6 +419,17 @@ ActiveRecord::Schema.define(version: 20151002183227) do
 
   add_index "sipity_work_areas", ["name"], name: "index_sipity_work_areas_on_name", unique: true, using: :btree
   add_index "sipity_work_areas", ["slug"], name: "index_sipity_work_areas_on_slug", unique: true, using: :btree
+
+  create_table "sipity_work_redirect_strategies", force: :cascade do |t|
+    t.string   "work_id",    limit: 255, null: false
+    t.string   "url",        limit: 255, null: false
+    t.date     "start_date",             null: false
+    t.date     "end_date"
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  add_index "sipity_work_redirect_strategies", ["work_id", "start_date"], name: "idx_work_redirect_strategies_surrogate", using: :btree
 
   create_table "sipity_work_submissions", force: :cascade do |t|
     t.integer  "work_area_id",         limit: 4,   null: false
@@ -439,8 +455,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
   create_table "sipity_works", id: false, force: :cascade do |t|
     t.string   "id",         limit: 32,    null: false
     t.text     "title",      limit: 65535
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
     t.string   "work_type",  limit: 255,   null: false
   end
 
@@ -456,8 +472,8 @@ ActiveRecord::Schema.define(version: 20151002183227) do
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip",         limit: 255
     t.string   "last_sign_in_ip",            limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                             null: false
+    t.datetime "updated_at",                                             null: false
     t.string   "name",                       limit: 255
     t.integer  "role",                       limit: 4
     t.string   "username",                   limit: 255,                 null: false

@@ -10,7 +10,7 @@ module Sipity
         its(:column_names) { should include('slug') }
       end
 
-      subject { described_class.new }
+      subject { described_class.new(slug: 'the-slug') }
 
       it { should respond_to :processing_strategy }
       it { should respond_to :processing_state }
@@ -35,6 +35,8 @@ module Sipity
           expect(subject.slug).to eq('hello-world')
         end
       end
+
+      its(:to_s) { should eq(subject.slug) }
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do

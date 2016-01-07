@@ -11,8 +11,12 @@ module Sipity
         PowerConverter.convert(identifiable_agent, to: :identifiable_agent)
       end
 
-      def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
+      def scope_users_for_entity_and_roles(entity:, roles:)
         get_remote_identifiable_agent_finder(entity: entity).each(roles: roles).to_a
+      end
+
+      def scope_creating_users_for_entity(entity:)
+        scope_users_for_entity_and_roles(entity: entity, roles: Models::Role::CREATING_USER)
       end
 
       # @api public

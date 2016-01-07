@@ -86,6 +86,7 @@ module Sipity
         metadata['title'] = work.title
         metadata['contributor'] = collaborators_name_and_title
         metadata['degree'] = degree_info
+        metadata['creator'] = creator_names
         metadata
       end
 
@@ -93,7 +94,12 @@ module Sipity
         degree_info = {}
         degree_info[extract_name_for('degree_name')] = repository.work_attribute_values_for(work: work, key: 'degree')
         degree_info[extract_name_for('program_name')] = repository.work_attribute_values_for(work: work, key: 'program_name')
+        degree_info[extract_name_for('degree_level')] = lookup_degree_level_for(work: work)
         degree_info
+      end
+
+      def lookup_degree_level_for(work:)
+        I18n.t("#{work.work_type}.label", scope: 'work_types', raise: true)
       end
 
       def collaborators
@@ -115,8 +121,12 @@ module Sipity
         @access_right ||= repository.work_access_right_code(work: work)
       end
 
-      def creators
-        @creators ||= repository.scope_creating_users_for_entity(entity: work).map(&:username)
+      def creator_names
+        repository.work_attribute_values_for(work: work, key: 'author_name')
+      end
+
+      def creator_usernames
+        repository.scope_creating_users_for_entity(entity: work).map(&:username)
       end
 
       def gather_work_metadata(json)
@@ -148,8 +158,7 @@ module Sipity
 
       def decode_access_right
         # determine and add Public, Private, Embargo and ND only rights
-        # NOTE: We will also need to give rights to the ETD Reviewers Group
-        decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
+        decoded_access_rights = { READ_KEY => creator_usernames, EDIT_KEY => [BATCH_USER] }
         case access_right
         when Models::AccessRight::OPEN_ACCESS
           decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]

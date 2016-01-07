@@ -6,7 +6,7 @@ module Sipity
   module Runners
     module VisitorsRunner
       include RunnersSupport
-      RSpec.describe AreasEtd do
+      RSpec.describe WorkArea do
         context 'configuration' do
           subject { described_class }
           its(:authentication_layer) { should eq(:none) }
@@ -23,16 +23,15 @@ module Sipity
           let(:context) { TestRunnerContext.new(find_work_area_by: work_area) }
           let(:handler) { double(invoked: true) }
           let(:work_area) { double }
-          let(:presenter) { double }
-
-          # NOTE: This is a fragile test in that I'm overriding the various
-          #   guard methods of the ShowPresenter.
-          before { expect(Controllers::WorkAreas::Etd::ShowPresenter).to receive(:new).and_return(presenter) }
 
           it 'issues the :success callback' do
             response = subject.run(work_area_slug: 'a_work_area')
-            expect(handler).to have_received(:invoked).with("SUCCESS", presenter)
-            expect(response).to eq([:success, presenter])
+            expect(handler).to have_received(:invoked).with("SUCCESS", work_area)
+            expect(response).to eq([:success, work_area])
+          end
+
+          it 'allows for a processing_action_name to be passed (because upstream assumes as much)' do
+            expect { subject.run(work_area_slug: 'a_work_area', processing_action_name: 'work_area') }.to_not raise_error(ArgumentError)
           end
         end
       end

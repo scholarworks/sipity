@@ -17,8 +17,6 @@ module Sipity
           before do
             allow(repository).to receive(:find_work_area_by).with(slug: work_area.slug).and_return(work_area)
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
-            allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'work_publication_strategy').
-              and_return(['valid_work_publication_strategy'])
           end
 
           it { should implement_processing_form_interface }
@@ -58,91 +56,26 @@ module Sipity
             expect(subject.award_categories_for_select).to be_a(Array)
           end
 
-          context 'selectable answers that are an array of symbols for SimpleForm internationalization' do
-            it 'will have #work_publication_strategies_for_select' do
-              expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
-            end
-          end
-
-          context 'validations for' do
-            let(:attributes) { { title: nil, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
+          context 'validations' do
+            let(:attributes) { { title: nil, access_rights_answer: nil } }
             subject { described_class.new(keywords) }
-            context '#title' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:title]).to be_present
-              end
-            end
-            context '#advisor_netid' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:advisor_netid]).to be_present
-              end
-            end
-            context '#award_category' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:award_category]).to be_present
-              end
-            end
-            context '#submission_window' do
-              it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(requested_by: user, repository: repository, attributes: attributes) }.
-                  to raise_error(ArgumentError)
-              end
-            end
-            context '#work_type' do
-              it 'must be present' do
-                subject = described_class.new(keywords.merge(attributes: { work_type: nil }))
-                subject.valid?
-                expect(subject.errors[:work_type]).to be_present
-              end
-            end
-            context '#work_publication_strategy' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'must be from the approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'will be valid if from approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: 'valid_work_publication_strategy' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to_not be_present
-              end
-            end
-          end
-
-          context 'Sanitizing HTML title' do
-            let(:attributes) { { title: title, work_publication_strategy: nil, advisor_net_id: nil, award_category: nil } }
-            subject { described_class.new(keywords) }
-            context 'removes script tags' do
-              let(:title) { "<script>alert('Like this');</script>" }
-              it { expect(subject.title).to_not have_tag('script') }
-            end
-            context 'removes JavaScript links' do
-              let(:title) do
-                "JavaScript can also be included in an anchor tag
-            <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
-              end
-              it { expect(subject.title).to_not have_tag("a[href]") }
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:title) }
+            it { should validate_presence_of(:advisor_netid) }
+            it { should validate_presence_of(:award_category) }
+            it { should validate_presence_of(:work_type) }
+            it { should validate_presence_of(:course_name) }
+            it { should validate_presence_of(:course_number) }
+            it 'should validate submission_window_is_open' do
+              expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
+              subject.valid?
             end
           end
 
           context '#submit' do
-            let(:attributes) do
-              {
-                title: "This is my title",
-                work_publication_strategy: 'do_not_know',
-                advisor_net_id: 'dummy_id',
-                award_category: 'some_category'
-              }
-            end
             subject { described_class.new(keywords) }
             context 'with invalid data' do
+              let(:attributes) { { title: "This is my title", advisor_netid: 'dummy_id', award_category: 'some_category' } }
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
                 expect { subject.submit }.
@@ -155,12 +88,20 @@ module Sipity
             end
             context 'with valid data' do
               let(:user) { User.new(id: '123') }
-              let(:work) { double }
-              before do
-                expect(subject).to receive(:valid?).and_return(true)
+              let(:work) { Sipity::Models::Work.new(id: 1) }
+              let(:attributes) do
+                {
+                  title: 'Hello', access_rights_answer: 'right answer',
+                  course_name: 'a name', course_number: 'a number', award_category: 'a category', advisor_netid: 'a netid'
+                }
               end
-              it 'will return the work having created the work, added the attributes,
-              assigned collaborators, assigned permission, and loggged the event' do
+              before do
+                allow(subject).to receive(:valid?).and_return(true)
+                allow(repository).to receive(:create_work!).and_return(work)
+                allow(repository).to receive(:register_action_taken_on_entity)
+              end
+
+              it 'will return the work' do
                 expect(repository).to receive(:create_work!).and_return(work)
                 response = subject.submit
                 expect(response).to eq(work)
@@ -173,6 +114,47 @@ module Sipity
 
               it 'will grant creating user permission for' do
                 expect(repository).to receive(:grant_creating_user_permission_for!).and_call_original
+                subject.submit
+              end
+
+              it 'will also register the action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).with(
+                  entity: work, action: subject.processing_action_name, requested_by: user
+                ).and_call_original
+                subject.submit
+              end
+
+              it 'will register the action on the submission window' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will register the project_information action on the work' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: work, action: 'project_information', requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will assiassign_collaborators_to the given work' do
+                expect(repository).to receive(:assign_collaborators_to).with(
+                  work: work, collaborators: kind_of(Models::Collaborator)
+                ).and_call_original
+                subject.submit
+              end
+
+              it 'will use a valid collaborator' do
+                collaborator = subject.send(:build_collaborator, work: work)
+                expect(collaborator).to be_valid
+                expect(collaborator).to be_responsible_for_review
+              end
+
+              it 'will persist the additional attributes of course_name, course_number, and award_category' do
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'course_name', values: 'a name')
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'course_number', values: 'a number')
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'award_category', values: 'a category')
                 subject.submit
               end
             end

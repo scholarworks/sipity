@@ -5,7 +5,7 @@ module Sipity
   module Exporters
     RSpec.describe EtdExporter do
       let(:access_right) { ['private_access'] }
-      let(:work) { double }
+      let(:work) { Sipity::Models::Work.new(id: 'abc123') }
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
       let(:title) { 'Title of the work' }
@@ -16,6 +16,12 @@ module Sipity
       subject { described_class.new(work, repository: repository) }
 
       its(:default_repository) { should respond_to :work_attachments }
+      its(:webhook_authorization_credentials) { should be_a(String) }
+
+      # The .json is important as it helps this Rails application negotiate the content. Without the .json,
+      # the batch ingest process is posting a "Content-Type: application/json" but Rails is falling back to
+      # an HTML response; Which doesn't work because the HTML template does not exist.
+      its(:webhook_url) { should match(%r{/work_submissions/#{work.to_param}/callback/ingest_completed.json$}) }
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
@@ -40,6 +46,7 @@ module Sipity
           expect(subject).to receive(:export_to_json).
             and_return(["rof json array"])
           expect(FileUtils).to receive(:mv)
+          expect(subject).to receive(:create_webook).and_call_original
           subject.call
         end
       end

@@ -15,15 +15,16 @@ module Sipity
       include mod if mod.to_s =~ /Sipity::Queries::/
     end
 
-    include Commands::WorkCommands
+    include Commands::AccountProfileCommands
+    include Commands::AdditionalAttributeCommands
+    include Commands::AdministrativeScheduledActionCommands
     include Commands::EventLogCommands
     include Commands::NotificationCommands
-    include Commands::AdditionalAttributeCommands
     include Commands::PermissionCommands
-    include Commands::TransientAnswerCommands
-    include Commands::TodoListCommands
-    include Commands::AccountProfileCommands
     include Commands::ProcessingCommands
-    include Commands::AdministrativeScheduledActionCommands
+    include Commands::RedirectCommands
+    include Commands::TodoListCommands
+    include Commands::TransientAnswerCommands
+    include Commands::WorkCommands
   end
 end

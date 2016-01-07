@@ -9,15 +9,25 @@ module Sipity
         RSpec.describe PlanOfStudyForm do
           let(:user) { double('User') }
           let(:work) { double('Work') }
-          let(:expected_graduation_date) { Time.zone.today }
+          let(:expected_graduation_date) { 'Summer 2015' }
           let(:majors) { 'Computer Science' }
+          let(:minors) { 'A Minor' }
+          let(:college) { 'Arts and Letters' }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) { { requested_by: user, attributes: {}, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
+          before do
+            allow(repository).to receive(
+              :get_controlled_vocabulary_values_for_predicate_name
+            ).with(name: 'college').and_return([college])
+            allow(repository).to receive(:possible_expected_graduation_dates).and_return([expected_graduation_date])
+          end
+
           its(:processing_action_name) { should eq('plan_of_study') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
+          it { should delegate_method(:possible_expected_graduation_dates).to(:repository) }
 
           context 'class configuration' do
             subject { described_class }
@@ -33,23 +43,25 @@ module Sipity
           it { should respond_to :expected_graduation_date }
           it { should respond_to :majors }
 
-          it 'will require a expected_graduation_date' do
-            subject.valid?
-            expect(subject.errors[:expected_graduation_date]).to be_present
-          end
+          include Shoulda::Matchers::ActiveModel
+          it { should validate_presence_of(:expected_graduation_date) }
+          it { should validate_inclusion_of(:expected_graduation_date).in_array(subject.possible_expected_graduation_dates) }
+          it { should validate_presence_of(:college) }
+          it { should validate_inclusion_of(:college).in_array(subject.possible_colleges) }
 
-          it 'will require a major' do
-            subject.valid?
-            expect(subject.errors[:majors]).to be_present
-          end
-
-          it 'will require at least one non-blank major' do
+          it 'will be invalid if all of the input majors are blank' do
             subject = described_class.new(keywords.merge(attributes: { majors: ['', ''] }))
             subject.valid?
             expect(subject.errors[:majors]).to be_present
           end
 
-          it 'will require at least one non-blank major' do
+          it 'will not require minors' do
+            subject = described_class.new(keywords.merge(attributes: { minors: ['', ''] }))
+            subject.valid?
+            expect(subject.errors[:minors]).to_not be_present
+          end
+
+          it 'will be valid if at least one of the input majors is not blank' do
             subject = described_class.new(keywords.merge(attributes: { majors: ['chocolate', ''] }))
             subject.valid?
             expect(subject.errors[:majors]).to_not be_present
@@ -59,19 +71,22 @@ module Sipity
             context 'with data from the database' do
               let(:expected_graduation_date) { Time.zone.today }
               let(:majors) { 'Computer Science' }
+              let(:minors) { 'Book' }
               subject { described_class.new(keywords) }
               it 'will return the expected_graduation_date of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'expected_graduation_date').and_return(expected_graduation_date)
+                  with(work: work, key: 'expected_graduation_date', cardinality: 1).and_return(expected_graduation_date)
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'majors').and_return([majors])
+                  with(work: work, key: 'majors', cardinality: :many).and_return([majors])
+                expect(repository).to receive(:work_attribute_values_for).
+                  with(work: work, key: 'minors', cardinality: :many).and_return([minors])
+                expect(repository).to receive(:work_attribute_values_for).
+                  with(work: work, key: 'college', cardinality: 1).and_return(college)
+
                 expect(subject.expected_graduation_date).to eq expected_graduation_date
                 expect(subject.majors).to eq [majors]
+                expect(subject.minors).to eq [minors]
               end
-            end
-            context 'when initial date is given is bogus' do
-              subject { described_class.new(keywords.merge(attributes: { expected_graduation_date: '2014-02-31' })) }
-              its(:expected_graduation_date) { should_not be_present }
             end
           end
           context '#submit' do
@@ -86,7 +101,11 @@ module Sipity
 
             context 'with valid data' do
               subject do
-                described_class.new(keywords.merge(attributes: { expected_graduation_date: expected_graduation_date, majors: majors }))
+                described_class.new(
+                  keywords.merge(
+                    attributes: { expected_graduation_date: expected_graduation_date, majors: majors, minors: minors, college: college }
+                  )
+                )
               end
               before do
                 allow(subject).to receive(:valid?).and_return(true)
@@ -94,7 +113,18 @@ module Sipity
               end
 
               it 'will add additional attributes entries' do
-                expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'expected_graduation_date', values: expected_graduation_date
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'majors', values: [majors]
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'minors', values: [minors]
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'college', values: college
+                ).and_call_original
                 subject.submit
               end
             end

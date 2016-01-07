@@ -13,6 +13,9 @@ module Sipity
       subject { described_class.new(context, submission_window: submission_window, repository: repository) }
 
       its(:path) { should eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}") }
+      its(:path_to_start_a_submission) do
+        should eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}/do/start_a_submission")
+      end
       its(:link) { should eq(%(<a href="#{subject.path}">the-slug</a>)) }
       its(:slug) { should eq(submission_window.slug) }
 

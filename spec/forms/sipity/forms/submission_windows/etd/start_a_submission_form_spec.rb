@@ -11,7 +11,7 @@ module Sipity
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:user) { User.new(id: '123') }
+          let(:user) { User.new(id: '123', name: 'Hello') }
           let(:submission_window) do
             Models::SubmissionWindow.new(id: 1, work_area: work_area, slug: 'start')
           end
@@ -68,63 +68,19 @@ module Sipity
             end
           end
 
-          context 'validations for' do
+          context 'validations' do
             let(:attributes) { { title: nil, access_rights_answer: nil, work_publication_strategy: nil } }
             subject { described_class.new(keywords) }
-            context '#title' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:title]).to be_present
-              end
-            end
-            context '#submission_window' do
-              it 'must be present and will throw an exception if incorrect' do
-                expect { described_class.new(keywords.merge(submission_window: nil)) }.to raise_error(PowerConverter::ConversionError)
-              end
-            end
-            context '#access_rights_answer' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:access_rights_answer]).to be_present
-              end
-              it 'must be in the given list' do
-                subject = described_class.new(keywords.merge(attributes: { access_rights_answer: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:access_rights_answer]).to be_present
-              end
-            end
-            context '#work_type' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_type]).to be_present
-              end
-            end
-            context '#work_publication_strategy' do
-              it 'must be present' do
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-              it 'must be from the approved list' do
-                subject = described_class.new(keywords.merge(attributes: { work_publication_strategy: '__not_found__' }))
-                subject.valid?
-                expect(subject.errors[:work_publication_strategy]).to be_present
-              end
-            end
-          end
-
-          context 'Sanitizing HTML title' do
-            let(:attributes) { { title: title, access_rights_answer: nil, work_publication_strategy: nil } }
-            subject { described_class.new(keywords) }
-            context 'removes script tags' do
-              let(:title) { "<script>alert('Like this');</script>" }
-              it { expect(subject.title).to_not have_tag('script') }
-            end
-            context 'removes JavaScript links' do
-              let(:title) do
-                "JavaScript can also be included in an anchor tag
-            <a href=\"javascript:alert('CLICK HIJACK');\">like so</a>"
-              end
-              it { expect(subject.title).to_not have_tag("a[href]") }
+            include Shoulda::Matchers::ActiveModel
+            it { should validate_presence_of(:title) }
+            it { should validate_presence_of(:access_rights_answer) }
+            it { should validate_inclusion_of(:access_rights_answer).in_array(subject.send(:possible_access_right_codes)) }
+            it { should validate_presence_of(:work_publication_strategy) }
+            it { should validate_inclusion_of(:work_publication_strategy).in_array(subject.send(:possible_work_publication_strategies)) }
+            it { should validate_presence_of(:work_type) }
+            it 'should validate submission_window_is_open' do
+              expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
+              subject.valid?
             end
           end
 
@@ -149,6 +105,7 @@ module Sipity
                 expect(subject).to receive(:valid?).and_return(true)
                 allow(repository).to receive(:create_work!).and_return(work)
                 allow(repository).to receive(:register_action_taken_on_entity)
+                expect(subject.send(:publication_and_patenting_intent_extension)).to receive(:persist_work_publication_strategy)
               end
               it 'will assign the work attribute on submit' do
                 expect { subject.submit }.to change(subject, :work).from(nil).to(work)
@@ -163,6 +120,19 @@ module Sipity
               it 'will register the action on the submission window' do
                 expect(repository).to receive(:register_action_taken_on_entity).
                   with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will register the author action on the work submission' do
+                expect(repository).to receive(:register_action_taken_on_entity).
+                  with(entity: submission_window, action: subject.processing_action_name, requested_by: user).
+                  and_call_original
+                subject.submit
+              end
+
+              it 'will set the author_name' do
+                expect(repository).to receive(:update_work_attribute_values!).with(work: work, key: 'author_name', values: user.to_s).
                   and_call_original
                 subject.submit
               end

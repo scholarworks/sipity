@@ -21,6 +21,25 @@ module Sipity
         end
       end
 
+      RSpec.describe RedirectResponder do
+        context '.for_controller' do
+          let(:handler) { double('Handler', response_object: double(url: 'google.com'), redirect_to: true) }
+          it 'will coordinate the rendering of the template' do
+            described_class.for_controller(handler: handler)
+            expect(handler).to have_received(:redirect_to).with(handler.response_object.url)
+          end
+        end
+
+        context '.for_command_line' do
+          let(:handler) { double('Handler', response_object: double, response_errors: [], response_status: :redirect) }
+          it 'will raise an exception' do
+            expect do
+              described_class.for_command_line(handler: handler)
+            end.to raise_error(Sipity::Exceptions::ResponseHandlerError)
+          end
+        end
+      end
+
       RSpec.describe SubmitSuccessResponder do
         let(:handler) { double(redirect_to: true, response_object: double(id: '123')) }
         context '.for_controller' do

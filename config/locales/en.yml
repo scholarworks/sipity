@@ -41,6 +41,7 @@ en:
         citationType: 'Citation style'
         collaborators: 'People involved'
         publicationDate: 'Publication date'
+        scheduled_time: 'Scheduled date'
         work_publication_strategy: 'Publication intent'
         work_patent_strategy: 'Patent intent'
   application:
@@ -116,16 +117,6 @@ en:
         hint: 'Select the program name for which you are submitting this work'
       publication_name:
         title_html: 'Please provide a <b>publication name</b> of your work'
-      course:
-        title_html: 'Course Name/Number (if applicable)'
-      nature_of_supervision:
-        title_html: 'Please briefly describe the nature of your supervision of this project'
-      supervising_semester:
-        title_html: 'Semester(s) supervising student work on this project (select all that apply)'
-      quality_of_research:
-        title_html: "Please comment on the quality of the research and the depth of inquiry demonstrated by the student's project."
-      use_of_library_resources:
-        title_html: "How did the student’s use of library resources (such as print, electronic, database, special collections, etc.) contribute to the outcome of this research project?"
       project_info:
         title_html: "Project Information"
       project_evaluation:
@@ -135,6 +126,8 @@ en:
       label: 'Patent Intent'
     work_publication_strategy:
       label: 'Publication Intent'
+    catalog_system_number:
+      label: 'ALEPH system number'
   panel_headings:
     access_rights_answer:
       label: 'Who should have <b>access</b> to this work after it is deposited?'
@@ -147,6 +140,13 @@ en:
       description: "Does this work contain the first public disclosure of material being considered for patent protection?"
     work_type:
       label: 'What <b>type</b> of work is this?'
+    work_area/ulra:
+      award_category:
+        label: "What is the type of project you are submitting?"
+      advisor_netid:
+        label: "What is your sponsoring <b>Advisor's NetID</b> for this submission?"
+      course_information:
+        label: "What is basic <b>Course Information</b>?"
   sections:
     todo:
       label: 'To-do'
@@ -169,6 +169,8 @@ en:
       label: "<b>Attach</b> files to this %{work_type}"
     describe:
       label: "Further <b>describe</b> your %{work_type}"
+    author:
+      label: "Update your <b>author name</b> as it appears in your %{work_type}"
     destroy:
       confirm_destroy:
         label: "I am sure that I want to delete this %{work_type}?"
@@ -193,6 +195,17 @@ en:
       label: "Add <b>degree</b> for your %{work_type}"
     program_name:
       label: "Add <b>program name</b> for your %{work_type}"
+    work_type/ulra_submission:
+      project_information:
+        label: "Tell us about your <b>Project Information</b>"
+      plan_of_study:
+        label: "Tell us more about your <b>Plan of Study</b>"
+      research_process:
+        label: "Explain your <b>Research Process</b>"
+      publisher_information:
+        label: "Provide additional <b>Publication Information</b>"
+      faculty_response:
+        label: "Attach your <b>Letter of Recommendation</b>"
     show:
       work_area/self-deposit:
         start_a_submission:
@@ -212,11 +225,20 @@ en:
             <p>Please note: Some submissions may be restricted to campus-access only or may be temporarily withheld from public access due to pending patent registration or publication.
             If you wish to inquire about an electronic thesis or dissertation that is not yet publicly accessible,
             please contact the Graduate School's dissertation editor at <a mailto="dteditor@nd.edu">dteditor@nd.edu</a> or (574) 631-7545.</p>
+      work_area/ulra:
+        landing_page_greeting_introduction_html:
+          label: |
+            <p>Greeting and introduction goes here.</p>
+        landing_page_greeting_help_html:
+          label: |
+            <p>Greeting help goes here.</p>
   work_types:
     master_thesis:
       label: "Master’s Thesis"
+      curate_nd_label: "Master’s Thesis"
     doctoral_dissertation:
       label: "Doctoral Dissertation"
+      curate_nd_label: "Doctoral Dissertation"
   access_rights:
     models/attachment:
       title:
@@ -250,10 +272,6 @@ en:
             access_rights_answer:
               blank: 'Please select an option'
               inclusion: 'Please select an option from the list'
-        sipity/forms/work_enrichments/publisher_information_form:
-          attributes:
-            allow_pre_prints:
-              inclusion: 'is not included in the list'
   sipity/forms:
     error_messages:
     state_advancing_actions:
@@ -268,6 +286,7 @@ en:
         etd/ingest_with_postponed_cataloging: 'Ingest with Postponed Cataloging'
         etd/cataloger_requests_change: 'Changes are Required for Cataloging'
         etd/submit_for_review: 'Terms of Deposit'
+        ulra/submit_for_review: 'Terms of Deposit'
       verification:
         etd/advisor_signoff:
           i_agree: 'I have reviewed the submission and all aspects of it conform to my expectations.'
@@ -335,7 +354,7 @@ en:
         blank: 'select a valid date'
     messages:
       disallow_nd_dot_edu_emails: 'You may not use an @nd.edu email'
-      at_least_one_collaborator_must_be_research_director_with_netid: 'At least one collaborator must be research director with valid Netid'
+      at_least_one_collaborator_must_be_research_director_with_netid: 'At least one collaborator must be research director with valid NetID'
       presence_of_access_policies_for_all_objects_required: 'Please select access policy for each item'
       at_least_one_attachment_required: 'At least one file must be attached'
   sipity/mailers/email_notifier:

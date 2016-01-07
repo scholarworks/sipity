@@ -23,6 +23,7 @@ AllCops:
     - 'tmp/**/*'
     - 'spec/support/sipity/command_repository_interface.rb'
     - 'spec/support/sipity/query_repository_interface.rb'
+    - 'app/validators/open_for_starting_submissions_validator.rb'
   RunRailsCops: true
 
 ModuleLength:
@@ -72,6 +73,7 @@ MethodLength:
     - 'spec/support/site_prism_support.rb'
     - 'app/services/sipity/guard_interface_expectation.rb'
     - 'app/services/sipity/services/notifier.rb'
+    - 'app/mailers/sipity/mailer_builder.rb'
 
 LineLength:
   Description: 'Limit lines to 140 characters.'
@@ -128,6 +130,7 @@ Metrics/AbcSize:
      - 'app/repositories/sipity/commands/processing_commands.rb'
      - app/forms/sipity/forms/processing_form.rb
      - app/services/sipity/services/authentication_layer.rb
+     - app/mailers/sipity/mailer_builder.rb
 Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: false

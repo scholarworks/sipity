@@ -4,7 +4,9 @@ feature 'Enriching a Work', :devise, :feature do
   include Warden::Test::Helpers
   before do
     Sipity::DataGenerators::FindOrCreateWorkArea.call(name: 'Electronic Thesis and Dissertation', slug: 'etd') do |work_area|
-      Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(slug: 'start', work_area: work_area)
+      Sipity::DataGenerators::FindOrCreateSubmissionWindow.call(
+        slug: 'start', work_area: work_area, open_for_starting_submissions_at: 4.hours.ago
+      )
     end
     Warden.test_mode!
   end

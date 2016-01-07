@@ -1,0 +1,5 @@
+<p>On <%= @entity.action_taken_at.to_formatted_s(:long_ordinal) %>, <%= @entity.on_behalf_of %> approved <%= link_to "your #{@entity.work_type}", @entity.email_message_action_url %> for submission to the Graduate School.</p>
+
+<%= render partial: 'sipity/mailers/etd_mailer/etd_submission_assistance' %>
+<%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>

@@ -1,0 +1,26 @@
+<section>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="page-header">
+        <h1>{{ name }}</h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12">
+      {{*submission_windows}}
+        <a href="{{path_to_start_a_submission}}" class="btn btn-primary">Start a Submission for {{ slug }}</a>
+      {{/submission_windows}}
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="row">
+    <div class="col-xs-12">
+      {{ translate.landing_page_greeting_introduction_html }}
+      {{ translate.landing_page_greeting_help_html }}
+    </div>
+  </div>
+</section>

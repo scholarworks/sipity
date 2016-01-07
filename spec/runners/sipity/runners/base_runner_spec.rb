@@ -5,6 +5,18 @@ module Sipity
   module Runners
     include RunnersSupport
     RSpec.describe BaseRunner do
+      before do
+        class MockRunner < BaseRunner
+          def run(*)
+            enforce_authentication!
+          end
+        end
+      end
+
+      after do
+        Sipity::Runners.send(:remove_const, :MockRunner)
+      end
+
       let(:context) { double('Context') }
       let(:my_options) { {} }
       subject { BaseRunner.new(context, my_options) }
@@ -26,11 +38,19 @@ module Sipity
         expect(subject.action_name).to eq('base_runner')
       end
 
-      context '#enforce_authentication!' do
-        it 'will raise an error if enforce_authentication is false' do
-          expect(subject).to receive(:enforce_authentication).and_return(false)
-
-          expect { subject.enforce_authentication! }.to raise_error(Exceptions::AuthenticationFailureError)
+      context 'authentication layer coordination' do
+        it 'will delegate :default authentication to the given context (because Devise)' do
+          subject = MockRunner.new(context, authentication_layer: :default)
+          expect(subject.send(:authentication_layer)).to receive(:call).with(context).and_return(true)
+          subject.run
+        end
+        it 'will build a "none" authentication layer if none is given' do
+          runner = BaseRunner.new(context, authentication_layer: false)
+          expect(runner.send(:authentication_layer)).to respond_to(:call)
+        end
+        it 'will fail to build a "clearly_this_wont_work" authentication layer because it does not exist' do
+          expect { BaseRunner.new(context, authentication_layer: :clearly_this_wont_work) }.
+            to raise_error(Sipity::Exceptions::FailedToBuildAuthenticationLayerError)
         end
       end
 
@@ -40,26 +60,6 @@ module Sipity
           expect_any_instance_of(described_class).to receive(:callback).with(:unauthenticated)
           expect_any_instance_of(described_class).to_not receive(:run)
           described_class.run(context: context)
-        end
-      end
-
-      context 'authentication layer coordination' do
-        it 'will raise an exception if the authentication layer method does not exist' do
-          expect { BaseRunner.new(context, authentication_layer: :bogus) }.to(
-            raise_error(Sipity::Exceptions::FailedToBuildAuthenticationLayerError)
-          )
-        end
-
-        it 'will build a "none" authentication layer if none is given' do
-          runner = BaseRunner.new(context, authentication_layer: false)
-          expect(runner.send(:authentication_layer)).to respond_to(:call)
-        end
-
-        context 'when the authentication layer is mis-configured' do
-          it 'will raise an error' do
-            expect { BaseRunner.new(context, authentication_layer: :borked) }.
-              to raise_error(Exceptions::FailedToBuildAuthenticationLayerError)
-          end
         end
       end
 

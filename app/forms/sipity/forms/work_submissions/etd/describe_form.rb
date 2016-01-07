@@ -37,19 +37,6 @@ module Sipity
 
           private
 
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
-          end
-
-          def abstract=(value)
-            @abstract = sanitize_html(value)
-          end
-
-          def alternate_title=(value)
-            @alternate_title = sanitize_html(value) { nil }
-          end
-
           def abstract_from_work
             repository.work_attribute_values_for(work: work, key: 'abstract', cardinality: 1)
           end

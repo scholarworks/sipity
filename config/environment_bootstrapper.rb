@@ -26,3 +26,10 @@ etd_ingestor = Sipity::Models::Group.find_or_create_by!(name: etd_ingestors)
 
 $stdout.puts "Associating batch_ingestor with #{etd_ingestor.name}"
 etd_ingestor.group_memberships.find_or_create_by(user: batch_ingestor)
+
+ulra_review_committee_group_name = Sipity::DataGenerators::WorkTypes::UlraGenerator::ULRA_REVIEW_COMMITTEE_GROUP_NAME
+$stdout.puts "Finding or creating group for '#{ulra_review_committee_group_name}'"
+ulra_review_committee_group = Sipity::Models::Group.find_or_create_by!(name: ulra_review_committee_group_name)
+
+$stdout.puts "Associating #{user.name} with #{ulra_review_committee_group.name}"
+ulra_review_committee_group.group_memberships.find_or_create_by(user: batch_ingestor)

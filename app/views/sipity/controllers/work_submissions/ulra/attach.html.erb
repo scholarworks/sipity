@@ -1,0 +1,45 @@
+<h1>Attach Files</h1>
+
+<%= simple_form_for(
+  model,
+  url: request.path,
+  method: :post,
+  as: :work,
+  html: { class: 'simple-form panel panel-primary with-footer attachements-form' }
+) do |f| %>
+  <legend class="panel-heading">
+    <h3 class="pannel-title">Please <b>attach</b> the pertinent files</h3>
+  </legend>
+
+  <fieldset class="panel-body">
+    <p class="panel-hint">If you have more than one file please select one as the principle manuscript.</p>
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+
+    <%= f.input :project_url, input_html: { class: 'form-control' } %>
+    <%= f.input :attached_files_completion_state, collection: model.possible_attached_files_completion_states, input_html: { class: 'form-control' } %>
+
+    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Select your project file(s) for upload" %>
+
+  <% if model.attachments.any? %>
+    <ol class="attachment-listing">
+      <%= f.fields_for :attachments do |attachment_form| %>
+        <li class="attachement form-inline">
+          <%= attachment_form.input :name, input_html: { class: 'form-control' } %>
+          <%= attachment_form.input :delete, as: :boolean, wrapper_html: { class: 'checkbox' } %>
+        </li>
+      <% end %>
+    </ol>
+
+    <%= f.input :representative_attachment_id, collection: model.attachments, input_html: { class: 'form-control' } %>
+  <% end %>
+  </fieldset>
+
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>

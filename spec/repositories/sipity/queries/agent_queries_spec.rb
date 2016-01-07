@@ -52,6 +52,14 @@ module Sipity
         end
       end
 
+      context '#scope_users_for_entity_and_roles' do
+        it "will leverage Complex::AgentsAssociatedWithEntity" do
+          entity = Sipity::Models::Processing::Entity.new
+          expect_any_instance_of(Complex::AgentsAssociatedWithEntity).to receive(:each).with(roles: Models::Role::ADVISOR)
+          test_repository.scope_users_for_entity_and_roles(entity: entity, roles: Models::Role::ADVISOR)
+        end
+      end
+
       context "#get_role_names_with_email_addresses_for" do
         it 'will be an hash keyed by role name with values of emails' do
           entity = Sipity::Models::Processing::Entity.new

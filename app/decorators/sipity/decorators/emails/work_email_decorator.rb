@@ -11,7 +11,6 @@ module Sipity
           self.repository = repository
         end
 
-        include Conversions::SanitizeHtml
         def title
           work.to_s
         end
@@ -40,16 +39,16 @@ module Sipity
           creators.map(&:username)
         end
 
-        def accessible_objects
-          @accessible_objects ||= Array.wrap(repository.access_rights_for_accessible_objects_of(work: work))
+        def accessible_objects(predicate_name: :all)
+          repository.access_rights_for_accessible_objects_of(work: work, predicate_name: predicate_name)
         end
 
         def work_access
           @work_access ||= Models::AccessRightFacade.new(work, work: work)
         end
 
-        def accessible_files
-          @accessible_files ||= Array.wrap(repository.work_attachments(work: work)).map do |object|
+        def accessible_files(predicate_name: :all)
+          Array.wrap(repository.work_attachments(work: work, predicate_name: predicate_name)).map do |object|
             Models::AccessRightFacade.new(object, work: work)
           end
         end
@@ -80,6 +79,10 @@ module Sipity
 
         def submission_date
           Array.wrap(repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::ETD_SUBMISSION_DATE))
+        end
+
+        def catalog_system_number
+          repository.work_attribute_values_for(work: work, key: Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1)
         end
 
         def email_message_action_name

@@ -17,6 +17,10 @@ module Sipity
       def slug=(value)
         super(PowerConverter.convert(value, to: :slug))
       end
+
+      def to_s
+        slug
+      end
     end
   end
 end

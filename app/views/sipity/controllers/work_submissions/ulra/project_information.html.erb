@@ -1,0 +1,26 @@
+<h1>Tell us about your <b>Project Information</b></h1>
+
+<%= simple_form_for(view_object, url: request.path, as: :work, method: :post, html: { class: 'simple-form panel panel-primary with-footer' }) do |f| %>
+  <legend class="panel-heading">
+    <h3 class="panel-title">Project Information</h3>
+  </legend>
+
+  <fieldset class="panel-body">
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+    <div class="panel-tiles">
+      <%= f.input :title, as: :text, input_html: { class: 'redactor-input form-control' } %>
+      <%= f.input :award_category, as: :radio_buttons, collection: view_object.award_categories_for_select %>
+      <%= f.input :course_name %>
+      <%= f.input :course_number %>
+    </div>
+  </fieldset>
+
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>

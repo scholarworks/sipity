@@ -1,3 +1,5 @@
+@import 'bootstrap/variables';
+
 .attribute-listing {
   margin-bottom: 0;
 
@@ -67,6 +69,24 @@
   margin: 0;
   padding: 0;
   width: 100%;
+
+  .nested-attribute-list {
+    clear: both;
+    float: left;
+    padding: .3em 0;
+    width: 100%;
+  }
+
+  .nested-attribute-list:first-child {
+    padding-top: 0;
+  }
+
+  .nested-attribute-list:nth-child(even) {
+    background-color: $table-bg-accent;
+    border-color: $table-border-color;
+    border-style: solid;
+    border-width: 1px 0;
+  }
 }
 
 .nested-attribute-item {

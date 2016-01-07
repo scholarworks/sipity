@@ -36,7 +36,7 @@ module Sipity
         before do
           allow(repository).to receive(:scope_creating_users_for_entity).with(entity: work).and_return(creators)
           allow(repository).to receive(:access_rights_for_accessible_objects_of).
-            with(work: work).and_return(accessible_objects)
+            with(work: work, predicate_name: :all).and_return(accessible_objects)
           allow(repository).to receive(:work_collaborators_for).
             with(work: work).and_return(collaborators)
           allow(repository).to receive(:work_collaborators_responsible_for_review).
@@ -63,6 +63,13 @@ module Sipity
         its(:publishing_intent) { should eq([publishing_intent]) }
         its(:patent_intent) { should eq([patent_intent]) }
         its(:submission_date) { should eq([submission_date]) }
+        its(:catalog_system_number) do
+          expect(repository).to receive(:work_attribute_values_for).with(
+            work: work, key: Sipity::Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1
+          ).and_return(1234)
+
+          should eq(1234)
+        end
 
         its(:additional_committe_members) do
           allow(subject).to receive(:collaborators).and_return(['John', 'Ringo'])
@@ -77,11 +84,10 @@ module Sipity
         end
 
         its(:accessible_files) do
-          allow(repository).to receive(:work_attachments).with(work: work).and_return(accessible_file)
+          allow(repository).to receive(:work_attachments).with(work: work, predicate_name: :all).and_return(accessible_file)
           allow(Models::AccessRightFacade).to receive(:new).and_return(accessible_file)
           should eq([accessible_file])
         end
-
       end
     end
   end

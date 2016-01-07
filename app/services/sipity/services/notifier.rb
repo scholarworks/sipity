@@ -5,29 +5,20 @@ module Sipity
       module_function
 
       # Providing a singular end point for sending messages
-      def deliver(repository:, notification:, notification_container: default_notification_container, **options)
-        notification_container = build_verified_notification_container(
-          notification_container: notification_container, notification: notification
-        )
-        deliver_email(repository: repository, notification_container: notification_container, notification: notification, options: options)
+      def deliver(entity:, notification:, email_service_finder: default_email_service_finder, **options)
+        notification_container = email_service_finder.call(entity: entity, notification: notification)
+        deliver_email(notification_container: notification_container, notification: notification, options: options, entity: entity)
       end
 
-      def build_verified_notification_container(notification:, notification_container:)
-        return notification_container if notification_container.respond_to?(notification)
-        fail Exceptions::NotificationNotFoundError, name: notification, container: notification_container
+      def default_email_service_finder
+        Sipity::Mailers.method(:find_mailer_for)
       end
-      private_class_method :build_verified_notification_container
+      private_class_method :default_email_service_finder
 
-      def default_notification_container
-        Sipity::Mailers::EmailNotifier
-      end
-      private_class_method :default_notification_container
-
-      def deliver_email(repository:, notification_container:, notification:, options:)
+      def deliver_email(notification_container:, notification:, entity:, options:)
         to, cc, bcc = options.fetch(:to), options.fetch(:cc, []), options.fetch(:bcc, [])
-        entity = options.fetch(:entity)
         return notify_aibrake_of_no_sender if to.empty?
-        email_notifier = notification_container.public_send(notification, entity: entity, to: to, cc: cc, bcc: bcc, repository: repository)
+        email_notifier = notification_container.public_send(notification, entity: entity, to: to, cc: cc, bcc: bcc)
         email_notifier.deliver_now
       end
       private_class_method :deliver_email

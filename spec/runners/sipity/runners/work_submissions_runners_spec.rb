@@ -13,13 +13,16 @@ module Sipity
         let(:form) { double('Form') }
         let(:processing_action_name) { 'fun_things' }
         let(:context) do
-          TestRunnerContext.new(find_work_by: work, current_user: user, build_work_submission_processing_action_form: form)
+          TestRunnerContext.new(
+            find_work_by: work, current_user: user, build_work_submission_processing_action_form: form, active_redirect_for: nil
+          )
         end
         let(:handler) { double(invoked: true) }
 
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.success { |a| handler.invoked("SUCCESS", a) }
+            on.redirect { |a| handler.invoked("REDIRECT", a) }
           end
         end
 
@@ -32,9 +35,18 @@ module Sipity
         end
 
         it 'issues the :success callback' do
+          expect(subject).to receive(:enforce_authentication!).and_call_original
           response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("SUCCESS", form)
           expect(response).to eq([:success, form])
+        end
+
+        it 'issues the :redirect callback if a redirect is present' do
+          expect(context.repository).to receive(:active_redirect_for).with(work_id: work.id).and_return(:a_redirect)
+          expect(subject).to_not receive(:enforce_authentication!)
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
+          expect(handler).to have_received(:invoked).with("REDIRECT", :a_redirect)
+          expect(response).to eq([:redirect, :a_redirect])
         end
       end
 
@@ -44,7 +56,9 @@ module Sipity
         let(:form) { double('Form') }
         let(:processing_action_name) { 'fun_things' }
         let(:context) do
-          TestRunnerContext.new(find_work_by: work, current_user: user, build_work_submission_processing_action_form: form)
+          TestRunnerContext.new(
+            find_work_by: work, current_user: user, build_work_submission_processing_action_form: form, active_redirect_for: nil
+          )
         end
         let(:handler) { double(invoked: true) }
 
@@ -52,6 +66,7 @@ module Sipity
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
             on.submit_success { |a| handler.invoked("SUCCESS", a) }
             on.submit_failure { |a| handler.invoked("FAILURE", a) }
+            on.redirect { |a| handler.invoked("REDIRECT", a) }
           end
         end
 
@@ -63,9 +78,18 @@ module Sipity
           expect(described_class.authorization_layer).to eq(:default)
         end
 
+        it 'issues the :redirect callback if a redirect is present' do
+          expect(context.repository).to receive(:active_redirect_for).with(work_id: work.id).and_return(:a_redirect)
+          expect(subject).to_not receive(:enforce_authentication!).and_call_original
+          response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
+          expect(handler).to have_received(:invoked).with("REDIRECT", :a_redirect)
+          expect(response).to eq([:redirect, :a_redirect])
+        end
+
         it 'issues the :submit_success callback when form is submitted' do
           thing = double
           expect(form).to receive(:submit).and_return(thing)
+          expect(subject).to receive(:enforce_authentication!).and_call_original
           response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("SUCCESS", thing)
           expect(response).to eq([:submit_success, thing])
@@ -73,6 +97,7 @@ module Sipity
 
         it 'issues the :submit_failure callback when form fails to submit' do
           expect(form).to receive(:submit).and_return(false)
+          expect(subject).to receive(:enforce_authentication!).and_call_original
           response = subject.run(work_id: work.id, processing_action_name: processing_action_name, attributes: double)
           expect(handler).to have_received(:invoked).with("FAILURE", form)
           expect(response).to eq([:submit_failure, form])

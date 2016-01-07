@@ -11,6 +11,7 @@ module Sipity
         self.authorization_layer = :default
 
         def run(work_area_slug:, processing_action_name:, attributes: {})
+          enforce_authentication!
           work_area = repository.find_work_area_by(slug: work_area_slug)
           form = repository.build_work_area_processing_action_form(
             work_area: work_area, processing_action_name: processing_action_name, attributes: attributes, requested_by: current_user

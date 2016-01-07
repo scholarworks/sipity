@@ -31,6 +31,30 @@ module Sipity
         end
       end
 
+      context '#find_open_submission_windows_by' do
+        let(:as_of) { Time.zone.now }
+
+        it 'will return alphabetized entries which are open as of the current date' do
+          [
+            {
+              work_area_id: work_area.id, slug: 'use', open_for_starting_submissions_at: 2.hours.ago
+            }, {
+              work_area_id: work_area.id, slug: 'another', open_for_starting_submissions_at: 4.hours.ago,
+              closed_for_starting_submissions_at: 5.hours.from_now
+            }, {
+              work_area_id: work_area.id + 2, slug: 'skip_other_area', open_for_starting_submissions_at: 2.hours.ago
+            }, {
+              work_area_id: work_area.id, slug: 'skip_in_future', open_for_starting_submissions_at: 2.hours.from_now
+            }, {
+              work_area_id: work_area.id, slug: 'skip_now_closed', open_for_starting_submissions_at: 4.hours.ago,
+              closed_for_starting_submissions_at: 2.hours.ago
+            }
+          ].each do |attributes|
+            Models::SubmissionWindow.create!(attributes)
+          end
+          expect(test_repository.find_open_submission_windows_by(work_area: work_area).pluck(:slug)).to eq(['another', 'use'])
+        end
+      end
       context '#build_submission_window_processing_action_form' do
         let(:parameters) { { submission_window: double, processing_action_name: double, attributes: double, requested_by: double } }
         let(:form) { double }

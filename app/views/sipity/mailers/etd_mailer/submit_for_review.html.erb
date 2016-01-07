@@ -1,0 +1,13 @@
+<p><%= @entity.creator_names.to_sentence %> has begun the formal electronic submission process for a <%= @entity.work_type %>, and has identified you as a primary research director or advisor for this document. As part of the formal submission, the Graduate School requires your approval before the submission can move forward for our review.</p>
+
+<p>To review and approve this <%= @entity.work_type %> for formal submission to the Graduate School, you may either:</p>
+
+<ul>
+  <li>Use your personal NetID and password to (<%= link_to "review and approve this student’s formal submission", @entity.email_message_action_url %>); or</li>
+  <li>If you are unable to log in to provide an electronic approval, your student may submit a printed title page with your original signature. The Graduate School will sign off in the ETD record on your behalf once we receive the signed title page.</li>
+</ul>
+
+<p>If you have questions about this process, do not currently have a NetID, or are unable to complete either of these approval options, please email me at <a href="mailto:shill2@nd.edu" target="_top">shill2@nd.edu</a> or call <a href="tel:574.631.7545">574-631-7545</a> for assistance.</p>
+
+<%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>

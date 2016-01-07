@@ -10,6 +10,7 @@ module Sipity
         self.action_name = :show?
 
         def run(work_id:)
+          enforce_authentication!
           work = repository.find_work(work_id)
           authorization_layer.enforce!(action_name => work) do
             callback(:success, work)

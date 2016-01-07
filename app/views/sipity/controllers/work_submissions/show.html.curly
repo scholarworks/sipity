@@ -39,21 +39,6 @@
             <dd class="value title">{{ title }}</dd>
             <dt class="predicate work-type">{{label.work_type}}</dt>
             <dd class="value work-type">{{work_type}}</dd>
-            {{#creators?}}
-              <dt class="predicate creators">{{label.creators}}</dt>
-              <dd class="value creators">
-                <ul class="nested-attributes-list">
-                  {{*creators}}
-                    <li class="nested-attribute-list">
-                      <dl class="nested-attribute-definition">
-                        <dt class="predicate name">{{label.name}}</dt>
-                        <dd class="value name">{{name}}</dd>
-                      </dl>
-                    </li>
-                  {{/creators}}
-                </ul>
-              </dd>
-            {{/creators?}}
             {{#collaborators?}}
               <dt class="predicate collaborators">{{label.collaborators}}</dt>
               <dd class="value collaborators">

@@ -5,12 +5,12 @@ module Sipity
   module Mappers
     RSpec.describe EtdMapper do
       let(:access_right) { 'private_access' }
-      let(:work) { double }
+      let(:work) { Models::Work.new(work_type: 'doctoral_dissertation') }
       let(:repository) { QueryRepositoryInterface.new }
-      let(:creators) { [double(username: 'Hello')] }
+      let(:creators) { [double(username: 'Hello', name: "Creator Name")] }
       let(:collaborators) { [double(name: 'Hello', role: 'role')] }
       let(:contributor_map) { { 'dc:contributor' => 'Hello', 'ms:role' => 'role' } }
-      let(:degree_map) { { "ms:name" => ["a degree_name"], "ms:discipline" => ["a program_name"] } }
+      let(:degree_map) { { "ms:name" => ["a degree_name"], "ms:discipline" => ["a program_name"], "ms:level" => 'TRANSLATED!' } }
       let(:title) { 'Title of the work' }
       let(:batch_user) { 'curate_batch_user' }
 
@@ -19,6 +19,10 @@ module Sipity
       its(:default_repository) { should be_a QueryRepository }
       its(:default_attribute_map) { should be_a(Hash) }
       its(:default_mount_data_path) { should be_a(String) }
+
+      before do
+        allow(I18n).to receive(:t).and_return("TRANSLATED!")
+      end
 
       it 'will instantiate then call the instance' do
         expect(described_class).to receive(:new).and_return(double(call: true))
@@ -32,6 +36,7 @@ module Sipity
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'abstract').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'degree').and_return(['a degree_name'])
+        expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'author_name').and_return(['Dolly'])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'defense_date').and_return([])
         expect(repository).to receive(:work_attribute_values_for).with(work: work, key: 'program_name').and_return(['a program_name'])
         expect(repository).to receive(:work_access_right_code).with(work: work).and_return(access_right)
@@ -47,6 +52,7 @@ module Sipity
         expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
         expect(expected_json["metadata"]["dc:contributor"]).to eq([contributor_map])
         expect(expected_json["metadata"]["ms:degree"]).to eq(degree_map)
+        expect(expected_json["metadata"]["dc:creator"]).to eq(['Dolly'])
       end
 
       context 'will have be able to map correct access_right' do

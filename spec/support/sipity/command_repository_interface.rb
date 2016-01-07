@@ -6,11 +6,15 @@
 module Sipity
   class CommandRepositoryInterface
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def access_rights_for_accessible_objects_of(work:)
+    def access_rights_for_accessible_objects_of(work:, predicate_name: :all)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def accessible_objects(work:)
+    def accessible_objects(work:, predicate_name: :all)
+    end
+
+    # @see ./app/repositories/sipity/queries/redirect_queries.rb
+    def active_redirect_for(work_id:, as_of: Time.zone.today)
     end
 
     # @see ./app/repositories/sipity/queries/account_profile_queries.rb
@@ -77,6 +81,10 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def create_redirect_for(work:, url:, as_of: Time.zone.today)
+    end
+
     # @see ./app/repositories/sipity/commands/administrative_scheduled_action_commands.rb
     def create_scheduled_action(work:, scheduled_time:, reason:)
     end
@@ -127,6 +135,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/comment_queries.rb
     def find_current_comments_for(entity:)
+    end
+
+    # @see ./app/repositories/sipity/queries/submission_window_queries.rb
+    def find_open_submission_windows_by(work_area:, as_of: Time.zone.now)
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
@@ -213,6 +225,10 @@ module Sipity
     def manage_collaborators_for(work:, collaborators:, repository: self)
     end
 
+    # @see ./app/repositories/sipity/queries/ulra_queries.rb
+    def possible_expected_graduation_dates(ending_year: Time.zone.today.year, **)
+    end
+
     # @see ./app/repositories/sipity/queries/processing_queries.rb
     def processing_state_names_for_select_within_work_area(work_area:, usage_type: Sipity::Models::WorkType)
     end
@@ -242,7 +258,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/agent_queries.rb
-    def scope_creating_users_for_entity(entity:, roles: Models::Role::CREATING_USER)
+    def scope_creating_users_for_entity(entity:)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
@@ -313,6 +329,10 @@ module Sipity
     def scope_strategy_actions_without_prerequisites(entity:)
     end
 
+    # @see ./app/repositories/sipity/queries/agent_queries.rb
+    def scope_users_for_entity_and_roles(entity:, roles:)
+    end
+
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
     end
@@ -323,6 +343,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/commands/todo_list_commands.rb
     def unregister_action_taken_on_entity(entity:, action:, requested_by:, **keywords)
+    end
+
+    # @see ./app/repositories/sipity/commands/redirect_commands.rb
+    def update_previous_open_ended_redirects_for(work:, as_of:)
     end
 
     # @see ./app/repositories/sipity/commands/work_commands.rb
@@ -346,7 +370,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
-    def work_attachments(work:)
+    def work_attachments(work:, predicate_name: :all)
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb

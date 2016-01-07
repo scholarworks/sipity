@@ -14,13 +14,13 @@ module Sipity
       has_one :access_right, as: :entity, dependent: :destroy
       has_many :event_logs, as: :entity, class_name: 'Sipity::Models::EventLog'
       has_one :work_submission, dependent: :destroy
+      has_many :work_redirect_strategies
 
       delegate :submission_window, :work_area, to: :work_submission, allow_nil: true
       delegate :transition_date, to: :access_right, allow_nil: true, prefix: true
 
-      include Conversions::SanitizeHtml
-      def to_s
-        remove_para_tag(sanitize_html(title))
+      def to_s(scrubber: Hesburgh::Lib::HtmlScrubber.build_inline_scrubber)
+        scrubber.sanitize(title)
       end
 
       Processing.configure_as_a_processible_entity(self)

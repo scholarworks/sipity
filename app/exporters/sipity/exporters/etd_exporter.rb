@@ -49,6 +49,7 @@ module Sipity
 
       def call
         package_data
+        create_webook
         move_files_to_curate_batch_queue
       end
 
@@ -65,6 +66,25 @@ module Sipity
       private
 
       attr_accessor :repository, :work, :attachments
+
+      def create_webook
+        create_directory(curate_data_directory)
+        File.open(File.join(curate_data_directory, 'WEBHOOK'), 'w+') do |file|
+          file.puts(webhook_url)
+        end
+      end
+
+      # @TODO This is likely in the wrong place but its what I have.
+      def webhook_url
+        File.join(
+          "#{Figaro.env.protocol!}://#{webhook_authorization_credentials}@#{Figaro.env.domain_name!}",
+          "/work_submissions/#{work.to_param}/callback/ingest_completed.json"
+        )
+      end
+
+      def webhook_authorization_credentials
+        "#{Sipity::DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS}:#{Figaro.env.sipity_batch_ingester_access_key!}"
+      end
 
       def package_data
         # Create rof etd file to be ingested

@@ -2,7 +2,6 @@ module Sipity
   module Decorators
     # A decoration layer for Sipity::Work
     class WorkDecorator < ApplicationDecorator
-      include Conversions::SanitizeHtml
       def self.object_class
         Models::Work
       end
@@ -27,17 +26,14 @@ module Sipity
         object.title.html_safe
       end
 
-      def to_s
-        return if title.nil?
-        remove_para_tag(title)
-      end
+      alias_method :to_s, :title
 
       def human_attribute_name(name)
         object.class.human_attribute_name(name)
       end
 
-      def accessible_objects
-        @accessible_objects ||= Array.wrap(repository.access_rights_for_accessible_objects_of(work: object))
+      def accessible_objects(predicate_name: :all)
+        repository.access_rights_for_accessible_objects_of(work: object, predicate_name: predicate_name)
       end
 
       def comments(decorator: default_comment_decorator)
@@ -52,9 +48,9 @@ module Sipity
         end
       end
 
-      def selected_copyright(copyright_url)
+      def selected_copyright(copyright_url, scrubber: Hesburgh::Lib::HtmlScrubber.build_inline_with_link_scrubber)
         copyright_value = repository.get_controlled_vocabulary_value_for(name: 'copyright', term_uri: copyright_url)
-        sanitize_html("<a href='#{copyright_url}'>#{copyright_value}</a>")
+        scrubber.sanitize("<a href='#{copyright_url}'>#{copyright_value}</a>")
       end
 
       private

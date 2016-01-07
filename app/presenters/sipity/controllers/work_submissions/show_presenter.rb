@@ -1,3 +1,5 @@
+require 'sipity/conversions/convert_to_permanent_uri'
+
 module Sipity
   module Controllers
     module WorkSubmissions
@@ -79,7 +81,7 @@ module Sipity
         end
 
         def creators
-          @creators ||= repository.scope_creating_users_for_entity(entity: work_submission, roles: Sipity::Models::Role::CREATING_USER)
+          @creators ||= repository.scope_creating_users_for_entity(entity: work_submission)
         end
 
         def work_type
@@ -107,8 +109,9 @@ module Sipity
           TranslationAssistant.call(scope: :sections, subject: work_submission, object: 'repository_url')
         end
 
+        include Conversions::ConvertToPermanentUri
         def repository_url_for_work
-          File.join(Figaro.env.curate_nd_url_show_prefix_url!, work_submission.id)
+          convert_to_permanent_uri(work_submission)
         end
 
         private

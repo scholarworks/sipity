@@ -52,7 +52,7 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
       )
       subject.call
       expect(exception_handler).to have_received(:call).with(
-        error_class: RuntimeError, error_message: 'Failed for work1', parameters: {
+        kind_of(RuntimeError), parameters: {
           work_id: work1.id, requested_by: subject.send(:requested_by), processing_action_name: subject.send(:processing_action_name),
           job_class: described_class, work_ingester: work_ingester
         }

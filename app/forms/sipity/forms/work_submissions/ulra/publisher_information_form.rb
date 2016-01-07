@@ -10,7 +10,7 @@ module Sipity
         class PublisherInformationForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:publication_name, :allow_pre_prints]
+            attribute_names: [:publication_name, :submission_accepted_for_publication, :submitted_for_publication]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -18,35 +18,58 @@ module Sipity
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }
-            self.allow_pre_prints = attributes.fetch(:allow_pre_prints) { allow_pre_prints_from_work }
+            self.submission_accepted_for_publication = attributes.fetch(:submission_accepted_for_publication) do
+              submission_accepted_for_publication_from_work
+            end
+            self.submitted_for_publication = attributes.fetch(:submitted_for_publication) { submitted_for_publication_from_work }
           end
 
           include ActiveModel::Validations
           include Hydra::Validations
-          validates :publication_name, presence: true
-
-          VALID_VALUES_FOR_ALLOW_PRE_PRINTS = ["Yes", "No", "I do not know"].freeze
-          validates :allow_pre_prints, inclusion: { in: VALID_VALUES_FOR_ALLOW_PRE_PRINTS }, presence: true
-
-          def available_options_for_allow_pre_prints
-            VALID_VALUES_FOR_ALLOW_PRE_PRINTS
-          end
+          validates :publication_name, presence: { if: :submission_accepted_for_publication? }
+          validates(
+            :submission_accepted_for_publication,
+            inclusion: { in: :possible_submission_accepted_for_publication, if: :submitted_for_publication? }
+          )
 
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
-              repository.update_work_attribute_values!(work: work, key: 'allow_pre_prints', values: allow_pre_prints)
+              repository.update_work_attribute_values!(work: work, key: 'submitted_for_publication', values: submitted_for_publication)
+              repository.update_work_attribute_values!(
+                work: work, key: 'submission_accepted_for_publication', values: submission_accepted_for_publication
+              )
             end
           end
+
+          def possible_submission_accepted_for_publication
+            ['Yes', 'No', 'Pending']
+          end
+
+          def submission_accepted_for_publication?
+            return false unless submission_accepted_for_publication.present?
+            return false if submission_accepted_for_publication == 'No'
+            true
+          end
+
+          alias_method :submitted_for_publication?, :submitted_for_publication
 
           private
 
           def publication_name_from_work
-            Array.wrap(repository.work_attribute_values_for(work: work, key: 'publication_name')).first
+            Array.wrap(repository.work_attribute_values_for(work: work, key: 'publication_name', cardinality: :many))
           end
 
-          def allow_pre_prints_from_work
-            Array.wrap(repository.work_attribute_values_for(work: work, key: 'allow_pre_prints')).first
+          def submission_accepted_for_publication_from_work
+            repository.work_attribute_values_for(work: work, key: 'submission_accepted_for_publication', cardinality: 1)
+          end
+
+          def submitted_for_publication_from_work
+            repository.work_attribute_values_for(work: work, key: 'submitted_for_publication', cardinality: 1)
+          end
+
+          def submitted_for_publication=(input)
+            @submitted_for_publication = PowerConverter.convert(input, to: :boolean)
           end
         end
       end

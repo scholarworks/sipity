@@ -4,6 +4,10 @@ require 'sipity/exceptions'
 
 module Sipity
   module Exceptions
+    RSpec.describe EmailAsOptionInvalidError do
+      subject { described_class.new(as: :chicken, valid_list: [:hello]) }
+      its(:message) { should be_a(String) }
+    end
     RSpec.describe ResponseHandlerError do
       subject { described_class.new(object: double, errors: [], status: :failure) }
       its(:message) { should be_a(String) }

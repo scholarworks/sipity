@@ -1,0 +1,6 @@
+<p>
+  <%= @entity.name_of_commentor %> has responded to a request for changes to the formal submission of the doctoral dissertation or master's thesis <%= link_to @entity.title, @entity.email_message_action_url %>.
+</p>
+
+<%= render partial: 'sipity/mailers/etd_mailer/comment', object: @entity %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>

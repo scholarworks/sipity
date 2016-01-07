@@ -11,7 +11,7 @@ module Sipity
         collaborators_table = Models::Collaborator.arel_table
         Models::Collaborator.where(
           collaborators_table[:work_id].eq(work.id).and(
-            collaborators_table[:id].not_in(collaborators.flat_map(&:id))
+            collaborators_table[:id].not_in(Array.wrap(collaborators).flat_map(&:id))
           )
         ).destroy_all
 
@@ -53,6 +53,7 @@ module Sipity
         # just yet.
         pid_minter = keywords.fetch(:pid_minter) { default_pid_minter }
         Array.wrap(files).each do |file|
+          next unless file.present? # because we may have gotten [{}]
           pid = pid_minter.call
           Models::Attachment.create!(work: work, file: file, pid: pid, predicate_name: predicate_name)
         end

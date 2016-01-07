@@ -6,7 +6,7 @@ module Sipity
     #
     # @see Sipity::Conversions for conventions regarding a conversion method
     module ConvertToPermanentUri
-      PERMANENT_URI_FORMAT = "https://change.me/show/%s".freeze
+      PERMANENT_URI_FORMAT = File.join(Figaro.env.curate_nd_url_show_prefix_url!, '%s').freeze
 
       # A convenience method so that you don't need to include the conversion
       # module in your base class.

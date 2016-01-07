@@ -61,7 +61,7 @@ module Sipity
           validates :work_publication_strategy, presence: true, inclusion: { in: :possible_work_publication_strategies }
           validates :work_type, presence: true, inclusion: { in: :possible_work_types }
           validates :access_rights_answer, presence: true, inclusion: { in: :possible_access_right_codes }
-          validates :submission_window, presence: true
+          validates :submission_window, presence: true, open_for_starting_submissions: true
           validates :requested_by, presence: true
 
           def form_path
@@ -92,11 +92,14 @@ module Sipity
               repository.handle_transient_access_rights_answer(entity: work, answer: access_rights_answer)
               persist_work_publication_strategy
               repository.grant_creating_user_permission_for!(entity: work, user: requested_by)
+              repository.update_work_attribute_values!(work: work, key: 'author_name', values: requested_by.to_s)
               register_actions
             end
           end
 
           def register_actions
+            # TODO: See Ulra::StartASubmissionForm for common behavior
+            #
             # Your read that right, register actions on both the work and submission window.
             # This form crosses a conceptual boundary. I need permission within
             # the submission window to create a work. However, I want to
@@ -105,11 +108,7 @@ module Sipity
             repository.register_action_taken_on_entity(
               entity: submission_window, action: processing_action_name, requested_by: requested_by
             )
-          end
-
-          include Conversions::SanitizeHtml
-          def title=(value)
-            @title = sanitize_html(value)
+            repository.register_action_taken_on_entity(entity: work, action: 'author', requested_by: requested_by)
           end
 
           def create_the_work

@@ -4,6 +4,8 @@
       <dl class="nested-attribute-definition">
         <dt class="predicate title"><%= accessible_object.translate(:title) %></dt>
         <dd class="value title"><%= link_to accessible_object.to_s.html_safe, accessible_object.access_url %></dd>
+        <dt class="predicate accessible-object-type"><%= accessible_object.translate(:type) %></dt>
+        <dd class="value accessible-object-type"><%= accessible_object.accessible_object_type %></dd>
         <dt class="predicate access-right"><%= accessible_object.translate(:access_right_code) %></dt>
         <% if accessible_object.access_right_code.present? %>
         <dd class="value access-right"><%= t("sipity/emails.access_controls.#{accessible_object.access_right_code.to_s.titleize}") %></dd>

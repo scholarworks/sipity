@@ -24,6 +24,28 @@ module Sipity
         end
       end
 
+      # It worked
+      module RedirectResponder
+        def self.for_controller(handler:)
+          handler.redirect_to(handler.response_object.url)
+        end
+
+        class << self
+          alias_method :call, :for_controller
+          deprecate call: "Prefer .for_controller instead"
+        end
+
+        # @review should I consider if a logger is passed?
+        def self.for_command_line(handler:)
+          fail(
+            Sipity::Exceptions::ResponseHandlerError,
+            object: handler.response_object,
+            errors: [],
+            status: handler.response_status
+          )
+        end
+      end
+
       # We have a successful form submission.
       module SubmitSuccessResponder
         def self.for_controller(handler:)
