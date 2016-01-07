@@ -29,7 +29,7 @@ module Sipity
               form_object = double('Form Object')
               expect(form_object).to receive(:input).with(:oclc_number, input_html: { required: "required" }).and_return("<input />")
               expect(form_object).to receive(:input).with(
-                :catalog_system_number, input_html: { required: "required" }
+                :catalog_system_number, input_html: { required: "required" }, label: 'ALEPH system number'
               ).and_return("<input />")
               expect(form_object).to receive(:input).with(:agree_to_signoff, hash_including(as: :boolean)).and_return("<input />")
               expect(subject.render(f: form_object)).to be_html_safe

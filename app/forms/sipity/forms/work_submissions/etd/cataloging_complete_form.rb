@@ -32,7 +32,9 @@ module Sipity
           def render(f:)
             markup = view_context.content_tag('legend', legend)
             markup << f.input(:oclc_number, input_html: { required: 'required' }).html_safe
-            markup << f.input(:catalog_system_number, input_html: { required: 'required' }).html_safe
+            # Because simple form threw the following exception:
+            # `I18n::InvalidPluralizationData: translation data {:label=>"ALEPH system number"} can not be used with :count => 1`
+            markup << f.input(:catalog_system_number, input_html: { required: 'required' }, label: 'ALEPH system number').html_safe
             markup << f.input(
               :agree_to_signoff,
               as: :boolean, inline_label: signoff_agreement, label: false, wrapper_class: 'checkbox',
