@@ -118,14 +118,14 @@ module Sipity
 
         context '#creators?' do
           it 'will be true if there is at least one creating user' do
-            expect(repository).to receive(:scope_users_for_entity_and_roles).with(
+            expect(repository).to receive(:scope_creating_users_for_entity).with(
               entity: work_submission, roles: Sipity::Models::Role::CREATING_USER
             ).and_return(['Hello'])
             expect(subject.creators?).to eq(true)
           end
 
           it 'will be true if there is are no creating users' do
-            expect(repository).to receive(:scope_users_for_entity_and_roles).with(
+            expect(repository).to receive(:scope_creating_users_for_entity).with(
               entity: work_submission, roles: Sipity::Models::Role::CREATING_USER
             ).and_return([])
             expect(subject.creators?).to eq(false)
