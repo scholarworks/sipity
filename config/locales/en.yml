@@ -357,7 +357,7 @@ en:
       at_least_one_collaborator_must_be_research_director_with_netid: 'At least one collaborator must be research director with valid NetID'
       presence_of_access_policies_for_all_objects_required: 'Please select access policy for each item'
       at_least_one_attachment_required: 'At least one file must be attached'
-  sipity/mailers/email_notifier:
+  sipity/mailers/etd_mailer:
     email_name:
       submit_for_review: "Submitted to research director(s) for review and approval"
       confirmation_of_advisor_signoff: "Confirmation of research director's approval"
