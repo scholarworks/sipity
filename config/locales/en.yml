@@ -370,6 +370,7 @@ en:
     email_name:
       faculty_assigned_for_ulra_submission: "Action Requested - ULRA - Advisor Letter of Recommendation Requested"
       faculty_completed_their_portion_of_ulra: "ULRA - Advisor Portion - Letter of Recommendation Submitted"
+      confirmation_of_ulra_submission_started: "ULRA - Student Application Portion - Submission Started"
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'
