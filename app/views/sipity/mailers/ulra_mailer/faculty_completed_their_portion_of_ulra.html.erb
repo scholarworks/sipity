@@ -1,2 +1,6 @@
-Generated in:
-<code>app/views/sipity/mailers/ulra_mailer/faculty_completed_their_portion_of_ulra.html.erb</code>
+<p>You have successfully submitted your Letter of Recommendation for <%= @entity.creator_names.to_sentence %>’s <strong><%= @entity.title %></strong> project.</p>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/important_dates', object: @entity) %>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/questions_and_about_ulra', object: @entity) %>
+<!-- app/views/sipity/mailers/ulra_mailer/faculty_completed_their_portion_of_ulra.html.erb -->
