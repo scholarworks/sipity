@@ -33,6 +33,7 @@ gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
 gem 'locabulary', github: 'ndlib/locabulary', branch: 'master'
 gem 'data_migrator', github: 'jeremyf/data-migrator'
+gem 'dry-validation'
 
 group :doc do
   gem 'inch', require: false
