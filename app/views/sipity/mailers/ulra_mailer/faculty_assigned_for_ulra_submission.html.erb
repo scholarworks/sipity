@@ -1,2 +1,28 @@
-Generated in:
-<code>app/views/sipity/mailers/ulra_mailer/faculty_assigned_for_ulra_submission.html.erb</code>
+<p>
+  <%= @entity.creator_names.to_sentence %> has initiated an application for the Undergraduate Library Research Award for their project: <strong><%= @entity.title %></strong>.
+</p>
+
+<p>
+  <strong>Please submit a letter of recommendation (.pdf) in support of this project prior to the deadline:</strong>
+
+  <ul>
+    <li>Please briefly describe the nature of your supervision of this project.</li>
+    <li>
+      Please comment on the quality of the research/scholarship and the depth of inquiry demonstrated by the student's project, including the following (as applicable):
+      <ul>
+        <li>Whether the sources used were appropriate for the scope of the project and its method</li>
+        <li>Whether the methods of research/scholarship were consistent with disciplinary standards</li>
+      <ul>
+    </li>
+    <li>How did the student's use of library resources and/or services (such as print, electronic, database, special collections, etc.) contribute to the outcome of this project?</li>
+    <li>The evaluators are particularly interested in how the use of library materials, services and/or other resources contributed to making the project comprehensive, original, or unique.</li>
+  </ul>
+<p>
+
+<p><strong>Upload your letter of recommendation (.pdf) here:</strong> <%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></p>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/important_dates', object: @entity) %>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/questions_and_about_ulra', object: @entity) %>
+
+<!--app/views/sipity/mailers/ulra_mailer/faculty_assigned_for_ulra_submission.html.erb-->
