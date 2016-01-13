@@ -34,18 +34,24 @@ module Sipity
                         states.array? do
                           states.each do |state|
                             state.hash? do
-                              state.key(:name, &filled_string)
+                              state.key(:name, &string_or_array_of_strings_config)
                               state.key(:roles, &string_or_array_of_strings_config)
                             end
                           end
                         end
                       end
                       action.optional(:emails, &email_config)
+                      action.optional(:attributes) do |attributes|
+                        attributes.hash? do
+                          attributes.optional(:presentation_sequence) { |seq| seq.int? & seq.gteq?(0) }
+                          attributes.optional(:allow_repeat_within_current_state, &:bool?)
+                        end
+                      end
                     end
                   end
                 end
               end
-              work_type.key(:strategy_permissions) do |strategy_permissions|
+              work_type.optional(:strategy_permissions) do |strategy_permissions|
                 strategy_permissions.array? do
                   strategy_permissions.each do |strategy_permission|
                     strategy_permission.hash? do
