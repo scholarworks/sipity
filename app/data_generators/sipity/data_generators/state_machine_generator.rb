@@ -1,19 +1,30 @@
 module Sipity
   module DataGenerators
     class StateMachineGenerator
-      def self.call(processing_strategy:, action_name:, config:)
-        new(processing_strategy: processing_strategy, action_name: action_name, config: config).call
+      def self.generate_from_schema(strategy:, name:, **keywords)
+        new(
+          processing_strategy: strategy, action_name: name, config: keywords,
+          email_generator_method_name: :schema_based_email_generator_method
+        ).call
       end
 
-      def initialize(processing_strategy:, action_name:, config:)
+      def self.call(processing_strategy:, action_name:, config:)
+        new(
+          processing_strategy: processing_strategy, action_name: action_name, config: config,
+         email_generator_method_name: :deprecated_email_generator_method
+        ).call
+      end
+
+      def initialize(processing_strategy:, action_name:, config:, email_generator_method_name: :deprecated_email_generator_method)
         self.processing_strategy = processing_strategy
         self.action_name = action_name
         self.config = config
+        self.email_generator_method_name = email_generator_method_name
       end
 
       private
 
-      attr_accessor :processing_strategy, :action_name, :config
+      attr_accessor :processing_strategy, :action_name, :config, :email_generator_method_name
 
       def create_the_strategy_action!
         @action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: action_name.to_s)
@@ -65,7 +76,22 @@ module Sipity
           end
         end
 
+        send(email_generator_method_name, processing_strategy: processing_strategy, config: config)
+      end
+
+      def deprecated_email_generator_method(processing_strategy:, config:)
         config.fetch(:emails, {}).each do |email_name, recipients|
+          EmailNotificationGenerator.call(
+            strategy: processing_strategy, email_name: email_name, recipients: recipients, scope: action_name,
+            reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
+          )
+        end
+      end
+
+      def schema_based_email_generator_method(processing_strategy:, config:)
+        Array.wrap(config.fetch(:emails, [])).each do |configuration|
+          email_name = configuration.fetch(:name)
+          recipients = configuration.slice(:to, :cc, :bcc)
           EmailNotificationGenerator.call(
             strategy: processing_strategy, email_name: email_name, recipients: recipients, scope: action_name,
             reason: Parameters::NotificationContextParameter::REASON_ACTION_IS_TAKEN
