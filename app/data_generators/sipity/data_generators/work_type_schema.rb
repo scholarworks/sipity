@@ -29,6 +29,7 @@ module Sipity
                     action.hash? do
                       action.key(:name, &filled_string)
                       action.optional(:transition_to, &filled_string)
+                      action.optional(:analogous_to, &filled_string)
                       action.optional(:required_actions, &string_or_array_of_strings_config)
                       action.optional(:states) do |states|
                         states.array? do
