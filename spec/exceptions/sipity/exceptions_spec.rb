@@ -4,6 +4,11 @@ require 'sipity/exceptions'
 
 module Sipity
   module Exceptions
+    RSpec.describe InvalidSchemaError do
+      subject { described_class.new(errors: { key: 'error' }) }
+      its(:message) { should be_a(String) }
+    end
+
     RSpec.describe EmailAsOptionInvalidError do
       subject { described_class.new(as: :chicken, valid_list: [:hello]) }
       its(:message) { should be_a(String) }
