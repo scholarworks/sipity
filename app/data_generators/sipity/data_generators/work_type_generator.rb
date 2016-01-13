@@ -86,7 +86,9 @@ module Sipity
 
       def generate_state_diagram(strategy:, actions_configuration:)
         Array.wrap(actions_configuration).each do |configuration|
-          DataGenerators::StateMachineGenerator.generate_from_schema(strategy: strategy, **configuration)
+          Array.wrap(configuration.fetch(:name)).each do |name|
+            DataGenerators::StateMachineGenerator.generate_from_schema(strategy: strategy, name: name, **configuration.except(:name))
+          end
         end
       end
 

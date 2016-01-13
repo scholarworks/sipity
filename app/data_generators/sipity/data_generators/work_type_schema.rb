@@ -61,7 +61,6 @@ module Sipity
                   end
                 end
               end
-
               work_type.optional(:processing_hooks) do |processing_hooks|
                 processing_hooks.array? do
                   processing_hooks.each do |processing_hook|

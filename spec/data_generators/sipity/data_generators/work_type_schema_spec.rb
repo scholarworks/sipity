@@ -52,10 +52,15 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
       expect(subject.call(data).messages).to be_empty
     end
 
-    it 'validates another data' do
-      data = JSON.parse(Rails.root.join('app/data_generators/sipity/data_generators/work_types/ulra_work_types.json').read)
-      data.deep_symbolize_keys!
-      expect(subject.call(data).messages).to be_empty
+    [
+      "ulra_work_types.json",
+      "etd_work_types.json"
+    ].each do |basename|
+      it "validates #{basename}" do
+        data = JSON.parse(Rails.root.join('app/data_generators/sipity/data_generators/work_types', basename).read)
+        data.deep_symbolize_keys!
+        expect(subject.call(data).messages).to be_empty
+      end
     end
   end
 end
