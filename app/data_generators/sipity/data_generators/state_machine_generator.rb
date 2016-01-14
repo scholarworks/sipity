@@ -46,15 +46,22 @@ module Sipity
         end
 
         # Strategy State
-        config.fetch(:states, {}).each do |state_name, state_config|
-          strategy_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: state_name.to_s)
-          PermissionGenerator.call(
-            actors: [],
-            roles: state_config.fetch(:roles),
-            strategy_state: strategy_state,
-            action_names: action_name,
-            strategy: processing_strategy
-          )
+        config.fetch(:states, {}).each do |state_names, state_config|
+          # TODO: Once the schema load method is used tidy this up
+          if state_names.is_a?(Hash)
+            state_config = state_names.except(:name) if state_config.nil?
+            state_names = state_names.fetch(:name)
+          end
+          Array.wrap(state_names).each do |state_name|
+            strategy_state = Models::Processing::StrategyState.find_or_create_by!(strategy: processing_strategy, name: state_name.to_s)
+            PermissionGenerator.call(
+              actors: [],
+              roles: state_config.fetch(:roles),
+              strategy_state: strategy_state,
+              action_names: action_name,
+              strategy: processing_strategy
+            )
+          end
         end
 
         # Prerequisites
