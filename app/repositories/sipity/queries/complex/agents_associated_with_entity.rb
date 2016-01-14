@@ -55,7 +55,7 @@ module Sipity
 
         attr_accessor :agents_finder
         def default_agents_finder
-          require 'cogitate/client' unless defined?(Cogiate::Client)
+          require 'cogitate/client' unless defined?(Cogitate::Client)
           Cogitate::Client.method(:request_agents_without_group_membership)
         end
 
