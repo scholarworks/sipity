@@ -339,7 +339,7 @@
       "name": "cataloging_complete",
       "attributes": {
         "presentation_sequence": 1,
-        "allow_repeat_within_current_state": true
+        "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_ingest",
       "states": [{
@@ -728,7 +728,7 @@
       "name": "cataloging_complete",
       "attributes": {
         "presentation_sequence": 1,
-        "allow_repeat_within_current_state": true
+        "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_ingest",
       "states": [{
