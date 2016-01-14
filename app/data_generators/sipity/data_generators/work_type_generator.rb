@@ -58,7 +58,8 @@ module Sipity
           strategy: strategy, strategy_permissions_configuration: configuration.fetch(:strategy_permissions, [])
         )
         generate_state_diagram(strategy: strategy, actions_configuration: configuration.fetch(:actions))
-        generate_processing_hooks(strategy: strategy, processing_hooks_configuration: configuration.fetch(:processing_hooks, []))
+        generate_state_emails(strategy: strategy, state_emails_configuration: configuration.fetch(:state_emails, []))
+        generate_action_analogues(strategy: strategy, action_analogues_configuration: configuration.fetch(:action_analogues, []))
       end
 
       def find_or_create_work_type!(work_type:)
@@ -92,17 +93,27 @@ module Sipity
         end
       end
 
-      def generate_processing_hooks(strategy:, processing_hooks_configuration:)
-        Array.wrap(processing_hooks_configuration).each do |configuration|
+      def generate_state_emails(strategy:, state_emails_configuration:)
+        Array.wrap(state_emails_configuration).each do |configuration|
           scope = configuration.fetch(:state)
+          reason = configuration.fetch(:reason)
           Array.wrap(configuration.fetch(:emails)).each do |email_configuration|
             email_name = email_configuration.fetch(:name)
             recipients = email_configuration.slice(:to, :cc, :bcc)
             DataGenerators::EmailNotificationGenerator.call(
-              strategy: strategy, scope: scope, email_name: email_name, recipients: recipients,
-              reason: Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED
+              strategy: strategy, scope: scope, email_name: email_name, recipients: recipients, reason: reason
             )
           end
+        end
+      end
+
+      def generate_action_analogues(strategy:, action_analogues_configuration:)
+        Array.wrap(action_analogues_configuration).each do |configuration|
+          action = Conversions::ConvertToProcessingAction.call(configuration.fetch(:action), scope: strategy)
+          analogous_to = Conversions::ConvertToProcessingAction.call(configuration.fetch(:analogous_to), scope: strategy)
+          Models::Processing::StrategyActionAnalogue.find_or_create_by!(
+            strategy_action: action, analogous_to_strategy_action: analogous_to
+          )
         end
       end
     end

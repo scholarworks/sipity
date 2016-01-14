@@ -368,6 +368,25 @@
         "name": ["ready_for_ingest"],
         "roles": ["batch_ingestor"]
       }]
+    }],
+    "action_analogues": [{
+      "action": "advisor_requests_change",
+      "analogous_to": "advisor_signoff"
+    }],
+    "state_emails": [{
+      "state": "under_grad_school_review",
+      "reason": "entered_state",
+      "emails": [{
+        "name": "advisor_signoff_is_complete", "to": "etd_reviewer", "cc": "creating_user"
+      }, {
+        "name": "confirmation_of_advisor_signoff_is_complete", "to": "creating_user"
+      }]
+    }, {
+      "state": "ingested",
+      "reason": "entered_state",
+      "emails": [{
+        "name": "release_suspended_catalog_record", "to": "cataloger"
+      }]
     }]
   }]
 }

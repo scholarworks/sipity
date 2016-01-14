@@ -29,7 +29,6 @@ module Sipity
                     action.hash? do
                       action.key(:name, &filled_string)
                       action.optional(:transition_to, &filled_string)
-                      action.optional(:analogous_to, &filled_string)
                       action.optional(:required_actions, &string_or_array_of_strings_config)
                       action.optional(:states) do |states|
                         states.array? do
@@ -62,12 +61,28 @@ module Sipity
                   end
                 end
               end
-              work_type.optional(:processing_hooks) do |processing_hooks|
+              work_type.optional(:action_analogues) do |analogues|
+                analogues.array? do
+                  analogues.each do |analogue|
+                    analogue.hash? do
+                      analogue.key(:action, &filled_string)
+                      analogue.key(:analogous_to, &filled_string)
+                    end
+                  end
+                end
+              end
+              work_type.optional(:state_emails) do |processing_hooks|
                 processing_hooks.array? do
                   processing_hooks.each do |processing_hook|
                     processing_hook.hash? do
                       processing_hook.key(:state, &filled_string)
                       processing_hook.key(:emails, &email_config)
+                      processing_hook.key(:reason) do |reason|
+                        reason.inclusion?([
+                          Parameters::NotificationContextParameter::REASON_ENTERED_STATE,
+                          Parameters::NotificationContextParameter::REASON_PROCESSING_HOOK_TRIGGERED
+                        ])
+                      end
                     end
                   end
                 end

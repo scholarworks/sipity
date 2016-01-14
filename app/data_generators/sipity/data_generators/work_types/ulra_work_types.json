@@ -234,8 +234,9 @@
         }],
         "transition_to": "review_completed"
       }],
-      "processing_hooks": [{
+      "state_emails": [{
         "state": "under_review",
+        "reason": "processing_hook_triggered",
         "emails": [{
           "name": "student_has_indicated_attachments_are_complete",
           "to": "ulra_reviewer"

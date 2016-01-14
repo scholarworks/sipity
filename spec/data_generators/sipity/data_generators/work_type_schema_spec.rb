@@ -15,7 +15,6 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
             actions: [
               {
                 name: 'start_a_submission',
-                analogous_to: 'something',
                 transition_to: 'new',
                 emails: [
                   { name: 'confirmation_of_ulra_submission_started', to: ['creating_user'] },
@@ -35,7 +34,7 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
                 ]
               }
             ],
-            processing_hooks: [
+            state_emails: [
               {
                 state: 'under_review',
                 reason: 'processing_hook_triggered',
@@ -43,6 +42,9 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
                   { name: 'student_has_indicated_attachments_are_complete', to: 'ulra_reviewer' }
                 ]
               }
+            ],
+            action_analogues: [
+              { action: 'start_a_submission', analogous_to: 'something' }
             ]
           }
         ]
