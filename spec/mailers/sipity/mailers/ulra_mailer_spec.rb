@@ -9,6 +9,12 @@ module Sipity
         ActionMailer::Base.deliveries = []
         allow(work).to receive(:persisted?).and_return(true)
       end
+      around do |example|
+        # Because we are hitting up Cogitate
+        Cogitate::Client.with_custom_configuration(
+          client_request_handler: ->(*) { Rails.root.join('spec/fixtures/cogitate/group_with_agents.response.json').read }
+        ) { example.run }
+      end
       after do
         ActionMailer::Base.deliveries.clear
       end
