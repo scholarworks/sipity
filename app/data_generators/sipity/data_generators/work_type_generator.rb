@@ -1,18 +1,20 @@
 require 'json'
 module Sipity
   module DataGenerators
+    # Responsible for the generation of a work type and its corresponding processing entries (i.e. state machine, emails ,etc.)
     class WorkTypeGenerator
+      # Responsible for generating the work type and corresponding processing entries based on given pathname or JSON document.
       def self.generate_from_json_file(path:, **keywords)
         contents = path.respond_to?(:read) ? path.read : File.read(path)
         data = JSON.parse(contents)
         new(data: data, **keywords).call
       end
 
-      def self.call(**keywords)
-        new(**keywords).call
-      end
-
-      def initialize(submission_window:, data:, validator: default_validator, schema: default_schema)
+      # @param submission_window [Sipity::Models::SubmissionWindow]
+      # @param data [#deep_symbolize_keys] the configuration information from which we will generate all the data entries
+      # @param schema [#call] The schema in which you will validate the data
+      # @param validator [#call] The validation service for the given data and schema
+      def initialize(submission_window:, data:, schema: default_schema, validator: default_validator)
         self.submission_window = submission_window
         self.data = data
         self.schema = schema
@@ -57,28 +59,15 @@ module Sipity
       private
 
       def find_or_create_from(configuration:)
-        work_type = find_or_create_work_type!(work_type: configuration.fetch(:name))
-        strategy_usage = find_or_create_strategy_usage!(work_type: work_type)
-        strategy = strategy_usage.strategy
-        assign_submission_window_work_type(work_type: work_type)
-        find_or_create_strategy_permissions!(
-          strategy: strategy, strategy_permissions_configuration: configuration.fetch(:strategy_permissions, [])
-        )
-        generate_state_diagram(strategy: strategy, actions_configuration: configuration.fetch(:actions))
-        generate_state_emails(strategy: strategy, state_emails_configuration: configuration.fetch(:state_emails, []))
-        generate_action_analogues(strategy: strategy, action_analogues_configuration: configuration.fetch(:action_analogues, []))
-      end
-
-      def find_or_create_work_type!(work_type:)
-        PowerConverter.convert_to_work_type(work_type)
-      end
-
-      def find_or_create_strategy_usage!(work_type:)
-        return work_type.strategy_usage if work_type.strategy_usage
-        # NOTE: Assumption, each work type has one and only one processing strategy
-        #   and it does not vary by submission window.
-        strategy = Models::Processing::Strategy.find_or_create_by!(name: "#{work_type.name} processing")
-        work_type.create_strategy_usage!(strategy: strategy)
+        FindOrCreateWorkType.call(name: configuration.fetch(:name)) do |work_type, strategy, _initial_strategy_state|
+          assign_submission_window_work_type(work_type: work_type)
+          find_or_create_strategy_permissions!(
+            strategy: strategy, strategy_permissions_configuration: configuration.fetch(:strategy_permissions, [])
+          )
+          generate_state_diagram(strategy: strategy, actions_configuration: configuration.fetch(:actions))
+          generate_state_emails(strategy: strategy, state_emails_configuration: configuration.fetch(:state_emails, []))
+          generate_action_analogues(strategy: strategy, action_analogues_configuration: configuration.fetch(:action_analogues, []))
+        end
       end
 
       def assign_submission_window_work_type(work_type:)
