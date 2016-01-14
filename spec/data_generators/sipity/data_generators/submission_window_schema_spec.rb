@@ -5,7 +5,10 @@ module Sipity
   RSpec.describe DataGenerators::SubmissionWindowSchema do
     subject { described_class.new }
 
-    ['ulra_submission_windows.config.json'].each do |basename|
+    [
+      'ulra_submission_windows.config.json',
+      'etd_submission_windows.config.json'
+    ].each do |basename|
       it "validates #{basename}" do
         data = JSON.parse(Rails.root.join('app/data_generators/sipity/data_generators/submission_windows', basename).read)
         data.deep_symbolize_keys!

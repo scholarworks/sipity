@@ -1,0 +1,39 @@
+{
+  "submission_windows": [{
+    "attributes": {
+      "open_for_starting_submissions_at": "2015-03-13",
+      "slug": "start"
+    },
+    "strategy_permissions": [{
+      "group": "All Registered Users",
+      "role": "work_submitter"
+    }],
+    "actions": [{
+      "name": "show",
+      "states": [{
+        "name": ["new", "opened", "closed"],
+        "roles": "work_submitter"
+      }]
+    }, {
+      "name": "open",
+      "transition_to": "opened",
+      "states": [{
+        "name": ["new", "closed"],
+        "roles": "etd_reviewer"
+      }]
+    }, {
+      "name": "close",
+      "transition_to": "closed",
+      "states": [{
+        "name": ["opened", "new"],
+        "roles": "etd_reviewer"
+      }]
+    }, {
+      "name": "start_a_submission",
+      "states": [{
+        "name": ["new", "opened"],
+        "roles": "work_submitter"
+      }]
+    }]
+  }]
+}
