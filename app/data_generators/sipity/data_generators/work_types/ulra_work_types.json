@@ -19,19 +19,7 @@
       }, {
         "name": "debug",
         "states": [{
-          "name": "new",
-          "roles": ["ulra_reviewer"]
-        }, {
-          "name": "under_review",
-          "roles": ["ulra_reviewer"]
-        }, {
-          "name": "pending_advisor_completion",
-          "roles": ["ulra_reviewer"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["ulra_reviewer"]
-        }, {
-          "name": "review_completed",
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
           "roles": ["ulra_reviewer"]
         }],
         "attributes": {
@@ -40,19 +28,7 @@
       }, {
         "name": "show",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user", "advisor", "ulra_reviewer"]
-        }, {
-          "name": "under_review",
-          "roles": ["creating_user", "advisor", "ulra_reviewer"]
-        }, {
-          "name": "pending_advisor_completion",
-          "roles": ["creating_user", "advisor", "ulra_reviewer"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user", "advisor", "ulra_reviewer"]
-        }, {
-          "name": "review_completed",
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
           "roles": ["creating_user", "advisor", "ulra_reviewer"]
         }],
         "attributes": {
@@ -61,13 +37,7 @@
       }, {
         "name": "destroy",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user", "ulra_reviewer"]
-        }, {
-          "name": "pending_advisor_completion",
-          "roles": ["creating_user", "ulra_reviewer"]
-        }, {
-          "name": "pending_student_completion",
+          "name": ["new", "pending_advisor_completion", "pending_student_completion"],
           "roles": ["creating_user", "ulra_reviewer"]
         }, {
           "name": "under_review",
@@ -79,13 +49,7 @@
       }, {
         "name": "project_information",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -94,16 +58,7 @@
       }, {
         "name": "attach",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "under_review",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion", "under_review"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -112,16 +67,10 @@
       }, {
         "name": "access_policy",
         "states": [{
-          "name": "new",
+          "name": ["new", "pending_advisor_completion"],
           "roles": ["creating_user", "advisor"]
         }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
-          "roles": ["creating_user", "advisor"]
-        }, {
-          "name": "under_review",
+          "name": ["pending_student_completion", "under_review"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -130,13 +79,7 @@
       }, {
         "name": "plan_of_study",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -145,13 +88,7 @@
       }, {
         "name": "publisher_information",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -160,13 +97,7 @@
       }, {
         "name": "research_process",
         "states": [{
-          "name": "new",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["creating_user"]
-        }, {
-          "name": "pending_advisor_completion",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -175,13 +106,7 @@
       }, {
         "name": "faculty_response",
         "states": [{
-          "name": "new",
-          "roles": ["advisor"]
-        }, {
-          "name": "pending_student_completion",
-          "roles": ["advisor"]
-        }, {
-          "name": "pending_advisor_completion",
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["advisor"]
         }]
       }, {
