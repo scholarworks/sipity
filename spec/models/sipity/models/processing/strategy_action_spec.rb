@@ -10,10 +10,6 @@ module Sipity
           its(:column_names) { should include('strategy_id') }
           its(:column_names) { should include('resulting_strategy_state_id') }
           its(:column_names) { should include('name') }
-          # TODO: Does this even make sense? It is not used outside of this
-          # class. It was a presumptive change.
-          its(:column_names) { should include('form_class_name') }
-          its(:column_names) { should include('completion_required') }
           its(:column_names) { should include('action_type') }
           its(:column_names) { should include('allow_repeat_within_current_state') }
         end
