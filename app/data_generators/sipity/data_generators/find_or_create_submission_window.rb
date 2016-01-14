@@ -52,10 +52,6 @@ module Sipity
         "Sipity::DataGenerators::SubmissionWindows::#{work_area.demodulized_class_prefix_name}Generator".constantize
       end
 
-      def work_area_specific_work_types_generator
-        WorkTypeGenerator.method(:generate_from_json_file)
-      end
-
       def path_to_work_type_configuration
         Rails.root.join('app/data_generators/sipity/data_generators/work_types/', "#{work_area.partial_suffix}_work_types.json")
       end
