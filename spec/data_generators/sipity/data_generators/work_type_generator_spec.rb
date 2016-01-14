@@ -63,6 +63,17 @@ module Sipity
       expect(validator).to have_received(:call).with(data: subject.send(:data), schema: subject.send(:schema))
     end
 
+    context '.generate_from_json_file' do
+      # Should I be testing a production file?
+      let(:path) { Rails.root.join('app/data_generators/sipity/data_generators/work_types/ulra_work_types.json').to_s }
+      let(:keywords) { { submission_window: submission_window, path: path } }
+
+      it 'will load the file and parse as JSON' do
+        expect_any_instance_of(described_class).to receive(:call)
+        described_class.generate_from_json_file(**keywords)
+      end
+    end
+
     context 'data generation' do
       let(:keywords) { { submission_window: submission_window, data: data } }
       it 'creates the requisite data' do

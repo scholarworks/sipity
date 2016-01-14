@@ -1,6 +1,13 @@
+require 'json'
 module Sipity
   module DataGenerators
     class WorkTypeGenerator
+      def self.generate_from_json_file(path:, **keywords)
+        contents = path.respond_to?(:read) ? path.read : File.read(path)
+        data = JSON.parse(contents)
+        new(data: data, **keywords).call
+      end
+
       def self.call(**keywords)
         new(**keywords).call
       end
