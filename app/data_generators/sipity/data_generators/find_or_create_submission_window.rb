@@ -45,15 +45,15 @@ module Sipity
 
       def build_submission_window_workflow!
         work_area_specific_submission_window_generator.call(work_area: work_area, submission_window: submission_window)
-        work_area_specific_work_types_generator.call(work_area: work_area, submission_window: submission_window)
+        WorkTypeGenerator.generate_from_json_file(submission_window: submission_window, path: path_to_work_type_configuration)
       end
 
       def work_area_specific_submission_window_generator
         "Sipity::DataGenerators::SubmissionWindows::#{work_area.demodulized_class_prefix_name}Generator".constantize
       end
 
-      def work_area_specific_work_types_generator
-        "Sipity::DataGenerators::WorkTypes::#{work_area.demodulized_class_prefix_name}Generator".constantize
+      def path_to_work_type_configuration
+        Rails.root.join('app/data_generators/sipity/data_generators/work_types/', "#{work_area.partial_suffix}_work_types.json")
       end
     end
   end
