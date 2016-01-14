@@ -15,6 +15,7 @@ module Sipity
       def self.call(**keywords, &block)
         new(**keywords, &block).call
       end
+
       def initialize(roles:, strategy:, actors: [], **keywords)
         self.roles = roles
         self.strategy = strategy
@@ -23,12 +24,6 @@ module Sipity
         self.strategy_state = keywords.fetch(:strategy_state, false)
         self.action_names = keywords.fetch(:action_names, [])
         yield(self) if block_given?
-      end
-
-      attr_writer :allow_repeat_within_current_state
-
-      def allow_repeat_within_current_state
-        defined?(@allow_repeat_within_current_state) ? @allow_repeat_within_current_state : true
       end
 
       private
@@ -72,9 +67,7 @@ module Sipity
       end
 
       def create_action_and_permission_for(action_name, strategy_role)
-        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(
-          strategy: strategy, name: action_name, allow_repeat_within_current_state: allow_repeat_within_current_state
-        )
+        strategy_action = Models::Processing::StrategyAction.find_or_create_by!(strategy: strategy, name: action_name)
         return unless strategy_state.present?
         state_action = Models::Processing::StrategyStateAction.find_or_create_by!(
           strategy_action: strategy_action, originating_strategy_state: strategy_state

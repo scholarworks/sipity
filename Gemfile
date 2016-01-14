@@ -36,6 +36,7 @@ gem 'data_migrator', github: 'jeremyf/data-migrator'
 gem 'contracts'
 gem 'activerecord-session_store'
 gem 'cogitate', github: 'ndlib/cogitate'
+gem 'dry-validation'
 
 group :doc do
   gem 'inch', require: false

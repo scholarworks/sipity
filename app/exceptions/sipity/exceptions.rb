@@ -11,6 +11,15 @@ module Sipity
     class RuntimeError < ::RuntimeError
     end
 
+    # When a schema doesn't validate
+    class InvalidSchemaError < RuntimeError
+      attr_reader :errors
+      def initialize(errors:)
+        @errors = errors
+        super("Invalid schema: #{errors.inspect}")
+      end
+    end
+
     # When you have misconfigured the email options
     class EmailAsOptionInvalidError < RuntimeError
       def initialize(as:, valid_list:)

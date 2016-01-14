@@ -25,21 +25,21 @@ Sipity::Models::Processing::StrategyUsage.create!([
   {strategy_id: 1, usage_id: 1, usage_type: 'Sipity::Models::WorkType'}
 ])
 Sipity::Models::Processing::StrategyAction.create!([
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "show", form_class_name: nil, completion_required: false, action_type: "resourceful_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "edit", form_class_name: nil, completion_required: false, action_type: "resourceful_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "destroy", form_class_name: nil, completion_required: false, action_type: "resourceful_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "describe", form_class_name: nil, completion_required: false, action_type: "enrichment_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "attach", form_class_name: nil, completion_required: false, action_type: "enrichment_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "collaborators", form_class_name: nil, completion_required: false, action_type: "enrichment_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "assign_a_doi", form_class_name: nil, completion_required: false, action_type: "enrichment_action"},
-  {strategy_id: 1, resulting_strategy_state_id: nil, name: "assign_a_citation", form_class_name: nil, completion_required: false, action_type: "enrichment_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 2, name: "submit_for_review", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 4, name: "advisor_signs_off", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 3, name: "advisor_requests_changes", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 2, name: "request_revision", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 5, name: "grad_school_signoff", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 6, name: "ingest", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"},
-  {strategy_id: 1, resulting_strategy_state_id: 7, name: "ingest_completed", form_class_name: nil, completion_required: false, action_type: "state_advancing_action"}
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "show", action_type: "resourceful_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "edit", action_type: "resourceful_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "destroy", action_type: "resourceful_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "describe", action_type: "enrichment_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "attach", action_type: "enrichment_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "collaborators", action_type: "enrichment_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "assign_a_doi", action_type: "enrichment_action"},
+  {strategy_id: 1, resulting_strategy_state_id: nil, name: "assign_a_citation", action_type: "enrichment_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 2, name: "submit_for_review", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 4, name: "advisor_signs_off", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 3, name: "advisor_requests_changes", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 2, name: "request_revision", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 5, name: "grad_school_signoff", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 6, name: "ingest", action_type: "state_advancing_action"},
+  {strategy_id: 1, resulting_strategy_state_id: 7, name: "ingest_completed", action_type: "state_advancing_action"}
 ])
 Sipity::Models::Processing::StrategyActionPrerequisite.create!([
   {guarded_strategy_action_id: 9, prerequisite_strategy_action_id: 4},

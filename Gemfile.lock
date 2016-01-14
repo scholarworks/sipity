@@ -253,6 +253,29 @@ GEM
       activemodel (>= 3.0)
       activesupport (>= 3.0)
       request_store (~> 1.0)
+    dry-configurable (0.1.2)
+      thread_safe
+    dry-container (0.2.7)
+      dry-configurable (= 0.1.2)
+      thread_safe
+    dry-data (0.5.1)
+      dry-configurable (~> 0.1)
+      dry-container (~> 0.2)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.1)
+      inflecto (~> 0.0.0, >= 0.0.2)
+      kleisli (~> 0.2)
+      thread_safe (~> 0.3)
+    dry-equalizer (0.2.0)
+    dry-logic (0.1.0)
+      dry-container (~> 0.2, >= 0.2.6)
+      dry-equalizer (~> 0.2)
+    dry-validation (0.5.0)
+      dry-configurable (~> 0.1)
+      dry-container (~> 0.2, >= 0.2.6)
+      dry-data (~> 0.5, >= 0.5.0)
+      dry-equalizer (~> 0.2)
+      dry-logic (~> 0.1)
     equalizer (0.0.11)
     erubis (2.7.0)
     eventmachine (1.0.8)
@@ -334,6 +357,7 @@ GEM
       sparkr (>= 0.2.0)
       term-ansicolor
       yard (~> 0.8.7.5)
+    inflecto (0.0.2)
     interception (0.5)
     ipaddress (0.8.0)
     jbuilder (2.4.0)
@@ -352,6 +376,7 @@ GEM
     kaminari (0.16.3)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
+    kleisli (0.2.7)
     launchy (2.4.3)
       addressable (~> 2.3)
     letter_opener (1.4.1)
@@ -659,6 +684,7 @@ DEPENDENCIES
   dragonfly!
   dragonfly-s3_data_store
   draper
+  dry-validation
   execjs
   ezid-client!
   faker

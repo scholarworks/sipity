@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151211183738) do
+ActiveRecord::Schema.define(version: 20160114173904) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -296,16 +296,14 @@ ActiveRecord::Schema.define(version: 20151211183738) do
   add_index "sipity_processing_strategy_action_prerequisites", ["guarded_strategy_action_id", "prerequisite_strategy_action_id"], name: "sipity_processing_strategy_action_prerequisites_aggregate", unique: true, using: :btree
 
   create_table "sipity_processing_strategy_actions", force: :cascade do |t|
-    t.integer  "strategy_id",                       limit: 4,                   null: false
+    t.integer  "strategy_id",                       limit: 4,                  null: false
     t.integer  "resulting_strategy_state_id",       limit: 4
-    t.string   "name",                              limit: 255,                 null: false
-    t.string   "form_class_name",                   limit: 255
-    t.boolean  "completion_required",                           default: false
-    t.datetime "created_at",                                                    null: false
-    t.datetime "updated_at",                                                    null: false
-    t.string   "action_type",                       limit: 255,                 null: false
+    t.string   "name",                              limit: 255,                null: false
+    t.datetime "created_at",                                                   null: false
+    t.datetime "updated_at",                                                   null: false
+    t.string   "action_type",                       limit: 255,                null: false
     t.integer  "presentation_sequence",             limit: 4
-    t.boolean  "allow_repeat_within_current_state",             default: true,  null: false
+    t.boolean  "allow_repeat_within_current_state",             default: true, null: false
   end
 
   add_index "sipity_processing_strategy_actions", ["action_type"], name: "index_sipity_processing_strategy_actions_on_action_type", using: :btree

@@ -1,2 +1,24 @@
-Generated in:
-<code>app/views/sipity/mailers/ulra_mailer/confirmation_of_submitted_to_ulra_committee.html.erb</code>
+<p>You have successfully started the student portion of your ULRA application.</p>
+
+<p>
+  In order for your application to be considered by the selection committee, please ensure that the following application components are completed and successfully submitted prior to the deadline:
+
+  <ul>
+    <li>Student Application Components
+      <ul>
+        <li>Application form</li>
+        <li>Application essay</li>
+        <li>Final project</li>
+      </ul>
+    </li>
+    <li>Advisor letter of recommendation</li>
+  </ul>
+</p>
+
+<p><strong>Continue working on your application here: </strong> <%= link_to(@entity.email_message_action_url, @entity.email_message_action_url) %></p>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/important_dates', object: @entity) %>
+
+<%= render(partial: 'sipity/mailers/ulra_mailer/questions_and_about_ulra', object: @entity) %>
+
+<!-- app/views/sipity/mailers/ulra_mailer/confirmation_of_ulra_submission_started.html.erb -->

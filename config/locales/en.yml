@@ -357,7 +357,7 @@ en:
       at_least_one_collaborator_must_be_research_director_with_netid: 'At least one collaborator must be research director with valid NetID'
       presence_of_access_policies_for_all_objects_required: 'Please select access policy for each item'
       at_least_one_attachment_required: 'At least one file must be attached'
-  sipity/mailers/email_notifier:
+  sipity/mailers/etd_mailer:
     email_name:
       submit_for_review: "Submitted to research director(s) for review and approval"
       confirmation_of_advisor_signoff: "Confirmation of research director's approval"
@@ -366,6 +366,13 @@ en:
       respond_to_grad_school_request: "Author response to Graduate School's change request(s)"
       advisor_requests_change: "Your research director has requested changes to your submission"
       confirmation_of_submit_for_review: "Confirmation of submission for review"
+  sipity/mailers/ulra_mailer:
+    email_name:
+      faculty_assigned_for_ulra_submission: "Action Requested - ULRA - Advisor Letter of Recommendation Requested"
+      faculty_completed_their_portion_of_ulra: "ULRA - Advisor Portion - Letter of Recommendation Submitted"
+      confirmation_of_ulra_submission_started: "ULRA - Student Application Portion - Submission Started"
+      student_completed_their_portion_of_ulra: "ULRA - Student Application Portion - Submission Completed"
+      confirmation_of_submitted_to_ulra_committee: "ULRA - Complete Application Package Received"
   sipity/emails:
     access_controls:
       restricted_access: 'Restricted Access'

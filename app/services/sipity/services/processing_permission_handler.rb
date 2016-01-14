@@ -44,7 +44,7 @@ module Sipity
       private
 
       def with_valid_strategy_role
-        strategy_role = Models::Processing::StrategyRole.where(strategy_id: strategy.id, role_id: role.id).first!
+        strategy_role = Models::Processing::StrategyRole.find_by!(strategy_id: strategy.id, role_id: role.id)
         yield(strategy_role)
       rescue ActiveRecord::RecordNotFound => exception
         raise Exceptions::ValidProcessingStrategyRoleNotFoundError, exception.message

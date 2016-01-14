@@ -1,0 +1,172 @@
+{
+  "work_types": [
+    {
+      "name": "ulra_submission",
+      "strategy_permissions": [{
+        "group": "ULRA Review Committee",
+        "role": "ulra_reviewer"
+      }],
+      "actions": [{
+        "name": "start_a_submission",
+        "transition_to": "new",
+        "emails": [{
+          "name": "confirmation_of_ulra_submission_started",
+          "to": "creating_user"
+        }, {
+          "name": "faculty_assigned_for_ulra_submission",
+          "to": "advisor"
+        }]
+      }, {
+        "name": "debug",
+        "states": [{
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
+          "roles": ["ulra_reviewer"]
+        }],
+        "attributes": {
+          "presentation_sequence": 2
+        }
+      }, {
+        "name": "show",
+        "states": [{
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
+          "roles": ["creating_user", "advisor", "ulra_reviewer"]
+        }],
+        "attributes": {
+          "presentation_sequence": 1
+        }
+      }, {
+        "name": "destroy",
+        "states": [{
+          "name": ["new", "pending_advisor_completion", "pending_student_completion"],
+          "roles": ["creating_user", "ulra_reviewer"]
+        }, {
+          "name": "under_review",
+          "roles": ["ulra_reviewer"]
+        }],
+        "attributes": {
+          "presentation_sequence": 3
+        }
+      }, {
+        "name": "project_information",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 1
+        }
+      }, {
+        "name": "attach",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion", "under_review"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 2
+        }
+      }, {
+        "name": "access_policy",
+        "states": [{
+          "name": ["new", "pending_advisor_completion"],
+          "roles": ["creating_user", "advisor"]
+        }, {
+          "name": ["pending_student_completion", "under_review"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 3
+        }
+      }, {
+        "name": "plan_of_study",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 4
+        }
+      }, {
+        "name": "publisher_information",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 6
+        }
+      }, {
+        "name": "research_process",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 5
+        }
+      }, {
+        "name": "faculty_response",
+        "states": [{
+          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "roles": ["advisor"]
+        }]
+      }, {
+        "name": "submit_student_portion",
+        "states": [{
+          "name": "new",
+          "roles": ["creating_user"]
+        }],
+        "transition_to": "pending_advisor_completion",
+        "emails": [{
+          "name": "student_completed_their_portion_of_ulra",
+          "to": "advisor",
+          "cc": "creating_user"
+        }],
+        "required_actions": ["project_information", "attach", "access_policy", "plan_of_study", "publisher_information", "research_process"]
+      }, {
+        "name": "submit_advisor_portion",
+        "states": [{
+          "name": "new",
+          "roles": ["advisor"]
+        }],
+        "transition_to": "pending_student_completion",
+        "emails": [{
+          "name": "faculty_completed_their_portion_of_ulra",
+          "to": "creating_user",
+          "cc": "advisor"
+        }],
+        "required_actions": ["access_policy", "faculty_response"]
+      }, {
+        "name": "submit_for_review",
+        "states": [{
+          "name": "pending_student_completion",
+          "roles": ["creating_user"]
+        }, {
+          "name": "pending_advisor_completion",
+          "roles": ["advisor"]
+        }],
+        "transition_to": "under_review",
+        "emails": [{
+          "name": "confirmation_of_submitted_to_ulra_committee",
+          "to": "creating_user",
+          "cc": "advisor"
+        }],
+        "required_actions": ["attach", "plan_of_study", "publisher_information", "research_process", "faculty_response"]
+      }, {
+        "name": "submit_completed_review",
+        "states": [{
+          "name": "under_review",
+          "roles": "ulra_reviewer"
+        }],
+        "transition_to": "review_completed"
+      }],
+      "state_emails": [{
+        "state": "under_review",
+        "reason": "processing_hook_triggered",
+        "emails": [{
+          "name": "student_has_indicated_attachments_are_complete",
+          "to": "ulra_reviewer"
+        }]
+      }]
+    }
+  ]
+}
