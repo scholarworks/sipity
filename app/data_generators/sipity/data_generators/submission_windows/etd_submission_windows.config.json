@@ -8,7 +8,7 @@
       "group": "All Registered Users",
       "role": "work_submitter"
     }],
-    "work_type_config_paths": ["app/data_generators/sipity/data_generators/work_types/etd_work_types.json"],
+    "work_type_config_paths": ["app/data_generators/sipity/data_generators/work_types/etd_work_types.config.json"],
     "actions": [{
       "name": "show",
       "states": [{

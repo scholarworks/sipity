@@ -64,7 +64,7 @@ module Sipity
 
     context '.generate_from_json_file' do
       # Should I be testing a production file?
-      let(:path) { Rails.root.join('app/data_generators/sipity/data_generators/work_types/ulra_work_types.json').to_s }
+      let(:path) { Rails.root.join('app/data_generators/sipity/data_generators/work_types/ulra_work_types.config.json').to_s }
 
       it 'will load the file and parse as JSON' do
         expect_any_instance_of(described_class).to receive(:call)
