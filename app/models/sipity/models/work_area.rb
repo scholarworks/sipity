@@ -56,6 +56,15 @@ module Sipity
       def demodulized_class_prefix_name=(value)
         super(PowerConverter.convert(value, to: :demodulized_class_name))
       end
+
+      after_initialize :assign_values_from_slug
+
+      private
+
+      def assign_values_from_slug
+        self.partial_suffix ||= slug
+        self.demodulized_class_prefix_name ||= slug
+      end
     end
   end
 end

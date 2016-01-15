@@ -44,6 +44,14 @@ module Sipity
         expect(subject.work_submissions).to be_a(ActiveRecord::Relation)
       end
 
+      it 'will assign slug as partial_suffix if none is given' do
+        expect(described_class.new(slug: "aslug").partial_suffix).to eq('aslug')
+      end
+
+      it 'will assign slug as demodulized_class_prefix_name if none is given' do
+        expect(described_class.new(slug: "aslug").demodulized_class_prefix_name).to eq('Aslug')
+      end
+
       context '#slug' do
         it 'will transform the slug to a URI safe item' do
           subject.slug = 'Hello World'
