@@ -8,6 +8,10 @@ module Sipity
         new(data: data, **keywords).call
       end
 
+      class << self
+        alias_method :call, :generate_from_json_file
+      end
+
       # @param work_area [Sipity::Models::WorkArea]
       # @param data [#deep_symbolize_keys] the configuration information from which we will generate all the data entries
       # @param schema [#call] The schema in which you will validate the data

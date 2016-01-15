@@ -4,10 +4,16 @@ module Sipity
   RSpec.describe DataGenerators::SubmissionWindowGenerator do
     let(:work_area) { Models::WorkArea.new(id: 2, slug: 'etd', partial_suffix: 'etd') }
     let(:validator) { double(call: true) }
+    let(:path) { Rails.root.join('app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json') }
     subject { described_class.new(work_area: work_area, data: {}, validator: validator) }
 
     its(:default_validator) { should respond_to(:call) }
     its(:default_schema) { should respond_to(:call) }
+
+    it 'exposes .call as a convenience method' do
+      expect_any_instance_of(described_class).to receive(:call)
+      described_class.call(work_area: work_area, path: path)
+    end
 
     it 'validates the data against the schema' do
       subject
@@ -15,7 +21,6 @@ module Sipity
     end
 
     it 'will create submission window' do
-      path = Rails.root.join('app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json')
       allow_any_instance_of(DataGenerators::WorkTypeGenerator).to receive(:call) # I want validation but not execution of the work_types
       allow_any_instance_of(DataGenerators::StrategyPermissionsGenerator).to receive(:call)
       allow_any_instance_of(DataGenerators::ProcessingActionsGenerator).to receive(:call)
