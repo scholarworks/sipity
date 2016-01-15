@@ -17,16 +17,15 @@ module Sipity
     it 'will create submission window' do
       path = Rails.root.join('app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json')
       allow_any_instance_of(DataGenerators::WorkTypeGenerator).to receive(:call) # I want validation but not execution of the work_types
+      allow_any_instance_of(DataGenerators::StrategyPermissionsGenerator).to receive(:call)
       expect(DataGenerators::StateMachineGenerator).to receive(:generate_from_schema).and_call_original.at_least(1).times
       expect do
         expect do
           expect do
-            expect do
-              described_class.generate_from_json_file(work_area: work_area, path: path)
-            end.to change { Models::SubmissionWindow.count }.by(1)
-          end.to change { Models::Processing::Strategy.count }.by(1)
-        end.to change { Models::Processing::StrategyUsage.count }.by(1)
-      end.to change { Models::Group.count }.by(1)
+            described_class.generate_from_json_file(work_area: work_area, path: path)
+          end.to change { Models::SubmissionWindow.count }.by(1)
+        end.to change { Models::Processing::Strategy.count }.by(1)
+      end.to change { Models::Processing::StrategyUsage.count }.by(1)
 
       [:update_attribute, :update_attributes, :update_attributes!, :save, :save!, :update, :update!].each do |method_names|
         expect_any_instance_of(ActiveRecord::Base).to_not receive(method_names)

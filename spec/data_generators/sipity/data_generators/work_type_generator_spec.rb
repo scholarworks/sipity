@@ -76,19 +76,18 @@ module Sipity
       it 'creates the requisite data' do
         expect(DataGenerators::StateMachineGenerator).to receive(:generate_from_schema).and_call_original.exactly(2).times
         expect(DataGenerators::EmailNotificationGenerator).to receive(:call).and_call_original.exactly(3).times
+        expect_any_instance_of(DataGenerators::StrategyPermissionsGenerator).to receive(:call)
         expect do
           expect do
             expect do
               expect do
                 expect do
-                  expect do
-                    described_class.generate_from_json_file(submission_window: submission_window, path: path)
-                  end.to change { Models::Processing::StrategyActionAnalogue.count }.by(1)
-                end.to change { Models::Processing::Strategy.count }.by(1)
-              end.to change { Models::Processing::StrategyUsage.count }.by(1)
-            end.to change { Models::WorkType.count }.by(1)
-          end.to change { Models::SubmissionWindowWorkType.count }.by(1)
-        end.to change { Models::Group.count }.by(1)
+                  described_class.generate_from_json_file(submission_window: submission_window, path: path)
+                end.to change { Models::Processing::StrategyActionAnalogue.count }.by(1)
+              end.to change { Models::Processing::Strategy.count }.by(1)
+            end.to change { Models::Processing::StrategyUsage.count }.by(1)
+          end.to change { Models::WorkType.count }.by(1)
+        end.to change { Models::SubmissionWindowWorkType.count }.by(1)
       end
     end
   end

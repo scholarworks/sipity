@@ -96,12 +96,8 @@ module Sipity
         window
       end
 
-      def find_or_create_strategy_permissions!(strategy:, strategy_permissions_configuration:)
-        Array.wrap(strategy_permissions_configuration).each do |configuration|
-          group = Models::Group.find_or_create_by!(name: configuration.fetch(:group))
-          PermissionGenerator.call(actors: group, roles: configuration.fetch(:role), strategy: strategy)
-        end
-      end
+      extend Forwardable
+      def_delegator Sipity::DataGenerators::StrategyPermissionsGenerator, :call, :find_or_create_strategy_permissions!
 
       def generate_state_diagram(strategy:, actions_configuration:)
         Array.wrap(actions_configuration).each do |configuration|
