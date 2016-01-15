@@ -14,6 +14,7 @@ module Sipity
               end
               work_area.key(:actions, &SchemaRulesForProcessingEntity.actions_config)
               work_area.optional(:strategy_permissions, &SchemaRulesForProcessingEntity.strategy_permissions_config)
+              work_area.optional(:submission_window_config_paths, &SchemaRulesForProcessingEntity.string_or_array_of_strings_config)
             end
           end
         end
