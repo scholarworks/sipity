@@ -134,7 +134,7 @@ module Sipity
           end
 
           def initialize_work_area_and_submission_window!(submission_window:)
-            @work_area = repository.find_work_area_by(slug: DataGenerators::WorkAreas::EtdGenerator::SLUG)
+            @work_area = repository.find_work_area_by(slug: 'etd')
             self.submission_window = submission_window
           end
 
