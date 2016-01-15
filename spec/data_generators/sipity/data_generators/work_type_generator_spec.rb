@@ -74,9 +74,9 @@ module Sipity
 
     context 'data generation' do
       it 'creates the requisite data' do
-        expect(DataGenerators::StateMachineGenerator).to receive(:generate_from_schema).and_call_original.exactly(2).times
         expect(DataGenerators::EmailNotificationGenerator).to receive(:call).and_call_original.exactly(3).times
         expect_any_instance_of(DataGenerators::StrategyPermissionsGenerator).to receive(:call)
+        expect(DataGenerators::ProcessingActionsGenerator).to receive(:call).and_call_original
         expect do
           expect do
             expect do

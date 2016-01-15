@@ -18,7 +18,7 @@ module Sipity
       path = Rails.root.join('app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json')
       allow_any_instance_of(DataGenerators::WorkTypeGenerator).to receive(:call) # I want validation but not execution of the work_types
       allow_any_instance_of(DataGenerators::StrategyPermissionsGenerator).to receive(:call)
-      expect(DataGenerators::StateMachineGenerator).to receive(:generate_from_schema).and_call_original.at_least(1).times
+      allow_any_instance_of(DataGenerators::ProcessingActionsGenerator).to receive(:call)
       expect do
         expect do
           expect do

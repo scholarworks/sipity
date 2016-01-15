@@ -75,15 +75,8 @@ module Sipity
       end
 
       extend Forwardable
-      def_delegator Sipity::DataGenerators::StrategyPermissionsGenerator, :call, :find_or_create_strategy_permissions!
-
-      def generate_state_diagram(strategy:, actions_configuration:)
-        Array.wrap(actions_configuration).each do |configuration|
-          Array.wrap(configuration.fetch(:name)).each do |name|
-            DataGenerators::StateMachineGenerator.generate_from_schema(strategy: strategy, name: name, **configuration.except(:name))
-          end
-        end
-      end
+      def_delegator StrategyPermissionsGenerator, :call, :find_or_create_strategy_permissions!
+      def_delegator ProcessingActionsGenerator, :call, :generate_state_diagram
 
       def generate_state_emails(strategy:, state_emails_configuration:)
         Array.wrap(state_emails_configuration).each do |configuration|
