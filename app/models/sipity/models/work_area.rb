@@ -5,8 +5,7 @@ module Sipity
     #
     # It provides a :slug for a routable location and customization.
     #
-    # @see Sipity::DataGenerators::FindOrCreateWorkArea for how to bootstrap a Work
-    #   Area in the system.
+    # @see Sipity::DataGenerators::WorkAreaGenerator for how to bootstrap a WorkArea in the system.
     class WorkArea < ActiveRecord::Base
       self.table_name = 'sipity_work_areas'
 
@@ -55,6 +54,15 @@ module Sipity
 
       def demodulized_class_prefix_name=(value)
         super(PowerConverter.convert(value, to: :demodulized_class_name))
+      end
+
+      after_initialize :assign_values_from_slug
+
+      private
+
+      def assign_values_from_slug
+        self.partial_suffix ||= slug
+        self.demodulized_class_prefix_name ||= slug
       end
     end
   end
