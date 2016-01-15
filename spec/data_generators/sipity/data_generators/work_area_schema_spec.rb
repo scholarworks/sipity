@@ -6,14 +6,11 @@ RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
   context 'with valid data' do
     let(:data) do
       {
-        name: 'Electronic Thesis and Dissertation',
-        slug: 'etd',
-        actions: [
-          { name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }
-        ],
-        group_role_map: [
-          { group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }
-        ]
+        work_areas: [{
+          attributes: { name: 'Electronic Thesis and Dissertation', slug: 'etd' },
+          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }],
+          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }]
+        }]
       }
     end
 
@@ -25,18 +22,16 @@ RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
   context 'with invalid data' do
     let(:data) do
       {
-        name: 'Electronic Thesis and Dissertation',
-        actions: [
-          { name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }
-        ],
-        group_role_map: [
-          { group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }
-        ]
+        work_areas: [{
+          attributes: { name: 'Electronic Thesis and Dissertation' },
+          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }],
+          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }]
+        }]
       }
     end
 
-    it 'validates good data' do
-      expect(subject.call(data).messages).to eq(slug: [["slug is missing"], nil])
+    it 'invalidates bad data' do
+      expect(subject.call(data).messages).to be_present
     end
   end
 end
