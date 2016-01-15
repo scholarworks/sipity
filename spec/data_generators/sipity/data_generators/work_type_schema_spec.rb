@@ -56,8 +56,8 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
     end
 
     [
-      "ulra_work_types.json",
-      "etd_work_types.json"
+      "ulra_work_types.config.json",
+      "etd_work_types.config.json"
     ].each do |basename|
       it "validates #{basename}" do
         data = JSON.parse(Rails.root.join('app/data_generators/sipity/data_generators/work_types', basename).read)

@@ -5,10 +5,10 @@
       "slug": "2016"
     },
     "strategy_permissions": [{
-      "group": "All Registered Users",
+      "group": "All Verified \"netid\" Users",
       "role": "work_submitter"
     }],
-    "work_type_config_paths": ["app/data_generators/sipity/data_generators/work_types/ulra_work_types.json"],
+    "work_type_config_paths": ["app/data_generators/sipity/data_generators/work_types/ulra_work_types.config.json"],
     "actions": [{
       "name": "show",
       "states": [{

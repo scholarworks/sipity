@@ -19,6 +19,17 @@ RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
     end
   end
 
+  [
+    "ulra_work_area.config.json",
+    "etd_work_area.config.json"
+  ].each do |basename|
+    it "validates #{basename}" do
+      data = JSON.parse(Rails.root.join('app/data_generators/sipity/data_generators/work_areas', basename).read)
+      data.deep_symbolize_keys!
+      expect(subject.call(data).messages).to be_empty
+    end
+  end
+
   context 'with invalid data' do
     let(:data) do
       {
