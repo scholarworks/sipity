@@ -20,6 +20,13 @@ module Sipity
           it 'will raise an exception if the role name is invalid' do
             expect { described_class['string'] }.to raise_error(ArgumentError)
           end
+          it 'will handle the interstitial' do
+            existing_object = described_class.create!(name: 'advising')
+            expect(existing_object).to receive(:update!).with(name: 'advising')
+            expect(described_class).to receive(:find_by).with(name: 'advising').and_return(nil)
+            expect(described_class).to receive(:find_by).with(name: 'advisor').and_return(existing_object)
+            described_class['advising']
+          end
         end
       end
 
@@ -29,7 +36,7 @@ module Sipity
       end
 
       it 'will have a #to_s that is a name' do
-        subject.name = 'advisor'
+        subject.name = 'advising'
         expect(subject.to_s).to eq(subject.name)
       end
     end

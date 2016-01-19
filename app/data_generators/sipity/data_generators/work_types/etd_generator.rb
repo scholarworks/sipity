@@ -9,12 +9,6 @@ module Sipity
           Models::WorkType::DOCTORAL_DISSERTATION,
           Models::WorkType::MASTER_THESIS
         ]
-        PROCESSING_ROLE_NAMES = [
-          Models::Role::CREATING_USER,
-          Models::Role::ETD_REVIEWER,
-          Models::Role::DATA_OBSERVER,
-          Models::Role::ADVISOR
-        ]
         GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
         CATALOGERS = "Catalogers"
         ETD_INGESTORS = "ETD Ingestors"

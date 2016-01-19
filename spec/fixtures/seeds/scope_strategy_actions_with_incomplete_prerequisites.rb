@@ -150,8 +150,8 @@ Sipity::Models::Processing::StrategyStateActionPermission.create!([
 ])
 Sipity::Models::Role.create!([
   {name: "creating_user", description: nil},
-  {name: "etd_reviewer", description: nil},
-  {name: "advisor", description: nil}
+  {name: "etd_reviewing", description: nil},
+  {name: "advising", description: nil}
 ])
 Sipity::Models::Work.create!([
   {id: '1', title: "Hello", work_type: "doctoral_dissertation"}

@@ -14,10 +14,10 @@ module Sipity
       {
         states: {
           pending_student_completion: { roles: ['creating_user'] },
-          pending_advisor_completion: { roles: ['advisor'] }
+          pending_advisor_completion: { roles: ['advising'] }
         },
         transition_to: :under_review,
-        emails: { confirmation_of_submitted_to_ulra_committee: { to: 'creating_user', cc: 'advisor' } },
+        emails: { confirmation_of_submitted_to_ulra_committee: { to: 'creating_user', cc: 'advising' } },
         required_actions: [:attach, :plan_of_study, :publisher_information, :research_process, :faculty_response]
       }
     end
