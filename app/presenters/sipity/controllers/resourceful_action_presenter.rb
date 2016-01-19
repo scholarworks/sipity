@@ -31,7 +31,7 @@ module Sipity
       private
 
       DESTROY_ACTION_NAME = 'destroy'.freeze
-      STATE_AVAILABLE = 'available'
+      STATE_AVAILABLE = 'available'.freeze
 
       def available?
         availability_state == STATE_AVAILABLE

@@ -13,7 +13,7 @@ module Sipity
         ths: 'http://id.loc.gov/vocabulary/relators/'
       }.freeze
 
-      WORK_ATTRIBUTES = ['alternate_title', 'subject', 'abstract', 'copyright', 'language', 'defense_date']
+      WORK_ATTRIBUTES = ['alternate_title', 'subject', 'abstract', 'copyright', 'language', 'defense_date'].freeze
       PID_KEY = 'pid'.freeze
       TYPE_KEY = 'type'.freeze
       CONTEXT_KEY = '@context'.freeze

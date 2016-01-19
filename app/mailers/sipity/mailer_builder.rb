@@ -56,7 +56,7 @@ module Sipity
         work: 'Sipity::Decorators::Emails::WorkEmailDecorator',
         action: 'Sipity::Decorators::Emails::RegisteredActionDecorator',
         comment: 'Sipity::Decorators::Emails::ProcessingCommentDecorator'
-      }
+      }.freeze
       def initialize(name:, as:)
         self.name = name
         self.as = as
