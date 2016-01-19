@@ -166,11 +166,8 @@ module Sipity
       end
 
       def date_convert(sql_date)
-        if sql_date.present?
-          return sql_date.to_date.strftime('%FZ')
-        else
-          return sql_date
-        end
+        return sql_date.to_date.strftime('%FZ') if sql_date.present?
+        sql_date
       end
 
       def create_content_in(content_file_path)
