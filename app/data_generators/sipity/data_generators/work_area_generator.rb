@@ -78,7 +78,7 @@ module Sipity
       end
 
       def find_or_create_strategy!
-        Models::Processing::Strategy.find_or_create_by!(name: "#{Models::WorkArea.class} processing")
+        Models::Processing::Strategy.find_or_create_by!(name: "#{Models::WorkArea} processing")
       end
 
       def find_or_create_work_area(attributes:)
