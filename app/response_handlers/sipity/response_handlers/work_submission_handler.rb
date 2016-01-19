@@ -14,7 +14,7 @@ module Sipity
         end
 
         class << self
-          alias_method :call, :for_controller
+          alias call for_controller
           deprecate call: "Prefer .for_controller instead"
         end
 
@@ -31,7 +31,7 @@ module Sipity
         end
 
         class << self
-          alias_method :call, :for_controller
+          alias call for_controller
           deprecate call: "Prefer .for_controller instead"
         end
 
@@ -53,7 +53,7 @@ module Sipity
         end
 
         class << self
-          alias_method :call, :for_controller
+          alias call for_controller
           deprecate call: "Prefer .for_controller instead"
         end
 
@@ -70,7 +70,7 @@ module Sipity
         end
 
         class << self
-          alias_method :call, :for_controller
+          alias call for_controller
           deprecate call: "Prefer .for_controller instead"
         end
 

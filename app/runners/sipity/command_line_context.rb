@@ -18,7 +18,7 @@ module Sipity
     end
 
     attr_reader :repository, :requested_by
-    alias_method :current_user, :requested_by
+    alias current_user requested_by
 
     private
 

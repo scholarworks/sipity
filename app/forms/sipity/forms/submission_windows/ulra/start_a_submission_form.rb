@@ -93,7 +93,7 @@ module Sipity
             end
           end
 
-          alias_method :to_work_area, :work_area
+          alias to_work_area work_area
           public :to_work_area
 
           private

@@ -16,7 +16,7 @@ module Sipity
         super || __getobj__.is_a?(classification)
       end
 
-      alias_method :kind_of?, :is_a?
+      alias kind_of? is_a?
 
       private
 

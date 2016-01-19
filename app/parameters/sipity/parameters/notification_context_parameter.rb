@@ -22,7 +22,7 @@ module Sipity
         self.reason = keywords[:reason] || default_reason
       end
 
-      alias_method :reason_for_notification, :reason
+      alias reason_for_notification reason
       deprecate :reason_for_notification
 
       private

@@ -16,7 +16,7 @@ module Sipity
 
       delegate :to_param, :id, :persisted?, :to_s, to: :@accessible_object
       delegate :access_right_code, :release_date, to: :access_right_object
-      alias_method :entity_id, :id
+      alias entity_id id
       attr_reader :entity_type
       attr_reader :accessible_object, :work
       private :accessible_object, :work

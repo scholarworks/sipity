@@ -63,7 +63,7 @@ module Sipity
       end
 
       attr_reader :name, :as
-      alias_method :method_name, :name
+      alias method_name name
 
       def decorator
         AS_OPTIONS_LOOKUP.fetch(as).constantize

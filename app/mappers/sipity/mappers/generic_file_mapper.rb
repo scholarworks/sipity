@@ -91,7 +91,7 @@ module Sipity
       def file_access_right_code
         file_access_rights.access_right_code
       end
-      alias_method :access_right_code, :file_access_right_code
+      alias access_right_code file_access_right_code
 
       def creators
         @creators ||= repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER).map(&:username)

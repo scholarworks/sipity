@@ -9,7 +9,7 @@ module Sipity
       end
 
       class << self
-        alias_method :call, :generate_from_json_file
+        alias call  generate_from_json_file
       end
 
       # @param data [#deep_symbolize_keys] the configuration information from which we will generate all the data entries
