@@ -29,7 +29,7 @@ module Sipity
       end
 
       it 'will have a #to_s that is a name' do
-        subject.name = 'advisor'
+        subject.name = 'advising'
         expect(subject.to_s).to eq(subject.name)
       end
     end

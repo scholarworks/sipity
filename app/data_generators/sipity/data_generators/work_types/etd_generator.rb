@@ -11,9 +11,9 @@ module Sipity
         ]
         PROCESSING_ROLE_NAMES = [
           Models::Role::CREATING_USER,
-          Models::Role::ETD_REVIEWER,
-          Models::Role::DATA_OBSERVER,
-          Models::Role::ADVISOR
+          Models::Role::ETD_REVIEWING,
+          Models::Role::DATA_OBSERVING,
+          Models::Role::ADVISING
         ]
         GRADUATE_SCHOOL_REVIEWERS = 'Graduate School Reviewers'
         CATALOGERS = "Catalogers"

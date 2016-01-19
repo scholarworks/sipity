@@ -13,7 +13,7 @@ module Sipity
             "name": "ulra_submission",
             "strategy_permissions": [{
               "group": "ULRA Review Committee",
-              "role": "ulra_reviewer"
+              "role": "ulra_reviewing"
             }],
             "actions": [{
               "name": "start_a_submission",
@@ -23,7 +23,7 @@ module Sipity
                 "to": "creating_user"
               },{
                 "name": "faculty_assigned_for_ulra_submission",
-                "to": "advisor"
+                "to": "advising"
               }]
             },{
               "name": "start"
@@ -36,7 +36,7 @@ module Sipity
               "reason": "processing_hook_triggered",
               "emails": [{
                 "name": "student_has_indicated_attachments_are_complete",
-                "to": "ulra_reviewer"
+                "to": "ulra_reviewing"
               }]
             }]
           }

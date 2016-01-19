@@ -8,8 +8,8 @@ RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
       {
         work_areas: [{
           attributes: { name: 'Electronic Thesis and Dissertation', slug: 'etd' },
-          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }],
-          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }]
+          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWING'] }] }],
+          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWING' }]
         }]
       }
     end
@@ -35,8 +35,8 @@ RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
       {
         work_areas: [{
           attributes: { name: 'Electronic Thesis and Dissertation' },
-          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWER'] }] }],
-          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWER' }]
+          actions: [{ name: 'show', states: [{ name: 'new', roles: ['WORK_AREA_VIEWING'] }] }],
+          strategy_permissions: [{ group: 'ALL_REGISTERED_USERS', role: 'WORK_AREA_VIEWING' }]
         }]
       }
     end

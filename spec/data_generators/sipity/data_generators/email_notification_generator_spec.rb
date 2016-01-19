@@ -7,7 +7,7 @@ module Sipity
       let(:strategy) { Models::Processing::Strategy.new(id: 1) }
       let(:scope) { 'show' }
       let(:email_name) { :the_weasel }
-      let(:recipients) { { to: 'creating_user', cc: 'advisor', bcc: 'data_observer' } }
+      let(:recipients) { { to: 'creating_user', cc: 'advising', bcc: "data_observing" } }
 
       context '#call' do
         context 'with for reason: REASON_ACTION_IS_TAKEN' do

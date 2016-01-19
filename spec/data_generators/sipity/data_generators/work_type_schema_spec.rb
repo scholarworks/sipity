@@ -10,7 +10,7 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
           {
             name: 'ulra_submission',
             strategy_permissions: [
-              { group: 'ULRA Review Committee', role: 'ulra_reviewer' }
+              { group: 'ULRA Review Committee', role: "ulra_reviewing" }
             ],
             actions: [
               {
@@ -18,11 +18,11 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
                 transition_to: 'new',
                 emails: [
                   { name: 'confirmation_of_ulra_submission_started', to: ['creating_user'] },
-                  { name: 'faculty_assigned_for_ulra_submission', to: ['advisor'] }
+                  { name: 'faculty_assigned_for_ulra_submission', to: ['advising'] }
                 ],
                 states: [
-                  { name: 'under_review', roles: 'ulra_reviewer' },
-                  { name: 'something_else', roles: ['ulra_reviewer'] }
+                  { name: 'under_review', roles: "ulra_reviewing" },
+                  { name: 'something_else', roles: ["ulra_reviewing"] }
                 ],
                 attributes: { presentation_sequence: 1 },
                 required_actions: ['something']
@@ -30,7 +30,7 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
                 name: 'something',
                 transition_to: 'new',
                 states: [
-                  { name: 'something_else', roles: ['ulra_reviewer'] }
+                  { name: 'something_else', roles: ["ulra_reviewing"] }
                 ]
               }
             ],
@@ -39,7 +39,7 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
                 state: 'under_review',
                 reason: 'processing_hook_triggered',
                 emails: [
-                  { name: 'student_has_indicated_attachments_are_complete', to: 'ulra_reviewer' }
+                  { name: 'student_has_indicated_attachments_are_complete', to: "ulra_reviewing" }
                 ]
               }
             ],

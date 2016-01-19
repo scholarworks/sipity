@@ -1,8 +1,20 @@
 module Sipity
   module Models
-    # A named concept that represents a set of responsibilities/verbs.
-    # Often confused for a Group. Group represents people.
-    # Roles represent what can/is done by anything/anyone having the given role.
+    # A role is a responsibility to do things. That is to take actions. It is
+    # easy to conflate a person's role with the groups to which they belong.
+    # A group is a set of people. The association of group with role
+    # indicates that the set of people have the same responsibilities.
+    #
+    # By separating Group and Role, we expose a more rich system in which we
+    # can talk about group membership separate from the group's
+    # responsibility.
+    #
+    # Another way to think of it is that a Group is a marco that expands to
+    # represent people. A Role is a macro that expands to represent
+    # responsibilities. In keeping them separate we can model more rich
+    # relationships.
+    #
+    # @note Roles should be verbs. They are what you do.
     #
     # @note Should this be in the Processing submodule? Perhaps. This model
     #   representes the "roles" that users of the system can have. It is not
@@ -27,33 +39,33 @@ module Sipity
         class_name: 'Sipity::Models::Notification::EmailRecipient'
       )
 
-      ADVISOR = 'advisor'.freeze
-      BATCH_INGESTOR = 'batch_ingestor'.freeze
-      CATALOGER = 'cataloger'.freeze
+      ADVISING = 'advising'.freeze
+      BATCH_INGESTING = "batch_ingesting".freeze
+      CATALOGING = "cataloging".freeze
       CREATING_USER = 'creating_user'.freeze
-      DATA_OBSERVER = 'data_observer'.freeze
-      ETD_REVIEWER = 'etd_reviewer'.freeze
-      SUBMISSION_WINDOW_VIEWER = 'submission_window_viewer'.freeze
-      ULRA_REVIEWER = 'ulra_reviewer'.freeze
-      WORK_AREA_MANAGER = 'work_area_manager'.freeze
-      WORK_AREA_VIEWER = 'work_area_viewer'.freeze
-      WORK_SUBMITTER = 'work_submitter'.freeze
+      DATA_OBSERVING = "data_observing".freeze
+      ETD_REVIEWING = "etd_reviewing".freeze
+      SUBMISSION_WINDOW_VIEWING = "submission_window_viewing".freeze
+      ULRA_REVIEWING = "ulra_reviewing".freeze
+      WORK_AREA_MANAGING = "work_area_managing".freeze
+      WORK_AREA_VIEWING = "work_area_viewing".freeze
+      WORK_SUBMITTING = "work_submitting".freeze
 
       # As I don't have a means for assigning roles for a given processing type
       # I need a controlled vocabulary for roles.
       enum(
         name: {
-          ADVISOR => ADVISOR,
-          BATCH_INGESTOR => BATCH_INGESTOR,
-          CATALOGER => CATALOGER,
+          ADVISING => ADVISING,
+          BATCH_INGESTING => BATCH_INGESTING,
+          CATALOGING => CATALOGING,
           CREATING_USER => CREATING_USER,
-          DATA_OBSERVER => DATA_OBSERVER,
-          ETD_REVIEWER => ETD_REVIEWER,
-          SUBMISSION_WINDOW_VIEWER => SUBMISSION_WINDOW_VIEWER,
-          ULRA_REVIEWER => ULRA_REVIEWER,
-          WORK_AREA_MANAGER => WORK_AREA_MANAGER,
-          WORK_AREA_VIEWER => WORK_AREA_VIEWER,
-          WORK_SUBMITTER => WORK_SUBMITTER
+          DATA_OBSERVING => DATA_OBSERVING,
+          ETD_REVIEWING => ETD_REVIEWING,
+          SUBMISSION_WINDOW_VIEWING => SUBMISSION_WINDOW_VIEWING,
+          ULRA_REVIEWING => ULRA_REVIEWING,
+          WORK_AREA_MANAGING => WORK_AREA_MANAGING,
+          WORK_AREA_VIEWING => WORK_AREA_VIEWING,
+          WORK_SUBMITTING => WORK_SUBMITTING
         }
       )
 

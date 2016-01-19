@@ -158,7 +158,7 @@ module Sipity
           test_repository.scope_proxied_objects_for_the_user_and_proxy_for_type(user: user, proxy_for_type: Sipity::Models::Work)
         end
         let(:user) { User.create!(username: 'user') }
-        let(:advisor) { User.create!(username: 'advisor') }
+        let(:advisor) { User.create!(username: 'advising') }
         let(:no_access) { User.create!(username: 'no_access') }
         let(:submission_window) { Models::SubmissionWindow.new(id: 111, work_area_id: 222) }
         let(:commands) { CommandRepository.new }
@@ -190,7 +190,7 @@ module Sipity
           # user they were treated as always having access to the object.
           commands.grant_creating_user_permission_for!(entity: work_three, user: advisor)
 
-          commands.grant_processing_permission_for!(entity: work_one, actor: advisor, role: 'advisor')
+          commands.grant_processing_permission_for!(entity: work_one, actor: advisor, role: 'advising')
 
           sorter = ->(a, b) { a.id <=> b.id } # Because IDs may not be sorted
           expect(
