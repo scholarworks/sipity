@@ -12,8 +12,7 @@ module SitePrism
         # Since names are helpful, but machines like URLs better, I opted to
         # first find the URL, and fallback to the named action for something to
         # click on.
-        action =
-        begin
+        action = begin
           entry_point.find("[itemprop='target'] [itemprop='url']")
         rescue Capybara::ElementNotFound
           entry_point.find("[itemprop='target'] [itemprop='name']")
