@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: aa2c454dd1b7b3751056bdcb94051572e72f2b94
+  revision: 9d8bff668b3da2fc4b50101071aef172c1b67849
   branch: master
   specs:
     locabulary (0.1.6)
@@ -119,14 +119,14 @@ GEM
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
     addressable (2.4.0)
-    airbrake (4.3.4)
+    airbrake (4.3.5)
       builder
       multi_json
     arel (6.0.3)
     ast (2.2.0)
     astrolabe (1.3.1)
       parser (~> 2.2)
-    autoprefixer-rails (6.2.3)
+    autoprefixer-rails (6.3.1)
       execjs
       json
     axiom-types (0.1.1)
@@ -165,7 +165,7 @@ GEM
     capistrano-bundler (1.1.4)
       capistrano (~> 3.1)
       sshkit (~> 1.2)
-    capistrano-rails (1.1.5)
+    capistrano-rails (1.1.6)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
     capistrano-rails-console (1.0.2)
@@ -173,7 +173,8 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capybara (2.5.0)
+    capybara (2.6.0)
+      addressable
       mime-types (>= 1.16)
       nokogiri (>= 1.3.3)
       rack (>= 1.0.0)
@@ -181,7 +182,7 @@ GEM
       xpath (~> 2.0)
     capybara-accessible (0.2.1)
       capybara (~> 2.0)
-    childprocess (0.5.8)
+    childprocess (0.5.9)
       ffi (~> 1.0, >= 1.0.11)
     cliver (0.3.2)
     codeclimate-engine-rb (0.1.0)
@@ -215,7 +216,7 @@ GEM
     debug_inspector (0.0.2)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
-    devise (3.5.3)
+    devise (3.5.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
       railties (>= 3.2.6, < 5)
@@ -253,7 +254,7 @@ GEM
       kleisli (~> 0.2)
       thread_safe (~> 0.3)
     dry-equalizer (0.2.0)
-    dry-logic (0.1.0)
+    dry-logic (0.1.2)
       dry-container (~> 0.2, >= 0.2.6)
       dry-equalizer (~> 0.2)
     dry-validation (0.5.0)
@@ -278,7 +279,7 @@ GEM
     flog (4.3.2)
       ruby_parser (~> 3.1, > 3.1.0)
       sexp_processor (~> 4.4)
-    fog-aws (0.7.6)
+    fog-aws (0.8.1)
       fog-core (~> 1.27)
       fog-json (~> 1.0)
       fog-xml (~> 0.1)
@@ -295,7 +296,7 @@ GEM
       nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
     git-version-bump (0.15.1)
-    given_core (3.7.1)
+    given_core (3.8.0)
       sorcerer (>= 0.3.7)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -344,11 +345,11 @@ GEM
       yard (~> 0.8.7.5)
     inflecto (0.0.2)
     interception (0.5)
-    ipaddress (0.8.0)
+    ipaddress (0.8.2)
     jbuilder (2.4.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
-    jquery-rails (4.0.5)
+    jquery-rails (4.1.0)
       rails-dom-testing (~> 1.0)
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
@@ -370,7 +371,7 @@ GEM
       rb-inotify (>= 0.9)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
-    lumberjack (1.0.9)
+    lumberjack (1.0.10)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     memoizable (0.4.2)
@@ -461,7 +462,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rainbow (2.0.0)
-    rake (10.4.2)
+    rake (10.5.0)
     rb-fchange (0.0.6)
       ffi
     rb-fsevent (0.9.7)
@@ -469,13 +470,13 @@ GEM
       ffi (>= 0.5.0)
     rb-readline (0.5.3)
     rdiscount (2.1.8)
-    reek (3.8.1)
+    reek (3.8.3)
       codeclimate-engine-rb (~> 0.1.0)
       parser (~> 2.2, >= 2.2.2.5)
       private_attr (~> 1.1)
       rainbow (~> 2.0)
       unparser (~> 0.2.2)
-    request_store (1.2.1)
+    request_store (1.3.0)
     responders (2.1.1)
       railties (>= 4.2.0, < 5.1)
     rest-client (1.8.0)
@@ -491,8 +492,8 @@ GEM
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
-    rspec-given (3.7.1)
-      given_core (= 3.7.1)
+    rspec-given (3.8.0)
+      given_core (= 3.8.0)
       rspec (>= 2.14.0)
     rspec-html-matchers (0.7.0)
       nokogiri (~> 1)
@@ -500,7 +501,7 @@ GEM
     rspec-its (1.2.0)
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
-    rspec-mocks (3.4.0)
+    rspec-mocks (3.4.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.4.0)
     rspec-rails (3.4.0)
@@ -533,7 +534,7 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
-    sass (3.4.20)
+    sass (3.4.21)
     sass-rails (5.0.4)
       railties (>= 4.0.0, < 5.0)
       sass (~> 3.1)
@@ -546,7 +547,7 @@ GEM
     seed_dump (3.2.4)
       activerecord (>= 4)
       activesupport (>= 4)
-    selenium-webdriver (2.48.1)
+    selenium-webdriver (2.49.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
@@ -574,7 +575,7 @@ GEM
     slop (3.6.0)
     sorcerer (1.0.2)
     sparkr (0.4.1)
-    spring (1.6.1)
+    spring (1.6.2)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     sprockets (3.5.2)
@@ -596,7 +597,7 @@ GEM
     terminal-table (1.5.2)
     thor (0.19.1)
     thread_safe (0.3.5)
-    tilt (2.0.1)
+    tilt (2.0.2)
     tins (1.6.0)
     turbolinks (2.5.3)
       coffee-rails
@@ -630,7 +631,7 @@ GEM
     xpath (2.0.0)
       nokogiri (~> 1.3)
     yard (0.8.7.6)
-    yard-activerecord (0.0.15)
+    yard-activerecord (0.0.16)
       yard (>= 0.8.3)
 
 PLATFORMS
@@ -718,7 +719,7 @@ DEPENDENCIES
   seed_dump
   selenium-webdriver
   shoulda-callback-matchers
-  shoulda-matchers
+  shoulda-matchers (~> 3.0.1)
   simple_form
   site_prism
   spring
