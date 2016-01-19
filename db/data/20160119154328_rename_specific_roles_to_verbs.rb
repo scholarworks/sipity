@@ -13,8 +13,9 @@ class RenameSpecificRolesToVerbs < ActiveRecord::Migration
       ["work_area_viewer", "work_area_viewing"],
       ["work_submitter", "work_submitting"]
     ].each do |before, after|
-      role = Sipity::Models::Role.find_by(name: before)
-      next if role.nil?
+      old_role = Sipity::Models::Role.find_by(name: before)
+      next if old_role.nil?
+      next if Sipity::Models::Role.find_by(name: after)
       role.update!(name: after)
     end
   end

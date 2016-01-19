@@ -69,8 +69,38 @@ module Sipity
         }
       )
 
+      # TODO: Once renaming roles data migration (20160119154328) has been deployed the REVERSE_MAP constant
+      # can be removed.
+      REVERSE_MAP = {
+        "advising" => "advisor",
+        "batch_ingesting" => "batch_ingestor",
+        "cataloging" => "cataloger",
+        "creating_user" => "creating_user",
+        "data_observing" => "data_observer",
+        "etd_reviewing" => "etd_reviewer",
+        "submission_window_viewing" => "submission_window_viewer",
+        "ulra_reviewing" => "ulra_reviewer",
+        "work_area_managing" => "work_area_manager",
+        "work_area_viewing" => "work_area_viewer",
+        "work_submitting" => "work_submitter"
+      }.freeze
+      private_constant :REVERSE_MAP
+
+      # TODO: Once renaming roles data migration (20160119154328) has been deployed the self.[] can be
+      # restored to:
+      # def self.[](name)
+      #   find_or_create_by!(name: name.to_s)
+      # end
       def self.[](name)
-        find_or_create_by!(name: name.to_s)
+        role = find_by(name: name.to_s)
+        return role if role
+        reversed_name = find_by(name: REVERSE_MAP.fetch(name.to_s, name.to_s))
+        if reversed_name
+          reversed_name.update!(name: name.to_s)
+          return reversed_name
+        else
+          create!(name: name.to_s)
+        end
       end
 
       def self.valid_names
