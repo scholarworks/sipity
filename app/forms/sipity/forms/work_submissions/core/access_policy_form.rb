@@ -155,11 +155,7 @@ module Sipity
 
             include Conversions::ConvertToDate
             def release_date=(value)
-              if keep_user_input_release_date?
-                @release_date = convert_to_date(value) { nil }
-              else
-                @release_date = nil
-              end
+              @release_date = keep_user_input_release_date? ? convert_to_date(value) { nil } : nil
             end
 
             def keep_user_input_release_date?
