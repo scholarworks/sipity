@@ -719,7 +719,7 @@ DEPENDENCIES
   seed_dump
   selenium-webdriver
   shoulda-callback-matchers
-  shoulda-matchers
+  shoulda-matchers (~> 3.0.1)
   simple_form
   site_prism
   spring

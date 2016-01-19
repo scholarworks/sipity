@@ -102,7 +102,7 @@ group :test do
   gem 'rspec-html-matchers', '~>0.6'
   gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
-  gem 'shoulda-matchers'
+  gem 'shoulda-matchers', '~> 3.0.1'
   gem 'site_prism'
   gem 'sqlite3'
 end
