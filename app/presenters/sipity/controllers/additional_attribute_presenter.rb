@@ -33,7 +33,7 @@ module Sipity
       attr_reader :additional_attribute
 
       RENDER_METHOD_PREFIX = 'render_value_for_'.freeze
-      RENDER_METHOD_REGEXP = /\A#{RENDER_METHOD_PREFIX}/.freeze
+      RENDER_METHOD_REGEXP = /\A#{RENDER_METHOD_PREFIX}/
 
       def method_name_for_render_key_value
         "#{RENDER_METHOD_PREFIX}#{PowerConverter.convert_to_safe_for_method_name(key)}"

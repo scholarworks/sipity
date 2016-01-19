@@ -22,7 +22,7 @@ module Sipity
 
     private
 
-    IS_A_AUTHENTICATE_METHOD_REGEXP = /\Aauthenticate_(.*)!\Z/.freeze
+    IS_A_AUTHENTICATE_METHOD_REGEXP = /\Aauthenticate_(.*)!\Z/
 
     def method_missing(method_name, *args, &block)
       return current_user.present? if method_name =~ IS_A_AUTHENTICATE_METHOD_REGEXP
