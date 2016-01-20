@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 9d8bff668b3da2fc4b50101071aef172c1b67849
+  revision: 63a22799c689a44a8b617af523a44ca19277f9ba
   branch: master
   specs:
     locabulary (0.1.6)
