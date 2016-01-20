@@ -199,7 +199,7 @@ en:
       label: "Add <b>program name</b> for your %{work_type}"
     work_type/ulra_submission:
       project_information:
-        label: "Tell us about your <b>Project Information</b>"
+        label: "Tell us about your <b>Project</b>"
       plan_of_study:
         label: "Tell us more about your <b>Plan of Study</b>"
       research_process:
@@ -251,6 +251,8 @@ en:
     models/work:
       title:
         label: 'Title'
+    access_right_code:
+      label: 'Access'
   sipity/account_profiles:
     action/update:
       update_account_profile: "Your account profile has been updated."
