@@ -2,7 +2,7 @@
   "work_areas": [{
     "attributes": {
       "slug": "ulra",
-      "name": "Undergraduate Library Research Award"
+      "name": "Undergraduate Library Research Award (ULRA)"
     },
     "strategy_permissions": [{
       "group": "All Registered Users",
