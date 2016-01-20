@@ -12,14 +12,22 @@ module Sipity
       def matches?(request)
         warden = request.env.fetch('warden', false)
         if warden
-          return true unless warden.respond_to?(:user)
-          return true unless warden.user.present?
-          return false
+          matches_warden?(warden: warden)
         else
-          cogitate_authenticated = request.env.fetch('rack.session', {}).fetch('cogitate_data', false)
-          return true unless cogitate_authenticated.present?
-          return false
+          matches_cogitate?(request: request)
         end
+      end
+
+      def matches_warden?(warden:)
+        return true unless warden.respond_to?(:user)
+        return true unless warden.user.present?
+        return false
+      end
+
+      def matches_cogitate?(request:)
+        cogitate_authenticated = request.env.fetch('rack.session', {}).fetch('cogitate_data', false)
+        return true unless cogitate_authenticated.present?
+        return false
       end
     end
   end
