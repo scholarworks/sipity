@@ -29,7 +29,7 @@ module Sipity
       enum(name: NAMED_WORK_TYPES_FOR_ENUM)
 
       def self.[](name)
-        where(name: name.to_s).first!
+        find_by!(name: name.to_s)
       end
 
       def self.valid_names
