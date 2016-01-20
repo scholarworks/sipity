@@ -31,7 +31,7 @@ module Sipity
           end
 
           it 'allows for a processing_action_name to be passed (because upstream assumes as much)' do
-            expect { subject.run(work_area_slug: 'a_work_area', processing_action_name: 'work_area') }.to_not raise_error(ArgumentError)
+            expect { subject.run(work_area_slug: 'a_work_area', processing_action_name: 'work_area') }.to_not raise_error
           end
         end
       end
