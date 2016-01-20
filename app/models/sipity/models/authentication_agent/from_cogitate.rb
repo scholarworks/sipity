@@ -40,7 +40,7 @@ module Sipity
           Cogitate::Client.encoded_identifier_for(strategy: 'netid', identifying_value: netid)
         end
 
-        alias_method :to_identifier_id, :identifier_id
+        alias to_identifier_id identifier_id
 
         private
 

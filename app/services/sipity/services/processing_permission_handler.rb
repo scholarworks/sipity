@@ -20,7 +20,7 @@ module Sipity
         self.role = role
       end
       attr_reader :entity, :identifiable, :role
-      alias_method :identifier_id, :identifiable
+      alias identifier_id identifiable
 
       delegate :strategy, to: :entity
 

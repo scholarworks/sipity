@@ -17,7 +17,7 @@ module Sipity
           'User'
         end
         delegate :id, :email, to: :user
-        alias_method :user_id, :id
+        alias user_id id
 
         def name
           user.to_s
@@ -36,7 +36,7 @@ module Sipity
         end
 
         attr_reader :identifier_id
-        alias_method :to_identifier_id, :identifier_id
+        alias to_identifier_id identifier_id
 
         private
 

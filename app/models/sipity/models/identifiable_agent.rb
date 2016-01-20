@@ -42,9 +42,9 @@ module Sipity
       end
 
       attr_reader :identifier_id, :name, :email
-      alias_method :to_s, :name
+      alias to_s name
 
-      alias_method :to_identifier_id, :identifier_id
+      alias to_identifier_id identifier_id
 
       private
 
