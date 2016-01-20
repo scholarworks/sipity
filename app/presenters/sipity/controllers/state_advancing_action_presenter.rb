@@ -23,7 +23,7 @@ module Sipity
       end
 
       attr_reader :available
-      alias_method :available?, :available
+      alias available?  available
 
       def availability_state
         available? ? STATE_AVAILABLE : STATE_PREREQUISITES_NOT_MET

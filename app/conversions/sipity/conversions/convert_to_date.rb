@@ -36,11 +36,8 @@ module Sipity
           Date.parse(input, false)
         end
       rescue TypeError, ArgumentError
-        if block_given?
-          yield
-        else
-          raise Exceptions::DateConversionError, input
-        end
+        raise(Exceptions::DateConversionError, input) unless block_given?
+        yield
       end
 
       module_function :convert_to_date

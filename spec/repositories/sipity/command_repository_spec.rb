@@ -9,7 +9,7 @@ module Sipity
       let(:modules_to_check_for_method_collision) do
         # I'm concerned about the methods I've mixed in. There are several
         # modules already included.
-        Sipity::CommandRepository.included_modules.select { |mod| mod.to_s =~ /\ASipity::/ }
+        Sipity::CommandRepository.included_modules.select { |mod| mod.to_s.start_with?("Sipity::") }
       end
 
       it 'will have unique method names for its mixed in modules' do

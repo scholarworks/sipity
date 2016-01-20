@@ -80,10 +80,10 @@ module Sipity
           with(entity: work, roles: 'creating_user').and_return(creators)
         expect(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
         expect(work).to receive(:id).and_return('a_work_id')
-        expect(subject).to receive(:file_name_to_create).and_return(File.basename __FILE__)
+        expect(subject).to receive(:file_name_to_create).and_return(File.basename(__FILE__))
         expected_json = JSON.parse(subject.call)
         expect(expected_json["content-meta"]).to eq("mime-type" => file.file.mime_type, "label" => file.file_name)
-        expect(expected_json["content-file"]).to eq(File.basename __FILE__)
+        expect(expected_json["content-file"]).to eq(File.basename(__FILE__))
       end
 
       context 'will have be able to map correct access_right' do

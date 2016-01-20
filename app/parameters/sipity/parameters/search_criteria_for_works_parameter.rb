@@ -33,11 +33,7 @@ module Sipity
       attr_writer :user, :processing_state, :proxy_for_type, :work_area, :per
 
       def order=(input)
-        if ORDER_BY_OPTIONS.include?(input)
-          @order = input
-        else
-          @order = default_order
-        end
+        @order = ORDER_BY_OPTIONS.include?(input) ? input : default_order
       end
 
       def page=(input)

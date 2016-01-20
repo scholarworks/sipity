@@ -20,8 +20,6 @@ module Sipity
             initialize_attributes(attributes)
           end
 
-          public
-
           def award_categories_for_select
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'award_category')
           end

@@ -33,7 +33,7 @@ module Sipity
       private_class_method :notify_aibrake_of_no_sender
 
       class << self
-        alias_method :call, :deliver
+        alias call deliver
       end
     end
   end

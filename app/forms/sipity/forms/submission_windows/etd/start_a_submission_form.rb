@@ -51,7 +51,7 @@ module Sipity
           public
 
           attr_reader :work
-          alias_method :to_work_area, :work_area
+          alias to_work_area work_area
           public :to_work_area
 
           delegate :slug, :work_area_slug, to: :submission_window

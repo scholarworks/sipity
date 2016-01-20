@@ -25,7 +25,7 @@ module Sipity
 
       attr_accessor :view_object
       helper_method :view_object
-      alias_method :model, :view_object
+      alias model view_object
       helper_method :model
 
       private

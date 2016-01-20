@@ -32,7 +32,7 @@ module Sipity
         super || __getobj__.is_a?(classification) || base_class == classification
       end
 
-      alias_method :kind_of?, :is_a?
+      alias kind_of? is_a?
     end
   end
 end

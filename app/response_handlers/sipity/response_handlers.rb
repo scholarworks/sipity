@@ -88,7 +88,7 @@ module Sipity
 
       private
 
-      PATH_METHOD_REGEXP = /_path\Z/.freeze
+      PATH_METHOD_REGEXP = /_path\Z/
 
       def method_missing(method_name, *args, **keywords, &block)
         if method_name =~ PATH_METHOD_REGEXP

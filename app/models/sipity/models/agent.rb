@@ -12,7 +12,7 @@ module Sipity
       #   behavior and its not something that is going to be used all that
       #   often.
       def self.create_a_named_agent!(name:, authentication_token: self.authentication_token)
-        self.create!(name: name, authentication_token: authentication_token)
+        create!(name: name, authentication_token: authentication_token)
       end
     end
   end
