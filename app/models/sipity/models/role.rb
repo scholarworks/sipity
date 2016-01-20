@@ -86,12 +86,12 @@ module Sipity
       }.freeze
       private_constant :REVERSE_MAP
 
-      # TODO: Once renaming roles data migration (20160119154328) has been deployed the self.[] can be
-      # restored to:
-      # def self.[](name)
-      #   find_or_create_by!(name: name.to_s)
-      # end
       def self.[](name)
+        find_or_create_by!(name: name.to_s)
+      end
+
+      # TODO: Once renaming roles has been deployed to production, this can go away.
+      def self.find_or_create_by!(name:)
         role = find_by(name: name.to_s)
         return role if role
         reversed_name = find_by(name: REVERSE_MAP.fetch(name.to_s, name.to_s))
