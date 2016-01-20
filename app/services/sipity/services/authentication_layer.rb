@@ -40,6 +40,7 @@ module Sipity
 
       # @api private
       # @todo https://github.com/ndlib/sipity/issues/888
+      # rubocop:disable IdenticalConditionalBranches
       def authenticate_user!
         set_current_user
         if current_user.user_signed_in?
@@ -51,6 +52,7 @@ module Sipity
           return false
         end
       end
+      # rubocop:enable IdenticalConditionalBranches
 
       # @api private
       # @todo https://github.com/ndlib/sipity/issues/888
