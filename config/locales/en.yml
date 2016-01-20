@@ -141,12 +141,14 @@ en:
     work_type:
       label: 'What <b>type</b> of work is this?'
     work_area/ulra:
+      title:
+        label: "What is the <b>title</b> of your project?"
       award_category:
-        label: "What is the type of project you are submitting?"
+        label: "In which <b>category</b> is your project to be submitted?"
       advisor_netid:
-        label: "What is your sponsoring <b>Advisor's NetID</b> for this submission?"
+        label: "Who is your <b>project advisor</b>?"
       course_information:
-        label: "What is basic <b>Course Information</b>?"
+        label: "For which <b>course</b> was your project was created?"
   sections:
     todo:
       label: 'To-do'
@@ -239,6 +241,9 @@ en:
     doctoral_dissertation:
       label: "Doctoral Dissertation"
       curate_nd_label: "Doctoral Dissertation"
+    ulra_submission:
+      label: "ULRA Submission"
+      curate_nd_label: "ULRA Submission"
   access_rights:
     models/attachment:
       title:

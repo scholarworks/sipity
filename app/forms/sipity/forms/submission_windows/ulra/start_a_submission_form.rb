@@ -11,7 +11,7 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :submission_window,
             policy_enforcer: Policies::SubmissionWindowPolicy,
-            attribute_names: [:title, :award_category, :advisor_netid, :course_name, :course_number]
+            attribute_names: [:title, :award_category, :advisor_netid, :advisor_name, :course_name, :course_number]
           )
 
           def initialize(submission_window:, requested_by:, attributes: {}, **keywords)
@@ -40,6 +40,7 @@ module Sipity
           validates :title, presence: true
           validates :award_category, presence: true, inclusion: { in: :award_categories_for_select }
           validates :advisor_netid, presence: true, net_id: true
+          validates :advisor_name, presence: true
           validates :work_type, presence: true
           validates :course_name, presence: true
           validates :course_number, presence: true
@@ -67,7 +68,7 @@ module Sipity
             # HACK: I don't like the name as netid nor do I like the role as RESEARCH_DIRECTOR_ROLE, however, I'm pressed for time so
             # I'm making a compromise. The alternative is a larger systemic change that will need to come later.
             Models::Collaborator.new(
-              work: work, name: advisor_netid, netid: advisor_netid, role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE,
+              work: work, name: advisor_name, netid: advisor_netid, role: Models::Collaborator::RESEARCH_DIRECTOR_ROLE,
               responsible_for_review: true
             )
           end
@@ -100,6 +101,7 @@ module Sipity
             self.work_type = default_work_type
             self.title = attributes[:title]
             self.advisor_netid = attributes[:advisor_netid]
+            self.advisor_name = attributes[:advisor_name]
             self.award_category = attributes[:award_category]
             self.course_name = attributes[:course_name]
             self.course_number = attributes[:course_number]

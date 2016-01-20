@@ -13,10 +13,11 @@
       <%= f.input :course_number %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'advisor_netid', theme: :primary, object: view_object }) do %>
-      <%= f.input :advisor_netid, input_html: { class: 'form-control' }, label: false %>
+      <%= f.input :advisor_netid %>
+      <%= f.input :advisor_name %>
     <% end %>
   </div>
   <div class="action-pane">
-    <%= f.submit %>
+    <%= f.submit "Start ULRA Submission" %>
   </div>
 <% end %>
