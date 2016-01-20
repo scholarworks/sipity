@@ -34,9 +34,9 @@ module Sipity
         delegate :name, to: :strategy, prefix: :strategy
 
         # TODO: This is a concession for the existing application
-        alias_method :processing_state, :strategy_state_name
+        alias processing_state strategy_state_name
         # TODO: Concession for an interface
-        alias_method :processing_strategy, :strategy
+        alias processing_strategy strategy
       end
     end
   end

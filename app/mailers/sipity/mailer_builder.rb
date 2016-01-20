@@ -56,14 +56,14 @@ module Sipity
         work: 'Sipity::Decorators::Emails::WorkEmailDecorator',
         action: 'Sipity::Decorators::Emails::RegisteredActionDecorator',
         comment: 'Sipity::Decorators::Emails::ProcessingCommentDecorator'
-      }
+      }.freeze
       def initialize(name:, as:)
         self.name = name
         self.as = as
       end
 
       attr_reader :name, :as
-      alias_method :method_name, :name
+      alias method_name name
 
       def decorator
         AS_OPTIONS_LOOKUP.fetch(as).constantize

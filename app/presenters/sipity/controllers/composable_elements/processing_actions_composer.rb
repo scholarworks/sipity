@@ -58,10 +58,12 @@ module Sipity
         end
 
         def action_set_for(name:, identifier: nil)
-          if name.to_s == 'enrichment_actions'
-            collection = send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
-          else
-            collection = public_send(name)
+          collection = begin
+            if name.to_s == 'enrichment_actions'
+              send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
+            else
+              public_send(name)
+            end
           end
           Parameters::ActionSetParameter.new(identifier: identifier, collection: collection, entity: entity)
         end

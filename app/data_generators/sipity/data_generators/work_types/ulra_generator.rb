@@ -8,9 +8,9 @@ module Sipity
         ]
         PROCESSING_ROLE_NAMES = [
           Models::Role::CREATING_USER,
-          Models::Role::ADVISOR,
-          Models::Role::DATA_OBSERVER,
-          Models::Role::ULRA_REVIEWER
+          Models::Role::ADVISING,
+          Models::Role::DATA_OBSERVING,
+          Models::Role::ULRA_REVIEWING
         ]
         ULRA_REVIEW_COMMITTEE_GROUP_NAME = 'ULRA Review Committee'
       end

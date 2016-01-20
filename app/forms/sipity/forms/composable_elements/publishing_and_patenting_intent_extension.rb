@@ -22,6 +22,10 @@ module Sipity
           @form = input
         end
 
+        def default_repository
+          CommandRepository.new
+        end
+
         [
           [:work_patent_strategy, :work_patent_strategies],
           [:work_publication_strategy, :work_publication_strategies]
@@ -53,12 +57,6 @@ module Sipity
               Models::AdditionalAttribute.const_get(singular_name.to_s.upcase)
             end
           end
-        end
-
-        private
-
-        def default_repository
-          CommandRepository.new
         end
       end
     end

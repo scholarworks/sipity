@@ -9,7 +9,7 @@ module Sipity
       end
 
       class << self
-        alias_method :call, :generate_from_json_file
+        alias call  generate_from_json_file
       end
 
       # @param work_area [Sipity::Models::WorkArea]

@@ -7,8 +7,8 @@ module Sipity
       let(:strategy) { Models::Processing::Strategy.new(name: 'Hello') }
       let(:strategy_permissions_configuration) do
         [
-          { group: ["All Registered Users", "Somebody Else"], role: "work_submitter" },
-          { group: ["All Registered Users", "Taco Truck Drivers"], role: "etd_reviewer" }
+          { group: ["All Registered Users", "Somebody Else"], role: "work_submitting" },
+          { group: ["All Registered Users", "Taco Truck Drivers"], role: "etd_reviewing" }
         ]
       end
 

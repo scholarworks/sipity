@@ -26,7 +26,7 @@ module Sipity
         object.title.html_safe
       end
 
-      alias_method :to_s, :title
+      alias to_s  title
 
       def human_attribute_name(name)
         object.class.human_attribute_name(name)

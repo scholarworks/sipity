@@ -9,7 +9,7 @@ module Sipity
       end
 
       class << self
-        alias_method :call, :generate_from_json_file
+        alias call  generate_from_json_file
       end
 
       # @param data [#deep_symbolize_keys] the configuration information from which we will generate all the data entries
@@ -78,7 +78,7 @@ module Sipity
       end
 
       def find_or_create_strategy!
-        Models::Processing::Strategy.find_or_create_by!(name: "#{Models::WorkArea.class} processing")
+        Models::Processing::Strategy.find_or_create_by!(name: "#{Models::WorkArea} processing")
       end
 
       def find_or_create_work_area(attributes:)

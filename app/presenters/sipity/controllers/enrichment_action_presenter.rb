@@ -44,10 +44,10 @@ module Sipity
       end
 
       attr_reader :complete
-      alias_method :complete?, :complete
+      alias complete? complete
 
       attr_reader :a_prerequisite
-      alias_method :a_prerequisite?, :a_prerequisite
+      alias a_prerequisite? a_prerequisite
 
       def label
         TranslationAssistant.call(

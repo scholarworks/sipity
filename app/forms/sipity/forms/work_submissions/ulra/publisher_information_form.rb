@@ -52,7 +52,7 @@ module Sipity
             true
           end
 
-          alias_method :submitted_for_publication?, :submitted_for_publication
+          alias submitted_for_publication? submitted_for_publication
 
           private
 

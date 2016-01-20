@@ -6,37 +6,37 @@
     },
     "strategy_permissions": [{
       "group": "All Verified \"netid\" Users",
-      "role": "work_area_viewer"
+      "role": "work_area_viewing"
     }, {
       "group": "Graduate School Reviewers",
-      "role": "work_area_manager"
+      "role": "work_area_managing"
     }],
     "submission_window_config_paths": ["app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json"],
     "actions": [{
       "name": "show",
       "states": [{
         "name": ["new", "opened", "closed"],
-        "roles": "work_area_viewer"
+        "roles": "work_area_viewing"
       }]
     }, {
       "name": "open",
       "transition_to": "opened",
       "states": [{
         "name": ["new", "closed"],
-        "roles": "work_area_manager"
+        "roles": "work_area_managing"
       }]
     }, {
       "name": "close",
       "transition_to": "closed",
       "states": [{
         "name": ["opened", "new"],
-        "roles": "work_area_manager"
+        "roles": "work_area_managing"
       }]
     }, {
       "name": "start_a_submission",
       "states": [{
         "name": ["new", "opened"],
-        "roles": "work_area_viewer"
+        "roles": "work_area_viewing"
       }]
     }]
   }]

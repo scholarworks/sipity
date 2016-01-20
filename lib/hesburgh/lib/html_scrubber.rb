@@ -51,7 +51,7 @@ module Hesburgh
           return input unless input.is_a?(String)
           Loofah.fragment(input).scrub!(self).to_s.strip
         end
-        alias_method :call, :sanitize
+        alias call sanitize
 
         def scrub(node)
           return node.remove if script_node?(node)

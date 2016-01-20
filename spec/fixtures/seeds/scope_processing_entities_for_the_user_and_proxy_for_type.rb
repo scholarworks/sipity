@@ -6,8 +6,8 @@ end
 roles = {}
 [
   'creating_user',
-  'etd_reviewer',
-  'advisor'
+  "etd_reviewing",
+  'advising'
 ].each do |role_name|
   roles[role_name] = Sipity::Models::Role.find_or_create_by!(name: role_name)
 end
@@ -17,8 +17,8 @@ Sipity::DataGenerators::FindOrCreateWorkType.call(name: 'doctoral_dissertation')
 
   [
     'creating_user',
-    'etd_reviewer',
-    'advisor'
+    "etd_reviewing",
+    'advising'
   ].each do |role_name|
     etd_strategy_roles[role_name] = etd_strategy.strategy_roles.find_or_create_by!(role: roles.fetch(role_name))
   end
@@ -54,9 +54,9 @@ Sipity::DataGenerators::FindOrCreateWorkType.call(name: 'doctoral_dissertation')
 
   [
     ['new', 'submit_for_review', ['creating_user']],
-    ['new', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
-    ['new', 'describe', ['creating_user', 'etd_reviewer']],
-    ['under_advisor_review', 'show', ['creating_user', 'advisor', 'etd_reviewer']],
+    ['new', 'show', ['creating_user', 'advising', "etd_reviewing"]],
+    ['new', 'describe', ['creating_user', "etd_reviewing"]],
+    ['under_advisor_review', 'show', ['creating_user', 'advising', "etd_reviewing"]],
   ].each do |originating_state_name, action_name, role_names|
     action = etd_actions.fetch(action_name)
     originating_state = etd_states.fetch(originating_state_name)

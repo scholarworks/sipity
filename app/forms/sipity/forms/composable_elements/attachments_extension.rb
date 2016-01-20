@@ -15,7 +15,7 @@ module Sipity
         attr_reader :attachments_attributes, :files
         private(:form=, :repository=, :predicate_name=)
 
-        alias_method :attachment_predicate_name, :predicate_name
+        alias attachment_predicate_name predicate_name
 
         delegate :action, :work, :errors, to: :form
 

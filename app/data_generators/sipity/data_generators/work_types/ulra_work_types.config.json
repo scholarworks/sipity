@@ -4,7 +4,7 @@
       "name": "ulra_submission",
       "strategy_permissions": [{
         "group": "ULRA Review Committee",
-        "role": "ulra_reviewer"
+        "role": "ulra_reviewing"
       }],
       "actions": [{
         "name": "start_a_submission",
@@ -14,13 +14,13 @@
           "to": "creating_user"
         }, {
           "name": "faculty_assigned_for_ulra_submission",
-          "to": "advisor"
+          "to": "advising"
         }]
       }, {
         "name": "debug",
         "states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
-          "roles": ["ulra_reviewer"]
+          "roles": ["ulra_reviewing"]
         }],
         "attributes": {
           "presentation_sequence": 2
@@ -29,7 +29,7 @@
         "name": "show",
         "states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
-          "roles": ["creating_user", "advisor", "ulra_reviewer"]
+          "roles": ["creating_user", "advising", "ulra_reviewing"]
         }],
         "attributes": {
           "presentation_sequence": 1
@@ -38,10 +38,10 @@
         "name": "destroy",
         "states": [{
           "name": ["new", "pending_advisor_completion", "pending_student_completion"],
-          "roles": ["creating_user", "ulra_reviewer"]
+          "roles": ["creating_user", "ulra_reviewing"]
         }, {
           "name": "under_review",
-          "roles": ["ulra_reviewer"]
+          "roles": ["ulra_reviewing"]
         }],
         "attributes": {
           "presentation_sequence": 3
@@ -68,7 +68,7 @@
         "name": "access_policy",
         "states": [{
           "name": ["new", "pending_advisor_completion"],
-          "roles": ["creating_user", "advisor"]
+          "roles": ["creating_user", "advising"]
         }, {
           "name": ["pending_student_completion", "under_review"],
           "roles": ["creating_user"]
@@ -107,7 +107,7 @@
         "name": "faculty_response",
         "states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
-          "roles": ["advisor"]
+          "roles": ["advising"]
         }]
       }, {
         "name": "submit_student_portion",
@@ -118,7 +118,7 @@
         "transition_to": "pending_advisor_completion",
         "emails": [{
           "name": "student_completed_their_portion_of_ulra",
-          "to": "advisor",
+          "to": "advising",
           "cc": "creating_user"
         }],
         "required_actions": ["project_information", "attach", "access_policy", "plan_of_study", "publisher_information", "research_process"]
@@ -126,13 +126,13 @@
         "name": "submit_advisor_portion",
         "states": [{
           "name": "new",
-          "roles": ["advisor"]
+          "roles": ["advising"]
         }],
         "transition_to": "pending_student_completion",
         "emails": [{
           "name": "faculty_completed_their_portion_of_ulra",
           "to": "creating_user",
-          "cc": "advisor"
+          "cc": "advising"
         }],
         "required_actions": ["access_policy", "faculty_response"]
       }, {
@@ -142,20 +142,20 @@
           "roles": ["creating_user"]
         }, {
           "name": "pending_advisor_completion",
-          "roles": ["advisor"]
+          "roles": ["advising"]
         }],
         "transition_to": "under_review",
         "emails": [{
           "name": "confirmation_of_submitted_to_ulra_committee",
           "to": "creating_user",
-          "cc": "advisor"
+          "cc": "advising"
         }],
         "required_actions": ["attach", "plan_of_study", "publisher_information", "research_process", "faculty_response"]
       }, {
         "name": "submit_completed_review",
         "states": [{
           "name": "under_review",
-          "roles": "ulra_reviewer"
+          "roles": "ulra_reviewing"
         }],
         "transition_to": "review_completed"
       }],
@@ -164,7 +164,7 @@
         "reason": "processing_hook_triggered",
         "emails": [{
           "name": "student_has_indicated_attachments_are_complete",
-          "to": "ulra_reviewer"
+          "to": "ulra_reviewing"
         }]
       }]
     }

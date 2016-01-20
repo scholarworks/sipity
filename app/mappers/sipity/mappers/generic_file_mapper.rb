@@ -91,7 +91,7 @@ module Sipity
       def file_access_right_code
         file_access_rights.access_right_code
       end
-      alias_method :access_right_code, :file_access_right_code
+      alias access_right_code file_access_right_code
 
       def creators
         @creators ||= repository.scope_creating_users_for_entity(entity: work).map(&:username)
@@ -166,11 +166,8 @@ module Sipity
       end
 
       def date_convert(sql_date)
-        if sql_date.present?
-          return sql_date.to_date.strftime('%FZ')
-        else
-          return sql_date
-        end
+        return sql_date.to_date.strftime('%FZ') if sql_date.present?
+        sql_date
       end
 
       def create_content_in(content_file_path)

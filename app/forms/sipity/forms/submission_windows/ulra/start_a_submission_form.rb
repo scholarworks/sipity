@@ -93,10 +93,8 @@ module Sipity
             end
           end
 
-          alias_method :to_work_area, :work_area
+          alias to_work_area work_area
           public :to_work_area
-
-          private
 
           def initialize_attributes(attributes)
             self.work_type = default_work_type

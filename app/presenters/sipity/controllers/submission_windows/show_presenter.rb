@@ -6,7 +6,7 @@ module Sipity
       # @see Sipity::Forms::Core::SubmissionWindows::ShowForm for interface
       class ShowPresenter < SubmissionWindowPresenter
         RENDER_METHOD_PREFIX = "render_submission_window_for_".freeze
-        RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/.freeze
+        RENDER_METHOD_WORK_TYPE_REGEXP = /\A#{RENDER_METHOD_PREFIX}.*\Z/
         def render_submission_window
           # HACK: Oh boy is this ugly, but it delivers what I am after.
           # It also draws attention to the new rendering that I'm after

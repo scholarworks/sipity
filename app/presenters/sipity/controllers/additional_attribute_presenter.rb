@@ -33,7 +33,7 @@ module Sipity
       attr_reader :additional_attribute
 
       RENDER_METHOD_PREFIX = 'render_value_for_'.freeze
-      RENDER_METHOD_REGEXP = /\A#{RENDER_METHOD_PREFIX}/.freeze
+      RENDER_METHOD_REGEXP = /\A#{RENDER_METHOD_PREFIX}/
 
       def method_name_for_render_key_value
         "#{RENDER_METHOD_PREFIX}#{PowerConverter.convert_to_safe_for_method_name(key)}"
@@ -42,8 +42,8 @@ module Sipity
       def render_titleized_value(value)
         value.to_s.titleize
       end
-      alias_method :render_value_for_work_patent_strategy, :render_titleized_value
-      alias_method :render_value_for_work_publication_strategy, :render_titleized_value
+      alias render_value_for_work_patent_strategy render_titleized_value
+      alias render_value_for_work_publication_strategy render_titleized_value
 
       def method_missing(method_name, *args, &block)
         match = RENDER_METHOD_REGEXP.match(method_name)

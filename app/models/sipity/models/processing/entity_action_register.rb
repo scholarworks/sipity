@@ -19,8 +19,8 @@ module Sipity
         belongs_to :on_behalf_of_actor, class_name: 'Sipity::Models::Processing::Actor'
         belongs_to :subject, polymorphic: true
 
-        alias_method :to_processing_action, :strategy_action
-        alias_method :to_processing_entity, :entity
+        alias to_processing_action  strategy_action
+        alias to_processing_entity  entity
         delegate :proxy_for, to: :entity
       end
     end

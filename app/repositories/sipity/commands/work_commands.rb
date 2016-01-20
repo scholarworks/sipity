@@ -26,7 +26,7 @@ module Sipity
           collaborator.work_id = work.id
           collaborator.save!
           next unless collaborator.responsible_for_review?
-          repository.grant_permission_for!(actors: collaborator, entity: work, acting_as: Models::Role::ADVISOR)
+          repository.grant_permission_for!(actors: collaborator, entity: work, acting_as: Models::Role::ADVISING)
         end
       end
 
