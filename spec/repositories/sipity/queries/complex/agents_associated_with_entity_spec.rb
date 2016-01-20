@@ -96,26 +96,30 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
     it 'will return a well defined data structure' do
       results = subject.all_for(entity: entity)
       sorted_results = results.map(&:attributes).sort { |a, b| a.fetch('identifier_id') <=> b.fetch('identifier_id') }
-      expect(sorted_results).to eq([
-        {
-          "id" => 0, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "abc", "entity_id" => "1",
-          "permission_grant_level" => "entity_level"
-        }, {
-          "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
-          "permission_grant_level" => "strategy_level"
-        }
-      ])
+      expect(sorted_results).to eq(
+        [
+          {
+            "id" => 0, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "abc", "entity_id" => "1",
+            "permission_grant_level" => "entity_level"
+          }, {
+            "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
+            "permission_grant_level" => "strategy_level"
+          }
+        ]
+      )
     end
 
     it 'will allow for specific roles' do
       results = subject.all_for(entity: entity, role: 'creating_user')
       sorted_results = results.map(&:attributes).sort { |a, b| a.fetch('identifier_id') <=> b.fetch('identifier_id') }
-      expect(sorted_results).to eq([
-        {
-          "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
-          "permission_grant_level" => "strategy_level"
-        }
-      ])
+      expect(sorted_results).to eq(
+        [
+          {
+            "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
+            "permission_grant_level" => "strategy_level"
+          }
+        ]
+      )
     end
 
     it 'will allow fetch of attributes' do
