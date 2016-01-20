@@ -3,7 +3,7 @@ class CreateCollaboratorSpecificResponsibility < ActiveRecord::Migration
     Sipity::Models::Collaborator.where(responsible_for_review: true).find_each do |collaborator|
       next unless collaborator.email.present?
       entity = Sipity::Conversions::ConvertToProcessingEntity(collaborator.work)
-      role = Sipity::Models::Role::ADVISOR
+      role = Sipity::Models::Role::ADVISING
       Sipity::Services::ProcessingPermissionHandler.grant(role: role, entity: entity, identifiable: collaborator)
     end
   end

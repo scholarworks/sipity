@@ -13,7 +13,7 @@ module Sipity
       let(:to_emails) { ['hello@world.com'] }
       let(:cc_emails) { ['goodbye@cruelworld.com'] }
       let(:bcc_emails) { [] }
-      let(:role_for_cc) { Models::Role.new(name: 'advisor') }
+      let(:role_for_cc) { Models::Role.new(name: 'advising') }
       let(:email) do
         Models::Notification::Email.new(method_name: 'notification_method_name') do |email|
           email.recipients.build(role: role_for_to, recipient_strategy: 'to')

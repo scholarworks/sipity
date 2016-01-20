@@ -55,8 +55,8 @@ module Sipity
       context '#scope_users_for_entity_and_roles' do
         it "will leverage Complex::AgentsAssociatedWithEntity" do
           entity = Sipity::Models::Processing::Entity.new
-          expect_any_instance_of(Complex::AgentsAssociatedWithEntity).to receive(:each).with(roles: Models::Role::ADVISOR)
-          test_repository.scope_users_for_entity_and_roles(entity: entity, roles: Models::Role::ADVISOR)
+          expect_any_instance_of(Complex::AgentsAssociatedWithEntity).to receive(:each).with(roles: Models::Role::ADVISING)
+          test_repository.scope_users_for_entity_and_roles(entity: entity, roles: Models::Role::ADVISING)
         end
       end
 

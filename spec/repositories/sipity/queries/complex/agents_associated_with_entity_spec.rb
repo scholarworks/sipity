@@ -6,7 +6,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
   let(:agent_1) { double('Agent', identifier_id: '123') }
   let(:agent_2) { double('Agent', identifier_id: '456') }
   let(:aggregate_1) { double(role_name: 'creating_user') }
-  let(:aggregate_2) { double(role_name: 'etd_reviewer') }
+  let(:aggregate_2) { double(role_name: 'etd_reviewing') }
   let(:role_and_identifier_ids_finder) { double('Finder', call: [role_identifier_1, role_identifier_2]) }
   let(:agents_finder) { double('AgentsFinder', call: [agent_1, agent_2]) }
   let(:aggregator) { double('Aggregator', call: [aggregate_1, aggregate_2]) }
@@ -39,7 +39,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity do
 
     it 'will allow you to limit on a given set of roles' do
       # Mixing both role and a role_name
-      roles = [Sipity::Models::Role.new(name: 'creating_user'), 'etd_reviewer']
+      roles = [Sipity::Models::Role.new(name: 'creating_user'), 'etd_reviewing']
       aggregate_3 = double(role_name: 'h')
       expect(subject).to receive(:aggregated_data).and_return([aggregate_1, aggregate_2, aggregate_3])
       expect { |b| subject.each(roles: roles, &b) }.to yield_successive_args(aggregate_1, aggregate_2)
@@ -74,8 +74,8 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
   subject { described_class }
   let(:entity) { Sipity::Models::Processing::Entity.new(id: 1, strategy_id: 2) }
   let(:role_creating_user) { Sipity::Models::Role.create!(name: 'creating_user') }
-  let(:role_etd_reviewer) { Sipity::Models::Role.create!(name: 'etd_reviewer') }
-  let(:role_advisor) { Sipity::Models::Role.create!(name: 'advisor') }
+  let(:role_etd_reviewer) { Sipity::Models::Role.create!(name: 'etd_reviewing') }
+  let(:role_advisor) { Sipity::Models::Role.create!(name: 'advising') }
   let(:strategy_role_creating_user) do
     Sipity::Models::Processing::StrategyRole.create!(role: role_creating_user, strategy_id: entity.strategy_id)
   end
@@ -99,7 +99,7 @@ RSpec.describe Sipity::Queries::Complex::AgentsAssociatedWithEntity::RoleIdentif
       expect(sorted_results).to eq(
         [
           {
-            "id" => 0, "role_id" => 2, "role_name" => "etd_reviewer", "identifier_id" => "abc", "entity_id" => "1",
+            "id" => 0, "role_id" => 2, "role_name" => "etd_reviewing", "identifier_id" => "abc", "entity_id" => "1",
             "permission_grant_level" => "entity_level"
           }, {
             "id" => 0, "role_id" => 3, "role_name" => "creating_user", "identifier_id" => "def", "entity_id" => "1",
