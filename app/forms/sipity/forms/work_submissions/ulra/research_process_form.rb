@@ -10,7 +10,7 @@ module Sipity
         class ResearchProcessForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:resource_consulted, :other_resource_consulted, :citation_style]
+            attribute_names: [:resource_consulted, :other_resource_consulted]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -35,22 +35,16 @@ module Sipity
           private(:attach_or_update_files)
 
           include ActiveModel::Validations
-          validates :citation_style, presence: true
           validate :at_least_one_file_must_be_attached
 
           def available_resource_consulted
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'resource_consulted')
           end
 
-          def available_citation_style
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'citation_style')
-          end
-
           def submit
             processing_action_form.submit do
               repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
               repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
-              repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
               attach_or_update_files(requested_by: requested_by)
             end
           end
@@ -62,7 +56,6 @@ module Sipity
             self.other_resource_consulted = attributes.fetch(:other_resource_consulted) do
               retrieve_from_work(key: 'other_resource_consulted').first
             end
-            self.citation_style = attributes.fetch(:citation_style) { retrieve_from_work(key: 'citation_style').first }
           end
 
           def resource_consulted=(values)
