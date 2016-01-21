@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
+require 'sipity/forms/work_submissions/ulra/attach_form'
 
 module Sipity
   module ProcessingHooks
@@ -24,7 +25,7 @@ module Sipity
                 ).and_call_original
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: entity, key: 'attached_files_completion_state', cardinality: 1).
-                and_return('complete')
+                and_return(Forms::WorkSubmissions::Ulra::AttachForm::COMPLETE_STATE)
 
               subject.call(entity: entity, action: action, requested_by: user, repository: repository)
             end
