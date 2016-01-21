@@ -9,8 +9,8 @@
       <%= f.input :award_category, as: :radio_buttons, collection: view_object.award_categories_for_select, label: false %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'course_information', theme: :primary, object: view_object }) do %>
-      <%= f.input :course_name %>
-      <%= f.input :course_number %>
+      <%= f.input :course_name, hint: "e.g., Le patrimoine un concept en crise" %>
+      <%= f.input :course_number, hint: "e.g., ROFR 30604" %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'advisor_netid', theme: :primary, object: view_object }) do %>
       <%= f.input :advisor_netid %>
