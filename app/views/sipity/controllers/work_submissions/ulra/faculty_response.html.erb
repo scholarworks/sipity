@@ -8,6 +8,13 @@
   <fieldset class="panel-body">
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
+    <p class="panel-hint">The letter of recommendation you upload will only be visible to:
+      <ul>
+        <li><strong>you</strong></li>
+        <li>review <strong>committee</strong> members</li>
+        <li>the <strong>student</strong> for whom you are submitting this letter of recommendation</li>
+      </ul>
+    </p>
     <div class="panel-tiles">
       <%= f.input :files, as: :file, input_html: { multiple: false }, label: "Upload letter of recommendation" %>
       <% if model.attachments.any? %>
