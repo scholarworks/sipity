@@ -110,7 +110,7 @@ en:
       terms_of_service:
         title_html: 'Terms of Service'
   sipity/decorators/entitiy_enrichments:
-    cancel: 'Return without saving'
+    cancel: 'Cancel'
     panels:
       program_name:
         title_html: 'Please choose a <b>program name</b> for this work'
