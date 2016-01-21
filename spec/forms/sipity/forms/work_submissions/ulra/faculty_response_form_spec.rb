@@ -16,7 +16,7 @@ module Sipity
           its(:processing_action_name) { should eq('faculty_response') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
-          its(:attachment_predicate_name) { should eq('faculty_comments_attachment') }
+          its(:attachment_predicate_name) { should eq('faculty_letter_of_recommendation') }
 
           context 'class configuration' do
             subject { described_class }
