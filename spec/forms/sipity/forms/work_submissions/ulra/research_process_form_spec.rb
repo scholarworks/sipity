@@ -14,7 +14,7 @@ module Sipity
           subject { described_class.new(keywords) }
 
           its(:processing_action_name) { should eq('research_process') }
-          its(:attachment_predicate_name) { should eq('application_essay') }
+          its(:attachment_predicate_name) { should eq('submission_essay') }
           its(:base_class) { should eq(Models::Work) }
 
           context 'class configuration' do
@@ -30,7 +30,6 @@ module Sipity
           it { should respond_to :files }
           it { should_not be_persisted }
 
-          it { should delegate_method(:attachment_predicate_name).to(:attachments_extension) }
           it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
           it { should delegate_method(:attachments).to(:attachments_extension) }
 
