@@ -24,8 +24,8 @@ module Sipity
           end
 
           it { should respond_to :work }
-          it { should respond_to :resource_consulted }
-          it { should respond_to :other_resource_consulted }
+          it { should respond_to :resources_consulted }
+          it { should respond_to :other_resources_consulted }
           it { should respond_to :attachments }
           it { should respond_to :files }
           it { should_not be_persisted }
@@ -37,9 +37,9 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
 
           it 'will have #available_resouce_consulted' do
-            expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resource_consulted').
+            expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resources_consulted').
               and_return(['some value', 'bogus'])
-            expect(subject.available_resource_consulted).to be_a(Array)
+            expect(subject.available_resources_consulted).to be_a(Array)
           end
 
           it 'will validate at_least_one_file_must_be_attached' do
@@ -74,16 +74,16 @@ module Sipity
 
           context 'retrieving values from the repository' do
             context 'with data from the database' do
-              let(:resource_consulted) { ['dummy', 'test'] }
-              let(:other_resource_consulted) { 'some other value' }
+              let(:resources_consulted) { ['dummy', 'test'] }
+              let(:other_resources_consulted) { 'some other value' }
               subject { described_class.new(keywords) }
-              it 'will return the resource_consulted of the work' do
+              it 'will return the resources_consulted of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'resource_consulted').and_return(resource_consulted)
+                  with(work: work, key: 'resources_consulted').and_return(resources_consulted)
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'other_resource_consulted').and_return(other_resource_consulted)
-                expect(subject.resource_consulted).to eq resource_consulted
-                expect(subject.other_resource_consulted).to eq other_resource_consulted
+                  with(work: work, key: 'other_resources_consulted').and_return(other_resources_consulted)
+                expect(subject.resources_consulted).to eq resources_consulted
+                expect(subject.other_resources_consulted).to eq other_resources_consulted
               end
             end
           end
@@ -101,7 +101,7 @@ module Sipity
               subject do
                 described_class.new(
                   keywords.merge(
-                    attributes: { resource_consulted: 'a resource', other_resource_consulted: 'another' }
+                    attributes: { resources_consulted: 'a resource', other_resources_consulted: 'another' }
                   )
                 )
               end
@@ -110,7 +110,7 @@ module Sipity
               end
 
               it 'will add additional attributes entries' do
-                expect(repository).to receive(:update_work_attribute_values!).exactly(3).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).exactly(2).and_call_original
                 subject.submit
               end
             end

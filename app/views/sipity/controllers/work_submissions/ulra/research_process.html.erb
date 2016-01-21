@@ -30,8 +30,8 @@
             <% end %>
           </ol>
         <% end %>
-        <%= f.input :resource_consulted, as: :check_boxes, collection: model.available_resource_consulted  %>
-        <%= f.input :other_resource_consulted, as: :text, input_html: { class: 'form-control' } %>
+        <%= f.input :resources_consulted, as: :check_boxes, collection: model.available_resources_consulted  %>
+        <%= f.input :other_resources_consulted, as: :text, input_html: { class: 'form-control' } %>
       </fieldset>
     </div>
   </fieldset>
