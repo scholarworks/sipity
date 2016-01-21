@@ -16,7 +16,13 @@
     <%= f.error :base, error_method: :to_sentence %>
 
     <%= f.input :project_url, input_html: { class: 'form-control' } %>
-    <%= f.input :attached_files_completion_state, collection: model.possible_attached_files_completion_states, input_html: { class: 'form-control' } %>
+    <%= f.input(
+                  :attached_files_completion_state,
+                  collection: model.possible_attached_files_completion_states,
+                  input_html: { class: 'form-control' },
+                  label: "I am submitting the",
+                  hint: "You may upload your final version at later. However, the final version of your project must be provided before you receive any monetary award."
+               )%>
 
     <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Upload project file(s)", hint: "To select multiple files: Windows Ctrl+click; Mac Cmd+click" %>
 
