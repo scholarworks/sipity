@@ -199,15 +199,19 @@ en:
       label: "Add <b>program name</b> for your %{work_type}"
     work_type/ulra_submission:
       project_information:
-        label: "Tell us about your <b>Project</b>"
+        label: "Tell us about your <b>project</b>"
       plan_of_study:
-        label: "Tell us more about your <b>Plan of Study</b>"
+        label: "Tell us more about <b>yourself</b>"
       research_process:
-        label: "Explain your <b>Research Process</b>"
+        label: "Describe how you used <b>library resources</b>"
       publisher_information:
-        label: "Provide additional <b>Publication Information</b>"
+        label: "Provide additional <b>publication information</b>"
       faculty_response:
-        label: "Attach your <b>Letter of Recommendation</b>"
+        label: "Attach your <b>letter of recommendation</b>"
+      attach:
+        label: "<b>Attach</b> project files to this %{work_type}"
+      access_policy:
+        label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
     show:
       work_area/self-deposit:
         start_a_submission:
