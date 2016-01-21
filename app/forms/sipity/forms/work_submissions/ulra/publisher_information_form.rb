@@ -10,7 +10,7 @@ module Sipity
         class PublisherInformationForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:publication_name, :submission_accepted_for_publication, :submitted_for_publication]
+            attribute_names: [:publication_name, :publication_status_of_submission, :submitted_for_publication]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
@@ -18,18 +18,18 @@ module Sipity
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
             self.publication_name = attributes.fetch(:publication_name) { publication_name_from_work }
-            self.submission_accepted_for_publication = attributes.fetch(:submission_accepted_for_publication) do
-              submission_accepted_for_publication_from_work
+            self.publication_status_of_submission = attributes.fetch(:publication_status_of_submission) do
+              publication_status_of_submission_from_work
             end
             self.submitted_for_publication = attributes.fetch(:submitted_for_publication) { submitted_for_publication_from_work }
           end
 
           include ActiveModel::Validations
           include Hydra::Validations
-          validates :publication_name, presence: { if: :submission_accepted_for_publication? }
+          validates :publication_name, presence: { if: :publication_status_of_submission? }
           validates(
-            :submission_accepted_for_publication,
-            inclusion: { in: :possible_submission_accepted_for_publication, if: :submitted_for_publication? }
+            :publication_status_of_submission,
+            inclusion: { in: :possible_publication_status_of_submission, if: :submitted_for_publication? }
           )
 
           def submit
@@ -37,18 +37,18 @@ module Sipity
               repository.update_work_attribute_values!(work: work, key: 'publication_name', values: publication_name)
               repository.update_work_attribute_values!(work: work, key: 'submitted_for_publication', values: submitted_for_publication)
               repository.update_work_attribute_values!(
-                work: work, key: 'submission_accepted_for_publication', values: submission_accepted_for_publication
+                work: work, key: 'publication_status_of_submission', values: publication_status_of_submission
               )
             end
           end
 
-          def possible_submission_accepted_for_publication
+          def possible_publication_status_of_submission
             ['Yes', 'No', 'Pending']
           end
 
-          def submission_accepted_for_publication?
-            return false unless submission_accepted_for_publication.present?
-            return false if submission_accepted_for_publication == 'No'
+          def publication_status_of_submission?
+            return false unless publication_status_of_submission.present?
+            return false if publication_status_of_submission == 'No'
             true
           end
 
@@ -60,8 +60,8 @@ module Sipity
             Array.wrap(repository.work_attribute_values_for(work: work, key: 'publication_name', cardinality: :many))
           end
 
-          def submission_accepted_for_publication_from_work
-            repository.work_attribute_values_for(work: work, key: 'submission_accepted_for_publication', cardinality: 1)
+          def publication_status_of_submission_from_work
+            repository.work_attribute_values_for(work: work, key: 'publication_status_of_submission', cardinality: 1)
           end
 
           def submitted_for_publication_from_work

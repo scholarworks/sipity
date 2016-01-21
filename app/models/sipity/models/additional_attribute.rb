@@ -44,7 +44,7 @@ module Sipity
       RESOURCES_CONSULTED_NAME = 'resources_consulted'.freeze
       SPATIAL_COVERAGE = 'spatial_coverage'.freeze
       SUBJECT = 'subject'.freeze
-      SUBMISSION_ACCEPTED_FOR_PUBLICATION = 'submission_accepted_for_publication'.freeze
+      PUBLICATION_STATUS_OF_SUBMISSION = 'publication_status_of_submission'.freeze
       SUBMITTED_FOR_PUBLICATION = 'submitted_for_publication'.freeze
       TEMPORAL_COVERAGE = 'temporal_coverage'.freeze
       USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME = 'use_of_library_resources'.freeze
@@ -90,7 +90,7 @@ module Sipity
           RESOURCES_CONSULTED_NAME => RESOURCES_CONSULTED_NAME,
           SPATIAL_COVERAGE => SPATIAL_COVERAGE,
           SUBJECT => SUBJECT,
-          SUBMISSION_ACCEPTED_FOR_PUBLICATION => SUBMISSION_ACCEPTED_FOR_PUBLICATION,
+          PUBLICATION_STATUS_OF_SUBMISSION => PUBLICATION_STATUS_OF_SUBMISSION,
           SUBMITTED_FOR_PUBLICATION => SUBMITTED_FOR_PUBLICATION,
           TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
           USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME => USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME,

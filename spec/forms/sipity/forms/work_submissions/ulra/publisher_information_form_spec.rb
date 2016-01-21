@@ -14,7 +14,7 @@ module Sipity
             {
               requested_by: user, work: work, repository: repository,
               attributes: {
-                submitted_for_publication: true, submission_accepted_for_publication: true
+                submitted_for_publication: true, publication_status_of_submission: true
               }
             }
           end
@@ -33,27 +33,27 @@ module Sipity
           it { should respond_to :work }
           it { should respond_to :entity }
           it { should respond_to :publication_name }
-          it { should respond_to :submission_accepted_for_publication }
+          it { should respond_to :publication_status_of_submission }
           it { should_not be_persisted }
 
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of :publication_name }
           it do
             should validate_inclusion_of(
-              :submission_accepted_for_publication
-            ).in_array(subject.possible_submission_accepted_for_publication)
+              :publication_status_of_submission
+            ).in_array(subject.possible_publication_status_of_submission)
           end
 
-          context '#submission_accepted_for_publication?' do
+          context '#publication_status_of_submission?' do
             [
               [nil, false],
               ['Yes', true],
               ['Pending', true],
               ['No', false]
             ].each do |value, answer|
-              it "is #{answer.inspect} when submission_accepted_for_publication is #{value.inspect}" do
-                subject = described_class.new(keywords.merge(attributes: { submission_accepted_for_publication: value }))
-                expect(subject.submission_accepted_for_publication?).to eq(answer)
+              it "is #{answer.inspect} when publication_status_of_submission is #{value.inspect}" do
+                subject = described_class.new(keywords.merge(attributes: { publication_status_of_submission: value }))
+                expect(subject.publication_status_of_submission?).to eq(answer)
               end
             end
           end
@@ -64,7 +64,7 @@ module Sipity
                 work: work, key: 'publication_name', cardinality: :many
               )
               allow(repository).to receive(:work_attribute_values_for).with(
-                work: work, key: 'submission_accepted_for_publication', cardinality: 1
+                work: work, key: 'publication_status_of_submission', cardinality: 1
               )
               allow(repository).to receive(:work_attribute_values_for).with(
                 work: work, key: 'submitted_for_publication', cardinality: 1
@@ -83,20 +83,20 @@ module Sipity
             end
           end
 
-          context '#submission_accepted_for_publication' do
+          context '#publication_status_of_submission' do
             before do
               allow(repository).to receive(:work_attribute_values_for)
             end
             it 'will be the input via the #form' do
-              subject = described_class.new(keywords.merge(attributes: { submission_accepted_for_publication: 'Pending' }))
-              expect(subject.submission_accepted_for_publication).to eq('Pending')
+              subject = described_class.new(keywords.merge(attributes: { publication_status_of_submission: 'Pending' }))
+              expect(subject.publication_status_of_submission).to eq('Pending')
             end
-            it 'will fall back on #submission_accepted_for_publication information associated with the work' do
+            it 'will fall back on #publication_status_of_submission information associated with the work' do
               expect(repository).to receive(
                 :work_attribute_values_for
-              ).with(work: work, key: 'submission_accepted_for_publication', cardinality: 1).and_return('Yes')
+              ).with(work: work, key: 'publication_status_of_submission', cardinality: 1).and_return('Yes')
               subject = described_class.new(requested_by: user, work: work, repository: repository)
-              expect(subject.submission_accepted_for_publication).to eq('Yes')
+              expect(subject.publication_status_of_submission).to eq('Yes')
             end
           end
 
@@ -112,7 +112,7 @@ module Sipity
 
             context 'with valid data' do
               subject do
-                described_class.new(keywords.merge(attributes: { publication_name: 'bogus', submission_accepted_for_publication: true }))
+                described_class.new(keywords.merge(attributes: { publication_name: 'bogus', publication_status_of_submission: true }))
               end
               before do
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield
@@ -125,7 +125,7 @@ module Sipity
                 ).with(work: work, key: 'publication_name', values: 'bogus').and_call_original
                 expect(repository).to receive(
                   :update_work_attribute_values!
-                ).with(work: work, key: 'submission_accepted_for_publication', values: true).and_call_original
+                ).with(work: work, key: 'publication_status_of_submission', values: true).and_call_original
                 expect(repository).to receive(
                   :update_work_attribute_values!
                 ).with(work: work, key: 'submitted_for_publication', values: false).and_call_original
