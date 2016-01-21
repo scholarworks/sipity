@@ -246,8 +246,8 @@ en:
       label: "Doctoral Dissertation"
       curate_nd_label: "Doctoral Dissertation"
     ulra_submission:
-      label: "ULRA Submission"
-      curate_nd_label: "ULRA Submission"
+      label: "ULRA Application"
+      curate_nd_label: "ULRA Application"
   access_rights:
     models/attachment:
       title:
