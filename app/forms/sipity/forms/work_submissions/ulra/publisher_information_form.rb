@@ -26,7 +26,7 @@ module Sipity
 
           include ActiveModel::Validations
           include Hydra::Validations
-          validates :publication_name, presence: { if: :publication_status_of_submission? }
+          validates :publication_name, presence: { if: :publication_name_required? }
           validates(
             :publication_status_of_submission,
             inclusion: { in: :possible_publication_status_of_submission, if: :submitted_for_publication? }
@@ -42,13 +42,15 @@ module Sipity
             end
           end
 
+          POSSIBLE_PUBLICATION_STATUS_OF_SUBMISSION = ['Accepted'.freeze, 'Not Accepted'.freeze, 'Under Review'.freeze].freeze
+
           def possible_publication_status_of_submission
-            ['Yes', 'No', 'Pending']
+            POSSIBLE_PUBLICATION_STATUS_OF_SUBMISSION
           end
 
-          def publication_status_of_submission?
+          def publication_name_required?
             return false unless publication_status_of_submission.present?
-            return false if publication_status_of_submission == 'No'
+            return false if publication_status_of_submission == 'Not Accepted'
             true
           end
 

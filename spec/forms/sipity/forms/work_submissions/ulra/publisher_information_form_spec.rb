@@ -44,16 +44,16 @@ module Sipity
             ).in_array(subject.possible_publication_status_of_submission)
           end
 
-          context '#publication_status_of_submission?' do
+          context '#publication_name_required?' do
             [
               [nil, false],
-              ['Yes', true],
-              ['Pending', true],
-              ['No', false]
+              ['Accepted', true],
+              ['Under Review', true],
+              ['Not Accepted', false]
             ].each do |value, answer|
               it "is #{answer.inspect} when publication_status_of_submission is #{value.inspect}" do
                 subject = described_class.new(keywords.merge(attributes: { publication_status_of_submission: value }))
-                expect(subject.publication_status_of_submission?).to eq(answer)
+                expect(subject.publication_name_required?).to eq(answer)
               end
             end
           end
