@@ -28,6 +28,19 @@ PowerConverter.define_conversion_for(:boolean) do |input|
   end
 end
 
+PowerConverter.define_conversion_for(:catalog_system_number) do |input|
+  case input
+  when Float
+    nil
+  else
+    begin
+      format("%09d", input)
+    rescue ArgumentError, TypeError
+      nil
+    end
+  end
+end
+
 PowerConverter.define_conversion_for(:demodulized_class_name) do |input|
   case input
   when Symbol, String

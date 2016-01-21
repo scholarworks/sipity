@@ -19,6 +19,13 @@ module Sipity
           it { should validate_presence_of(:oclc_number) }
           it { should validate_presence_of(:catalog_system_number) }
 
+          context '#catalog_system_number' do
+            it "will prepend 0s for catalog_system_number's smaller than 9 digits" do
+              subject = described_class.new(keywords.merge(attributes: { catalog_system_number: '123' }))
+              expect(subject.catalog_system_number).to eq('000000123')
+            end
+          end
+
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
               form_object = double('Form Object')
