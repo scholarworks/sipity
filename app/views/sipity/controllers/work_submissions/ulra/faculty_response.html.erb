@@ -9,7 +9,7 @@
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <div class="panel-tiles">
-      <%= f.input :files, as: :file, input_html: { multiple: false } %>
+      <%= f.input :files, as: :file, input_html: { multiple: false }, label: "Upload letter of recommendation" %>
       <% if model.attachments.any? %>
         <ol class="attachment-listing">
           <%= f.fields_for :attachments do |attachment_form| %>
