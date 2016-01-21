@@ -48,7 +48,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
-              predicate_name: 'faculty_comments_attachment',
+              predicate_name: 'faculty_letter_of_recommendation',
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

@@ -75,7 +75,9 @@ module Sipity
           context '#submit' do
             subject { described_class.new(keywords) }
             context 'with invalid data' do
-              let(:attributes) { { title: "This is my title", advisor_netid: 'dummy_id', award_category: 'some_category' } }
+              let(:attributes) do
+                { title: "This is my title", advisor_name: 'a name', advisor_netid: 'dummy_id', award_category: 'some_category' }
+              end
               it 'will not create a a work' do
                 allow(subject).to receive(:valid?).and_return(false)
                 expect { subject.submit }.
@@ -91,7 +93,7 @@ module Sipity
               let(:work) { Sipity::Models::Work.new(id: 1) }
               let(:attributes) do
                 {
-                  title: 'Hello', access_rights_answer: 'right answer',
+                  title: 'Hello', access_rights_answer: 'right answer', advisor_name: 'a name',
                   course_name: 'a name', course_number: 'a number', award_category: 'a category', advisor_netid: 'a netid'
                 }
               end

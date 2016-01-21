@@ -62,7 +62,7 @@
           "roles": ["creating_user"]
         }],
         "attributes": {
-          "presentation_sequence": 2
+          "presentation_sequence": 5
         }
       }, {
         "name": "access_policy",
@@ -74,7 +74,7 @@
           "roles": ["creating_user"]
         }],
         "attributes": {
-          "presentation_sequence": 3
+          "presentation_sequence": 6
         }
       }, {
         "name": "plan_of_study",
@@ -83,7 +83,7 @@
           "roles": ["creating_user"]
         }],
         "attributes": {
-          "presentation_sequence": 4
+          "presentation_sequence": 2
         }
       }, {
         "name": "publisher_information",
@@ -92,7 +92,7 @@
           "roles": ["creating_user"]
         }],
         "attributes": {
-          "presentation_sequence": 6
+          "presentation_sequence": 4
         }
       }, {
         "name": "research_process",
@@ -101,7 +101,7 @@
           "roles": ["creating_user"]
         }],
         "attributes": {
-          "presentation_sequence": 5
+          "presentation_sequence": 3
         }
       }, {
         "name": "faculty_response",

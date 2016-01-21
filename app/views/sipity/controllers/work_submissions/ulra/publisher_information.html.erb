@@ -8,9 +8,9 @@
     <fieldset class="panel-body">
       <%= f.error_notification %>
       <%= f.error :base, error_method: :to_sentence %>
-      <%= f.input :submitted_for_publication, as: :boolean, inline_label: 'Was your thesis submitted for publication?', label: false, wrapper_class: 'checkbox' %>
+      <%= f.input :submitted_for_publication, as: :boolean, inline_label: 'Was your project submitted for publication?', label: false, wrapper_class: 'checkbox' %>
       <div class="ask-if-submitted-for-publication">
-        <%= f.input :submission_accepted_for_publication, as: :select, collection: f.object.possible_submission_accepted_for_publication, input_html: { class: 'form-control' } %>
+        <%= f.input :publication_status_of_submission, as: :select, collection: f.object.possible_publication_status_of_submission, input_html: { class: 'form-control' } %>
         <%= f.input :publication_name, as: :multi_value, input_html: { class: 'form-control' } %>
       </div>
     </fieldset>

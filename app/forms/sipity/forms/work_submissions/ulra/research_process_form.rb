@@ -10,8 +10,11 @@ module Sipity
         class ResearchProcessForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:resource_consulted, :other_resource_consulted, :citation_style]
+            attribute_names: [:resources_consulted, :other_resources_consulted]
           )
+
+          class_attribute :attachment_predicate_name, instance_predicate: false, instance_writer: false
+          self.attachment_predicate_name = 'submission_essay'.freeze
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
@@ -28,29 +31,23 @@ module Sipity
           public
 
           delegate(
-            :attachments, :attach_or_update_files, :attachments_attributes=, :files, :attachment_predicate_name,
+            :attachments, :attach_or_update_files, :attachments_attributes=, :files,
             :at_least_one_file_must_be_attached, to: :attachments_extension
           )
 
           private(:attach_or_update_files)
 
           include ActiveModel::Validations
-          validates :citation_style, presence: true
           validate :at_least_one_file_must_be_attached
 
-          def available_resource_consulted
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'resource_consulted')
-          end
-
-          def available_citation_style
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'citation_style')
+          def available_resources_consulted
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'resources_consulted')
           end
 
           def submit
             processing_action_form.submit do
-              repository.update_work_attribute_values!(work: work, key: 'resource_consulted', values: resource_consulted)
-              repository.update_work_attribute_values!(work: work, key: 'other_resource_consulted', values: other_resource_consulted)
-              repository.update_work_attribute_values!(work: work, key: 'citation_style', values: citation_style)
+              repository.update_work_attribute_values!(work: work, key: 'resources_consulted', values: resources_consulted)
+              repository.update_work_attribute_values!(work: work, key: 'other_resources_consulted', values: other_resources_consulted)
               attach_or_update_files(requested_by: requested_by)
             end
           end
@@ -58,15 +55,14 @@ module Sipity
           private
 
           def initialize_non_attachment_attributes(attributes)
-            self.resource_consulted = attributes.fetch(:resource_consulted) { retrieve_from_work(key: 'resource_consulted') }
-            self.other_resource_consulted = attributes.fetch(:other_resource_consulted) do
-              retrieve_from_work(key: 'other_resource_consulted').first
+            self.resources_consulted = attributes.fetch(:resources_consulted) { retrieve_from_work(key: 'resources_consulted') }
+            self.other_resources_consulted = attributes.fetch(:other_resources_consulted) do
+              retrieve_from_work(key: 'other_resources_consulted').first
             end
-            self.citation_style = attributes.fetch(:citation_style) { retrieve_from_work(key: 'citation_style').first }
           end
 
-          def resource_consulted=(values)
-            @resource_consulted = to_array_without_empty_values(values)
+          def resources_consulted=(values)
+            @resources_consulted = to_array_without_empty_values(values)
           end
 
           def retrieve_from_work(key:)
@@ -82,7 +78,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
-              predicate_name: 'application_essay',
+              predicate_name: attachment_predicate_name,
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

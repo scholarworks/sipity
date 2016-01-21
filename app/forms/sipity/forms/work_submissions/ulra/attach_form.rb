@@ -14,6 +14,9 @@ module Sipity
             ]
           )
 
+          class_attribute :attachment_predicate_name, instance_predicate: false, instance_writer: false
+          self.attachment_predicate_name = 'project_file'.freeze
+
           def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
             self.requested_by = requested_by
@@ -42,8 +45,8 @@ module Sipity
             inclusion: { in: ->(record) { record.possible_attached_files_completion_states } }
           )
 
-          INCOMPLETE_STATE = 'incomplete'.freeze
-          COMPLETE_STATE = 'complete'.freeze
+          INCOMPLETE_STATE = 'representative version of my project'.freeze
+          COMPLETE_STATE = 'final version of my project'.freeze
 
           def possible_attached_files_completion_states
             [INCOMPLETE_STATE, COMPLETE_STATE]
@@ -88,6 +91,7 @@ module Sipity
               form: self,
               repository: repository,
               files: attachment_attr[:files],
+              predicate_name: attachment_predicate_name,
               attachments_attributes: attachment_attr[:attachments_attributes]
             )
           end

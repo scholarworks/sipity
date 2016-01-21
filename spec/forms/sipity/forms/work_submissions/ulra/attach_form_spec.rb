@@ -16,6 +16,7 @@ module Sipity
 
           its(:policy_enforcer) { should be_present }
           its(:processing_action_name) { should eq('attach') }
+          its(:attachment_predicate_name) { should eq('project_file') }
 
           it { should respond_to :attachments }
           it { should respond_to :representative_attachment_id }
