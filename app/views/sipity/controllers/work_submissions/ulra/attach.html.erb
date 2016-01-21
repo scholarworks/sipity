@@ -8,18 +8,17 @@
   html: { class: 'simple-form panel panel-primary with-footer attachements-form' }
 ) do |f| %>
   <legend class="panel-heading">
-    <h3 class="pannel-title">Please <b>attach</b> the pertinent files</h3>
+    <h3 class="pannel-title">Please <b>attach</b> your project files</h3>
   </legend>
 
   <fieldset class="panel-body">
-    <p class="panel-hint">If you have more than one file please select one as the principle manuscript.</p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
 
     <%= f.input :project_url, input_html: { class: 'form-control' } %>
     <%= f.input :attached_files_completion_state, collection: model.possible_attached_files_completion_states, input_html: { class: 'form-control' } %>
 
-    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Select your project file(s) for upload" %>
+    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Project file(s) for upload", hint: "To select multiple files: Windows Ctrl+click; Mac Cmd+click" %>
 
   <% if model.attachments.any? %>
     <ol class="attachment-listing">
