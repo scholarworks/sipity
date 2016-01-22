@@ -84,10 +84,18 @@ jQuery(function($){
     $('.submission_window_advisor_name').append('<div id="people-search-results"></div>');
     $('.submission_window_advisor_name .controls').append('&nbsp;<a href="#" class="btn btn-default" id="people-search-button">Search</a>');
     $('#submission_window_advisor_name').attr('placeholder', 'People Search');
+    $('#submission_window_advisor_name').on('keypress', function(e){
+      if (e.keyCode == 13){
+        e.preventDefault();
+        queryLdap();
+      }
+    });
+
     $('#people-search-button').on('click', function(e){
       e.preventDefault();
       queryLdap();
     });
+
     $('#people-search-results').on('click', 'a', function(e) {
       e.preventDefault();
       selectResult(e);
