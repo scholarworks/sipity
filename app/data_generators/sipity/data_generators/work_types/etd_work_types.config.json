@@ -291,6 +291,16 @@
         "to": "creating_user"
       }]
     }, {
+      "name": "grad_school_final_signoff",
+      "attributes": {
+        "presentation_sequence": 1
+      },
+      "transition_to": "ready_for_cataloging",
+      "states": [{
+        "name": ["grad_school_approved_but_waiting_for_routing"],
+        "roles": ["etd_reviewing"]
+      }]
+    }, {
       "name": "grad_school_requests_change",
       "attributes": {
         "presentation_sequence": 2,
@@ -678,6 +688,16 @@
       "emails": [{
         "name": "confirmation_of_grad_school_signoff",
         "to": "creating_user"
+      }]
+    }, {
+      "name": "grad_school_final_signoff",
+      "attributes": {
+        "presentation_sequence": 1
+      },
+      "transition_to": "ready_for_cataloging",
+      "states": [{
+        "name": ["grad_school_approved_but_waiting_for_routing"],
+        "roles": ["etd_reviewing"]
       }]
     }, {
       "name": "grad_school_requests_change",
