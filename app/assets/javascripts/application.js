@@ -11,13 +11,19 @@
 // about supported directives.
 //
 //= require jquery
-//= require vendor/jquery-ui-widget
 //= require jquery_ujs
-//= require turbolinks
+//
 //= require bootstrap-sprockets
-//= require vendor/redactor
 //= require readmore
-//= require_tree .
+//= require turbolinks
+//
+//= require vendor/jquery-ui-widget
+//= require vendor/redactor
+//
+//= require manage_repeating_fields
+//= require manage_repeating_sections
+//= require nd_ldap_lookup
+//
 //= stub vendor/modernizr
 
 (function($) {
