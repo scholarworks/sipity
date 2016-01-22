@@ -22,6 +22,7 @@ module Sipity
           it { should respond_to :work }
           its(:processing_action_name) { should eq('collaborator') }
           its(:collaborators) { should_not be_empty }
+          its(:possible_roles) { should be_a(Hash) }
 
           it 'will require a work' do
             subject = described_class.new(keywords.merge(work: nil))

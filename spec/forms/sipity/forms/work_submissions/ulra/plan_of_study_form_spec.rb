@@ -13,6 +13,7 @@ module Sipity
           let(:majors) { 'Computer Science' }
           let(:minors) { 'A Minor' }
           let(:college) { 'Arts and Letters' }
+          let(:underclass_level) { 'First Year' }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) { { requested_by: user, attributes: {}, work: work, repository: repository } }
           subject { described_class.new(keywords) }
@@ -21,6 +22,9 @@ module Sipity
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
             ).with(name: 'college').and_return([college])
+            allow(repository).to receive(
+              :get_controlled_vocabulary_values_for_predicate_name
+            ).with(name: 'underclass_level').and_return([underclass_level])
             allow(repository).to receive(:possible_expected_graduation_dates).and_return([expected_graduation_date])
           end
 
@@ -48,6 +52,8 @@ module Sipity
           it { should validate_inclusion_of(:expected_graduation_date).in_array(subject.possible_expected_graduation_dates) }
           it { should validate_presence_of(:college) }
           it { should validate_inclusion_of(:college).in_array(subject.possible_colleges) }
+          it { should validate_presence_of(:underclass_level) }
+          it { should validate_inclusion_of(:underclass_level).in_array(subject.possible_underclass_levels) }
 
           it 'will be invalid if all of the input majors are blank' do
             subject = described_class.new(keywords.merge(attributes: { majors: ['', ''] }))
@@ -82,10 +88,14 @@ module Sipity
                   with(work: work, key: 'minors', cardinality: :many).and_return([minors])
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'college', cardinality: 1).and_return(college)
+                expect(repository).to receive(:work_attribute_values_for).
+                  with(work: work, key: 'underclass_level', cardinality: 1).and_return(underclass_level)
 
                 expect(subject.expected_graduation_date).to eq expected_graduation_date
                 expect(subject.majors).to eq [majors]
                 expect(subject.minors).to eq [minors]
+                expect(subject.college).to eq(college)
+                expect(subject.underclass_level).to eq(underclass_level)
               end
             end
           end
@@ -103,7 +113,10 @@ module Sipity
               subject do
                 described_class.new(
                   keywords.merge(
-                    attributes: { expected_graduation_date: expected_graduation_date, majors: majors, minors: minors, college: college }
+                    attributes: {
+                      expected_graduation_date: expected_graduation_date, majors: majors, minors: minors, college: college,
+                      underclass_level: underclass_level
+                    }
                   )
                 )
               end
@@ -124,6 +137,9 @@ module Sipity
                 ).and_call_original
                 expect(repository).to receive(:update_work_attribute_values!).with(
                   work: work, key: 'college', values: college
+                ).and_call_original
+                expect(repository).to receive(:update_work_attribute_values!).with(
+                  work: work, key: 'underclass_level', values: underclass_level
                 ).and_call_original
                 subject.submit
               end

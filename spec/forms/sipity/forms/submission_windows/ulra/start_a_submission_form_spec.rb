@@ -151,6 +151,7 @@ module Sipity
                 collaborator = subject.send(:build_collaborator, work: work)
                 expect(collaborator).to be_valid
                 expect(collaborator).to be_responsible_for_review
+                expect(collaborator.role).to eq(Models::Collaborator::ADVISING_FACULTY_ROLE)
               end
 
               it 'will persist the additional attributes of course_name, course_number, and award_category' do

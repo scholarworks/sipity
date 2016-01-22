@@ -47,6 +47,7 @@ module Sipity
       PUBLICATION_STATUS_OF_SUBMISSION = 'publication_status_of_submission'.freeze
       SUBMITTED_FOR_PUBLICATION = 'submitted_for_publication'.freeze
       TEMPORAL_COVERAGE = 'temporal_coverage'.freeze
+      UNDERCLASS_LEVEL = 'underclass_level'.freeze
       USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME = 'use_of_library_resources'.freeze
       WORK_PATENT_STRATEGY = 'work_patent_strategy'.freeze
       WORK_PUBLICATION_STRATEGY = 'work_publication_strategy'.freeze
@@ -93,6 +94,7 @@ module Sipity
           PUBLICATION_STATUS_OF_SUBMISSION => PUBLICATION_STATUS_OF_SUBMISSION,
           SUBMITTED_FOR_PUBLICATION => SUBMITTED_FOR_PUBLICATION,
           TEMPORAL_COVERAGE => TEMPORAL_COVERAGE,
+          UNDERCLASS_LEVEL => UNDERCLASS_LEVEL,
           USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME => USE_OF_LIBRARY_RESOURCES_PREDICATE_NAME,
           WORK_PATENT_STRATEGY => WORK_PATENT_STRATEGY,
           WORK_PUBLICATION_STRATEGY => WORK_PUBLICATION_STRATEGY
