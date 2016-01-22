@@ -13,8 +13,8 @@
       <%= f.input :course_number, hint: "e.g., ROFR 30604" %>
     <% end %>
     <%= render(layout: 'sipity/form_panel', locals: { name: 'advisor_netid', theme: :primary, object: view_object }) do %>
-      <%= f.input :advisor_netid %>
       <%= f.input :advisor_name %>
+      <%= f.input :advisor_netid %>
     <% end %>
   </div>
   <div class="action-pane">
