@@ -35,8 +35,19 @@ module Sipity
 
           include Shoulda::Matchers::ActiveModel
 
+          context '#top_level_categories' do
+            it 'will be friendly for rendering HTML input fields' do
+              expect(subject).to receive(:available_resources_consulted).and_return(["Hello::World", "Nice::Day", "Hello::Hamster"])
+              expect(subject.top_level_categories).to eq(
+                "Hello" => [["World", "Hello::World"], ["Hamster", "Hello::Hamster"]],
+                "Nice" => [["Day", "Nice::Day"]]
+              )
+            end
+          end
+
           it 'will have #available_resouce_consulted' do
-            expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'resources_consulted').
+            expect(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).
+              with(name: described_class::RESOURCES_CONSULTED_CONTROLLED_VOCABULARY_KEY).
               and_return(['some value', 'bogus'])
             expect(subject.available_resources_consulted).to be_a(Array)
           end
