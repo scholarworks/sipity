@@ -15,13 +15,13 @@ jQuery(function($){
     ;
     if(query.length >= 2){
       $button.prop('disabled', true);
-      $icon.removeClass('icon-search').addClass('icon-arrows-cw animate-spin');
+      $icon.removeClass('icon-search').addClass('icon-arrows animate-spin');
       $.getJSON( api, {
         q: query
       })
       .done(function(response) {
         $button.prop('disabled', false);
-        $icon.removeClass('icon-arrows-cw animate-spin').addClass('icon-search');
+        $icon.removeClass('icon-arrows animate-spin').addClass('icon-search');
         if(response.response === 'success'){
           showResults(response.data);
         } else {
@@ -73,7 +73,8 @@ jQuery(function($){
     var $target = $(e.target),
         $result = []
     ;
-
+    // Pressing 'Enter' when a search result has focus returns the result selector link
+    // Clicking a result returns a child element
     if ($target.hasClass('result-selector')) {
       $result = $target;
     } else {
@@ -83,7 +84,6 @@ jQuery(function($){
     var name = $('.person-name', $result).text(),
         netid = $('.person-netid', $result).text()
     ;
-
     $('#people-search-results').empty();
     $('#submission_window_advisor_name').val(name);
     $('#submission_window_advisor_netid').val(netid).focus();
@@ -94,7 +94,7 @@ jQuery(function($){
         $searchInput = $('#submission_window_advisor_name')
     ;
     $formControls.append('<div id="people-search-results"></div>');
-    $('.controls', $formControls).append('&nbsp;<a href="javascript:void(0);" class="btn btn-default" id="people-search-button">Search</a>');
+    $('.controls', $formControls).append('&nbsp;<a href="javascript:void(0);" class="btn btn-default" id="people-search-button"><i></i>Look up NetID</a>');
     $searchInput
       .on('keypress', function(e){
         if (e.keyCode === 13){
@@ -102,7 +102,7 @@ jQuery(function($){
           queryLdap();
         }
       })
-      .attr('placeholder', 'People Search');
+      .attr('placeholder', 'Name');
 
     $('#people-search-button').on('click', function(e){
       e.preventDefault();
