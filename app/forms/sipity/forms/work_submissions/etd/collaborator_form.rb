@@ -65,6 +65,10 @@ module Sipity
             end
           end
 
+          def possible_roles
+            Models::Collaborator.roles.slice(Models::Collaborator::RESEARCH_DIRECTOR_ROLE, Models::Collaborator::COMMITTEE_MEMBER_ROLE)
+          end
+
           private
 
           def collaborators_from_work

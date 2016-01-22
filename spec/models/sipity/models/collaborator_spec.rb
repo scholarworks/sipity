@@ -87,8 +87,6 @@ module Sipity
         expect(subject.to_s).to eq(subject.name)
       end
 
-      its(:possible_roles) { should eq(described_class.roles) }
-
       it 'will raise an ArgumentError if you provide an invalid role' do
         expect { subject.role = '__incorrect_role__' }.to raise_error(ArgumentError)
       end

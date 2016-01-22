@@ -50,7 +50,7 @@
             <td class="role">
               <%= collaborator_form.input :role,
                 as: :select,
-                collection: collaborator_form.object.possible_roles,
+                collection: model.possible_roles,
                 label: false,
                 wrapper: false,
                 input_html: {

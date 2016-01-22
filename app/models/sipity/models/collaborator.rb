@@ -11,6 +11,7 @@ module Sipity
     class Collaborator < ActiveRecord::Base
       RESEARCH_DIRECTOR_ROLE = DEFAULT_ROLE = 'Research Director'.freeze
       COMMITTEE_MEMBER_ROLE =  'Committee Member'.freeze
+      ADVISING_FACULTY_ROLE = 'Advising Faculty'.freeze
 
       def self.build_default
         new
@@ -62,16 +63,13 @@ module Sipity
         role:
         {
           RESEARCH_DIRECTOR_ROLE => RESEARCH_DIRECTOR_ROLE,
-          COMMITTEE_MEMBER_ROLE => COMMITTEE_MEMBER_ROLE
+          COMMITTEE_MEMBER_ROLE => COMMITTEE_MEMBER_ROLE,
+          ADVISING_FACULTY_ROLE => ADVISING_FACULTY_ROLE
         }
       )
 
       def to_s
         name
-      end
-
-      def possible_roles
-        self.class.roles
       end
 
       before_save :nilify_blank_values
