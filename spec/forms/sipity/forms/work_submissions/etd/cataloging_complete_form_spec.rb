@@ -10,19 +10,21 @@ module Sipity
           let(:user) { double('User') }
           let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: {} } }
           let(:oclc_number) { "123456789" }
-          let(:catalog_system_number) { "abc" }
+          let(:catalog_system_number) { "123456789" }
           subject do
-            described_class.new(
-              keywords.merge(
-                attributes: { agree_to_signoff: true, oclc_number: oclc_number, catalog_system_number: catalog_system_number }
-              )
-            )
+            described_class.new(keywords.merge(attributes: { oclc_number: oclc_number, catalog_system_number: catalog_system_number }))
           end
 
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:oclc_number) }
           it { should validate_presence_of(:catalog_system_number) }
-          it { should validate_acceptance_of(:agree_to_signoff) }
+
+          context '#catalog_system_number' do
+            it "will prepend 0s for catalog_system_number's smaller than 9 digits" do
+              subject = described_class.new(keywords.merge(attributes: { catalog_system_number: '123' }))
+              expect(subject.catalog_system_number).to eq('000000123')
+            end
+          end
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
@@ -31,7 +33,6 @@ module Sipity
               expect(form_object).to receive(:input).with(
                 :catalog_system_number, input_html: { required: "required" }, label: 'ALEPH system number'
               ).and_return("<input />")
-              expect(form_object).to receive(:input).with(:agree_to_signoff, hash_including(as: :boolean)).and_return("<input />")
               expect(subject.render(f: form_object)).to be_html_safe
             end
           end

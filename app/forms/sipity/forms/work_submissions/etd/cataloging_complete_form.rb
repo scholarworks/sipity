@@ -9,22 +9,20 @@ module Sipity
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
             template: Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME,
-            attribute_names: [:agree_to_signoff, :oclc_number, :catalog_system_number]
+            attribute_names: [:oclc_number, :catalog_system_number]
           )
 
           def initialize(work:, requested_by:, attributes: {}, **keywords)
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.agree_to_signoff = attributes[:agree_to_signoff]
             self.oclc_number = attributes.fetch(:oclc_number) { oclc_number_from_work }
             self.catalog_system_number = attributes.fetch(:catalog_system_number) { catalog_system_number_from_work }
           end
 
           include ActiveModel::Validations
-          validates :agree_to_signoff, acceptance: { accept: true }
-          validates :oclc_number, presence: true
-          validates :catalog_system_number, presence: true
+          validates :oclc_number, presence: true, format: /\A\d{6,}\Z/
+          validates :catalog_system_number, presence: true, format: /\A\d{9}\Z/
 
           # @param f SimpleFormBuilder
           #
@@ -35,11 +33,6 @@ module Sipity
             # Because simple form threw the following exception:
             # `I18n::InvalidPluralizationData: translation data {:label=>"ALEPH system number"} can not be used with :count => 1`
             markup << f.input(:catalog_system_number, input_html: { required: 'required' }, label: 'ALEPH system number').html_safe
-            markup << f.input(
-              :agree_to_signoff,
-              as: :boolean, inline_label: signoff_agreement, label: false, wrapper_class: 'checkbox',
-              input_html: { required: 'required' } # There is no way to add true boolean attributes to simle_form fields.
-            ).html_safe
           end
 
           def legend
@@ -61,8 +54,8 @@ module Sipity
 
           private
 
-          def agree_to_signoff=(value)
-            @agree_to_signoff = PowerConverter.convert_to_boolean(value)
+          def catalog_system_number=(input)
+            @catalog_system_number = PowerConverter.convert(input, to: :catalog_system_number) { input }
           end
 
           def view_context

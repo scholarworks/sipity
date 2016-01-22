@@ -281,7 +281,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "transition_to": "grad_school_approved_but_waiting_for_routing",
+      "transition_to": "ready_for_cataloging",
       "states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
@@ -289,6 +289,16 @@
       "emails": [{
         "name": "confirmation_of_grad_school_signoff",
         "to": "creating_user"
+      }]
+    }, {
+      "name": "grad_school_final_signoff",
+      "attributes": {
+        "presentation_sequence": 1
+      },
+      "transition_to": "ready_for_cataloging",
+      "states": [{
+        "name": ["grad_school_approved_but_waiting_for_routing"],
+        "roles": ["etd_reviewing"]
       }]
     }, {
       "name": "grad_school_requests_change",
@@ -313,7 +323,7 @@
       },
       "transition_to": "ready_for_cataloging",
       "states": [{
-        "name": ["back_from_cataloging", "ready_for_cataloging"],
+        "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
       "emails": [{
@@ -670,7 +680,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "transition_to": "grad_school_approved_but_waiting_for_routing",
+      "transition_to": "ready_for_cataloging",
       "states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
@@ -678,6 +688,16 @@
       "emails": [{
         "name": "confirmation_of_grad_school_signoff",
         "to": "creating_user"
+      }]
+    }, {
+      "name": "grad_school_final_signoff",
+      "attributes": {
+        "presentation_sequence": 1
+      },
+      "transition_to": "ready_for_cataloging",
+      "states": [{
+        "name": ["grad_school_approved_but_waiting_for_routing"],
+        "roles": ["etd_reviewing"]
       }]
     }, {
       "name": "grad_school_requests_change",
@@ -702,7 +722,7 @@
       },
       "transition_to": "ready_for_cataloging",
       "states": [{
-        "name": ["back_from_cataloging", "ready_for_cataloging"],
+        "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
       "emails": [{
