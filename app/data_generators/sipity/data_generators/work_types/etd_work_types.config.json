@@ -281,7 +281,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "transition_to": "grad_school_approved_but_waiting_for_routing",
+      "transition_to": "ready_for_cataloging",
       "states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
@@ -680,7 +680,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "transition_to": "grad_school_approved_but_waiting_for_routing",
+      "transition_to": "ready_for_cataloging",
       "states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
