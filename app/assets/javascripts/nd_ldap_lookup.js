@@ -35,7 +35,7 @@ jQuery(function($){
     } else {
       $results.html('Error: A search must be at least two characters in length.');
     }
-  };
+  }
 
   function showResults(data){
     var $results = $('#people-search-results'),
@@ -44,7 +44,7 @@ jQuery(function($){
     $.each(data, function(){
       var item = this;
       var name = (item.formal_name) ? item.formal_name : item.fullname;
-      output += '<li><a href="#" class="result-selector"><b class="person-name">'+ name +'</b> ';
+      output += '<li><a href="javascript:void(0);" class="result-selector"><b class="person-name">'+ name +'</b> ';
       if(item.affiliation_primary.length > 0){ output += '<span class="person-primary-affiliation">('+ item.affiliation_primary +')</span> '; }
       output += '<ul class="person-details">';
       output += itemList(item.title, 'person-title');
@@ -71,25 +71,38 @@ jQuery(function($){
 
   function selectResult(e){
     var $target = $(e.target),
-        $result = $target.parents('.result-selector'),
-        name = $('.person-name', $result).text(),
+        $result = []
+    ;
+
+    if ($target.hasClass('result-selector')) {
+      $result = $target;
+    } else {
+      $result = $target.parents('.result-selector');
+    }
+
+    var name = $('.person-name', $result).text(),
         netid = $('.person-netid', $result).text()
     ;
-    $('#submission_window_advisor_name').val(name);
-    $('#submission_window_advisor_netid').val(netid);
+
     $('#people-search-results').empty();
+    $('#submission_window_advisor_name').val(name);
+    $('#submission_window_advisor_netid').val(netid).focus();
   }
 
-  var ready = function(){
-    $('.submission_window_advisor_name').append('<div id="people-search-results"></div>');
-    $('.submission_window_advisor_name .controls').append('&nbsp;<a href="#" class="btn btn-default" id="people-search-button">Search</a>');
-    $('#submission_window_advisor_name').attr('placeholder', 'People Search');
-    $('#submission_window_advisor_name').on('keypress', function(e){
-      if (e.keyCode == 13){
-        e.preventDefault();
-        queryLdap();
-      }
-    });
+  function ready(){
+    var $formControls = $('.submission_window_advisor_name'),
+        $searchInput = $('#submission_window_advisor_name')
+    ;
+    $formControls.append('<div id="people-search-results"></div>');
+    $('.controls', $formControls).append('&nbsp;<a href="javascript:void(0);" class="btn btn-default" id="people-search-button">Search</a>');
+    $searchInput
+      .on('keypress', function(e){
+        if (e.keyCode === 13){
+          e.preventDefault();
+          queryLdap();
+        }
+      })
+      .attr('placeholder', 'People Search');
 
     $('#people-search-button').on('click', function(e){
       e.preventDefault();
@@ -100,7 +113,7 @@ jQuery(function($){
       e.preventDefault();
       selectResult(e);
     });
-  };
+  }
 
   $(document).ready(ready);
   $(document).on('page:load', ready);
