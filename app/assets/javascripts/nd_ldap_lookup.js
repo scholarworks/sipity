@@ -1,18 +1,16 @@
 /*!
 * People Search
-* @author Erik Runyon
-* Updated 2014-05-12
+* Based on work by Erik Runyon
 */
 jQuery(function($){
   'use strict';
 
-  $('#ldap').on('submit', function(e){
-    e.preventDefault();
-    var $button = $('#people-submit'),
+  function queryLdap(){
+    var $button = $('#people-search-button'),
         $icon = $button.find('i'),
-        query = $(this).find('.people-q').val(),
+        query = $('#submission_window_advisor_name').val(),
         api = "//www3.nd.edu/~webdev/utilities/ldap/?callback=?",
-        $results = $('#people-results'),
+        $results = $('#people-search-results'),
         error = '<p>Error!</p>'
     ;
     if(query.length >= 2){
@@ -37,23 +35,22 @@ jQuery(function($){
     } else {
       $results.html('Error: A search must be at least two characters in length.');
     }
-  });
+  };
 
   function showResults(data){
-    var $results = $('#people-results'),
-        output = '<ul>'
+    var $results = $('#people-search-results'),
+        output = '<ul class="inline-search-results">'
     ;
     $.each(data, function(){
       var item = this;
       var name = (item.formal_name) ? item.formal_name : item.fullname;
-      output += '<li><b class="person-name">'+ name +'</b> ';
+      output += '<li><a href="#" class="result-selector"><b class="person-name">'+ name +'</b> ';
       if(item.affiliation_primary.length > 0){ output += '<span class="person-primary-affiliation">('+ item.affiliation_primary +')</span> '; }
       output += '<ul class="person-details">';
       output += itemList(item.title, 'person-title');
       output += itemList(item.dept, 'person-dept');
-      if(item.email){ output += '<li class="person-email"><a href="mailto:' + item.email + '">' + item.email + '</a></li>'; }
-      if(item.id){ output += '<li class="person-netid">NetID: ' + item.id + '</li>'; }
-      output += '</ul></li>';
+      if(item.id){ output += '<li class="person-netid-field">NetID: <span class="person-netid">' + item.id + '</span></li>'; }
+      output += '</ul></a></li>';
     });
     output += '</ul>';
     if(data.length === 0){ output = '<p>No results found.</p>'; }
@@ -71,4 +68,32 @@ jQuery(function($){
     }
     return output;
   }
+
+  function selectResult(e){
+    var $target = $(e.target),
+        $result = $target.parents('.result-selector'),
+        name = $('.person-name', $result).text(),
+        netid = $('.person-netid', $result).text()
+    ;
+    $('#submission_window_advisor_name').val(name);
+    $('#submission_window_advisor_netid').val(netid);
+    $('#people-search-results').empty();
+  }
+
+  var ready = function(){
+    $('.submission_window_advisor_name').append('<div id="people-search-results"></div>');
+    $('.submission_window_advisor_name .controls').append('&nbsp;<a href="#" class="btn btn-default" id="people-search-button">Search</a>');
+    $('#submission_window_advisor_name').attr('placeholder', 'People Search');
+    $('#people-search-button').on('click', function(e){
+      e.preventDefault();
+      queryLdap();
+    });
+    $('#people-search-results').on('click', 'a', function(e) {
+      e.preventDefault();
+      selectResult(e);
+    });
+  };
+
+  $(document).ready(ready);
+  $(document).on('page:load', ready);
 });

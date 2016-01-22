@@ -1,0 +1,39 @@
+@import 'bootstrap/variables';
+
+.inline-search-results,
+.inline-search-results ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.inline-search-results {
+  .result-selector {
+    display: block;
+    outline: 2px solid transparent;
+    padding: .3em .5em;
+
+    &,
+    &:active,
+    &:focus,
+    &:hover,
+    &:visited {
+      color: $text-color;
+      text-decoration: none;
+    }
+
+    &:active,
+    &:focus,
+    &:hover {
+      outline: 2px solid $input-border-focus;
+    }
+  }
+
+  > li {
+    margin: 0;
+
+    &:nth-child(even) {
+      background-color: $table-bg-accent;
+    }
+  }
+}
