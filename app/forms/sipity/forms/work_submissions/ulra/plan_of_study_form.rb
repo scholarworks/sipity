@@ -10,7 +10,7 @@ module Sipity
         class PlanOfStudyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:expected_graduation_date, :majors, :minors, :college]
+            attribute_names: [:expected_graduation_date, :majors, :minors, :college, :underclass_level]
           )
 
           include Conversions::ExtractInputDateFromInput
@@ -24,11 +24,13 @@ module Sipity
             self.majors = attributes.fetch(:majors) { majors_from_work }
             self.minors = attributes.fetch(:minors) { minors_from_work }
             self.college = attributes.fetch(:college) { college_from_work }
+            self.underclass_level = attributes.fetch(:underclass_level) { underclass_level_from_work }
           end
 
           include ActiveModel::Validations
           include Hydra::Validations
           validates :expected_graduation_date, presence: true, inclusion: { in: :possible_expected_graduation_dates }
+          validates :underclass_level, presence: true, inclusion: { in: :possible_underclass_levels }
           validates :majors, presence: true
           validates :college, presence: true, inclusion: { in: :possible_colleges }
 
@@ -38,7 +40,7 @@ module Sipity
 
           def submit
             processing_action_form.submit do
-              ['expected_graduation_date', 'majors', 'minors', 'college'].each do |predicate_name|
+              ['expected_graduation_date', 'majors', 'minors', 'college', 'underclass_level'].each do |predicate_name|
                 repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
               end
             end
@@ -46,6 +48,10 @@ module Sipity
 
           def possible_colleges
             repository.get_controlled_vocabulary_values_for_predicate_name(name: 'college')
+          end
+
+          def possible_underclass_levels
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'underclass_level')
           end
 
           private
@@ -64,6 +70,10 @@ module Sipity
 
           def minors_from_work
             repository.work_attribute_values_for(work: work, key: 'minors', cardinality: :many)
+          end
+
+          def underclass_level_from_work
+            repository.work_attribute_values_for(work: work, key: 'underclass_level', cardinality: 1)
           end
 
           def majors=(input)
