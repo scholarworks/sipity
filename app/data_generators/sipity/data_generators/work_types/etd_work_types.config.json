@@ -313,7 +313,7 @@
       },
       "transition_to": "ready_for_cataloging",
       "states": [{
-        "name": ["back_from_cataloging", "ready_for_cataloging"],
+        "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
       "emails": [{
@@ -702,7 +702,7 @@
       },
       "transition_to": "ready_for_cataloging",
       "states": [{
-        "name": ["back_from_cataloging", "ready_for_cataloging"],
+        "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
       "emails": [{
