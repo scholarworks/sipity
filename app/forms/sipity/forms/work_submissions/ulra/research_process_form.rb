@@ -40,8 +40,20 @@ module Sipity
           include ActiveModel::Validations
           validate :at_least_one_file_must_be_attached
 
+          def top_level_categories
+            available_resources_consulted.each_with_object({}) do |full_value, obj|
+              key, value = full_value.split("::")
+              obj[key] ||= []
+              obj[key] << [Array.wrap(value || key).join("::"), full_value]
+              obj
+            end
+          end
+
+          # Yes, I'm using the singular because the controlled vocabulary key is this
+          RESOURCES_CONSULTED_CONTROLLED_VOCABULARY_KEY = 'resource_consulted'.freeze
+
           def available_resources_consulted
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'resources_consulted')
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: RESOURCES_CONSULTED_CONTROLLED_VOCABULARY_KEY)
           end
 
           def submit
