@@ -9,7 +9,7 @@
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
     <div class="panel-tiles">
-      <%= f.input :college, as: :select, collection: f.object.possible_colleges, input_html: { class: 'form-control' }  %>
+      <%= f.input :primary_college, as: :select, collection: f.object.possible_colleges, input_html: { class: 'form-control' }  %>
       <%= f.input :underclass_level, as: :select, collection: f.object.possible_underclass_levels, input_html: { class: 'form-control' }  %>
       <%= f.input :expected_graduation_term, as: :select, collection: f.object.possible_expected_graduation_terms, input_html: { class: 'form-control' } %>
       <%= f.input :majors, as: :multi_value, input_html: { class: 'form-control input-xlarge' }  %>

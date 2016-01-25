@@ -12,7 +12,7 @@ module Sipity
           let(:expected_graduation_term) { 'Summer 2015' }
           let(:majors) { 'Computer Science' }
           let(:minors) { 'A Minor' }
-          let(:college) { 'Arts and Letters' }
+          let(:primary_college) { 'Arts and Letters' }
           let(:underclass_level) { 'First Year' }
           let(:repository) { CommandRepositoryInterface.new }
           let(:keywords) { { requested_by: user, attributes: {}, work: work, repository: repository } }
@@ -21,7 +21,7 @@ module Sipity
           before do
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
-            ).with(name: 'college').and_return([college])
+            ).with(name: "primary_college").and_return([primary_college])
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
             ).with(name: 'underclass_level').and_return([underclass_level])
@@ -50,8 +50,8 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of(:expected_graduation_term) }
           it { should validate_inclusion_of(:expected_graduation_term).in_array(subject.possible_expected_graduation_terms) }
-          it { should validate_presence_of(:college) }
-          it { should validate_inclusion_of(:college).in_array(subject.possible_colleges) }
+          it { should validate_presence_of(:primary_college) }
+          it { should validate_inclusion_of(:primary_college).in_array(subject.possible_primary_colleges) }
           it { should validate_presence_of(:underclass_level) }
           it { should validate_inclusion_of(:underclass_level).in_array(subject.possible_underclass_levels) }
 
@@ -87,14 +87,14 @@ module Sipity
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'minors', cardinality: :many).and_return([minors])
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'college', cardinality: 1).and_return(college)
+                  with(work: work, key: "primary_college", cardinality: 1).and_return(primary_college)
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'underclass_level', cardinality: 1).and_return(underclass_level)
 
                 expect(subject.expected_graduation_term).to eq expected_graduation_term
                 expect(subject.majors).to eq [majors]
                 expect(subject.minors).to eq [minors]
-                expect(subject.college).to eq(college)
+                expect(subject.primary_college).to eq(primary_college)
                 expect(subject.underclass_level).to eq(underclass_level)
               end
             end
@@ -114,7 +114,7 @@ module Sipity
                 described_class.new(
                   keywords.merge(
                     attributes: {
-                      expected_graduation_term: expected_graduation_term, majors: majors, minors: minors, college: college,
+                      expected_graduation_term: expected_graduation_term, majors: majors, minors: minors, primary_college: primary_college,
                       underclass_level: underclass_level
                     }
                   )
@@ -136,7 +136,7 @@ module Sipity
                   work: work, key: 'minors', values: [minors]
                 ).and_call_original
                 expect(repository).to receive(:update_work_attribute_values!).with(
-                  work: work, key: 'college', values: college
+                  work: work, key: "primary_college", values: primary_college
                 ).and_call_original
                 expect(repository).to receive(:update_work_attribute_values!).with(
                   work: work, key: 'underclass_level', values: underclass_level

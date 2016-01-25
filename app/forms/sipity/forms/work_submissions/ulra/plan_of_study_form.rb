@@ -10,7 +10,7 @@ module Sipity
         class PlanOfStudyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:expected_graduation_term, :majors, :minors, :college, :underclass_level]
+            attribute_names: [:expected_graduation_term, :majors, :minors, :primary_college, :underclass_level]
           )
 
           include Conversions::ExtractInputDateFromInput
@@ -23,7 +23,7 @@ module Sipity
             end
             self.majors = attributes.fetch(:majors) { majors_from_work }
             self.minors = attributes.fetch(:minors) { minors_from_work }
-            self.college = attributes.fetch(:college) { college_from_work }
+            self.primary_college = attributes.fetch(:primary_college) { primary_college_from_work }
             self.underclass_level = attributes.fetch(:underclass_level) { underclass_level_from_work }
           end
 
@@ -32,7 +32,7 @@ module Sipity
           validates :expected_graduation_term, presence: true, inclusion: { in: :possible_expected_graduation_terms }
           validates :underclass_level, presence: true, inclusion: { in: :possible_underclass_levels }
           validates :majors, presence: true
-          validates :college, presence: true, inclusion: { in: :possible_colleges }
+          validates :primary_college, presence: true, inclusion: { in: :possible_primary_colleges }
 
           def possible_expected_graduation_terms
             repository.possible_expected_graduation_terms
@@ -40,14 +40,14 @@ module Sipity
 
           def submit
             processing_action_form.submit do
-              ['expected_graduation_term', 'majors', 'minors', 'college', 'underclass_level'].each do |predicate_name|
+              ['expected_graduation_term', 'majors', 'minors', "primary_college", 'underclass_level'].each do |predicate_name|
                 repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
               end
             end
           end
 
-          def possible_colleges
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: 'college')
+          def possible_primary_colleges
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: "primary_college")
           end
 
           def possible_underclass_levels
@@ -60,8 +60,8 @@ module Sipity
             repository.work_attribute_values_for(work: work, key: 'expected_graduation_term', cardinality: 1)
           end
 
-          def college_from_work
-            repository.work_attribute_values_for(work: work, key: 'college', cardinality: 1)
+          def primary_college_from_work
+            repository.work_attribute_values_for(work: work, key: "primary_college", cardinality: 1)
           end
 
           def majors_from_work
