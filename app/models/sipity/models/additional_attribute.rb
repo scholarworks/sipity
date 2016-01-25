@@ -30,7 +30,7 @@ module Sipity
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
       ETD_REVIEWER_SIGNOFF_DATE = 'ETD_REVIEWER_SIGNOFF_DATE'.freeze
       ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
-      EXPECTED_GRADUATION_DATE = 'expected_graduation_date'.freeze
+      EXPECTED_GRADUATION_TERM = 'expected_graduation_term'.freeze
       LANGUAGE = 'language'.freeze
       MAJORS = 'majors'.freeze
       MINORS = 'minors'.freeze
@@ -77,7 +77,7 @@ module Sipity
           DOI_PREDICATE_NAME => DOI_PREDICATE_NAME,
           ETD_REVIEWER_SIGNOFF_DATE => ETD_REVIEWER_SIGNOFF_DATE,
           ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE,
-          EXPECTED_GRADUATION_DATE => EXPECTED_GRADUATION_DATE,
+          EXPECTED_GRADUATION_TERM => EXPECTED_GRADUATION_TERM,
           LANGUAGE => LANGUAGE,
           MAJORS => MAJORS,
           MINORS => MINORS,

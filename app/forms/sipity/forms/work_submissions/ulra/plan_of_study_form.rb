@@ -10,7 +10,7 @@ module Sipity
         class PlanOfStudyForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:expected_graduation_date, :majors, :minors, :college, :underclass_level]
+            attribute_names: [:expected_graduation_term, :majors, :minors, :college, :underclass_level]
           )
 
           include Conversions::ExtractInputDateFromInput
@@ -18,8 +18,8 @@ module Sipity
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.expected_graduation_date = extract_input_date_from_input(:expected_graduation_date, attributes) do
-              expected_graduation_date_from_work
+            self.expected_graduation_term = extract_input_date_from_input(:expected_graduation_term, attributes) do
+              expected_graduation_term_from_work
             end
             self.majors = attributes.fetch(:majors) { majors_from_work }
             self.minors = attributes.fetch(:minors) { minors_from_work }
@@ -29,18 +29,18 @@ module Sipity
 
           include ActiveModel::Validations
           include Hydra::Validations
-          validates :expected_graduation_date, presence: true, inclusion: { in: :possible_expected_graduation_dates }
+          validates :expected_graduation_term, presence: true, inclusion: { in: :possible_expected_graduation_terms }
           validates :underclass_level, presence: true, inclusion: { in: :possible_underclass_levels }
           validates :majors, presence: true
           validates :college, presence: true, inclusion: { in: :possible_colleges }
 
-          def possible_expected_graduation_dates
-            repository.possible_expected_graduation_dates
+          def possible_expected_graduation_terms
+            repository.possible_expected_graduation_terms
           end
 
           def submit
             processing_action_form.submit do
-              ['expected_graduation_date', 'majors', 'minors', 'college', 'underclass_level'].each do |predicate_name|
+              ['expected_graduation_term', 'majors', 'minors', 'college', 'underclass_level'].each do |predicate_name|
                 repository.update_work_attribute_values!(work: work, key: predicate_name, values: send(predicate_name))
               end
             end
@@ -56,8 +56,8 @@ module Sipity
 
           private
 
-          def expected_graduation_date_from_work
-            repository.work_attribute_values_for(work: work, key: 'expected_graduation_date', cardinality: 1)
+          def expected_graduation_term_from_work
+            repository.work_attribute_values_for(work: work, key: 'expected_graduation_term', cardinality: 1)
           end
 
           def college_from_work

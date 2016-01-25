@@ -9,7 +9,7 @@ module Sipity
         RSpec.describe PlanOfStudyForm do
           let(:user) { double('User') }
           let(:work) { double('Work') }
-          let(:expected_graduation_date) { 'Summer 2015' }
+          let(:expected_graduation_term) { 'Summer 2015' }
           let(:majors) { 'Computer Science' }
           let(:minors) { 'A Minor' }
           let(:college) { 'Arts and Letters' }
@@ -25,13 +25,13 @@ module Sipity
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
             ).with(name: 'underclass_level').and_return([underclass_level])
-            allow(repository).to receive(:possible_expected_graduation_dates).and_return([expected_graduation_date])
+            allow(repository).to receive(:possible_expected_graduation_terms).and_return([expected_graduation_term])
           end
 
           its(:processing_action_name) { should eq('plan_of_study') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
-          it { should delegate_method(:possible_expected_graduation_dates).to(:repository) }
+          it { should delegate_method(:possible_expected_graduation_terms).to(:repository) }
 
           context 'class configuration' do
             subject { described_class }
@@ -44,12 +44,12 @@ module Sipity
 
           it { should_not be_persisted }
           it { should respond_to :work }
-          it { should respond_to :expected_graduation_date }
+          it { should respond_to :expected_graduation_term }
           it { should respond_to :majors }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:expected_graduation_date) }
-          it { should validate_inclusion_of(:expected_graduation_date).in_array(subject.possible_expected_graduation_dates) }
+          it { should validate_presence_of(:expected_graduation_term) }
+          it { should validate_inclusion_of(:expected_graduation_term).in_array(subject.possible_expected_graduation_terms) }
           it { should validate_presence_of(:college) }
           it { should validate_inclusion_of(:college).in_array(subject.possible_colleges) }
           it { should validate_presence_of(:underclass_level) }
@@ -75,13 +75,13 @@ module Sipity
 
           context 'retrieving values from the repository' do
             context 'with data from the database' do
-              let(:expected_graduation_date) { Time.zone.today }
+              let(:expected_graduation_term) { Time.zone.today }
               let(:majors) { 'Computer Science' }
               let(:minors) { 'Book' }
               subject { described_class.new(keywords) }
-              it 'will return the expected_graduation_date of the work' do
+              it 'will return the expected_graduation_term of the work' do
                 expect(repository).to receive(:work_attribute_values_for).
-                  with(work: work, key: 'expected_graduation_date', cardinality: 1).and_return(expected_graduation_date)
+                  with(work: work, key: 'expected_graduation_term', cardinality: 1).and_return(expected_graduation_term)
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'majors', cardinality: :many).and_return([majors])
                 expect(repository).to receive(:work_attribute_values_for).
@@ -91,7 +91,7 @@ module Sipity
                 expect(repository).to receive(:work_attribute_values_for).
                   with(work: work, key: 'underclass_level', cardinality: 1).and_return(underclass_level)
 
-                expect(subject.expected_graduation_date).to eq expected_graduation_date
+                expect(subject.expected_graduation_term).to eq expected_graduation_term
                 expect(subject.majors).to eq [majors]
                 expect(subject.minors).to eq [minors]
                 expect(subject.college).to eq(college)
@@ -114,7 +114,7 @@ module Sipity
                 described_class.new(
                   keywords.merge(
                     attributes: {
-                      expected_graduation_date: expected_graduation_date, majors: majors, minors: minors, college: college,
+                      expected_graduation_term: expected_graduation_term, majors: majors, minors: minors, college: college,
                       underclass_level: underclass_level
                     }
                   )
@@ -127,7 +127,7 @@ module Sipity
 
               it 'will add additional attributes entries' do
                 expect(repository).to receive(:update_work_attribute_values!).with(
-                  work: work, key: 'expected_graduation_date', values: expected_graduation_date
+                  work: work, key: 'expected_graduation_term', values: expected_graduation_term
                 ).and_call_original
                 expect(repository).to receive(:update_work_attribute_values!).with(
                   work: work, key: 'majors', values: [majors]
