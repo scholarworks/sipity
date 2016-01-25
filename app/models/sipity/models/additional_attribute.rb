@@ -21,7 +21,7 @@ module Sipity
       CITATION_STYLE_NAME = 'citation_style'.freeze
       CITATION_TYPE_PREDICATE_NAME = 'citationType'.freeze
       COLLABORATOR_PREDICATE_NAME = 'collaborator'.freeze
-      COLLEGE_PREDICATE_NAME = 'college'.freeze
+      PRIMARY_COLLEGE_PREDICATE_NAME = "primary_college".freeze
       COPYRIGHT_PREDICATE_NAME = 'copyright'.freeze
       COURSE_NAME_PREDICATE_NAME = 'course_name'.freeze
       COURSE_NUMBER_PREDICATE_NAME = 'course_number'.freeze
@@ -30,7 +30,7 @@ module Sipity
       DOI_PREDICATE_NAME = 'identifier.doi'.freeze
       ETD_REVIEWER_SIGNOFF_DATE = 'ETD_REVIEWER_SIGNOFF_DATE'.freeze
       ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
-      EXPECTED_GRADUATION_DATE = 'expected_graduation_date'.freeze
+      EXPECTED_GRADUATION_TERM = 'expected_graduation_term'.freeze
       LANGUAGE = 'language'.freeze
       MAJORS = 'majors'.freeze
       MINORS = 'minors'.freeze
@@ -68,7 +68,7 @@ module Sipity
           CITATION_STYLE_NAME => CITATION_STYLE_NAME,
           CITATION_TYPE_PREDICATE_NAME => CITATION_TYPE_PREDICATE_NAME,
           COLLABORATOR_PREDICATE_NAME => COLLABORATOR_PREDICATE_NAME,
-          COLLEGE_PREDICATE_NAME => COLLEGE_PREDICATE_NAME,
+          PRIMARY_COLLEGE_PREDICATE_NAME => PRIMARY_COLLEGE_PREDICATE_NAME,
           COPYRIGHT_PREDICATE_NAME => COPYRIGHT_PREDICATE_NAME,
           COURSE_NAME_PREDICATE_NAME => COURSE_NAME_PREDICATE_NAME,
           COURSE_NUMBER_PREDICATE_NAME => COURSE_NUMBER_PREDICATE_NAME,
@@ -77,7 +77,7 @@ module Sipity
           DOI_PREDICATE_NAME => DOI_PREDICATE_NAME,
           ETD_REVIEWER_SIGNOFF_DATE => ETD_REVIEWER_SIGNOFF_DATE,
           ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE,
-          EXPECTED_GRADUATION_DATE => EXPECTED_GRADUATION_DATE,
+          EXPECTED_GRADUATION_TERM => EXPECTED_GRADUATION_TERM,
           LANGUAGE => LANGUAGE,
           MAJORS => MAJORS,
           MINORS => MINORS,
