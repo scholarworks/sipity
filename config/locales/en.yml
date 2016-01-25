@@ -232,12 +232,12 @@ en:
             If you wish to inquire about an electronic thesis or dissertation that is not yet publicly accessible,
             please contact the Graduate School's dissertation editor at <a mailto="dteditor@nd.edu">dteditor@nd.edu</a> or (574) 631-7545.</p>
       work_area/ulra:
-        landing_page_greeting_introduction_html:
-          label: |
-            <p>Greeting and introduction goes here.</p>
         landing_page_greeting_help_html:
           label: |
-            <p>Greeting help goes here.</p>
+            <p>
+            For ULRA policy or procedure questions email <a mailto="ulra-group@nd.edu">ulra-group@nd.edu</a><br />
+            See <a href="//library.nd.edu/ulra/">library.nd.edu/ulra</a> for more information about the Undergraduate Library Research Awards.
+            </p>
   work_types:
     master_thesis:
       label: "Master’s Thesis"
