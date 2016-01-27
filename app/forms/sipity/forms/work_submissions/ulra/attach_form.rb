@@ -45,8 +45,8 @@ module Sipity
             inclusion: { in: ->(record) { record.possible_attached_files_completion_states } }
           )
 
-          INCOMPLETE_STATE = 'representative version of my project'.freeze
-          COMPLETE_STATE = 'final version of my project'.freeze
+          INCOMPLETE_STATE = 'a representative version of my project'.freeze
+          COMPLETE_STATE = 'the final version of my project'.freeze
 
           def possible_attached_files_completion_states
             [INCOMPLETE_STATE, COMPLETE_STATE]
