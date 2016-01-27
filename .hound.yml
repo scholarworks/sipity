@@ -12,6 +12,7 @@ AllCops:
   Include:
     - Rakefile
   Exclude:
+    - architecture/**/*
     - app/data_generators/sipity/data_generators/**/*
     - db/**/*
     - bin/**/*
