@@ -2,6 +2,13 @@ require 'spec_helper'
 require 'application_controller'
 
 RSpec.describe ApplicationController do
+  context '#store_previous_path_if_applicable' do
+    it 'will store the previous location if one is given' do
+      allow(controller).to receive(:controller_name).and_return('cas_sessions')
+      controller.params['previous_url'] = '/somewhere'
+      expect(controller.send(:store_previous_path_if_applicable)).to eq(true)
+    end
+  end
   context '#repository' do
     it 'will be a QueryRepository for a GET request' do
       expect(request).to receive(:get?).and_return(true)

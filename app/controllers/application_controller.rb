@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
 
   include Hesburgh::Lib::ControllerWithRunner
   before_action :filter_notify
+  before_action :store_previous_path_if_applicable
 
   force_ssl if: :ssl_configured?
 
@@ -28,6 +29,15 @@ class ApplicationController < ActionController::Base
 
   def message_for(key, options = {})
     t(key, { scope: "sipity/#{controller_name}.action/#{action_name}" }.merge(options))
+  end
+
+  def store_previous_path_if_applicable
+    fail "This is for Devise" unless defined?(Devise)
+    return true unless request.get?
+    return true unless controller_name == 'cas_sessions'
+    return true unless params.key?('previous_url')
+    store_location_for(:user, params['previous_url'])
+    true
   end
 
   # Remove error inserted since we are not showing a page before going to web access, this error message always shows up a page too late.
