@@ -17,7 +17,7 @@
         terms: [
           {
             term: 'ND.attached_files_completion_state', label: "I am submitting",
-            hint: "You may upload your final version at later. However, the final version of your project must be provided before you receive any monetary award."
+            hint: "You may upload your final version at a later date. However, the final version of your project must be provided before you receive any monetary award."
           },
           { term: 'ND.attachment' },
           { term: 'ND.project_url'}
@@ -41,7 +41,7 @@
       terms: [{
         term: 'ND.attached_files_completion_state', cardinality: 1,
         label: "Project Files Completion Status",
-        options: ['a representative version of my project', 'the final version of my project'],
+        options: ['a representative sample of my project', 'the final version of my project'],
       },{
         term: 'ND.attachment', cardinality: 'many',
         label: 'Upload project file(s)',
