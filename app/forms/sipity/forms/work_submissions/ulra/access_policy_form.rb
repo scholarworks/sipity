@@ -1,4 +1,4 @@
-require 'sipity/forms/work_submissions/ulra/access_policy_form'
+require 'sipity/forms/work_submissions/core/access_policy_form'
 require 'sipity/forms/work_submissions/ulra/attach_form'
 
 module Sipity
