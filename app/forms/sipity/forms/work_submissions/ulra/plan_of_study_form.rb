@@ -47,7 +47,7 @@ module Sipity
           end
 
           def possible_primary_colleges
-            repository.get_controlled_vocabulary_values_for_predicate_name(name: "primary_college")
+            repository.get_controlled_vocabulary_values_for_predicate_name(name: "college")
           end
 
           def possible_underclass_levels

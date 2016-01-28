@@ -21,7 +21,7 @@ module Sipity
           before do
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
-            ).with(name: "primary_college").and_return([primary_college])
+            ).with(name: "college").and_return([primary_college])
             allow(repository).to receive(
               :get_controlled_vocabulary_values_for_predicate_name
             ).with(name: 'underclass_level').and_return([underclass_level])
