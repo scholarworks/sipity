@@ -1,0 +1,20 @@
+class RemoveFacultyAbilityToUpdateAccessPolicy < ActiveRecord::Migration
+  def self.up
+    advising_role = Sipity::Models::Role['advising']
+    advising_role.processing_strategy_roles.find_each do |strategy_role|
+      strategy_role.strategy_state_action_permissions.find_each do |state_action_permission|
+        case state_action_permission.strategy_state_action.strategy_action.name
+        when 'access_policy'
+          state_action_permission.destroy
+        when 'faculty_response'
+          next unless state_action_permission.strategy_state_action.originating_strategy_state.name == 'pending_student_completion'
+          state_action_permission.strategy_state_action.destroy
+        end
+      end
+    end
+  end
+
+  def self.down
+    raise ActiveRecord::IrreversibleMigration
+  end
+end
