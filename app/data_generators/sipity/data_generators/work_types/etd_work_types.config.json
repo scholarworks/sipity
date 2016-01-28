@@ -170,6 +170,18 @@
         "roles": ["etd_reviewing", "data_observing"]
       }]
     }, {
+      "name": "copyright",
+      "attributes": {
+        "presentation_sequence": 10
+      },
+      "states": [{
+        "name": ["new", "advisor_changes_requested"],
+        "roles": ["creating_user"]
+      }, {
+        "name": ["new", "advisor_changes_requested", "grad_school_changes_requested", "under_grad_school_review"],
+        "roles": ["etd_reviewing", "data_observing"]
+      }]
+    }, {
       "name": "submit_for_review",
       "transition_to": "under_advisor_review",
       "attributes": {
@@ -179,7 +191,7 @@
         "name": ["new"],
         "roles": ["creating_user"]
       }],
-      "required_actions": ["describe", "degree", "attach", "collaborators", "access_policy", "publishing_and_patenting_intent", "author"],
+      "required_actions": ["describe", "degree", "attach", "collaborators", "copyright", "access_policy", "publishing_and_patenting_intent", "author"],
       "emails": [{
         "name": "confirmation_of_submit_for_review",
         "to": "creating_user"
@@ -557,9 +569,21 @@
         "roles": ["etd_reviewing", "data_observing"]
       }]
     }, {
-      "name": "access_policy",
+      "name": "copyright",
       "attributes": {
         "presentation_sequence": 9
+      },
+      "states": [{
+        "name": ["new", "advisor_changes_requested"],
+        "roles": ["creating_user"]
+      }, {
+        "name": ["new", "advisor_changes_requested", "grad_school_changes_requested", "under_grad_school_review"],
+        "roles": ["etd_reviewing", "data_observing"]
+      }]
+    }, {
+      "name": "access_policy",
+      "attributes": {
+        "presentation_sequence": 10
       },
       "states": [{
         "name": ["new", "advisor_changes_requested"],
@@ -578,7 +602,7 @@
         "name": ["new"],
         "roles": ["creating_user"]
       }],
-      "required_actions": ["describe", "degree", "attach", "collaborators", "access_policy", "publishing_and_patenting_intent", "author", "defense_date"],
+      "required_actions": ["describe", "degree", "attach", "collaborators", "copyright", "access_policy", "publishing_and_patenting_intent", "author", "defense_date"],
       "emails": [{
         "name": "confirmation_of_submit_for_review",
         "to": "creating_user"

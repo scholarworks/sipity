@@ -12,6 +12,11 @@ class RemoveFacultyAbilityToUpdateAccessPolicy < ActiveRecord::Migration
         end
       end
     end
+    submit_advisor_portion = Sipity::Models::Processing::StrategyAction.find_by!(name: 'submit_advisor_portion')
+    Sipity::Models::Processing::StrategyActionPrerequisite.where(guarded_strategy_action: submit_advisor_portion).each do |action_prerequisite|
+      next unless action_prerequisite.prerequisite_strategy_action.name == 'access_policy'
+      action_prerequisite.destroy
+    end
   end
 
   def self.down

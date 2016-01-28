@@ -14,13 +14,9 @@ module Sipity
           let(:repository) { CommandRepositoryInterface.new }
           let(:attributes) { {} }
           let(:keywords) { { work: work, requested_by: user, repository: repository, attributes: attributes } }
-          let(:copyrights) do
-            [double(predicate_name: 'name', term_label: 'value', term_uri: 'code'), double]
-          end
           subject { described_class.new(keywords) }
 
           before do
-            allow(repository).to receive(:work_attribute_values_for).with(work: work, key: 'copyright', cardinality: 1).and_return(nil)
             allow(repository).to receive(
               :access_rights_for_accessible_objects_of
             ).with(work: work, predicate_name: :all).and_return([work, attachment])
@@ -30,7 +26,6 @@ module Sipity
 
           its(:processing_action_name) { should eq('access_policy') }
           it { should respond_to :accessible_objects_attributes= }
-          it { should respond_to :copyright }
           it { should respond_to :representative_attachment_id }
 
           it 'will expose accessible_objects' do
@@ -44,7 +39,6 @@ module Sipity
           end
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:copyright) }
           it { should validate_presence_of(:representative_attachment_id) }
 
           it 'will validate the presence of accessible_objects_attributes' do
@@ -67,19 +61,10 @@ module Sipity
             expect(subject.errors[:accessible_objects_attributes]).to be_present
           end
 
-          it 'will have #available_copyrights' do
-            expect(repository).to receive(:get_controlled_vocabulary_entries_for_predicate_name).with(name: 'copyright').
-              and_return(copyrights)
-            expect(subject.available_copyrights).to eq(copyrights)
-          end
-
           context '#submit' do
             let(:rights) { 'All rights reserved' }
             let(:attributes) do
-              {
-                rights: rights, accessible_objects_attributes: accessible_objects_attributes,
-                representative_attachment_id: attachment.to_param
-              }
+              { accessible_objects_attributes: accessible_objects_attributes, representative_attachment_id: attachment.to_param }
             end
             let(:accessible_objects_attributes) do
               {
@@ -95,11 +80,6 @@ module Sipity
 
             it 'will representative_attachment_id' do
               expect(repository).to receive(:set_as_representative_attachment).and_call_original
-              subject.submit
-            end
-
-            it 'will update_work_attribute_values!' do
-              expect(repository).to receive(:update_work_attribute_values!).and_call_original
               subject.submit
             end
 

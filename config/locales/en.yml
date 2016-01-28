@@ -166,7 +166,9 @@ en:
       panel:
         title: "Publishing and Patenting Intent"
     access_policy:
-      label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
+      label: "Set <b>access controls</b> for this %{work_type}"
+    copyright:
+      label: "Set <b>copyright</b> for this %{work_type}"
     attach:
       label: "<b>Attach</b> files to this %{work_type}"
     describe:
@@ -211,7 +213,7 @@ en:
       attach:
         label: "<b>Attach</b> project files to this %{work_type}"
       access_policy:
-        label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
+        label: "Set <b>access controls</b> for this %{work_type}"
     show:
       work_area/self-deposit:
         start_a_submission:
@@ -234,6 +236,14 @@ en:
       work_area/ulra:
         landing_page_greeting_help_html:
           label: |
+            <p>
+            Welcome!<br/>
+            You have reached the application portal for the Undergraduate Library Research Award.
+              <ul>
+                <li><b>Students:</b> To start your application, click the "Start a Submission" button.</li>
+                <li><b>Advisors:</b> To upload a letter of recommendation, click "Sign in"</li>
+              </ul>
+            </p>
             <p>
             For ULRA policy or procedure questions email <a mailto="ulra-group@nd.edu">ulra-group@nd.edu</a><br />
             See <a href="//library.nd.edu/ulra/">library.nd.edu/ulra</a> for more information about the Undergraduate Library Research Awards.
