@@ -11,8 +11,8 @@
     <div class="panel-tiles">
       <%= f.input :title, as: :text, input_html: { class: 'redactor-input form-control' } %>
       <%= f.input :award_category, as: :radio_buttons, collection: view_object.award_categories_for_select %>
-      <%= f.input :course_name %>
-      <%= f.input :course_number %>
+      <%= f.input :course_name, hint: "e.g., Modern Arab Literature in Translation" %>
+      <%= f.input :course_number, hint: "MEAR14236" %>
     </div>
   </fieldset>
 

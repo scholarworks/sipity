@@ -8,7 +8,7 @@
     <fieldset class="panel-body with-followup-questions-js">
       <%= f.error_notification %>
       <%= f.error :base, error_method: :to_sentence %>
-      <%= f.input :submitted_for_publication, as: :boolean, inline_label: 'Was your project submitted for publication?', label: false, wrapper_class: 'checkbox', input_html: { class: 'submitted-for-publication-js'} %>
+      <%= f.input :submitted_for_publication, as: :boolean, inline_label: 'Project was submitted for publication', hint: 'If you have not submitted your project for publication, please click "Save and continue"', label: false, wrapper_class: 'checkbox', input_html: { class: 'submitted-for-publication-js'} %>
       <div class="followup-questions-to-submitted-for-publication">
         <noscript>
           <p>If your project was submitted for publication please fill out the following:</p>
