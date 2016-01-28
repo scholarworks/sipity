@@ -23,7 +23,7 @@
                   hint: "You may upload your final version at a later date. However, the final version of your project must be provided before you receive any monetary award."
                )%>
 
-    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Upload project file(s)", hint: "To select multiple files: Windows Ctrl+click; Mac Cmd+click" %>
+    <%= f.input :files, as: :file, input_html: { multiple: 'multiple' }, label: "Upload project file(s)", hint: "CTRL+CLICK (Windows) or CMD+CLICK (Mac) to select multiple files" %>
 
     <% if model.attachments.any? %>
       <ol class="attachment-listing">
