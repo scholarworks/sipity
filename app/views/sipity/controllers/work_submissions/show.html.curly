@@ -8,7 +8,7 @@
         </h1>
         <p class="work-status">
           <span class="work-type">{{ work_type }}</span> &bull;
-          <span class="work-processing-state">{{ human_readable_processing_state }}</span>
+          (Status: <span class="work-processing-state">{{ human_readable_processing_state }}</span>)
         </p>
       </div>
     </div>
