@@ -1,0 +1,12 @@
+<p>
+  Thank you for your patience.
+  We are sending your <%= @entity.work_type %> to be cataloged and ingested into CurateND.
+</p>
+
+<p>
+  When your <%= @entity.work_type %> is cataloged and available in CurateND, we'll send you another email.
+  You may continue to access your official ETD record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %>.
+</p>
+
+<%= render partial: 'sipity/mailers/etd_mailer/grad_school_email_signature' %>
+<%= render(partial: 'sipity/mailers/etd_mailer/action_in_the_inbox', object: @entity) %>

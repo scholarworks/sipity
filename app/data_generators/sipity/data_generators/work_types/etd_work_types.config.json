@@ -311,6 +311,10 @@
       "from_states": [{
         "name": ["grad_school_approved_but_waiting_for_routing"],
         "roles": ["etd_reviewing"]
+      }],
+      "emails": [{
+        "name": "thank_you_for_your_patience_with_the_new_etd_system",
+        "to": "creating_user"
       }]
     }, {
       "name": "grad_school_requests_change",
@@ -378,6 +382,10 @@
       "from_states": [{
         "name": ["ingesting"],
         "roles": ["batch_ingesting"]
+      }],
+      "emails": [{
+        "name": "hurray_your_work_is_in_curatend",
+        "to": "creating_user"
       }]
     }, {
       "name": "submit_for_ingest",

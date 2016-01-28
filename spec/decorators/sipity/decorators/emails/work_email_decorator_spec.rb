@@ -48,6 +48,7 @@ module Sipity
           end
         end
 
+        its(:permanent_url) { should be_a(String) }
         its(:work_type) { should eq('Doctoral dissertation') }
         its(:title) { should eq(work.title) }
         its(:email_message_action_description) { should eq("Review Doctoral dissertation “#{work.title}”") }
