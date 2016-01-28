@@ -67,10 +67,7 @@
       }, {
         "name": "access_policy",
         "states": [{
-          "name": ["new", "pending_advisor_completion"],
-          "roles": ["creating_user", "advising"]
-        }, {
-          "name": ["pending_student_completion", "under_review"],
+          "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
         }],
         "attributes": {
@@ -106,7 +103,7 @@
       }, {
         "name": "faculty_response",
         "states": [{
-          "name": ["new", "pending_student_completion", "pending_advisor_completion"],
+          "name": ["new", "pending_advisor_completion"],
           "roles": ["advising"]
         }]
       }, {
