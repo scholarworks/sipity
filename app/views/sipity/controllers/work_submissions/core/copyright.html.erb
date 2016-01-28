@@ -1,0 +1,29 @@
+<h1>Set Access Controls</h1>
+
+<%= simple_form_for(model, url: request.path, method: :post, as: :work, html: { class: 'simple-form panel panel-primary with-footer' }) do |f| %>
+  <legend class="panel-heading">
+    <h3 class="panel-title">
+      Please choose the <b>copyright</b> for your work
+    </h3>
+  </legend>
+
+  <fieldset class="panel-body">
+    <p class="panel-hint">
+      The <i>copyright release</i> applies to the work itself as well as the attached files.
+    </p>
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+    <div>
+      <%= f.input :copyright, collection: model.available_copyrights,
+            label_method: :term_label, value_method: :term_uri,
+            include_blank: true, input_html: { class: 'form-control', selected: model.copyright} %>
+    </div>
+  </fieldset>
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>

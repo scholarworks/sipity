@@ -11,7 +11,6 @@
     <p class="panel-hint">
       Please choose the <i>access controls</i> for the record of your work and its attachments.
       The access controls determine who will be able to see the material when the submission process is complete.
-      The <i>copyright release</i> applies to the work itself as well as the attached files.
     </p>
     <%= f.error_notification %>
     <%= f.error :base, error_method: :to_sentence %>
@@ -76,9 +75,6 @@
       <% if model.available_representative_attachments.any? %>
         <%= f.input :representative_attachment_id, collection: model.available_representative_attachments, input_html: { class: 'form-control' }, required: true %>
       <% end %>
-      <%= f.input :copyright, collection: model.available_copyrights,
-            label_method: :term_label, value_method: :term_uri,
-            include_blank: false, input_html: { class: 'form-control', selected: model.copyright} %>
     </div>
   </fieldset>
   <div class="panel-footer action-pane">

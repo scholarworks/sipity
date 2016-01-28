@@ -65,13 +65,22 @@
           "presentation_sequence": 5
         }
       }, {
-        "name": "access_policy",
+        "name": "copyright",
         "states": [{
           "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
         }],
         "attributes": {
           "presentation_sequence": 6
+        }
+      }, {
+        "name": "access_policy",
+        "states": [{
+          "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
+          "roles": ["creating_user"]
+        }],
+        "attributes": {
+          "presentation_sequence": 7
         }
       }, {
         "name": "plan_of_study",
@@ -118,7 +127,7 @@
           "to": "advising",
           "cc": "creating_user"
         }],
-        "required_actions": ["project_information", "attach", "access_policy", "plan_of_study", "publisher_information", "research_process"]
+        "required_actions": ["project_information", "attach", "access_policy", "copyright", "plan_of_study", "publisher_information", "research_process"]
       }, {
         "name": "submit_advisor_portion",
         "states": [{
@@ -131,7 +140,7 @@
           "to": "creating_user",
           "cc": "advising"
         }],
-        "required_actions": ["access_policy", "faculty_response"]
+        "required_actions": ["faculty_response"]
       }, {
         "name": "submit_for_review",
         "states": [{

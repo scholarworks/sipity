@@ -166,7 +166,9 @@ en:
       panel:
         title: "Publishing and Patenting Intent"
     access_policy:
-      label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
+      label: "Set <b>access controls</b> for this %{work_type}"
+    copyright:
+      label: "Set <b>copyright</b> for this %{work_type}"
     attach:
       label: "<b>Attach</b> files to this %{work_type}"
     describe:
@@ -211,7 +213,7 @@ en:
       attach:
         label: "<b>Attach</b> project files to this %{work_type}"
       access_policy:
-        label: "Set <b>access controls</b> and <b>copyright</b> for this %{work_type}"
+        label: "Set <b>access controls</b> for this %{work_type}"
     show:
       work_area/self-deposit:
         start_a_submission:
