@@ -11,27 +11,27 @@
     "work_type_config_paths": ["app/data_generators/sipity/data_generators/work_types/etd_work_types.config.json"],
     "actions": [{
       "name": "show",
-      "states": [{
+      "from_states": [{
         "name": ["new", "opened", "closed"],
         "roles": "work_submitting"
       }]
     }, {
       "name": "open",
       "transition_to": "opened",
-      "states": [{
+      "from_states": [{
         "name": ["new", "closed"],
         "roles": "etd_reviewing"
       }]
     }, {
       "name": "close",
       "transition_to": "closed",
-      "states": [{
+      "from_states": [{
         "name": ["opened", "new"],
         "roles": "etd_reviewing"
       }]
     }, {
       "name": "start_a_submission",
-      "states": [{
+      "from_states": [{
         "name": ["new", "opened"],
         "roles": "work_submitting"
       }]

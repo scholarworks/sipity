@@ -46,7 +46,7 @@ module Sipity
         end
 
         # Strategy State
-        config.fetch(:states, {}).each do |state_names, state_config|
+        config.fetch(:from_states, {}).each do |state_names, state_config|
           # TODO: Once the schema load method is used tidy this up
           if state_names.is_a?(Hash)
             state_config = state_names.except(:name) if state_config.nil?

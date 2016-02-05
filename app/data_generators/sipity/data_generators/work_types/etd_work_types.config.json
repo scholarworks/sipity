@@ -30,7 +30,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "grad_school_approved_but_waiting_for_routing", "under_advisor_review", "advisor_changes_requested", "under_grad_school_review", "grad_school_changes_requested", "ready_for_cataloging", "back_from_cataloging", "ready_for_ingest", "ingesting", "ingested"],
         "roles": ["etd_reviewing", "data_observing", "creating_user"]
       }, {
@@ -45,7 +45,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": "new",
         "roles": ["creating_user"]
       }, {
@@ -57,7 +57,7 @@
       "attributes": {
         "presentation_sequence": 3
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "grad_school_approved_but_waiting_for_routing", "under_advisor_review", "advisor_changes_requested", "under_grad_school_review", "grad_school_changes_requested", "ready_for_cataloging", "back_from_cataloging", "ready_for_ingest", "ingesting", "ingested"],
         "roles": ["etd_reviewing", "data_observing"]
       }]
@@ -66,7 +66,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -78,7 +78,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -90,7 +90,7 @@
       "attributes": {
         "presentation_sequence": 3
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -102,7 +102,7 @@
       "attributes": {
         "presentation_sequence": 4
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -114,7 +114,7 @@
       "attributes": {
         "presentation_sequence": 5
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -126,7 +126,7 @@
       "attributes": {
         "presentation_sequence": 6
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -138,7 +138,7 @@
       "attributes": {
         "presentation_sequence": 7
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -150,7 +150,7 @@
       "attributes": {
         "presentation_sequence": 8
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -162,7 +162,7 @@
       "attributes": {
         "presentation_sequence": 9
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -174,7 +174,7 @@
       "attributes": {
         "presentation_sequence": 10
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -187,7 +187,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new"],
         "roles": ["creating_user"]
       }],
@@ -205,7 +205,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["advisor_changes_requested"],
         "roles": ["creating_user"]
       }],
@@ -219,7 +219,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["advising"]
       }],
@@ -234,7 +234,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "under_grad_school_review",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["advising"]
       }],
@@ -249,7 +249,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "under_grad_school_review",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["etd_reviewing"]
       }],
@@ -264,7 +264,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "advisor_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["etd_reviewing"]
       }],
@@ -279,7 +279,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "grad_school_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["grad_school_changes_requested"],
         "roles": ["creating_user"]
       }],
@@ -294,7 +294,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
       }],
@@ -308,7 +308,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["grad_school_approved_but_waiting_for_routing"],
         "roles": ["etd_reviewing"]
       }]
@@ -319,7 +319,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "grad_school_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
       }],
@@ -334,7 +334,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
@@ -349,7 +349,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "back_from_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_cataloging"],
         "roles": ["cataloging"]
       }],
@@ -364,7 +364,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_ingest",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_cataloging"],
         "roles": ["cataloging"]
       }]
@@ -375,7 +375,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ingested",
-      "states": [{
+      "from_states": [{
         "name": ["ingesting"],
         "roles": ["batch_ingesting"]
       }]
@@ -386,7 +386,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ingesting",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_ingest"],
         "roles": ["batch_ingesting"]
       }]
@@ -441,7 +441,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "grad_school_approved_but_waiting_for_routing", "under_advisor_review", "advisor_changes_requested", "under_grad_school_review", "grad_school_changes_requested", "ready_for_cataloging", "back_from_cataloging", "ready_for_ingest", "ingesting", "ingested"],
         "roles": ["etd_reviewing", "data_observing", "creating_user"]
       }, {
@@ -456,7 +456,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": "new",
         "roles": ["creating_user"]
       }, {
@@ -468,7 +468,7 @@
       "attributes": {
         "presentation_sequence": 3
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "grad_school_approved_but_waiting_for_routing", "under_advisor_review", "advisor_changes_requested", "under_grad_school_review", "grad_school_changes_requested", "ready_for_cataloging", "back_from_cataloging", "ready_for_ingest", "ingesting", "ingested"],
         "roles": ["etd_reviewing", "data_observing"]
       }]
@@ -477,7 +477,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -489,7 +489,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -501,7 +501,7 @@
       "attributes": {
         "presentation_sequence": 3
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -513,7 +513,7 @@
       "attributes": {
         "presentation_sequence": 4
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -525,7 +525,7 @@
       "attributes": {
         "presentation_sequence": 5
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -537,7 +537,7 @@
       "attributes": {
         "presentation_sequence": 6
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -549,7 +549,7 @@
       "attributes": {
         "presentation_sequence": 7
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -561,7 +561,7 @@
       "attributes": {
         "presentation_sequence": 8
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -573,7 +573,7 @@
       "attributes": {
         "presentation_sequence": 9
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -585,7 +585,7 @@
       "attributes": {
         "presentation_sequence": 10
       },
-      "states": [{
+      "from_states": [{
         "name": ["new", "advisor_changes_requested"],
         "roles": ["creating_user"]
       }, {
@@ -598,7 +598,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["new"],
         "roles": ["creating_user"]
       }],
@@ -616,7 +616,7 @@
       "attributes": {
         "presentation_sequence": 1
       },
-      "states": [{
+      "from_states": [{
         "name": ["advisor_changes_requested"],
         "roles": ["creating_user"]
       }],
@@ -630,7 +630,7 @@
       "attributes": {
         "presentation_sequence": 2
       },
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["advising"]
       }],
@@ -645,7 +645,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "under_grad_school_review",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["advising"]
       }],
@@ -660,7 +660,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "under_grad_school_review",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["etd_reviewing"]
       }],
@@ -675,7 +675,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "advisor_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["under_advisor_review"],
         "roles": ["etd_reviewing"]
       }],
@@ -690,7 +690,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "grad_school_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["grad_school_changes_requested"],
         "roles": ["creating_user"]
       }],
@@ -705,7 +705,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
       }],
@@ -719,7 +719,7 @@
         "presentation_sequence": 1
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["grad_school_approved_but_waiting_for_routing"],
         "roles": ["etd_reviewing"]
       }]
@@ -730,7 +730,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "grad_school_changes_requested",
-      "states": [{
+      "from_states": [{
         "name": ["under_grad_school_review", "grad_school_changes_requested"],
         "roles": ["etd_reviewing"]
       }],
@@ -745,7 +745,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
       }],
@@ -760,7 +760,7 @@
         "allow_repeat_within_current_state": true
       },
       "transition_to": "back_from_cataloging",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_cataloging"],
         "roles": ["cataloging"]
       }],
@@ -775,7 +775,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ready_for_ingest",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_cataloging"],
         "roles": ["cataloging"]
       }]
@@ -786,7 +786,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ingested",
-      "states": [{
+      "from_states": [{
         "name": ["ingesting"],
         "roles": ["batch_ingesting"]
       }]
@@ -797,7 +797,7 @@
         "allow_repeat_within_current_state": false
       },
       "transition_to": "ingesting",
-      "states": [{
+      "from_states": [{
         "name": ["ready_for_ingest"],
         "roles": ["batch_ingesting"]
       }]

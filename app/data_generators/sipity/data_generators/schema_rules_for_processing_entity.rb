@@ -49,7 +49,7 @@ module Sipity
                 action.key(:name, &SchemaRulesForProcessingEntity.filled_string)
                 action.optional(:transition_to, &SchemaRulesForProcessingEntity.filled_string)
                 action.optional(:required_actions, &SchemaRulesForProcessingEntity.string_or_array_of_strings_config)
-                action.optional(:states) do |states|
+                action.optional(:from_states) do |states|
                   states.array? do
                     states.each do |state|
                       state.hash? do

@@ -18,7 +18,7 @@
         }]
       }, {
         "name": "debug",
-        "states": [{
+        "from_states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
           "roles": ["ulra_reviewing"]
         }],
@@ -27,7 +27,7 @@
         }
       }, {
         "name": "show",
-        "states": [{
+        "from_states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
           "roles": ["creating_user", "advising", "ulra_reviewing"]
         }],
@@ -36,7 +36,7 @@
         }
       }, {
         "name": "destroy",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_advisor_completion", "pending_student_completion"],
           "roles": ["creating_user", "ulra_reviewing"]
         }, {
@@ -48,7 +48,7 @@
         }
       }, {
         "name": "project_information",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
@@ -57,7 +57,7 @@
         }
       }, {
         "name": "attach",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion", "under_review"],
           "roles": ["creating_user"]
         }],
@@ -66,7 +66,7 @@
         }
       }, {
         "name": "copyright",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
         }],
@@ -75,7 +75,7 @@
         }
       }, {
         "name": "access_policy",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
         }],
@@ -84,7 +84,7 @@
         }
       }, {
         "name": "plan_of_study",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
@@ -93,7 +93,7 @@
         }
       }, {
         "name": "publisher_information",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
@@ -102,7 +102,7 @@
         }
       }, {
         "name": "research_process",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
         }],
@@ -111,13 +111,13 @@
         }
       }, {
         "name": "faculty_response",
-        "states": [{
+        "from_states": [{
           "name": ["new", "pending_advisor_completion"],
           "roles": ["advising"]
         }]
       }, {
         "name": "submit_student_portion",
-        "states": [{
+        "from_states": [{
           "name": "new",
           "roles": ["creating_user"]
         }],
@@ -130,7 +130,7 @@
         "required_actions": ["project_information", "attach", "access_policy", "copyright", "plan_of_study", "publisher_information", "research_process"]
       }, {
         "name": "submit_advisor_portion",
-        "states": [{
+        "from_states": [{
           "name": "new",
           "roles": ["advising"]
         }],
@@ -143,7 +143,7 @@
         "required_actions": ["faculty_response"]
       }, {
         "name": "submit_for_review",
-        "states": [{
+        "from_states": [{
           "name": "pending_student_completion",
           "roles": ["creating_user"]
         }, {
@@ -159,7 +159,7 @@
         "required_actions": ["attach", "plan_of_study", "publisher_information", "research_process", "faculty_response"]
       }, {
         "name": "submit_completed_review",
-        "states": [{
+        "from_states": [{
           "name": "under_review",
           "roles": "ulra_reviewing"
         }],

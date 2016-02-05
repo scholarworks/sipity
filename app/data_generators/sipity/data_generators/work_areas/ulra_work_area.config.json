@@ -14,27 +14,27 @@
     "submission_window_config_paths": ["app/data_generators/sipity/data_generators/submission_windows/ulra_submission_windows.config.json"],
     "actions": [{
       "name": "show",
-      "states": [{
+      "from_states": [{
         "name": ["new", "opened", "closed"],
         "roles": "work_area_viewing"
       }]
     }, {
       "name": "open",
       "transition_to": "opened",
-      "states": [{
+      "from_states": [{
         "name": ["new", "closed"],
         "roles": "work_area_managing"
       }]
     }, {
       "name": "close",
       "transition_to": "closed",
-      "states": [{
+      "from_states": [{
         "name": ["opened", "new"],
         "roles": "work_area_managing"
       }]
     }, {
       "name": "start_a_submission",
-      "states": [{
+      "from_states": [{
         "name": ["new", "opened"],
         "roles": "work_area_viewing"
       }]
