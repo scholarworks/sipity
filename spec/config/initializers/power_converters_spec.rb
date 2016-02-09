@@ -75,9 +75,10 @@ RSpec.describe 'power converters' do
     [
       ["1", "000000001"],
       ["1234567890000000", "1234567890000000"],
+      ['004316606', '004316606'],
       [123_456, "000123456"]
     ].each_with_index do |(to_convert, expected), index|
-      it "will convert #{to_convert.inspect} to #{expected} (Scenario ##{index}" do
+      it "will convert #{to_convert.inspect} to #{expected.inspect} (Scenario ##{index}" do
         expect(PowerConverter.convert(to_convert, to: :catalog_system_number)).to eq(expected)
       end
     end

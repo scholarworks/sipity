@@ -10,7 +10,7 @@ module Sipity
           let(:user) { double('User') }
           let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: {} } }
           let(:oclc_number) { "123456789" }
-          let(:catalog_system_number) { "123456789" }
+          let(:catalog_system_number) { "004316606" }
           subject do
             described_class.new(keywords.merge(attributes: { oclc_number: oclc_number, catalog_system_number: catalog_system_number }))
           end
