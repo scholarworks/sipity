@@ -403,12 +403,6 @@
       }, {
         "name": "confirmation_of_advisor_signoff_is_complete", "to": "creating_user"
       }]
-    }, {
-      "state": "ingested",
-      "reason": "entered_state",
-      "emails": [{
-        "name": "release_suspended_catalog_record", "to": "cataloging"
-      }]
     }]
   },{
     "name": "doctoral_dissertation",
@@ -813,12 +807,6 @@
         "name": "advisor_signoff_is_complete", "to": "etd_reviewing", "cc": "creating_user"
       }, {
         "name": "confirmation_of_advisor_signoff_is_complete", "to": "creating_user"
-      }]
-    }, {
-      "state": "ingested",
-      "reason": "entered_state",
-      "emails": [{
-        "name": "release_suspended_catalog_record", "to": "cataloging"
       }]
     }]
   }]
