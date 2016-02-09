@@ -33,10 +33,14 @@ PowerConverter.define_conversion_for(:catalog_system_number) do |input|
   when Float
     nil
   else
-    begin
-      format("%09d", input)
-    rescue ArgumentError, TypeError
-      nil
+    if input.to_s =~ /\A\d{9}\Z/
+      input
+    else
+      begin
+        format("%#9.09d", input)
+      rescue ArgumentError, TypeError
+        nil
+      end
     end
   end
 end
