@@ -69,7 +69,7 @@ group :development do
   gem 'rails_layout'
   gem 'rb-fchange', require: false
   gem 'rb-fsevent', require: false
-  gem 'rb-inotify', require: false
+  gem 'rb-inotify', '0.9.5', require: false
   gem 'spring'
   gem 'spring-commands-rspec'
   gem 'terminal-notifier'
