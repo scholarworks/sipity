@@ -387,6 +387,8 @@ en:
       respond_to_grad_school_request: "Author response to Graduate School's change request(s)"
       advisor_requests_change: "Your research director has requested changes to your submission"
       confirmation_of_submit_for_review: "Confirmation of submission for review"
+      hurray_your_work_is_in_curatend: "Cataloging complete"
+      thank_you_for_your_patience_with_the_new_etd_system: "Cataloging in progress"
   sipity/mailers/ulra_mailer:
     email_name:
       faculty_assigned_for_ulra_submission: "Action Requested - ULRA - Advisor Letter of Recommendation Requested"
