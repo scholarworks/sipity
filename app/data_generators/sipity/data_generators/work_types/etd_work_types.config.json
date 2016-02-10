@@ -341,10 +341,6 @@
       "from_states": [{
         "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
-      }],
-      "emails": [{
-        "name": "grad_school_requests_cataloging",
-        "to": "cataloging"
       }]
     }, {
       "name": "send_back_to_grad_school",
@@ -410,6 +406,12 @@
         "name": "advisor_signoff_is_complete", "to": "etd_reviewing", "cc": "creating_user"
       }, {
         "name": "confirmation_of_advisor_signoff_is_complete", "to": "creating_user"
+      }]
+    }, {
+      "state": "ready_for_cataloging",
+      "reason": "entered_state",
+      "emails": [{
+        "name": "grad_school_requests_cataloging", "to": "cataloging"
       }]
     }]
   },{
@@ -724,6 +726,10 @@
       "from_states": [{
         "name": ["grad_school_approved_but_waiting_for_routing"],
         "roles": ["etd_reviewing"]
+      }],
+      "emails": [{
+        "name": "thank_you_for_your_patience_with_the_new_etd_system",
+        "to": "creating_user"
       }]
     }, {
       "name": "grad_school_requests_change",
@@ -750,10 +756,6 @@
       "from_states": [{
         "name": ["back_from_cataloging"],
         "roles": ["etd_reviewing"]
-      }],
-      "emails": [{
-        "name": "grad_school_requests_cataloging",
-        "to": "cataloging"
       }]
     }, {
       "name": "send_back_to_grad_school",
@@ -815,6 +817,12 @@
         "name": "advisor_signoff_is_complete", "to": "etd_reviewing", "cc": "creating_user"
       }, {
         "name": "confirmation_of_advisor_signoff_is_complete", "to": "creating_user"
+      }]
+    }, {
+      "state": "ready_for_cataloging",
+      "reason": "entered_state",
+      "emails": [{
+        "name": "grad_school_requests_cataloging", "to": "cataloging"
       }]
     }]
   }]
