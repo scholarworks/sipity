@@ -1,6 +1,12 @@
-<p>Congratulations! Your <%= @entity.work_type %> has been approved by the Graduate School, and will now be added to the Hesburgh Library ETD collection. If you have any questions or concerns about this submission, please contact Shari Sweet at <a href="mailto:shill2@nd.edu" target="_top">shill2@nd.edu</a> or the Graduate School at <a href="mailto:dteditor@nd.edu" target="_top">dteditor@nd.edu</a> for assistance.</p>
+<p>
+  Congratulations! Your <%= @entity.work_type %> has been approved by the Graduate School, and will now be moved to the cataloging queue for addition to the Hesburgh Library ETD collection.
+  If you have any questions or concerns about this submission, please contact Shari Sweet at <a href="mailto:shill2@nd.edu" target="_top">shill2@nd.edu</a> or the Graduate School at <a href="mailto:dteditor@nd.edu" target="_top">dteditor@nd.edu</a> for assistance.
+</p>
 
-<p>You may access your official ETD record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %></p>
+<p>
+  You may continue to access your official ETD record at: <%= link_to @entity.email_message_action_url, @entity.email_message_action_url %>.
+  When your <%= @entity.work_type %> has been cataloged and deposited into CurateND, you will be notified by email.
+</p>
 
 <p>Author summary:</p>
 <ul>

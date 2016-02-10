@@ -13,6 +13,10 @@ module Sipity
           work.to_s
         end
 
+        def permanent_url
+          Conversions::ConvertToPermanentUri.call(work)
+        end
+
         def work_type
           Sipity::Controllers::TranslationAssistant.call(scope: :work_types, subject: work.work_type)
         end
