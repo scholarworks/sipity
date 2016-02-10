@@ -37,13 +37,13 @@ module Sipity
       end
 
       def comments(decorator: default_comment_decorator)
-        @comments ||= repository.find_comments_for(entity: self).map do|comment|
+        @comments ||= repository.find_comments_for(entity: self).map do |comment|
           decorator.decorate(comment)
         end
       end
 
       def current_comments(decorator: default_comment_decorator)
-        @current_comments ||= repository.find_current_comments_for(entity: self).map do|comment|
+        @current_comments ||= repository.find_current_comments_for(entity: self).map do |comment|
           decorator.decorate(comment)
         end
       end
