@@ -8,7 +8,7 @@ class RemoveAdvisorFromSeeingItemsAtTooManyStates < ActiveRecord::Migration
       strategy = work_type.strategy_usage.strategy
       show_action = strategy.strategy_actions.find_by!(name: 'show')
       advisor_strategy_role = strategy.strategy_roles.includes(:role).to_a.detect { |a_strategy_role| a_strategy_role.role.name == 'advising' }
-      fail "Could not find a advisor" unless advisor_strategy_role
+      raise "Could not find a advisor" unless advisor_strategy_role
       [
         'under_grad_school_review',
         'grad_school_changes_requested',

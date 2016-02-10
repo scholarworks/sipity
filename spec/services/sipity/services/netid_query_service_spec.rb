@@ -43,7 +43,7 @@ module Sipity
           expect(subject.preferred_name).to eq(netid)
         end
 
-        it 'will return false when the requested NetID is not found for a person'do
+        it 'will return false when the requested NetID is not found for a person' do
           expect(subject).to receive(:open).and_return(StringIO.new(valid_response_but_not_for_a_user))
           expect(subject.preferred_name).to eq(netid)
         end
@@ -63,7 +63,7 @@ module Sipity
           expect(subject.valid_netid?).to eq(false)
         end
 
-        it 'will return false when the requested NetID is not found for a person'do
+        it 'will return false when the requested NetID is not found for a person' do
           expect(subject).to receive(:open).and_return(StringIO.new(valid_response_but_not_for_a_user))
           expect(subject.valid_netid?).to eq(false)
         end

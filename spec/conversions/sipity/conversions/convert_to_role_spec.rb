@@ -43,7 +43,7 @@ module Sipity
           expect(convert_to_role(object)).to be_a(Models::Role)
         end
 
-        it "will raise exception if the name is invalid" do
+        it "will fail exception if the name is invalid" do
           object = '__not_valid__'
           expect { convert_to_role(object) }.to raise_error(Exceptions::RoleConversionError)
         end

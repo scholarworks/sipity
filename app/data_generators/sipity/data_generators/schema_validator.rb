@@ -10,7 +10,7 @@ module Sipity
       def self.call(data:, schema:)
         validation = schema.call(data)
         return true unless validation.messages.present?
-        fail Exceptions::InvalidSchemaError, errors: validation.messages
+        raise Exceptions::InvalidSchemaError, errors: validation.messages
       end
     end
   end

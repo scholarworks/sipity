@@ -34,7 +34,7 @@ module Sipity
         when Models::Processing::StrategyAction
           input.name
         else
-          fail Exceptions::ProcessingActionNameConversionError, input
+          raise Exceptions::ProcessingActionNameConversionError, input
         end
       end
 

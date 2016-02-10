@@ -34,7 +34,7 @@ module Sipity
       attr_writer :scope, :the_thing, :requested_by, :on_behalf_of, :reason
 
       def reason=(value)
-        fail ArgumentError, "Expected #{value.inspect} in #{VALID_REASONS_FOR_ENUM.inspect}" unless VALID_REASONS_FOR_ENUM.key?(value)
+        raise ArgumentError, "Expected #{value.inspect} in #{VALID_REASONS_FOR_ENUM.inspect}" unless VALID_REASONS_FOR_ENUM.key?(value)
         @reason = value
       end
     end

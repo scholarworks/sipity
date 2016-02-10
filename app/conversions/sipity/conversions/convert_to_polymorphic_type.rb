@@ -20,7 +20,7 @@ module Sipity
         return input.to_polymorphic_type if input.respond_to?(:to_polymorphic_type)
         return input.base_class if input.respond_to?(:base_class)
         return input.class.base_class if input.is_a?(ActiveRecord::Base)
-        fail Exceptions::EntityTypeConversionError, input
+        raise Exceptions::EntityTypeConversionError, input
       end
 
       module_function :convert_to_polymorphic_type

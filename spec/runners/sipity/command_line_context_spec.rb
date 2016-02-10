@@ -9,7 +9,7 @@ RSpec.describe Sipity::CommandLineContext do
   its(:current_user) { should eq(requested_by) }
   its(:repository) { should be_a(Sipity::QueryRepository) }
 
-  it 'will fail to initialize with a :bogus repository strategy' do
+  it 'will raise to initialize with a :bogus repository strategy' do
     expect { described_class.new(username: username, repository_strategy: :bogus) }.to raise_error(NameError)
   end
 

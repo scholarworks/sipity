@@ -29,7 +29,7 @@ module Sipity
         rescue Exceptions::ProcessingEntityConversionError
           nil
         end
-        fail Exceptions::ProcessingStrategyIdConversionError, input
+        raise Exceptions::ProcessingStrategyIdConversionError, input
       end
 
       module_function :convert_to_processing_strategy_id

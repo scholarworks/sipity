@@ -37,7 +37,7 @@ module Sipity
 
         # @review should I consider if a logger is passed?
         def self.for_command_line(handler:)
-          fail(
+          raise(
             Sipity::Exceptions::ResponseHandlerError,
             object: handler.response_object,
             errors: [],
@@ -63,7 +63,7 @@ module Sipity
         end
       end
 
-      # Forms that fail to submit may have different errors.
+      # Forms that raise to submit may have different errors.
       module SubmitFailureResponder
         def self.for_controller(handler:)
           handler.render(template: handler.template, status: :unprocessable_entity)
@@ -76,7 +76,7 @@ module Sipity
 
         # @review should I consider if a logger is passed?
         def self.for_command_line(handler:)
-          fail(
+          raise(
             Sipity::Exceptions::ResponseHandlerError,
             object: handler.response_object,
             errors: handler.response_errors,

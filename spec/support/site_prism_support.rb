@@ -30,7 +30,7 @@ module SitePrism
         when Capybara::Poltergeist::Node
           find_named_object_for_poltergeist(object_name_node.native)
         else
-          fail "Unexpected #native value for #{object_name_node}"
+          raise "Unexpected #native value for #{object_name_node}"
         end
       end
 

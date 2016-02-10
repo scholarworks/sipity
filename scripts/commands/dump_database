@@ -69,5 +69,5 @@ if db_environment_config.fetch('adapter') =~ /^mysql/i
   system(command)
   exit!($?.exitstatus)
 else
-  fail "Expected mysql for dumping the database"
+  raise "Expected mysql for dumping the database"
 end

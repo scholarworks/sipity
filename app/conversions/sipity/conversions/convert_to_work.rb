@@ -33,7 +33,7 @@ module Sipity
         return input.work if input.respond_to?(:work)
         return input if input.is_a?(Models::Work)
         return convert_to_work(input.proxy_for) if input.respond_to?(:proxy_for)
-        fail Exceptions::WorkConversionError, input
+        raise Exceptions::WorkConversionError, input
       end
 
       module_function :convert_to_work
