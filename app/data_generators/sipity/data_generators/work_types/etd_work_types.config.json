@@ -291,7 +291,8 @@
     }, {
       "name": "grad_school_signoff",
       "attributes": {
-        "presentation_sequence": 1
+        "presentation_sequence": 1,
+        "allow_repeat_within_current_state": true
       },
       "transition_to": "ready_for_cataloging",
       "from_states": [{
@@ -706,7 +707,8 @@
     }, {
       "name": "grad_school_signoff",
       "attributes": {
-        "presentation_sequence": 1
+        "presentation_sequence": 1,
+        "allow_repeat_within_current_state": true
       },
       "transition_to": "ready_for_cataloging",
       "from_states": [{

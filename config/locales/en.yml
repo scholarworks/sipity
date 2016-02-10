@@ -389,6 +389,7 @@ en:
       confirmation_of_submit_for_review: "Confirmation of submission for review"
       hurray_your_work_is_in_curatend: "Cataloging complete"
       thank_you_for_your_patience_with_the_new_etd_system: "Cataloging in progress"
+      grad_school_requests_cataloging: "ETD - Grad School Cataloging Request"
   sipity/mailers/ulra_mailer:
     email_name:
       faculty_assigned_for_ulra_submission: "Action Requested - ULRA - Advisor Letter of Recommendation Requested"
