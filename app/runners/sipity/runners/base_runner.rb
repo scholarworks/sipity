@@ -71,7 +71,7 @@ module Sipity
       #
       # @see NamedCallback
       def run(*)
-        fail NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
+        raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
       end
 
       def action_name
@@ -88,7 +88,7 @@ module Sipity
           when :none, false, nil then authentication_layer_that_authenticates_anything
           when :default, true then authentication_layer_that_uses_context_authentication
           else
-            fail Exceptions::FailedToBuildAuthenticationLayerError
+            raise Exceptions::FailedToBuildAuthenticationLayerError
           end
         end
       end
@@ -108,7 +108,7 @@ module Sipity
         # service has likely thrown an exception if things have failed. This is
         # my last line of defense. If you encounter this exception, make sure
         # to review the authentication_service method for its output.
-        fail Exceptions::AuthenticationFailureError, self.class
+        raise Exceptions::AuthenticationFailureError, self.class
       end
 
       # @todo Tease out a builder
@@ -119,7 +119,7 @@ module Sipity
           when :none, false, nil then authorization_layer_that_authorizes_everything
           when :default, true then authorization_layer_with_enforcement
           else
-            fail Exceptions::FailedToBuildAuthorizationLayerError
+            raise Exceptions::FailedToBuildAuthorizationLayerError
           end
         end
       end

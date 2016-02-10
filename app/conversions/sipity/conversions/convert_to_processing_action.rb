@@ -17,7 +17,7 @@ module Sipity
           strategy_action = Models::Processing::StrategyAction.find_by(strategy_id: strategy_id, name: object.to_s)
           return strategy_action if strategy_action.present?
         end
-        fail Exceptions::ProcessingStrategyActionConversionError, { scope: scope, object: object }.inspect
+        raise Exceptions::ProcessingStrategyActionConversionError, { scope: scope, object: object }.inspect
       end
 
       module_function :convert_to_processing_action

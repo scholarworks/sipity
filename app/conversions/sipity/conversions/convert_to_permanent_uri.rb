@@ -23,7 +23,7 @@ module Sipity
         return PERMANENT_URI_FORMAT % input.id if input.is_a?(Models::Work)
         return PERMANENT_URI_FORMAT % input.work_id if input.respond_to?(:work_id)
         return convert_to_permanent_uri(input.work) if input.respond_to?(:work)
-        fail Exceptions::PermanentUriConversionError, input
+        raise Exceptions::PermanentUriConversionError, input
       end
 
       module_function :convert_to_permanent_uri

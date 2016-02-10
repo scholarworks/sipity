@@ -46,7 +46,7 @@ module Sipity
       #   are authorized.
       #
       # @raise [Exceptions::AuthorizationFailureError] if one of the
-      #   action_to_authorize/entity pairs fail to authorize.
+      #   action_to_authorize/entity pairs raise to authorize.
       #
       # @note If the context implements #callbacks, that will be called.
       #
@@ -56,7 +56,7 @@ module Sipity
         action_to_authorizes_and_entity_pairs.each do |action_to_authorize, entity|
           next if policy_authorizer.call(user: user, action_to_authorize: action_to_authorize, entity: entity)
           context.callback(:unauthorized) if context.respond_to?(:callback)
-          fail Exceptions::AuthorizationFailureError, user: user, action_to_authorize: action_to_authorize, entity: entity
+          raise Exceptions::AuthorizationFailureError, user: user, action_to_authorize: action_to_authorize, entity: entity
         end
         yield
       end

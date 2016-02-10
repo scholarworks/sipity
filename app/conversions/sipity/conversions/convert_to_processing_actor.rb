@@ -16,7 +16,7 @@ module Sipity
           # up the whole world.
           return Models::Processing::Actor.find_or_create_by!(proxy_for: input) if input.id.present?
         end
-        fail Exceptions::ProcessingActorConversionError, input
+        raise Exceptions::ProcessingActorConversionError, input
       end
 
       module_function :convert_to_processing_actor

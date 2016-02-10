@@ -50,7 +50,7 @@ module Devise
 
         context 'with user id that is missing' do
           let(:env) { { 'rack.session' => { Devise::Strategies::VALIDATED_RESOURCE_ID_SESSION_KEY => '-1' } } }
-          it 'will fail if the resource is not found' do
+          it 'will raise if the resource is not found' do
             expect(subject).to receive(:fail!).with(:invalid)
             subject.authenticate!
           end

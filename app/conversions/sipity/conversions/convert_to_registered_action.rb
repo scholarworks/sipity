@@ -31,7 +31,7 @@ module Sipity
       def convert_to_registered_action(input)
         return input.to_registered_action if input.respond_to?(:to_registered_action)
         return input if input.is_a?(Models::Processing::EntityActionRegister)
-        fail Exceptions::RegisteredActionConversionError, input
+        raise Exceptions::RegisteredActionConversionError, input
       end
 
       module_function :convert_to_registered_action

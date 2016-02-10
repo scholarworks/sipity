@@ -48,7 +48,7 @@ module Sipity
           expect(convert_to_polymorphic_type(object)).to eq(Models::Work)
         end
 
-        it "will raise an error on any old object" do
+        it "will fail an error on any old object" do
           object = Object.new
           expect { convert_to_polymorphic_type(object) }.to raise_error(Exceptions::EntityTypeConversionError)
         end

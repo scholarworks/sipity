@@ -74,7 +74,7 @@ module Sipity
       attr_writer :name
 
       def as=(input)
-        fail(Exceptions::EmailAsOptionInvalidError, as: input, valid_list: AS_OPTIONS_LOOKUP) unless AS_OPTIONS_LOOKUP.key?(input)
+        raise(Exceptions::EmailAsOptionInvalidError, as: input, valid_list: AS_OPTIONS_LOOKUP) unless AS_OPTIONS_LOOKUP.key?(input)
         @as = input
       end
     end

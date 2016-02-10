@@ -11,7 +11,7 @@ module Sipity
         next if input.respond_to?(expectation, include_all)
         missing_methods << expectation
       end
-      fail(Exceptions::InterfaceExpectationError, object: input, expectations: missing_methods) if missing_methods.present?
+      raise(Exceptions::InterfaceExpectationError, object: input, expectations: missing_methods) if missing_methods.present?
     end
 
     def guard_interface_collaborator_expectations!(input, **keywords)
@@ -28,7 +28,7 @@ module Sipity
         end
       end
 
-      fail(Exceptions::InterfaceCollaboratorExpectationError, object: input, collaborator_expectations: errors) if errors.present?
+      raise(Exceptions::InterfaceCollaboratorExpectationError, object: input, collaborator_expectations: errors) if errors.present?
     end
   end
 end

@@ -127,14 +127,14 @@ RSpec.describe 'power converters' do
       expect(PowerConverter.convert(register, to: :processing_comment)).to eq(object)
     end
 
-    it 'will fail if Processing EntityActionRegister subject is not a comment' do
+    it 'will raise if Processing EntityActionRegister subject is not a comment' do
       object = Sipity::Models::Work.new
       register = Sipity::Models::Processing::EntityActionRegister.new(subject: object)
       expect { PowerConverter.convert(register, to: :processing_comment) }.
         to raise_error(PowerConverter::ConversionError)
     end
 
-    it 'will fail to convert a string' do
+    it 'will raise to convert a string' do
       expect { PowerConverter.convert('missing', to: :processing_comment) }.
         to raise_error(PowerConverter::ConversionError)
     end

@@ -15,7 +15,7 @@ module Sipity
     def self.find_mailer_for(entity:, notification:)
       mailer = mailer_for(entity: entity)
       return mailer if mailer.respond_to?(notification)
-      fail Exceptions::NotificationNotFoundError, name: notification, container: mailer
+      raise Exceptions::NotificationNotFoundError, name: notification, container: mailer
     end
 
     def self.mailer_for(entity:)

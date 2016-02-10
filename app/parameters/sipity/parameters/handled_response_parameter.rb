@@ -66,7 +66,7 @@ module Sipity
       attr_writer :template
 
       def status=(input)
-        fail Exceptions::InvalidHandledResponseStatus, input unless input.is_a?(Symbol)
+        raise Exceptions::InvalidHandledResponseStatus, input unless input.is_a?(Symbol)
         @status = input
       end
 

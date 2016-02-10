@@ -16,7 +16,7 @@ module Sipity
         base_class.send(:define_method, :to_processing_entity) do
           # This is a bit of a short cut, perhaps I should check if its persisted?
           # But I'll settle for this right now.
-          processing_entity || fail(Exceptions::ProcessingEntityConversionError, self)
+          processing_entity || raise(Exceptions::ProcessingEntityConversionError, self)
         end
       end
     end

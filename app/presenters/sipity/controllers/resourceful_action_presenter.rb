@@ -21,7 +21,7 @@ module Sipity
       end
 
       def path
-        fail NotImplementedError
+        raise NotImplementedError
       end
 
       def availability_state

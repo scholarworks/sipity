@@ -62,7 +62,7 @@ module Sipity
           end
         end
         context "with mismatching strategy_id and action's strategy_id" do
-          it "will raise an error if the scope's strategy_id is different than the actions" do
+          it "will fail an error if the scope's strategy_id is different than the actions" do
             expect { convert_to_processing_action(action, scope: strategy_id + 1) }.
               to raise_error(Exceptions::ProcessingStrategyActionConversionError)
           end
