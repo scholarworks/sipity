@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 4ba066e8b610eba349ec0fb4f88fddc842ac7fb5
+  revision: 7e18b0a3586df186f900203c00bbfb5245a8021a
   branch: master
   specs:
     locabulary (0.1.8)
@@ -325,7 +325,7 @@ GEM
       yard (~> 0.8.7.5)
     inflecto (0.0.2)
     interception (0.5)
-    ipaddress (0.8.2)
+    ipaddress (0.8.3)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -346,9 +346,9 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    listen (3.0.5)
+    listen (3.0.6)
       rb-fsevent (>= 0.9.3)
-      rb-inotify (>= 0.9)
+      rb-inotify (>= 0.9.7)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
