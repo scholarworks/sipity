@@ -7,7 +7,7 @@
 # They are included so we can share what the keys should be.
 cas_base_url: "https://login.nd.edu/cas"
 cas_validate_url: "https://login.nd.edu/cas/serviceValidate"
-curate_nd_url_for_etds: "https://curate.nd.edu/catalog?utf8=%E2%9C%93&search_field=all_fields&q=etd"
+curate_nd_url_for_etds: "https://curate.nd.edu/catalog?f_inclusive%5Bhuman_readable_type_sim%5D%5B%5D=Doctoral+Dissertation&f_inclusive%5Bhuman_readable_type_sim%5D%5B%5D=Master%27s+Thesis"
 curate_nd_url_show_prefix_url: "https://curate.nd.edu/show/"
 default_email_from: 'sipity-development@nd.edu'
 default_email_return_path: 'no-reply@nd.edu'
