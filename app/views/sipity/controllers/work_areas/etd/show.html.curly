@@ -27,7 +27,12 @@
   </div>
 
   <div class="row">
-    {{paginate_works}}
+    <div class="col-xs-12 work-listing">
+      {{paginate_works}}
+    </div>
+  </div>
+
+  <div class="row">
     <div class="col-xs-12 work-listing">
       <table class="table">
         <thead>
@@ -52,6 +57,12 @@
             </tr>
           {{/works}}
       </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-12 work-listing">
+      {{paginate_works}}
     </div>
   </div>
 
