@@ -5,7 +5,7 @@
 #
 # Learn more: http://github.com/javan/whenever
 
-set :output, Rails.root.join('log/cron_log.log').to_s
+set :output, "/home/app/sipity/shared/log/cron_log.log"
 
 # I prefer to choose prime number moments in time for scheduling because other
 # people tend to schedule tasks on the quarter hours.
