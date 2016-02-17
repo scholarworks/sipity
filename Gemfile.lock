@@ -52,7 +52,7 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 4ba066e8b610eba349ec0fb4f88fddc842ac7fb5
+  revision: 7e18b0a3586df186f900203c00bbfb5245a8021a
   branch: master
   specs:
     locabulary (0.1.8)
@@ -120,7 +120,7 @@ GEM
       multi_json
     arel (6.0.3)
     ast (2.2.0)
-    autoprefixer-rails (6.3.1)
+    autoprefixer-rails (6.3.3)
       execjs
       json
     bcrypt (3.1.10)
@@ -325,7 +325,7 @@ GEM
       yard (~> 0.8.7.5)
     inflecto (0.0.2)
     interception (0.5)
-    ipaddress (0.8.2)
+    ipaddress (0.8.3)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -346,9 +346,9 @@ GEM
       addressable (~> 2.3)
     letter_opener (1.4.1)
       launchy (~> 2.2)
-    listen (3.0.5)
+    listen (3.0.6)
       rb-fsevent (>= 0.9.3)
-      rb-inotify (>= 0.9)
+      rb-inotify (>= 0.9.7)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     lumberjack (1.0.10)
@@ -377,7 +377,7 @@ GEM
       nenv (~> 0.1)
       shellany (~> 0.0)
     orm_adapter (0.5.0)
-    parser (2.3.0.4)
+    parser (2.3.0.6)
       ast (~> 2.2)
     poltergeist (1.9.0)
       capybara (~> 2.1)
@@ -404,7 +404,7 @@ GEM
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rack (1.6.4)
-    rack-cache (1.6.0)
+    rack-cache (1.6.1)
       rack (>= 0.4)
     rack-contrib (1.4.0)
       git-version-bump (~> 0.15)
@@ -483,7 +483,7 @@ GEM
       rspec-mocks (~> 3.4.0)
       rspec-support (~> 3.4.0)
     rspec-support (3.4.1)
-    rubocop (0.37.1)
+    rubocop (0.37.2)
       parser (>= 2.3.0.4, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)
@@ -516,7 +516,7 @@ GEM
     seed_dump (3.2.4)
       activerecord (>= 4)
       activesupport (>= 4)
-    selenium-webdriver (2.51.0)
+    selenium-webdriver (2.52.0)
       childprocess (~> 0.5)
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
