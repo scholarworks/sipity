@@ -120,7 +120,7 @@ GEM
       multi_json
     arel (6.0.3)
     ast (2.2.0)
-    autoprefixer-rails (6.3.1)
+    autoprefixer-rails (6.3.3)
       execjs
       json
     bcrypt (3.1.10)
