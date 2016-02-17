@@ -20,6 +20,7 @@ set :secret_repo_name, Proc.new{
   when 'production' then 'secret_prod'
   end
 }
+set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:rails_env)}" }
 
 namespace :deploy do
 
