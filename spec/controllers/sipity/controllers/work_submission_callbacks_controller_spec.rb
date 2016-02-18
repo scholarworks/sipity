@@ -60,6 +60,20 @@ module Sipity
         end
       end
 
+      context '#current_user' do
+        before { allow_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action) }
+        let(:processing_action_name) { 'fun_things' }
+        context 'with Basic authentication credentials' do
+          it 'will attempt to find user_for_etd_ingester' do
+            user = double('User')
+            expect(controller).to receive(:user_for_etd_ingester).with(user: 'User', password: 'Password').and_return(user)
+            request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('User', 'Password')
+            controller.current_user
+            expect(controller.instance_variable_get("@current_user")).to eq(user)
+          end
+        end
+      end
+
       context '#user_for_etd_ingester' do
         let(:valid_name) { Sipity::DataGenerators::WorkTypes::EtdGenerator::ETD_INGESTORS }
         let(:invalid_name) { 'nope' }
