@@ -21,6 +21,7 @@ set :secret_repo_name, Proc.new{
   end
 }
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:rails_env)}" }
+set :whenever_variables,    ->{ "environment=#{fetch :rails_env}" }
 
 namespace :deploy do
 
