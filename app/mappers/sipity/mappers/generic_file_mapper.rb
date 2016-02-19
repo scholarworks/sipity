@@ -131,7 +131,7 @@ module Sipity
             RELS_EXT_URI.each { |key, uri| json.set!(key, uri) }
           end
           json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
-          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_grad_school_editing_group_pid!])
           json.set!(PARENT_PREDICATE_KEY, [namespaced_pid(work.id)])
         end
       end
