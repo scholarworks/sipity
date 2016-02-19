@@ -13,6 +13,7 @@ module Sipity
       let(:degree_map) { { "ms:name" => ["a degree_name"], "ms:discipline" => ["a program_name"], "ms:level" => 'TRANSLATED!' } }
       let(:title) { 'Title of the work' }
       let(:batch_user) { 'curate_batch_user' }
+      let(:etd_reviewer_group) { Figaro.env.curate_grad_school_editing_group_pid! }
 
       subject { described_class.new(work, repository: repository) }
 
@@ -48,7 +49,7 @@ module Sipity
         expected_json = JSON.parse(subject.call)
         expect(expected_json["pid"]).to eq("und:a_id")
         expect(expected_json["pid"]).to eq("und:a_id")
-        expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
+        expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
         expect(expected_json["metadata"]["dc:title"]).to eq(title)
         expect(expected_json["metadata"]["dc:language"]).to eq(['eng'])
         expect(expected_json["metadata"]["dc:contributor"]).to eq([contributor_map])
@@ -66,7 +67,9 @@ module Sipity
           expect(work).to receive(:title).and_return(title)
           expect(work).to receive(:collaborators).and_return(collaborators)
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
+          expect(expected_json["rights"]).to eq(
+            "read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group]
+          )
         end
 
         it 'have restricted access rights' do
@@ -78,7 +81,9 @@ module Sipity
           expect(work).to receive(:title).and_return(title)
           expect(work).to receive(:collaborators).and_return(collaborators)
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq("read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user])
+          expect(expected_json["rights"]).to eq(
+            "read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group]
+          )
         end
 
         context 'will add embargo date to rights metadata' do
@@ -96,7 +101,7 @@ module Sipity
             expect(work).to receive(:collaborators).and_return(collaborators)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
-                                                  "read" => ['Hello'], "edit" => [batch_user])
+                                                  "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
           end
 
           it 'have public access rights with embargo date' do
@@ -110,7 +115,7 @@ module Sipity
             expect(work).to receive(:collaborators).and_return(collaborators)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
-                                                  "read" => ['Hello'], "edit" => [batch_user])
+                                                  "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
           end
         end
       end
