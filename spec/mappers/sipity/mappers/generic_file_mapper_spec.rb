@@ -19,6 +19,7 @@ module Sipity
       let(:repository) { QueryRepositoryInterface.new }
       let(:creators) { [double(username: 'Hello')] }
       let(:batch_user) { 'curate_batch_user' }
+      let(:etd_reviewer_group) { Figaro.env.curate_grad_school_editing_group_pid! }
       let(:sample_file) { File.new(__FILE__) }
       let(:fedora_date) { Time.zone.today.strftime('%FZ') }
 
@@ -45,7 +46,7 @@ module Sipity
         expect(work).to receive(:id).and_return('a_work_id')
         expected_json = JSON.parse(subject.call)
         expect(expected_json["pid"]).to eq("und:a_pid")
-        expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user])
+        expect(expected_json["rights"]).to eq("read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
         expect(expected_json["metadata"]["dc:title"]).to eq(file.file_name)
         expect(expected_json["metadata"]["dc:dateSubmitted"]).to eq(fedora_date)
         expect(expected_json["metadata"]["dc:modified"]).to eq(fedora_date)
@@ -94,7 +95,9 @@ module Sipity
           expect(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
+          expect(expected_json["rights"]).to eq(
+            "read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group]
+          )
         end
 
         it 'have work access_right when file have no access rights ' do
@@ -104,7 +107,9 @@ module Sipity
           expect(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq("read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user])
+          expect(expected_json["rights"]).to eq(
+            "read-groups" => ["public"], "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group]
+          )
         end
 
         it 'will use attachment access_right when available' do
@@ -114,7 +119,9 @@ module Sipity
           expect(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
           expect(work).to receive(:id).and_return('a_work_id')
           expected_json = JSON.parse(subject.call)
-          expect(expected_json["rights"]).to eq("read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user])
+          expect(expected_json["rights"]).to eq(
+            "read-groups" => ["restricted"], "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group]
+          )
         end
 
         context 'will add embargo date to rights metadata' do
@@ -131,7 +138,7 @@ module Sipity
             allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => embargo_date, "read-groups" => ["public"],
-                                                  "read" => ['Hello'], "edit" => [batch_user])
+                                                  "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
           end
           it 'have public access rights with embargo date' do
             allow(repository).to receive(:attachment_access_right).with(attachment: file).and_return(access_right)
@@ -141,7 +148,7 @@ module Sipity
             expect(work).to receive(:id).and_return('a_id')
             expected_json = JSON.parse(subject.call)
             expect(expected_json["rights"]).to eq("embargo-date" => [embargo_date], "read-groups" => ["public"],
-                                                  "read" => ['Hello'], "edit" => [batch_user])
+                                                  "read" => ['Hello'], "edit" => [batch_user], "edit-groups" => [etd_reviewer_group])
           end
         end
       end
