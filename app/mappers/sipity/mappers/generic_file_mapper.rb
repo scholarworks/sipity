@@ -25,6 +25,7 @@ module Sipity
       READ_KEY = 'read'.freeze
       EDIT_KEY = 'edit'.freeze
       READ_GROUP_KEY = 'read-groups'.freeze
+      EDIT_GROUP_KEY = 'edit-groups'.freeze
       EMBARGO_KEY = 'embargo-date'.freeze
       # RELS-EXT KEYS
       RELS_EXT_KEY = 'rels-ext'.freeze
@@ -131,7 +132,7 @@ module Sipity
             RELS_EXT_URI.each { |key, uri| json.set!(key, uri) }
           end
           json.set!(EDITOR_PREDICATE_KEY, [Figaro.env.curate_batch_user_pid!])
-          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_batch_group_pid!])
+          json.set!(EDITOR_GROUP_PREDICATE_KEY, [Figaro.env.curate_grad_school_editing_group_pid!])
           json.set!(PARENT_PREDICATE_KEY, [namespaced_pid(work.id)])
         end
       end
@@ -180,7 +181,9 @@ module Sipity
 
       def decode_access_rights
         # determine and add Public, Private, Embargo and ND only rights
-        decoded_access_rights = { READ_KEY => creators, EDIT_KEY => [BATCH_USER] }
+        decoded_access_rights = {
+          READ_KEY => creators, EDIT_KEY => [BATCH_USER], EDIT_GROUP_KEY => [Figaro.env.curate_grad_school_editing_group_pid!]
+        }
         case access_right_code
         when Models::AccessRight::OPEN_ACCESS
           decoded_access_rights[READ_GROUP_KEY] = [PUBLIC_ACCESS]
