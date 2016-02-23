@@ -52,10 +52,10 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 7e18b0a3586df186f900203c00bbfb5245a8021a
+  revision: 69ec6264ca8246d2f9809afc0fe83155116a1fa1
   branch: master
   specs:
-    locabulary (0.1.8)
+    locabulary (0.2.0)
       json (~> 1.8)
 
 GIT
@@ -115,14 +115,13 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     addressable (2.4.0)
-    airbrake (4.3.5)
+    airbrake (4.3.6)
       builder
       multi_json
     arel (6.0.3)
     ast (2.2.0)
-    autoprefixer-rails (6.3.3)
+    autoprefixer-rails (6.3.3.1)
       execjs
-      json
     bcrypt (3.1.10)
     better_errors (2.1.1)
       coderay (>= 1.0.0)
@@ -178,7 +177,7 @@ GEM
     cliver (0.3.2)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)
-    coderay (1.1.0)
+    coderay (1.1.1)
     coffee-rails (4.1.1)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0, < 5.1.x)
@@ -248,7 +247,7 @@ GEM
     erubis (2.7.0)
     excon (0.45.4)
     execjs (2.6.0)
-    faker (1.6.1)
+    faker (1.6.2)
       i18n (~> 0.5)
     fastercsv (1.5.5)
     ffi (1.9.10)
@@ -355,10 +354,10 @@ GEM
     lumberjack (1.0.10)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    meta_request (0.3.4)
+    meta_request (0.4.0)
       callsite (~> 0.0, >= 0.0.11)
       rack-contrib (~> 1.1)
-      railties (>= 3.0.0, < 5.0.0)
+      railties (>= 3.0.0, < 5.1.0)
     method_source (0.8.2)
     mime-types (2.6.2)
     mini_portile2 (2.0.0)
@@ -458,7 +457,7 @@ GEM
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
       rspec-mocks (~> 3.4.0)
-    rspec-core (3.4.2)
+    rspec-core (3.4.3)
       rspec-support (~> 3.4.0)
     rspec-expectations (3.4.0)
       diff-lcs (>= 1.2.0, < 2.0)
@@ -466,9 +465,9 @@ GEM
     rspec-given (3.8.0)
       given_core (= 3.8.0)
       rspec (>= 2.14.0)
-    rspec-html-matchers (0.7.0)
+    rspec-html-matchers (0.7.1)
       nokogiri (~> 1)
-      rspec (~> 3)
+      rspec (>= 3.0.0.a, < 4)
     rspec-its (1.2.0)
       rspec-core (>= 3.0.0)
       rspec-expectations (>= 3.0.0)
@@ -498,7 +497,7 @@ GEM
       sexp_processor (~> 4.1)
     rubycas-client (2.3.9)
       activesupport
-    rubyzip (1.1.7)
+    rubyzip (1.2.0)
     safe_yaml (1.0.4)
     sanitize (4.0.1)
       crass (~> 1.0.2)
@@ -522,7 +521,7 @@ GEM
       multi_json (~> 1.0)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
-    sexp_processor (4.6.1)
+    sexp_processor (4.7.0)
     shellany (0.0.1)
     shoulda-callback-matchers (1.1.3)
       activesupport (>= 3)
