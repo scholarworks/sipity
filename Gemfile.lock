@@ -667,10 +667,11 @@ DEPENDENCIES
   rb-readline
   rdiscount
   responders (~> 2.0)
+  rspec (~> 3.4.0)
   rspec-given
   rspec-html-matchers (~> 0.6)
   rspec-its
-  rspec-rails
+  rspec-rails (~> 3.4.0)
   rubocop
   sanitize
   sass-rails
