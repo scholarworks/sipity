@@ -27,6 +27,13 @@ module Sipity
           define_method(email.method_name) do |options = {}|
             entity = options.fetch(:entity)
             @entity = options.fetch(:decorator) { email.decorator }.new(entity)
+            processing_entity = Conversions::ConvertToProcessingEntity.call(entity)
+            logger_payload = {
+              context: "Sipity::MailerBuilder.build", email: email.method_name, subject_entity_id: entity.id,
+              subject_entity_type: entity.class.to_s, processing_entity_id: processing_entity.id, to: Array.wrap(options[:to]),
+              cc: Array.wrap(options[:to]), bcc: Array.wrap(options[:bcc])
+            }
+            logger.info(logger_payload.to_json)
             mail(options.slice(:to, :cc, :bcc).merge(subject: email_subject(email.method_name)))
           end
         end
