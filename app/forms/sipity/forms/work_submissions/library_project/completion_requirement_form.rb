@@ -35,14 +35,14 @@ module Sipity
 
           private
 
+          include Conversions::ExtractInputDateFromInput
           def initialize_attributes(attributes)
-            [
-              [:project_must_complete_by_date, 1], [:project_must_complete_by_reason, 1]
-            ].each do |attribute_name, cardinality|
-              value = attributes.fetch(attribute_name) do
-                repository.work_attribute_values_for(work: work, key: attribute_name.to_s, cardinality: cardinality)
-              end
-              send("#{attribute_name}=", value)
+            self.project_must_complete_by_reason = attributes.fetch(:project_must_complete_by_reason) do
+              repository.work_attribute_values_for(work: work, key: 'project_must_complete_by_reason', cardinality: 1)
+            end
+
+            self.project_must_complete_by_date = extract_input_date_from_input(:project_must_complete_by_date, attributes) do
+              repository.work_attribute_values_for(work: work, key: 'project_must_complete_by_date', cardinality: 1)
             end
           end
 
