@@ -32,6 +32,10 @@ module Sipity
           as: :scope_for_notification,
           class_name: 'Sipity::Models::Notification::NotifiableContext'
         )
+
+        # A reserved word for submission windows; Its how we know if the
+        # window is open.
+        OPEN_SUBMISSION_WINDOW_STATE = 'opened'.freeze
       end
     end
   end

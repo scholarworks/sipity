@@ -32,12 +32,10 @@ module Sipity
       end
 
       context '#find_open_submission_windows_by' do
-        let(:as_of) { Time.zone.now }
-
         it 'will return alphabetized entries which are open as of the current date' do
           [
             {
-              work_area_id: work_area.id, slug: 'use', open_for_starting_submissions_at: 2.hours.ago
+              work_area_id: work_area.id, slug: 'use'
             }, {
               work_area_id: work_area.id, slug: 'another', open_for_starting_submissions_at: 4.hours.ago,
               closed_for_starting_submissions_at: 5.hours.from_now
