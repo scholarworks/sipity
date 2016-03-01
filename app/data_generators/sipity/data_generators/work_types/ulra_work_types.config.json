@@ -158,12 +158,19 @@
         }],
         "required_actions": ["attach", "plan_of_study", "publisher_information", "research_process", "faculty_response"]
       }, {
+        "name": "submission_review",
+        "from_states": [{
+          "name": "under_review",
+          "roles": "ulra_reviewing"
+        }]
+      }, {
         "name": "submit_completed_review",
         "from_states": [{
           "name": "under_review",
           "roles": "ulra_reviewing"
         }],
-        "transition_to": "review_completed"
+        "transition_to": "review_completed",
+        "required_actions": ["submission_review"]
       }],
       "state_emails": [{
         "state": "under_review",
