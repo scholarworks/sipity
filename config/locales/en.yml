@@ -200,6 +200,8 @@ en:
     program_name:
       label: "Add <b>program name</b> for your %{work_type}"
     work_type/ulra_submission:
+      assign_award_status:
+        label: "Assign <b>Award Status</b> for ULRA Submission"
       project_information:
         label: "Tell us about your <b>project</b>"
       plan_of_study:

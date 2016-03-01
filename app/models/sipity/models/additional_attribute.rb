@@ -31,6 +31,7 @@ module Sipity
       ETD_REVIEWER_SIGNOFF_DATE = 'ETD_REVIEWER_SIGNOFF_DATE'.freeze
       ETD_SUBMISSION_DATE = 'etd_submission_date'.freeze
       EXPECTED_GRADUATION_TERM = 'expected_graduation_term'.freeze
+      IS_AN_AWARD_WINNER = 'is_an_award_winner'.freeze
       LANGUAGE = 'language'.freeze
       MAJORS = 'majors'.freeze
       MINORS = 'minors'.freeze
@@ -78,6 +79,7 @@ module Sipity
           ETD_REVIEWER_SIGNOFF_DATE => ETD_REVIEWER_SIGNOFF_DATE,
           ETD_SUBMISSION_DATE => ETD_SUBMISSION_DATE,
           EXPECTED_GRADUATION_TERM => EXPECTED_GRADUATION_TERM,
+          IS_AN_AWARD_WINNER => IS_AN_AWARD_WINNER,
           LANGUAGE => LANGUAGE,
           MAJORS => MAJORS,
           MINORS => MINORS,
