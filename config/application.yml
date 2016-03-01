@@ -17,7 +17,7 @@ dragonfly_s3_root_path: 's3_root_dir'
 dragonfly_s3_secret_access_key: 'secret'
 dragonfly_s3_url_host: 'bucketname.aws.com'
 dragonfly_secret: "12345"
-jira_username: 'jfriesen'
+jira_username: 'sipity'
 jira_site_url: 'https://jira.library.nd.edu'
 sipity_batch_ingester_access_key: '1234'
 ezid_client_default_shoulder: "doi:10.5072/FK2"
