@@ -60,7 +60,6 @@ module Sipity
         if config.key?(:required_actions)
           Array.wrap(config.fetch(:required_actions)).each do |required_action_name|
             prerequisite_action = Models::Processing::StrategyAction.find_or_create_by!(strategy: processing_strategy, name: required_action_name)
-            prerequisite_action.update!(completion_required: true) unless prerequisite_action.completion_required?
             Models::Processing::StrategyActionPrerequisite.find_or_create_by!(guarded_strategy_action: action, prerequisite_strategy_action: prerequisite_action)
           end
         end
