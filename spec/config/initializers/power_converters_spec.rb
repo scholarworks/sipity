@@ -65,6 +65,9 @@ RSpec.describe 'power converters' do
       ['FALSE', false],
       ['Yes', true],
       ['No', false],
+      ['01', true],
+      ['ashdkfjahskdfadsf', true],
+      ['9876543210', true],
       [nil, false],
       [Object.new, true]
     ].each_with_index do |(to_convert, expected), index|
