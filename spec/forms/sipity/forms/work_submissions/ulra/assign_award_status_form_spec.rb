@@ -1,12 +1,12 @@
 require 'spec_helper'
 require 'support/sipity/command_repository_interface'
-require 'sipity/forms/work_submissions/ulra/submission_review_form'
+require 'sipity/forms/work_submissions/ulra/assign_award_status_form'
 
 module Sipity
   module Forms
     module WorkSubmissions
       module Ulra
-        RSpec.describe SubmissionReviewForm do
+        RSpec.describe AssignAwardStatusForm do
           let(:user) { double('User') }
           let(:work) { double('Work') }
           let(:is_an_award_winner) { 'Yes' }
@@ -14,7 +14,7 @@ module Sipity
           let(:keywords) { { requested_by: user, attributes: {}, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('submission_review') }
+          its(:processing_action_name) { should eq('assign_award_status') }
           its(:policy_enforcer) { should eq Policies::WorkPolicy }
           its(:base_class) { should eq(Models::Work) }
 

@@ -158,7 +158,7 @@
         }],
         "required_actions": ["attach", "plan_of_study", "publisher_information", "research_process", "faculty_response"]
       }, {
-        "name": "submission_review",
+        "name": "assign_award_status",
         "from_states": [{
           "name": "under_review",
           "roles": "ulra_reviewing"
@@ -170,7 +170,7 @@
           "roles": "ulra_reviewing"
         }],
         "transition_to": "review_completed",
-        "required_actions": ["submission_review"]
+        "required_actions": ["assign_award_status"]
       }],
       "state_emails": [{
         "state": "under_review",

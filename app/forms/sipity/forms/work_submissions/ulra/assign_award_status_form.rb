@@ -7,7 +7,7 @@ module Sipity
     module WorkSubmissions
       module Ulra
         # Responsible for capturing and validating information for research process
-        class SubmissionReviewForm
+        class AssignAwardStatusForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
             attribute_names: [:is_an_award_winner]
@@ -36,9 +36,11 @@ module Sipity
 
           private
 
+          # rubocop:disable Style/PredicateName
           def is_an_award_winner_from_work
             repository.work_attribute_values_for(work: work, key: "is_an_award_winner", cardinality: 1)
           end
+          # rubocop:enable Style/PredicateName
         end
       end
     end
