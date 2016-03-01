@@ -34,6 +34,7 @@ gem 'curly-templates', github: 'jeremyf/curly', branch: 'sipity-hack'
 gem 'kaminari'
 gem 'locabulary', github: 'ndlib/locabulary', branch: 'master'
 gem 'data_migrator', github: 'jeremyf/data-migrator'
+gem 'whenever', require: false
 
 group :doc do
   gem 'inch', require: false
