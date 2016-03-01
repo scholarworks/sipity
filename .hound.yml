@@ -24,6 +24,7 @@ AllCops:
     - 'spec/support/sipity/command_repository_interface.rb'
     - 'spec/support/sipity/query_repository_interface.rb'
     - 'app/validators/open_for_starting_submissions_validator.rb'
+    - 'app/repositories/sipity/commands/library_project_commands.rb'
   RunRailsCops: true
 
 ModuleLength:
