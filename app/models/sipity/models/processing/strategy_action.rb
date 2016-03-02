@@ -70,6 +70,11 @@ module Sipity
 
         RESOURCEFUL_ACTION_NAMES = %w(new create show edit update destroy debug).freeze
 
+        # A magical action that for starting a submission in a submission window but creating a work
+        # Both the submission window and the work processing strategies have a start_a_submission to
+        # indicate how things get moving.
+        START_A_SUBMISSION = 'start_a_submission'.freeze
+
         include Conversions::ConvertToProcessingActionName
         def name=(value)
           super(convert_to_processing_action_name(value))

@@ -25,6 +25,7 @@ AllCops:
     - 'spec/support/sipity/command_repository_interface.rb'
     - 'spec/support/sipity/query_repository_interface.rb'
     - 'app/validators/open_for_starting_submissions_validator.rb'
+    - 'spec/features/sipity/validate_work_type_configuration_spec.rb'
   TargetRubyVersion: 2.2
 
 Rails:
