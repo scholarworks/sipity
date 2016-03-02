@@ -5,6 +5,9 @@
       "strategy_permissions": [{
         "group": "ULRA Review Committee",
         "role": "ulra_reviewing"
+      },{
+        "group": "ULRA Data Remediators",
+        "role": "remediating_data"
       }],
       "actions": [{
         "name": "start_a_submission",
