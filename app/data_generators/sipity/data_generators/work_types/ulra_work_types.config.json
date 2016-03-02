@@ -22,7 +22,7 @@
       }, {
         "name": "debug",
         "from_states": [{
-          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed", "under_data_remediation", "ready_for_ingest"],
           "roles": ["ulra_reviewing"]
         }],
         "attributes": {
@@ -31,7 +31,7 @@
       }, {
         "name": "show",
         "from_states": [{
-          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed"],
+          "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed", "under_data_remediation", "ready_for_ingest"],
           "roles": ["creating_user", "advising", "ulra_reviewing"]
         }],
         "attributes": {
@@ -54,6 +54,9 @@
         "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 1
@@ -63,6 +66,9 @@
         "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion", "under_review"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 5
@@ -72,6 +78,9 @@
         "from_states": [{
           "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 6
@@ -81,6 +90,9 @@
         "from_states": [{
           "name": ["new", "pending_advisor_completion","pending_student_completion", "under_review"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 7
@@ -90,6 +102,9 @@
         "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 2
@@ -99,6 +114,9 @@
         "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 4
@@ -108,6 +126,9 @@
         "from_states": [{
           "name": ["new", "pending_student_completion", "pending_advisor_completion"],
           "roles": ["creating_user"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 3
@@ -117,6 +138,9 @@
         "from_states": [{
           "name": ["new", "pending_advisor_completion"],
           "roles": ["advising"]
+        },{
+          "name": ["under_data_remediation"],
+          "roles": ["remediating_data"]
         }]
       }, {
         "name": "submit_student_portion",
@@ -174,6 +198,20 @@
         }],
         "transition_to": "review_completed",
         "required_actions": ["assign_award_status"]
+      }, {
+        "name": "begin_data_remediation",
+        "from_states": [{
+          "name": "review_completed",
+          "roles": "remediating_data"
+        }],
+        "transition_to": "under_data_remediation"
+      }, {
+        "name": "finish_data_remediation",
+        "from_states": [{
+          "name": "under_data_remediation",
+          "roles": "remediating_data"
+        }],
+        "transition_to": "remediation_complete"
       }],
       "state_emails": [{
         "state": "under_review",
