@@ -27,7 +27,6 @@ module Sipity
           include ActiveModel::Validations
           validate :each_accessible_objects_attributes_are_valid
           validate :at_lease_one_accessible_objects_attributes_entry
-          validates :copyright, presence: true
           validates :requested_by, presence: true
           validates :representative_attachment_id, presence: true, if: :at_least_one_attachment?
 
