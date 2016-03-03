@@ -33,3 +33,10 @@ ulra_review_committee_group = Sipity::Models::Group.find_or_create_by!(name: ulr
 
 $stdout.puts "Associating #{user.name} with #{ulra_review_committee_group.name}"
 ulra_review_committee_group.group_memberships.find_or_create_by(user: batch_ingestor)
+
+ulra_data_remediators = 'ULRA Data Remediators'
+$stdout.puts "Finding or creating group for '#{ulra_data_remediators}'"
+ulra_data_remediator_group = Sipity::Models::Group.find_or_create_by!(name: ulra_data_remediators)
+
+$stdout.puts "Associating #{user.name} with #{ulra_data_remediator_group.name}"
+ulra_data_remediator_group.group_memberships.find_or_create_by(user: user)

@@ -45,6 +45,7 @@ module Sipity
       CREATING_USER = 'creating_user'.freeze
       DATA_OBSERVING = "data_observing".freeze
       ETD_REVIEWING = "etd_reviewing".freeze
+      REMEDIATING_DATA = "remediating_data".freeze
       SUBMISSION_WINDOW_VIEWING = "submission_window_viewing".freeze
       ULRA_REVIEWING = "ulra_reviewing".freeze
       WORK_AREA_MANAGING = "work_area_managing".freeze
@@ -61,6 +62,7 @@ module Sipity
           CREATING_USER => CREATING_USER,
           DATA_OBSERVING => DATA_OBSERVING,
           ETD_REVIEWING => ETD_REVIEWING,
+          REMEDIATING_DATA => REMEDIATING_DATA,
           SUBMISSION_WINDOW_VIEWING => SUBMISSION_WINDOW_VIEWING,
           ULRA_REVIEWING => ULRA_REVIEWING,
           WORK_AREA_MANAGING => WORK_AREA_MANAGING,
