@@ -132,16 +132,6 @@ module Sipity
                 under_pmo_review: { roles: [managing_projects] }
               }, attributes: { presentation_sequence: 1 }
             },
-            project_prioritization: {
-              states: {
-                under_pmo_review: { roles: [managing_projects] }
-              }, attributes: { presentation_sequence: 2 }
-            },
-            digital_collections_project: {
-              states: {
-                under_pmo_review: { roles: [managing_projects] }
-              }, attributes: { presentation_sequence: 3 }
-            },
             submit_for_pmo_review: {
               states: { initial_state_name => { roles: [creating_user] } },
               transition_to: :under_pmo_review,
