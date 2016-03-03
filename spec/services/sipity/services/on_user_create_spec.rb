@@ -1,8 +1,8 @@
 require 'rails_helper'
-require 'sipity/data_generators/on_user_create'
+require 'sipity/services/on_user_create'
 
 module Sipity
-  module DataGenerators
+  module Services
     RSpec.describe OnUserCreate do
       let(:user) { double('User') }
 

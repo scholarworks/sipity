@@ -1,5 +1,5 @@
 module Sipity
-  module DataGenerators
+  module Services
     # Responsible for adding user to registered user group
     #
     class OnUserCreate
