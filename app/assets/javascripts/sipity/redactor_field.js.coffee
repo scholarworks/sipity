@@ -19,7 +19,9 @@ class RedactorTextArea
     @fieldElement.redactor({
       buttonSource: true
       focus: true
-      formatting: ['p', 'blockquote', 'h3', 'h4', 'h5']
+      formatting: ['p', 'blockquote', 'h2', 'h3', 'h4']
+      buttons: ['formatting', 'bold', 'italic', 'unorderedlist', 'orderedlist', 'deleted']
+      minHeight: '16em'
     })
 
 
