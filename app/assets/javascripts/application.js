@@ -19,6 +19,7 @@
 //
 //= require vendor/jquery-ui-widget
 //= require vendor/redactor
+//= require sipity/redactor_field
 //
 //= require manage_repeating_fields
 //= require manage_repeating_sections
