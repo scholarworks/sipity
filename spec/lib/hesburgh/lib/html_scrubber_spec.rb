@@ -132,7 +132,9 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
       %(<i>Hello<script><i>World</i></script></i>) => %(<i>Hello</i>),
       %(<script><i>Hello</i></script>) => %(),
       %(<p>Hello <a href="http://world.com" target="_blank">World</a></p>) => %(<p>Hello <a href="http://world.com">World</a></p>),
-      %(Hello <p>World <i>Are we there yet?</i></p>) => %(Hello <p>World <i>Are we there yet?</i></p>)
+      %(Hello <p>World <i>Are we there yet?</i></p>) => %(Hello <p>World <i>Are we there yet?</i></p>),
+      # Because you should know how the scrubber will obliterate and interact with the HTML tag delimiters
+      %(Hello < World > Where Are < You > Do You Know >) => %(Hello  Where Are  Do You Know &gt;)
     }.each do |input, expected|
       it "will scrub #{input.inspect} into #{expected.inspect}" do
         expect(subject.sanitize(input)).to eq(expected)
