@@ -42,7 +42,7 @@ module Sipity
       end
 
       attr_reader :handled_response, :responder
-      def initialize(handled_response:, responder:, **)
+      def initialize(handled_response:, responder:, **_keywords)
         self.handled_response = handled_response
         self.responder = responder
       end

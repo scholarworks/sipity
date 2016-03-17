@@ -134,7 +134,7 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/ulra_queries.rb
-    def possible_expected_graduation_terms(ending_year: Time.zone.today.year, **)
+    def possible_expected_graduation_terms(ending_year: Time.zone.today.year, **_keywords)
     end
 
     # @see ./app/repositories/sipity/queries/processing_queries.rb
