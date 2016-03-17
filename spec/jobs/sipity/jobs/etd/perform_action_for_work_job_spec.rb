@@ -9,16 +9,16 @@ RSpec.describe Sipity::Jobs::Etd::PerformActionForWorkJob do
   let(:parameters) do
     {
       work_id: 1, processing_action_name: 'submit_for_ingest', requested_by: 'someone', context_builder: context_builder, runner: runner,
-      processing_action_handler_builder: processing_action_handler_builder
+      processing_action_handler_builder: processing_action_handler_builder, attributes: { hello: 'world' }
     }
   end
 
   subject { described_class.new(parameters) }
 
-  its(:attributes) { is_expected.to eq({}) }
-  its(:default_context_builder) { is_expected.to respond_to(:call) }
-  its(:default_runner) { is_expected.to respond_to(:call) }
-  its(:default_processing_action_handler_builder) { is_expected.to respond_to(:call) }
+  its(:attributes) { should eq(parameters.fetch(:attributes)) }
+  its(:default_context_builder) { should respond_to(:call) }
+  its(:default_runner) { should respond_to(:call) }
+  its(:default_processing_action_handler_builder) { should respond_to(:call) }
 
   it 'should expose .call as a convenience method' do
     expect_any_instance_of(described_class).to receive(:call)
