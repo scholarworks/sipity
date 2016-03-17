@@ -8,8 +8,8 @@ module Sipity
       class WorkArea < BaseRunner
         self.authentication_layer = :none
         # @note Some of the methods that invoke the runners assume :processing_action_name, however this one does not need it. Thus I am
-        # swalling with :processing_action_name keyword arg in the double splat (**) operator.
-        def run(work_area_slug:, **)
+        # swallowing :processing_action_name keyword arg in the double splat (**_keywords) operator.
+        def run(work_area_slug:, **_keywords)
           enforce_authentication! # No authentication required; but I'd prefer to follow the authentication layer convention
           work_area = repository.find_work_area_by(slug: work_area_slug)
           callback(:success, work_area)
