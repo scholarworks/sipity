@@ -122,12 +122,15 @@ en:
       project_evaluation:
         title_html: "Project Evaluation"
   attributes:
+    catalog_system_number:
+      label: 'ALEPH system number'
     work_patent_strategy:
       label: 'Patent Intent'
     work_publication_strategy:
       label: 'Publication Intent'
-    catalog_system_number:
-      label: 'ALEPH system number'
+    work_type/ulra_submission:
+      project_url:
+        label: 'Project URL'
   panel_headings:
     access_rights_answer:
       label: 'Who should have <b>access</b> to this work after it is deposited?'
@@ -364,8 +367,9 @@ en:
       citation:
         type: 'Citation format'
       work:
-        representative_attachment_id: 'Which file best represents your project'
         files: 'Select files to upload'
+        project_url: 'Project URL'
+        representative_attachment_id: 'Which file best represents your project'
     hints:
       work:
         program_name_html: 'To choose multiple programs, press the CTRL key and select the appropriate programs'
