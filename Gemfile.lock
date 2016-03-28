@@ -62,10 +62,12 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 20663d5468ce2f4ad1d3297595473c94f55f51b4
+  revision: 721298bd0544b0b0a1518a31b22a30ec62987b4e
   branch: master
   specs:
-    locabulary (0.2.0)
+    locabulary (0.3.1)
+      dry-configurable
+      hanami-utils
       json (~> 1.8)
 
 GIT
@@ -317,6 +319,7 @@ GEM
       rubocop (~> 0.20)
     haml (4.0.7)
       tilt
+    hanami-utils (0.7.1)
     hashie (3.4.3)
     high_voltage (2.4.0)
     highline (1.7.8)
@@ -695,3 +698,6 @@ DEPENDENCIES
   whenever
   yard
   yard-activerecord
+
+BUNDLED WITH
+   1.11.2
