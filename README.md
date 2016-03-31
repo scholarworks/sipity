@@ -32,6 +32,8 @@ Or if you can leverage the command line.
 
 ![Sipity Command Line Request Cycle](artifacts/sipity-command-line-request-cycle.png)
 
+Or if you'd like to see how `cron` jobs are scheduled, look in [config/schedule.rb](config/schedule.rb).
+
 ## Anatomy of Sipity
 
 Below is a list of the various concepts of Sipity.
