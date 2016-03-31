@@ -61,11 +61,6 @@ module Sipity
           end
         end
 
-        # @note This only applies to the ETD group; The editing group will need to be parameterized
-        def editing_groups
-          [Figaro.env.curate_grad_school_editing_group_pid!]
-        end
-
         # @note This is a rather critical assumption
         def creator_usernames
           @creator_usernames ||= Array.wrap(
