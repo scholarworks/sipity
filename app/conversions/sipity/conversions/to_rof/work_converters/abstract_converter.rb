@@ -8,23 +8,41 @@ module Sipity
         # Responsible for defining the interface for the specific converters
         class AbstractConverter
           DEFAULT_ROF_TYPE = 'fobject'.freeze
-          def initialize(work:, repository: default_repository)
+          def initialize(work:, repository: default_repository, attachment_converter: default_attachment_converter)
             self.work = work
             self.repository = repository
+            self.attachment_converter = attachment_converter
           end
 
           private
 
-          attr_accessor :work, :repository
+          attr_writer :work
+          attr_accessor :repository
 
           public
 
+          # @api public
+          attr_reader :work
+
+          # @api public
+          def namespaced_pid(context: work)
+            "und:#{context.to_param}"
+          end
+
+          # @api public
           def to_rof
             [to_hash] + attachments.map do |attachment|
-              ToRof::AttachmentConverter.call(attachment: attachment, repository: repository)
+              attachment_converter.call(attachment: attachment, work_converter: self, repository: repository)
             end
           end
 
+          # @api public
+          # @return Hash
+          def edit_groups
+            raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
+          end
+
+          # @api public
           def to_hash
             {
               'type' => rof_type,
@@ -40,10 +58,6 @@ module Sipity
 
           def rof_type
             DEFAULT_ROF_TYPE
-          end
-
-          def namespaced_pid
-            "und:#{work.to_param}"
           end
 
           # @return Hash
@@ -83,12 +97,12 @@ module Sipity
             )
           end
 
-          # @return Hash
-          def edit_groups
-            raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
-          end
-
           private
+
+          attr_accessor :attachment_converter
+          def default_attachment_converter
+            ToRof::AttachmentConverter
+          end
 
           # @todo Optimize round trips to the database concerning the additional attributes
           def fetch_attribute_values(key:)

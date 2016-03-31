@@ -20,6 +20,7 @@ module Sipity
 
           subject { described_class.new(work: work, repository: repository) }
           its(:default_repository) { is_expected.to respond_to :work_attribute_values_for }
+          its(:default_attachment_converter) { is_expected.to respond_to :call }
           its(:properties_meta) { is_expected.to be_a(Hash) }
           its(:properties) { is_expected.to be_a(String) }
           it { is_expected.to respond_to(:access_rights) }
@@ -54,9 +55,9 @@ module Sipity
           end
 
           context '#to_rof' do
-            let(:converter) { described_class.new(work: work, repository: repository) }
+            let(:converter) { described_class.new(work: work, repository: repository, attachment_converter: attachment_converter) }
+            let(:attachment_converter) { double("Attachment Converter", call: true) }
             let(:attachment) { double }
-            let(:converted_attachment) { { converted: 'attachment' }}
             subject { converter.to_rof }
             context 'when #to_hash and #attachments are defined' do
               before do
@@ -65,9 +66,9 @@ module Sipity
                 expect(converter).to receive(:metadata).and_return({})
                 expect(converter).to receive(:edit_groups).and_return(['hello world'])
                 expect(converter).to receive(:attachments).and_return([attachment])
-                expect(ToRof::AttachmentConverter).to receive(:call).with(
-                  attachment: attachment, repository: repository
-                ).and_return(converted_attachment)
+                expect(attachment_converter).to receive(:call).with(
+                  attachment: attachment, repository: repository, work_converter: converter
+                ).and_return(converted: 'attachment')
               end
               it { is_expected.to be_a(Array) }
             end

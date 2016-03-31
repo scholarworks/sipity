@@ -9,13 +9,14 @@ module Sipity
         # @api public
         #
         # @param attachment [Sipity::Models::Attachment]
-        def self.call(attachment:, **keywords)
-          new(attachment: attachment, **keywords).call
+        def self.call(attachment:, work_converter:, **keywords)
+          new(attachment: attachment, work_converter: work_converter, **keywords).call
         end
 
-        def initialize(attachment:, repository: default_repository)
+        def initialize(attachment:, work_converter:, repository: default_repository)
           self.attachment = attachment
           self.repository = repository
+          self.work_converter = work_converter
         end
 
         def call
@@ -35,9 +36,14 @@ module Sipity
 
         private
 
-        def namespaced_pid(context: attachment)
-          "und:#{context.id}"
+        attr_accessor :attachment, :repository, :work_converter
+
+        def default_repository
+          Sipity::QueryRepository.new
         end
+
+        extend Forwardable
+        def_delegators :work_converter, :namespaced_pid, :edit_groups, :work
 
         def access_rights
           AccessRightsBuilder.call(
@@ -66,25 +72,17 @@ module Sipity
           input.to_date.strftime('%FZ')
         end
 
-        extend Forwardable
-        def_delegator :attachment, :work
-
         def creator_usernames
           @creator_usernames ||= Array.wrap(
             repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
           ).map(&:username)
         end
 
-        # @note This assumption does not hold-up with ULRA
-        def edit_groups
-          [Figaro.env.curate_grad_school_editing_group_pid!]
-        end
-
         def rels_ext
           {
             "@context" => jsonld_contexts,
             'hydramata-rel:hasEditor' => [Figaro.env.curate_batch_user_pid!],
-            'hydramata-rel:hasEditorGroup' => [Figaro.env.curate_grad_school_editing_group_pid!],
+            'hydramata-rel:hasEditorGroup' => edit_groups,
             'isPartOf' => [namespaced_pid(context: work)]
           }
         end
@@ -113,12 +111,6 @@ module Sipity
 
         def content_file
           "#{attachment.id}-#{attachment.file_name}"
-        end
-
-        attr_accessor :attachment, :repository
-
-        def default_repository
-          Sipity::QueryRepository.new
         end
       end
     end
