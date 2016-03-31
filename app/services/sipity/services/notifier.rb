@@ -4,7 +4,13 @@ module Sipity
     module Notifier
       module_function
 
+      # @api public
+      #
       # Providing a singular end point for sending messages
+      #
+      # @param entity The primary context for which we are delivering a notification
+      # @param notification [String] The name of the notification we are attempting to send
+      # @param email_service_finder [#call] Responsible for finding the mailer class for delivery
       def deliver(entity:, notification:, email_service_finder: default_email_service_finder, **options)
         notificaton_container = email_service_finder.call(entity: entity, notification: notification)
         deliver_email(notificaton_container: notificaton_container, notification: notification, options: options, entity: entity)
@@ -13,6 +19,7 @@ module Sipity
       def default_email_service_finder
         Sipity::Mailers.method(:find_mailer_for)
       end
+      private_class_method :default_email_service_finder
 
       def deliver_email(notificaton_container:, notification:, entity:, options:)
         to, cc, bcc = options.fetch(:to), options.fetch(:cc, []), options.fetch(:bcc, [])
