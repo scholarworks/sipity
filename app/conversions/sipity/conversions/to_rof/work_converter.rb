@@ -1,10 +1,10 @@
 require 'sipity/exceptions'
-require 'sipity/conversions/to_rof_hash/work_converters/etd_converter'
-require 'sipity/conversions/to_rof_hash/work_converters/ulra_converters'
+require 'sipity/conversions/to_rof/work_converters/etd_converter'
+require 'sipity/conversions/to_rof/work_converters/ulra_converters'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       # Responsible for converting a work to an ROF hash. This is a bit more
       # complicated as the work's work_type defines the data structure.
       module WorkConverter
@@ -14,7 +14,7 @@ module Sipity
         # @return [Hash]
         # @raise Exceptions::FailedToInitializeWorkConverterError when we don't know how to convert this object
         def self.call(work:, **keywords)
-          find_and_initialize(work: work, **keywords).to_hash
+          find_and_initialize(work: work, **keywords).to_rof
         end
 
         def self.find_and_initialize(work:, repository: default_repository)

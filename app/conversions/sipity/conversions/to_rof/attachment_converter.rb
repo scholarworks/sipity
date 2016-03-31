@@ -1,7 +1,7 @@
-require 'sipity/conversions/to_rof_hash/access_rights_builder'
+require 'sipity/conversions/to_rof/access_rights_builder'
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       # Responsible for converting an attachment to an ROF hash.
       #
       # @see Sipity::Mappers::GenericFileMapper for the original work and inspiration.

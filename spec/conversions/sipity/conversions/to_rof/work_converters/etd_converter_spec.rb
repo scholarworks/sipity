@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/work_converters/etd_converter'
+require 'sipity/conversions/to_rof/work_converters/etd_converter'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       module WorkConverters
         RSpec.describe EtdConverter do
           let(:work) do
@@ -30,7 +30,7 @@ module Sipity
 
           context '#attachments' do
             it 'should retrieve all attachments' do
-              expect(repository).to receive(:work_attachments).with(work: work, predicate_name: :all).return(:returned_value)
+              expect(repository).to receive(:work_attachments).with(work: work, predicate_name: :all).and_return(:returned_value)
               expect(subject.attachments).to be_a(Array)
             end
           end

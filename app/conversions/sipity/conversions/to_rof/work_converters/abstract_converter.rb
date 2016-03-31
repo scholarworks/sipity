@@ -1,8 +1,8 @@
-require 'sipity/conversions/to_rof_hash/access_rights_builder'
+require 'sipity/conversions/to_rof/access_rights_builder'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       # A namespacing module
       module WorkConverters
         # Responsible for defining the interface for the specific converters
@@ -18,6 +18,12 @@ module Sipity
           attr_accessor :work, :repository
 
           public
+
+          def to_rof
+            [to_hash] + attachments.map do |attachment|
+              ToRof::AttachmentConverter.call(attachment: attachment, repository: repository)
+            end
+          end
 
           def to_hash
             {

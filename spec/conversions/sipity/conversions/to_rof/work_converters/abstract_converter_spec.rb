@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/work_converters/abstract_converter'
+require 'sipity/conversions/to_rof/work_converters/abstract_converter'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       module WorkConverters
         RSpec.describe AbstractConverter do
           let(:work) do
@@ -47,6 +47,31 @@ module Sipity
               it { is_expected.to be_a(Hash) }
             end
             context 'when af_model, rels_ext, and metadata are NOT overridden' do
+              it 'should raise an exception' do
+                expect { subject }.to raise_error NotImplementedError
+              end
+            end
+          end
+
+          context '#to_rof' do
+            let(:converter) { described_class.new(work: work, repository: repository) }
+            let(:attachment) { double }
+            let(:converted_attachment) { { converted: 'attachment' }}
+            subject { converter.to_rof }
+            context 'when #to_hash and #attachments are defined' do
+              before do
+                expect(converter).to receive(:af_model).and_return('OVERRIDE')
+                expect(converter).to receive(:rels_ext).and_return({})
+                expect(converter).to receive(:metadata).and_return({})
+                expect(converter).to receive(:edit_groups).and_return(['hello world'])
+                expect(converter).to receive(:attachments).and_return([attachment])
+                expect(ToRof::AttachmentConverter).to receive(:call).with(
+                  attachment: attachment, repository: repository
+                ).and_return(converted_attachment)
+              end
+              it { is_expected.to be_a(Array) }
+            end
+            context 'when #to_hash or #attachments are NOT overridden' do
               it 'should raise an exception' do
                 expect { subject }.to raise_error NotImplementedError
               end

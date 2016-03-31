@@ -1,19 +1,19 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/work_converter'
+require 'sipity/conversions/to_rof/work_converter'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       RSpec.describe WorkConverter do
         let(:work) { double('Work') }
-        let(:converting_instance) { double(to_hash: true) }
+        let(:converting_instance) { double(to_rof: true) }
         subject { described_class }
 
         context '.call' do
           it 'should convert the work into a hash' do
             allow(described_class).to receive(:find_and_initialize).and_return(converting_instance)
             subject.call(work: work)
-            expect(converting_instance).to have_received(:to_hash)
+            expect(converting_instance).to have_received(:to_rof)
           end
         end
 

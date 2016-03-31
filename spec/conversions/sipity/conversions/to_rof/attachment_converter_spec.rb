@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/attachment_converter'
+require 'sipity/conversions/to_rof/attachment_converter'
 
 module Sipity
-  RSpec.describe Conversions::ToRofHash::AttachmentConverter do
+  RSpec.describe Conversions::ToRof::AttachmentConverter do
     let(:work) { Sipity::Models::Work.new(id: 'abcd-ef') }
     let(:attachment) do
       Sipity::Models::Attachment.new(

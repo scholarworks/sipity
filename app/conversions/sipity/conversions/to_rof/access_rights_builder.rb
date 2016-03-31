@@ -1,6 +1,6 @@
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       # Responsible for building the access rights in a consistent manner
       class AccessRightsBuilder
         # A convenience method for constructing and calling this function.

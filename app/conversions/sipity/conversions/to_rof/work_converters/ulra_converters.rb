@@ -1,7 +1,7 @@
-require 'sipity/conversions/to_rof_hash/work_converters/abstract_converter'
+require 'sipity/conversions/to_rof/work_converters/abstract_converter'
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       module WorkConverters
         # Below are the available attributes for a given ULRA Submission. These are valid up to and including the date of the commit.
         #

@@ -1,8 +1,8 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/access_rights_builder'
+require 'sipity/conversions/to_rof/access_rights_builder'
 
 module Sipity
-  RSpec.describe Conversions::ToRofHash::AccessRightsBuilder do
+  RSpec.describe Conversions::ToRof::AccessRightsBuilder do
     let(:work) { Sipity::Models::Work.new(id: 'abcd-ef') }
     let(:access_rights_data) { double(access_right_code: Models::AccessRight::OPEN_ACCESS) }
     let(:repository) { Sipity::QueryRepositoryInterface.new }

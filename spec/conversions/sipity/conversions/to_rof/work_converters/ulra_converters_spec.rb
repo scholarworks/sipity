@@ -1,9 +1,9 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof_hash/work_converters/ulra_converters'
+require 'sipity/conversions/to_rof/work_converters/ulra_converters'
 
 module Sipity
   module Conversions
-    module ToRofHash
+    module ToRof
       module WorkConverters
         RSpec.describe UlraSeniorThesisConverter do
           let(:work) do
@@ -36,7 +36,7 @@ module Sipity
             it 'should retrieve all attachments' do
               expect(repository).to receive(:work_attachments).with(
                 work: work, predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
-              ).return(:returned_value)
+              ).and_return(:returned_value)
               expect(subject.attachments).to be_a(Array)
             end
           end
@@ -75,7 +75,7 @@ module Sipity
             it 'should retrieve all attachments' do
               expect(repository).to receive(:work_attachments).with(
                 work: work, predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
-              ).return(:returned_value)
+              ).and_return(:returned_value)
               expect(subject.attachments).to be_a(Array)
             end
           end
