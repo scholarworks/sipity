@@ -11,7 +11,8 @@ module Sipity
               id: 'abcd-ef',
               work_type: 'doctoral_dissertation',
               collaborators: [collaborator],
-              access_right: access_right
+              access_right: access_right,
+              created_at: Time.zone.today
             )
           end
           let(:access_right) { Sipity::Models::AccessRight.new(access_right_code: Sipity::Models::AccessRight::OPEN_ACCESS) }

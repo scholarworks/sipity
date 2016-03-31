@@ -39,7 +39,10 @@ module Sipity
               'dc:creator' => creator_names,
               'dc:contributor#advisor' => advising_faculty,
               'dc:description' => fetch_attribute_values(key: 'abstract'),
-              'dc:rights' => fetch_attribute_values(key: 'copyright')
+              'dc:rights' => fetch_attribute_values(key: 'copyright'),
+              'dc:created' => format_date(work.created_at),
+              'dc:modified' => format_date(Time.zone.today),
+              'dc:dateSubmitted' => format_date(Time.zone.today)
             }
           end
 
@@ -63,9 +66,13 @@ module Sipity
         end
 
         # Map the ULRA Submission to a Document
-        class UlraDocumentConverter < AbstractConverter
+        class UlraDocumentConverter < UlraSeniorThesisConverter
           def af_model
             'Document'
+          end
+
+          def metadata
+            super.merge('dc:type' => 'Document')
           end
         end
       end

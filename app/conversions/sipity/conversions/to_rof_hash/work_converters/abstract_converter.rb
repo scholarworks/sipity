@@ -97,6 +97,10 @@ module Sipity
               "hydramata-rel" => "http://projecthydra.org/ns/relations#"
             }
           end
+
+          def format_date(date)
+            date.strftime('%Y-%m-%d')
+          end
         end
         private_constant :AbstractConverter
       end
