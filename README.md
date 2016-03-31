@@ -28,6 +28,10 @@ Sipity is a Rails application but is built with a few more concepts in mind.
 
 ![Sipity Request Cycle](artifacts/sipity-request-cycle.png)
 
+Or if you can leverage the command line.
+
+![Sipity Command Line Request Cycle](artifacts/sipity-command-line-request-cycle.png)
+
 ## Anatomy of Sipity
 
 Below is a list of the various concepts of Sipity.

@@ -1,0 +1,24 @@
+# Render via PlantUML
+# Generated via plantuml-preview (https://github.com/peele/plantuml-preview) in Atom
+@startuml
+
+title Command Line Sequence Diagram for Sipity
+
+Shell -> RailsRunner
+RailsRunner --> PerformActionForJob : * Incomplete
+PerformActionForJob <--> CommandLineContext
+PerformActionForJob --> Runner
+Runner --> AuthenticationLayer
+AuthenticationLayer --> Form
+Form <--> Repository : for initial context
+Form --> AuthorizationLayer
+AuthorizationLayer --> Repository : for authorization checks
+Form <-- AuthorizationLayer
+Form <--> Repository : for additional context
+Presenter <-- Form
+Runner <-- Presenter
+PerformActionForJob <-- Runner
+RailsRunner <-- PerformActionForJob
+Shell <-- RailsRunner
+
+@enduml
