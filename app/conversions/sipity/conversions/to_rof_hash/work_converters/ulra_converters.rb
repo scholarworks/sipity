@@ -3,12 +3,66 @@ module Sipity
   module Conversions
     module ToRofHash
       module WorkConverters
+        # Below are the available attributes for a given ULRA Submission. These are valid up to and including the date of the commit.
+        #
+        # attached_files_completion_state
+        # award_category
+        # copyright
+        # course_name
+        # course_number
+        # expected_graduation_term
+        # is_an_award_winner
+        # majors
+        # minors
+        # other_resources_consulted
+        # primary_college
+        # project_url
+        # publication_name
+        # publication_status_of_submission
+        # resources_consulted
+        # submitted_for_publication
+        # underclass_level
         class UlraSeniorThesisConverter < AbstractConverter
+          # @todo Do we need to create an ULRA group?
+          def edit_groups
+            []
+          end
+
           def af_model
             'SeniorThesis'
           end
+
+          def metadata
+            {
+              '@context' => jsonld_context,
+              'dc:title' => work.title,
+              'dc:creator' => creator_names,
+              'dc:contributor#advisor' => advising_faculty,
+              'dc:description' => fetch_attribute_values(key: 'abstract'),
+              'dc:rights' => fetch_attribute_values(key: 'copyright')
+            }
+          end
+
+          def rels_ext
+            {
+              "@context" => jsonld_context,
+              'hydramata-rel:hasEditor' => [Figaro.env.curate_batch_user_pid!],
+              'hydramata-rel:hasEditorGroup' => edit_groups
+            }
+          end
+
+          def advising_faculty
+            Array.wrap(repository.work_collaborator_names_for(work: work, role: Models::Collaborator::ADVISING_FACULTY_ROLE))
+          end
+
+          def creator_names
+            Array.wrap(
+              repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
+            ).map(&:name)
+          end
         end
 
+        # Map the ULRA Submission to a Document
         class UlraDocumentConverter < AbstractConverter
           def af_model
             'Document'
