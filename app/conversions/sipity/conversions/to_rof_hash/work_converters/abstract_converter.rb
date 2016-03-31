@@ -45,6 +45,11 @@ module Sipity
             raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
           end
 
+          # @return Array
+          def attachments
+            raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"
+          end
+
           # @return Hash
           def rels_ext
             raise NotImplementedError, "Expected #{self.class} to implement ##{__method__}"

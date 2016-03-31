@@ -26,7 +26,7 @@ module Sipity
           its(:namespaced_pid) { is_expected.to be_a(String) }
           its(:rof_type) { is_expected.to eq(described_class::DEFAULT_ROF_TYPE) }
 
-          %w(af_model rels_ext metadata edit_groups).each do |method_name|
+          %w(af_model rels_ext metadata edit_groups attachments).each do |method_name|
             context "##{method_name}" do
               it "requires subclass to define the method" do
                 expect { subject.public_send(method_name) }.to raise_error NotImplementedError

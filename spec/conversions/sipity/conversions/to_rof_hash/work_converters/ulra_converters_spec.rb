@@ -26,6 +26,21 @@ module Sipity
             is_expected.to be_a(Array)
           end
 
+          context 'ATTACHMENT_TYPES_FOR_EXPORT' do
+            subject { described_class::ATTACHMENT_TYPES_FOR_EXPORT }
+            it { is_expected.to be_a(Array) }
+            it { is_expected.to_not include('faculty_letter_of_recommendation') }
+          end
+
+          context '#attachments' do
+            it 'should retrieve all attachments' do
+              expect(repository).to receive(:work_attachments).with(
+                work: work, predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
+              ).return(:returned_value)
+              expect(subject.attachments).to be_a(Array)
+            end
+          end
+
           its(:creator_names) do
             expect(repository).to(
               receive(:scope_users_for_entity_and_roles).with(
@@ -54,6 +69,15 @@ module Sipity
               receive(:work_collaborator_names_for).with(work: work, role: Models::Collaborator::ADVISING_FACULTY_ROLE).and_return('Bob')
             )
             is_expected.to be_a(Array)
+          end
+
+          context '#attachments' do
+            it 'should retrieve all attachments' do
+              expect(repository).to receive(:work_attachments).with(
+                work: work, predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
+              ).return(:returned_value)
+              expect(subject.attachments).to be_a(Array)
+            end
           end
 
           its(:creator_names) do

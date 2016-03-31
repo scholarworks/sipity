@@ -39,6 +39,10 @@ module Sipity
             }
           end
 
+          def attachments
+            Array.wrap(repository.work_attachments(work: work, predicate_name: :all))
+          end
+
           private
 
           def degree_metadata

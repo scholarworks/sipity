@@ -63,6 +63,11 @@ module Sipity
               repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER)
             ).map(&:name)
           end
+
+          ATTACHMENT_TYPES_FOR_EXPORT = %w(project_file submission_essay).freeze
+          def attachments
+            Array.wrap(repository.work_attachments(work: work, predicate_name: ['project_file', 'submission_essay']))
+          end
         end
 
         # Map the ULRA Submission to a Document

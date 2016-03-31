@@ -21,7 +21,8 @@ module Sipity
         # @return Array<Hash>
         def call
           # Instead of mutating an instance variable, return a new value after
-          # each call
+          # each call. Also need to consider which attachments should or should
+          # not be exported.
           [to_rof_hash(object: work)] + work.attachments.map do |attachment|
             to_rof_hash(object: attachment)
           end
