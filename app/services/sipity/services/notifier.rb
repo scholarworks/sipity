@@ -19,6 +19,7 @@ module Sipity
       def default_email_service_finder
         Sipity::Mailers.method(:find_mailer_for)
       end
+      private_class_method :default_email_service_finder
 
       def deliver_email(notificaton_container:, notification:, entity:, options:)
         to, cc, bcc = options.fetch(:to), options.fetch(:cc, []), options.fetch(:bcc, [])
