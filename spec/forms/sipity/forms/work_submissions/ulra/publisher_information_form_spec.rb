@@ -34,7 +34,7 @@ module Sipity
           it { should respond_to :entity }
           it { should respond_to :publication_name }
           it { should respond_to :publication_status_of_submission }
-          it { should_not be_persisted }
+          it { is_expected.not_to be_persisted }
 
           include Shoulda::Matchers::ActiveModel
           it { should validate_presence_of :publication_name }

@@ -42,7 +42,7 @@ module Sipity
             end
             context 'when initial date is given is bogus' do
               subject { described_class.new(keywords.merge(attributes: { defense_date: '2014-02-31' })) }
-              its(:defense_date) { should_not be_present }
+              its(:defense_date) { is_expected.not_to be_present }
             end
           end
 

@@ -55,7 +55,7 @@ module Sipity
         its(:base_class) { should eq(Models::Work) }
         its(:policy_enforcer) { should eq(Policies::WorkPolicy) }
         its(:template) { should eq('hello_world') }
-        it { should_not be_persisted }
+        it { is_expected.not_to be_persisted }
         it { should delegate_method(:param_key).to(:model_name) }
         it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
         it { should delegate_method(:to_processing_action).to(:processing_action_form) }

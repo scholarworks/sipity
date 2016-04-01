@@ -28,7 +28,7 @@ module Sipity
           end
 
           it { should respond_to :work }
-          it { should_not be_persisted }
+          it { is_expected.not_to be_persisted }
 
           it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
 

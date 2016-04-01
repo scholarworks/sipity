@@ -28,7 +28,7 @@ module Sipity
           it { should respond_to :other_resources_consulted }
           it { should respond_to :attachments }
           it { should respond_to :files }
-          it { should_not be_persisted }
+          it { is_expected.not_to be_persisted }
 
           it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
           it { should delegate_method(:attachments).to(:attachments_extension) }

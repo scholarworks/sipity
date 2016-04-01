@@ -30,7 +30,7 @@ module Sipity
           its(:response_handler) { should respond_to(:call) }
         end
 
-        it { should_not respond_to(:prepend_processing_action_view_path_with) }
+        it { is_expected.not_to respond_to(:prepend_processing_action_view_path_with) }
 
         it 'will expose #run_and_respond_with_processing_action' do
           expect(runner).to receive(:call).with(work_id: 1, processing_action_name: processing_action_name).

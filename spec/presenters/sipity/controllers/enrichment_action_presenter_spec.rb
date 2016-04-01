@@ -69,11 +69,11 @@ module Sipity
             with(entity: entity, pluck: :id).and_return([enrichment_action.id])
         end
 
-        its(:completion_mark_if_applicable) { should_not be_present }
+        its(:completion_mark_if_applicable) { is_expected.not_to be_present }
         its(:completion_mark_if_applicable) { should be_html_safe }
         its(:todo_checkbox_element) { should be_html_safe }
         its(:todo_checkbox_element) { should have_tag('span.circle.incomplete') }
-        its(:todo_checkbox_element) { should_not have_tag('svg') }
+        its(:todo_checkbox_element) { is_expected.not_to have_tag('svg') }
         its(:state) { should eq('incomplete') }
         its(:complete?) { should be_falsey }
       end

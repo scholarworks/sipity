@@ -26,7 +26,7 @@ module Sipity
           end
 
           its(:comment_legend) { should be_html_safe }
-          it { should_not be_persisted }
+          it { is_expected.not_to be_persisted }
 
           it 'will validate the presence of the :comment' do
             subject.valid?

@@ -9,7 +9,7 @@ module Sipity
       context 'database columns' do
         subject { Work }
         its(:column_names) { should include('work_type') }
-        its(:column_names) { should_not include('work_publication_strategy') }
+        its(:column_names) { is_expected.not_to include('work_publication_strategy') }
         its(:column_names) { should include('title') }
       end
 

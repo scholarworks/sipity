@@ -27,7 +27,7 @@ module Sipity
             end
           end
 
-          it { should_not be_persisted }
+          it { is_expected.not_to be_persisted }
           it { should respond_to :work }
           it { should respond_to :is_an_award_winner }
 

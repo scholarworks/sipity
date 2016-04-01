@@ -21,7 +21,7 @@ module Sipity
 
           it { should respond_to :work }
           its(:processing_action_name) { should eq('collaborator') }
-          its(:collaborators) { should_not be_empty }
+          its(:collaborators) { is_expected.not_to be_empty }
           its(:possible_roles) { should be_a(Hash) }
 
           it 'will require a work' do
@@ -92,23 +92,23 @@ module Sipity
                   { __sequence: { name: "Jeremy", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
                 end
                 its(:valid?) { should be_falsey }
-                its(:collaborators) { should_not be_empty }
-                its(:collaborators_from_input) { should_not be_empty }
+                its(:collaborators) { is_expected.not_to be_empty }
+                its(:collaborators_from_input) { is_expected.not_to be_empty }
               end
               context 'with a missing name' do
                 let(:collaborators_attributes) do
                   { __sequence: { name: "", role: "", netid: "", email: "", responsible_for_review: "false", id: 11 } }
                 end
                 its(:valid?) { should be_falsey }
-                its(:collaborators) { should_not be_empty }
-                its(:collaborators_from_input) { should_not be_empty }
+                its(:collaborators) { is_expected.not_to be_empty }
+                its(:collaborators_from_input) { is_expected.not_to be_empty }
               end
               context 'with a missing name and id' do
                 let(:collaborators_attributes) do
                   { __sequence: { name: "", role: "", netid: "", email: "", responsible_for_review: "0", id: '' } }
                 end
                 its(:valid?) { should be_falsey }
-                its(:collaborators) { should_not be_empty }
+                its(:collaborators) { is_expected.not_to be_empty }
                 its(:collaborators_from_input) { should be_empty }
               end
               context 'with empty strings' do
@@ -125,8 +125,8 @@ module Sipity
                   { __sequence: { name: "", role: "Research Director", netid: "", email: "test@test.com", responsible_for_review: "0" } }
                 end
                 its(:valid?) { should be_falsey }
-                its(:collaborators) { should_not be_empty }
-                its(:collaborators_from_input) { should_not be_empty }
+                its(:collaborators) { is_expected.not_to be_empty }
+                its(:collaborators_from_input) { is_expected.not_to be_empty }
               end
             end
 
