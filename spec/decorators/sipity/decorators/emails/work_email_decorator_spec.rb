@@ -76,13 +76,13 @@ module Sipity
           allow(subject).to receive(:collaborators).and_return(['John', 'Ringo'])
           allow(subject).to receive(:reviewers).and_return(['Ringo'])
           additional_committe_members = ['John']
-          should eq(additional_committe_members)
+          is_expected.to eq(additional_committe_members)
         end
 
         its(:work_access) do
           allow(Models::AccessRightFacade).to receive(:new).
             with(work, work: work).and_return(work_access)
-          should eq(work_access)
+          is_expected.to eq(work_access)
         end
 
         its(:accessible_files) do
@@ -90,7 +90,7 @@ module Sipity
             with(work: work, predicate_name: :all).and_return(accessible_files)
           allow(Models::AccessRightFacade).to receive(:new).
             and_return(accessible_file)
-          should eq(accessible_files)
+          is_expected.to eq(accessible_files)
         end
 
       end

@@ -39,7 +39,7 @@ module Sipity
           include Shoulda::Matchers::ActiveModel
           it { is_expected.to validate_presence_of :publication_name }
           it do
-            should validate_inclusion_of(
+            is_expected.to validate_inclusion_of(
               :publication_status_of_submission
             ).in_array(subject.possible_publication_status_of_submission)
           end

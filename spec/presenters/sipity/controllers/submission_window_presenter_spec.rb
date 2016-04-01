@@ -14,7 +14,7 @@ module Sipity
 
       its(:path) { is_expected.to eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}") }
       its(:path_to_start_a_submission) do
-        should eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}/do/start_a_submission")
+        is_expected.to eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}/do/start_a_submission")
       end
       its(:link) { is_expected.to eq(%(<a href="#{subject.path}">the-slug</a>)) }
       its(:slug) { is_expected.to eq(submission_window.slug) }

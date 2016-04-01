@@ -47,12 +47,12 @@ module Sipity
             its(:oclc_number) do
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: work, key: 'oclc_number', cardinality: 1).and_return(123)
-              should eq(123)
+              is_expected.to eq(123)
             end
             its(:catalog_system_number) do
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: work, key: 'catalog_system_number', cardinality: 1).and_return('abc')
-              should eq('abc')
+              is_expected.to eq('abc')
             end
           end
 
