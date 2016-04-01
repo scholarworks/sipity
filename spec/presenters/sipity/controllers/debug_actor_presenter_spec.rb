@@ -13,11 +13,11 @@ module Sipity
         described_class.new(context, debug_actor: actor)
       end
 
-      its(:name) { should eq(actor.proxy_for.to_s) }
-      it { should delegate_method(:proxy_for_type).to(:debug_actor) }
-      it { should delegate_method(:proxy_for_id).to(:debug_actor) }
-      it { should delegate_method(:actor_processing_relationship).to(:debug_actor) }
-      it { should delegate_method(:actor_id).to(:debug_actor).as(:id) }
+      its(:name) { is_expected.to eq(actor.proxy_for.to_s) }
+      it { is_expected.to delegate_method(:proxy_for_type).to(:debug_actor) }
+      it { is_expected.to delegate_method(:proxy_for_id).to(:debug_actor) }
+      it { is_expected.to delegate_method(:actor_processing_relationship).to(:debug_actor) }
+      it { is_expected.to delegate_method(:actor_id).to(:debug_actor).as(:id) }
 
       it 'will guard the interface of the actor' do
         expect { described_class.new(context, debug_actor: double) }.to raise_error(Exceptions::InterfaceExpectationError)

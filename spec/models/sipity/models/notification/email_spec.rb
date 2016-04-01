@@ -7,7 +7,7 @@ module Sipity
       RSpec.describe Email, type: :model do
         context 'database configuration' do
           subject { described_class }
-          its(:column_names) { should include('method_name') }
+          its(:column_names) { is_expected.to include('method_name') }
         end
       end
     end

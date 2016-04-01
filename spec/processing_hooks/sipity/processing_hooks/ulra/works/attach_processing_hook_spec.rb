@@ -16,7 +16,7 @@ module Sipity
 
             subject { described_class }
 
-            its(:default_repository) { should respond_to(:deliver_notification_for) }
+            its(:default_repository) { is_expected.to respond_to(:deliver_notification_for) }
 
             it 'will deliver notifications if the attachment entry is complete' do
               expect(repository).

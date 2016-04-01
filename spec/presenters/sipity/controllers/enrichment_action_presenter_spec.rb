@@ -23,21 +23,21 @@ module Sipity
         )
       end
 
-      its(:default_repository) { should respond_to(:scope_statetegy_actions_that_have_occurred) }
-      its(:default_repository) { should respond_to(:scope_strategy_actions_that_are_prerequisites) }
+      its(:default_repository) { is_expected.to respond_to(:scope_statetegy_actions_that_have_occurred) }
+      its(:default_repository) { is_expected.to respond_to(:scope_strategy_actions_that_are_prerequisites) }
 
-      its(:identifier) { should eq(enrichment_action_set.identifier) }
-      its(:entity) { should eq(enrichment_action_set.entity) }
-      its(:action_name) { should eq(enrichment_action.name) }
-      its(:path) { should be_a(String) }
+      its(:identifier) { is_expected.to eq(enrichment_action_set.identifier) }
+      its(:entity) { is_expected.to eq(enrichment_action_set.entity) }
+      its(:action_name) { is_expected.to eq(enrichment_action.name) }
+      its(:path) { is_expected.to be_a(String) }
 
       it 'will delegate #label to the TranslationAssistant' do
         expect(TranslationAssistant).to receive(:call)
         subject.label
       end
 
-      it { should respond_to(:complete?) }
-      it { should respond_to(:a_prerequisite?) }
+      it { is_expected.to respond_to(:complete?) }
+      it { is_expected.to respond_to(:a_prerequisite?) }
 
       it 'will be a prerequisite if the associated action is a prerequisite' do
         allow(repository).to receive(:scope_strategy_actions_that_are_prerequisites).
@@ -53,13 +53,13 @@ module Sipity
             with(entity: entity, pluck: :id).and_return([enrichment_action.id])
         end
 
-        its(:completion_mark_if_applicable) { should be_present }
-        its(:completion_mark_if_applicable) { should be_html_safe }
-        its(:todo_checkbox_element) { should be_html_safe }
-        its(:todo_checkbox_element) { should have_tag('span.circle.done') }
-        its(:todo_checkbox_element) { should have_tag('svg') }
-        its(:state) { should eq('done') }
-        its(:complete?) { should be_truthy }
+        its(:completion_mark_if_applicable) { is_expected.to be_present }
+        its(:completion_mark_if_applicable) { is_expected.to be_html_safe }
+        its(:todo_checkbox_element) { is_expected.to be_html_safe }
+        its(:todo_checkbox_element) { is_expected.to have_tag('span.circle.done') }
+        its(:todo_checkbox_element) { is_expected.to have_tag('svg') }
+        its(:state) { is_expected.to eq('done') }
+        its(:complete?) { is_expected.to be_truthy }
       end
 
       context 'when incomplete' do
@@ -70,12 +70,12 @@ module Sipity
         end
 
         its(:completion_mark_if_applicable) { is_expected.not_to be_present }
-        its(:completion_mark_if_applicable) { should be_html_safe }
-        its(:todo_checkbox_element) { should be_html_safe }
-        its(:todo_checkbox_element) { should have_tag('span.circle.incomplete') }
+        its(:completion_mark_if_applicable) { is_expected.to be_html_safe }
+        its(:todo_checkbox_element) { is_expected.to be_html_safe }
+        its(:todo_checkbox_element) { is_expected.to have_tag('span.circle.incomplete') }
         its(:todo_checkbox_element) { is_expected.not_to have_tag('svg') }
-        its(:state) { should eq('incomplete') }
-        its(:complete?) { should be_falsey }
+        its(:state) { is_expected.to eq('incomplete') }
+        its(:complete?) { is_expected.to be_falsey }
       end
 
       context '#button_class' do

@@ -11,11 +11,11 @@ module Sipity
           let(:work) { double(id: 1) }
           subject { described_class.new(work: work, processing_action_name: processing_action_name) }
 
-          its(:policy_enforcer) { should eq Sipity::Policies::WorkPolicy }
-          its(:processing_action_name) { should eq processing_action_name }
-          its(:work_id) { should eq work.id }
-          it { should be_decorated }
-          it { should be_a(Models::Work) }
+          its(:policy_enforcer) { is_expected.to eq Sipity::Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq processing_action_name }
+          its(:work_id) { is_expected.to eq work.id }
+          it { is_expected.to be_decorated }
+          it { is_expected.to be_a(Models::Work) }
         end
       end
     end

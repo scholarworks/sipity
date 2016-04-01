@@ -6,8 +6,8 @@ module Sipity
     RSpec.describe SubmissionWindowWorkType, type: :model do
       context 'database configuration' do
         subject { described_class }
-        its(:column_names) { should include('submission_window_id') }
-        its(:column_names) { should include('work_type_id') }
+        its(:column_names) { is_expected.to include('submission_window_id') }
+        its(:column_names) { is_expected.to include('work_type_id') }
       end
     end
   end

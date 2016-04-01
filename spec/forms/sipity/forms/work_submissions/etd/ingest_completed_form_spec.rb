@@ -13,20 +13,20 @@ module Sipity
           let(:user) { double('User') }
           subject { described_class.new(keywords) }
 
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:processing_action_name) { should eq('ingest_completed') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq('ingest_completed') }
 
-          it { should respond_to :job_state }
+          it { is_expected.to respond_to :job_state }
 
-          it { should respond_to :work }
-          it { should delegate_method(:submit).to(:processing_action_form) }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to delegate_method(:submit).to(:processing_action_form) }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_inclusion_of(:job_state).in_array([described_class::JOB_STATE_SUCCESS]) }
+          it { is_expected.to validate_inclusion_of(:job_state).in_array([described_class::JOB_STATE_SUCCESS]) }
 
           context 'with invalid data' do
             before { expect(subject).to receive(:valid?).and_return(false) }
-            its(:submit) { should eq(false) }
+            its(:submit) { is_expected.to eq(false) }
           end
 
           context 'with valid data' do

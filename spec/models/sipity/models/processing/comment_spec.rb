@@ -8,12 +8,12 @@ module Sipity
 
         context 'database configuration' do
           subject { described_class }
-          its(:column_names) { should include('entity_id') }
-          its(:column_names) { should include('actor_id') }
-          its(:column_names) { should include('comment') }
-          its(:column_names) { should include('originating_strategy_action_id') }
-          its(:column_names) { should include('originating_strategy_state_id') }
-          its(:column_names) { should include('stale') }
+          its(:column_names) { is_expected.to include('entity_id') }
+          its(:column_names) { is_expected.to include('actor_id') }
+          its(:column_names) { is_expected.to include('comment') }
+          its(:column_names) { is_expected.to include('originating_strategy_action_id') }
+          its(:column_names) { is_expected.to include('originating_strategy_state_id') }
+          its(:column_names) { is_expected.to include('stale') }
         end
 
         subject { described_class.new }

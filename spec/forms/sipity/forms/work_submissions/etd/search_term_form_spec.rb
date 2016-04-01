@@ -12,11 +12,11 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: double('User') } }
           subject { described_class.new(keywords) }
 
-          it { should respond_to :work }
-          it { should respond_to :subject }
-          it { should respond_to :language }
-          it { should respond_to :temporal_coverage }
-          it { should respond_to :spatial_coverage }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :subject }
+          it { is_expected.to respond_to :language }
+          it { is_expected.to respond_to :temporal_coverage }
+          it { is_expected.to respond_to :spatial_coverage }
 
           context 'without specified values' do
             before do

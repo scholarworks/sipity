@@ -10,7 +10,7 @@ module Sipity
       let(:work) { Models::Work.new(id: '1') }
       subject { described_class.new(context, work_submission: work, creator: creator) }
 
-      its(:name) { should eq(creator.to_s) }
+      its(:name) { is_expected.to eq(creator.to_s) }
 
       it 'will translate the identified label' do
         expect(TranslationAssistant).to receive(:call).with(scope: :predicates, object: 'name', subject: work, predicate: :label).

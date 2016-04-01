@@ -13,8 +13,8 @@ module Sipity
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
 
-          its(:default_translator) { should respond_to :call }
-          its(:default_repository) { should respond_to :find_submission_window_by }
+          its(:default_translator) { is_expected.to respond_to :call }
+          its(:default_repository) { is_expected.to respond_to :find_submission_window_by }
 
           let(:submission_window) { double }
           let(:processing_action) { double(name: 'start_a_submission') }
@@ -47,15 +47,15 @@ module Sipity
             subject
           end
 
-          it { should delegate_method(:name).to(:work_area) }
-          it { should delegate_method(:resourceful_actions).to(:processing_actions) }
-          it { should delegate_method(:resourceful_actions?).to(:processing_actions) }
-          it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
-          it { should delegate_method(:state_advancing_actions).to(:processing_actions) }
-          it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
-          it { should delegate_method(:enrichment_actions?).to(:processing_actions) }
+          it { is_expected.to delegate_method(:name).to(:work_area) }
+          it { is_expected.to delegate_method(:resourceful_actions).to(:processing_actions) }
+          it { is_expected.to delegate_method(:resourceful_actions?).to(:processing_actions) }
+          it { is_expected.to delegate_method(:state_advancing_actions).to(:processing_actions) }
+          it { is_expected.to delegate_method(:state_advancing_actions).to(:processing_actions) }
+          it { is_expected.to delegate_method(:enrichment_actions?).to(:processing_actions) }
+          it { is_expected.to delegate_method(:enrichment_actions?).to(:processing_actions) }
 
-          its(:to_work_area) { should eq(subject.send(:work_area)) }
+          its(:to_work_area) { is_expected.to eq(subject.send(:work_area)) }
 
           it 'will initialize the presumptive submission window' do
             expect(repository).to receive(:find_submission_window_by).

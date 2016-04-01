@@ -22,8 +22,8 @@ module Sipity
           expect(subject.path).to eq("/areas/#{submission_window.work_area_slug}/#{submission_window.slug}/do/#{resourceful_action.name}")
         end
 
-        its(:work_area_slug) { should eq(submission_window.work_area_slug) }
-        its(:submission_window_slug) { should eq(submission_window.slug) }
+        its(:work_area_slug) { is_expected.to eq(submission_window.work_area_slug) }
+        its(:submission_window_slug) { is_expected.to eq(submission_window.slug) }
       end
     end
   end

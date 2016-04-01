@@ -49,7 +49,7 @@ module Sipity
         expect(fallback_hook).to have_received(:call).with(keywords)
       end
 
-      its(:default_fallback_hook) { should respond_to(:call) }
+      its(:default_fallback_hook) { is_expected.to respond_to(:call) }
     end
   end
 end

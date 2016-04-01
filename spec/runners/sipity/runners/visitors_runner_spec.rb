@@ -9,8 +9,8 @@ module Sipity
       RSpec.describe WorkArea do
         context 'configuration' do
           subject { described_class }
-          its(:authentication_layer) { should eq(:none) }
-          its(:authorization_layer) { should eq(:none) }
+          its(:authentication_layer) { is_expected.to eq(:none) }
+          its(:authorization_layer) { is_expected.to eq(:none) }
         end
 
         context '#run' do

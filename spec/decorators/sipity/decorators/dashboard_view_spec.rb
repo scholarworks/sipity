@@ -20,8 +20,8 @@ module Sipity
         expect(subject.works).to eq(works)
       end
 
-      its(:default_repository) { should respond_to(:find_works_for) }
-      its(:processing_state) { should eq(filter.fetch(:processing_state)) }
+      its(:default_repository) { is_expected.to respond_to(:find_works_for) }
+      its(:processing_state) { is_expected.to eq(filter.fetch(:processing_state)) }
     end
   end
 end

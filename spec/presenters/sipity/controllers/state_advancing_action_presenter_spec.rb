@@ -29,10 +29,10 @@ module Sipity
           with(entity: entity, pluck: :id).and_return(actions_with_unmet_prerequisites)
       end
 
-      its(:default_repository) { should respond_to(:scope_strategy_actions_with_incomplete_prerequisites) }
+      its(:default_repository) { is_expected.to respond_to(:scope_strategy_actions_with_incomplete_prerequisites) }
 
-      its(:action_name) { should eq(state_advancing_action.name) }
-      its(:path) { should be_a(String) }
+      its(:action_name) { is_expected.to eq(state_advancing_action.name) }
+      its(:path) { is_expected.to be_a(String) }
 
       it 'will delegate #label to the TranslationAssistant' do
         expect(TranslationAssistant).to receive(:call)
@@ -41,14 +41,14 @@ module Sipity
 
       context 'with all actions having met the prerequites' do
         let(:actions_with_unmet_prerequisites) { [] }
-        its(:available?) { should eq(true) }
-        its(:availability_state) { should eq(described_class::STATE_AVAILABLE) }
+        its(:available?) { is_expected.to eq(true) }
+        its(:availability_state) { is_expected.to eq(described_class::STATE_AVAILABLE) }
       end
 
       context 'with unmet prequisites' do
         let(:actions_with_unmet_prerequisites) { [state_advancing_action.id] }
-        its(:available?) { should eq(false) }
-        its(:availability_state) { should eq(described_class::STATE_PREREQUISITES_NOT_MET) }
+        its(:available?) { is_expected.to eq(false) }
+        its(:availability_state) { is_expected.to eq(described_class::STATE_PREREQUISITES_NOT_MET) }
       end
     end
   end

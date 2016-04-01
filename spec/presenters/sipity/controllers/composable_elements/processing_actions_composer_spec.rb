@@ -14,10 +14,10 @@ module Sipity
 
         subject { described_class.new(user: user, entity: entity, repository: repository) }
 
-        its(:default_repository) { should respond_to :scope_permitted_entity_strategy_actions_for_current_state }
-        its(:default_repository) { should respond_to :scope_strategy_actions_that_are_prerequisites }
-        its(:default_repository) { should respond_to :scope_strategy_actions_with_incomplete_prerequisites }
-        its(:default_action_names_to_skip) { should eq(['show']) }
+        its(:default_repository) { is_expected.to respond_to :scope_permitted_entity_strategy_actions_for_current_state }
+        its(:default_repository) { is_expected.to respond_to :scope_strategy_actions_that_are_prerequisites }
+        its(:default_repository) { is_expected.to respond_to :scope_strategy_actions_with_incomplete_prerequisites }
+        its(:default_action_names_to_skip) { is_expected.to eq(['show']) }
 
         it 'will omit the skipped action names' do
           subject = described_class.new(

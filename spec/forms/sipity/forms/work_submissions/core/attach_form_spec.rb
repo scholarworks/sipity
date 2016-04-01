@@ -14,15 +14,15 @@ module Sipity
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
 
-          its(:policy_enforcer) { should be_present }
-          its(:processing_action_name) { should eq('attach') }
+          its(:policy_enforcer) { is_expected.to be_present }
+          its(:processing_action_name) { is_expected.to eq('attach') }
 
-          it { should respond_to :attachments }
-          it { should respond_to :representative_attachment_id }
-          it { should respond_to :files }
+          it { is_expected.to respond_to :attachments }
+          it { is_expected.to respond_to :representative_attachment_id }
+          it { is_expected.to respond_to :files }
 
-          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
-          it { should delegate_method(:attachments_associated_with_the_work?).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:attachments_associated_with_the_work?).to(:attachments_extension) }
 
           context 'validations' do
             it 'will require a work' do

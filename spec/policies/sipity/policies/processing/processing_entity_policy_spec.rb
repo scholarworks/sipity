@@ -27,7 +27,7 @@ module Sipity
 
         context 'default configuration' do
           subject { described_class.new(user, work) }
-          its(:repository) { should respond_to(:authorized_for_processing?) }
+          its(:repository) { is_expected.to respond_to(:authorized_for_processing?) }
         end
       end
     end

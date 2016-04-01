@@ -7,28 +7,28 @@ module Sipity
 
       context 'configuration' do
         subject { described_class }
-        its(:default_order) { should be_a(String) }
-        its(:order_options_for_select) { should be_a(Array) }
+        its(:default_order) { is_expected.to be_a(String) }
+        its(:order_options_for_select) { is_expected.to be_a(Array) }
       end
 
       context 'instance' do
         subject { described_class.new }
-        it { should respond_to(:user) }
-        it { should respond_to(:processing_state) }
-        it { should respond_to(:order) }
-        it { should respond_to(:proxy_for_type) }
-        it { should respond_to(:work_area) }
-        it { should respond_to(:page) }
-        it { should respond_to(:per) }
+        it { is_expected.to respond_to(:user) }
+        it { is_expected.to respond_to(:processing_state) }
+        it { is_expected.to respond_to(:order) }
+        it { is_expected.to respond_to(:proxy_for_type) }
+        it { is_expected.to respond_to(:work_area) }
+        it { is_expected.to respond_to(:page) }
+        it { is_expected.to respond_to(:per) }
       end
 
-      its(:default_page) { should eq(1) }
-      its(:default_per) { should eq(15) }
-      its(:default_user) { should eq(nil) }
-      its(:default_proxy_for_type) { should eq(Models::Work) }
-      its(:default_processing_state) { should eq(nil) }
-      its(:default_work_area) { should eq(nil) }
-      its(:default_order) { should eq('title'.freeze) }
+      its(:default_page) { is_expected.to eq(1) }
+      its(:default_per) { is_expected.to eq(15) }
+      its(:default_user) { is_expected.to eq(nil) }
+      its(:default_proxy_for_type) { is_expected.to eq(Models::Work) }
+      its(:default_processing_state) { is_expected.to eq(nil) }
+      its(:default_work_area) { is_expected.to eq(nil) }
+      its(:default_order) { is_expected.to eq('title'.freeze) }
 
       it 'will fallback on default order if an invalid order is given' do
         subject = described_class.new(order: 'chicken-sandwich')

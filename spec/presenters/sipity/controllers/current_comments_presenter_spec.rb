@@ -9,9 +9,9 @@ module Sipity
       let(:current_comments) { Parameters::EntityWithCommentsParameter.new(entity: double, comments: [double, double]) }
       subject { CurrentCommentsPresenter.new(context, current_comments: current_comments) }
 
-      its(:comments) { should eq(current_comments.comments) }
-      its(:path_to_all_comments) { should be_a(String) }
-      its(:multiple_comments?) { should == true }
+      its(:comments) { is_expected.to eq(current_comments.comments) }
+      its(:path_to_all_comments) { is_expected.to be_a(String) }
+      its(:multiple_comments?) { is_expected.to eq(true) }
     end
 
     RSpec.describe CurrentCommentsPresenter do
@@ -19,7 +19,7 @@ module Sipity
       let(:current_comments) { Parameters::EntityWithCommentsParameter.new(entity: double, comments: [double]) }
       subject { CurrentCommentsPresenter.new(context, current_comments: current_comments) }
 
-      its(:multiple_comments?) { should == false }
+      its(:multiple_comments?) { is_expected.to eq(false) }
     end
   end
 end

@@ -23,8 +23,8 @@ module Sipity
 
       subject { described_class.new(notification_context: notification_context, repository: repository, notifier: notifier) }
 
-      its(:default_repository) { should respond_to :user_emails_for_entity_and_roles }
-      its(:default_notifier) { should respond_to :call }
+      its(:default_repository) { is_expected.to respond_to :user_emails_for_entity_and_roles }
+      its(:default_notifier) { is_expected.to respond_to :call }
 
       before do
         allow(repository).to receive(:email_notifications_for).and_return([email])

@@ -27,8 +27,8 @@ module Sipity
             end
           end
 
-          it { should delegate_method(:submit).to(:processing_action_form) }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          it { is_expected.to delegate_method(:submit).to(:processing_action_form) }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
         end
       end
     end

@@ -9,11 +9,11 @@ module Sipity
       let(:template) { 'named/template' }
 
       subject { described_class.new(status: status, object: object, template: template) }
-      its(:status) { should eq status }
-      its(:object) { should eq object }
-      its(:template) { should eq template }
+      its(:status) { is_expected.to eq status }
+      its(:object) { is_expected.to eq object }
+      its(:template) { is_expected.to eq template }
 
-      it { should delegate_method(:errors).to(:object) }
+      it { is_expected.to delegate_method(:errors).to(:object) }
 
       it 'will raise to initialize if the status is not a symbol' do
         expect { described_class.new(status: double, object: object, template: template) }.

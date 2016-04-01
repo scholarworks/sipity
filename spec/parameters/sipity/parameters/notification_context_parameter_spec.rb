@@ -12,11 +12,11 @@ module Sipity
         described_class.new(scope: scope, the_thing: the_thing, requested_by: requested_by, on_behalf_of: on_behalf_of)
       end
 
-      its(:scope) { should eq scope }
-      its(:the_thing) { should eq the_thing }
-      its(:reason) { should be_a String }
-      it { should respond_to :requested_by }
-      it { should respond_to :on_behalf_of }
+      its(:scope) { is_expected.to eq scope }
+      its(:the_thing) { is_expected.to eq the_thing }
+      its(:reason) { is_expected.to be_a String }
+      it { is_expected.to respond_to :requested_by }
+      it { is_expected.to respond_to :on_behalf_of }
 
       it 'will set on_behalf_of to requested_by if on_behalf_of is falsey' do
         subject = described_class.new(scope: scope, the_thing: the_thing, requested_by: 'someone', on_behalf_of: on_behalf_of)

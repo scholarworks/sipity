@@ -29,11 +29,11 @@ module Sipity
             end
           end
 
-          its(:legend) { should be_html_safe }
-          its(:signoff_agreement) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:legend) { is_expected.to be_html_safe }
+          its(:signoff_agreement) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
-          it { should delegate_method(:submit).to(:processing_action_form) }
+          it { is_expected.to delegate_method(:submit).to(:processing_action_form) }
         end
       end
     end

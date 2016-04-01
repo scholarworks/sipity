@@ -9,13 +9,13 @@ module Sipity
 
         subject { described_class.new(context, work: work) }
 
-        its(:title) { should be_html_safe }
-        its(:processing_state) { should eq('New') }
-        its(:date_created) { should be_a(String) }
-        its(:creator_names_to_sentence) { should be_a(String) }
-        its(:program_names_to_sentence) { should be_a(String) }
-        its(:work_type) { should eq('Doctoral dissertation') }
-        it { should delegate_method(:submission_window).to(:work) }
+        its(:title) { is_expected.to be_html_safe }
+        its(:processing_state) { is_expected.to eq('New') }
+        its(:date_created) { is_expected.to be_a(String) }
+        its(:creator_names_to_sentence) { is_expected.to be_a(String) }
+        its(:program_names_to_sentence) { is_expected.to be_a(String) }
+        its(:work_type) { is_expected.to eq('Doctoral dissertation') }
+        it { is_expected.to delegate_method(:submission_window).to(:work) }
 
         it 'will delegate path to PowerConverter' do
           expect(PowerConverter).to receive(:convert).with(work, to: :access_path).and_return('/the/path')

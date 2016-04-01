@@ -14,8 +14,8 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('advisor_requests_change') }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:processing_action_name) { is_expected.to eq('advisor_requests_change') }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context '#render' do
             let(:f) { double }
@@ -25,7 +25,7 @@ module Sipity
             end
           end
 
-          its(:comment_legend) { should be_html_safe }
+          its(:comment_legend) { is_expected.to be_html_safe }
           it { is_expected.not_to be_persisted }
 
           it 'will validate the presence of the :comment' do

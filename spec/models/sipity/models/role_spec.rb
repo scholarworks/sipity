@@ -6,8 +6,8 @@ module Sipity
     RSpec.describe Role, type: :model do
       context 'class methods' do
         subject { described_class }
-        its(:column_names) { should include('name') }
-        its(:column_names) { should include('description') }
+        its(:column_names) { is_expected.to include('name') }
+        its(:column_names) { is_expected.to include('description') }
         context '.[]' do
           let(:valid_name) { described_class.valid_names.first }
           it 'will find the named role' do

@@ -14,13 +14,13 @@ module Sipity
           let(:keywords) { { requested_by: user, attributes: {}, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('assign_award_status') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:base_class) { should eq(Models::Work) }
+          its(:processing_action_name) { is_expected.to eq('assign_award_status') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:base_class) { is_expected.to eq(Models::Work) }
 
           context 'class configuration' do
             subject { described_class }
-            its(:model_name) { should eq(Models::Work.model_name) }
+            its(:model_name) { is_expected.to eq(Models::Work.model_name) }
             it 'will delegate human_attribute_name to the base class' do
               expect(described_class.base_class).to receive(:human_attribute_name).and_call_original
               expect(described_class.human_attribute_name(:title)).to be_a(String)
@@ -28,12 +28,12 @@ module Sipity
           end
 
           it { is_expected.not_to be_persisted }
-          it { should respond_to :work }
-          it { should respond_to :is_an_award_winner }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :is_an_award_winner }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:is_an_award_winner) }
-          it { should validate_inclusion_of(:is_an_award_winner).in_array(subject.possible_is_an_award_winner) }
+          it { is_expected.to validate_presence_of(:is_an_award_winner) }
+          it { is_expected.to validate_inclusion_of(:is_an_award_winner).in_array(subject.possible_is_an_award_winner) }
 
           context 'retrieving values from the repository' do
             context 'with data from the database' do

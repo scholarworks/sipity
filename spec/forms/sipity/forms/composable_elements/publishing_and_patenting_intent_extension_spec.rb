@@ -9,8 +9,8 @@ module Sipity
         let(:repository) { CommandRepositoryInterface.new }
         subject { described_class.new(form: form, repository: repository) }
 
-        its(:default_repository) { should respond_to :update_work_attribute_values! }
-        its(:default_repository) { should respond_to :get_controlled_vocabulary_values_for_predicate_name }
+        its(:default_repository) { is_expected.to respond_to :update_work_attribute_values! }
+        its(:default_repository) { is_expected.to respond_to :get_controlled_vocabulary_values_for_predicate_name }
 
         it 'guards that the form has a work' do
           expect { described_class.new(form: double, repository: repository) }.to raise_error(Exceptions::InterfaceExpectationError)
@@ -22,7 +22,7 @@ module Sipity
               with(name: subject.send(:work_publication_strategy_predicate_name)).and_return(['hello', 'world'])
           end
 
-          it { should respond_to :work_publication_strategy }
+          it { is_expected.to respond_to :work_publication_strategy }
 
           it 'will have #work_publication_strategies_for_select that are all symbols' do
             expect(subject.work_publication_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy
@@ -47,7 +47,7 @@ module Sipity
               with(name: subject.send(:work_patent_strategy_predicate_name)).and_return(['hello', 'world'])
           end
 
-          it { should respond_to :work_patent_strategy }
+          it { is_expected.to respond_to :work_patent_strategy }
 
           it 'will have #work_patent_strategies_for_select that are all symbols' do
             expect(subject.work_patent_strategies_for_select.all? { |strategy| strategy.is_a?(Symbol) }).to be_truthy

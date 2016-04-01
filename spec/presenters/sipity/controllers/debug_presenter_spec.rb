@@ -14,14 +14,14 @@ module Sipity
         described_class.new(context, repository: repository, view_object: view_object)
       end
 
-      its(:object_name) { should eq(view_object.to_s) }
-      its(:processing_entity_id) { should eq(processing_entity.id) }
-      its(:processing_entity_strategy_name) { should eq(processing_entity.strategy_name) }
-      its(:processing_entity_strategy_id) { should eq(processing_entity.strategy_id) }
-      its(:processing_entity_strategy_state_name) { should eq(processing_entity.strategy_state_name) }
-      its(:processing_entity_strategy_state_id) { should eq(processing_entity.strategy_state_id) }
+      its(:object_name) { is_expected.to eq(view_object.to_s) }
+      its(:processing_entity_id) { is_expected.to eq(processing_entity.id) }
+      its(:processing_entity_strategy_name) { is_expected.to eq(processing_entity.strategy_name) }
+      its(:processing_entity_strategy_id) { is_expected.to eq(processing_entity.strategy_id) }
+      its(:processing_entity_strategy_state_name) { is_expected.to eq(processing_entity.strategy_state_name) }
+      its(:processing_entity_strategy_state_id) { is_expected.to eq(processing_entity.strategy_state_id) }
 
-      its(:default_repository) { should respond_to(:scope_roles_associated_with_the_given_entity) }
+      its(:default_repository) { is_expected.to respond_to(:scope_roles_associated_with_the_given_entity) }
 
       context '#debug_roles' do
         let(:role) { double }

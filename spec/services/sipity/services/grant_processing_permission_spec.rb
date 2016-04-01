@@ -14,7 +14,7 @@ module Sipity
       end
 
       subject { described_class.new(entity: entity, role: role, actor: actor) }
-      its(:strategy) { should eq entity.strategy }
+      its(:strategy) { is_expected.to eq entity.strategy }
 
       context '.call' do
         it 'will instantiate then call the instance' do

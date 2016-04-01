@@ -28,14 +28,14 @@ module Sipity
             allow(repository).to receive(:possible_expected_graduation_terms).and_return([expected_graduation_term])
           end
 
-          its(:processing_action_name) { should eq('plan_of_study') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:base_class) { should eq(Models::Work) }
-          it { should delegate_method(:possible_expected_graduation_terms).to(:repository) }
+          its(:processing_action_name) { is_expected.to eq('plan_of_study') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:base_class) { is_expected.to eq(Models::Work) }
+          it { is_expected.to delegate_method(:possible_expected_graduation_terms).to(:repository) }
 
           context 'class configuration' do
             subject { described_class }
-            its(:model_name) { should eq(Models::Work.model_name) }
+            its(:model_name) { is_expected.to eq(Models::Work.model_name) }
             it 'will delegate human_attribute_name to the base class' do
               expect(described_class.base_class).to receive(:human_attribute_name).and_call_original
               expect(described_class.human_attribute_name(:title)).to be_a(String)
@@ -43,17 +43,17 @@ module Sipity
           end
 
           it { is_expected.not_to be_persisted }
-          it { should respond_to :work }
-          it { should respond_to :expected_graduation_term }
-          it { should respond_to :majors }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :expected_graduation_term }
+          it { is_expected.to respond_to :majors }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:expected_graduation_term) }
-          it { should validate_inclusion_of(:expected_graduation_term).in_array(subject.possible_expected_graduation_terms) }
-          it { should validate_presence_of(:primary_college) }
-          it { should validate_inclusion_of(:primary_college).in_array(subject.possible_primary_colleges) }
-          it { should validate_presence_of(:underclass_level) }
-          it { should validate_inclusion_of(:underclass_level).in_array(subject.possible_underclass_levels) }
+          it { is_expected.to validate_presence_of(:expected_graduation_term) }
+          it { is_expected.to validate_inclusion_of(:expected_graduation_term).in_array(subject.possible_expected_graduation_terms) }
+          it { is_expected.to validate_presence_of(:primary_college) }
+          it { is_expected.to validate_inclusion_of(:primary_college).in_array(subject.possible_primary_colleges) }
+          it { is_expected.to validate_presence_of(:underclass_level) }
+          it { is_expected.to validate_inclusion_of(:underclass_level).in_array(subject.possible_underclass_levels) }
 
           it 'will be invalid if all of the input majors are blank' do
             subject = described_class.new(keywords.merge(attributes: { majors: ['', ''] }))

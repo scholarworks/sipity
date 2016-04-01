@@ -14,17 +14,17 @@ module Sipity
           let(:attributes) { {} }
           subject { described_class.new(keywords) }
 
-          its(:policy_enforcer) { should be_present }
-          its(:processing_action_name) { should eq('attach') }
-          its(:attachment_predicate_name) { should eq('project_file') }
+          its(:policy_enforcer) { is_expected.to be_present }
+          its(:processing_action_name) { is_expected.to eq('attach') }
+          its(:attachment_predicate_name) { is_expected.to eq('project_file') }
 
-          it { should respond_to :attachments }
-          it { should respond_to :representative_attachment_id }
-          it { should respond_to :files }
-          it { should respond_to :attached_files_completion_state }
-          it { should respond_to :project_url }
+          it { is_expected.to respond_to :attachments }
+          it { is_expected.to respond_to :representative_attachment_id }
+          it { is_expected.to respond_to :files }
+          it { is_expected.to respond_to :attached_files_completion_state }
+          it { is_expected.to respond_to :project_url }
 
-          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
 
           context 'values from work' do
             before do
@@ -35,15 +35,19 @@ module Sipity
                 work: work, key: 'project_url', cardinality: 1
               ).and_return('existing.url')
             end
-            its(:attached_files_completion_state_from_work) { should eq('complete') }
-            its(:attached_files_completion_state) { should eq('complete') }
+            its(:attached_files_completion_state_from_work) { is_expected.to eq('complete') }
+            its(:attached_files_completion_state) { is_expected.to eq('complete') }
           end
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:work) }
-          it { should validate_presence_of(:requested_by) }
-          it { should validate_presence_of(:attached_files_completion_state) }
-          it { should validate_inclusion_of(:attached_files_completion_state).in_array(subject.possible_attached_files_completion_states) }
+          it { is_expected.to validate_presence_of(:work) }
+          it { is_expected.to validate_presence_of(:requested_by) }
+          it { is_expected.to validate_presence_of(:attached_files_completion_state) }
+          it do
+            is_expected.to validate_inclusion_of(:attached_files_completion_state).in_array(
+              subject.possible_attached_files_completion_states
+            )
+          end
 
           context 'assigning attachments attributes' do
             let(:user) { double('User') }

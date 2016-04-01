@@ -29,7 +29,7 @@ module Sipity
             end
           end
 
-          its(:work) { should eq work }
+          its(:work) { is_expected.to eq work }
 
           context '#render' do
             it 'will render HTML safe submission terms and confirmation' do
@@ -39,9 +39,9 @@ module Sipity
             end
           end
 
-          its(:advisor_signoff_legend) { should be_html_safe }
-          its(:signoff_agreement) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:advisor_signoff_legend) { is_expected.to be_html_safe }
+          its(:signoff_agreement) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'validation' do
             it 'will require agreement to the signoff' do

@@ -12,17 +12,17 @@ module Sipity
 
       before { allow(Models::AccessRight).to receive(:find_or_initialize_by).and_return(access_right) }
 
-      its(:id) { should eq(object.id) }
-      its(:persisted?) { should eq(object.persisted?) }
-      its(:to_s) { should eq(object.to_s) }
-      its(:entity_id) { should eq(subject.id) }
-      its(:to_param) { should eq(object.to_param) }
-      its(:entity_type) { should eq(Sipity::Models::Work) }
-      its(:access_right_code) { should eq(access_right.access_right_code) }
-      its(:release_date) { should eq(access_right.release_date) }
+      its(:id) { is_expected.to eq(object.id) }
+      its(:persisted?) { is_expected.to eq(object.persisted?) }
+      its(:to_s) { is_expected.to eq(object.to_s) }
+      its(:entity_id) { is_expected.to eq(subject.id) }
+      its(:to_param) { is_expected.to eq(object.to_param) }
+      its(:entity_type) { is_expected.to eq(Sipity::Models::Work) }
+      its(:access_right_code) { is_expected.to eq(access_right.access_right_code) }
+      its(:release_date) { is_expected.to eq(access_right.release_date) }
 
-      its(:model_name) { should eq(work.class.model_name) }
-      its(:human_model_name) { should eq(work.class.model_name.human) }
+      its(:model_name) { is_expected.to eq(work.class.model_name) }
+      its(:human_model_name) { is_expected.to eq(work.class.model_name.human) }
 
       it 'will leverage the access right to translate human_attribute_name' do
         expect(subject.send(:translator)).

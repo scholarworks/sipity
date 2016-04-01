@@ -5,14 +5,14 @@ module Sipity
   module Models
     RSpec.describe EventLog, type: :model do
 
-      it { should belong_to(:user) }
-      it { should belong_to(:entity) }
-      it { should belong_to(:requested_by) }
+      it { is_expected.to belong_to(:user) }
+      it { is_expected.to belong_to(:entity) }
+      it { is_expected.to belong_to(:requested_by) }
 
       # This is a "stop-gap" for validations going forward. Once the database
       # constraint is added this should go away.
-      it { should validate_presence_of(:requested_by_id).on(:create) }
-      it { should validate_presence_of(:requested_by_type).on(:create) }
+      it { is_expected.to validate_presence_of(:requested_by_id).on(:create) }
+      it { is_expected.to validate_presence_of(:requested_by_type).on(:create) }
 
       it 'relies on the database to enforce the requirement of an :event_name' do
         expect do

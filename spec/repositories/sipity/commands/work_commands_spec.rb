@@ -105,8 +105,8 @@ module Sipity
 
       context '#default_pid_minter' do
         subject { test_repository.default_pid_minter }
-        it { should respond_to(:call) }
-        its(:call) { should be_a(String) }
+        it { is_expected.to respond_to(:call) }
+        its(:call) { is_expected.to be_a(String) }
       end
 
       context '#create_sipity_user_from' do

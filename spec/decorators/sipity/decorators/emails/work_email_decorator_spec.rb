@@ -48,28 +48,28 @@ module Sipity
           end
         end
 
-        its(:permanent_url) { should be_a(String) }
-        its(:work_type) { should eq('Doctoral dissertation') }
-        its(:title) { should eq(work.title) }
-        its(:email_message_action_description) { should eq("Review Doctoral dissertation “#{work.title}”") }
-        its(:email_message_action_name) { should eq("Review Doctoral dissertation") }
-        its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
-        its(:collaborators) { should eq(collaborators) }
-        its(:reviewers) { should eq(reviewers) }
-        its(:creator_names) { should eq(['John', 'Ringo']) }
-        its(:accessible_objects) { should eq(accessible_objects) }
-        its(:program_names) { should eq(program_names) }
-        its(:degree) { should eq(degree) }
-        its(:creator_netids) { should eq(creator_netids) }
-        its(:publishing_intent) { should eq(publishing_intent) }
-        its(:patent_intent) { should eq(patent_intent) }
-        its(:submission_date) { should eq(submission_date) }
+        its(:permanent_url) { is_expected.to be_a(String) }
+        its(:work_type) { is_expected.to eq('Doctoral dissertation') }
+        its(:title) { is_expected.to eq(work.title) }
+        its(:email_message_action_description) { is_expected.to eq("Review Doctoral dissertation “#{work.title}”") }
+        its(:email_message_action_name) { is_expected.to eq("Review Doctoral dissertation") }
+        its(:email_message_action_url) { is_expected.to match(%r{/#{work.to_param}\Z}) }
+        its(:collaborators) { is_expected.to eq(collaborators) }
+        its(:reviewers) { is_expected.to eq(reviewers) }
+        its(:creator_names) { is_expected.to eq(['John', 'Ringo']) }
+        its(:accessible_objects) { is_expected.to eq(accessible_objects) }
+        its(:program_names) { is_expected.to eq(program_names) }
+        its(:degree) { is_expected.to eq(degree) }
+        its(:creator_netids) { is_expected.to eq(creator_netids) }
+        its(:publishing_intent) { is_expected.to eq(publishing_intent) }
+        its(:patent_intent) { is_expected.to eq(patent_intent) }
+        its(:submission_date) { is_expected.to eq(submission_date) }
         its(:catalog_system_number) do
           expect(repository).to receive(:work_attribute_values_for).with(
             work: work, key: Sipity::Models::AdditionalAttribute::CATALOG_SYSTEM_NUMBER, cardinality: 1
           ).and_return(1234)
 
-          should eq(1234)
+          is_expected.to eq(1234)
         end
 
         its(:additional_committe_members) do

@@ -12,7 +12,7 @@ module Sipity
           double(slug: 'the-slug', work_area_slug: 'another', work_area_partial_suffix: 'work_area', processing_action_name: 'hello')
         end
         subject { described_class.new(context, submission_window: submission_window) }
-        it { should be_a SubmissionWindowPresenter }
+        it { is_expected.to be_a SubmissionWindowPresenter }
 
         context '#render_submission_window' do
           context 'for a ULRA' do

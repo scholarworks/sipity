@@ -19,27 +19,27 @@ module Sipity
             allow(repository).to receive(:get_controlled_vocabulary_values_for_predicate_name).with(name: 'award_category').and_return([])
           end
 
-          it { should implement_processing_form_interface }
-          its(:public_methods) { should include(:to_work_area) }
+          it { is_expected.to implement_processing_form_interface }
+          its(:public_methods) { is_expected.to include(:to_work_area) }
 
           context 'its class configuration' do
             subject { described_class }
-            its(:base_class) { should eq(Models::Work) }
-            its(:model_name) { should eq(Models::Work.model_name) }
+            its(:base_class) { is_expected.to eq(Models::Work) }
+            its(:model_name) { is_expected.to eq(Models::Work.model_name) }
             it 'will delegate human_attribute_name to the base class' do
               expect(Models::Work).to receive(:human_attribute_name).and_call_original
               expect(subject.human_attribute_name(:title)).to be_a(String)
             end
           end
 
-          its(:policy_enforcer) { should eq Policies::SubmissionWindowPolicy }
-          its(:base_class) { should eq Models::Work }
-          its(:default_repository) { should respond_to :create_work! }
-          its(:default_repository) { should respond_to :find_submission_window_by }
-          its(:processing_subject_name) { should eq :submission_window }
-          its(:entity) { should eq submission_window }
-          its(:to_work_area) { should eq(work_area) }
-          its(:persisted?) { should eq(false) }
+          its(:policy_enforcer) { is_expected.to eq Policies::SubmissionWindowPolicy }
+          its(:base_class) { is_expected.to eq Models::Work }
+          its(:default_repository) { is_expected.to respond_to :create_work! }
+          its(:default_repository) { is_expected.to respond_to :find_submission_window_by }
+          its(:processing_subject_name) { is_expected.to eq :submission_window }
+          its(:entity) { is_expected.to eq submission_window }
+          its(:to_work_area) { is_expected.to eq(work_area) }
+          its(:persisted?) { is_expected.to eq(false) }
 
           it 'will delegate #to_processing_entity to the submission window' do
             expect(submission_window).to receive(:to_processing_entity)
@@ -60,12 +60,12 @@ module Sipity
             let(:attributes) { { title: nil, access_rights_answer: nil } }
             subject { described_class.new(keywords) }
             include Shoulda::Matchers::ActiveModel
-            it { should validate_presence_of(:title) }
-            it { should validate_presence_of(:advisor_netid) }
-            it { should validate_presence_of(:award_category) }
-            it { should validate_presence_of(:work_type) }
-            it { should validate_presence_of(:course_name) }
-            it { should validate_presence_of(:course_number) }
+            it { is_expected.to validate_presence_of(:title) }
+            it { is_expected.to validate_presence_of(:advisor_netid) }
+            it { is_expected.to validate_presence_of(:award_category) }
+            it { is_expected.to validate_presence_of(:work_type) }
+            it { is_expected.to validate_presence_of(:course_name) }
+            it { is_expected.to validate_presence_of(:course_number) }
             it 'should validate submission_window_is_open' do
               expect_any_instance_of(OpenForStartingSubmissionsValidator).to receive(:validate_each)
               subject.valid?

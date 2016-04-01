@@ -7,11 +7,11 @@ module Sipity
       RSpec.describe StrategyAction, type: :model do
         context 'database configuration' do
           subject { described_class }
-          its(:column_names) { should include('strategy_id') }
-          its(:column_names) { should include('resulting_strategy_state_id') }
-          its(:column_names) { should include('name') }
-          its(:column_names) { should include('action_type') }
-          its(:column_names) { should include('allow_repeat_within_current_state') }
+          its(:column_names) { is_expected.to include('strategy_id') }
+          its(:column_names) { is_expected.to include('resulting_strategy_state_id') }
+          its(:column_names) { is_expected.to include('name') }
+          its(:column_names) { is_expected.to include('action_type') }
+          its(:column_names) { is_expected.to include('allow_repeat_within_current_state') }
         end
 
         it 'will include debug as resourceful' do
@@ -28,11 +28,11 @@ module Sipity
           end
         end
 
-        its(:default_action_type) { should be_a(String) }
+        its(:default_action_type) { is_expected.to be_a(String) }
 
-        it { should respond_to(:resourceful_action?) }
-        it { should respond_to(:state_advancing_action?) }
-        it { should respond_to(:enrichment_action?) }
+        it { is_expected.to respond_to(:resourceful_action?) }
+        it { is_expected.to respond_to(:state_advancing_action?) }
+        it { is_expected.to respond_to(:enrichment_action?) }
 
         context 'set action type' do
           it 'will set the action type if none is specified' do

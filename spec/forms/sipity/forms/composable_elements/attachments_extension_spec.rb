@@ -26,16 +26,16 @@ module Sipity
           )
         end
 
-        its(:default_predicate_name) { should eq('attachment') }
+        its(:default_predicate_name) { is_expected.to eq('attachment') }
 
-        it { should respond_to :repository }
-        it { should respond_to :files }
-        it { should respond_to :attach_or_update_files }
-        it { should respond_to :attachments_attributes= }
-        it { should respond_to :attachments }
-        it { should delegate_method(:errors).to(:form) }
+        it { is_expected.to respond_to :repository }
+        it { is_expected.to respond_to :files }
+        it { is_expected.to respond_to :attach_or_update_files }
+        it { is_expected.to respond_to :attachments_attributes= }
+        it { is_expected.to respond_to :attachments }
+        it { is_expected.to delegate_method(:errors).to(:form) }
 
-        its(:default_predicate_name) { should eq('attachment') }
+        its(:default_predicate_name) { is_expected.to eq('attachment') }
 
         context '#attachments_associated_with_the_work?' do
           it 'will be false if no files nor attachments_metadata exists' do

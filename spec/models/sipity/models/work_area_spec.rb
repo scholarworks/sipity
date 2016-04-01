@@ -6,10 +6,10 @@ module Sipity
     RSpec.describe WorkArea, type: :model do
       context 'database configuration' do
         subject { described_class }
-        its(:column_names) { should include('slug') }
-        its(:column_names) { should include('partial_suffix') }
-        its(:column_names) { should include('demodulized_class_prefix_name') }
-        its(:column_names) { should include('name') }
+        its(:column_names) { is_expected.to include('slug') }
+        its(:column_names) { is_expected.to include('partial_suffix') }
+        its(:column_names) { is_expected.to include('demodulized_class_prefix_name') }
+        its(:column_names) { is_expected.to include('name') }
       end
 
       subject { described_class.new }
@@ -23,8 +23,8 @@ module Sipity
         expect(subject.association(:strategy_usage)).to be_a(ActiveRecord::Associations::HasOneAssociation)
       end
 
-      it { should respond_to :processing_strategy }
-      it { should respond_to :processing_state }
+      it { is_expected.to respond_to :processing_strategy }
+      it { is_expected.to respond_to :processing_state }
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do

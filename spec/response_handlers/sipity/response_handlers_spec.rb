@@ -67,9 +67,9 @@ module Sipity
         expect(responder).to receive(:for_command_line).with(handler: subject).and_return(:for_command_line_called)
         expect(subject.respond).to eq(:for_command_line_called)
       end
-      it { should delegate_method(:status).to(:handled_response).with_prefix(:response) }
-      it { should delegate_method(:object).to(:handled_response).with_prefix(:response) }
-      it { should delegate_method(:errors).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:status).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:object).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:errors).to(:handled_response).with_prefix(:response) }
     end
 
     RSpec.describe ControllerResponseHandler do
@@ -83,9 +83,9 @@ module Sipity
         expect(subject.respond).to eq(context.render)
       end
 
-      it { should delegate_method(:status).to(:handled_response).with_prefix(:response) }
-      it { should delegate_method(:object).to(:handled_response).with_prefix(:response) }
-      it { should delegate_method(:errors).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:status).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:object).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:errors).to(:handled_response).with_prefix(:response) }
 
       it 'will coordinate updating view path information with the context' do
         expect(handled_response).to receive(:with_each_additional_view_path_slug).and_yield('core').and_yield('ulra')

@@ -14,9 +14,9 @@ module Sipity
       let(:repository) { CommandRepositoryInterface.new }
 
       subject { described_class.new(entity: entity, requested_by: requested_by, action: action, repository: repository) }
-      its(:default_repository) { should respond_to(:log_event!) }
-      its(:default_repository) { should respond_to(:deliver_notification_for) }
-      its(:default_processing_hooks) { should respond_to(:call) }
+      its(:default_repository) { is_expected.to respond_to(:log_event!) }
+      its(:default_repository) { is_expected.to respond_to(:deliver_notification_for) }
+      its(:default_processing_hooks) { is_expected.to respond_to(:call) }
 
       before { allow(subject.send(:default_processing_hooks)).to receive(:call) }
 

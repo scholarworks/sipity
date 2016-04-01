@@ -8,9 +8,9 @@ module Sipity
 
       context 'database columns' do
         subject { Work }
-        its(:column_names) { should include('work_type') }
+        its(:column_names) { is_expected.to include('work_type') }
         its(:column_names) { is_expected.not_to include('work_publication_strategy') }
-        its(:column_names) { should include('title') }
+        its(:column_names) { is_expected.to include('title') }
       end
 
       it 'will sanitize its title' do
@@ -18,14 +18,14 @@ module Sipity
         expect(subject.title).to eq('Hello')
       end
 
-      its(:to_s) { should eq(subject.title) }
+      its(:to_s) { is_expected.to eq(subject.title) }
 
-      it { should have_many :work_redirect_strategies }
-      it { should respond_to :processing_strategy }
-      it { should respond_to :processing_state }
-      it { should respond_to :work_area }
-      it { should respond_to :submission_window }
-      it { should delegate_method(:transition_date).to(:access_right).with_prefix }
+      it { is_expected.to have_many :work_redirect_strategies }
+      it { is_expected.to respond_to :processing_strategy }
+      it { is_expected.to respond_to :processing_state }
+      it { is_expected.to respond_to :work_area }
+      it { is_expected.to respond_to :submission_window }
+      it { is_expected.to delegate_method(:transition_date).to(:access_right).with_prefix }
 
       context '#to_processing_entity' do
         it 'will raise an exception if one has not been created' do

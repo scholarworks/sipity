@@ -13,7 +13,7 @@ module Sipity
       let(:resourceful_action) { Models::Processing::StrategyAction.new(name: 'show') }
       subject { described_class.new(context, resourceful_action: resourceful_action) }
 
-      its(:availability_state) { should be_a(String) }
+      its(:availability_state) { is_expected.to be_a(String) }
 
       it "will require you to implement a path" do
         expect { subject.path }.to raise_error(NotImplementedError)

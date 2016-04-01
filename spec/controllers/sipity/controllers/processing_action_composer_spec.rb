@@ -27,7 +27,7 @@ module Sipity
               processing_action_name: processing_action_name
             )
           end
-          its(:response_handler) { should respond_to(:call) }
+          its(:response_handler) { is_expected.to respond_to(:call) }
         end
 
         it { is_expected.not_to respond_to(:prepend_processing_action_view_path_with) }
@@ -59,12 +59,12 @@ module Sipity
 
         subject { described_class.build_for_controller(controller: controller, response_handler: response_handler) }
 
-        its(:processing_action_name) { should eq(processing_action_name) }
-        it { should respond_to(:processing_action_name) }
+        its(:processing_action_name) { is_expected.to eq(processing_action_name) }
+        it { is_expected.to respond_to(:processing_action_name) }
 
         context 'with default build options' do
           subject { described_class.build_for_controller(controller: controller, processing_action_name: 'york') }
-          its(:response_handler) { should respond_to(:call) }
+          its(:response_handler) { is_expected.to respond_to(:call) }
         end
 
         it 'will allow a specific processing action name to be provided' do

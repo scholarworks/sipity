@@ -20,24 +20,24 @@ module Sipity
           end
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('publisher_information') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:base_class) { should eq(Models::Work) }
+          its(:processing_action_name) { is_expected.to eq('publisher_information') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:base_class) { is_expected.to eq(Models::Work) }
 
           context 'class configuration' do
             subject { described_class }
-            it { should delegate_method(:model_name).to(:base_class) }
-            it { should delegate_method(:human_attribute_name).to(:base_class) }
+            it { is_expected.to delegate_method(:model_name).to(:base_class) }
+            it { is_expected.to delegate_method(:human_attribute_name).to(:base_class) }
           end
 
-          it { should respond_to :work }
-          it { should respond_to :entity }
-          it { should respond_to :publication_name }
-          it { should respond_to :publication_status_of_submission }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :entity }
+          it { is_expected.to respond_to :publication_name }
+          it { is_expected.to respond_to :publication_status_of_submission }
           it { is_expected.not_to be_persisted }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of :publication_name }
+          it { is_expected.to validate_presence_of :publication_name }
           it do
             should validate_inclusion_of(
               :publication_status_of_submission

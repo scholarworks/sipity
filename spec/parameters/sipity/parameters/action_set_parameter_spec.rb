@@ -8,12 +8,12 @@ module Sipity
       let(:collection) { double(any?: true, present?: true) }
       let(:entity) { double(processing_state: 'processing_state') }
       subject { described_class.new(identifier: identifier, collection: collection, entity: entity) }
-      its(:identifier) { should eq identifier }
-      its(:collection) { should eq [collection] }
-      its(:processing_state) { should eq entity.processing_state }
-      its(:entity) { should eq entity }
-      its(:any?) { should eq collection.any? }
-      its(:present?) { should eq collection.present? }
+      its(:identifier) { is_expected.to eq identifier }
+      its(:collection) { is_expected.to eq [collection] }
+      its(:processing_state) { is_expected.to eq entity.processing_state }
+      its(:entity) { is_expected.to eq entity }
+      its(:any?) { is_expected.to eq collection.any? }
+      its(:present?) { is_expected.to eq collection.present? }
     end
   end
 end

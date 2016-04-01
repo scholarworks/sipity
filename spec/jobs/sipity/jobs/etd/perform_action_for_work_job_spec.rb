@@ -15,10 +15,10 @@ RSpec.describe Sipity::Jobs::Etd::PerformActionForWorkJob do
 
   subject { described_class.new(parameters) }
 
-  its(:attributes) { should eq({}) }
-  its(:default_context_builder) { should respond_to(:call) }
-  its(:default_runner) { should respond_to(:call) }
-  its(:default_processing_action_handler_builder) { should respond_to(:call) }
+  its(:attributes) { is_expected.to eq({}) }
+  its(:default_context_builder) { is_expected.to respond_to(:call) }
+  its(:default_runner) { is_expected.to respond_to(:call) }
+  its(:default_processing_action_handler_builder) { is_expected.to respond_to(:call) }
 
   it 'should expose .call as a convenience method' do
     expect_any_instance_of(described_class).to receive(:call)

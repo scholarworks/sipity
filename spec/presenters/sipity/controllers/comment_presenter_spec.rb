@@ -5,8 +5,8 @@ module Sipity
       let(:comment) { double(comment: 'Hello World', name_of_commentor: 'My Name') }
       subject { described_class.new(context, comment: comment) }
 
-      its(:message) { should eq(comment.comment) }
-      its(:name_of_commentor) { should eq(comment.name_of_commentor) }
+      its(:message) { is_expected.to eq(comment.comment) }
+      its(:name_of_commentor) { is_expected.to eq(comment.name_of_commentor) }
     end
   end
 end

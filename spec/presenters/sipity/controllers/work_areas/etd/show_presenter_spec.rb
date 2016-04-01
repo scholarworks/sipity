@@ -20,8 +20,8 @@ module Sipity
             allow(repository).to receive(:find_submission_window_by).and_return(submission_window)
             allow_any_instance_of(described_class).to receive(:convert_to_processing_action).and_return(processing_action)
           end
-          it { should be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
-          its(:view_submitted_etds_url) { should match(%r{\Ahttps://curate.nd.edu}) }
+          it { is_expected.to be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
+          its(:view_submitted_etds_url) { is_expected.to match(%r{\Ahttps://curate.nd.edu}) }
         end
       end
     end

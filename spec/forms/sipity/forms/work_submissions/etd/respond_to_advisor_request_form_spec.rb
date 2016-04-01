@@ -21,9 +21,9 @@ module Sipity
             end
           end
 
-          its(:input_legend) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
-          it { should implement_processing_form_interface }
+          its(:input_legend) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          it { is_expected.to implement_processing_form_interface }
 
           context 'with valid data' do
             before do

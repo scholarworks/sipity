@@ -5,10 +5,10 @@ module Sipity
   module Forms
     RSpec.describe BaseForm do
 
-      its(:to_key) { should be_empty }
-      its(:policy_enforcer) { should be_nil }
-      its(:to_param) { should be_nil }
-      its(:persisted?) { should eq(false) }
+      its(:to_key) { is_expected.to be_empty }
+      its(:policy_enforcer) { is_expected.to be_nil }
+      its(:to_param) { is_expected.to be_nil }
+      its(:persisted?) { is_expected.to eq(false) }
 
       context '#submit' do
         context 'with invalid data' do

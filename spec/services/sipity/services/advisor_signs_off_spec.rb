@@ -89,10 +89,10 @@ module Sipity
         end
       end
 
-      its(:default_repository) { should respond_to :collaborators_that_have_taken_the_action_on_the_entity }
-      its(:default_repository) { should respond_to :work_collaborators_responsible_for_review }
-      its(:default_action) { should eq(form.to_processing_action) }
-      its(:default_also_register_as) { should be_empty }
+      its(:default_repository) { is_expected.to respond_to :collaborators_that_have_taken_the_action_on_the_entity }
+      its(:default_repository) { is_expected.to respond_to :work_collaborators_responsible_for_review }
+      its(:default_action) { is_expected.to eq(form.to_processing_action) }
+      its(:default_also_register_as) { is_expected.to be_empty }
     end
   end
 end

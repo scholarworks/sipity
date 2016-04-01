@@ -80,8 +80,8 @@ module Sipity
         let(:user) { double }
         let(:filter) { double }
         subject { test_repository.build_dashboard_view(user: user, filter: filter, page: 1) }
-        it { should respond_to :filterable_processing_states }
-        it { should respond_to :search_path }
+        it { is_expected.to respond_to :filterable_processing_states }
+        it { is_expected.to respond_to :search_path }
       end
     end
   end

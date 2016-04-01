@@ -16,7 +16,7 @@ module Sipity
           let(:keywords) { { requested_by: user, attributes: attributes, work: work, repository: repository } }
           subject { described_class.new(keywords) }
 
-          its(:default_repository) { should respond_to(:get_controlled_vocabulary_values_for_predicate_name) }
+          its(:default_repository) { is_expected.to respond_to(:get_controlled_vocabulary_values_for_predicate_name) }
 
           before do
             allow(
@@ -27,11 +27,11 @@ module Sipity
           end
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:title) }
-          it { should validate_inclusion_of(:award_category).in_array(subject.award_categories_for_select) }
-          it { should validate_presence_of(:course_name) }
-          it { should validate_presence_of(:course_number) }
-          it { should validate_presence_of(:requested_by) }
+          it { is_expected.to validate_presence_of(:title) }
+          it { is_expected.to validate_inclusion_of(:award_category).in_array(subject.award_categories_for_select) }
+          it { is_expected.to validate_presence_of(:course_name) }
+          it { is_expected.to validate_presence_of(:course_number) }
+          it { is_expected.to validate_presence_of(:requested_by) }
 
           context '#initialization without attributes given' do
             subject { described_class.new(requested_by: user, attributes: {}, work: work, repository: repository) }
@@ -56,14 +56,14 @@ module Sipity
               before do
                 expect(subject).to receive(:valid?).and_return(false)
               end
-              its(:submit) { should eq(false) }
+              its(:submit) { is_expected.to eq(false) }
             end
             context 'with valid data' do
               before do
                 allow(subject).to receive(:valid?).and_return(true)
                 allow(subject.send(:processing_action_form)).to receive(:submit).and_yield.and_return(work)
               end
-              its(:submit) { should eq(work) }
+              its(:submit) { is_expected.to eq(work) }
 
               it 'will update the title' do
                 expect(repository).to receive(:update_work_title!).with(work: work, title: attributes.fetch(:title))

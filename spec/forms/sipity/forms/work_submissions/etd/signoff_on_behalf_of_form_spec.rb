@@ -14,8 +14,8 @@ module Sipity
 
           subject { described_class.new(base_options) }
 
-          it { should respond_to :work }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          it { is_expected.to respond_to :work }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           let(:someone) { double(id: 'one') }
 

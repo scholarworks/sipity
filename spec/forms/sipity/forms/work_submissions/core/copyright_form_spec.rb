@@ -25,12 +25,12 @@ module Sipity
             )
           end
 
-          its(:processing_action_name) { should eq('copyright') }
-          it { should respond_to :copyright }
+          its(:processing_action_name) { is_expected.to eq('copyright') }
+          it { is_expected.to respond_to :copyright }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:copyright) }
-          it { should validate_inclusion_of(:copyright).in_array(subject.available_copyrights_for_validation) }
+          it { is_expected.to validate_presence_of(:copyright) }
+          it { is_expected.to validate_inclusion_of(:copyright).in_array(subject.available_copyrights_for_validation) }
 
           it 'will have #available_copyrights' do
             expect(repository).to receive(:get_controlled_vocabulary_entries_for_predicate_name).with(name: 'copyright').

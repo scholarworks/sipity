@@ -13,9 +13,9 @@ module Sipity
       end
       let(:entity) { double }
       subject { described_class.new(additional_attributes: additional_attributes, entity: entity) }
-      its(:entity) { should eq entity }
-      its(:any?) { should be_truthy }
-      its(:count) { should eq(2) }
+      its(:entity) { is_expected.to eq entity }
+      its(:any?) { is_expected.to be_truthy }
+      its(:count) { is_expected.to eq(2) }
     end
   end
 end

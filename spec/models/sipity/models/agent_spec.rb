@@ -6,13 +6,13 @@ module Sipity
     RSpec.describe Agent, type: :model do
       context 'class configuration' do
         subject { described_class }
-        its(:column_names) { should include('name') }
-        its(:column_names) { should include('description') }
-        its(:column_names) { should include('authentication_token') }
+        its(:column_names) { is_expected.to include('name') }
+        its(:column_names) { is_expected.to include('description') }
+        its(:column_names) { is_expected.to include('authentication_token') }
       end
 
-      it { should have_one(:processing_actor) }
-      it { should have_many(:event_logs) }
+      it { is_expected.to have_one(:processing_actor) }
+      it { is_expected.to have_many(:event_logs) }
 
       context '.create_a_named_agent!' do
         it 'creates a named agent and assigns an authentication_token' do

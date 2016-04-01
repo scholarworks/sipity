@@ -14,10 +14,10 @@ module Sipity
         described_class.new(context, debug_role: role)
       end
 
-      it { should delegate_method(:name).to(:debug_role) }
-      it { should delegate_method(:repository).to(:debug_role) }
-      it { should delegate_method(:to_processing_entity).to(:debug_role) }
-      it { should delegate_method(:role_id).to(:debug_role).as(:id) }
+      it { is_expected.to delegate_method(:name).to(:debug_role) }
+      it { is_expected.to delegate_method(:repository).to(:debug_role) }
+      it { is_expected.to delegate_method(:to_processing_entity).to(:debug_role) }
+      it { is_expected.to delegate_method(:role_id).to(:debug_role).as(:id) }
 
       it 'will guard the interface of the role' do
         expect { described_class.new(context, debug_role: double) }.to raise_error(Exceptions::InterfaceExpectationError)

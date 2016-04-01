@@ -10,12 +10,12 @@ module Sipity
       before { allow(work).to receive(:work_area).and_return(work_area) }
 
       context 'configuration' do
-        its(:runner_container) { should eq(Sipity::Runners::WorkSubmissionsRunners) }
-        its(:response_handler_container) { should eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }
+        its(:runner_container) { is_expected.to eq(Sipity::Runners::WorkSubmissionsRunners) }
+        its(:response_handler_container) { is_expected.to eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }
       end
 
-      it { should respond_to :prepend_processing_action_view_path_with }
-      it { should respond_to :run_and_respond_with_processing_action }
+      it { is_expected.to respond_to :prepend_processing_action_view_path_with }
+      it { is_expected.to respond_to :run_and_respond_with_processing_action }
 
       context '#command_attributes' do
 

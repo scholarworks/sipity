@@ -11,7 +11,7 @@ module Sipity
         let(:attributes) { { agreed_to_terms_of_service: '1', preferred_name: 'Billy Joe Armstrong' } }
         subject { described_class.new(requested_by: user, repository: repository, attributes: attributes) }
 
-        its(:default_repository) { should respond_to(:user_agreed_to_terms_of_service) }
+        its(:default_repository) { is_expected.to respond_to(:user_agreed_to_terms_of_service) }
 
         context 'validations' do
           context 'with invalid data' do
