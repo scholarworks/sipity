@@ -24,7 +24,7 @@ module Sipity
         end
       end
 
-      its(:default_repository) { should respond_to :destroy_existing_registered_state_changing_actions_for }
+      its(:default_repository) { is_expected.to respond_to :destroy_existing_registered_state_changing_actions_for }
 
       context 'with a processing state object' do
         before do

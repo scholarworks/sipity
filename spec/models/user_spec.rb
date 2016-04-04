@@ -2,7 +2,7 @@ describe User do
 
   subject { User.new(email: 'user@example.com', name: "Hello Somebody") }
 
-  it { should respond_to(:email) }
+  it { is_expected.to respond_to(:email) }
 
   it { expect(User.create!(username: 'bogus', email: '')).to callback(:call_on_create_user_service).after(:commit) }
 
@@ -11,6 +11,6 @@ describe User do
     expect { User.create!(username: 'two', email: '') }.to_not raise_error
   end
 
-  its(:to_s) { should eq subject.name }
+  its(:to_s) { is_expected.to eq subject.name }
 
 end

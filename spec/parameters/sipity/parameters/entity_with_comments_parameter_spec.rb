@@ -7,8 +7,8 @@ module Sipity
       let(:comments) { double }
       let(:entity) { double }
       subject { described_class.new(comments: comments, entity: entity) }
-      its(:entity) { should eq entity }
-      its(:comments) { should eq comments }
+      its(:entity) { is_expected.to eq entity }
+      its(:comments) { is_expected.to eq comments }
     end
   end
 end

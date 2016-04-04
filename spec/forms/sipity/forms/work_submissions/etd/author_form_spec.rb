@@ -17,15 +17,15 @@ module Sipity
               with(work: work, key: 'author_name', cardinality: 1).and_return(nil)
           end
 
-          its(:processing_action_name) { should eq('author') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq('author') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
 
-          it { should respond_to :work }
-          it { should respond_to :author_name }
-          it { should respond_to :requested_by }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :author_name }
+          it { is_expected.to respond_to :requested_by }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:author_name) }
+          it { is_expected.to validate_presence_of(:author_name) }
 
           context '#submit' do
             context 'with invalid data' do

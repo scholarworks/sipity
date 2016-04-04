@@ -4,7 +4,7 @@ require 'sipity'
 
 RSpec.describe Sipity do
   subject { described_class }
-  its(:table_name_prefix) { should eq('sipity_') }
+  its(:table_name_prefix) { is_expected.to eq('sipity_') }
 
   it 'exposes #t as a helper method for translations' do
     keywords = { scope: 'hello', subject: 'world' }

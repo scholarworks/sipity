@@ -21,8 +21,8 @@ module Sipity
             end
           end
 
-          its(:input_legend) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:input_legend) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'without valid data' do
             it 'will not save the form' do

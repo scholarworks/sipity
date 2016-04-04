@@ -16,8 +16,8 @@ RSpec.describe Sipity::Controllers::WorkAreas::FilterFormPresenter do
 
   subject { described_class.new(context, work_area: work_area) }
 
-  its(:submit_button) { should be_html_safe }
-  its(:select_tag_for_processing_state) { should be_html_safe }
+  its(:submit_button) { is_expected.to be_html_safe }
+  its(:select_tag_for_processing_state) { is_expected.to be_html_safe }
 
   it 'will expose select_tag_for_processing_state' do
     expect(subject.select_tag_for_processing_state).to have_tag('select[name="hello[world]"]') do

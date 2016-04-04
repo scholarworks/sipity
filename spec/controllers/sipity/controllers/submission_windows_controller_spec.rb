@@ -7,8 +7,8 @@ module Sipity
       let(:submission_window) { Models::SubmissionWindow.new(slug: 'start', work_area: work_area) }
       let(:work_area) { Models::WorkArea.new(slug: 'etd') }
       context 'configuration' do
-        its(:runner_container) { should eq(Runners::SubmissionWindowRunners) }
-        its(:response_handler_container) { should eq(ResponseHandlers::SubmissionWindowHandler) }
+        its(:runner_container) { is_expected.to eq(Runners::SubmissionWindowRunners) }
+        its(:response_handler_container) { is_expected.to eq(ResponseHandlers::SubmissionWindowHandler) }
       end
 
       context 'GET #query_action' do

@@ -15,12 +15,12 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: double, attributes: attributes } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('degree') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq('degree') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
 
-          it { should respond_to :work }
-          it { should respond_to :degree }
-          it { should respond_to :program_name }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :degree }
+          it { is_expected.to respond_to :program_name }
 
           it 'will require a degree' do
             subject.valid?

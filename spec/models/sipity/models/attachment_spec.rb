@@ -7,12 +7,12 @@ module Sipity
       context 'class methods' do
         subject { described_class }
 
-        its(:column_names) { should include('work_id') }
-        its(:column_names) { should include('pid') }
-        its(:column_names) { should include('predicate_name') }
-        its(:column_names) { should include('file_uid') }
-        its(:column_names) { should include('file_name') }
-        its(:primary_key) { should eq('pid') }
+        its(:column_names) { is_expected.to include('work_id') }
+        its(:column_names) { is_expected.to include('pid') }
+        its(:column_names) { is_expected.to include('predicate_name') }
+        its(:column_names) { is_expected.to include('file_uid') }
+        its(:column_names) { is_expected.to include('file_name') }
+        its(:primary_key) { is_expected.to eq('pid') }
       end
 
       context 'instance methods' do

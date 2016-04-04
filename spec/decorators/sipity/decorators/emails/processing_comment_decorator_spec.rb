@@ -12,14 +12,14 @@ module Sipity
         let(:processing_comment) { Models::Processing::Comment.new(comment: 'hello', actor: actor, entity: entity) }
         subject { described_class.new(processing_comment) }
 
-        its(:comment) { should eq processing_comment.comment }
-        its(:name_of_commentor) { should eq(user.name) }
-        its(:work_type) { should eq('Doctoral dissertation') }
-        its(:title) { should eq(work.title) }
-        its(:email_message_action_description) { should eq("Review comments for “#{work.title}”") }
-        its(:email_message_action_name) { should eq("Review comments") }
-        its(:email_message_action_name) { should eq("Review comments") }
-        its(:email_message_action_url) { should match(%r{/#{work.to_param}\Z}) }
+        its(:comment) { is_expected.to eq processing_comment.comment }
+        its(:name_of_commentor) { is_expected.to eq(user.name) }
+        its(:work_type) { is_expected.to eq('Doctoral dissertation') }
+        its(:title) { is_expected.to eq(work.title) }
+        its(:email_message_action_description) { is_expected.to eq("Review comments for “#{work.title}”") }
+        its(:email_message_action_name) { is_expected.to eq("Review comments") }
+        its(:email_message_action_name) { is_expected.to eq("Review comments") }
+        its(:email_message_action_url) { is_expected.to match(%r{/#{work.to_param}\Z}) }
       end
     end
   end

@@ -6,8 +6,8 @@ module Sipity
     module Processing
       RSpec.describe StrategyState, type: :model do
         subject { described_class }
-        its(:column_names) { should include("strategy_id") }
-        its(:column_names) { should include("name") }
+        its(:column_names) { is_expected.to include("strategy_id") }
+        its(:column_names) { is_expected.to include("name") }
       end
     end
   end

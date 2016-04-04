@@ -4,7 +4,7 @@ require 'hesburgh/lib/html_scrubber'
 RSpec.describe Hesburgh::Lib::HtmlScrubber do
   context '.build_inline_scrubber' do
     subject { described_class.build_inline_scrubber }
-    it { should respond_to(:call) }
+    it { is_expected.to respond_to(:call) }
     {
       nil => '',
       ' ' => '',
@@ -63,7 +63,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
 
   context '.build_inline_with_link_scrubber' do
     subject { described_class.build_inline_with_link_scrubber }
-    it { should respond_to(:call) }
+    it { is_expected.to respond_to(:call) }
     {
       nil => '',
       ' ' => '',
@@ -122,7 +122,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
   end
   context '.build_block_scrubber' do
     subject { described_class.build_block_scrubber }
-    it { should respond_to(:call) }
+    it { is_expected.to respond_to(:call) }
     {
       nil => '',
       ' ' => '',
@@ -144,7 +144,7 @@ RSpec.describe Hesburgh::Lib::HtmlScrubber do
 
   context '.build_meta_tag_scrubber' do
     subject { described_class.build_meta_tag_scrubber }
-    it { should respond_to(:call) }
+    it { is_expected.to respond_to(:call) }
     {
       nil => '',
       ' ' => '',

@@ -33,8 +33,8 @@ module Sipity
         expect { subject.run }.to raise_error(NotImplementedError)
       end
 
-      it { should respond_to :repository }
-      it { should respond_to :current_user }
+      it { is_expected.to respond_to :repository }
+      it { is_expected.to respond_to :current_user }
 
       it 'will have an #action_name' do
         expect(subject.action_name).to eq('base_runner')

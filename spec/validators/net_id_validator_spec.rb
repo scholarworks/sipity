@@ -21,7 +21,7 @@ describe NetIdValidator do
     it { expect(:valid?).to be_truthy }
   end
 
-  its(:default_netid_remote_validator) { should respond_to :call }
+  its(:default_netid_remote_validator) { is_expected.to respond_to :call }
 
   context '#validate_each' do
     let(:a_netid) { 'a_netid' }

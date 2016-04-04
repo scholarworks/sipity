@@ -7,7 +7,7 @@ module Sipity
       let(:additional_attribute_set) { double(additional_attributes: double) }
       let(:context) { PresenterHelper::Context.new }
       subject { described_class.new(context, additional_attribute_set: additional_attribute_set) }
-      it { should delegate_method(:additional_attributes).to(:additional_attribute_set) }
+      it { is_expected.to delegate_method(:additional_attributes).to(:additional_attribute_set) }
     end
   end
 end

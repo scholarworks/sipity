@@ -24,9 +24,9 @@ module Sipity
             allow(repository).to receive(:work_attachments).with(work: work, predicate_name: :all).and_return([attachment])
           end
 
-          its(:processing_action_name) { should eq('access_policy') }
-          it { should respond_to :accessible_objects_attributes= }
-          it { should respond_to :representative_attachment_id }
+          its(:processing_action_name) { is_expected.to eq('access_policy') }
+          it { is_expected.to respond_to :accessible_objects_attributes= }
+          it { is_expected.to respond_to :representative_attachment_id }
 
           it 'will expose accessible_objects' do
             expect(subject.accessible_objects.size).to eq(2)
@@ -39,7 +39,7 @@ module Sipity
           end
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:representative_attachment_id) }
+          it { is_expected.to validate_presence_of(:representative_attachment_id) }
 
           it 'will validate the presence of accessible_objects_attributes' do
             subject = described_class.new(keywords.merge(attributes: { accessible_objects_attributes: {} }))
@@ -110,9 +110,9 @@ module Sipity
           let(:persisted_object) { double('Persisted Object', entity_type: 'Hello', human_model_name: 'Work') }
           subject { described_class.new(persisted_object, attributes) }
 
-          its(:persisted?) { should be_truthy }
-          its(:human_model_name) { should eq(persisted_object.human_model_name) }
-          it { should delegate_method(:accessible_object_type).to(:persisted_object) }
+          its(:persisted?) { is_expected.to be_truthy }
+          its(:human_model_name) { is_expected.to eq(persisted_object.human_model_name) }
+          it { is_expected.to delegate_method(:accessible_object_type).to(:persisted_object) }
 
           it 'will have a public :access_right_code' do
             expect { subject.access_right_code }.to_not raise_error

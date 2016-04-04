@@ -19,10 +19,10 @@ module Sipity
         end
         subject { described_class.new(processing_comment) }
 
-        its(:comment) { should eq processing_comment.comment }
-        its(:created_date) { should match(/2015/) }
-        its(:name_of_commentor) { should eq(user.name) }
-        its(:work_type) { should eq('Doctoral Dissertation') }
+        its(:comment) { is_expected.to eq processing_comment.comment }
+        its(:created_date) { is_expected.to match(/2015/) }
+        its(:name_of_commentor) { is_expected.to eq(user.name) }
+        its(:work_type) { is_expected.to eq('Doctoral Dissertation') }
       end
     end
   end

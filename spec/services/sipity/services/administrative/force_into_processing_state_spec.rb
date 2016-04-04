@@ -13,7 +13,7 @@ module Sipity
 
     subject { described_class.new(entity: entity, state: 'bacon', repository: repository) }
 
-    its(:default_repository) { should respond_to :destroy_existing_registered_state_changing_actions_for }
+    its(:default_repository) { is_expected.to respond_to :destroy_existing_registered_state_changing_actions_for }
     it 'exposes .call as a convenience method' do
       expect_any_instance_of(described_class).to receive(:call)
       described_class.call(entity: entity, state: 'bacon', repository: repository)

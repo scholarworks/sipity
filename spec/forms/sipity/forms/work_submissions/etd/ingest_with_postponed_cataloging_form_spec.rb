@@ -32,13 +32,13 @@ module Sipity
             end
           end
 
-          its(:legend) { should be_html_safe }
-          its(:signoff_agreement) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:legend) { is_expected.to be_html_safe }
+          its(:signoff_agreement) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:scheduled_time) }
-          it { should validate_acceptance_of(:agree_to_signoff) }
+          it { is_expected.to validate_presence_of(:scheduled_time) }
+          it { is_expected.to validate_acceptance_of(:agree_to_signoff) }
 
           context '#scheduled_time' do
             it 'will be set by extracting from the attributes' do

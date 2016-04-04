@@ -19,14 +19,14 @@ module Sipity
           let(:user) { double }
           before { allow(work).to receive(:work_area).and_return(work_area) }
 
-          it { should implement_processing_form_interface }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:base_class) { should eq Models::Work }
+          it { is_expected.to implement_processing_form_interface }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:base_class) { is_expected.to eq Models::Work }
 
-          it { should delegate_method(:work_patent_strategy).to(:publication_and_patenting_intent_extension) }
-          it { should delegate_method(:work_patent_strategies_for_select).to(:publication_and_patenting_intent_extension) }
-          it { should delegate_method(:work_publication_strategy).to(:publication_and_patenting_intent_extension) }
-          it { should delegate_method(:work_publication_strategies_for_select).to(:publication_and_patenting_intent_extension) }
+          it { is_expected.to delegate_method(:work_patent_strategy).to(:publication_and_patenting_intent_extension) }
+          it { is_expected.to delegate_method(:work_patent_strategies_for_select).to(:publication_and_patenting_intent_extension) }
+          it { is_expected.to delegate_method(:work_publication_strategy).to(:publication_and_patenting_intent_extension) }
+          it { is_expected.to delegate_method(:work_publication_strategies_for_select).to(:publication_and_patenting_intent_extension) }
 
           context 'validation' do
             before do

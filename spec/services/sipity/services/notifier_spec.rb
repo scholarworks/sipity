@@ -6,7 +6,7 @@ module Sipity
     describe Notifier do
       context '.default_email_service_finder' do
         subject { described_class.send(:default_email_service_finder) }
-        its(:parameters) { should eq([[:keyreq, :entity], [:keyreq, :notification]]) }
+        its(:parameters) { is_expected.to eq([[:keyreq, :entity], [:keyreq, :notification]]) }
       end
       context '.deliver' do
         let(:missing_notification) { 'never_would_this_be_a_notification' }

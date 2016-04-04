@@ -45,31 +45,31 @@ module Sipity
           end
         end
         before { described_class.configure(form_class: form_class, base_class: Models::Work, attribute_names: [:title, :job]) }
-        it { should respond_to :work }
-        it { should respond_to :entity }
-        it { should respond_to :title }
-        it { should respond_to :job }
-        it { should respond_to :requested_by }
-        its(:processing_subject_name) { should eq('work') }
-        its(:attribute_names) { should eq([:title, :job]) }
-        its(:base_class) { should eq(Models::Work) }
-        its(:policy_enforcer) { should eq(Policies::WorkPolicy) }
-        its(:template) { should eq('hello_world') }
-        it { should_not be_persisted }
-        it { should delegate_method(:param_key).to(:model_name) }
-        it { should delegate_method(:to_processing_entity).to(:processing_action_form) }
-        it { should delegate_method(:to_processing_action).to(:processing_action_form) }
-        it { should delegate_method(:to_work_area).to(:processing_action_form) }
-        it { should delegate_method(:processing_action_name).to(:processing_action_form) }
+        it { is_expected.to respond_to :work }
+        it { is_expected.to respond_to :entity }
+        it { is_expected.to respond_to :title }
+        it { is_expected.to respond_to :job }
+        it { is_expected.to respond_to :requested_by }
+        its(:processing_subject_name) { is_expected.to eq('work') }
+        its(:attribute_names) { is_expected.to eq([:title, :job]) }
+        its(:base_class) { is_expected.to eq(Models::Work) }
+        its(:policy_enforcer) { is_expected.to eq(Policies::WorkPolicy) }
+        its(:template) { is_expected.to eq('hello_world') }
+        it { is_expected.not_to be_persisted }
+        it { is_expected.to delegate_method(:param_key).to(:model_name) }
+        it { is_expected.to delegate_method(:to_processing_entity).to(:processing_action_form) }
+        it { is_expected.to delegate_method(:to_processing_action).to(:processing_action_form) }
+        it { is_expected.to delegate_method(:to_work_area).to(:processing_action_form) }
+        it { is_expected.to delegate_method(:processing_action_name).to(:processing_action_form) }
         it 'will delegate repository to processing_action_form' do
           expect(subject.send(:repository)).to eq(subject.send(:processing_action_form).send(:repository))
         end
       end
 
-      it { should delegate_method(:valid?).to(:form) }
+      it { is_expected.to delegate_method(:valid?).to(:form) }
 
-      its(:default_repository) { should respond_to :register_action_taken_on_entity }
-      its(:default_translator) { should respond_to :call }
+      its(:default_repository) { is_expected.to respond_to :register_action_taken_on_entity }
+      its(:default_translator) { is_expected.to respond_to :call }
 
       context '#translate' do
         it 'should delegate translation to the translator' do

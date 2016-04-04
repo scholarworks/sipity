@@ -15,14 +15,14 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: attributes } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('defense_date') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq('defense_date') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
 
-          it { should respond_to :work }
-          it { should respond_to :defense_date }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :defense_date }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:defense_date) }
+          it { is_expected.to validate_presence_of(:defense_date) }
 
           it 'will handle Rails defense_date that was input via Rails HTML multi-field date input' do
             form = described_class.new(
@@ -42,7 +42,7 @@ module Sipity
             end
             context 'when initial date is given is bogus' do
               subject { described_class.new(keywords.merge(attributes: { defense_date: '2014-02-31' })) }
-              its(:defense_date) { should_not be_present }
+              its(:defense_date) { is_expected.not_to be_present }
             end
           end
 

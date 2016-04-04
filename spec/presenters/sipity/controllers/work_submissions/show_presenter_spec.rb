@@ -12,7 +12,7 @@ module Sipity
         let(:repository) { QueryRepositoryInterface.new }
         subject { described_class.new(context, work_submission: work_submission, repository: repository) }
 
-        its(:default_repository) { should respond_to :find_current_comments_for }
+        its(:default_repository) { is_expected.to respond_to :find_current_comments_for }
 
         it 'exposes processing_state' do
           allow(work_submission).to receive(:processing_state).and_return('Hello')
@@ -29,8 +29,8 @@ module Sipity
           expect(subject.collaborators?).to be_falsey
         end
 
-        it { should delegate_method(:collaborators).to(:work_submission) }
-        it { should delegate_method(:title).to(:work_submission) }
+        it { is_expected.to delegate_method(:collaborators).to(:work_submission) }
+        it { is_expected.to delegate_method(:title).to(:work_submission) }
 
         context '#render_current_comments' do
           subject { described_class.new(context, work_submission: work_submission, repository: repository) }

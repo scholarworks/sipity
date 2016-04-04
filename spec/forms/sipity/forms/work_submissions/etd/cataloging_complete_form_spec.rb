@@ -16,8 +16,8 @@ module Sipity
           end
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:oclc_number) }
-          it { should validate_presence_of(:catalog_system_number) }
+          it { is_expected.to validate_presence_of(:oclc_number) }
+          it { is_expected.to validate_presence_of(:catalog_system_number) }
 
           context '#catalog_system_number' do
             it "will prepend 0s for catalog_system_number's smaller than 9 digits" do
@@ -37,9 +37,9 @@ module Sipity
             end
           end
 
-          its(:legend) { should be_html_safe }
-          its(:signoff_agreement) { should be_html_safe }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:legend) { is_expected.to be_html_safe }
+          its(:signoff_agreement) { is_expected.to be_html_safe }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
           context 'with data from the repository' do
             subject { described_class.new(keywords) }
@@ -47,12 +47,12 @@ module Sipity
             its(:oclc_number) do
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: work, key: 'oclc_number', cardinality: 1).and_return(123)
-              should eq(123)
+              is_expected.to eq(123)
             end
             its(:catalog_system_number) do
               expect(repository).to receive(:work_attribute_values_for).
                 with(work: work, key: 'catalog_system_number', cardinality: 1).and_return('abc')
-              should eq('abc')
+              is_expected.to eq('abc')
             end
           end
 

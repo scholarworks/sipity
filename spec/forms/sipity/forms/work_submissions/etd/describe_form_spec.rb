@@ -19,18 +19,18 @@ module Sipity
               with(work: work, key: 'alternate_title', cardinality: 1).and_return(nil)
           end
 
-          its(:processing_action_name) { should eq('describe') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
+          its(:processing_action_name) { is_expected.to eq('describe') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
 
-          it { should respond_to :work }
-          it { should respond_to :title }
-          it { should respond_to :abstract }
-          it { should respond_to :alternate_title }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :title }
+          it { is_expected.to respond_to :abstract }
+          it { is_expected.to respond_to :alternate_title }
 
           include Shoulda::Matchers::ActiveModel
-          it { should validate_presence_of(:title) }
-          it { should validate_presence_of(:abstract) }
-          it { should validate_presence_of(:work) }
+          it { is_expected.to validate_presence_of(:title) }
+          it { is_expected.to validate_presence_of(:abstract) }
+          it { is_expected.to validate_presence_of(:work) }
 
           context 'validations' do
             it 'will require a requested_by' do

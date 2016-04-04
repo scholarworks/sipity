@@ -11,8 +11,8 @@ module Sipity
         expect(subject.to_s).to eq(work.title)
       end
 
-      its(:date_created) { should be_a(String) }
-      its(:title) { should be_html_safe }
+      its(:date_created) { is_expected.to be_a(String) }
+      its(:title) { is_expected.to be_html_safe }
 
       context '#creators and #creator_names' do
         let(:creators) { [double(name: 'Hello')] }

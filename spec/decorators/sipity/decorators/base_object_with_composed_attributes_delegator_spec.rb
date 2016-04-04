@@ -12,9 +12,9 @@ module Sipity
         expect(subject.chicken).to eq(base_object.chicken)
       end
 
-      it { should respond_to :age }
-      it { should respond_to :chicken }
-      it { should respond_to :title }
+      it { is_expected.to respond_to :age }
+      it { is_expected.to respond_to :chicken }
+      it { is_expected.to respond_to :title }
 
       it 'will expose additional collaborators of the object' do
         expect(subject.title).to eq(keywords.fetch(:title))

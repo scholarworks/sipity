@@ -6,10 +6,10 @@ module Sipity
           let(:work) { double(id: true) }
           let(:processing_action_name) { 'debug' }
           subject { described_class.new(work: work, processing_action_name: processing_action_name) }
-          its(:base_class) { should eq(Models::Work) }
-          its(:policy_enforcer) { should eq(Sipity::Policies::WorkPolicy) }
+          its(:base_class) { is_expected.to eq(Models::Work) }
+          its(:policy_enforcer) { is_expected.to eq(Sipity::Policies::WorkPolicy) }
 
-          it { should delegate_method(:work_id).to(:work).as(:id) }
+          it { is_expected.to delegate_method(:work_id).to(:work).as(:id) }
         end
       end
     end

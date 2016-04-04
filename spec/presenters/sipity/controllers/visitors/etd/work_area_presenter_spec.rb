@@ -21,7 +21,7 @@ module Sipity
             allow_any_instance_of(described_class).to receive(:convert_to_processing_action).and_return(processing_action)
           end
 
-          its(:view_submitted_etds_url) { should match(%r{\Ahttps://curate.nd.edu}) }
+          its(:view_submitted_etds_url) { is_expected.to match(%r{\Ahttps://curate.nd.edu}) }
         end
       end
     end

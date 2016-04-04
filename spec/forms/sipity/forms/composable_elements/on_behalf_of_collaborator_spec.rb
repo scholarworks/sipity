@@ -10,8 +10,8 @@ module Sipity
 
         subject { described_class.new(form: form, repository: repository) }
 
-        it { should respond_to(:on_behalf_of_collaborator_id) }
-        it { should respond_to(:on_behalf_of_collaborator_id=) }
+        it { is_expected.to respond_to(:on_behalf_of_collaborator_id) }
+        it { is_expected.to respond_to(:on_behalf_of_collaborator_id=) }
 
         it 'will forward delegate #on_behalf_of_collaborator to the underlying repository' do
           expect(repository).to receive(:collaborators_that_can_advance_the_current_state_of).and_return([someone, sometwo])

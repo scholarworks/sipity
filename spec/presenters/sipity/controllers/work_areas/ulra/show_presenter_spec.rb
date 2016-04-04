@@ -12,22 +12,22 @@ module Sipity
           let(:repository) { QueryRepositoryInterface.new }
           let(:translator) { double(call: true) }
           subject { described_class.new(context, work_area: work_area, repository: repository, translator: translator) }
-          it { should be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
+          it { is_expected.to be_a(Sipity::Controllers::WorkAreas::Core::ShowPresenter) }
 
           context 'when there are open submission windows' do
             let(:submission_window) { double }
             before do
               allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return(submission_window)
             end
-            its(:submission_windows) { should eq([submission_window]) }
-            its(:submission_windows?) { should eq(true) }
+            its(:submission_windows) { is_expected.to eq([submission_window]) }
+            its(:submission_windows?) { is_expected.to eq(true) }
           end
           context 'when there are NO open submission windows' do
             before do
               allow(repository).to receive(:find_open_submission_windows_by).with(work_area: work_area).and_return([])
             end
-            its(:submission_windows) { should eq([]) }
-            its(:submission_windows?) { should eq(false) }
+            its(:submission_windows) { is_expected.to eq([]) }
+            its(:submission_windows?) { is_expected.to eq(false) }
           end
         end
       end

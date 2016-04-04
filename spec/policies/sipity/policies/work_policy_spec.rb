@@ -15,19 +15,19 @@ module Sipity
 
       context 'for a non-authenticated user' do
         let(:user) { nil }
-        its(:create?) { should eq(false) }
+        its(:create?) { is_expected.to eq(false) }
       end
 
       context 'for an authenticated user' do
         context 'with an new work' do
           before { allow(work).to receive(:persisted?).and_return(false) }
-          its(:create?) { should eq(true) }
+          its(:create?) { is_expected.to eq(true) }
         end
         context 'with an existing work' do
           before do
             allow(work).to receive(:persisted?).and_return(true)
           end
-          its(:create?) { should eq(false) }
+          its(:create?) { is_expected.to eq(false) }
         end
       end
     end

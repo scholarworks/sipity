@@ -23,8 +23,8 @@ module Sipity
               subject.call(as_fo_date: as_fo_date, entity: entity, repository: repository)
             end
 
-            its(:default_repository) { should respond_to(:update_work_attribute_values!) }
-            its(:default_as_of_date) { should be_a(Date) }
+            its(:default_repository) { is_expected.to respond_to(:update_work_attribute_values!) }
+            its(:default_as_of_date) { is_expected.to be_a(Date) }
           end
         end
       end

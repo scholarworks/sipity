@@ -5,11 +5,11 @@ module Sipity
   module Models
     RSpec.describe AccessRight, type: :model do
       subject { described_class }
-      its(:column_names) { should include('entity_id') }
-      its(:column_names) { should include('entity_type') }
-      its(:column_names) { should include('access_right_code') }
-      its(:column_names) { should include('transition_date') }
-      its(:valid_access_right_codes) { should be_a(Array) }
+      its(:column_names) { is_expected.to include('entity_id') }
+      its(:column_names) { is_expected.to include('entity_type') }
+      its(:column_names) { is_expected.to include('access_right_code') }
+      its(:column_names) { is_expected.to include('transition_date') }
+      its(:valid_access_right_codes) { is_expected.to be_a(Array) }
 
       context 'conditionally assign release date' do
         subject { described_class.new(entity_id: 1) }

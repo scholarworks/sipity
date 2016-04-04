@@ -13,24 +13,24 @@ module Sipity
           let(:user) { double('User') }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('faculty_response') }
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
-          its(:base_class) { should eq(Models::Work) }
-          its(:attachment_predicate_name) { should eq('faculty_letter_of_recommendation') }
+          its(:processing_action_name) { is_expected.to eq('faculty_response') }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
+          its(:base_class) { is_expected.to eq(Models::Work) }
+          its(:attachment_predicate_name) { is_expected.to eq('faculty_letter_of_recommendation') }
 
           context 'class configuration' do
             subject { described_class }
-            its(:model_name) { should eq(Models::Work.model_name) }
+            its(:model_name) { is_expected.to eq(Models::Work.model_name) }
             it 'will delegate human_attribute_name to the base class' do
               expect(described_class.base_class).to receive(:human_attribute_name).and_call_original
               expect(described_class.human_attribute_name(:title)).to be_a(String)
             end
           end
 
-          it { should respond_to :work }
-          it { should_not be_persisted }
+          it { is_expected.to respond_to :work }
+          it { is_expected.not_to be_persisted }
 
-          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
 
           it 'will have #attachments' do
             attachment = [double('Attachment')]

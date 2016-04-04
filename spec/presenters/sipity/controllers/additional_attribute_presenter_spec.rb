@@ -8,10 +8,10 @@ module Sipity
       let(:context) { PresenterHelper::Context.new }
       subject { described_class.new(context, additional_attribute: additional_attribute) }
 
-      it { should delegate_method(:key).to(:additional_attribute) }
-      it { should delegate_method(:values).to(:additional_attribute) }
-      its(:label) { should be_a(String) }
-      its(:render_list_of_values) { should be_html_safe }
+      it { is_expected.to delegate_method(:key).to(:additional_attribute) }
+      it { is_expected.to delegate_method(:values).to(:additional_attribute) }
+      its(:label) { is_expected.to be_a(String) }
+      its(:render_list_of_values) { is_expected.to be_html_safe }
 
       it 'will translate the key into a label' do
         expect(TranslationAssistant).to receive(:call)

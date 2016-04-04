@@ -13,25 +13,25 @@ module Sipity
           let(:keywords) { { work: work, requested_by: user, repository: repository } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('research_process') }
-          its(:attachment_predicate_name) { should eq('submission_essay') }
-          its(:base_class) { should eq(Models::Work) }
+          its(:processing_action_name) { is_expected.to eq('research_process') }
+          its(:attachment_predicate_name) { is_expected.to eq('submission_essay') }
+          its(:base_class) { is_expected.to eq(Models::Work) }
 
           context 'class configuration' do
             subject { described_class }
-            it { should delegate_method(:model_name).to(:base_class) }
-            it { should delegate_method(:human_attribute_name).to(:base_class) }
+            it { is_expected.to delegate_method(:model_name).to(:base_class) }
+            it { is_expected.to delegate_method(:human_attribute_name).to(:base_class) }
           end
 
-          it { should respond_to :work }
-          it { should respond_to :resources_consulted }
-          it { should respond_to :other_resources_consulted }
-          it { should respond_to :attachments }
-          it { should respond_to :files }
-          it { should_not be_persisted }
+          it { is_expected.to respond_to :work }
+          it { is_expected.to respond_to :resources_consulted }
+          it { is_expected.to respond_to :other_resources_consulted }
+          it { is_expected.to respond_to :attachments }
+          it { is_expected.to respond_to :files }
+          it { is_expected.not_to be_persisted }
 
-          it { should delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
-          it { should delegate_method(:attachments).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:at_least_one_file_must_be_attached).to(:attachments_extension) }
+          it { is_expected.to delegate_method(:attachments).to(:attachments_extension) }
 
           include Shoulda::Matchers::ActiveModel
 

@@ -49,8 +49,8 @@ module Sipity
 
     subject { described_class.new(submission_window: submission_window, data: {}, validator: validator) }
 
-    its(:default_validator) { should respond_to(:call) }
-    its(:default_schema) { should respond_to(:call) }
+    its(:default_validator) { is_expected.to respond_to(:call) }
+    its(:default_schema) { is_expected.to respond_to(:call) }
 
     it 'exposes .generate_from_json_file as a convenience method' do
       expect_any_instance_of(described_class).to receive(:call)

@@ -11,9 +11,9 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: double, attributes: attributes } }
           subject { described_class.new(keywords) }
 
-          its(:policy_enforcer) { should eq Policies::WorkPolicy }
+          its(:policy_enforcer) { is_expected.to eq Policies::WorkPolicy }
 
-          it { should respond_to :work }
+          it { is_expected.to respond_to :work }
 
           context '#submit' do
             let(:user) { double('User') }

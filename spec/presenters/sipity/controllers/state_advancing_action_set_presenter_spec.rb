@@ -13,9 +13,9 @@ module Sipity
       end
       subject { described_class.new(context, state_advancing_action_set: state_advancing_action_set) }
 
-      its(:state_advancing_actions) { should eq(state_advancing_action_set.collection) }
-      its(:entity) { should eq(state_advancing_action_set.entity) }
-      its(:processing_state) { should eq(state_advancing_action_set.processing_state) }
+      its(:state_advancing_actions) { is_expected.to eq(state_advancing_action_set.collection) }
+      its(:entity) { is_expected.to eq(state_advancing_action_set.entity) }
+      its(:processing_state) { is_expected.to eq(state_advancing_action_set.processing_state) }
     end
   end
 end

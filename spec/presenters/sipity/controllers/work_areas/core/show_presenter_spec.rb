@@ -45,7 +45,7 @@ module Sipity
             subject do
               described_class.new(context, work_area: work_area, repository: repository).send(:search_criteria)
             end
-            its(:work_area) { should eq(work_area) }
+            its(:work_area) { is_expected.to eq(work_area) }
           end
         end
       end

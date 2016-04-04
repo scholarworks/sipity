@@ -15,7 +15,9 @@ module Sipity
           let(:keywords) { { work: work, requested_by: user, repository: repository, attributes: attributes } }
           subject { described_class.new(keywords) }
 
-          its(:representative_attachment_predicate_name) { should eq(Forms::WorkSubmissions::Ulra::AttachForm.attachment_predicate_name) }
+          its(:representative_attachment_predicate_name) do
+            is_expected.to eq(Forms::WorkSubmissions::Ulra::AttachForm.attachment_predicate_name)
+          end
 
           it 'will leverage the representative_attachment_predicate_name for the #available_representative_attachments' do
             expect(repository).to receive(:work_attachments).with(

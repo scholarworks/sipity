@@ -17,9 +17,9 @@ module Sipity
 
       subject { described_class.new(work, repository: repository) }
 
-      its(:default_repository) { should be_a QueryRepository }
-      its(:default_attribute_map) { should be_a(Hash) }
-      its(:default_mount_data_path) { should be_a(String) }
+      its(:default_repository) { is_expected.to be_a QueryRepository }
+      its(:default_attribute_map) { is_expected.to be_a(Hash) }
+      its(:default_mount_data_path) { is_expected.to be_a(String) }
 
       before do
         allow(I18n).to receive(:t).and_return("TRANSLATED!")

@@ -13,11 +13,11 @@ module Sipity
           let(:keywords) { { work: work, repository: repository, requested_by: user } }
           subject { described_class.new(keywords) }
 
-          its(:processing_action_name) { should eq('grad_school_requests_change') }
-          its(:template) { should eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
+          its(:processing_action_name) { is_expected.to eq('grad_school_requests_change') }
+          its(:template) { is_expected.to eq(Forms::STATE_ADVANCING_ACTION_CONFIRMATION_TEMPLATE_NAME) }
 
-          it { should_not be_persisted }
-          it { should implement_processing_form_interface }
+          it { is_expected.not_to be_persisted }
+          it { is_expected.to implement_processing_form_interface }
 
           it 'will validate the presence of the :comment' do
             subject.valid?
@@ -30,7 +30,7 @@ module Sipity
               expect(f).to receive(:input).with(:comment, hash_including(as: :text))
               subject.render(f: f)
             end
-            its(:grad_school_requests_change_legend) { should be_html_safe }
+            its(:grad_school_requests_change_legend) { is_expected.to be_html_safe }
           end
 
           context 'without valid data' do

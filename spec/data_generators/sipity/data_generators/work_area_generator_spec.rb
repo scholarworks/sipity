@@ -6,8 +6,8 @@ module Sipity
     let(:path) { Rails.root.join('app/data_generators/sipity/data_generators/work_areas/etd_work_area.config.json') }
     subject { described_class.new(data: {}, validator: validator) }
 
-    its(:default_validator) { should respond_to(:call) }
-    its(:default_schema) { should respond_to(:call) }
+    its(:default_validator) { is_expected.to respond_to(:call) }
+    its(:default_schema) { is_expected.to respond_to(:call) }
 
     it 'exposes .call as a convenience method' do
       expect_any_instance_of(described_class).to receive(:call)

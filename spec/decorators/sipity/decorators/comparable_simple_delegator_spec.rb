@@ -6,13 +6,13 @@ module Sipity
       let(:decorating_class) { Class.new(described_class) { self.base_class = Models::Work } }
       let(:underlying_object) { double }
       subject { decorating_class.new(underlying_object) }
-      its(:model_name) { should eq(decorating_class.base_class.model_name) }
+      its(:model_name) { is_expected.to eq(decorating_class.base_class.model_name) }
 
       context 'class methods' do
         subject { decorating_class }
-        it { should delegate_method(:model_name).to(:base_class) }
-        it { should delegate_method(:name).to(:base_class) }
-        it { should delegate_method(:human_attribute_name).to(:base_class) }
+        it { is_expected.to delegate_method(:model_name).to(:base_class) }
+        it { is_expected.to delegate_method(:name).to(:base_class) }
+        it { is_expected.to delegate_method(:human_attribute_name).to(:base_class) }
       end
 
       context 'instantiating an instance of the class' do

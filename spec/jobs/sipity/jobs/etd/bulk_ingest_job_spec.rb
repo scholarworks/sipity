@@ -12,14 +12,14 @@ RSpec.describe Sipity::Jobs::Etd::BulkIngestJob do
     described_class.new(work_area: work_area, repository: repository, work_ingester: work_ingester, exception_handler: exception_handler)
   end
 
-  its(:default_initial_processing_state_name) { should eq('ready_for_ingest') }
-  its(:default_work_area) { should eq('etd') }
-  its(:default_work_ingester) { should respond_to(:call) }
-  its(:default_requested_by) { should be_a(String) }
-  its(:default_search_criteria_builder) { should respond_to(:call) }
-  its(:default_processing_action_name) { should eq('submit_for_ingest') }
-  its(:default_repository) { should respond_to(:find_works_via_search) }
-  its(:default_exception_handler) { should respond_to(:call) }
+  its(:default_initial_processing_state_name) { is_expected.to eq('ready_for_ingest') }
+  its(:default_work_area) { is_expected.to eq('etd') }
+  its(:default_work_ingester) { is_expected.to respond_to(:call) }
+  its(:default_requested_by) { is_expected.to be_a(String) }
+  its(:default_search_criteria_builder) { is_expected.to respond_to(:call) }
+  its(:default_processing_action_name) { is_expected.to eq('submit_for_ingest') }
+  its(:default_repository) { is_expected.to respond_to(:find_works_via_search) }
+  its(:default_exception_handler) { is_expected.to respond_to(:call) }
 
   before { allow(Sipity::Models::Group).to receive(:find_by!).and_return('ETD Ingestor') }
 
