@@ -2,6 +2,7 @@
   "submission_windows": [{
     "attributes": {
       "open_for_starting_submissions_at": "2016-03-13",
+      "closed_for_starting_submissions_at": "2016-04-14 00:00:00",
       "slug": "2016"
     },
     "strategy_permissions": [{
