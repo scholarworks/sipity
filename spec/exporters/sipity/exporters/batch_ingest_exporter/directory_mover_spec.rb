@@ -11,7 +11,7 @@ module Sipity
         let(:destination) { 'tmp/queue' }
         let(:file_utility) { FileUtils::NoWrite }
 
-        describe '#call' do
+        describe '.call' do
           it 'prepares the destination path' do
             expect(described_class).to receive(:prepare_destination)
             described_class.call(exporter: exporter, file_utility: file_utility)
@@ -23,13 +23,13 @@ module Sipity
           end
         end
 
-        describe '#prepare_destination' do
+        describe '.prepare_destination' do
           subject { described_class.prepare_destination(path: destination) }
           # FileUtils.mkdir_p returns an array of the directories that were created
           it { is_expected.to eq(Array.wrap(destination)) }
         end
 
-        describe '#move_files' do
+        describe '.move_files' do
           # FileUtils::NoWrite.mv always returns nil; it is difficult to verify correctness
           it 'calls the .mv method' do
             expect(file_utility).to receive(:mv)
