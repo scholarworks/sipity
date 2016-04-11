@@ -9,7 +9,7 @@ module Sipity
         let(:exporter) { double('BatchIngestExporter', work_id: 1661, data_directory: '/tmp/sipity-1661', make_data_directory: true) }
         let(:mock_file) { StringIO.new }
 
-        describe '#call' do
+        describe '.call' do
           before { allow(described_class).to receive(:output_buffer).and_return(mock_file) }
 
           it 'bootstraps the data directory' do
@@ -23,7 +23,7 @@ module Sipity
           end
         end
 
-        describe '#write_contents' do
+        describe '.write_contents' do
           let(:example_webhook_url) { 'http://webhook.url.technology' }
 
           it 'writes the content to the specified file' do
@@ -33,18 +33,18 @@ module Sipity
           end
         end
 
-        describe '#output_buffer' do
+        describe '.output_buffer' do
           let(:placeholder_file) { File.join(Dir.pwd, 'spec/exporters/sipity/exporters/batch_ingest_exporter/PLACEHOLDER_FILE') }
           subject { described_class.output_buffer(filename: placeholder_file) }
           it { is_expected.to respond_to(:write) }
         end
 
-        describe '#target_path' do
+        describe '.target_path' do
           subject { described_class.target_path(exporter: exporter) }
           it { is_expected.to eq('/tmp/sipity-1661/WEBHOOK') }
         end
 
-        describe '#callback_url' do
+        describe '.callback_url' do
           subject { described_class.callback_url(exporter: exporter) }
           # Figaro.env.protocol! == 'http'
           # Figaro.env.domain_name! == 'localhost:3000'
@@ -57,7 +57,7 @@ module Sipity
           end
         end
 
-        describe '#authorization_credentials' do
+        describe '.authorization_credentials' do
           subject { described_class.authorization_credentials }
           # Figaro.env.sipity_batch_ingester_access_key! == '1234'
 
