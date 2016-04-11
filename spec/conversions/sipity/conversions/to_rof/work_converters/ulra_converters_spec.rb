@@ -26,12 +26,12 @@ module Sipity
 
           context '#advising_faculty' do
             subject { converter.advising_faculty }
-            it do
+            before do
               expect(repository).to(
                 receive(:work_collaborator_names_for).with(work: work, role: Models::Collaborator::ADVISING_FACULTY_ROLE).and_return('Bob')
               )
-              is_expected.to be_a(Array)
             end
+            it { is_expected.to be_a(Array) }
           end
 
           context '#to_hash' do
@@ -42,11 +42,21 @@ module Sipity
 
           context '#collections' do
             subject { converter.collections }
+            let(:is_an_award_winner) { false }
+            before do
+              allow(repository).to receive(:collection_pid_for).with(submission_window: work, key: 'participant').and_return('abc:123')
+              allow(repository).to receive(:collection_pid_for).with(submission_window: work, key: 'award_recipient').and_return('efg:456')
+              allow(repository).to receive(:work_attribute_values_for).with(
+                work: work, cardinality: 1, key: 'is_an_award_winner'
+              ).and_return(is_an_award_winner)
+            end
             context 'when an award recipient' do
-              xit { is_expected.to eq([recipient_collection_pid, participant_collection_pid]) }
+              let(:is_an_award_winner) { true }
+              it { is_expected.to eq(['abc:123', 'efg:456']) }
             end
             context 'when not an award recipient' do
-              xit { is_expected.to eq([participant_collection_pid]) }
+              let(:is_an_award_winner) { false }
+              it { is_expected.to eq(['abc:123']) }
             end
           end
 

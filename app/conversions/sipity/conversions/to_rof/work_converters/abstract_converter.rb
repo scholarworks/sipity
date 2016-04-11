@@ -105,8 +105,8 @@ module Sipity
           end
 
           # @todo Optimize round trips to the database concerning the additional attributes
-          def fetch_attribute_values(key:)
-            repository.work_attribute_values_for(work: work, key: key)
+          def fetch_attribute_values(key:, **keywords)
+            repository.work_attribute_values_for(work: work, key: key, **keywords)
           end
 
           def default_repository

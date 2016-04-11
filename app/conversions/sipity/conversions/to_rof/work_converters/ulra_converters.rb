@@ -74,7 +74,19 @@ module Sipity
           end
 
           def collections
-            []
+            collections = [collection_pid_for('participant')]
+            collections += [collection_pid_for('award_recipient')] if an_award_winner?
+            collections
+          end
+
+          private
+
+          def an_award_winner?
+            PowerConverter.convert(fetch_attribute_values(key: 'is_an_award_winner', cardinality: 1), to: :boolean)
+          end
+
+          def collection_pid_for(key)
+            repository.collection_pid_for(submission_window: work, key: key)
           end
         end
 
