@@ -1,7 +1,6 @@
 require 'fileutils'
 module Sipity
   module Exporters
-    # Responsible for coordinating sending a work through the batch ingest.
     class BatchIngestExporter
       # The batch ingest process is triggered by file operations. When the data
       # preparation is complete its containing directory is moved to the "queue"
