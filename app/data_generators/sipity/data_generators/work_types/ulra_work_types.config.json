@@ -23,7 +23,7 @@
         "name": "debug",
         "from_states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed", "under_data_remediation", "ready_for_ingest"],
-          "roles": ["ulra_reviewing"]
+          "roles": ["ulra_reviewing", "remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 2
@@ -32,7 +32,7 @@
         "name": "show",
         "from_states": [{
           "name": ["new", "under_review", "pending_advisor_completion", "pending_student_completion", "review_completed", "under_data_remediation", "ready_for_ingest"],
-          "roles": ["creating_user", "advising", "ulra_reviewing"]
+          "roles": ["creating_user", "advising", "ulra_reviewing", "remediating_data"]
         }],
         "attributes": {
           "presentation_sequence": 1
