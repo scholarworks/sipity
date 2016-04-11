@@ -23,7 +23,7 @@ module Sipity
         if user.present?
           # HACK: I'd prefer to use an attachment's policy instead of its related
           #   work; But, for now this will need to suffice.
-          work = Models::Attachment.includes(:work).where(file_uid: file_uid).first.work
+          work = Models::Attachment.includes(:work).find_by!(file_uid: file_uid).work
           return :authorized if Policies.authorized_for?(user: user, entity: work, action_to_authorize: :show?)
         end
         # REVIEW: A short-circuit. A general assumption for sipity is that

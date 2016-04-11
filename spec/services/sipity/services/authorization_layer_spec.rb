@@ -24,7 +24,7 @@ module Sipity
           user = User.new(id: 1)
           work = Models::Work.new(id: 2)
           file = Models::Attachment.new(work: work)
-          allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
+          allow_any_instance_of(ActiveRecord::Relation).to receive(:find_by!).and_return(file)
           expect(Policies).to receive(:authorized_for?).with(user: user, entity: entity, action_to_authorize: :show?).
             and_return(false)
           expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: user, &b) }.to yield_control
@@ -33,7 +33,7 @@ module Sipity
           user = User.new(id: 1)
           work = Models::Work.new(id: 2)
           file = Models::Attachment.new(work: work)
-          allow_any_instance_of(ActiveRecord::Relation).to receive(:where).and_return([file])
+          allow_any_instance_of(ActiveRecord::Relation).to receive(:find_by!).and_return(file)
           expect(Policies).to receive(:authorized_for?).with(user: user, entity: entity, action_to_authorize: :show?).
             and_return(true)
           expect { |b| described_class.without_authorization_to_attachment(file_uid: file_uid, user: user, &b) }.to_not yield_control
