@@ -1,3 +1,4 @@
+require 'fileutils'
 module Sipity
   module Exporters
     # Responsible for coordinating sending a work through the batch ingest.
@@ -10,18 +11,23 @@ module Sipity
 
         module_function
 
-        def call(exporter:, destination_path: DEFAULT_DESTINATION)
-          prepare_destination(path: destination_path)
-          move_files(source: exporter.data_directory, destination: destination_path)
+        def call(exporter:, destination_path: DEFAULT_DESTINATION, file_utility: default_file_utility)
+          prepare_destination(path: destination_path, file_utility: file_utility)
+          move_files(source: exporter.data_directory, destination: destination_path, file_utility: file_utility)
         end
 
-        def prepare_destination(path:)
-          FileUtils.mkdir_p(path)
+        def prepare_destination(path:, file_utility: default_file_utility)
+          file_utility.mkdir_p(path)
         end
 
-        def move_files(source:, destination:)
-          FileUtils.mv(source, File.join(destination, '/'))
+        def move_files(source:, destination:, file_utility: default_file_utility)
+          file_utility.mv(source, File.join(destination, '/'))
         end
+
+        def default_file_utility
+          FileUtils
+        end
+        private_class_method :default_file_utility
       end
     end
   end
