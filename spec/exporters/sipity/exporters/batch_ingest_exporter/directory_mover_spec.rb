@@ -13,27 +13,13 @@ module Sipity
 
         describe '.call' do
           it 'prepares the destination path' do
-            expect(described_class).to receive(:prepare_destination)
+            expect(file_utility).to receive(:mkdir_p).and_call_original
             described_class.call(exporter: exporter, file_utility: file_utility)
           end
 
-          it 'moves the data to the destination path' do
-            expect(described_class).to receive(:move_files)
+          it 'moves the data to the prepared destination path' do
+            expect(file_utility).to receive(:mv).and_call_original
             described_class.call(exporter: exporter, file_utility: file_utility)
-          end
-        end
-
-        describe '.prepare_destination' do
-          subject { described_class.prepare_destination(path: destination) }
-          # FileUtils.mkdir_p returns an array of the directories that were created
-          it { is_expected.to eq(Array.wrap(destination)) }
-        end
-
-        describe '.move_files' do
-          # FileUtils::NoWrite.mv always returns nil; it is difficult to verify correctness
-          it 'calls the .mv method' do
-            expect(file_utility).to receive(:mv)
-            described_class.move_files(source: source, destination: destination, file_utility: file_utility)
           end
         end
 

@@ -19,10 +19,12 @@ module Sipity
         def prepare_destination(path:, file_utility: default_file_utility)
           file_utility.mkdir_p(path)
         end
+        private_class_method :prepare_destination
 
         def move_files(source:, destination:, file_utility: default_file_utility)
           file_utility.mv(source, File.join(destination, '/'))
         end
+        private_class_method :move_files
 
         def default_file_utility
           FileUtils
