@@ -61,6 +61,10 @@ module Sipity
     def collaborators_that_have_taken_the_action_on_the_entity(entity:, actions:)
     end
 
+    # @see ./app/repositories/sipity/queries/ulra_queries.rb
+    def collection_pid_for(submission_window:, key:)
+    end
+
     # @see ./app/repositories/sipity/queries/notification_queries.rb
     def email_notifications_for(reason:, scope:)
     end
