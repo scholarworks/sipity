@@ -32,6 +32,10 @@ module Sipity
             'SeniorThesis'
           end
 
+          def to_hash
+            super.merge('collections' => collections)
+          end
+
           def metadata
             {
               '@context' => jsonld_context,
@@ -67,6 +71,10 @@ module Sipity
           ATTACHMENT_TYPES_FOR_EXPORT = %w(project_file submission_essay).freeze
           def attachments
             Array.wrap(repository.work_attachments(work: work, predicate_name: ['project_file', 'submission_essay']))
+          end
+
+          def collections
+            []
           end
         end
 
