@@ -7,8 +7,6 @@ module Sipity
       RSpec.describe DirectoryMover do
 
         let(:exporter) { double('BatchIngestExporter', data_directory: '/tmp/sipity-1492') }
-        let(:source) { exporter.data_directory }
-        let(:destination) { 'tmp/queue' }
         let(:file_utility) { FileUtils::NoWrite }
 
         describe '.call' do
