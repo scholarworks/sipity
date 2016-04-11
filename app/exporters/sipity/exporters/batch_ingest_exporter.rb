@@ -1,6 +1,7 @@
 require 'sipity/exporters/batch_ingest_exporter/metadata_builder'
 require 'sipity/exporters/batch_ingest_exporter/directory_mover'
 require 'sipity/exporters/batch_ingest_exporter/webhook_writer'
+require 'sipity/exporters/batch_ingest_exporter/metadata_writer'
 
 module Sipity
   module Exporters
@@ -44,9 +45,6 @@ module Sipity
       end
 
       class AttachmentWriter
-      end
-
-      class MetadataWriter
       end
     end
   end
