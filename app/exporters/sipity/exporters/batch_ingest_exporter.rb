@@ -22,13 +22,16 @@ module Sipity
 
       private
 
-      attr_accessor :work, :file_utility
+      attr_accessor :file_utility
+      attr_writer :work
 
       def default_file_utility
         FileUtils
       end
 
       public
+
+      attr_reader :work
 
       def call
         AttachmentWriter.call(exporter: self, work: work)
@@ -46,7 +49,15 @@ module Sipity
       end
 
       def data_directory
-        @data_directory ||= File.join(DATA_PATH, "/sipity-#{work_id}")
+        File.join(DATA_PATH, data_directory_basename)
+      end
+
+      def data_directory_basename
+        "sipity-#{work_id}"
+      end
+
+      def queue_pathname
+        Pathname.new(File.join(DirectoryMover::DEFAULT_DESTINATION_PATH, data_directory_basename))
       end
 
       def work_id

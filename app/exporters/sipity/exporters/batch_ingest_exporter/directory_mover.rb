@@ -6,11 +6,11 @@ module Sipity
       # preparation is complete its containing directory is moved to the "queue"
       # directory. This module manages moving the data.
       module DirectoryMover
-        DEFAULT_DESTINATION = Figaro.env.curate_batch_queue_mount_path!
-
         module_function
 
-        def call(exporter:, destination_path: DEFAULT_DESTINATION, file_utility: default_file_utility)
+        DEFAULT_DESTINATION_PATH = Figaro.env.curate_batch_queue_mount_path!
+
+        def call(exporter:, destination_path: DEFAULT_DESTINATION_PATH, file_utility: default_file_utility)
           prepare_destination(path: destination_path, file_utility: file_utility)
           move_files(source: exporter.data_directory, destination: destination_path, file_utility: file_utility)
         end

@@ -15,6 +15,13 @@ module Sipity
       its(:work_id) { is_expected.to eq(work.to_param)}
       its(:data_directory) { is_expected.to match(/\/sipity-#{work.to_param}/) }
       its(:default_file_utility) { is_expected.to respond_to(:mkdir_p) }
+      its(:data_directory_basename) { is_expected.to match(/^sipity-#{work.to_param}$/)}
+
+      context '#queue_pathname' do
+        subject { described_class.new(work: work).queue_pathname }
+        its(:to_s) { is_expected.to match(/\/sipity-#{work.to_param}/) }
+        it { is_expected.to be_a(Pathname) }
+      end
 
       context '#call' do
         it 'writes attachments, builds metadata, writes the metadata file, writes the webhook, then moves the directory' do
