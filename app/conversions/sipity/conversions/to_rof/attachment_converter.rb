@@ -46,7 +46,7 @@ module Sipity
         def_delegators :work_converter, :namespaced_pid, :edit_groups, :work
 
         def access_rights
-          AccessRightsBuilder.call(
+          AccessRightsBuilder.to_hash(
             work: work,
             access_rights_data: attachment_access_rights_data,
             edit_groups: edit_groups,

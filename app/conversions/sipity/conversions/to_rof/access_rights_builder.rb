@@ -10,10 +10,6 @@ module Sipity
           new(**keywords, &block).to_hash
         end
 
-        class << self
-          alias call to_hash
-        end
-
         # @todo We wouldn't need to pass the access_rights_data if we were to create a repository method that can extract that information
         def initialize(work:, access_rights_data:, edit_groups: [], repository: default_repository)
           self.work = work
@@ -25,7 +21,6 @@ module Sipity
         def to_hash
           base_access_rights.merge(specific_access_rights)
         end
-        alias call to_hash
 
         private
 

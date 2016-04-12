@@ -7,11 +7,6 @@ module Sipity
     let(:access_rights_data) { double(access_right_code: Models::AccessRight::OPEN_ACCESS) }
     let(:repository) { Sipity::QueryRepositoryInterface.new }
 
-    it 'exposes .call as a convenience method' do
-      expect_any_instance_of(described_class).to receive(:call)
-      described_class.call(work: work, access_rights_data: access_rights_data, repository: repository)
-    end
-
     it 'exposes .to_hash as a convenience method' do
       expect_any_instance_of(described_class).to receive(:to_hash)
       described_class.to_hash(work: work, access_rights_data: access_rights_data, repository: repository)
