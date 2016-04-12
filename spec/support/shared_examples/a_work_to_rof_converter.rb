@@ -43,7 +43,9 @@ module Sipity
       before { allow(repository).to receive(:work_attachments).and_call_original }
       let(:attachment_predicate_name) { parameters.fetch(:attachment_predicate_name) }
       it "should retrieve attachments for predicate_name(s) #{parameters.fetch(:attachment_predicate_name).inspect}" do
-        expect(repository).to receive(:work_attachments).with(work: work, predicate_name: attachment_predicate_name).and_return(:returned_value)
+        expect(repository).to receive(:work_attachments).with(
+          work: work, predicate_name: attachment_predicate_name
+        ).and_return(:returned_value)
         subject
       end
       it { is_expected.to be_a(Array) }
