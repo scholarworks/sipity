@@ -37,11 +37,11 @@ module Sipity
       let(:as_of) { Time.zone.today }
       context "for Models::AccessRight::OPEN_ACCESS" do
         let(:access_rights_data) { double(access_right_code: Models::AccessRight::OPEN_ACCESS, transition_date: as_of) }
-        it { is_expected.to eq(expected_base_rights.merge('read-groups' => 'public')) }
+        it { is_expected.to eq(expected_base_rights.merge('read-groups' => ['public'])) }
       end
       context "for Models::AccessRight::RESTRICTED_ACCESS" do
         let(:access_rights_data) { double(access_right_code: Models::AccessRight::RESTRICTED_ACCESS, transition_date: as_of) }
-        it { is_expected.to eq(expected_base_rights.merge('read-groups' => 'restricted')) }
+        it { is_expected.to eq(expected_base_rights.merge('read-groups' => ['restricted'])) }
       end
       context "for Models::AccessRight::PRIVATE_ACCESS" do
         let(:access_rights_data) { double(access_right_code: Models::AccessRight::PRIVATE_ACCESS, transition_date: as_of) }
@@ -51,7 +51,7 @@ module Sipity
         let(:access_rights_data) do
           double(access_right_code: Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS, transition_date: as_of)
         end
-        it { is_expected.to eq(expected_base_rights.merge('read-groups' => 'public', 'embargo-date' => as_of.strftime('%Y-%m-%d'))) }
+        it { is_expected.to eq(expected_base_rights.merge('read-groups' => ['public'], 'embargo-date' => as_of.strftime('%Y-%m-%d'))) }
       end
       context "for a bad access right code" do
         let(:access_rights_data) { double(access_right_code: 'BAD-BAD-LEROY-BROWN', transition_date: as_of) }
