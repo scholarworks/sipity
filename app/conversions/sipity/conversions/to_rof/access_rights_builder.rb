@@ -22,9 +22,10 @@ module Sipity
           self.edit_groups = edit_groups
         end
 
-        def call
+        def to_hash
           base_access_rights.merge(specific_access_rights)
         end
+        alias call to_hash
 
         private
 

@@ -14,7 +14,7 @@ module Sipity
 
     it 'exposes .to_hash as a convenience method' do
       expect_any_instance_of(described_class).to receive(:to_hash)
-      described_class.call(work: work, access_rights_data: access_rights_data, repository: repository)
+      described_class.to_hash(work: work, access_rights_data: access_rights_data, repository: repository)
     end
 
     before do
@@ -25,7 +25,7 @@ module Sipity
     subject { described_class.new(work: work, access_rights_data: access_rights_data, repository: repository) }
     its(:default_repository) { is_expected.to respond_to(:scope_users_for_entity_and_roles) }
 
-    context '#call' do
+    context '#to_hash' do
       let(:expected_base_rights) do
         {
           "edit" => ["curate_batch_user"],
@@ -33,7 +33,7 @@ module Sipity
           "read" => ["one-cool-cat"]
         }
       end
-      subject { described_class.call(work: work, access_rights_data: access_rights_data, repository: repository) }
+      subject { described_class.to_hash(work: work, access_rights_data: access_rights_data, repository: repository) }
       let(:as_of) { Time.zone.today }
       context "for Models::AccessRight::OPEN_ACCESS" do
         let(:access_rights_data) { double(access_right_code: Models::AccessRight::OPEN_ACCESS, transition_date: as_of) }
