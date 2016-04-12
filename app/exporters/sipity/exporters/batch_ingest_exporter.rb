@@ -2,6 +2,7 @@ require 'sipity/exporters/batch_ingest_exporter/metadata_builder'
 require 'sipity/exporters/batch_ingest_exporter/directory_mover'
 require 'sipity/exporters/batch_ingest_exporter/webhook_writer'
 require 'sipity/exporters/batch_ingest_exporter/metadata_writer'
+require 'sipity/exporters/batch_ingest_exporter/attachment_writer'
 
 module Sipity
   module Exporters
@@ -35,16 +36,8 @@ module Sipity
         @data_directory ||= File.join(DATA_PATH, "/sipity-#{work_id}")
       end
 
-      # REVIEW: Should this be called as the first part of the attachment writer?
-      def make_data_directory
-        FileUtils.mkdir_p(data_directory)
-      end
-
       def work_id
         work.to_param
-      end
-
-      class AttachmentWriter
       end
     end
   end
