@@ -7,11 +7,20 @@ module Sipity
     module ToRof
       module WorkConverters
         RSpec.describe UlraSeniorThesisConverter do
-          # it_behaves_like 'a work to rof converter', af_model: 'Etd', attachment_predicate_name: :all
+          it_behaves_like(
+            'a work to rof converter',
+            af_model: 'SeniorThesis',
+            attachment_predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
+          )
           it_behaves_like 'an ulra submission converted to ROF', af_model: 'SeniorThesis'
         end
 
         RSpec.describe UlraDocumentConverter do
+          it_behaves_like(
+            'a work to rof converter',
+            af_model: 'Document',
+            attachment_predicate_name: described_class::ATTACHMENT_TYPES_FOR_EXPORT
+          )
           it_behaves_like 'an ulra submission converted to ROF', af_model: 'Document'
         end
       end
