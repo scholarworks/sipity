@@ -55,11 +55,8 @@ module Sipity
 
           # @todo I cannot imagine that we really want dc:contributor to be nested within a dc:contributor data structure
           def collaborator_metadata
-            work.collaborators.map do |collaborator|
-              {
-                'dc:contributor' => collaborator.name,
-                'ms:role' => collaborator.role
-              }
+            Array.wrap(repository.work_collaborators_for(work: work)).map do |collaborator|
+              { 'dc:contributor' => collaborator.name, 'ms:role' => collaborator.role }
             end
           end
 
