@@ -7,14 +7,13 @@ module Sipity
         class SubmitForIngestForm
           ProcessingForm.configure(
             form_class: self, base_class: Models::Work, processing_subject_name: :work,
-            attribute_names: [:exporter]
+            attribute_names: []
           )
 
-          def initialize(work:, requested_by:, attributes: {}, **keywords)
+          def initialize(work:, requested_by:, **keywords)
             self.work = work
             self.requested_by = requested_by
             self.processing_action_form = processing_action_form_builder.new(form: self, **keywords)
-            self.exporter = attributes.fetch(:exporter)
           end
 
           include ActiveModel::Validations
@@ -22,7 +21,7 @@ module Sipity
 
           def submit
             processing_action_form.submit do
-              exporter.call(work)
+              exporter.call(work: work)
             end
           end
 
@@ -33,8 +32,8 @@ module Sipity
             errors.add(:base, :unauthorized)
           end
 
-          def exporter=(input)
-            @exporter = PowerConverter.convert(input, to: :exporter_function)
+          def exporter
+            Exporters::BatchIngestExporter
           end
         end
       end

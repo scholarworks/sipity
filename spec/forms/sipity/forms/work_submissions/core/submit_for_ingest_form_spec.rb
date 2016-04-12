@@ -7,8 +7,7 @@ module Sipity
         RSpec.describe SubmitForIngestForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:attributes) { { exporter: exporter } }
-          let(:exporter) { double("exporter", call: true) }
+          let(:attributes) { {} }
           let(:keywords) { { work: work, repository: repository, requested_by: double, attributes: attributes } }
           subject { described_class.new(keywords) }
 
@@ -21,7 +20,7 @@ module Sipity
             context 'with invalid data' do
               before do
                 expect(repository).to receive(:authorized_for_processing?).and_return(false)
-                expect(Sipity::Exporters::EtdExporter).to_not receive(:call).with(work)
+                expect(subject.send(:exporter)).to_not receive(:call)
               end
               it 'will return false if not valid' do
                 expect(subject.submit)
@@ -39,8 +38,8 @@ module Sipity
               end
 
               it 'will submit successfully if valid' do
+                expect(subject.send(:exporter)).to receive(:call).with(work: work)
                 subject.submit
-                expect(exporter).to have_received(:call).with(work)
               end
             end
           end

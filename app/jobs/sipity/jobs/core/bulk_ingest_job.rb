@@ -103,7 +103,7 @@ module Sipity
         end
 
         def ingester_attributes
-          { exporter: work_area_slug }
+          {}
         end
 
         attr_accessor :work_area_slug
