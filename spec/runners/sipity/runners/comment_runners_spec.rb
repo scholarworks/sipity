@@ -10,7 +10,7 @@ module Sipity
       RSpec.describe Index do
         let(:work) { double }
         let(:user) { double('User') }
-        let(:context) { TestRunnerContext.new(find_work: work, current_user: user) }
+        let(:context) { TestRunnerContext.new(find_work_by: work, current_user: user) }
         let(:handler) { double(invoked: true) }
         subject do
           described_class.new(context, authentication_layer: false, authorization_layer: false) do |on|
