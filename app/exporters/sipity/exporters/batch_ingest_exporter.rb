@@ -1,3 +1,4 @@
+require 'fileutils'
 require 'sipity/exporters/batch_ingest_exporter/metadata_builder'
 require 'sipity/exporters/batch_ingest_exporter/directory_mover'
 require 'sipity/exporters/batch_ingest_exporter/webhook_writer'
@@ -14,22 +15,34 @@ module Sipity
         new(work: work).call
       end
 
-      def initialize(work:)
+      def initialize(work:, file_utility: default_file_utility)
         self.work = work
+        self.file_utility = file_utility
       end
 
       private
 
-      attr_accessor :work
+      attr_accessor :work, :file_utility
+
+      def default_file_utility
+        FileUtils
+      end
 
       public
 
       def call
-        AttachmentWriter.call(exporter: self)
+        AttachmentWriter.call(exporter: self, work: work)
         work_metadata = MetadataBuilder.call(exporter: self)
         MetadataWriter.call(metadata: work_metadata, exporter: self)
         WebhookWriter.call(exporter: self)
         DirectoryMover.call(exporter: self)
+      end
+
+      # @todo This is not used throughout the submodules; Consider using it as a wrapping concern
+      def with_path_to_data_directory
+        file_utility.mkdir_p(data_directory)
+        yield(data_directory) if block_given?
+        data_directory
       end
 
       def data_directory
