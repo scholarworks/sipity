@@ -12,6 +12,11 @@ module Sipity
       described_class.call(work: work, access_rights_data: access_rights_data, repository: repository)
     end
 
+    it 'exposes .to_hash as a convenience method' do
+      expect_any_instance_of(described_class).to receive(:to_hash)
+      described_class.call(work: work, access_rights_data: access_rights_data, repository: repository)
+    end
+
     before do
       allow(repository).to(
         receive(:scope_users_for_entity_and_roles).with(entity: work, roles: 'creating_user').and_return(double(username: 'one-cool-cat'))

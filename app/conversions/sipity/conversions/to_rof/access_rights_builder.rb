@@ -6,8 +6,12 @@ module Sipity
         # A convenience method for constructing and calling this function.
         #
         # @api private
-        def self.call(**keywords, &block)
+        def self.to_hash(**keywords, &block)
           new(**keywords, &block).call
+        end
+
+        class << self
+          alias call to_hash
         end
 
         # @todo We wouldn't need to pass the access_rights_data if we were to create a repository method that can extract that information

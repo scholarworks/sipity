@@ -89,7 +89,7 @@ module Sipity
           end
 
           def access_rights
-            AccessRightsBuilder.call(
+            AccessRightsBuilder.to_hash(
               work: work,
               access_rights_data: work.access_right,
               repository: repository,
