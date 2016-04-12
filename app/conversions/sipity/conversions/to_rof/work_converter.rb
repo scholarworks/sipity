@@ -17,6 +17,16 @@ module Sipity
           find_and_initialize(work: work, **keywords).to_rof
         end
 
+        # @api public
+        #
+        # @param work [Sipity::Models::Work]
+        # @return Array<Sipity::Models::Attachment>
+        # @raise Exceptions::FailedToInitializeWorkConverterError when we don't know how to convert this object
+        def self.attachments_for(work:, **keywords)
+          find_and_initialize(work: work, **keywords).attachments
+        end
+
+        # @api private
         def self.find_and_initialize(work:, repository: default_repository)
           converter = instantiate_a_converter(work: work, repository: repository)
           raise Exceptions::FailedToInitializeWorkConverterError, work: work unless converter
