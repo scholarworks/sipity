@@ -110,7 +110,7 @@ module Sipity
         end
 
         def content_file
-          "#{attachment.id}-#{attachment.file_name}"
+          attachment.to_rof_file_basename
         end
       end
     end
