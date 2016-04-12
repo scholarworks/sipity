@@ -1,9 +1,6 @@
 module Sipity
   module Queries
-    # Queries
-    #
-    # TODO: Remove module methods for these functions. I want them to be mixins
-    #   instead of the existing singletons.
+    # Queries related to collaborators
     module CollaboratorQueries
       def find_or_initialize_collaborators_by(work:, id:, &block)
         Models::Collaborator.find_or_initialize_by(work_id: work.id, id: id, &block)
