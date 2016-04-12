@@ -1,5 +1,8 @@
+require 'support/shared_examples/a_work_to_rof_converter'
+
 module Sipity
   RSpec.shared_examples 'an ulra submission converted to ROF' do |parameters|
+    it_behaves_like 'a work to rof converter', parameters
     let(:work) do
       Models::Work.new(id: 'abcd-ef', access_right: access_right, created_at: Time.zone.today)
     end
@@ -7,16 +10,6 @@ module Sipity
     let(:collaborator) { Models::Collaborator.new(role: Models::Collaborator::ADVISING_FACULTY_ROLE, name: 'Alexander Hamilton') }
     let(:repository) { QueryRepositoryInterface.new }
     let(:converter) { described_class.new(work: work, repository: repository) }
-
-    context '#metadata' do
-      subject { converter.metadata }
-      it { is_expected.to be_a(Hash) }
-    end
-
-    context '#rels_ext' do
-      subject { converter.rels_ext }
-      it { is_expected.to be_a(Hash) }
-    end
 
     context '#advising_faculty' do
       subject { converter.advising_faculty }
@@ -30,7 +23,6 @@ module Sipity
 
     context '#to_hash' do
       subject { converter.to_hash }
-      it { is_expected.to be_a(Hash) }
       its(:keys) { is_expected.to include('collections') }
     end
 
@@ -80,13 +72,6 @@ module Sipity
         )
       end
       it { is_expected.to be_a(Array) }
-    end
-
-    let(:given_af_model) { parameters.fetch(:af_model) }
-
-    context '#af_model' do
-      subject { converter.af_model }
-      it { is_expected.to eq(given_af_model) }
     end
   end
 end
