@@ -7,7 +7,7 @@ module Sipity
         #
         # @api private
         def self.to_hash(**keywords, &block)
-          new(**keywords, &block).call
+          new(**keywords, &block).to_hash
         end
 
         class << self
