@@ -66,8 +66,6 @@ MethodLength:
     - 'app/controllers/sipity/controllers/dois_controller.rb'
     - 'app/forms/sipity/forms/create_work_form.rb'
     - 'app/forms/sipity/forms/processing_form.rb'
-    - 'app/mappers/sipity/mappers/etd_mapper.rb'
-    - 'app/mappers/sipity/mappers/generic_file_mapper.rb'
     - 'app/repositories/sipity/queries/notification_queries.rb'
     - 'app/repositories/sipity/queries/permission_queries.rb'
     - 'app/repositories/sipity/queries/comment_queries.rb'
@@ -90,9 +88,6 @@ ClassLength:
   Description: 'Avoid classes longer than 110 lines of code.'
   CountComments: false
   Enabled: true
-  Exclude:
-      - 'app/mappers/sipity/mappers/etd_mapper.rb'
-      - 'app/mappers/sipity/mappers/generic_file_mapper.rb'
 
 AlignParameters:
   Description: >-
