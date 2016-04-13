@@ -3,7 +3,8 @@ module Sipity
   module Conversions
     module ToRof
       module WorkConverters
-        # Below are the available attributes for a given ULRA Submission. These are valid up to and including the date of the commit.
+        # Below are the available attributes for a given ULRA Submission.
+        # These are valid up to and including the date of the commit.
         #
         # attached_files_completion_state
         # award_category
@@ -22,14 +23,14 @@ module Sipity
         # resources_consulted
         # submitted_for_publication
         # underclass_level
-        class UlraSeniorThesisConverter < CoreConverter
+        class UlraDocumentConverter < CoreConverter
+          def af_model
+            'Document'
+          end
+
           # @todo Do we need to create an ULRA group?
           def edit_groups
             []
-          end
-
-          def af_model
-            'SeniorThesis'
           end
 
           def to_hash
@@ -46,7 +47,8 @@ module Sipity
               'dc:rights' => fetch_attribute_values(key: 'copyright'),
               'dc:created' => format_date(work.created_at),
               'dc:modified' => format_date(Time.zone.today),
-              'dc:dateSubmitted' => format_date(Time.zone.today)
+              'dc:dateSubmitted' => format_date(Time.zone.today),
+              'dc:type' => 'Document'
             }
           end
 
@@ -90,14 +92,15 @@ module Sipity
           end
         end
 
-        # Map the ULRA Submission to a Document
-        class UlraDocumentConverter < UlraSeniorThesisConverter
+        # Map the ULRA Submission to a Senior Thesis
+        class UlraSeniorThesisConverter < UlraDocumentConverter
           def af_model
-            'Document'
+            'SeniorThesis'
           end
 
           def metadata
-            super.merge('dc:type' => 'Document')
+            # Because the Curate model for SeniorThesis does not account for dc:type
+            super.except('dc:type')
           end
         end
       end
