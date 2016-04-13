@@ -2,7 +2,6 @@
 
 .attribute-listing {
   margin-bottom: 0;
-  word-break: break-word;
 
   .predicate:after {
     content: ':';
@@ -19,7 +18,7 @@
 
   .value {
     padding-left: 1em;
-    word-break: break-all;
+    word-break: break-word;
 
     p:last-child {
       margin-bottom: 0;
