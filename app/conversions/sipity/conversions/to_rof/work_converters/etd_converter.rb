@@ -16,7 +16,7 @@ module Sipity
           # @todo dc:date for defense date looks very suspect
           def metadata
             {
-              "@context" => jsonld_context,
+              '@context' => jsonld_context,
               'dc:title' => work.title,
               'dc:creator' => fetch_attribute_values(key: 'author_name'),
               'dc:title#alternate' => fetch_attribute_values(key: 'alternate_title'),
@@ -33,7 +33,7 @@ module Sipity
 
           def rels_ext
             {
-              "@context" => jsonld_context,
+              '@context' => jsonld_context,
               'hydramata-rel:hasEditor' => [Figaro.env.curate_batch_user_pid!],
               'hydramata-rel:hasEditorGroup' => edit_groups
             }

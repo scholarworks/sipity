@@ -115,11 +115,11 @@ module Sipity
 
           def jsonld_context
             {
-              "dc" => 'http://purl.org/dc/terms/',
-              "rdfs" => 'http://www.w3.org/2000/01/rdf-schema#',
-              "ms" => 'http://www.ndltd.org/standards/metadata/etdms/1.1/',
-              "ths" => 'http://id.loc.gov/vocabulary/relators/',
-              "hydramata-rel" => "http://projecthydra.org/ns/relations#"
+              'dc' => 'http://purl.org/dc/terms/',
+              'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
+              'ms' => 'http://www.ndltd.org/standards/metadata/etdms/1.1/',
+              'ths' => 'http://id.loc.gov/vocabulary/relators/',
+              'hydramata-rel' => 'http://projecthydra.org/ns/relations#'
             }
           end
 
