@@ -35,6 +35,7 @@ en:
         netid: 'NetID'
         responsible_for_review: 'Review Sign Off'
       sipity/models/work:
+        catalog_system_number: 'ALEPH system number'
         access_rights: 'Access Rights <span class="glyphicon glyphicon-question-sign help-icon" data-toggle="tooltip" data-placement="top" title="Who can see this material after it is deposited?"></span>'
         access_right_code: 'Release'
         access_rights_answer: 'Access rights'
