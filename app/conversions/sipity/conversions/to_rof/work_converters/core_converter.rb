@@ -6,7 +6,7 @@ module Sipity
       # A namespacing module
       module WorkConverters
         # Responsible for defining the interface for the specific converters
-        class AbstractConverter
+        class CoreConverter
           DEFAULT_ROF_TYPE = 'fobject'.freeze
           def initialize(work:, repository: default_repository, attachment_converter: default_attachment_converter)
             self.work = work
@@ -127,7 +127,7 @@ module Sipity
             date.strftime('%Y-%m-%d')
           end
         end
-        private_constant :AbstractConverter
+        private_constant :CoreConverter
       end
     end
   end

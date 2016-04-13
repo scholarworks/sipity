@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'sipity/conversions/to_rof/work_converters/abstract_converter'
+require 'sipity/conversions/to_rof/work_converters/core_converter'
 
 module Sipity
   module Conversions
     module ToRof
       module WorkConverters
-        RSpec.describe AbstractConverter do
+        RSpec.describe CoreConverter do
           let(:work) do
             Sipity::Models::Work.new(
               id: 'abcd-ef',

@@ -1,4 +1,4 @@
-require 'sipity/conversions/to_rof/work_converters/abstract_converter'
+require 'sipity/conversions/to_rof/work_converters/core_converter'
 module Sipity
   module Conversions
     module ToRof
@@ -22,7 +22,7 @@ module Sipity
         # resources_consulted
         # submitted_for_publication
         # underclass_level
-        class UlraSeniorThesisConverter < AbstractConverter
+        class UlraSeniorThesisConverter < CoreConverter
           # @todo Do we need to create an ULRA group?
           def edit_groups
             []

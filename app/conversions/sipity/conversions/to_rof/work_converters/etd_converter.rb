@@ -1,10 +1,10 @@
-require 'sipity/conversions/to_rof/work_converters/abstract_converter'
+require 'sipity/conversions/to_rof/work_converters/core_converter'
 module Sipity
   module Conversions
     module ToRof
       module WorkConverters
         # Responsible for exposing the custom metadata mapping that occurs for an ETD
-        class EtdConverter < AbstractConverter
+        class EtdConverter < CoreConverter
           def edit_groups
             [Figaro.env.curate_grad_school_editing_group_pid!]
           end
