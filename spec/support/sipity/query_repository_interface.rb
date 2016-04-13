@@ -110,10 +110,6 @@ module Sipity
     end
 
     # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work, page: nil)
-    end
-
-    # @see ./app/repositories/sipity/queries/work_queries.rb
     def find_works_via_search(criteria:, repository: self)
     end
 

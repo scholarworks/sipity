@@ -27,15 +27,9 @@ module Sipity
         )
       end
 
-      # @todo Refactor places that use #find_works_for to leverage #find_works_via_search
-      def find_works_for(user:, processing_state: nil, repository: self, proxy_for_type: Models::Work, page: nil)
-        scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(
-          user: user, proxy_for_type: proxy_for_type, filter: { processing_state: processing_state }
-        )
-        return scope unless page
-        scope.page(page).per(15)
-      end
-
+      # @param criteria [Sipity::Parameters::SearchCriteriaForWorksParameter]
+      #
+      # @return [ActiveModel::Relation<Sipity::Models::Work>]
       def find_works_via_search(criteria:, repository: self)
         parameters = extract_search_paramters_from(criteria: criteria)
         scope = repository.scope_proxied_objects_for_the_user_and_proxy_for_type(**parameters)

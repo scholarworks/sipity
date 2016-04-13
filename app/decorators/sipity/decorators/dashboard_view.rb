@@ -1,3 +1,5 @@
+require 'sipity/parameters/search_criteria_for_works_parameter'
+
 module Sipity
   module Decorators
     # Responsible for collecting the logic related to rendering a user's
@@ -25,7 +27,7 @@ module Sipity
       end
 
       def works_scope
-        repository.find_works_for(user: user, processing_state: processing_state, page: page)
+        repository.find_works_via_search(criteria: criteria, repository: repository)
       end
 
       def works(decorator: WorkDecorator)
@@ -37,6 +39,14 @@ module Sipity
       end
 
       private
+
+      def criteria
+        Parameters::SearchCriteriaForWorksParameter.new(
+          user: user,
+          processing_state: processing_state,
+          page: page
+        )
+      end
 
       def view_context
         Draper::ViewContext.current
