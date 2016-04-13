@@ -9,7 +9,10 @@ module Sipity
   module Commands
   end
 
-  # The object you can use to interaction with the commands.
+  # The object you can use to interact with the commands.
+  #
+  # @note In developing repository methods, do not set nor get instance variables for a repository instance.
+  # @note These methods should be stateless.
   class CommandRepository
     # I was using a delegator but was encountering a problem when attempting to
     # initialize a given form; I was losing the scope of the original
