@@ -1,3 +1,8 @@
+require 'sipity/query_repository'
+Dir.glob(File.expand_path('../**/*_commands.rb', __FILE__)).each do |filename|
+  require filename
+end
+
 module Sipity
   # The module that contains various interactions with the underlying
   # persistence layer.
@@ -15,16 +20,8 @@ module Sipity
       include mod if mod.to_s =~ /Sipity::Queries::/
     end
 
-    include Commands::AccountProfileCommands
-    include Commands::AdditionalAttributeCommands
-    include Commands::AdministrativeScheduledActionCommands
-    include Commands::EventLogCommands
-    include Commands::NotificationCommands
-    include Commands::PermissionCommands
-    include Commands::ProcessingCommands
-    include Commands::RedirectCommands
-    include Commands::TodoListCommands
-    include Commands::TransientAnswerCommands
-    include Commands::WorkCommands
+    Commands.constants.each do |command_module|
+      include Commands.const_get(command_module)
+    end
   end
 end
