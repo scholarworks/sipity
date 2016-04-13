@@ -12,6 +12,7 @@ module Sipity
       end
 
       # NOTE: These are PIDs for the production environment, but for Sipity tests they are inconsequential.
+      # @see git.library.nd.edu:dlt_scripts curate_nd/ulra_2016_collection_creation/README.md for more information
       SUBMISSION_WINDOW_COLLECTION_IDS = {
         "ulra.2016.participant" => 'und:pr76f190g2d',
         "ulra.2016.award_recipient" => 'und:pv63fx73r3n'
