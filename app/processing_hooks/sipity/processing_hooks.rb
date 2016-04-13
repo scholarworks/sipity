@@ -21,7 +21,8 @@ module Sipity
     def call(action:, entity:, requested_by:, **keywords)
       entity = Conversions::ConvertToProcessingEntity.call(entity)
       action = Conversions::ConvertToProcessingAction.call(action, scope: entity.strategy_id)
-      find_the_hook(action: action, entity: entity, **keywords).call(action: action, entity: entity, requested_by: requested_by, **keywords)
+      the_hook = find_the_hook(action: action, entity: entity, **keywords)
+      the_hook.call(action: action, entity: entity, requested_by: requested_by, **keywords)
     end
 
     # @api private
