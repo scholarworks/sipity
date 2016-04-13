@@ -2,6 +2,7 @@
 
 .attribute-listing {
   margin-bottom: 0;
+  word-break: break-word;
 
   .predicate:after {
     content: ':';
