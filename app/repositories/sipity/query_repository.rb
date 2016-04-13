@@ -1,3 +1,7 @@
+Dir.glob(File.expand_path('../**/*_queries.rb', __FILE__)).each do |filename|
+  require filename
+end
+
 module Sipity
   # The module that contains the various query submodules
   module Queries
@@ -5,20 +9,8 @@ module Sipity
   # Defines and exposes the query methods for interacting with the public API of
   # the persistence layer.
   class QueryRepository
-    include Queries::AccountProfileQueries
-    include Queries::AdditionalAttributeQueries
-    include Queries::AdministrativeScheduledActionQueries
-    include Queries::AttachmentQueries
-    include Queries::CollaboratorQueries
-    include Queries::CommentQueries
-    include Queries::EventLogQueries
-    include Queries::NotificationQueries
-    include Queries::ProcessingQueries
-    include Queries::RedirectQueries
-    include Queries::SimpleControlledVocabularyQueries
-    include Queries::SubmissionWindowQueries
-    include Queries::UlraQueries
-    include Queries::WorkAreaQueries
-    include Queries::WorkQueries
+    Queries.constants.each do |query_module|
+      include Queries.const_get(query_module)
+    end
   end
 end
