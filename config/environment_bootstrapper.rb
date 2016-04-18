@@ -20,13 +20,8 @@ cataloging.group_memberships.find_or_create_by(user: user)
 $stdout.puts "Creating User batch_ingestor"
 batch_ingestor = User.find_or_create_by!(username: "batch_ingesting")
 
-[Sipity::DataGenerators::WorkTypes::EtdGenerator::BATCH_INGESTORS].each do |ingestor_name|
-  $stdout.puts "Finding or creating group for '#{ingestor_name}'"
-  ingestor = Sipity::Models::Group.find_or_create_by!(name: ingestor_name)
-
-  $stdout.puts "Associating batch_ingestor with #{ingestor.name}"
-  etd_ingestor.group_memberships.find_or_create_by(user: ingestor)
-end
+$stdout.puts "Associating batch_ingestor with #{ingestor.name}"
+batch_ingestor.group_memberships.find_or_create_by(user: ingestor)
 
 ulra_review_committee_group_name = Sipity::DataGenerators::WorkTypes::UlraGenerator::ULRA_REVIEW_COMMITTEE_GROUP_NAME
 $stdout.puts "Finding or creating group for '#{ulra_review_committee_group_name}'"
