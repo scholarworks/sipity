@@ -16,7 +16,6 @@ gem 'execjs'
 gem 'ezid-client', github: 'duke-libraries/ezid-client'
 gem 'figaro'
 gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
-gem 'high_voltage'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
 gem 'loofah', '~> 2.0.3' # Related to hesburgh-lib's dependency
