@@ -321,7 +321,6 @@ GEM
       tilt
     hanami-utils (0.7.1)
     hashie (3.4.3)
-    high_voltage (3.0.0)
     highline (1.7.8)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -639,7 +638,6 @@ DEPENDENCIES
   guard-rubocop
   guard-scss-lint!
   hesburgh-lib!
-  high_voltage
   hydra-validations!
   i18n-debug
   inch
