@@ -321,7 +321,7 @@ GEM
       tilt
     hanami-utils (0.7.1)
     hashie (3.4.3)
-    high_voltage (2.4.0)
+    high_voltage (3.0.0)
     highline (1.7.8)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
