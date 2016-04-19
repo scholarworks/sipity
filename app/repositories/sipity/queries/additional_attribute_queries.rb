@@ -26,6 +26,22 @@ module Sipity
         returning_value = returning_value.first if cardinality == :one || cardinality == 1
         returning_value
       end
+
+      # @api public
+      #
+      # Responsible for returning a Hash of key value pairs that represent the additional attributes of the
+      # given object.
+      #
+      # @param work [#to_work] The containing work
+      # @param keys [:all, Array<Symbol>] What are the keys we are interested in
+      #
+      # @return ActiveRecord::Relation
+      def scope_work_attributes_for(work:, keys: :all)
+        work = Conversions::ConvertToWork.call(work)
+        scope = Models::AdditionalAttribute.order(:key, :id).where(work_id: work.id)
+        scope = scope.where(key: Array.wrap(keys)) unless keys == :all
+        scope
+      end
     end
   end
 end
