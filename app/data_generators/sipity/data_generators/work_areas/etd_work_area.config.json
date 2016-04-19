@@ -19,6 +19,12 @@
         "roles": "work_area_viewing"
       }]
     }, {
+      "name": "list_submissions",
+      "from_states": [{
+        "name": ["new", "opened", "closed"],
+        "roles": "work_area_viewing"
+      }]
+    }, {
       "name": "open",
       "transition_to": "opened",
       "from_states": [{
