@@ -1,6 +1,8 @@
 require 'active_support/core_ext/array/wrap'
 
 require 'hesburgh/lib/controller_with_runner'
+require 'sipity/query_repository'
+require 'sipity/command_repository'
 
 # The foundational controller for this application
 class ApplicationController < ActionController::Base
