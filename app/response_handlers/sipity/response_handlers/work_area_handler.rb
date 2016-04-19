@@ -7,7 +7,7 @@ module Sipity
       # Huzzah! Success
       module SuccessResponder
         def self.for_controller(handler:)
-          handler.render(template: handler.template)
+          handler.render(template: handler.template, format: handler.request_format)
         end
 
         # @review should I consider if a logger is passed?
@@ -19,7 +19,7 @@ module Sipity
       # Forms that raise to submit may have different errors.
       module SubmitFailureResponder
         def self.for_controller(handler:)
-          handler.render(template: handler.template, status: :unprocessable_entity)
+          handler.render(template: handler.template, status: :unprocessable_entity, format: handler.request_format)
         end
 
         def self.for_command_line(handler:)

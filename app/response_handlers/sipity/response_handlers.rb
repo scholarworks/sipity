@@ -51,6 +51,10 @@ module Sipity
         responder.for_command_line(handler: self)
       end
 
+      def request_format
+        # TODO: Don't know what this should be
+      end
+
       private
 
       attr_writer :handled_response, :responder
@@ -82,7 +86,7 @@ module Sipity
         responder.for_controller(handler: self)
       end
 
-      delegate :render, :redirect_to, to: :context
+      delegate :render, :redirect_to, :request_format, to: :context
       delegate :object, :status, :errors, to: :handled_response, prefix: :response
       delegate :template, to: :handled_response
 
