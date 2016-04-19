@@ -20,8 +20,8 @@ cataloging.group_memberships.find_or_create_by(user: user)
 $stdout.puts "Creating User batch_ingestor"
 batch_ingestor = User.find_or_create_by!(username: "batch_ingesting")
 
-$stdout.puts "Associating batch_ingestor with #{ingestor.name}"
-batch_ingestor.group_memberships.find_or_create_by(user: ingestor)
+$stdout.puts "Associating batch_ingestor with #{batch_ingestor.name}"
+batch_ingestor.group_memberships.find_or_create_by(user: batch_ingestor)
 
 ulra_review_committee_group_name = Sipity::DataGenerators::WorkTypes::UlraGenerator::ULRA_REVIEW_COMMITTEE_GROUP_NAME
 $stdout.puts "Finding or creating group for '#{ulra_review_committee_group_name}'"
