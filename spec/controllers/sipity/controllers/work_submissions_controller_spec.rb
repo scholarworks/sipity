@@ -9,6 +9,8 @@ module Sipity
 
       before { allow(work).to receive(:work_area).and_return(work_area) }
 
+      it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
+
       context 'configuration' do
         its(:runner_container) { is_expected.to eq(Sipity::Runners::WorkSubmissionsRunners) }
         its(:response_handler_container) { is_expected.to eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }

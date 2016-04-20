@@ -5,6 +5,8 @@ require 'hesburgh/lib/mock_runner'
 module Sipity
   module Controllers
     RSpec.describe CommentsController, type: :controller do
+      it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
+
       let(:work) { Models::Work.new(title: 'The Title', id: '1234') }
       context 'GET #index' do
         before { controller.runner = runner }

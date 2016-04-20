@@ -10,6 +10,7 @@ module Sipity
         its(:runner_container) { is_expected.to eq(Runners::SubmissionWindowRunners) }
         its(:response_handler_container) { is_expected.to eq(ResponseHandlers::SubmissionWindowHandler) }
       end
+      it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
 
       context 'GET #query_action' do
         let(:processing_action_name) { 'fun_things' }

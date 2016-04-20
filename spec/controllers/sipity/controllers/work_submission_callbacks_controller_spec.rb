@@ -14,6 +14,8 @@ module Sipity
         its(:response_handler_container) { is_expected.to eq(Sipity::ResponseHandlers::WorkSubmissionHandler) }
       end
 
+      it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
+
       it { is_expected.to respond_to :prepend_processing_action_view_path_with }
       it { is_expected.to respond_to :run_and_respond_with_processing_action }
 

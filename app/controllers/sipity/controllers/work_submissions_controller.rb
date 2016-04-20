@@ -1,7 +1,7 @@
 module Sipity
   module Controllers
     # The controller for creating works.
-    class WorkSubmissionsController < ApplicationController
+    class WorkSubmissionsController < AuthenticatedController
       class_attribute :response_handler_container
       self.runner_container = Sipity::Runners::WorkSubmissionsRunners
       self.response_handler_container = Sipity::ResponseHandlers::WorkSubmissionHandler

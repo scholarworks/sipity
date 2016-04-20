@@ -1,7 +1,7 @@
 module Sipity
   module Controllers
     # The controller for handling callbacks for work submissions
-    class WorkSubmissionCallbacksController < ApplicationController
+    class WorkSubmissionCallbacksController < AuthenticatedController
       skip_before_action :verify_authenticity_token
 
       class_attribute :response_handler_container
