@@ -28,8 +28,8 @@ module Sipity
 
       # @api public
       #
-      # Responsible for returning a Hash of key value pairs that represent the additional attributes of the
-      # given object.
+      # Responsible for returning an ActiveRecord scoping object that is all of the records for
+      # the given work and limited to keys based on the keys parameter
       #
       # @param work [#to_work] The containing work
       # @param keys [:all, Array<Symbol>] What are the keys we are interested in
@@ -40,6 +40,11 @@ module Sipity
         scope = Models::AdditionalAttribute.order(:key, :id).where(work_id: work.id)
         scope = scope.where(key: Array.wrap(keys)) unless keys == :all
         scope
+      end
+
+      # @api public
+      def work_attribute_key_value_pairs_for(work:, keys: :all)
+        scope_work_attributes_for(work: work, keys: keys).pluck(:key, :value)
       end
     end
   end

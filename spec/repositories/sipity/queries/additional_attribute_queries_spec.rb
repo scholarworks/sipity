@@ -41,4 +41,33 @@ RSpec.describe Sipity::Queries::AdditionalAttributeQueries, type: :isolated_repo
       expect(subject).to eq([@alternate_title_one, @alternate_title_two])
     end
   end
+
+  context '#work_attribute_key_value_pairs_for' do
+    before do
+      @alternate_title_one = Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'alternate_title', value: 'Is Chicken')
+      @abstract = Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'abstract', value: 'An Abstract')
+      @alternate_title_two = Sipity::Models::AdditionalAttribute.create!(work_id: work.id, key: 'alternate_title', value: 'Is Egg')
+    end
+
+    it 'will be a hash of the work attributes' do
+      subject = test_repository.work_attribute_key_value_pairs_for(work: work)
+      expect(subject).to eq(
+        [
+          [@abstract.key, @abstract.value],
+          [@alternate_title_one.key, @alternate_title_one.value],
+          [@alternate_title_two.key, @alternate_title_two.value]
+        ]
+      )
+    end
+
+    it 'should allow for keys to be omitted' do
+      subject = test_repository.work_attribute_key_value_pairs_for(work: work, keys: 'alternate_title')
+      expect(subject).to eq(
+        [
+          [@alternate_title_one.key, @alternate_title_one.value],
+          [@alternate_title_two.key, @alternate_title_two.value]
+        ]
+      )
+    end
+  end
 end
