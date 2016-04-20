@@ -61,6 +61,10 @@ module Sipity
       end
 
       def additional_attributes
+        Array.wrap(repository.work_attribute_key_value_pairs_for(work: work)).each_with_object({}) do |(key, value), hash|
+          hash[key] ||= []
+          hash[key] << value
+        end
       end
 
       attr_reader :work

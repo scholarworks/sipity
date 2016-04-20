@@ -59,6 +59,23 @@ module Sipity
           expect(subject.first.keys).to eq([:file_name, :is_representative_file, :access_right_code, :release_date])
         end
       end
+      context '#additional_attributes' do
+        let(:attachment) { Models::Attachment.new }
+        before do
+          allow(repository).to receive(:work_attribute_key_value_pairs_for).with(work: work).and_return(
+            [
+              ['key', 'value'],
+              ['key', 'value2'],
+              ['chicken', 'nugget']
+            ]
+          )
+        end
+        subject { expanded_work.additional_attributes }
+        it { is_expected.to be_a(Hash) }
+        it 'should aggregate the returned key value pairs' do
+          expect(subject).to eq('key' => ['value', 'value2'], 'chicken' => ['nugget'])
+        end
+      end
     end
   end
 end
