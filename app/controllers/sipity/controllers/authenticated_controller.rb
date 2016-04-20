@@ -25,6 +25,8 @@ module Sipity
         @current_user
       end
 
+      private
+
       # @todo With Cogitate this will need to be revisited
       def authorize_group_from_api_key(group_name:, group_api_key:)
         return false unless group_api_key

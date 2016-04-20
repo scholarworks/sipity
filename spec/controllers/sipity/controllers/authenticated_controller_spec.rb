@@ -48,20 +48,20 @@ module Sipity
         it 'will equal false if its not the ETD Ingester' do
           expect(Sipity::Models::Group).to receive(:find_by).with(name: invalid_name, api_key: 'apassword').and_return(nil)
           expect(
-            controller.authorize_group_from_api_key(group_name: invalid_name, group_api_key: 'apassword')
+            controller.send(:authorize_group_from_api_key, group_name: invalid_name, group_api_key: 'apassword')
           ).to eq(false)
         end
 
         it 'will equal false if that password is incorrect' do
           expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'nope').and_return(nil)
-          expect(controller.authorize_group_from_api_key(group_name: valid_name, group_api_key: 'nope')).to eq(false)
+          expect(controller.send(:authorize_group_from_api_key, group_name: valid_name, group_api_key: 'nope')).to eq(false)
         end
 
         it 'will be the ETD Ingester group if the name and password match' do
           group = double('Group')
           expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'apassword').and_return(group)
           expect(
-            controller.authorize_group_from_api_key(group_name: valid_name, group_api_key: 'apassword')
+            controller.send(:authorize_group_from_api_key, group_name: valid_name, group_api_key: 'apassword')
           ).to eq(group)
         end
       end
