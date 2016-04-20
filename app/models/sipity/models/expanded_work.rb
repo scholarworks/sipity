@@ -41,7 +41,9 @@ module Sipity
         Array.wrap(repository.work_attachments(work: work)).map do |attachment|
           {
             file_name: attachment.file_name,
-            is_representative_file: attachment.is_representative_file
+            is_representative_file: attachment.is_representative_file,
+            access_right_code: attachment.access_right_code,
+            release_date: attachment.release_date
           }
         end
       end

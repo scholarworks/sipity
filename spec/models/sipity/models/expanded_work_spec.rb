@@ -13,6 +13,8 @@ module Sipity
       end
 
       subject { expanded_work }
+      its(:default_repository) { is_expected.to respond_to(:scope_users_for_entity_and_roles) }
+      its(:default_repository) { is_expected.to respond_to(:work_attachments) }
       it { is_expected.to delegate_method(:as_json).to(:to_hash) }
       it { is_expected.to delegate_method(:to_json).to(:to_hash) }
       it { is_expected.to delegate_method(:id).to(:work) }
@@ -46,6 +48,15 @@ module Sipity
         it { is_expected.to be_a(Array) }
         it 'should be an Array of Hashes each with keys: name, role, email, netid, responsible_for_review' do
           expect(subject.first.keys).to eq([:name, :role, :email, :netid, :responsible_for_review])
+        end
+      end
+      context '#files' do
+        let(:attachment) { Models::Attachment.new }
+        before { allow(repository).to receive(:work_attachments).with(work: work).and_return(attachment) }
+        subject { expanded_work.files }
+        it { is_expected.to be_a(Array) }
+        it 'should be an Array of Hashes each with keys: name, role, email, netid, responsible_for_review' do
+          expect(subject.first.keys).to eq([:file_name, :is_representative_file, :access_right_code, :release_date])
         end
       end
     end

@@ -21,6 +21,8 @@ module Sipity
 
       has_one :access_right, as: :entity, dependent: :destroy
 
+      delegate :access_right_code, :release_date, to: :access_right, allow_nil: true
+
       def to_s
         file_name
       end
