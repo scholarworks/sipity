@@ -10,6 +10,7 @@ module Sipity
 
       ALL_REGISTERED_USERS = 'All Registered Users'.freeze
       BATCH_INGESTORS = "Batch Ingestors".freeze
+      ETD_INTEGRATORS = "ETD_INTEGRATORS".freeze
 
       def self.all_registered_users
         find_or_create_by!(name: ALL_REGISTERED_USERS)
