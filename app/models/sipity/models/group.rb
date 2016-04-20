@@ -26,6 +26,14 @@ module Sipity
       has_many :event_logs, class_name: 'Sipity::Models::EventLog', as: :requested_by
 
       delegate :to_s, to: :name
+
+      def self.basic_authorization_string_for!(name:)
+        group = find_by!(name: name)
+        return "#{group.name}:#{group.api_key}" if group.api_key?
+        raise Exceptions::InvalidAuthorizationCredentialsError, "Expected #{name} to have an API_KEY"
+      rescue ActiveRecord::RecordNotFound
+        raise Exceptions::InvalidAuthorizationCredentialsError, "Unable to find authorization credentials for #{name}"
+      end
     end
   end
 end
