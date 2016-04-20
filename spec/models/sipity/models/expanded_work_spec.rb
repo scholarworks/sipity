@@ -17,7 +17,8 @@ module Sipity
       its(:default_repository) { is_expected.to respond_to(:work_attachments) }
       it { is_expected.to delegate_method(:as_json).to(:to_hash) }
       it { is_expected.to delegate_method(:to_json).to(:to_hash) }
-      it { is_expected.to delegate_method(:id).to(:work) }
+      it { is_expected.to delegate_method(:to_param).to(:work) }
+      it { is_expected.to delegate_method(:id).to(:work).as(:to_param) }
       it { is_expected.to delegate_method(:work_type).to(:work) }
       it { is_expected.to delegate_method(:title).to(:work) }
       its(:to_work) { is_expected.to eq(work) }
@@ -26,7 +27,26 @@ module Sipity
         subject { expanded_work.to_hash }
         it { is_expected.to be_a(Hash) }
         its(:keys) do
-          is_expected.to eq([:id, :url, :netid, :title, :work_type, :processing_state, :files, :collaborators, :additional_attributes])
+          is_expected.to eq([:id, :type, :links, :attributes])
+        end
+        context '#[:id]' do
+          subject { expanded_work.to_hash[:id] }
+          it { is_expected.to eq(expanded_work.to_param) }
+        end
+        context '#[:type]' do
+          subject { expanded_work.to_hash[:type] }
+          it { is_expected.to eq(described_class::JSON_API_TYPE) }
+        end
+        context '#[:links]' do
+          subject { expanded_work.to_hash[:links] }
+          it { is_expected.to eq(self: "#{expanded_work.url}.json") }
+        end
+        context '#[:attributes]' do
+          subject { expanded_work.to_hash[:attributes] }
+          it { is_expected.to be_a(Hash) }
+          its(:keys) do
+            is_expected.to eq([:url, :netid, :title, :work_type, :processing_state, :files, :collaborators, :additional_attributes])
+          end
         end
       end
       context '#netid' do

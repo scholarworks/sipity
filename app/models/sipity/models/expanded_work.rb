@@ -8,18 +8,24 @@ module Sipity
         self.repository = repository
       end
 
+      JSON_API_TYPE = 'sipity/models/expanded_works'.freeze
       def to_hash
         {
-          id: id, url: url, netid: netid, title: title, work_type: work_type,
-          processing_state: processing_state, files: files,
-          collaborators: collaborators,
-          additional_attributes: additional_attributes
+          id: to_param, type: JSON_API_TYPE,
+          links: { self: "#{url}.json" },
+          attributes: {
+            url: url, netid: netid, title: title, work_type: work_type,
+            processing_state: processing_state, files: files,
+            collaborators: collaborators,
+            additional_attributes: additional_attributes
+          }
         }
       end
 
       extend Forwardable
       def_delegators :to_hash, :as_json, :to_json
-      def_delegators :work, :id, :work_type, :title
+      def_delegators :work, :to_param, :work_type, :title
+      alias id to_param
 
       def netid
         @netid ||= creating_users.first.username
