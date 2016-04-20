@@ -8,9 +8,6 @@ module Sipity
       let(:repository) { QueryRepositoryInterface.new }
       let(:expanded_work) { described_class.new(work: work, repository: repository) }
       let(:user) { instance_double(User, username: 'anetid') }
-      before do
-        allow(repository).to receive(:scope_users_for_entity_and_roles).with(entity: work, roles: 'creating_user').and_return([user])
-      end
 
       subject { expanded_work }
       its(:default_repository) { is_expected.to respond_to(:scope_users_for_entity_and_roles) }
@@ -45,13 +42,18 @@ module Sipity
           subject { expanded_work.to_hash[:attributes] }
           it { is_expected.to be_a(Hash) }
           its(:keys) do
-            is_expected.to eq([:url, :netid, :title, :work_type, :processing_state, :files, :collaborators, :additional_attributes])
+            is_expected.to eq(
+              [:url, :title, :work_type, :processing_state, :creating_users, :files, :collaborators, :additional_attributes]
+            )
           end
         end
       end
-      context '#netid' do
-        subject { expanded_work.netid }
-        it { is_expected.to be_a(String) }
+      context '#creating_users' do
+        before do
+          allow(repository).to receive(:scope_users_for_entity_and_roles).with(entity: work, roles: 'creating_user').and_return(user)
+        end
+        subject { expanded_work.creating_users }
+        it { is_expected.to eq([{ netid: user.username }]) }
       end
       context '#url' do
         subject { expanded_work.url }

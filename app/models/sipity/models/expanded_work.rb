@@ -14,9 +14,9 @@ module Sipity
           id: to_param, type: JSON_API_TYPE,
           links: { self: "#{url}.json" },
           attributes: {
-            url: url, netid: netid, title: title, work_type: work_type,
-            processing_state: processing_state, files: files,
-            collaborators: collaborators,
+            url: url, title: title, work_type: work_type,
+            processing_state: processing_state, creating_users: creating_users,
+            files: files, collaborators: collaborators,
             additional_attributes: additional_attributes
           }
         }
@@ -27,11 +27,11 @@ module Sipity
       def_delegators :work, :to_param, :work_type, :title
       alias id to_param
 
-      def netid
-        @netid ||= creating_users.first.username
+      def creating_users
+        query_creating_users.map { |user| { netid: user.username } }
       end
 
-      private def creating_users
+      private def query_creating_users
         Array.wrap(repository.scope_users_for_entity_and_roles(entity: work, roles: Models::Role::CREATING_USER))
       end
 
