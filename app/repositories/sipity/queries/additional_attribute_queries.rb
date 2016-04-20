@@ -19,8 +19,7 @@ module Sipity
       #
       # @review Consider not using cardinality and instead preferring specific methods? This could mean an explosion.
       def work_attribute_values_for(work:, key:, cardinality: :many)
-        work = Conversions::ConvertToWork.call(work)
-        scope = Models::AdditionalAttribute.where(work_id: work.id, key: key)
+        scope = scope_work_attributes_for(work: work, keys: key)
         scope = scope.limit(cardinality) unless cardinality == :many
         returning_value = scope.pluck(:value)
         returning_value = returning_value.first if cardinality == :one || cardinality == 1
