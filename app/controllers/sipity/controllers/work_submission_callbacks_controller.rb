@@ -30,7 +30,9 @@ module Sipity
 
       # @todo With Cogitate this will need to be revisited
       def authenticate_user!
-        authenticated_user = authenticate_with_http_basic { |user, password| user_for_etd_ingester(user: user, password: password) }
+        authenticated_user = authenticate_with_http_basic do |group_name, group_api_key|
+          authorize_group_from_api_key(group_name: group_name, group_api_key: group_api_key)
+        end
         if authenticated_user
           @current_user = authenticated_user
         else
@@ -49,10 +51,10 @@ module Sipity
       end
 
       # @todo With Cogitate this will need to be revisited
-      def user_for_etd_ingester(user:, password:)
-        return false unless password
-        return false unless user
-        Sipity::Models::Group.find_by(name: user, api_key: password) || false
+      def authorize_group_from_api_key(group_name:, group_api_key:)
+        return false unless group_api_key
+        return false unless group_name
+        Sipity::Models::Group.find_by(name: group_name, api_key: group_api_key) || false
       end
 
       private

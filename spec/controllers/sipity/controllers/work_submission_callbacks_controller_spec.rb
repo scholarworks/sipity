@@ -42,9 +42,11 @@ module Sipity
         before { allow_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action) }
         let(:processing_action_name) { 'fun_things' }
         context 'with Basic authentication credentials' do
-          it 'will attempt to find user_for_etd_ingester' do
+          it 'will attempt to find authorize_group_from_api_key' do
             user = double('User')
-            expect(controller).to receive(:user_for_etd_ingester).with(user: 'User', password: 'Password').and_return(user)
+            expect(controller).to(
+              receive(:authorize_group_from_api_key).with(group_name: 'User', group_api_key: 'Password').and_return(user)
+            )
             request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('User', 'Password')
             controller.authenticate_user!
             expect(controller.instance_variable_get("@current_user")).to eq(user)
@@ -52,8 +54,8 @@ module Sipity
         end
 
         context 'without Basic authentication credentials' do
-          it 'will attempt to find user_for_etd_ingester' do
-            expect(controller).to_not receive(:user_for_etd_ingester)
+          it 'will attempt to find authorize_group_from_api_key' do
+            expect(controller).to_not receive(:authorize_group_from_api_key)
             expect { controller.authenticate_user! }.to raise_error(StandardError)
             expect(controller.instance_variable_get("@current_user")).to eq(nil)
           end
@@ -64,9 +66,11 @@ module Sipity
         before { allow_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action) }
         let(:processing_action_name) { 'fun_things' }
         context 'with Basic authentication credentials' do
-          it 'will attempt to find user_for_etd_ingester' do
+          it 'will attempt to find authorize_group_from_api_key' do
             user = double('User')
-            expect(controller).to receive(:user_for_etd_ingester).with(user: 'User', password: 'Password').and_return(user)
+            expect(controller).to(
+              receive(:authorize_group_from_api_key).with(group_name: 'User', group_api_key: 'Password').and_return(user)
+            )
             request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Basic.encode_credentials('User', 'Password')
             controller.current_user
             expect(controller.instance_variable_get("@current_user")).to eq(user)
@@ -74,26 +78,26 @@ module Sipity
         end
       end
 
-      context '#user_for_etd_ingester' do
+      context '#authorize_group_from_api_key' do
         let(:valid_name) { Sipity::Models::Group::BATCH_INGESTORS }
         let(:invalid_name) { 'nope' }
         it 'will equal false if its not the ETD Ingester' do
           expect(Sipity::Models::Group).to receive(:find_by).with(name: invalid_name, api_key: 'apassword').and_return(nil)
           expect(
-            controller.user_for_etd_ingester(user: invalid_name, password: 'apassword')
+            controller.authorize_group_from_api_key(group_name: invalid_name, group_api_key: 'apassword')
           ).to eq(false)
         end
 
         it 'will equal false if that password is incorrect' do
           expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'nope').and_return(nil)
-          expect(controller.user_for_etd_ingester(user: valid_name, password: 'nope')).to eq(false)
+          expect(controller.authorize_group_from_api_key(group_name: valid_name, group_api_key: 'nope')).to eq(false)
         end
 
         it 'will be the ETD Ingester group if the name and password match' do
           group = double('Group')
           expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'apassword').and_return(group)
           expect(
-            controller.user_for_etd_ingester(user: valid_name, password: 'apassword')
+            controller.authorize_group_from_api_key(group_name: valid_name, group_api_key: 'apassword')
           ).to eq(group)
         end
       end
