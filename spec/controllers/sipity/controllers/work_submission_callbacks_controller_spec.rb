@@ -78,20 +78,22 @@ module Sipity
         let(:valid_name) { Sipity::Models::Group::BATCH_INGESTORS }
         let(:invalid_name) { 'nope' }
         it 'will equal false if its not the ETD Ingester' do
+          expect(Sipity::Models::Group).to receive(:find_by).with(name: invalid_name, api_key: 'apassword').and_return(nil)
           expect(
-            controller.user_for_etd_ingester(user: invalid_name, password: Figaro.env.sipity_access_key_for_batch_ingester!)
+            controller.user_for_etd_ingester(user: invalid_name, password: 'apassword')
           ).to eq(false)
         end
 
         it 'will equal false if that password is incorrect' do
+          expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'nope').and_return(nil)
           expect(controller.user_for_etd_ingester(user: valid_name, password: 'nope')).to eq(false)
         end
 
         it 'will be the ETD Ingester group if the name and password match' do
           group = double('Group')
-          expect(Sipity::Models::Group).to receive(:find_by!).with(name: valid_name).and_return(group)
+          expect(Sipity::Models::Group).to receive(:find_by).with(name: valid_name, api_key: 'apassword').and_return(group)
           expect(
-            controller.user_for_etd_ingester(user: valid_name, password: Figaro.env.sipity_access_key_for_batch_ingester!)
+            controller.user_for_etd_ingester(user: valid_name, password: 'apassword')
           ).to eq(group)
         end
       end
