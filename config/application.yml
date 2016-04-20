@@ -29,6 +29,7 @@ noid_port: '3000'
 noid_server: 'noidserver.com'
 protocol: 'http'
 sipity_access_key_for_batch_ingester: '1234'
+sipity_access_key_for_etd_integrators: '4567'
 sipity_batch_ingester_access_key: '1234' # deprecated
 
 development:
