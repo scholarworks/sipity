@@ -5,6 +5,8 @@
 # development.
 #
 # They are included so we can share what the keys should be.
+airbrake_api_key: 'this-makes-no-sense'
+airbrake_host: 'errbit.library.nd.edu'
 cas_base_url: "https://login.nd.edu/cas"
 cas_validate_url: "https://login.nd.edu/cas/serviceValidate"
 curate_nd_url_for_etds: "https://curate.nd.edu/catalog?f_inclusive%5Bhuman_readable_type_sim%5D%5B%5D=Doctoral+Dissertation&f_inclusive%5Bhuman_readable_type_sim%5D%5B%5D=Master%27s+Thesis"
@@ -17,7 +19,6 @@ dragonfly_s3_root_path: 's3_root_dir'
 dragonfly_s3_secret_access_key: 'secret'
 dragonfly_s3_url_host: 'bucketname.aws.com'
 dragonfly_secret: "12345"
-sipity_batch_ingester_access_key: '1234'
 ezid_client_default_shoulder: "doi:10.5072/FK2"
 ezid_client_password: apitest
 ezid_client_user: apitest
@@ -27,8 +28,7 @@ noid_pool: 'pool_name'
 noid_port: '3000'
 noid_server: 'noidserver.com'
 protocol: 'http'
-airbrake_api_key: 'this-makes-no-sense'
-airbrake_host: 'errbit.library.nd.edu'
+sipity_batch_ingester_access_key: '1234'
 
 development:
   domain_name: "localhost:3000"
