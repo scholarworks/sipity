@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160217141830) do
+ActiveRecord::Schema.define(version: 20160420133504) do
 
   create_table "data_migrations", id: false, force: :cascade do |t|
     t.string "version", limit: 255, null: false
@@ -152,8 +152,10 @@ ActiveRecord::Schema.define(version: 20160217141830) do
     t.string   "name",       limit: 255, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "api_key",    limit: 255
   end
 
+  add_index "sipity_groups", ["name", "api_key"], name: "index_sipity_groups_on_name_and_api_key", using: :btree
   add_index "sipity_groups", ["name"], name: "index_sipity_groups_on_name", unique: true, using: :btree
 
   create_table "sipity_models_processing_administrative_scheduled_actions", force: :cascade do |t|
