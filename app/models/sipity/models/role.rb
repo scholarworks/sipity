@@ -45,11 +45,13 @@ module Sipity
       CREATING_USER = 'creating_user'.freeze
       DATA_OBSERVING = "data_observing".freeze
       ETD_REVIEWING = "etd_reviewing".freeze
+      ETD_THIRD_PARTY_INTEGRATING = 'etd_third_party_integrating'.freeze
       REMEDIATING_DATA = "remediating_data".freeze
       SUBMISSION_WINDOW_VIEWING = "submission_window_viewing".freeze
       ULRA_REVIEWING = "ulra_reviewing".freeze
       WORK_AREA_MANAGING = "work_area_managing".freeze
       WORK_AREA_VIEWING = "work_area_viewing".freeze
+      WORK_SUBMISSION_LISTING = 'work_submission_listing'.freeze
       WORK_SUBMITTING = "work_submitting".freeze
 
       # As I don't have a means for assigning roles for a given processing type
@@ -62,11 +64,13 @@ module Sipity
           CREATING_USER => CREATING_USER,
           DATA_OBSERVING => DATA_OBSERVING,
           ETD_REVIEWING => ETD_REVIEWING,
+          ETD_THIRD_PARTY_INTEGRATING => ETD_THIRD_PARTY_INTEGRATING,
           REMEDIATING_DATA => REMEDIATING_DATA,
           SUBMISSION_WINDOW_VIEWING => SUBMISSION_WINDOW_VIEWING,
           ULRA_REVIEWING => ULRA_REVIEWING,
           WORK_AREA_MANAGING => WORK_AREA_MANAGING,
           WORK_AREA_VIEWING => WORK_AREA_VIEWING,
+          WORK_SUBMISSION_LISTING => WORK_SUBMISSION_LISTING,
           WORK_SUBMITTING => WORK_SUBMITTING
         }
       )
