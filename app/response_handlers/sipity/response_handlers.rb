@@ -79,7 +79,7 @@ module Sipity
       end
 
       def respond
-        responder.call(handler: self)
+        responder.for_controller(handler: self)
       end
 
       delegate :render, :redirect_to, to: :context

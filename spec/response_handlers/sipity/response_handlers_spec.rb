@@ -6,7 +6,7 @@ module Sipity
     before do
       module MockContainer
         module SuccessResponder
-          def self.call(handler:)
+          def self.for_controller(handler:)
             # I want to make sure the interface is correct, but Rubocop wants
             # me to do something with the keyword.
             _handler = handler
@@ -26,7 +26,9 @@ module Sipity
 
     context '.handle_controller_response' do
       it 'will build a handler then respond with that handler' do
-        expect(MockContainer::SuccessResponder).to receive(:call).with(handler: kind_of(described_class::ControllerResponseHandler))
+        expect(MockContainer::SuccessResponder).to(
+          receive(:for_controller).with(handler: kind_of(described_class::ControllerResponseHandler))
+        )
         described_class.handle_controller_response(
           container: MockContainer, context: context, handled_response: handled_response
         )
@@ -73,7 +75,7 @@ module Sipity
     end
 
     RSpec.describe ControllerResponseHandler do
-      let(:responder) { double(call: true) }
+      let(:responder) { double(for_controller: true) }
       let(:context) { double(render: true, redirect_to: true, :view_object= => true, prepend_processing_action_view_path_with: true) }
       let(:handled_response) do
         double(status: :success, errors: [], object: double, template: 'show', with_each_additional_view_path_slug: true)
@@ -96,14 +98,13 @@ module Sipity
 
       it 'will .respond by calling the responder with the handler' do
         expect(described_class.respond(context: context, handled_response: handled_response, responder: responder)).to eq(context.render)
-        expect(responder).to have_received(:call).with(handler: kind_of(described_class))
+        expect(responder).to have_received(:for_controller).with(handler: kind_of(described_class))
       end
 
       it 'accepts a custom responder' do
-        responder = double(call: true)
         subject = described_class.new(context: context, handled_response: handled_response, responder: responder)
         subject.respond
-        expect(responder).to have_received(:call).with(handler: subject)
+        expect(responder).to have_received(:for_controller).with(handler: subject)
       end
 
       context '#method_missing' do

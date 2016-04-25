@@ -8,22 +8,39 @@ module Sipity
     module SubmissionWindowHandler
       # Success! Huzzah
       module SuccessResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.render(template: handler.template)
+        end
+
+        def self.for_command_line(*)
+          true
         end
       end
 
       # We have a successful form submission.
       module SubmitSuccessResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
+        end
+
+        def self.for_command_line(*)
+          true
         end
       end
 
       # Forms that raise to submit may have different errors.
       module SubmitFailureResponder
-        def self.call(handler:)
+        def self.for_controller(handler:)
           handler.render(template: handler.template, status: :unprocessable_entity)
+        end
+
+        def self.for_command_line(handler:)
+          raise(
+            Sipity::Exceptions::ResponseHandlerError,
+            object: handler.response_object,
+            errors: handler.response_errors,
+            status: handler.response_status
+          )
         end
       end
     end
