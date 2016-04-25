@@ -3,7 +3,7 @@ module Sipity
     # Responsible for handling an HTTP request to interact with a WorkArea.
     #
     # @note This is part of the Sipity::ResponseHandlers experimentation.
-    class SubmissionWindowsController < ApplicationController
+    class SubmissionWindowsController < AuthenticatedController
       class_attribute :response_handler_container
       self.runner_container = Sipity::Runners::SubmissionWindowRunners
       self.response_handler_container = Sipity::ResponseHandlers::SubmissionWindowHandler

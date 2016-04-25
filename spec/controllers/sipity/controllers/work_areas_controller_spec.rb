@@ -13,6 +13,8 @@ module Sipity
         its(:response_handler_container) { is_expected.to eq(Sipity::ResponseHandlers::WorkAreaHandler) }
       end
 
+      it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
+
       context '#query_or_command_attributes' do
         it 'will merge the :page attribute if the work area does not already have one' do
           allow(controller).to receive(:params).and_return(work_area: { chicken: 'nugget' }, page: 1)

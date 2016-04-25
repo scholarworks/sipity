@@ -7,6 +7,15 @@ graduate_school_reviewers = Sipity::DataGenerators::WorkTypes::EtdGenerator::GRA
 $stdout.puts "Finding or creating group for '#{graduate_school_reviewers}'"
 graduate_school = Sipity::Models::Group.find_or_create_by!(name: graduate_school_reviewers)
 
+batch_ingestor_name = Sipity::Models::Group::BATCH_INGESTORS
+$stdout.puts "Finding or batch ingestors for '#{batch_ingestor_name}'"
+batch_ingestor = Sipity::Models::Group.find_or_create_by!(name: batch_ingestor_name)
+batch_ingestor.update!(api_key: Figaro.env.sipity_access_key_for_batch_ingester!)
+
+$stdout.puts "Finding or batch ingestors for '#{Sipity::Models::Group::ETD_INTEGRATORS}'"
+integrator = Sipity::Models::Group.find_or_create_by!(name: Sipity::Models::Group::ETD_INTEGRATORS)
+integrator.update!(api_key: Figaro.env.sipity_access_key_for_etd_integrators!)
+
 $stdout.puts "Associating #{user.username} with #{graduate_school.name}"
 graduate_school.group_memberships.find_or_create_by(user: user)
 

@@ -9,6 +9,8 @@ module Sipity
       # REVIEW: It is possible the runner will return a well formed object
       let(:runner) { double('Runner', run: [status, work_area]) }
 
+      it { is_expected.to_not be_a(Sipity::Controllers::AuthenticatedController) }
+
       context 'configuration' do
         its(:runner_container) { is_expected.to eq(Sipity::Runners::VisitorsRunner) }
         its(:response_handler_container) { is_expected.to eq(Sipity::ResponseHandlers::WorkAreaHandler) }

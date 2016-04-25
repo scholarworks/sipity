@@ -4,6 +4,8 @@ feature 'Export ETD to Batch Ingest' do
   before do
     path = Rails.root.join('app/data_generators/sipity/data_generators/work_areas/etd_work_area.config.json')
     Sipity::DataGenerators::WorkAreaGenerator.call(path: path)
+    group = Sipity::Models::Group.find_or_create_by!(name: Sipity::Models::Group::BATCH_INGESTORS)
+    group.update!(api_key: '1234')
   end
   let(:user) { Sipity::Factories.create_user }
   let(:submission_window) { Sipity::Models::SubmissionWindow.find_by!(slug: 'start') }

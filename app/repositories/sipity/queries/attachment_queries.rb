@@ -3,7 +3,7 @@ module Sipity
     # Queries
     module AttachmentQueries
       def work_attachments(work:, predicate_name: :all)
-        scope = Models::Attachment.includes(:work).where(work_id: work.id)
+        scope = Models::Attachment.includes(:work, :access_right).where(work_id: work.id)
         return scope if predicate_name == :all
         scope.where(predicate_name: predicate_name)
       end

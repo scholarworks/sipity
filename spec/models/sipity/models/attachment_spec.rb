@@ -17,6 +17,8 @@ module Sipity
 
       context 'instance methods' do
         subject { described_class.new }
+        it { is_expected.to delegate_method(:access_right_code).to(:access_right) }
+        it { is_expected.to delegate_method(:release_date).to(:access_right) }
         it 'will have a #to_s equal to the file name' do
           subject.file_name = 'Hello World'
           expect(subject.to_s).to eq('Hello World')

@@ -1,7 +1,7 @@
 module Sipity
   module Controllers
     # The controller for handling callbacks for work submissions
-    class WorkSubmissionCallbacksController < ApplicationController
+    class WorkSubmissionCallbacksController < AuthenticatedController
       skip_before_action :verify_authenticity_token
 
       class_attribute :response_handler_container
@@ -27,33 +27,6 @@ module Sipity
       helper_method :view_object
       alias model view_object
       helper_method :model
-
-      # @todo With Cogitate this will need to be revisited
-      def authenticate_user!
-        authenticated_user = authenticate_with_http_basic { |user, password| user_for_etd_ingester(user: user, password: password) }
-        if authenticated_user
-          @current_user = authenticated_user
-        else
-          super
-        end
-      end
-
-      # Required because the authorization layer is firing the current user test prior to the authenticate_user! action filter
-      # The end result was that the user for the web request came through as nil in the authorization layer.
-      #
-      # @todo With Cogitate this will need to be revisited
-      def current_user
-        return @current_user if @current_user
-        authenticate_user!
-        @current_user
-      end
-
-      # @todo With Cogitate this will need to be revisited
-      def user_for_etd_ingester(user:, password:, group_name: Models::Group::BATCH_INGESTORS, env: Figaro.env)
-        return false unless user == group_name
-        return false unless password == env.sipity_batch_ingester_access_key!
-        Sipity::Models::Group.find_by!(name: group_name)
-      end
 
       private
 

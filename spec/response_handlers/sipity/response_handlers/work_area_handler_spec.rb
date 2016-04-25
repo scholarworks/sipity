@@ -5,11 +5,11 @@ module Sipity
   module ResponseHandlers
     module WorkAreaHandler
       RSpec.describe SuccessResponder do
-        let(:handler) { double(render: 'rendered', template: 'show') }
+        let(:handler) { double(render: 'rendered', template: 'show', request_format: :html) }
         context '.for_controller' do
           it 'will coordinate the rendering of the template' do
             described_class.for_controller(handler: handler)
-            expect(handler).to have_received(:render).with(template: handler.template)
+            expect(handler).to have_received(:render).with(template: handler.template, format: handler.request_format)
           end
         end
         context '.for_command_line' do
@@ -19,11 +19,13 @@ module Sipity
       end
 
       RSpec.describe SubmitFailureResponder do
-        let(:handler) { double(render: 'rendered', template: 'show') }
+        let(:handler) { double(render: 'rendered', template: 'show', request_format: :html) }
         context '.for_controller' do
           it 'will coordinate the rendering of the template' do
             described_class.for_controller(handler: handler)
-            expect(handler).to have_received(:render).with(template: handler.template, status: :unprocessable_entity)
+            expect(handler).to have_received(:render).with(
+              template: handler.template, status: :unprocessable_entity, format: handler.request_format
+            )
           end
         end
         context '.for_command_line' do

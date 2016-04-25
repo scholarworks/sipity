@@ -118,7 +118,7 @@ module Sipity
 
         def default_requested_by
           require 'sipity/models/group' unless defined?(Sipity::Models::Group)
-          Sipity::Models::Group.batch_ingestors
+          Sipity::Models::Group.find_by!(name: Sipity::Models::Group::BATCH_INGESTORS)
         end
 
         attr_accessor :repository

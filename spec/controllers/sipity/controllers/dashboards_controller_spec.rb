@@ -14,6 +14,7 @@ module Sipity
         end
         let(:view_object) { double }
         let(:callback_name) { :success }
+        it { is_expected.to be_a(Sipity::Controllers::AuthenticatedController) }
         it 'will render the new page' do
           get 'index', processing_state: 'hello'
           expect(assigns(:view)).to_not be_nil

@@ -65,6 +65,8 @@ module Sipity
         described_class.respond(handled_response: handled_response, responder: responder)
       end
 
+      it { is_expected.to respond_to(:request_format) }
+
       it 'will #respond by calling the responder#for_command_line' do
         expect(responder).to receive(:for_command_line).with(handler: subject).and_return(:for_command_line_called)
         expect(subject.respond).to eq(:for_command_line_called)
@@ -88,6 +90,7 @@ module Sipity
       it { is_expected.to delegate_method(:status).to(:handled_response).with_prefix(:response) }
       it { is_expected.to delegate_method(:object).to(:handled_response).with_prefix(:response) }
       it { is_expected.to delegate_method(:errors).to(:handled_response).with_prefix(:response) }
+      it { is_expected.to delegate_method(:request_format).to(:context) }
 
       it 'will coordinate updating view path information with the context' do
         expect(handled_response).to receive(:with_each_additional_view_path_slug).and_yield('core').and_yield('ulra')

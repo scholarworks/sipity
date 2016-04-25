@@ -10,6 +10,9 @@
     }, {
       "group": "Graduate School Reviewers",
       "role": "work_area_managing"
+    }, {
+      "group": "ETD_INTEGRATORS",
+      "role": "work_submission_listing"
     }],
     "submission_window_config_paths": ["app/data_generators/sipity/data_generators/submission_windows/etd_submission_windows.config.json"],
     "actions": [{
@@ -17,6 +20,12 @@
       "from_states": [{
         "name": ["new", "opened", "closed"],
         "roles": "work_area_viewing"
+      }]
+    }, {
+      "name": "list_submissions",
+      "from_states": [{
+        "name": ["new", "opened", "closed"],
+        "roles": "work_submission_listing"
       }]
     }, {
       "name": "open",

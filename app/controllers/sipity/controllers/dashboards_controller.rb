@@ -2,7 +2,7 @@ module Sipity
   module Controllers
     # Controller responsible for rendering a user's dashboard. That is to say
     # How can I see everything?
-    class DashboardsController < ApplicationController
+    class DashboardsController < AuthenticatedController
       respond_to :html, :json
 
       self.runner_container = Sipity::Runners::DashboardRunners

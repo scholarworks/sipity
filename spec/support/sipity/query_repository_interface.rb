@@ -221,6 +221,10 @@ module Sipity
     def scope_users_for_entity_and_roles(entity:, roles:)
     end
 
+    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
+    def scope_work_attributes_for(work:, keys: :all)
+    end
+
     # @see ./app/repositories/sipity/queries/event_log_queries.rb
     def sequence_of_events_for(options = {})
     end
@@ -239,6 +243,10 @@ module Sipity
 
     # @see ./app/repositories/sipity/queries/attachment_queries.rb
     def work_attachments(work:, predicate_name: :all)
+    end
+
+    # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb
+    def work_attribute_key_value_pairs_for(work:, keys: :all)
     end
 
     # @see ./app/repositories/sipity/queries/additional_attribute_queries.rb

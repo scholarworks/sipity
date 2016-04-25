@@ -1,7 +1,7 @@
 module Sipity
   module Controllers
     # Controller for displaying comments
-    class CommentsController < ApplicationController
+    class CommentsController < AuthenticatedController
       respond_to :html, :json
 
       self.runner_container = Sipity::Runners::CommentRunners

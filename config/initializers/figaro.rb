@@ -18,6 +18,6 @@ Figaro.require_keys(
   'noid_server',
   'protocol',
   'secret_key_base',
-  'sipity_batch_ingester_access_key',
+  'sipity_access_key_for_batch_ingester',
   'url_host',
 )
