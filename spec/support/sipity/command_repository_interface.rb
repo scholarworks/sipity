@@ -165,10 +165,6 @@ module Sipity
     def find_submission_window_by(slug:, work_area:)
     end
 
-    # @see ./app/repositories/sipity/queries/work_queries.rb
-    def find_work(work_id)
-    end
-
     # @see ./app/repositories/sipity/queries/work_area_queries.rb
     def find_work_area_by(slug:)
     end

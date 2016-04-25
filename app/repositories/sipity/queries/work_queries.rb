@@ -2,11 +2,6 @@ module Sipity
   module Queries
     # Queries
     module WorkQueries
-      def find_work(work_id)
-        find_work_by(id: work_id)
-      end
-      deprecate :find_work
-
       def find_work_by(id:)
         Models::Work.includes(:processing_entity, work_submission: [:work_area, :submission_window]).find(id)
       end
