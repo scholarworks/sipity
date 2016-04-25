@@ -13,11 +13,6 @@ module Sipity
           handler.render(template: handler.template)
         end
 
-        class << self
-          alias call for_controller
-          deprecate call: "Prefer .for_controller instead"
-        end
-
         # @review should I consider if a logger is passed?
         def self.for_command_line(*)
           return true
@@ -28,11 +23,6 @@ module Sipity
       module RedirectResponder
         def self.for_controller(handler:)
           handler.redirect_to(handler.response_object.url)
-        end
-
-        class << self
-          alias call for_controller
-          deprecate call: "Prefer .for_controller instead"
         end
 
         # @review should I consider if a logger is passed?
@@ -52,11 +42,6 @@ module Sipity
           handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
         end
 
-        class << self
-          alias call for_controller
-          deprecate call: "Prefer .for_controller instead"
-        end
-
         # @review should I consider if a logger is passed?
         def self.for_command_line(*)
           return true
@@ -67,11 +52,6 @@ module Sipity
       module SubmitFailureResponder
         def self.for_controller(handler:)
           handler.render(template: handler.template, status: :unprocessable_entity)
-        end
-
-        class << self
-          alias call for_controller
-          deprecate call: "Prefer .for_controller instead"
         end
 
         # @review should I consider if a logger is passed?
