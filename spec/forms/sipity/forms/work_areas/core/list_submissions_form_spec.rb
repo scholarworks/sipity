@@ -11,7 +11,7 @@ module Sipity
           let(:user) { double }
           let(:attributes) { {} }
           let(:form) { described_class.new(work_area: work_area, requested_by: user, repository: repository, attributes: attributes) }
-          subject {  form }
+          subject { form }
 
           its(:policy_enforcer) { is_expected.to eq Sipity::Policies::WorkAreaPolicy }
           its(:processing_action_name) { is_expected.to eq('list_submissions') }
