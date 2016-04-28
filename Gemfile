@@ -61,9 +61,6 @@ group :development do
   gem 'guard-scss-lint', github: 'ndlib/guard-scss-lint'
   gem 'i18n-debug'
   gem 'letter_opener'
-  # Paired with Chrome the RailsPanel plugin, you can see request information
-  # https://github.com/dejan/rails_panel
-  gem 'meta_request'
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'quiet_assets'

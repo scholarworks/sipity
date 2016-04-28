@@ -156,7 +156,6 @@ GEM
       terminal-table (~> 1.4)
     builder (3.2.2)
     byebug (8.2.2)
-    callsite (0.0.11)
     capistrano (3.4.1)
       i18n
       rake (>= 10.0.0)
@@ -283,7 +282,6 @@ GEM
       fog-core
       nokogiri (~> 1.5, >= 1.5.11)
     formatador (0.2.5)
-    git-version-bump (0.15.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     guard (2.13.0)
@@ -355,10 +353,6 @@ GEM
     lumberjack (1.0.10)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
-    meta_request (0.4.0)
-      callsite (~> 0.0, >= 0.0.11)
-      rack-contrib (~> 1.1)
-      railties (>= 3.0.0, < 5.1.0)
     method_source (0.8.2)
     mime-types (2.6.2)
     mini_portile2 (2.0.0)
@@ -407,9 +401,6 @@ GEM
     rack (1.6.4)
     rack-cache (1.6.1)
       rack (>= 0.4)
-    rack-contrib (1.4.0)
-      git-version-bump (~> 0.15)
-      rack (~> 1.4)
     rack-test (0.6.3)
       rack (>= 1.0)
     rails (4.2.6)
@@ -640,7 +631,6 @@ DEPENDENCIES
   letter_opener
   locabulary!
   loofah (~> 2.0.3)
-  meta_request
   mime-types (~> 2.6.1)
   mysql2
   noids_client!
