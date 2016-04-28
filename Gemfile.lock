@@ -227,7 +227,7 @@ GEM
       rubycas-client (>= 2.2.1)
     diff-lcs (1.2.5)
     docile (1.1.5)
-    domain_name (0.5.20160216)
+    domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     dragonfly-s3_data_store (1.2)
       dragonfly (~> 1.0)
