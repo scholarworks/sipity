@@ -100,7 +100,7 @@ group :test do
   gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 3.0.1'
-  gem 'site_prism'
+  gem 'site_prism', require: false
   gem 'sqlite3'
 end
 
