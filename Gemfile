@@ -82,7 +82,6 @@ group :development, :staging do
 end
 
 group :development, :test do
-  gem 'faker'
   gem 'pry-rescue', require: false
   gem 'pry-stack_explorer', require: false
   gem 'rspec-its'
