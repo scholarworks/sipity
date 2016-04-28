@@ -17,6 +17,7 @@ require_relative './coverage_helper'
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 require 'rspec-html-matchers'
+require 'rspec/its'
 require_relative './support/sipity/rspec_matchers'
 require 'shoulda/matchers'
 
