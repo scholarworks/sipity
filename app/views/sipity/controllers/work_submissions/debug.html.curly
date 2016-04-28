@@ -14,7 +14,7 @@
         <li>
           <dl>
             <dt>Name</dt>
-            <dd>{{name}} (ID={{role_id}})</dd>
+            <dd>{{name}} ({{role_model_name}} ID={{role_id}})</dd>
             <dt>Actors</dt>
             <dd>
               <ul>
