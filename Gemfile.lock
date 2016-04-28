@@ -355,7 +355,7 @@ GEM
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.6.2)
+    mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
     multi_json (1.11.2)
@@ -633,7 +633,8 @@ DEPENDENCIES
   letter_opener
   locabulary!
   loofah (~> 2.0.3)
-  mime-types (~> 2.6.1)
+  meta_request
+  mime-types (~> 2.6)
   mysql2
   noids_client!
   poltergeist
