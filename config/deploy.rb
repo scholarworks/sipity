@@ -1,8 +1,9 @@
 # config valid only for Capistrano 3.1
-lock '3.4.1'
+lock '3.5.0'
 set :default_env, {
   path: "/opt/ruby/current/bin:$PATH"
 }
+set :format, :pretty
 set :bundle_roles, [:app, :work]
 set :bundle_flags, "--deployment --path=vendor/bundle"
 set :bundle_cmd, "/opt/ruby/current/bin/bundle"
@@ -155,3 +156,4 @@ after 'deploy', 'deploy:restart'
 
 require './config/boot'
 require 'airbrake/capistrano3'
+require 'capistrano/console'
