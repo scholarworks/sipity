@@ -7,7 +7,7 @@ GIT
 
 GIT
   remote: git://github.com/jeremyf/curly.git
-  revision: 7209cb9e932f7cbd0839508b96cc979d61b19277
+  revision: 88686a74b87be21986aa235401237725babb4217
   branch: sipity-hack
   specs:
     curly-templates (2.5.0)
