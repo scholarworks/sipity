@@ -61,8 +61,8 @@ group :development do
   gem 'guard-scss-lint', github: 'ndlib/guard-scss-lint'
   gem 'i18n-debug'
   gem 'letter_opener'
-  gem 'pry-byebug'
-  gem 'pry-rails'
+  gem 'pry-byebug', require: false
+  gem 'pry-rails', require: false
   gem 'quiet_assets'
   gem 'rails_layout'
   gem 'rb-fchange', require: false
