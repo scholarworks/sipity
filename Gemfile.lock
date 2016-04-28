@@ -21,7 +21,7 @@ GIT
 
 GIT
   remote: git://github.com/jeremyf/dragonfly.git
-  revision: f28dc0cde85a79a07ca43e385f58bf01317e3475
+  revision: b5397e72bdb974cb7009c84261591dd69331e109
   branch: updating-dragonfly-to_file
   specs:
     dragonfly (1.0.12)
@@ -364,7 +364,7 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
-    multi_json (1.11.2)
+    multi_json (1.11.3)
     mysql2 (0.4.4)
     nenv (0.3.0)
     net-scp (1.2.1)
