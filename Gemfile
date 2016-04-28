@@ -90,7 +90,7 @@ group :development, :test do
   gem 'rspec-rails', '~>3.4.0'
   gem 'commitment'
   gem 'jshintrb', github: 'ndlib/jshintrb', ref: 'f8cb0bd86ed9379acd50de871b3af9f8d251b977'
-  gem 'rubocop'
+  gem 'rubocop', require: false
 end
 
 group :test do
