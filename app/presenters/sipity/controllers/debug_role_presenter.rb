@@ -8,7 +8,7 @@ module Sipity
       presents :debug_role
 
       delegate :name, :to_processing_entity, :repository, to: :debug_role
-      delegate :id, to: :debug_role, prefix: :role
+      delegate :id, :model_name, to: :debug_role, prefix: :role
 
       def initialize(context, options = {})
         super
