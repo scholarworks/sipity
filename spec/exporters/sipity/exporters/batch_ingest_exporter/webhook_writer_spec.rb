@@ -16,6 +16,14 @@ module Sipity
             described_class.call(exporter: exporter)
           end
         end
+
+        describe '.authorization_credentials' do
+          subject { described_class.send(:authorization_credentials) }
+          it 'URI encodes the authorization credentials' do
+            allow(Models::Group).to receive(:basic_authorization_string_for!).and_return("User Name:Super Secret")
+            expect(subject).to eq("User%20Name:Super%20Secret")
+          end
+        end
       end
     end
   end

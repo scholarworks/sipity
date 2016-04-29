@@ -17,13 +17,17 @@ module Sipity
         private_class_method :target_path
 
         def callback_url(work_id:)
-          authorization_credentials = Models::Group.basic_authorization_string_for!(name: Models::Group::BATCH_INGESTORS)
           File.join(
             "#{Figaro.env.protocol!}://#{authorization_credentials}@#{Figaro.env.domain_name!}",
             "/work_submissions/#{work_id}/callback/ingest_completed.json"
           )
         end
         private_class_method :callback_url
+
+        def authorization_credentials
+          URI.encode(Models::Group.basic_authorization_string_for!(name: Models::Group::BATCH_INGESTORS))
+        end
+        private_class_method :authorization_credentials
       end
     end
   end
