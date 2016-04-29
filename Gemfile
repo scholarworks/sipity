@@ -62,11 +62,8 @@ group :development do
   gem 'guard-scss-lint', github: 'ndlib/guard-scss-lint'
   gem 'i18n-debug'
   gem 'letter_opener'
-  # Paired with Chrome the RailsPanel plugin, you can see request information
-  # https://github.com/dejan/rails_panel
-  gem 'meta_request'
-  gem 'pry-byebug'
-  gem 'pry-rails'
+  gem 'pry-byebug', require: false
+  gem 'pry-rails', require: false
   gem 'quiet_assets'
   gem 'rails_layout'
   gem 'rb-fchange', require: false
@@ -83,10 +80,9 @@ group :development, :staging do
 end
 
 group :development, :test do
-  gem 'faker'
   gem 'pry-rescue', require: false
   gem 'pry-stack_explorer', require: false
-  gem 'rspec-its'
+  gem 'rspec-its', require: false
   gem 'rspec', '~>3.4.0'
   gem 'rspec-rails', '~>3.4.0'
   gem 'commitment'
@@ -105,7 +101,7 @@ group :test do
   gem 'shoulda-callback-matchers'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 3.0.1'
-  gem 'site_prism'
+  gem 'site_prism', require: false
   gem 'sqlite3'
 end
 
