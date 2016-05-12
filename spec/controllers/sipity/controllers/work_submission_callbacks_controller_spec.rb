@@ -21,12 +21,10 @@ module Sipity
 
       context '#command_attributes' do
 
-        it 'will normalize parameters' do
+        it 'will normalize QUERY parameters' do
           given_params = {
             "host" => "libvirt6.library.nd.edu", "version" => "1.0.0", "job_name" => "sipity-44558c99h70", "job_state" => "success",
-            "work_id" => "44558c99h70", "processing_action_name" => "ingest_completed", "work_submission" => {
-              "host" => "libvirt6.library.nd.edu", "version" => "1.0.0", "job_name" => "sipity-44558c99h70", "job_state" => "success"
-            }
+            "work_id" => "44558c99h70", "processing_action_name" => "ingest_completed", "work_submission" => {}
           }
           expect_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action).with(
             work_id: given_params.fetch('work_id'),
@@ -36,6 +34,17 @@ module Sipity
           )
           expect do
             post 'command_action', given_params
+          end.to raise_error(ActionView::MissingTemplate, /command_action/) # Because auto-rendering
+        end
+
+        it 'will normalize posted body parameters' do
+          json_body = '{"host":"curatewkrprod.library.nd.edu", "version":"1.1.4", "job_name":"sipity-44558c99h70", "job_state":"success"}'
+          expect_any_instance_of(ProcessingActionComposer).to receive(:run_and_respond_with_processing_action).with(
+            work_id: work.to_param, attributes: JSON.parse(json_body)
+          )
+          expect do
+            request.env['RAW_POST_DATA'] = json_body
+            post 'command_action', work_id: work.to_param, processing_action_name: 'ingest_completed', format: :json
           end.to raise_error(ActionView::MissingTemplate, /command_action/) # Because auto-rendering
         end
       end

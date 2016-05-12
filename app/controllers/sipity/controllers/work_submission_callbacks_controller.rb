@@ -46,11 +46,24 @@ module Sipity
       #
       # @see https://github.com/ndlib/curatend-batch/blob/master/webhook.md
       def command_attributes
-        params.fetch(:work) { HashWithIndifferentAccess.new }.merge(normalized_attributes_for_existing_callback_constraints)
+        params.fetch(:work) { HashWithIndifferentAccess.new }.merge(
+          normalized_attributes_for_existing_callback_constraints
+        ).merge(
+          request_body_attributes
+        )
       end
 
       def normalized_attributes_for_existing_callback_constraints
-        params.except(:action, :controller, :work_id, :processing_action_name, :work, :work_submission)
+        params.except(:action, :controller, :work_id, :processing_action_name, :work, :work_submission, :format)
+      end
+
+      # Because not all parameters may be coming from the query params; in fact they may be raw params from the body
+      def request_body_attributes
+        return {} unless request.format.json?
+        return {} unless request.body.present?
+        JSON.parse(request.body.read)
+      ensure
+        request.body.rewind if request.body.present?
       end
     end
   end
