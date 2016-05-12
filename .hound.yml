@@ -128,6 +128,7 @@ Metrics/AbcSize:
      - 'app/repositories/sipity/commands/processing_commands.rb'
      - app/forms/sipity/forms/processing_form.rb
      - app/mailers/sipity/mailer_builder.rb
+     - app/controllers/sipity/controllers/work_submission_callbacks_controller.rb
 Delegate:
   Description: 'Prefer delegate method for delegations.'
   Enabled: false
