@@ -363,7 +363,7 @@ GEM
     mime-types (2.99.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
-    multi_json (1.11.3)
+    multi_json (1.12.0)
     mysql2 (0.4.4)
     nenv (0.3.0)
     net-scp (1.2.1)
