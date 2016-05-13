@@ -18,6 +18,7 @@ gem 'figaro'
 gem 'hesburgh-lib', github: 'ndlib/hesburgh-lib'
 gem 'jbuilder', '~> 2.0'
 gem 'jquery-rails'
+gem 'listen', '~> 3.0.7' # Frozen for Ruby 2.2.2; Release once updated
 gem 'loofah', '~> 2.0.3' # Related to hesburgh-lib's dependency
 gem 'noids_client', git: 'git://github.com/ndlib/noids_client'
 gem 'rdiscount'
