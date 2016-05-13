@@ -23,7 +23,7 @@ module Sipity
         # TODO: Move this to a repository question; After all don't we want
         # to limit the filter to only objects that are for states in which the
         # user can actually do something (ie see it, alter it, etc)
-        Models::Processing::StrategyState.all.pluck(:name).uniq.sort
+        Models::Processing::StrategyState.all.order(:name).select(:name).uniq.pluck(:name)
       end
 
       def works_scope
