@@ -93,7 +93,6 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'capybara-accessible', require: false
   gem 'codeclimate-test-reporter', require: nil
   gem 'database_cleaner'
   gem 'launchy'

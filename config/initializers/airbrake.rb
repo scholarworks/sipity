@@ -5,4 +5,5 @@ Airbrake.configure do |config|
   config.secure  = config.port == 443
   config.user_attributes = [:id, :username]
   config.ignore << "Sipity::Exceptions::AuthorizationFailureError"
+  config.ignore << "URI::InvalidComponentError"
 end

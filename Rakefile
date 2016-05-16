@@ -52,23 +52,6 @@ if defined?(RSpec)
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task[:default].invoke
     end
-
-    desc "Run all features with accessibility checks"
-    RSpec::Core::RakeTask.new(:accessible) do |t|
-      ENV['ACCESSIBLE'] = 'true'
-      t.pattern = './spec/features/**/*_spec.rb'
-    end
-
-    desc "Validate the code coverage goals"
-    task validate_coverage_goals: :environment do
-      default_percentage_coverage_goal = '100'
-      json_document = Rails.root.join('coverage/.last_run.json').read
-      coverage_percentage = JSON.parse(json_document).fetch('result').fetch('covered_percent').to_i
-      goal_percentage = (Figaro.env.percent_coverage_goal || default_percentage_coverage_goal).to_i
-      if goal_percentage > coverage_percentage
-        abort("Code Coverage Goal Not Met:\n\t#{goal_percentage}%\tExpected\n\t#{coverage_percentage}%\tActual")
-      end
-    end
   end
 
   # BEGIN `commitment:install` generator
