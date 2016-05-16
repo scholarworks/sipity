@@ -52,12 +52,6 @@ if defined?(RSpec)
       ENV['SPEC_OPTS'] ||= "--profile 5"
       Rake::Task[:default].invoke
     end
-
-    desc "Run all features with accessibility checks"
-    RSpec::Core::RakeTask.new(:accessible) do |t|
-      ENV['ACCESSIBLE'] = 'true'
-      t.pattern = './spec/features/**/*_spec.rb'
-    end
   end
 
   # BEGIN `commitment:install` generator
