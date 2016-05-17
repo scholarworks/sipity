@@ -245,3 +245,13 @@ is at a point where forms could be composed of a QueryService and
 CommandService object. And that is how things may move going forward.
 But for now we factor towards an understanding of how our code is
 growing and taking shape.
+
+## Users, Groups, and Actors
+
+Sipity has three concepts that are important when considering permissions:
+
+* [User](app/models/user.rb) - a NetID backed person leveraging the ubiqutous [Devise gem](https://github.com/plataformatec/devise)
+* [Sipity::Models::Group](app/models/sipity/models/group.rb) - represents a set of Users in which there is a logicl business connection.
+* [Sipity::Models::Processing::Actor](app/models/sipity/models/processing/actor.rb) - the Object in which permissions are checked against. An Actor is associated with either a User or a Group – via a polymorphic association.
+
+When actions are taken we record both the requestor and on behalf of information. Often the requester is a User (i.e. someone logged into the system) but Sipity is really only concerned with does the User’s associated Actor have permission. So I have short-circuited the Group structure to say that these “Agents” are in fact groups. I store the group’s api key and check basic authentication to see if it includes a Group and API Key that are correct. If so I authenticate the current user as the group (again a concession of Devise).
