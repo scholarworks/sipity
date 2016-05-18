@@ -47,7 +47,7 @@ module Sipity
       attr_accessor :schema
 
       def default_schema
-        SubmissionWindowSchema.new.method(:call)
+        SubmissionWindowSchema
       end
 
       def validate!

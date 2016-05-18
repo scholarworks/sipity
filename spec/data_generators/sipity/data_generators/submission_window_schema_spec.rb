@@ -3,7 +3,7 @@ require 'sipity/data_generators/submission_window_schema'
 
 module Sipity
   RSpec.describe DataGenerators::SubmissionWindowSchema do
-    subject { described_class.new }
+    subject { described_class }
 
     [
       'ulra_submission_windows.config.json',

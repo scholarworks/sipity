@@ -41,7 +41,7 @@ module Sipity
       attr_accessor :schema
 
       def default_schema
-        WorkTypeSchema.new.method(:call)
+        WorkTypeSchema
       end
 
       def validate!

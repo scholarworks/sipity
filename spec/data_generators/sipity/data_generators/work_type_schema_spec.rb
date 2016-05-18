@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
-  subject { described_class.new }
+  subject { described_class }
 
   context 'with valid data' do
     let(:data) do
@@ -53,6 +53,14 @@ RSpec.describe Sipity::DataGenerators::WorkTypeSchema do
 
     it 'validates good data' do
       expect(subject.call(data).messages).to be_empty
+    end
+
+    it 'invalidates bad data for a state emails reason' do
+      data = {
+        work_types: [{ actions: [], name: 'wonky', state_emails: [{ state: 'under_review', email: 'hello', reason: 'chicken_dinner' }] }]
+      }
+      messages = subject.call(data).messages
+      expect(messages[0][:work_types][0][:state_emails][:reason]).to be_present
     end
 
     [

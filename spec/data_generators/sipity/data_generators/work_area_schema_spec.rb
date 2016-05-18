@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe Sipity::DataGenerators::WorkAreaSchema do
-  subject { described_class.new }
+  subject { described_class }
 
   context 'with valid data' do
     let(:data) do
