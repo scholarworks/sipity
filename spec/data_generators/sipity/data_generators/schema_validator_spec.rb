@@ -20,9 +20,9 @@ module Sipity
 
       context 'with a dry-validation schema' do
         let(:schema) do
-          Class.new(Dry::Validation::Schema) do
-            key(:name, &:str?)
-          end.new
+          Dry::Validation.Schema do
+            key(:name).required(:str?)
+          end
         end
 
         it 'returns true if the given data has a valid schema' do
