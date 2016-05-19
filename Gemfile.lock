@@ -208,8 +208,6 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
-    devise-token_authenticatable (0.4.6)
-      devise (>= 3.5.2, < 4.0.0)
     devise_cas_authenticatable (1.9.1)
       devise (>= 1.2.0)
       rubycas-client (>= 2.2.1)
@@ -589,7 +587,6 @@ DEPENDENCIES
   data_migrator!
   database_cleaner
   devise
-  devise-token_authenticatable
   devise_cas_authenticatable
   dragonfly!
   dragonfly-s3_data_store
