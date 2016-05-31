@@ -134,7 +134,7 @@ GEM
       sshkit (>= 1.6.1, != 1.7.0)
     arel (6.0.3)
     ast (2.2.0)
-    autoprefixer-rails (6.3.6.1)
+    autoprefixer-rails (6.3.6.2)
       execjs
     bcrypt (3.1.11)
     better_errors (2.1.1)
@@ -149,7 +149,7 @@ GEM
     brakeman (3.3.0)
     builder (3.2.2)
     bumbler (0.3.2)
-    byebug (9.0.4)
+    byebug (9.0.5)
     capistrano (3.5.0)
       airbrussh (>= 1.0.0)
       capistrano-harrow
@@ -322,7 +322,7 @@ GEM
     inflecto (0.0.2)
     interception (0.5)
     ipaddress (0.8.3)
-    jbuilder (2.4.1)
+    jbuilder (2.5.0)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
     jquery-rails (4.1.1)
@@ -330,7 +330,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (1.8.3)
-    kaminari (0.16.3)
+    kaminari (0.17.0)
       actionpack (>= 3.0.0)
       activesupport (>= 3.0.0)
     launchy (2.4.3)
@@ -663,4 +663,4 @@ DEPENDENCIES
   yard-activerecord
 
 BUNDLED WITH
-   1.12.4
+   1.12.5
