@@ -25,7 +25,7 @@ module Sipity
               'dc:rights' => fetch_attribute_values(key: 'copyright'),
               'dc:language' => fetch_attribute_values(key: 'language'),
               'dc:date' => fetch_attribute_values(key: 'defense_date'),
-              'dc:dateSubmitted' => format_date(Time.zone.today),
+              'dc:dateSubmitted' => fetch_attribute_values(key: Sipity::Models::AdditionalAttribute::ETD_SUBMISSION_DATE),
               'dc:contributor' => collaborator_metadata,
               'ms:degree' => degree_metadata
             }
