@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 module Sipity
   module Decorators
     RSpec.describe DashboardView do

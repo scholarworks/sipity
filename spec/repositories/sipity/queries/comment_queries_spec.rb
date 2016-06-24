@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 module Sipity
   module Queries
     RSpec.describe CommentQueries, type: :isolated_repository_module do

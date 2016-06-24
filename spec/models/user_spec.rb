@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe User do
 
   subject { User.new(email: 'user@example.com', name: "Hello Somebody") }

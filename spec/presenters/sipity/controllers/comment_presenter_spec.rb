@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 module Sipity
   module Controllers
     RSpec.describe CommentPresenter do

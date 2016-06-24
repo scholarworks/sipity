@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 module Sipity
   module Policies
     RSpec.describe WorkAreaPolicy do
