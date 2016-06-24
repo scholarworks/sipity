@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/visitors/ulra/work_area_presenter'
 
 module Sipity

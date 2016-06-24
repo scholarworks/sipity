@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/decorators/emails/registered_action_decorator'
 
 module Sipity

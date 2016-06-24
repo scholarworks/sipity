@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/conversions/to_rof/access_rights_builder'
 
 module Sipity

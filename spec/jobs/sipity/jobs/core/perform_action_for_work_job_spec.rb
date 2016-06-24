@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/jobs/core/perform_action_for_work_job'
 
 RSpec.describe Sipity::Jobs::Core::PerformActionForWorkJob do

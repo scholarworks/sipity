@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/commands/transient_answer_commands'
 
 module Sipity

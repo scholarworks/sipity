@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 RSpec.describe 'database seeds' do
   let(:path_to_seeds) { Rails.root.join('db/seeds.rb') }

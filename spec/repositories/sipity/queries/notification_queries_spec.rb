@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/queries/notification_queries'
 require 'sipity/parameters/notification_context_parameter'
 

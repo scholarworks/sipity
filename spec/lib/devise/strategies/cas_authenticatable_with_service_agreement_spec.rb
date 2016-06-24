@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'devise/strategies/cas_authenticatable_with_service_agreement'
 
 module Devise

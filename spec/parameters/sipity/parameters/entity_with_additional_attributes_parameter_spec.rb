@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/parameters/entity_with_additional_attributes_parameter'
 
 module Sipity

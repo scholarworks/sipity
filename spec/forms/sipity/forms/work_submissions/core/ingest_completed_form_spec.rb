@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/forms/work_submissions/core/ingest_completed_form'
 
 module Sipity

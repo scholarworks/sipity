@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/decorators/work_decorator'
 
 module Sipity

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/conversions/extract_input_date_from_input'
 
 module Sipity

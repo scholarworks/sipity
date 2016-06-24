@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/additional_attribute_set_presenter'
 
 module Sipity

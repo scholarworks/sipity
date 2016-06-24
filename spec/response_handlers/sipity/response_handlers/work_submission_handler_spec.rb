@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/response_handlers/work_submission_handler'
 require 'sipity/response_handlers/work_submission_handler'
 

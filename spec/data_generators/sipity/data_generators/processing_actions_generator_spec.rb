@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/data_generators/processing_actions_generator'
 
 module Sipity

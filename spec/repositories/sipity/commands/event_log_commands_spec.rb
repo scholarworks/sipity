@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/commands/event_log_commands'
 
 module Sipity

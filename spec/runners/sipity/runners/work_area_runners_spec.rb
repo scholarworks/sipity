@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/runners/work_area_runners'
 require 'sipity/runners/work_area_runners'
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe 'work area routing spec', type: :routing do
   context 'sipity/controllers/submission_windows' do

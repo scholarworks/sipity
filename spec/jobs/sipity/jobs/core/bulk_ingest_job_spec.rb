@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/jobs/core/bulk_ingest_job'
 require 'sipity/models/work'
 

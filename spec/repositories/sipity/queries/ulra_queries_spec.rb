@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/queries/ulra_queries'
 
 RSpec.describe Sipity::Queries::UlraQueries, type: :isolated_repository_module do

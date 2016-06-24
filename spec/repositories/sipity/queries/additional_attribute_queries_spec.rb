@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/queries/additional_attribute_queries'
 
 RSpec.describe Sipity::Queries::AdditionalAttributeQueries, type: :isolated_repository_module do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/forms/work_submissions/ulra/access_policy_form'
 require 'sipity/models/work'
 require 'support/sipity/command_repository_interface'

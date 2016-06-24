@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'support/sipity/command_repository_interface'
 require 'sipity/processing_hooks/etd/works/submit_for_review_processing_hook'
 

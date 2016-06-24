@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 describe 'work area routing spec' do
   context 'sipity/controllers/work_areas' do

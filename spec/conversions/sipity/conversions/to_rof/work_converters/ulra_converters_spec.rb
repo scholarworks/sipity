@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/conversions/to_rof/work_converters/ulra_converters'
 require 'support/shared_examples/an_ulra_submission_converted_to_rof'
 

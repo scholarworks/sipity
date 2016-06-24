@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/runners/account_profile_runners'
 require 'sipity/runners/account_profile_runners'
 

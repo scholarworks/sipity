@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 
 RSpec.describe Sipity::CommandLineContext do
   let(:requested_by) { Sipity::Models::Processing::Actor.new }

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/runners/submission_window_runners'
 require 'sipity/runners/submission_window_runners'
 
