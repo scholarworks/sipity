@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/queries/redirect_queries'
 
 module Sipity

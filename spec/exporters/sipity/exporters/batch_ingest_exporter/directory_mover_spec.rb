@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/exporters/batch_ingest_exporter/directory_mover'
 
 module Sipity

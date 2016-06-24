@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/models/work'
 
 RSpec.describe Sipity::Models::WorkRedirectStrategy, type: :model do

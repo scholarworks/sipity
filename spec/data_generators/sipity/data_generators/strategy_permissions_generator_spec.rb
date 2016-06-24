@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/data_generators/strategy_permissions_generator'
 
 module Sipity

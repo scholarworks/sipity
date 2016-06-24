@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/comments_controller'
 require 'hesburgh/lib/mock_runner'
 

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/forms/work_areas/core/list_submissions_form'
 
 module Sipity

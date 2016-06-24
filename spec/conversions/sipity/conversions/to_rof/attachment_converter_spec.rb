@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/conversions/to_rof/attachment_converter'
 require 'sipity/conversions/to_rof/work_converters/etd_converter'
 

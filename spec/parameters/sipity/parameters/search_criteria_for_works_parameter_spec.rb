@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/parameters/search_criteria_for_works_parameter'
 
 module Sipity

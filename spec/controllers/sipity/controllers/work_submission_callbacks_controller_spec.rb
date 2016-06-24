@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/work_submission_callbacks_controller'
 
 module Sipity

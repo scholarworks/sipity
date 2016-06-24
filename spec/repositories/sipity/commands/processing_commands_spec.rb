@@ -1,3 +1,5 @@
+require "rails_helper"
+
 module Sipity
   module Commands
     RSpec.describe ProcessingCommands, type: :isolated_repository_module do

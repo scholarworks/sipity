@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'sipity/services/netid_query_service'
 
 module Sipity

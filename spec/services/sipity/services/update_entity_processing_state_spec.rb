@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'support/sipity/command_repository_interface'
 require 'sipity/services/update_entity_processing_state'
 

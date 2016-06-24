@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/policies/processing/processing_entity_policy'
 
 module Sipity

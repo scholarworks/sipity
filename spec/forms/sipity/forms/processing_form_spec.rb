@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'active_model/validations'
 require 'support/sipity/command_repository_interface'
 require 'sipity/forms/processing_form'

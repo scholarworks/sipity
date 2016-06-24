@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/current_comments_presenter'
 require 'sipity/parameters/entity_with_comments_parameter'
 

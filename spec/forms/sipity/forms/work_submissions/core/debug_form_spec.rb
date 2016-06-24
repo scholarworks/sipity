@@ -1,3 +1,5 @@
+require "rails_helper"
+
 module Sipity
   module Forms
     module WorkSubmissions

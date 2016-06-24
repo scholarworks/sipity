@@ -1,3 +1,5 @@
+require "rails_helper"
+
 module Sipity
   module Decorators
     RSpec.describe DashboardView do

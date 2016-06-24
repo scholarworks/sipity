@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/mailers/etd_mailer'
 module Sipity
   module Mailers

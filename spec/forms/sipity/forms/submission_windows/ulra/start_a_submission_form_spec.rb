@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'support/sipity/command_repository_interface'
 require 'sipity/forms/submission_windows/ulra/start_a_submission_form'
 

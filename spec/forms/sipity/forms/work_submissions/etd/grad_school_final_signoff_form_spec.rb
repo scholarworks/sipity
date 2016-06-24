@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'support/sipity/command_repository_interface'
 require 'sipity/forms/work_submissions/etd/grad_school_final_signoff_form'
 

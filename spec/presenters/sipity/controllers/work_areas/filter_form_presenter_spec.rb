@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/work_areas/filter_form_presenter'
 
 RSpec.describe Sipity::Controllers::WorkAreas::FilterFormPresenter do

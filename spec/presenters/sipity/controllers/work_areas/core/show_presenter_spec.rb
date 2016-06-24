@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/work_areas/core/show_presenter'
 
 module Sipity

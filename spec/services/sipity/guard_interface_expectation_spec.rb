@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/guard_interface_expectation'
 
 module Sipity

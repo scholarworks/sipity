@@ -1,3 +1,5 @@
+require "rails_helper"
+
 module Sipity
   module Queries
     RSpec.describe WorkAreaQueries, type: :isolated_repository_module do

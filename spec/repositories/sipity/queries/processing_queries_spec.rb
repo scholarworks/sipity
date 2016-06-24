@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/queries/processing_queries'
 
 # Welcome intrepid developer. You have stumbled into some complex data

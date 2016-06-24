@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/forms/submission_windows/core/show_form'
 require 'sipity/forms/submission_windows/core/show_form'
 

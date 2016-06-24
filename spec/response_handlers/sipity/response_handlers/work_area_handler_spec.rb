@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/response_handlers/work_area_handler'
 
 module Sipity

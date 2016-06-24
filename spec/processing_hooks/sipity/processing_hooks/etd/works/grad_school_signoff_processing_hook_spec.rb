@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'support/sipity/command_repository_interface'
 require 'sipity/processing_hooks/etd/works/grad_school_signoff_processing_hook'
 

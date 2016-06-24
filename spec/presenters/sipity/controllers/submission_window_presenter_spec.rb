@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/submission_window_presenter'
 require 'sipity/controllers/submission_window_presenter'
 

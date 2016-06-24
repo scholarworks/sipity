@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/controllers/state_advancing_action_presenter'
 # Because RSpec's described_class is getting confused
 require 'sipity/controllers/state_advancing_action_presenter'

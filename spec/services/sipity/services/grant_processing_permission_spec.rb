@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'sipity/services/grant_processing_permission'
 
 module Sipity

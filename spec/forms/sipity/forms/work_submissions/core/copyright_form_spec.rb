@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/models/work'
 require 'support/sipity/command_repository_interface'
 require 'sipity/forms/work_submissions/core/copyright_form'

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require "rails_helper"
 require 'sipity/parameters/handled_response_parameter'
 module Sipity
   module Parameters
