@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby -w
+require 'rake'
+
+@errors = []
+File.open(File.expand_path('../tmp/isolated_test_failures.txt', __FILE__), 'w+') do |error_file|
+  FileList['spec/**/*_spec.rb'].sort.select do |fn|
+    puts "rspec #{fn}"
+    error_file.puts(fn) unless system("rspec #{fn}")
+  end
+end
