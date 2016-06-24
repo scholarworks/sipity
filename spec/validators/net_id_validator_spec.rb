@@ -1,5 +1,5 @@
-require 'active_model/validations'
 require 'rails_helper'
+require 'active_model/validations'
 require 'net_id_validator'
 
 describe NetIdValidator do

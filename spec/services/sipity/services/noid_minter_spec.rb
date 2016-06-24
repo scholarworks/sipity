@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 require 'sipity/services/noid_minter'
 module Sipity
   module Services

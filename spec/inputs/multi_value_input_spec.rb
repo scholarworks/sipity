@@ -1,5 +1,5 @@
-require 'active_model/validations'
 require "rails_helper"
+require 'active_model/validations'
 require 'multi_value_input'
 
 describe 'MultiValueInput', type: :input do
