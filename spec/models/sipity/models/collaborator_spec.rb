@@ -97,6 +97,12 @@ module Sipity
         expect(subject.email).to be_nil
         expect(subject.netid).to be_nil
       end
+
+      it 'will obliterate a provided email if netid is also provided' do
+        subject = described_class.new(work_id: 1, netid: 'hello', email: 'hello@world.com', role: 'Committee Member', name: 'Jeremy')
+        subject.save
+        expect(subject.email).to be_nil
+      end
     end
   end
 end

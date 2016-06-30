@@ -82,6 +82,12 @@ module Sipity
         self.netid = nil unless netid.present?
         self.email = nil unless email.present?
       end
+
+      before_save :obliterate_email_if_netid_provided
+
+      def obliterate_email_if_netid_provided
+        self.email = nil if netid.present?
+      end
     end
   end
 end
