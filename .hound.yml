@@ -31,6 +31,9 @@ AllCops:
 Rails:
   Enabled: true
 
+Rails/OutputSafety:
+  Enabled: false
+
 ModuleLength:
   Exclude:
     - '**/*'
