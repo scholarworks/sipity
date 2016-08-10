@@ -65,7 +65,7 @@ module Sipity
             # Loading translations adds a significant chunk of time to the test suite.
             {
               Models::WorkType::DOCTORAL_DISSERTATION => "Doctoral Dissertation",
-              Models::WorkType::MASTER_THESIS => "Master’s Thesis"
+              Models::WorkType::MASTER_THESIS => "Master's Thesis"
             }.fetch(work.work_type)
           end
         end
