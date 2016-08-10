@@ -520,7 +520,7 @@ GEM
       capybara (>= 2.1, < 3.0)
     slop (3.6.0)
     sparkr (0.4.1)
-    spring (1.7.1)
+    spring (1.7.2)
     spring-commands-rspec (1.0.4)
       spring (>= 0.9.1)
     sprockets (3.7.0)
