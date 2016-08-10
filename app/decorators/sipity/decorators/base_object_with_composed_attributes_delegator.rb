@@ -25,11 +25,13 @@ module Sipity
           __getobj__.send(method_name, *args, &block)
         elsif @attributes.key?(method_name)
           @attributes[method_name]
+        else
+          super
         end
       end
 
       def respond_to_missing?(method_name, *args)
-        super || @attributes.key?(method_name)
+        @attributes.key?(method_name) || super
       end
     end
   end

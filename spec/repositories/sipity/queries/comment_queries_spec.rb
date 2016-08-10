@@ -47,7 +47,7 @@ module Sipity
             Models::Processing::Comment.create!(
               originating_strategy_state_id: index, originating_strategy_action_id: (index % actions.size + 1),
               entity_id: entity.id, actor_id: 99, comment: "Comment #{index}",
-              stale: (index % 3 == 0)
+              stale: (index % 3).zero?
             )
           end
         end

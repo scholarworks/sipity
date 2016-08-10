@@ -23,6 +23,12 @@ module Sipity
       it 'will be like its base_class' do
         expect(subject.is_a?(base_object.class)).to eq(true)
       end
+
+      context '#method_missing' do
+        it 'defers to the underlying object when not an attribute method nor the base object' do
+          expect { subject.__faserip__ }.to raise_error(NoMethodError)
+        end
+      end
     end
   end
 end
