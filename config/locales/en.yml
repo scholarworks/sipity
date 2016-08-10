@@ -256,8 +256,8 @@ en:
             </p>
   work_types:
     master_thesis:
-      label: "Master’s Thesis"
-      curate_nd_label: "Master’s Thesis"
+      label: "Master's Thesis"
+      curate_nd_label: "Master's Thesis"
     doctoral_dissertation:
       label: "Doctoral Dissertation"
       curate_nd_label: "Doctoral Dissertation"
@@ -356,7 +356,7 @@ en:
           material_already_published: 'Material already published'
         work_type:
           doctoral_dissertation: 'Doctoral Dissertation'
-          master_thesis: "Master’s Thesis"
+          master_thesis: "Master's Thesis"
         access_rights_answer:
           open_access_html: '<b>Public</b> — Freely viewable to the world'
           restricted_access_html: '<b>Restricted</b> — Only groups you specifiy have access'
