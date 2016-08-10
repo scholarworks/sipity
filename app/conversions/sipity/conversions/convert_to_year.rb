@@ -28,7 +28,7 @@ module Sipity
         return input.year if input.respond_to?(:year)
         return convert_to_year(input.to_date) if input.respond_to?(:to_date)
       rescue ArgumentError
-        return input.to_i == 0 ? nil : input.to_i if input.respond_to?(:to_i)
+        return input.to_i.zero? ? nil : input.to_i if input.respond_to?(:to_i)
       end
 
       module_function :convert_to_year
