@@ -34,8 +34,8 @@ module Sipity
         let(:access_rights_data) { double(access_right_code: Models::AccessRight::OPEN_ACCESS, transition_date: as_of) }
         it { is_expected.to eq(expected_base_rights.merge('read-groups' => ['public'])) }
       end
-      context "for Models::AccessRight::RESTRICTED_ACCESS" do
-        let(:access_rights_data) { double(access_right_code: Models::AccessRight::RESTRICTED_ACCESS, transition_date: as_of) }
+      context "for Models::AccessRight::REGISTERED_ACCESS" do
+        let(:access_rights_data) { double(access_right_code: Models::AccessRight::REGISTERED_ACCESS, transition_date: as_of) }
         it { is_expected.to eq(expected_base_rights.merge('read-groups' => ['registered'])) }
       end
       context "for Models::AccessRight::PRIVATE_ACCESS" do
