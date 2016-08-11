@@ -58,6 +58,16 @@ Style/ParallelAssignment:
   Exclude:
     - app/services/sipity/services/notifier.rb
 
+Style/MethodMissing:
+  Exclude:
+    - app/policies/sipity/policies/processing/processing_entity_policy.rb
+    - app/policies/sipity/policies/submission_window_policy.rb
+    - app/policies/sipity/policies/work_area_policy.rb
+    - app/policies/sipity/policies/work_policy.rb
+    - app/presenters/sipity/controllers/additional_attribute_presenter.rb
+    - app/presenters/sipity/controllers/submission_windows/show_presenter.rb
+    - app/controllers/sipity/controllers/processing_action_composer.rb
+
 MethodLength:
   Max: 10
   Description: 'Avoid methods longer than 10 lines of code.'
