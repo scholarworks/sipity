@@ -50,8 +50,8 @@ module Sipity
           case access_rights_data.access_right_code
           when Models::AccessRight::OPEN_ACCESS
             { 'read-groups' => ['public'] }
-          when Models::AccessRight::RESTRICTED_ACCESS
-            { 'read-groups' => ['restricted'] }
+          when Models::AccessRight::REGISTERED_ACCESS
+            { 'read-groups' => ['registered'] }
           when Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS
             { 'read-groups' => ['public'], 'embargo-date' => access_rights_data.transition_date.strftime('%Y-%m-%d') }
           when Models::AccessRight::PRIVATE_ACCESS
