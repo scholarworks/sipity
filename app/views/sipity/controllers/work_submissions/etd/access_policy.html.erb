@@ -1,0 +1,98 @@
+<h1>Set Access Controls</h1>
+
+<%= simple_form_for(model, url: request.path, method: :post, as: :work, html: { class: 'simple-form panel panel-primary with-footer' }) do |f| %>
+  <legend class="panel-heading">
+    <h3 class="panel-title">
+      Please choose the <b>release options</b> for your work
+    </h3>
+  </legend>
+
+  <fieldset class="panel-body">
+    <p class="panel-hint">
+      To help improve the discoverability of your work, <strong>your abstract and metadata will be publicly accessible</strong> through <a href="https://curate.nd.edu">CurateND</a> and the <a href="http://http://onesearch.library.nd.edu/">Library Catalog</a>.
+      Please keep this in mind. Any <strong>attachments will retain their individually assigned access controls</strong>.
+      These access controls determine who will be able to see the material when the submission process is complete.
+    </p>
+    <%= f.error_notification %>
+    <%= f.error :base, error_method: :to_sentence %>
+    <table class="table">
+      <caption>
+      </caption>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Title</th>
+          <th class="single-option">Open Access</th>
+          <th class="single-option">Restricted to Notre Dame</th>
+          <th class="single-option">Private</th>
+          <th>Embargo then Open Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= f.fields_for :accessible_objects do |field| %>
+          <% is_disabled = field.object.accessible_object_type == 'Work' %>
+          <tr class="accessible-object <%= dom_class(field.object.entity_type) %>">
+            <td>
+              <p class="human-model-name"><%= field.object.accessible_object_type %></p>
+            </td>
+            <td>
+              <p class="title"><%= field.object %></p>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%
+                  # Without the hidden field, the radio button does not pass along its information.
+                  # See AccessPolicyProcessingHook for server side enforcement
+                  if is_disabled
+                %>
+                  <%= field.input :access_right_code, as: :hidden, input_html: { value: Sipity::Models::AccessRight::OPEN_ACCESS } %>
+                <% end %>
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::OPEN_ACCESS, disabled: is_disabled) %>
+                &#8203;
+              </label>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::REGISTERED_ACCESS, disabled: is_disabled) %>
+                &#8203;
+              </label>
+            </td>
+            <td class="single-option">
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::PRIVATE_ACCESS, disabled: is_disabled) %>
+                &#8203;
+              </label>
+            </td>
+            <td>
+              <label class="radio-inline">
+                <%= field.radio_button(:access_right_code, Sipity::Models::AccessRight::EMBARGO_THEN_OPEN_ACCESS, disabled: is_disabled) %>
+                released on
+              </label>
+              <%= field.input :release_date,
+                as: :date,
+                input_html: { class: 'form-control' },
+                include_blank: true,
+                label: false,
+                required: false,
+                wrapper_html: { class: 'form-inline form-inline-block' },
+                disabled: is_disabled
+              %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <div>
+      <% if model.available_representative_attachments.any? %>
+        <%= f.input :representative_attachment_id, collection: model.available_representative_attachments, input_html: { class: 'form-control' }, required: true %>
+      <% end %>
+    </div>
+  </fieldset>
+  <div class="panel-footer action-pane">
+    <%= f.submit nil, name: "form/#{model.processing_action_name}/submit" %>
+  </div>
+<% end %>
+
+<div class="action-pane">
+  <%= link_to t("sipity/decorators/entitiy_enrichments.cancel"), work_path(model.work), class: 'btn btn-default' %>
+</div>
