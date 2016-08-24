@@ -62,12 +62,12 @@ GIT
 
 GIT
   remote: git://github.com/ndlib/locabulary.git
-  revision: 999fa84b5bb3f973d71ac8a6a02e34bb2499ed36
+  revision: 4f79f8100f11518db5fae18718fb4787922693a2
   branch: master
   specs:
-    locabulary (0.4.0)
+    locabulary (0.6.1)
+      activesupport (~> 4.0)
       dry-configurable
-      hanami-utils
       json (~> 1.8)
 
 GIT
@@ -222,7 +222,7 @@ GEM
       activemodel (>= 3.0)
       activesupport (>= 3.0)
       request_store (~> 1.0)
-    dry-configurable (0.1.6)
+    dry-configurable (0.1.7)
       concurrent-ruby (~> 1.0)
     dry-container (0.3.4)
       concurrent-ruby (~> 1.0)
@@ -307,7 +307,6 @@ GEM
     guard-rubocop (1.2.0)
       guard (~> 2.0)
       rubocop (~> 0.20)
-    hanami-utils (0.7.2)
     hashie (3.4.4)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
