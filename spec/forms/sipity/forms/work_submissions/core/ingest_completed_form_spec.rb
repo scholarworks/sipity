@@ -8,8 +8,9 @@ module Sipity
         RSpec.describe IngestCompletedForm do
           let(:work) { Models::Work.new(id: '1234') }
           let(:repository) { CommandRepositoryInterface.new }
-          let(:attributes) { {} }
-          let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: { job_state: 'success' } } }
+          let(:processing_action) { Models::Processing::StrategyAction.new(name: 'ingest_completed') }
+          let(:attributes) { { job_state: described_class::JOB_STATE_SUCCESS } }
+          let(:keywords) { { work: work, repository: repository, requested_by: user, attributes: attributes } }
           let(:user) { double('User') }
           subject { described_class.new(keywords) }
 
@@ -23,6 +24,22 @@ module Sipity
 
           include Shoulda::Matchers::ActiveModel
           it { is_expected.to validate_inclusion_of(:job_state).in_array([described_class::JOB_STATE_SUCCESS]) }
+
+          context 'with "error" for job_state' do
+            let(:attributes) { { job_state: described_class::JOB_STATE_ERROR } }
+            before do
+              allow(subject).to receive(:valid?).and_return(false)
+            end
+            it 'will notify Airbrake' do
+              expect(subject).to_not receive(:create_a_redirect)
+              subject.submit
+            end
+            it 'will not submit' do
+              expect(Airbrake).to receive(:notify_or_ignore).and_call_original
+              subject.submit
+            end
+            its(:submit) { is_expected.to eq(false) }
+          end
 
           context 'with invalid data' do
             before { expect(subject).to receive(:valid?).and_return(false) }
