@@ -7,6 +7,7 @@ class MultiValueInput < SimpleForm::Inputs::CollectionInput
   def input(*)
     @rendered_first_element = false
     input_html_classes.unshift("string")
+    input_html_options[:multiple] = multiple?
     input_html_options[:type] ||= 'text'
     input_html_options[:name] ||= "#{object_name}[#{attribute_name}][]"
     markup = <<-HTML
