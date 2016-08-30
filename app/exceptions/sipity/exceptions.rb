@@ -14,6 +14,9 @@ module Sipity
     class InvalidAuthorizationCredentialsError < RuntimeError
     end
 
+    class IngestUnableToCompleteError < RuntimeError
+    end
+
     # When you can't instantiate a specific work converter, raise this exception.
     class FailedToInitializeWorkConverterError < RuntimeError
       attr_reader :work
