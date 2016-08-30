@@ -479,7 +479,7 @@ GEM
     rubycas-client (2.3.9)
       activesupport
     rubyzip (1.2.0)
-    sanitize (4.1.0)
+    sanitize (4.2.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
