@@ -102,7 +102,7 @@ unless system("which jira")
   exit!(9)
 end
 
-unless File.exist?(File.join(HOME, '.jira.d/config.yml'))
+unless File.exist?(File.join(ENV['HOME'], '.jira.d/config.yml'))
   $stderr.puts "Expected ~/.jira.d/config.yml to exist"
   $stderr.puts "Run the following:"
   $stderr.puts "\tmkdir ~/.jira.d\n\techo 'endpoint: https://jira.library.nd.edu' > ~/.jira.d/config.yml"
