@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-railroady -M -o artifacts/sipity-erd.dot && dot -oartifacts/sipity-erd.png -Tpng artifacts/sipity-erd.dot
+bundle exec railroady -M -o artifacts/sipity-erd.dot && dot -oartifacts/sipity-erd.png -Tpng artifacts/sipity-erd.dot
