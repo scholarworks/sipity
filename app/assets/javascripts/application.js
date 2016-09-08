@@ -15,7 +15,6 @@
 //
 //= require bootstrap-sprockets
 //= require readmore
-//= require turbolinks
 //
 //= require vendor/jquery-ui-widget
 //= require vendor/redactor
