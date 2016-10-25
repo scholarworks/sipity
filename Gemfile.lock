@@ -355,9 +355,8 @@ GEM
       net-ssh (>= 2.6.5)
     net-ssh (3.2.0)
     netrc (0.11.0)
-    nokogiri (1.6.8)
+    nokogiri (1.6.8.1)
       mini_portile2 (~> 2.1.0)
-      pkg-config (~> 1.1.7)
     nokogumbo (1.4.9)
       nokogiri
     notiffany (0.1.1)
@@ -367,7 +366,6 @@ GEM
     parser (2.3.1.2)
       ast (~> 2.2)
     path_expander (1.0.0)
-    pkg-config (1.1.7)
     poltergeist (1.10.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -479,7 +477,7 @@ GEM
     rubycas-client (2.3.9)
       activesupport
     rubyzip (1.2.0)
-    sanitize (4.2.0)
+    sanitize (4.4.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4.1)
