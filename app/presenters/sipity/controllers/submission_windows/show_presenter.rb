@@ -10,7 +10,7 @@ module Sipity
         def render_submission_window
           # HACK: Oh boy is this ugly, but it delivers what I am after.
           # It also draws attention to the new rendering that I'm after
-          slug_to_method_name_suffix = PowerConverter.convert_to_safe_for_method_name(submission_window.work_area_slug)
+          slug_to_method_name_suffix = PowerConverter.convert(submission_window.work_area_slug, to: :safe_for_method_name)
           send("#{RENDER_METHOD_PREFIX}#{slug_to_method_name_suffix}")
         end
 

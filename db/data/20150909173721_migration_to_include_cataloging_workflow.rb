@@ -25,7 +25,7 @@ class MigrationToIncludeCatalogingWorkflow < ActiveRecord::Migration
   private
 
   def etd_work_area
-    PowerConverter.convert_to_work_area('etd')
+    PowerConverter.convert('etd', to: :work_area)
   end
 
   def each_etd_entities

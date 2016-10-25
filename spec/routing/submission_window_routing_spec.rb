@@ -68,7 +68,7 @@ describe 'work area routing spec', type: :routing do
 
     it 'will have a routable power conversion' do
       submission_window = Sipity::Models::SubmissionWindow.new(slug: 'sw-slug', work_area: Sipity::Models::WorkArea.new(slug: 'wa-slug'))
-      root_path = PowerConverter.convert_to_processing_action_root_path(submission_window)
+      root_path = PowerConverter.convert(submission_window, to: :processing_action_root_path)
       expect(get: File.join(root_path, 'funny_things')).to(
         route_to(
           controller: controller,

@@ -31,7 +31,7 @@ module Sipity
         # HACK: Is there a better method for collaboration? In doing this, I
         # might be able to get rid of several underlying classes; So composition
         # by a convention.
-        root_path = PowerConverter.convert_to_processing_action_root_path(entity)
+        root_path = PowerConverter.convert(entity, to: :processing_action_root_path)
         File.join(root_path, action_name)
       end
 

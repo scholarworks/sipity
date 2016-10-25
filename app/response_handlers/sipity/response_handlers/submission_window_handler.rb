@@ -20,7 +20,7 @@ module Sipity
       # We have a successful form submission.
       module SubmitSuccessResponder
         def self.for_controller(handler:)
-          handler.redirect_to(PowerConverter.convert_to_access_path(handler.response_object))
+          handler.redirect_to(PowerConverter.convert(handler.response_object, to: :access_path))
         end
 
         def self.for_command_line(*)

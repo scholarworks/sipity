@@ -93,7 +93,7 @@ module Sipity
       end
 
       def create_submission_window!(attributes:)
-        slug = PowerConverter.convert_to_slug(attributes.fetch(:slug))
+        slug = PowerConverter.convert(attributes.fetch(:slug), to: :slug)
         window = Models::SubmissionWindow.find_or_create_by!(work_area_id: work_area.id, slug: slug)
         return window if window.attributes.symbolize_keys.slice(*attributes.keys) == attributes
         window.update(attributes)

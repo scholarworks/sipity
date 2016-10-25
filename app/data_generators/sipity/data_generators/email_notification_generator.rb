@@ -40,7 +40,7 @@ module Sipity
       def assign_recipients_to(email:)
         recipients.slice(:to, :cc, :bcc).each do |(recipient_strategy, recipient_roles)|
           Array.wrap(recipient_roles).each do |role|
-            email.recipients.find_or_create_by!(role: PowerConverter.convert_to_role(role), recipient_strategy: recipient_strategy.to_s)
+            email.recipients.find_or_create_by!(role: PowerConverter.convert(role, to: :role), recipient_strategy: recipient_strategy.to_s)
           end
         end
       end

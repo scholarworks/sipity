@@ -82,7 +82,7 @@ module Sipity
       end
 
       def find_or_create_work_area(attributes:)
-        slug = PowerConverter.convert_to_slug(attributes.fetch(:slug))
+        slug = PowerConverter.convert(attributes.fetch(:slug), to: :slug)
         work_area = Models::WorkArea.find_or_initialize_by(slug: slug)
         if work_area.attributes.symbolize_keys.slice(*attributes.keys) == attributes
           work_area.save! unless work_area.persisted?

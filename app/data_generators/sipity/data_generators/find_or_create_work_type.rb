@@ -31,7 +31,7 @@ module Sipity
       private
 
       def find_or_create_the_work_type!
-        PowerConverter.convert_to_work_type(name)
+        PowerConverter.convert(name, to: :work_type)
       end
 
       def find_or_create_strategy_usage!

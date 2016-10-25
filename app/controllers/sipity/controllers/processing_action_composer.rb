@@ -127,7 +127,7 @@ module Sipity
       ROOT_VIEW_PATH = Rails.root.join('app/views')
 
       def build_processing_action_view_path_for(slug:)
-        File.join(ROOT_VIEW_PATH, controller.controller_path, PowerConverter.convert_to_file_system_safe_file_name(slug))
+        File.join(ROOT_VIEW_PATH, controller.controller_path, PowerConverter.convert(slug, to: :file_system_safe_file_name))
       end
     end
     private_constant :ProcessingActionViewPathDelegator

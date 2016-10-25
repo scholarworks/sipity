@@ -3,6 +3,6 @@ PowerConverter.define_conversion_for(:processing_comment) do |input|
   when Sipity::Models::Processing::Comment
     input
   when Sipity::Models::Processing::EntityActionRegister
-    PowerConverter.convert_to_processing_comment(input.subject)
+    PowerConverter.convert(input.subject, to: :processing_comment)
   end
 end

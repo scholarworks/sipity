@@ -60,7 +60,7 @@ module Sipity
         def action_set_for(name:, identifier: nil)
           collection = begin
             if name.to_s == 'enrichment_actions'
-              send("enrichment_actions_that_are_#{PowerConverter.convert_to_safe_for_method_name(identifier)}")
+              send("enrichment_actions_that_are_#{PowerConverter.convert(identifier, to: :safe_for_method_name)}")
             else
               public_send(name)
             end

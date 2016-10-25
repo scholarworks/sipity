@@ -54,7 +54,7 @@ module Sipity
       def inject_work_area(scope:, subject:, options:, defaults:)
         return if scope == 'work_areas'
         begin
-          work_area = PowerConverter.convert_to_work_area(subject)
+          work_area = PowerConverter.convert(subject, to: :work_area)
           defaults.unshift(:"work_area/#{work_area.slug}.#{defaults.first}")
           options[:work_area] = work_area.name
         rescue PowerConverter::ConversionError

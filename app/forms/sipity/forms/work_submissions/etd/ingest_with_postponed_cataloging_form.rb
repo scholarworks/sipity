@@ -90,7 +90,7 @@ module Sipity
           end
 
           def agree_to_signoff=(value)
-            @agree_to_signoff = PowerConverter.convert_to_boolean(value)
+            @agree_to_signoff = PowerConverter.convert(value, to: :boolean)
           end
 
           def view_context

@@ -90,7 +90,7 @@ module Sipity
       end
 
       it 'should convert the underlying entity to a work area' do
-        expect(PowerConverter).to receive(:convert_to_work_area).with(entity).and_return(:converted)
+        expect(PowerConverter).to receive(:convert).with(entity, to: :work_area).and_return(:converted)
         expect(subject.to_work_area).to eq(:converted)
       end
 

@@ -33,13 +33,13 @@ module Sipity
           private
 
           def confirm_destroy=(value)
-            @confirm_destroy = PowerConverter.convert_to_boolean(value)
+            @confirm_destroy = PowerConverter.convert(value, to: :boolean)
           end
 
           attr_reader :submission_window
 
           def initialize_submission_window!
-            @submission_window = PowerConverter.convert_to_submission_window(work)
+            @submission_window = PowerConverter.convert(work, to: :submission_window)
           end
         end
       end

@@ -32,7 +32,7 @@ module Sipity
         private
 
         def agreed_to_terms_of_service=(value)
-          @agreed_to_terms_of_service = PowerConverter.convert_to_boolean(value)
+          @agreed_to_terms_of_service = PowerConverter.convert(value, to: :boolean)
         end
 
         def default_repository
