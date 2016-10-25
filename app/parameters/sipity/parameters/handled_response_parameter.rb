@@ -74,7 +74,7 @@ module Sipity
       def object=(input)
         # TODO: Refactor to include Contracts gem
         guard_interface_expectation!(input, :errors)
-        @work_area = PowerConverter.convert_to_work_area(input)
+        @work_area = PowerConverter.convert(input, to: :work_area)
         @object = input
       end
     end

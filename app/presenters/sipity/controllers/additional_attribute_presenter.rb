@@ -36,7 +36,7 @@ module Sipity
       RENDER_METHOD_REGEXP = /\A#{RENDER_METHOD_PREFIX}/
 
       def method_name_for_render_key_value
-        "#{RENDER_METHOD_PREFIX}#{PowerConverter.convert_to_safe_for_method_name(key)}"
+        "#{RENDER_METHOD_PREFIX}#{PowerConverter.convert(key, to: :safe_for_method_name)}"
       end
 
       def render_titleized_value(value)

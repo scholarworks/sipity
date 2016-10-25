@@ -44,7 +44,7 @@ module Sipity
         let(:handler) { double(redirect_to: true, response_object: double(id: '123')) }
         context '.for_controller' do
           it 'will coordinate the rendering of the template' do
-            expect(PowerConverter).to receive(:convert_to_access_path).and_return('/hello/world')
+            expect(PowerConverter).to receive(:convert).with(handler.response_object, to: :access_path).and_return('/hello/world')
             described_class.for_controller(handler: handler)
             expect(handler).to have_received(:redirect_to).with('/hello/world')
           end

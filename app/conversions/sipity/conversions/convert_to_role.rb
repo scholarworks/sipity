@@ -7,7 +7,7 @@ module Sipity
       end
 
       def convert_to_role(input)
-        PowerConverter.convert_to_role(input)
+        PowerConverter.convert(input, to: :role)
       rescue PowerConverter::ConversionError
         raise Exceptions::RoleConversionError, input
       end

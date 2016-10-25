@@ -3,7 +3,7 @@ module Sipity
     # Queries related to SubmissionWindows.
     module SubmissionWindowQueries
       def find_submission_window_by(slug:, work_area:)
-        work_area = PowerConverter.convert_to_work_area(work_area)
+        work_area = PowerConverter.convert(work_area, to: :work_area)
         Models::SubmissionWindow.find_by!(slug: slug, work_area_id: work_area.id)
       end
 
@@ -17,7 +17,7 @@ module Sipity
       #
       # @see OpenForStartingSubmissionsValidator
       def find_open_submission_windows_by(work_area:, as_of: Time.zone.now)
-        work_area = PowerConverter.convert_to_work_area(work_area)
+        work_area = PowerConverter.convert(work_area, to: :work_area)
         submission_windows = Models::SubmissionWindow.arel_table
         Models::SubmissionWindow.order(:slug).where(work_area_id: work_area.id).where(
           submission_windows[:open_for_starting_submissions_at].lteq(as_of).and(

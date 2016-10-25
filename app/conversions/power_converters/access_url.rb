@@ -4,6 +4,6 @@ PowerConverter.define_conversion_for(:access_url) do |input|
   when Sipity::Models::Attachment
     input.file_url
   else
-    File.join(Figaro.env.url_host, PowerConverter.convert_to_access_path(input))
+    File.join(Figaro.env.url_host, PowerConverter.convert(input, to: :access_path))
   end
 end

@@ -129,7 +129,7 @@ module Sipity
       end
 
       def to_work_area
-        PowerConverter.convert_to_work_area(entity)
+        PowerConverter.convert(entity, to: :work_area)
       end
 
       def to_processing_action

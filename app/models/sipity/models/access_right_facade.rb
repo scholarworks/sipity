@@ -37,7 +37,7 @@ module Sipity
       end
 
       def access_url
-        PowerConverter.convert_to_access_url(accessible_object)
+        PowerConverter.convert(accessible_object, to: :access_url)
       end
 
       private

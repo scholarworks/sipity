@@ -82,7 +82,7 @@ module Sipity
           @ids_for_deletion = []
           @attachments_metadata = {}
           attachments_attributes.each do |_key, attributes|
-            if PowerConverter.convert_to_boolean(attributes['delete'])
+            if PowerConverter.convert(attributes['delete'], to: :boolean)
               @ids_for_deletion << attributes.fetch('id')
             else
               @attachments_metadata[attributes.fetch('id')] = extract_permitted_attributes(attributes, 'name')

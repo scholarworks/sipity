@@ -65,7 +65,7 @@ module Sipity
           validates :requested_by, presence: true
 
           def form_path
-            File.join(PowerConverter.convert_to_processing_action_root_path(submission_window), processing_action_name)
+            File.join(PowerConverter.convert(submission_window, to: :processing_action_root_path), processing_action_name)
           end
 
           def access_rights_answer_for_select

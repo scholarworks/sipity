@@ -21,7 +21,7 @@ RSpec.describe 'PowerConverter' do
       [Object.new, true]
     ].each_with_index do |(to_convert, expected), index|
       it "will convert #{to_convert.inspect} to #{expected} (Scenario ##{index}" do
-        expect(PowerConverter.convert_to_boolean(to_convert)).to eq(expected)
+        expect(PowerConverter.convert(to_convert, to: :boolean)).to eq(expected)
       end
     end
 
