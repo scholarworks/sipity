@@ -34,6 +34,7 @@ gem 'locabulary', github: 'ndlib/locabulary', branch: 'master'
 gem 'data_migrator', github: 'jeremyf/data-migrator'
 gem 'dry-validation'
 gem 'whenever', require: false
+gem 'rof', github: 'ndlib/rof'
 
 group :doc do
   gem 'inch', require: false

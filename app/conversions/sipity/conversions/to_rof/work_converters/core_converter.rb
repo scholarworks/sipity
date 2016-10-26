@@ -1,4 +1,5 @@
 require 'sipity/conversions/to_rof/access_rights_builder'
+require 'rof/rdf_context'
 
 module Sipity
   module Conversions
@@ -114,13 +115,7 @@ module Sipity
           end
 
           def jsonld_context
-            {
-              'dc' => 'http://purl.org/dc/terms/',
-              'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
-              'ms' => 'http://www.ndltd.org/standards/metadata/etdms/1.1/',
-              'ths' => 'http://id.loc.gov/vocabulary/relators/',
-              'hydramata-rel' => 'http://projecthydra.org/ns/relations#'
-            }
+            ROF::RdfContext
           end
 
           def format_date(date)
